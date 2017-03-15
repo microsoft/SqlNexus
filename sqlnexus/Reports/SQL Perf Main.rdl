@@ -1,0 +1,1020 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:cl="http://schemas.microsoft.com/sqlserver/reporting/2010/01/componentdefinition" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2010/01/reportdefinition">
+  <AutoRefresh>0</AutoRefresh>
+  <DataSources>
+    <DataSource Name="DataSource_Private">
+      <ConnectionProperties>
+        <DataProvider>SQL</DataProvider>
+        <ConnectString>="data source=" &amp; Parameters!dsServerName.Value &amp; ";Connect Timeout=60;initial catalog="&amp;Parameters!dsDatabaseName.Value</ConnectString>
+        <IntegratedSecurity>true</IntegratedSecurity>
+      </ConnectionProperties>
+      <rd:SecurityType>Integrated</rd:SecurityType>
+      <rd:DataSourceID>98fa9aa2-7b65-4b42-a909-d998d08514c6</rd:DataSourceID>
+    </DataSource>
+  </DataSources>
+  <DataSets>
+    <DataSet Name="DataSet_Reports">
+      <Query>
+        <DataSourceName>DataSource_Private</DataSourceName>
+        <CommandText>declare @tbl_reports table 
+( 
+ReportId int identity primary key,
+ReportName nvarchar(128),
+ReportDisplayName nvarchar(256),
+ReportDescription nvarchar(max),
+VersionApplied int,
+ValidationObject nvarchar(128), 
+Category nvarchar(50),
+SeqNo int,
+DataCollection nvarchar(128),
+Importer nvarchar(128),
+Manditory bit,
+CategorySeq int
+)
+
+
+--common
+
+insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
+values ('AnalysisSummary_C', 'Best Practice &amp;  Analysis Summary', 'Most common things observed from analyzing the data',  1|2|4|8, 'Analysis Results', 'dbo.tbl_AnalysisSummary', 500, 'Perf Stats Collector', 1,500)
+
+
+
+insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
+values ('Loaded Modules_C', 'Loaded Modules', 'Modules loaded in SQL Server address space',  1|2|4|8, 'Common', 'dbo.tbl_loaded_modules', 500, 'Perf Stats Collector', 1,2000)
+insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
+values ('ServerConfiguration_C', 'Server Configuration', 'Common properties such as RAM, CPU, sp_configure, trace flags and startup prameters',  1|2|4|8, 'Common', 'dbo.tbl_ServerProperties', 200, 'SQL Base Collector', 1,2000)
+insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
+values ('DatabaseConfiguration_C', 'Database Configuration', 'Common properties such as files, auto update stats etc',  1|2|4|8, 'Common', 'dbo.tbl_SysDatabases', 200, 'SQL Base Collector', 1,2000)
+
+
+--RML
+insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
+values ('AnalysisSummary_C', 'Best Practice &amp;  Analysis Summary', 'Most common things observed from analyzing the data',  1|2|4|8, 'Performance', 'dbo.tbl_AnalysisSummary', 110, 'Perf Stats Collector', 1,3000)
+
+insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied,  Category, ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
+values ('ReadTrace_Main', 'ReadTrace Reports', 'ReadTrace reports for Profiler traces or Extended Events/XEvents', 1|2|4|8,'Performance', 'readtrace.tblBatches',  100, 'Profiler Trace', 1,3000)
+
+insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied,  Category, ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq ) 
+values ('Bottleneck Analysis_C', 'Bottleneck Analysis', 'Bottleneck Analysis',2 | 4,'Performance', 'dbo.tbl_REQUESTS', 200, 'Perf Stats Collector', 1,3000)
+
+
+insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq ) 
+values ('Blocking and Wait Statistics_C', 'Blocking and Wait Statistics', 'Blocking and wait statistics',  2 | 4, 'Performance', 'dbo.tbl_REQUESTS', 300, 'Perf Stats Collector', 1, 3000)
+
+insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq ) 
+values ('LockSummary_C', 'Lock Count Summary', 'Lock count graphed by resources',  2 | 4, 'Performance', 'dbo.tbl_locksummary', 4000, 'Perf Stats Collector', 1, 3000)
+
+
+insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied,  Category, ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
+values ('Spinlock Stats_C', 'Spin Lock Stats', 'Spin Lock Stats',  2 | 4,'Performance', 'dbo.tbl_REQUESTS',4000, 'Perf Stats Collector', 1,3000)
+
+insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied,  Category, ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
+values ('Query Hash_C', 'Query Hash', 'Top 10 queries from query hash that consume most CPU, IO or logical reads',  4, 'Performance', 'dbo.tbl_TopNLogicalReadsByQueryHash', 4000, 'Perf Stats Collector', 1,3000)
+
+insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied,  Category, ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
+values ('Missing Indexes_C', 'Missing Indexes', 'Missing Indexes captured by SQL Server DMVs',  2|4|8,'Performance', 'dbo.tbl_missingindexes', 4000, 'Perf Stats Collector', 1,3000)
+
+
+insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
+values ('SQL 2000 Blocking_C', 'SQL Server 2000 blocking', 'SQL Server 2000 blocking',  1, 'Performance', 'dbo.tbl_sysprocesses', 4000, 'SQL 2000 blocking collector', 1,3000)
+	
+
+insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
+values ('Perfmon_C', 'Perfmon Summary', 'Summary of most commonly looked at counters',  1|2|4|8, 'Performance', 'dbo.counterdata', 4000, 'Perfmon', 1,3000)
+
+insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
+values ('Virtual File Stats_C', 'Virtual File Stats', 'Display Virtual File Stats related to IO performance',  1|2|4|8, 'Performance', 'dbo.tbl_FileStats', 4000, 'Perf Stats Collector', 1,3000)
+
+
+insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
+values ('Memory Brokers_C', 'Memory Brokers', 'Display memory brokers',  1|2|4|8, 'Performance', 'dbo.tbl_dm_os_memory_brokers', 4000, 'Perf Stats Collector', 1,3000)
+
+insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
+values ('SysIndexes_C', 'Indexes and Stats', 'Display Stats info on indexes and stats',  1|2|4|8, 'Performance', 'dbo.tbl_SysIndexes', 4000, 'Perf Stats Collector', 1,3000)
+
+
+
+insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
+values ('Query Execution Memory_C', 'Query Execution Memory (Memory Grants)', 'Displays Query Execution Memory',  1|2|4|8, 'Performance', 'dbo.tbl_Query_Execution_Memory', 4000, 'SQL Memory Error Collector', 1,3000)
+
+insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
+values ('Memory Clerks_C', 'Memory Clerks', 'Displays sys.dm_Os_memory_clerks',  1|2|4|8, 'Performance', 'dbo.tbl_DM_OS_MEMORY_CLERKS', 4000, 'SQL Memory Error Collector', 1,3000)
+
+
+insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
+values ('Working Set Trim_C', 'Workingset Triming', 'Displays Workignset trimming info',  1|2|4|8, 'Performance', 'dbo.tbl_workingset_trimming', 4000, 'SQL Memory Error Colelctor', 1,3000)
+
+
+insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
+values ('TopPlanAnalysis_C', 'Tables used by top queries', 'Tables used by top CPU consuming queries',  1|2|4|8, 'Performance', 'dbo.tblObjectsUsedByTopPlans', 4000, 'Perf Stats Collector', 1,3000)
+
+
+insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
+values ('Query_Store_C', 'Query Store Query Analysis', 'Query Store Queries Aggregated at Server level',  1|2|4|8, 'Performance', 'dbo.tbl_query_store_runtime_stats_interval', 4000, 'Query Store Collector', 1,3000)
+
+
+insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
+values ('Active Queries_C', 'Active CPU Consuming Queries', 'Active CPU Consuming Queries',  1|2|4|8, 'Performance', 'dbo.tbl_Requests', 4000, 'Perf Stats Collector', 1,3000)
+
+insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
+values ('System_Requests_C', 'System Thread CPU Consumption', 'System Thread CPU Consumption',  1|2|4|8, 'Performance', 'dbo.tbl_System_Requests', 4000, 'Perf Stats Collector', 1,3000)
+
+insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
+values ('Active Traces and XEvents_C', 'Active Trace and XEvent Report', 'Active Trace and XEvent report',  1|2|4|8, 'Performance', 'dbo.tbl_profiler_trace_summary', 3000, 'Perf Stats Collector', 1,3000)
+
+
+
+
+
+
+--Azure
+insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection, Manditory,CategorySeq) 
+values ('WASD_Connection_Stats_C', 'Connection Stats', 'Historical summary of connection statistics to the server',  1|2|4|8, 'Azure', 'dbo.tbl_DB_CONN_STATS', 100, 'Azure Perf Stats Collector', 1, 1000)
+
+insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection, Manditory,CategorySeq) 
+values ('WASD_Deadlocks_C', 'Deadlocks', 'Deadlock data from sys.event_log',  1|2|4|8, 'Azure', 'dbo.tbl_EVENT_LOG', 200, 'Azure Perf Stats Collector', 1,1000)
+
+insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection, Manditory,CategorySeq) 
+values ('WASD_ResourceStats_C', 'sys.resource_stats', 'Snapshot from sys.resource_stats view',  1|2|4|8, 'Azure', 'dbo.tbl_RESOURCE_STATS', 300, 'Azure Perf Stats Collector', 1,1000)
+
+insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection, Manditory,CategorySeq) 
+values ('WASD_SloStats_C', 'SLO change history', 'Shows the changes in service level objective for databases',  1|2|4|8, 'Azure', 'dbo.tbl_SLO_HISTORY', 400, 'Azure Perf Stats Collector', 1,1000)
+
+
+
+
+
+select
+CategorySeq, Category, ReportName, ReportDisplayName, ReportDescription, DataCollection, SeqNo, MAX(ReportAvailable) ReportAvailable
+from 
+(
+select  CategorySeq,Category, ReportName, ReportDisplayName, ReportDescription, DataCollection, case when indx.rowcnt &gt;0 then 1 else 0 end  ReportAvailable, SeqNo
+ from @tbl_reports  rep  left outer join sysindexes indx on ( OBJECT_ID (rep.ValidationObject) = indx.id and indx.indid in (0,1,300)) ) t
+ group by CategorySeq, Category, ReportName, ReportDisplayName, ReportDescription, DataCollection, SeqNo
+ order by CategorySeq, SeqNo, ReportName</CommandText>
+        <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
+      </Query>
+      <Fields>
+        <Field Name="reportName">
+          <DataField>ReportName</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ReportDisplayName">
+          <DataField>ReportDisplayName</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ReportDescription">
+          <DataField>ReportDescription</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ReportAvailable">
+          <DataField>ReportAvailable</DataField>
+        </Field>
+        <Field Name="Category">
+          <DataField>Category</DataField>
+          <rd:UserDefined>true</rd:UserDefined>
+        </Field>
+        <Field Name="DataCollection">
+          <DataField>DataCollection</DataField>
+          <rd:UserDefined>true</rd:UserDefined>
+        </Field>
+        <Field Name="CategorySeq">
+          <DataField>CategorySeq</DataField>
+          <rd:UserDefined>true</rd:UserDefined>
+        </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="DataSet_SQLVersion">
+      <Query>
+        <DataSourceName>DataSource_Private</DataSourceName>
+        <CommandText>if object_id ('dbo.tblNexusInfo') is not null
+begin
+	select case [Value] when '9' then '2005' when '8' then '' when '10' then '2008' else null end as 'SQLVersion' from tblNexusInfo where Attribute='SQLVersion'
+end
+else
+	select '' as 'SQLVersion'</CommandText>
+        <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
+      </Query>
+      <Fields>
+        <Field Name="SQLVersion">
+          <DataField>SQLVersion</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="DataSet_Fake">
+      <Query>
+        <DataSourceName>DataSource_Private</DataSourceName>
+        <CommandText>select 1</CommandText>
+        <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
+      </Query>
+    </DataSet>
+    <DataSet Name="DataSet_Import_Report_matched">
+      <Query>
+        <DataSourceName>DataSource_Private</DataSourceName>
+        <CommandText>
+if object_id ('tblNexusInfo') is not null
+begin
+	declare @ImportVersion nvarchar(100), @ReportVersion nvarchar(100)
+	select  @ImportVersion=[Value] from tblNexusInfo where  Attribute =  'Nexus Importer Version'
+	select @ReportVersion=[Value] from tblNexusInfo where  Attribute =  'Nexus Report Version'
+	select @ImportVersion 'ImportVersion', @ReportVersion 'ReportVersion', cast( case when @ImportVersion = @ReportVersion then 1 else 0  end as bit ) IsImportReportMatched
+end
+else
+begin
+	select  cast(null as nvarchar(100)) 'ImportVersion', cast(null as nvarchar(100)) 'ReportVersion', cast(0 as bit ) IsImportReportMatched
+end</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="ImportVersion">
+          <DataField>ImportVersion</DataField>
+          <rd:UserDefined>true</rd:UserDefined>
+        </Field>
+        <Field Name="ReportVersion">
+          <DataField>ReportVersion</DataField>
+          <rd:UserDefined>true</rd:UserDefined>
+        </Field>
+        <Field Name="IsImportReportMatched">
+          <DataField>IsImportReportMatched</DataField>
+          <rd:UserDefined>true</rd:UserDefined>
+        </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="DataSet_IsLatestDiag">
+      <Query>
+        <DataSourceName>DataSource_Private</DataSourceName>
+        <CommandText>
+if object_id ('tbl_DiagInfo') is not null
+begin
+	if exists (select * from tbl_DiagInfo where DiagVersion &gt;=1001)
+	select cast (1 as int) 'IsLatestDiag'
+	else
+	select cast (0 as int) 'IsLatestDiag'
+end
+else	
+begin
+	select cast (0 as int) 'IsLatestDiag'
+end</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="IsLatestDiag">
+          <DataField>IsLatestDiag</DataField>
+          <rd:UserDefined>true</rd:UserDefined>
+        </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="DataSet_Mssolve_Helper">
+      <Query>
+        <DataSourceName>DataSource_Private</DataSourceName>
+        <CommandText>select cast(@@servername as sysname) 'ServerName', db_name() 'DatabaseName'</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="ServerName">
+          <DataField>ServerName</DataField>
+          <rd:UserDefined>true</rd:UserDefined>
+        </Field>
+        <Field Name="DatabaseName">
+          <DataField>DatabaseName</DataField>
+          <rd:UserDefined>true</rd:UserDefined>
+        </Field>
+      </Fields>
+    </DataSet>
+  </DataSets>
+  <ReportSections>
+    <ReportSection>
+      <Body>
+        <ReportItems>
+          <Tablix Name="table1">
+            <TablixBody>
+              <TablixColumns>
+                <TablixColumn>
+                  <Width>3.08959in</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>3.5825in</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>2.2425in</Width>
+                </TablixColumn>
+              </TablixColumns>
+              <TablixRows>
+                <TablixRow>
+                  <Height>0.46951in</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="textbox3">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Report  </Value>
+                                  <Style>
+                                    <FontFamily>Tahoma</FontFamily>
+                                    <FontSize>11pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>textbox3</rd:DefaultName>
+                          <ZIndex>5</ZIndex>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <BackgroundColor>=Parameters!FmtAmbientBackground.Value</BackgroundColor>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="textbox4">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Description</Value>
+                                  <Style>
+                                    <FontFamily>Tahoma</FontFamily>
+                                    <FontSize>11pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>textbox4</rd:DefaultName>
+                          <ZIndex>4</ZIndex>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <BackgroundColor>=Parameters!FmtAmbientBackground.Value</BackgroundColor>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox12">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Required Data Collection</Value>
+                                  <Style>
+                                    <FontFamily>Tahoma</FontFamily>
+                                    <FontSize>11pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox12</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <BackgroundColor>=Parameters!FmtAmbientBackground.Value</BackgroundColor>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+                <TablixRow>
+                  <Height>0.40549in</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="ReportDisplayName">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!ReportDisplayName.Value</Value>
+                                  <Style>
+                                    <FontFamily>Tahoma</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <Color>=IIF(Fields!ReportAvailable.Value=0 and Parameters!ShowAllReports.Value=false,  "Black",Parameters!FmtHyperLinkTextColor.Value )</Color>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>ReportDisplayName</rd:DefaultName>
+                          <ActionInfo>
+                            <Actions>
+                              <Action>
+                                <Drillthrough>
+                                  <ReportName>=IIF(Fields!ReportAvailable.Value=0 and Parameters!ShowAllReports.Value=false,  Nothing,Fields!reportName.Value)</ReportName>
+                                  <Parameters>
+                                    <Parameter Name="dsServerName">
+                                      <Value>=Parameters!dsServerName.Value</Value>
+                                      <Omit>=Variables!IsLocalReport.Value</Omit>
+                                    </Parameter>
+                                    <Parameter Name="dsDatabaseName">
+                                      <Value>=Parameters!dsDatabaseName.Value</Value>
+                                      <Omit>=Variables!IsLocalReport.Value</Omit>
+                                    </Parameter>
+                                  </Parameters>
+                                </Drillthrough>
+                              </Action>
+                            </Actions>
+                          </ActionInfo>
+                          <ZIndex>2</ZIndex>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="ReportDescription">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!ReportDescription.Value</Value>
+                                  <Style>
+                                    <FontFamily>Tahoma</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>ReportDescription</rd:DefaultName>
+                          <ZIndex>1</ZIndex>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="DataCollection">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!DataCollection.Value</Value>
+                                  <Style>
+                                    <FontFamily>Tahoma</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>DataCollection</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+              </TablixRows>
+            </TablixBody>
+            <TablixColumnHierarchy>
+              <TablixMembers>
+                <TablixMember />
+                <TablixMember />
+                <TablixMember />
+              </TablixMembers>
+            </TablixColumnHierarchy>
+            <TablixRowHierarchy>
+              <TablixMembers>
+                <TablixMember>
+                  <TablixHeader>
+                    <Size>2.23542in</Size>
+                    <CellContents>
+                      <Textbox Name="Textbox8">
+                        <CanGrow>true</CanGrow>
+                        <KeepTogether>true</KeepTogether>
+                        <Paragraphs>
+                          <Paragraph>
+                            <TextRuns>
+                              <TextRun>
+                                <Value>Category</Value>
+                                <Style>
+                                  <FontFamily>Tahoma</FontFamily>
+                                  <FontSize>11pt</FontSize>
+                                  <FontWeight>Bold</FontWeight>
+                                </Style>
+                              </TextRun>
+                            </TextRuns>
+                            <Style />
+                          </Paragraph>
+                        </Paragraphs>
+                        <rd:DefaultName>Textbox8</rd:DefaultName>
+                        <Style>
+                          <Border>
+                            <Color>LightGrey</Color>
+                            <Style>Solid</Style>
+                          </Border>
+                          <BackgroundColor>=Parameters!FmtAmbientBackground.Value</BackgroundColor>
+                          <PaddingLeft>2pt</PaddingLeft>
+                          <PaddingRight>2pt</PaddingRight>
+                          <PaddingTop>2pt</PaddingTop>
+                          <PaddingBottom>2pt</PaddingBottom>
+                        </Style>
+                      </Textbox>
+                    </CellContents>
+                  </TablixHeader>
+                  <TablixMembers>
+                    <TablixMember>
+                      <KeepTogether>true</KeepTogether>
+                    </TablixMember>
+                  </TablixMembers>
+                </TablixMember>
+                <TablixMember>
+                  <Group Name="Group1">
+                    <GroupExpressions>
+                      <GroupExpression>=Fields!Category.Value</GroupExpression>
+                    </GroupExpressions>
+                  </Group>
+                  <SortExpressions>
+                    <SortExpression>
+                      <Value>=Fields!CategorySeq.Value</Value>
+                    </SortExpression>
+                    <SortExpression>
+                      <Value>=Fields!Category.Value</Value>
+                    </SortExpression>
+                    <SortExpression>
+                      <Value>=Fields!ReportDisplayName.Value</Value>
+                    </SortExpression>
+                  </SortExpressions>
+                  <TablixHeader>
+                    <Size>2.23542in</Size>
+                    <CellContents>
+                      <Textbox Name="Group1">
+                        <CanGrow>true</CanGrow>
+                        <KeepTogether>true</KeepTogether>
+                        <Paragraphs>
+                          <Paragraph>
+                            <TextRuns>
+                              <TextRun>
+                                <Value>=Fields!Category.Value</Value>
+                                <Style>
+                                  <FontFamily>Tahoma</FontFamily>
+                                  <FontSize>11pt</FontSize>
+                                  <FontWeight>Bold</FontWeight>
+                                </Style>
+                              </TextRun>
+                            </TextRuns>
+                            <Style />
+                          </Paragraph>
+                        </Paragraphs>
+                        <rd:DefaultName>Group1</rd:DefaultName>
+                        <Style>
+                          <Border>
+                            <Color>LightGrey</Color>
+                            <Style>Solid</Style>
+                          </Border>
+                          <PaddingLeft>2pt</PaddingLeft>
+                          <PaddingRight>2pt</PaddingRight>
+                          <PaddingTop>2pt</PaddingTop>
+                          <PaddingBottom>2pt</PaddingBottom>
+                        </Style>
+                      </Textbox>
+                    </CellContents>
+                  </TablixHeader>
+                  <TablixMembers>
+                    <TablixMember>
+                      <Group Name="table1_Details_Group">
+                        <DataElementName>Detail</DataElementName>
+                      </Group>
+                      <TablixMembers>
+                        <TablixMember />
+                      </TablixMembers>
+                      <DataElementName>Detail_Collection</DataElementName>
+                      <DataElementOutput>Output</DataElementOutput>
+                      <KeepTogether>true</KeepTogether>
+                    </TablixMember>
+                  </TablixMembers>
+                  <Visibility>
+                    <Hidden>=IIF(Fields!ReportAvailable.Value=1 or Parameters!ShowAllReports.Value=True  , False, True)</Hidden>
+                  </Visibility>
+                </TablixMember>
+              </TablixMembers>
+            </TablixRowHierarchy>
+            <DataSetName>DataSet_Reports</DataSetName>
+            <Filters>
+              <Filter>
+                <FilterExpression>=IIF (Fields!ReportAvailable.Value=1 OR Parameters!ShowAllReports.Value=True, 1,0)</FilterExpression>
+                <Operator>Equal</Operator>
+                <FilterValues>
+                  <FilterValue DataType="Integer">1</FilterValue>
+                </FilterValues>
+              </Filter>
+            </Filters>
+            <Top>0.75in</Top>
+            <Height>0.875in</Height>
+            <Width>11.15001in</Width>
+            <Style />
+          </Tablix>
+          <Textbox Name="SQLVersion">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>="SQL Server " &amp; First(Fields!SQLVersion.Value, "DataSet_SQLVersion") &amp; " Nexus &amp; ReadTrace  Reports"</Value>
+                    <Style>
+                      <FontFamily>Tahoma</FontFamily>
+                      <FontSize>18pt</FontSize>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style>
+                  <TextAlign>Center</TextAlign>
+                </Style>
+              </Paragraph>
+            </Paragraphs>
+            <rd:DefaultName>SQLVersion</rd:DefaultName>
+            <Height>0.33in</Height>
+            <Width>9.25in</Width>
+            <ZIndex>1</ZIndex>
+            <Style>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+          <Textbox Name="textbox5">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>Note:  The data was imported using an older version of SQL Nexus or this database does not have any imported data.   The reports may or may not work even it says available.  Additionally, if the same data is imported using newer version of SQL Nexus, there will be more reports.</Value>
+                    <Style>
+                      <Color>Red</Color>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style />
+              </Paragraph>
+            </Paragraphs>
+            <rd:DefaultName>textbox5</rd:DefaultName>
+            <Top>0.34389in</Top>
+            <Left>0.125in</Left>
+            <Height>0.25in</Height>
+            <Width>11.02501in</Width>
+            <ZIndex>2</ZIndex>
+            <Visibility>
+              <Hidden>true</Hidden>
+            </Visibility>
+            <DataElementOutput>NoOutput</DataElementOutput>
+            <Style>
+              <Border />
+              <BackgroundColor>LemonChiffon</BackgroundColor>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+          <Textbox Name="Textbox6">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>This main page displays report based on data availability.  If the data is not available, the report won't be displayed. Following are some of reasons why a report is not avaiable:</Value>
+                    <Style />
+                  </TextRun>
+                </TextRuns>
+                <Style />
+              </Paragraph>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>The report doesn't apply to the SQL Server version.</Value>
+                    <Style />
+                  </TextRun>
+                </TextRuns>
+                <ListStyle>Numbered</ListStyle>
+                <ListLevel>1</ListLevel>
+                <Style />
+              </Paragraph>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>The data needed for the report is still being loaded.  Wait for a few minutes and refresh the report.  This can happen if load happens with different process.</Value>
+                    <Style />
+                  </TextRun>
+                </TextRuns>
+                <ListStyle>Numbered</ListStyle>
+                <ListLevel>1</ListLevel>
+                <Style />
+              </Paragraph>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>Data was not captured.  For example, most memory reports will require SQL Server Memory Error collector to be enabled explicitly.</Value>
+                    <Style />
+                  </TextRun>
+                </TextRuns>
+                <ListStyle>Numbered</ListStyle>
+                <ListLevel>1</ListLevel>
+                <Style />
+              </Paragraph>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>You have disabled certain importers from SQL Nexus when importing.</Value>
+                    <Style />
+                  </TextRun>
+                </TextRuns>
+                <ListStyle>Numbered</ListStyle>
+                <ListLevel>1</ListLevel>
+                <Style />
+              </Paragraph>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>If you want to show all reports regardless, you can change the report parameter "</Value>
+                    <Style />
+                  </TextRun>
+                  <TextRun>
+                    <Value>Show All Reports</Value>
+                    <Style>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                  <TextRun>
+                    <Value>" to allow you click on any reports.  Note that it will error out if the report doesn't have data.</Value>
+                    <Style />
+                  </TextRun>
+                </TextRuns>
+                <ListStyle>Numbered</ListStyle>
+                <ListLevel>1</ListLevel>
+                <Style />
+              </Paragraph>
+            </Paragraphs>
+            <rd:DefaultName>Textbox6</rd:DefaultName>
+            <Top>2.04875in</Top>
+            <Left>1in</Left>
+            <Height>1.05208in</Height>
+            <Width>8.09708in</Width>
+            <ZIndex>3</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+        </ReportItems>
+        <Height>3.37167in</Height>
+        <Style />
+      </Body>
+      <Width>14.0625in</Width>
+      <Page>
+        <PageHeader>
+          <Height>1.5in</Height>
+          <PrintOnFirstPage>true</PrintOnFirstPage>
+          <PrintOnLastPage>true</PrintOnLastPage>
+          <ReportItems>
+            <Textbox Name="Textbox1">
+              <CanGrow>true</CanGrow>
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>A different version of SQL Nexus was used to import the data or this database contians no data.  Reports may fail!!!!</Value>
+                      <Style>
+                        <FontSize>12pt</FontSize>
+                        <FontWeight>Bold</FontWeight>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style>
+                    <TextAlign>Center</TextAlign>
+                  </Style>
+                </Paragraph>
+              </Paragraphs>
+              <rd:DefaultName>Textbox1</rd:DefaultName>
+              <Top>0.14458in</Top>
+              <Left>0.125in</Left>
+              <Height>0.28598in</Height>
+              <Width>11.02501in</Width>
+              <Visibility>
+                <Hidden>=IIF(First(Fields!IsImportReportMatched.Value, "DataSet_Import_Report_matched")=True, True, False)</Hidden>
+              </Visibility>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+                <BackgroundColor>Red</BackgroundColor>
+                <PaddingLeft>2pt</PaddingLeft>
+                <PaddingRight>2pt</PaddingRight>
+                <PaddingTop>2pt</PaddingTop>
+                <PaddingBottom>2pt</PaddingBottom>
+              </Style>
+            </Textbox>
+            <Textbox Name="textbox_IsDiagMatched">
+              <CanGrow>true</CanGrow>
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>Data was captured with an older version of pssdiag.  Import or some reports may fail!!!!!</Value>
+                      <Style>
+                        <FontSize>12pt</FontSize>
+                        <FontWeight>Bold</FontWeight>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style>
+                    <TextAlign>Center</TextAlign>
+                  </Style>
+                </Paragraph>
+              </Paragraphs>
+              <Top>0.53in</Top>
+              <Left>0.125in</Left>
+              <Height>0.27556in</Height>
+              <Width>11.02501in</Width>
+              <ZIndex>1</ZIndex>
+              <Visibility>
+                <Hidden>=IIF(First(Fields!IsLatestDiag.Value, "DataSet_IsLatestDiag")=1, True, False)</Hidden>
+              </Visibility>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+                <BackgroundColor>Red</BackgroundColor>
+                <PaddingLeft>2pt</PaddingLeft>
+                <PaddingRight>2pt</PaddingRight>
+                <PaddingTop>2pt</PaddingTop>
+                <PaddingBottom>2pt</PaddingBottom>
+              </Style>
+            </Textbox>
+          </ReportItems>
+          <Style>
+            <Border>
+              <Style>None</Style>
+            </Border>
+          </Style>
+        </PageHeader>
+        <LeftMargin>1in</LeftMargin>
+        <RightMargin>1in</RightMargin>
+        <TopMargin>1in</TopMargin>
+        <BottomMargin>1in</BottomMargin>
+        <Style />
+      </Page>
+    </ReportSection>
+  </ReportSections>
+  <ReportParameters>
+    <ReportParameter Name="dsServerName">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>jackli2008\katmai64bit</Value>
+        </Values>
+      </DefaultValue>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>Server Name</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="dsDatabaseName">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>sqlnexus</Value>
+        </Values>
+      </DefaultValue>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>Database Name</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="FmtHyperLinkTextColor">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>blue</Value>
+        </Values>
+      </DefaultValue>
+      <AllowBlank>true</AllowBlank>
+      <Hidden>true</Hidden>
+    </ReportParameter>
+    <ReportParameter Name="FmtAmbientBackground">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>#E8F8FF</Value>
+        </Values>
+      </DefaultValue>
+      <AllowBlank>true</AllowBlank>
+      <Hidden>true</Hidden>
+    </ReportParameter>
+    <ReportParameter Name="FmtWarningBackground">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>#FFFACD </Value>
+        </Values>
+      </DefaultValue>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>Report_Parameter_4</Prompt>
+      <Hidden>true</Hidden>
+      <ValidValues>
+        <ParameterValues>
+          <ParameterValue>
+            <Value>#FFFACD </Value>
+          </ParameterValue>
+        </ParameterValues>
+      </ValidValues>
+    </ReportParameter>
+    <ReportParameter Name="ShowAllReports">
+      <DataType>Boolean</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>False</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>Show all reports even data is not available</Prompt>
+    </ReportParameter>
+  </ReportParameters>
+  <Language>en-US</Language>
+  <Variables>
+    <Variable Name="IsLocalReport">
+      <Value>= (Globals!ReportServerUrl="")</Value>
+    </Variable>
+  </Variables>
+  <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
+  <rd:ReportUnitType>Inch</rd:ReportUnitType>
+  <rd:ReportID>d3fb6165-6f7e-41bc-b7fe-a26ebefdcdd1</rd:ReportID>
+</Report>

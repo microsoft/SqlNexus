@@ -1,0 +1,10 @@
+use master
+if db_id ('{0}') is not null
+begin
+	alter database [{0}] set single_user with rollback immediate
+	drop database [{0}];
+end
+create database [{0}];
+--alter database [{0}] modify file (name='{0}', size=50MB)
+--alter database [{0}] set recovery simple
+

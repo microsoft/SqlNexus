@@ -1,0 +1,811 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Msg_RefreshingReport" xml:space="preserve">
+    <value>Refreshing report: </value>
+  </data>
+  <data name="Msg_NotFound" xml:space="preserve">
+    <value>No results were found that match your search criteria.</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="PrintPreviewHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PrintPreviewHS.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Msg_DSFixup" xml:space="preserve">
+    <value>Fixing up datasources</value>
+  </data>
+  <data name="OptionsHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\OptionsHS.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="status_anim" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\status_anim.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Messages" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Messages.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Print" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Print.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ShowRulelinesHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ShowRulelinesHS.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DataContainer_MoveFirstHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\DataContainer_MoveFirstHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Msg_Drillthrough" xml:space="preserve">
+    <value>Drilling through report: </value>
+  </data>
+  <data name="eventlogWarn" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\eventlogWarn.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PublicQueue" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PublicQueue.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Error_Exception" xml:space="preserve">
+    <value>Exception: {0}. Source: {1}. Stack: {2}. InnerException: {3}.</value>
+  </data>
+  <data name="Msg_FoundReport" xml:space="preserve">
+    <value>Found report:</value>
+  </data>
+  <data name="delete" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\delete.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PropertiesHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PropertiesHS.BMP;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DataContainer_MoveFirsHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\DataContainer_MoveFirsHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Msg_ConnString" xml:space="preserve">
+    <value>Connection string: </value>
+  </data>
+  <data name="Control_Form" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Control_Form.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Relationships" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Relationships.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DataContainer_MoveNextHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\DataContainer_MoveNextHS.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Msg_ServiceStarted" xml:space="preserve">
+    <value>SQLDiag diagnostic data collection service started.</value>
+  </data>
+  <data name="Msg_CollText" xml:space="preserve">
+    <value>Data collection</value>
+  </data>
+  <data name="Book_StackOfReportsHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Book_StackOfReportsHS.BMP;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PieChart3D" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PieChart3D.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="graphhs" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\graphhs.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Msg_NoParams" xml:space="preserve">
+    <value>This report has no user-settable parameters.</value>
+  </data>
+  <data name="Control_TreeView" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Control_TreeView.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PlayHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PlayHS.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DataContainer_MoveLastHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\DataContainer_MoveLastHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="saveHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\saveHS.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DataContainer_MovePrevious" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\DataContainer_MovePrevious.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PrintHS1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PrintHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Msg_Loading" xml:space="preserve">
+    <value>Loading report...</value>
+  </data>
+  <data name="Retry" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Retry.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Collapse_small" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Collapse_small.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="eventlogSuccessAudit" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\eventlogSuccessAudit.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Webcontrol_Webpartzone" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Webcontrol_Webpartzone.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Expand_small" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Expand_small.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Msg_RVSyncDrillthrough" xml:space="preserve">
+    <value>RV drillthrough sync event</value>
+  </data>
+  <data name="mail" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\mail.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PlayHS1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PlayHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="infoBubble" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\infoBubble.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Warning" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Warning.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CriticalError" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CriticalError.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Msg_InvalidSwitch" xml:space="preserve">
+    <value>Invalid command line switch: </value>
+  </data>
+  <data name="DialHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\DialHS.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="LegendHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\LegendHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Webcontrol_Xmldatasrc" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Webcontrol_Xmldatasrc.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RightArrowHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\RightArrowHS.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="GoRtlHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\GoRtlHS.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="book" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\book.jpg;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="GRAPH08" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\GRAPH08.ICO;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Webcontrol_Content" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Webcontrol_Content.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="eventlogFailureAudit" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\eventlogFailureAudit.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Msg_StoppingService" xml:space="preserve">
+    <value>Stoppping the SQLDiag diagnostic data collection service...</value>
+  </data>
+  <data name="Expanded" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Expanded.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Msg_LoadingReport" xml:space="preserve">
+    <value>Loading report: </value>
+  </data>
+  <data name="eps_open_largelHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\eps_open_largelHS.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Msg_ProcessParams" xml:space="preserve">
+    <value>Processing command-line parameters.</value>
+  </data>
+  <data name="NewReportHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\NewReportHS.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="GRAPH07" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\GRAPH07.ICO;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Error_MethodsSigsDontMatch" xml:space="preserve">
+    <value>: Method signatures do not match.</value>
+  </data>
+  <data name="GoToPrevious" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\GoToPrevious.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="serviceunknown" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\serviceunknown.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="openHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\openHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="OrganizerHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\OrganizerHS.BMP;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="HelpFile" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\HelpFile.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Msg_StartColl" xml:space="preserve">
+    <value>Do you want to start the SQLDiag data collector to perform real-time analysis of activity on this server?</value>
+  </data>
+  <data name="Expand_large" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Expand_large.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ZoomHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ZoomHS.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PieChart" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PieChart.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="GoToNextRecord" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\GoToNextRecord.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Msg_RVSyncRefresh" xml:space="preserve">
+    <value>RV refresh sync event</value>
+  </data>
+  <data name="ShowGridlinesHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ShowGridlinesHS.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="saveHS1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\saveHS1.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="GoLtrHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\GoLtrHS.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="pagelayout" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\pagelayout.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Control_TabControl" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Control_TabControl.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="eventlogInfo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\eventlogInfo.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Msg_RefreshDone" xml:space="preserve">
+    <value>Report refresh done.</value>
+  </data>
+  <data name="RefreshDocView" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\RefreshDocView.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="warning1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\warning.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RightArrow2HS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\RightArrow2HS.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="otheroptions" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\otheroptions.ico;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PrintPreviewHS1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PrintPreviewHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="OrgChart" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\OrgChart.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PieChart3DHS1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PieChart3DHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Output" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Output.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PrintSetupHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PrintSetupHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PrintSetup" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PrintSetup.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PieChartHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PieChartHS.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="InsertTabControlHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\InsertTabControlHS.BMP;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="book_reportHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\book_reportHS.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Msg_Nexus" xml:space="preserve">
+    <value>SQL Nexus</value>
+  </data>
+  <data name="eventlog" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\eventlog.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="servicerunning" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\servicerunning.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Control_ErrorProvider" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Control_ErrorProvider.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Collapse_large_right" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Collapse_large_right.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Collapse_large" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Collapse_large.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Book_angleHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Book_angleHS.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Msg_ServiceStopped" xml:space="preserve">
+    <value>SQLDiag diagnostic collection service stopped.</value>
+  </data>
+  <data name="DataContainer_MoveNext" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\DataContainer_MoveNext.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="eps_closedHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\eps_closedHS.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DataContainer_MoveFirst" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\DataContainer_MoveFirst.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Graph" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Graph.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Control_DataGrid" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Control_DataGrid.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="StopHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\StopHS.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="VSProject_genericproject" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\VSProject_genericproject.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PauseHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PauseHS.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RolledBack" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\RolledBack.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="searchweb" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\searchweb.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Msg_NoMoreFound" xml:space="preserve">
+    <value>No more matches found.</value>
+  </data>
+  <data name="EnvelopeHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\EnvelopeHS.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Error_MethodDoesntMatch" xml:space="preserve">
+    <value>: Method name does not match.</value>
+  </data>
+  <data name="Usage_RunReport" xml:space="preserve">
+    <value>"/Rreport"\tSpecifies a report file name to run.</value>
+  </data>
+  <data name="Error_ExceptionShort" xml:space="preserve">
+    <value>Exception: {0}. </value>
+  </data>
+  <data name="Critical" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Critical.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Progress" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Progress.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Usage_ConnectStr" xml:space="preserve">
+    <value>"/Cconnstring"\tSpecifies the SqlClient ConnectionString to use (can be used instead of /S /E).</value>
+  </data>
+  <data name="sqlserver" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\sqlserver.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="INFO" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\INFO1.ICO;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="help1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\help.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CopyHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CopyHS.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="VSProject_report" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\VSProject_report.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RadialChartHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\RadialChartHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Msg_EnableCollector" xml:space="preserve">
+    <value>Start SQLDiag diagnostics collection service for real-time analysis?</value>
+  </data>
+  <data name="Collapsed" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Collapsed.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="HLP" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\HLP.BMP;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="none1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\none.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="collapse_tran" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\collapse_tran.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Error_ArgConversionFailed" xml:space="preserve">
+    <value>: Argument conversion failed.</value>
+  </data>
+  <data name="performance" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\performance.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="textdoc" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\textdoc.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DataContainer_MoveNextHS1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\DataContainer_MoveNextHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Error_NoMethod" xml:space="preserve">
+    <value>No matching method found.</value>
+  </data>
+  <data name="servicestopped" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\servicestopped.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PieChart3DHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PieChart3DHS.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Webcontrol_Sqldatasrc" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Webcontrol_Sqldatasrc.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="OK" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\OK.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="none" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\none.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Msg_StartingService" xml:space="preserve">
+    <value>Starting the SQLDiag diagnostic data collection service...</value>
+  </data>
+  <data name="Msg_RVSyncToggle" xml:space="preserve">
+    <value>RV toggle sync event</value>
+  </data>
+  <data name="IPML" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\IPML.ICO;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="servicepaused" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\servicepaused.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RecordHS1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\RecordHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Msg_RemovedNode" xml:space="preserve">
+    <value>Removed report node: </value>
+  </data>
+  <data name="Pause" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Pause.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="error1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\error.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="question" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\question.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="eventlogError" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\eventlogError.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PageSetup" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PageSetup.BMP;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="InsertHyperlinkHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\InsertHyperlinkHS.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="globe" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\globe.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="StopHS1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\StopHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Error" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Error.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Input" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Input.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DataContainer_MoveLast" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\DataContainer_MoveLast.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Error_NoAssembly" xml:space="preserve">
+    <value>Could not load assembly: {0}.</value>
+  </data>
+  <data name="CopyHS1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CopyHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SuccessComplete" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SuccessComplete.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Msg_CantRegister" xml:space="preserve">
+    <value>Cannot register the SQLDiag service on a remote machine.  Please see the help for instructions on registering it manually.</value>
+  </data>
+  <data name="Msg_Refreshing" xml:space="preserve">
+    <value>Refreshing report...</value>
+  </data>
+  <data name="Msg_PageCount" xml:space="preserve">
+    <value>of {0}</value>
+  </data>
+  <data name="expand_tran" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\expand_tran.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="NewMessageHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\NewMessageHS.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="earth" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\earth.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Msg_Loaded" xml:space="preserve">
+    <value>Report loaded.</value>
+  </data>
+  <data name="Webcontrol_Paginator" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Webcontrol_Paginator.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="GoToPreviousRecord" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\GoToPreviousRecord.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="VSProject_form" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\VSProject_form.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SaveAsWebPageHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SaveAsWebPageHS.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Msg_StopColl" xml:space="preserve">
+    <value>The SQLDiag data collector is currently running.  Do you want to leave it running after you exit?</value>
+  </data>
+  <data name="Msg_Exporting" xml:space="preserve">
+    <value>Exporting report...</value>
+  </data>
+  <data name="Msg_RVSyncLink" xml:space="preserve">
+    <value>RV link sync event</value>
+  </data>
+  <data name="Msg_ReportCopied" xml:space="preserve">
+    <value>Report successfully exported.</value>
+  </data>
+  <data name="RecordHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\RecordHS.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Collapse_large_left" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Collapse_large_left.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Msg_AddedReportNode" xml:space="preserve">
+    <value>Added report node: </value>
+  </data>
+  <data name="Error_InvalidURL" xml:space="preserve">
+    <value>Invalid custom URL.  There must be at least three parts in a custom URL.</value>
+  </data>
+  <data name="FillLeftHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\FillLeftHS.BMP;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PieChartHS1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PieChartHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Msg_RVSyncBack" xml:space="preserve">
+    <value>RV back sync event</value>
+  </data>
+  <data name="Web_WebConfig" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Web_WebConfig.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SingleMessage" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SingleMessage.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Msg_Noprompt" xml:space="preserve">
+    <value>No prompt supplied</value>
+  </data>
+  <data name="Control_DataGridView" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Control_DataGridView.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Run" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Run.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="genericInternet" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\genericInternet.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Help" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Help.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="VSProject_database" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\VSProject_database.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PrintHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PrintHS.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Stop" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Stop.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Webcontrol_Webpartmgr" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Webcontrol_Webpartmgr.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Msg_RenderWarning" xml:space="preserve">
+    <value>Warning while rendering: </value>
+  </data>
+  <data name="delete_16x" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\delete_16x.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PauseRecorderHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PauseRecorderHS.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Serious" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Serious.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Error_NoTypes" xml:space="preserve">
+    <value>No matching types found.</value>
+  </data>
+  <data name="TableHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\TableHS.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Webcontrol_Gridview" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Webcontrol_Gridview.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Error_NoType" xml:space="preserve">
+    <value>Could not load type: {0} from assembly: {1}.</value>
+  </data>
+  <data name="pinkbutton" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\pinkbutton.gif;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Usage_ExitAfterProcessing" xml:space="preserve">
+    <value>/X\t\tExit after importing (/I) or exporting (/O) the specified report (/R)</value>
+  </data>
+  <data name="Usage_InputPath" xml:space="preserve">
+    <value>"/Ipath"\tImport SQL diagnostic data from this path</value>
+  </data>
+  <data name="Usage_OutputPath" xml:space="preserve">
+    <value>"/Opath"\tSpecifies an export path for reports executed via /R</value>
+  </data>
+  <data name="Usage_Password" xml:space="preserve">
+    <value>/Ppassword\tSpecifies the password for a SQL (non-Windows) login</value>
+  </data>
+  <data name="Usage_Server" xml:space="preserve">
+    <value>/Sserver\tSpecifies a SQL Server name to connect to.</value>
+  </data>
+  <data name="Usage_UserName" xml:space="preserve">
+    <value>/Uuser\t\tSpecifies a SQL (non-Windows) login name</value>
+  </data>
+  <data name="Usage_WindowsAuth" xml:space="preserve">
+    <value>/E\t\tLog in to SQL using Windows/integrated security</value>
+  </data>
+  <data name="Usage_Summary" xml:space="preserve">
+    <value>sqlnexus.exe [ [ /S [ /E | /Uuser /Ppwd ] [/D"database"] ] | [/C"connstr"] ] [/Iinputpath] [/Ooutputpath] [/Rreport] [/X]\n</value>
+  </data>
+  <data name="Usage_UnknownArg" xml:space="preserve">
+    <value>Unknown command line argument:</value>
+  </data>
+  <data name="Error_CmdLineNoSpaces" xml:space="preserve">
+    <value>Invalid command line argument. Do not insert a space in between the command line switch and its value ("/Rreport" is OK, "/R report" is not).</value>
+  </data>
+  <data name="Usage_Parameter" xml:space="preserve">
+    <value>/Vparam=value\tSpecify the value of a form parameter</value>
+  </data>
+  <data name="Usage_Database" xml:space="preserve">
+    <value>/D"database"\tDatabase to connect to</value>
+  </data>
+  <data name="Error_YukonRequired" xml:space="preserve">
+    <value>SQL Nexus requires SQL Server 2005.</value>
+  </data>
+  <data name="Msg_NativeImage" xml:space="preserve">
+    <value>Assembly {0} is a native image. Ignoring to load</value>
+  </data>
+  <data name="CreateDB" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CreateDB.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Error_Connect_Failure" xml:space="preserve">
+    <value>Failed to connect to SQL Server "{0}" with error {1}.  If you are on Vista, please ensure you manually add your Windows account to SQL Server login with enough permission.  Refer to http://msdn2.microsoft.com/EN-US/library/bb326612.aspx for more information.  Try Again. </value>
+  </data>
+  <data name="Error_InvalidLogger" xml:space="preserve">
+    <value>Logger passed in is invalid</value>
+  </data>
+  <data name="Error_CustomRowset_AlreadyExists" xml:space="preserve">
+    <value>Rowset {0} already exists in file {1}. Operation not allowed.</value>
+  </data>
+  <data name="Error_CustomRowset_HasChildren" xml:space="preserve">
+    <value>XML file {0} contains some rowset that has defined column types.  Current UI doesn't support editing it.  Please continue manually editing it.</value>
+  </data>
+  <data name="Error_CustomRowset_NotExists" xml:space="preserve">
+    <value>Rowset {0} does not exist.  Operation not allowed.</value>
+  </data>
+  <data name="Error_Nexus_CreateDBFailure" xml:space="preserve">
+    <value>Failed to create database {0} to SQL Server "{1}" with error {2}.  If you are on Vista, please ensure you manually add your Windows account to SQL Server login with enough permission.  Refer to http://msdn2.microsoft.com/EN-US/library/bb326612.aspx for more information.  Try Again.</value>
+  </data>
+  <data name="Msg_Nexus_SupportEmail" xml:space="preserve">
+    <value>mailto:</value>
+  </data>
+  <data name="Msg_Nexus_SupportUrl" xml:space="preserve">
+    <value>http://</value>
+  </data>
+  <data name="CreateDropDB" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CreateDropDB.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Warning_ToDropDB" xml:space="preserve">
+    <value>Because you have enabled drop database before importing.  Nexus is about to drop your current database "{0}".   This operation can't be recovered.  Are you sure you want to do this?</value>
+  </data>
+  <data name="Warning_ToEnableDropDB" xml:space="preserve">
+    <value>You are about to enable drop database before importing. This option is dangerous and will delete your current database everytime import runs and the operation can not be recovered. are you sure you want to do this?</value>
+  </data>
+</root>

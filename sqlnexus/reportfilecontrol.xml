@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<reports>
+  <reportfile name="test.rdl" displayname="test report" mainreport="true" seqno="1"/>
+   <reportfile name="test2.rdl" displayname="test report2" mainreport="true" seqno="2"/>
+   <reportfile name="test3.rdl" displayname="test report3" mainreport="false" seqno="3"/>
+   <reportfile name="test4.rdl" displayname="test report4" mainreport="true" seqno="4"/>
+</reports>
