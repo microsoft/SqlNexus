@@ -122,10 +122,11 @@ else
             <Value>=Parameters!EndTime.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>declare @proc int
-SELECT @proc = Internal_Value
-FROM dbo.tbl_XPMSVER
-  where name = 'ProcessorCount'
+        <CommandText>
+declare @proc int
+SELECT @proc = PropertyValue
+FROM dbo.tbl_ServerProperties
+  where PropertyName = 'cpu_count'
 
 select  top 10 InstanceName as InstName, 
 min (cast(CounterValue as decimal(38,2 )))/@proc as 'MinCounterValue', 
