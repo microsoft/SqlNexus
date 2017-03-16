@@ -43,14 +43,14 @@ namespace sqlnexus
             {
                 fmi.Show(mainform);
             }
-         
-            
+
+
 
             fmi.DoImport();
             fmi.Close();
         }
 
-       // private long TotalRowsInserted = 0;
+        // private long TotalRowsInserted = 0;
         //private long TotalLinesProcessed = 0;
         INexusImporter ri = null;
         ProgressBar currBar = null;
@@ -62,8 +62,8 @@ namespace sqlnexus
             la.AutoSize = true;
             tlpFiles.Controls.Add(la, 2, row);
             la.Text = msg;
-//            la.Dock = DockStyle.Fill;
-//            la.TextAlign = ContentAlignment.MiddleLeft;
+            //            la.Dock = DockStyle.Fill;
+            //            la.TextAlign = ContentAlignment.MiddleLeft;
             la.Anchor = AnchorStyles.Left;
             la.Location = new Point(0, 3);
         }
@@ -72,9 +72,9 @@ namespace sqlnexus
         private bool BlockPerfStatsSnapshot(string FileName)
         {
             String fileDir = Path.GetDirectoryName(FileName);
-            String [] files = Directory.GetFiles(fileDir, "*Perf_stats_snapshot_shutdown.out*");
+            String[] files = Directory.GetFiles(fileDir, "*Perf_stats_snapshot_shutdown.out*");
 
-            if ( files.Length > 0  &&
+            if (files.Length > 0 &&
                 FileName.ToUpper().IndexOf("PERF_STATS_SNAPSHOT_STARTUP") >= 0)
                 return true;
             else
@@ -91,14 +91,14 @@ namespace sqlnexus
 
             ToBlock = BlockPerfStatsSnapshot(FileName);
 
-            
 
-            if (    FileName.ToUpper().IndexOf("SQLDMP") >= 0 ||  //dump log file
+
+            if (FileName.ToUpper().IndexOf("SQLDMP") >= 0 ||  //dump log file
                     FileName.ToUpper().IndexOf("SQLDUMP") >= 0 ||  //dump log file
                     FileName.ToUpper().IndexOf(@"##") >= 0   // internal files. no need to import
 
                 )
-            
+
             {
                 return true;
             }
@@ -110,16 +110,16 @@ namespace sqlnexus
             string[] files2 = Directory.GetFiles(cbPath.Text.Trim().Replace("\"", ""), Mask);
 
             //if no file found for this mask, just return
-            if (files2.Length<=0)
+            if (files2.Length <= 0)
             {
                 return;
             }
-            int i = tlpFiles.RowCount-1;
+            int i = tlpFiles.RowCount - 1;
 
-            
+
             if (Importer is INexusFileImporter)
             {
-                string[] files = Directory.GetFiles(cbPath.Text.Trim().Replace("\"",""), Mask);
+                string[] files = Directory.GetFiles(cbPath.Text.Trim().Replace("\"", ""), Mask);
                 int blockedCounter = 0;
                 foreach (string f in files)
                 {
@@ -141,11 +141,11 @@ namespace sqlnexus
             }
             else
             {
-                if (0 != Directory.GetFiles(cbPath.Text.Trim().Replace("\"",""), Mask).Length)  //Only add the mask if matching files are found
+                if (0 != Directory.GetFiles(cbPath.Text.Trim().Replace("\"", ""), Mask).Length)  //Only add the mask if matching files are found
                 {
                     //need special handling read trace for multiple instances
                     //when multiple instances files are caputred, only provide the one instnance selected.
-                    if (Importer.Name.ToUpper().IndexOf("READTRACE") >= 0 && instances.Count >1)
+                    if (Importer.Name.ToUpper().IndexOf("READTRACE") >= 0 && instances.Count > 1)
                     {
                         if (Mask.ToUpper().Contains("XEL"))
                         {
@@ -155,12 +155,12 @@ namespace sqlnexus
                         {
                             AddFileRow(i, instances.SelectedTraceFileMask, Importer);
                         }
-                        
-                        
-                        
+
+
+
                     }
                     else
-                    { 
+                    {
                         AddFileRow(i, Mask, Importer);
                     }
 
@@ -175,13 +175,13 @@ namespace sqlnexus
             Label la = new Label();
             //Label lbl;
             la.Name = "FileNameLabel";
-            
-            
+
+
             la.AutoSize = true;
             //la.LinkBehavior = LinkBehavior.NeverUnderline;
             tlpFiles.Controls.Add(la, 0, row);
             la.Text = labelText; //+"(" + Importer.Name + ")";
-            
+
             la.Anchor = AnchorStyles.Left;
             la.Location = new Point(0, 3);
 
@@ -271,8 +271,29 @@ namespace sqlnexus
                 case ImportState.OpeningDatabaseConnection:
                     msg = "Opening database connection...";
                     break;
+                case ImportState.ImportingIoStat:
+                    msg = "Importing IO Stats...";
+                    break;
+                case ImportState.ImportingMemFree:
+                    msg = "Importing Memory Free...";
+                    break;
+                case ImportState.ImportingMemSwap:
+                    msg = "Importing Memory Swap";
+                    break;
+                case ImportState.ImportingMpStatCpu:
+                    msg = "Importing MP Stats CPU";
+                    break;
+                case ImportState.ImportingNetowrking:
+                    msg = "Importing Networking...";
+                    break;
+                case ImportState.ImportingPidStat:
+                    msg = "Importing Process PID Stat...";
+                    break;
+                case ImportState.CreatingBlg:
+                    msg = "Converting TSV to BLG...";
+                    break;
             }
-            currLabel.Text = "(" + ri.Name +")" +  msg;
+            currLabel.Text = "(" + ri.Name + ")" + msg;
             Application.DoEvents();
         }
         private UpdateStatusDelegate updateStatus;
@@ -292,7 +313,7 @@ namespace sqlnexus
 
         private void fmImport_Load(object sender, EventArgs e)
         {
-//            fb_Path.SelectedPath = Application.StartupPath;
+            //            fb_Path.SelectedPath = Application.StartupPath;
             if (Globals.PathsToImport.Count > 0)
             {
                 //currently do nothing.  basically this is for silent import
@@ -304,13 +325,13 @@ namespace sqlnexus
             }
 
             this.Left -= 100;
-            
+
             updateProgress = new UpdateProgressDelegate(this.UpdateProgress);
             updateStatus = new UpdateStatusDelegate(this.UpdateStatus);
             EnumImporters();
         }
 
-   
+
 
         private void llTemplate_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
@@ -345,33 +366,33 @@ namespace sqlnexus
         public void EnumImporters()
         {
             tsiImporters.DropDownItems.Clear();
-            EnumImportersFromDirectory(Environment.GetFolderPath (Environment.SpecialFolder.ApplicationData) + @"\SqlNexus\Importers");
+            EnumImportersFromDirectory(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\SqlNexus\Importers");
             EnumImportersFromDirectory(Application.StartupPath);
         }
         private String FileVersions(String file)
         {
             String s = System.Diagnostics.FileVersionInfo.GetVersionInfo(file).FileVersion;
-            FileInfo fi = new FileInfo(file) ;
-            s += " " +  fi.CreationTime.ToLongDateString();
+            FileInfo fi = new FileInfo(file);
+            s += " " + fi.CreationTime.ToLongDateString();
             return s;
         }
-        
+
 
         //order the importer to do rowset first
-        private List<string> OrderedImporterFiles(string [] files)
+        private List<string> OrderedImporterFiles(string[] files)
         {
             Dictionary<Int32, string> ImporterList = new Dictionary<Int32, string>();
-            
+
 
             foreach (string file in files)
             {
                 if (file.ToUpper().Contains("PERFMONIMPORTER"))
                 {
-                    ImporterList.Add(300,file);
+                    ImporterList.Add(300, file);
                 }
                 else if (file.ToUpper().Contains("ROWSETIMPORTENGINE"))
                 {
-                    ImporterList.Add(100,file);
+                    ImporterList.Add(100, file);
                 }
                 else if (file.ToUpper().Contains("READTRACE"))
                 {
@@ -380,7 +401,7 @@ namespace sqlnexus
                 }
                 else
                 {
-                    ImporterList.Add( file.GetHashCode(), file);
+                    ImporterList.Add(file.GetHashCode(), file);
                 }
 
             }
@@ -418,8 +439,8 @@ namespace sqlnexus
             foreach (string file in OrderedFiles)
             {
                 //we know this is a native image
-                MainForm.LogMessage("detecting importer file " + file + " version and creation date " + FileVersions (file));
-                
+                MainForm.LogMessage("detecting importer file " + file + " version and creation date " + FileVersions(file));
+
                 if (Path.GetFileName(file).ToUpper() == "BulkLoad.dll".ToUpper())
                 {
                     MainForm.LogMessage(String.Format(Properties.Resources.Msg_NativeImage, file));
@@ -429,8 +450,8 @@ namespace sqlnexus
                 try
                 {
                     Assem = Assembly.LoadFile(file);
-                    
-                    
+
+
                 }
                 catch (Exception ex)
                 {
@@ -491,11 +512,11 @@ namespace sqlnexus
                             else // boolean
                             {
                                 m_OptionList.Add(subtsi);
-                                
+
                                 subtsi.Tag = prod;
                                 subtsi.CheckOnClick = true;
-                                
-                                bool UserSaved = ImportOptions.IsEnabled(String.Format("{0}.{1}",prod.Name,subtsi.Text));
+
+                                bool UserSaved = ImportOptions.IsEnabled(String.Format("{0}.{1}", prod.Name, subtsi.Text));
                                 MainForm.LogMessage("load: " + String.Format("{0}.{1}", prod.Name, option), MessageOptions.Silent);
 
                                 if (ImportOptions.IsEnabled("SaveImportOptions"))
@@ -552,8 +573,8 @@ namespace sqlnexus
                 }
 
 
-                if (Enabled)  
-                {   
+                if (Enabled)
+                {
                     foreach (string s in prod.SupportedMasks)
                     {
                         AddFiles(s, prod);
@@ -564,15 +585,15 @@ namespace sqlnexus
             Application.DoEvents();
         }
 
-        Dictionary<string, string[]> PostScripts = new Dictionary<string,string[]>();
+        Dictionary<string, string[]> PostScripts = new Dictionary<string, string[]>();
 
         private void tsbGo_Click(object sender, EventArgs e)
         {
-            
+
             NexusInfo nInfo = new NexusInfo(Globals.credentialMgr.ConnectionString, this.MainForm);
             if (nInfo.HasNexusInfo() && (!tsiDropDBBeforeImporting.Checked) && !ImportOptions.IsEnabled("DropDbBeforeImporting"))
             {
-               MainForm.LogMessage("This database already have Nexus data. please choose or create a different database for fresh data load", MessageOptions.All);
+                MainForm.LogMessage("This database already have Nexus data. please choose or create a different database for fresh data load", MessageOptions.All);
                 this.Visible = false;
                 this.Dispose();
                 MainForm.BringToFront();
@@ -580,7 +601,7 @@ namespace sqlnexus
             }
 
             DoImport();
-           // nInfo.SetAttribute("Nexus Version", Application.ProductVersion);
+            // nInfo.SetAttribute("Nexus Version", Application.ProductVersion);
         }
 
         private void DoImport()
@@ -618,11 +639,11 @@ namespace sqlnexus
 
                     }
                 }
-                
+
                 SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
                 builder.ConnectionString = Globals.credentialMgr.ConnectionString;
                 builder.InitialCatalog = "master";
-                SqlConnection conn = new SqlConnection(builder.ConnectionString) ;
+                SqlConnection conn = new SqlConnection(builder.ConnectionString);
                 SqlCommand cmd = conn.CreateCommand();
                 cmd.CommandText = String.Format(Properties.Resources.CreateDropDB, Globals.credentialMgr.Database);
                 try
@@ -639,7 +660,7 @@ namespace sqlnexus
                 {
                     conn.Close();
                 }
-                
+
 
             }
 
@@ -662,7 +683,7 @@ namespace sqlnexus
             // Close any open reports based on the data that we're about to overwrite
             fmNexus.singleton.CloseAll();
 
-            string srcPath = Path.GetFullPath(cbPath.Text.Trim().Replace("\"",""));
+            string srcPath = Path.GetFullPath(cbPath.Text.Trim().Replace("\"", ""));
             /*
             string pathFromCmd = Globals.PathsToImport.Dequeue();
             if (pathFromCmd != null)
@@ -677,6 +698,9 @@ namespace sqlnexus
             if (-1 == cbPath.Items.IndexOf(srcPath))
             {
                 cbPath.Items.Add(srcPath);
+
+                // Setting working directory for linux perf importer (by stschn)
+                LinuxPerfImporter.Model.ConfigValues.WorkingDirectory = srcPath;
             }
             instances = new SqlInstances(srcPath);
 
@@ -718,7 +742,7 @@ namespace sqlnexus
                         currLabel = (Label)tlpFiles.Controls[i + 2];
 
                         int ticks = Environment.TickCount;
-                        
+
                         ri = (ll.Tag as INexusImporter);
                         MainForm.LogMessage(ri.Name + " is a INexusImporter");
 
@@ -848,7 +872,7 @@ namespace sqlnexus
 
                 process.OutputDataReceived += new DataReceivedEventHandler
                 (
-                    delegate(object sender, DataReceivedEventArgs e)
+                    delegate (object sender, DataReceivedEventArgs e)
                     {
                         output.Append(e.Data);
                     }
@@ -857,27 +881,27 @@ namespace sqlnexus
                 process.BeginOutputReadLine();
                 process.WaitForExit();
                 process.CancelOutputRead();
-                
+
                 MainForm.LogMessage("PostProcess output");
 
                 MainForm.LogMessage(output.ToString());
                 MainForm.LogMessage("End of  PostProcess output");
 
 
-                
+
                 //if (RunScripts)
                 //{
-                   // RunPostScripts();
+                // RunPostScripts();
                 //}
 
                 //run post script just once
-                    RunScript("PerfStatsAnalysis.sql");
-                
+                RunScript("PerfStatsAnalysis.sql");
+
                 //Refresh reports list in case provider changed it
                 MainForm.EnumReports();
 
                 //if (Globals.ReportExportPath != null)
-                  //  MainForm.ProcessReportQueue();
+                //  MainForm.ProcessReportQueue();
 
                 MainForm.LogMessage(String.Format("Import complete. Total import time: {0} seconds", (Environment.TickCount - startTicks) / 1000));
 
@@ -957,9 +981,9 @@ namespace sqlnexus
                 this.Cursor = Cursors.WaitCursor;
                 Application.DoEvents();
                 MainForm.LogMessage(string.Format("Executing {0}...", scriptname));
-               // Server srv = new Server(Globals.Server);
-                
-                
+                // Server srv = new Server(Globals.Server);
+
+
                 //Database db = srv.Databases[Globals.Database];
                 MainForm.LogMessage("db name = " + Globals.credentialMgr.Database);
 
@@ -1031,14 +1055,14 @@ namespace sqlnexus
 
         private void llOptions_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Point p = new Point(this.Location.X + llOptions.Location.X, this.Location.Y + llOptions.Location.Y + llOptions.Height+25);
+            Point p = new Point(this.Location.X + llOptions.Location.X, this.Location.Y + llOptions.Location.Y + llOptions.Height + 25);
             cmOptions.Show(p);
         }
 
         private void fmImport_FormClosing(object sender, FormClosingEventArgs e)
         {
             CheckAndStop();
-            
+
         }
 
 
@@ -1046,12 +1070,12 @@ namespace sqlnexus
         {
             ToolStripMenuItem tsi = (sender as ToolStripMenuItem);
             ImportOptions.Set("SaveImportOptions", tsi.Checked);
-            
+
             StringBuilder sb = new StringBuilder();
 
             if (tsi.Checked)
             {
-                
+
                 foreach (ToolStripMenuItem tsi_ImporterMenu in cmOptions.Items)
                 {
                     if (tsi_ImporterMenu.Text == "Importers")
@@ -1074,7 +1098,7 @@ namespace sqlnexus
             }
             else
                 ImportOptions.Clear();
-            
+
 
         }
         private void tsiBool_Click(object sender, EventArgs e)
@@ -1084,12 +1108,12 @@ namespace sqlnexus
             prod.Options[tsi.Text] = tsi.Checked;
             if (ImportOptions.IsEnabled("SaveImportOptions"))
             {
-                
+
                 ImportOptions.Set(string.Format("{0}.{1}", prod.Name, tsi.Text), tsi.Checked);
                 //LogMessage("strip: " + string.Format("{0}.{1}", prod.Name, tsi.Name), MessageOptions.Silent);
 
             }
-            
+
         }
 
         private void tsiDialog_Click(object sender, EventArgs e)
@@ -1125,7 +1149,7 @@ namespace sqlnexus
             }*/
             if (ImportOptions.IsEnabled("SaveImportOptions"))
                 ImportOptions.Set("DropDbBeforeImporting", tsi.Checked);
-        
+
 
         }
         private void cmOptions_Opening(object sender, CancelEventArgs e)
@@ -1136,7 +1160,7 @@ namespace sqlnexus
             tsiSaveOptions.Checked = ImportOptions.IsEnabled("SaveImportOptions");
             if (ImportOptions.IsEnabled("SaveImportOptions"))
                 tsiDropDBBeforeImporting.Checked = ImportOptions.IsEnabled("DropDbBeforeImporting");
-           
+
         }
 
 
@@ -1147,7 +1171,7 @@ namespace sqlnexus
 
     }
 
-    
 
-    
+
+
 }

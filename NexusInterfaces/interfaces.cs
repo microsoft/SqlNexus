@@ -60,7 +60,14 @@ namespace NexusInterfaces
         CreatingDatabase,
         Canceling,
         Importing,
-        ClosingFile
+        ClosingFile,
+        ImportingIoStat,
+        ImportingMemFree,
+        ImportingMemSwap,
+        ImportingNetowrking,
+        ImportingMpStatCpu,
+        ImportingPidStat,
+        CreatingBlg
     }
 
     public interface INexusFileSizeReporter
