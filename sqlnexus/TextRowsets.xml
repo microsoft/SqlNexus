@@ -155,13 +155,23 @@
       </KnownColumns>
     </Rowset>
 
-   <Rowset name="tbl_SPINLOCKSTATS" enabled="true" identifier="Spins/Collision" type="RowsetImportEngine.TextRowset">
+   
+    
+    
+    <Rowset name="tbl_SPINLOCKSTATS" enabled="true" identifier="--  dm_os_spinlock_stats --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
         <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
-        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" valuetoken="RUNTIME" />
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="collisions" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="spins" type="RowsetImportEngine.BigIntColumn"  />
+        <Column name="spins_per_collision" type="RowsetImportEngine.BigIntColumn"  />
+        <Column name="sleep_time" type="RowsetImportEngine.BigIntColumn"  />
+        <Column name="backoffs" type="RowsetImportEngine.BigIntColumn"  />
+        <Column name="name" type="RowsetImportEngine.VarCharColumn"  />
+      
       </KnownColumns>
     </Rowset>
-
+        
       
     
     <Rowset name="tbl_MEMORYSTATUS_BUF_DISTRIBUTION" enabled="true" identifier="Buffer Distribution" type="RowsetImportEngine.TextRowset">

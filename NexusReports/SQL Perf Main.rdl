@@ -190,10 +190,12 @@ select  CategorySeq,Category, ReportName, ReportDisplayName, ReportDescription, 
         <DataSourceName>DataSource_Private</DataSourceName>
         <CommandText>if object_id ('dbo.tblNexusInfo') is not null
 begin
-	select case [Value] when '9' then '2005' when '8' then '' when '10' then '2008' else null end as 'SQLVersion' from tblNexusInfo where Attribute='SQLVersion'
+	select case [PropertyValue] when '9' then '2005' when '8' then '' when '10' then '2008' when '10.50' then '2008 R2' when '11' then '2012'  when '12' then '2014' when '13' then '2016' when '14' then 'vNext' else null end as 'SQLVersion' from tbl_ServerProperties  where PropertyName='MajorVersion'
 end
 else
-	select '' as 'SQLVersion'</CommandText>
+	select '' as 'SQLVersion'
+
+</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -672,7 +674,7 @@ end</CommandText>
                 </FilterValues>
               </Filter>
             </Filters>
-            <Top>0.75in</Top>
+            <Top>0.76389in</Top>
             <Height>0.875in</Height>
             <Width>11.15001in</Width>
             <Style />
@@ -724,7 +726,7 @@ end</CommandText>
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>textbox5</rd:DefaultName>
-            <Top>0.34389in</Top>
+            <Top>0.35778in</Top>
             <Left>0.125in</Left>
             <Height>0.25in</Height>
             <Width>11.02501in</Width>
@@ -822,7 +824,7 @@ end</CommandText>
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox6</rd:DefaultName>
-            <Top>2.04875in</Top>
+            <Top>2.06264in</Top>
             <Left>1in</Left>
             <Height>1.05208in</Height>
             <Width>8.09708in</Width>
@@ -838,7 +840,7 @@ end</CommandText>
             </Style>
           </Textbox>
         </ReportItems>
-        <Height>3.37167in</Height>
+        <Height>3.38556in</Height>
         <Style />
       </Body>
       <Width>14.0625in</Width>
@@ -873,7 +875,7 @@ end</CommandText>
               <Height>0.28598in</Height>
               <Width>11.02501in</Width>
               <Visibility>
-                <Hidden>=IIF(First(Fields!IsImportReportMatched.Value, "DataSet_Import_Report_matched")=True, True, False)</Hidden>
+                <Hidden>true</Hidden>
               </Visibility>
               <Style>
                 <Border>
@@ -911,7 +913,7 @@ end</CommandText>
               <Width>11.02501in</Width>
               <ZIndex>1</ZIndex>
               <Visibility>
-                <Hidden>=IIF(First(Fields!IsLatestDiag.Value, "DataSet_IsLatestDiag")=1, True, False)</Hidden>
+                <Hidden>true</Hidden>
               </Visibility>
               <Style>
                 <Border>

@@ -33,21 +33,21 @@
 if (object_id ('tbl_SPINLOCKSTATS') is not null)
 begin
 with spinlocks as (
-select first.[spinlock name] as spinlock_name
+select first.[name] as spinlock_name
 	,  cast(last.[spins] as float) - cast(first.[spins] as float) as spin_diff
 	, cast(last.[collisions] as float) - cast(first.[collisions] as float) as collision_diff
 	, cast((cast(last.[spins] as float) - cast(first.[spins] as bigint)) as float) 
 	 / (cast((cast(last.[collisions] as float) - cast(first.[collisions] as bigint)) as float)+0.00000001 )
 	as spindiff_per_collisiondiff,
 	 cast(last.[Backoffs] as float) - cast(first.Backoffs as float) as backoff_diff,
-	 cast(last.[Sleep Time (ms)] as float) - cast(first.[Sleep Time (ms)] as float) as sleeptime_ms_diff
+	 cast(last.[Sleep_Time] as float) - cast(first.[Sleep_Time] as float) as sleeptime_ms_diff
 	 
 from [tbl_SPINLOCKSTATS] as first 
 	join [tbl_SPINLOCKSTATS] as last
-		on first.[spinlock name] = last.[spinlock name]
+		on first.[name] = last.[name]
 		and first.runtime = (select min(runtime) from tbl_spinlockstats where runtime &gt;= @StartTime)
 		and last.runtime =  (select max(runtime) from tbl_spinlockstats where runtime &lt;= @EndTime)
-where first.[spinlock name] not like '%dbcc execution%' and  last.[spinlock name] not like '%dbcc execution%') 
+where first.[name] not like '%dbcc execution%' and  last.[name] not like '%dbcc execution%') 
 select TOP 5 row_number() over (order by spindiff_per_collisiondiff desc) as rownumber,spinlock_name,spin_diff, collision_diff,spindiff_per_collisiondiff, backoff_diff, sleeptime_ms_diff
 from spinlocks
 where spindiff_per_collisiondiff &gt; 0
@@ -125,7 +125,7 @@ end
         <CommandText>if (object_id ('tbl_SPINLOCKSTATS') is not null)
 begin
 delete from [tbl_SPINLOCKSTATS]
-where [spinlock name] like '%dbcc execution%'
+where 1=0
 end</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
@@ -196,14 +196,13 @@ else
             <rd:UserDefined>true</rd:UserDefined>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>
-
+        <CommandText>--declare @StartTime datetime = '1990-1-1'
+--declare @EndTime datetime = '2099-12-31'
 if (object_id ('tbl_SPINLOCKSTATS') is not null)
 begin
-delete tbl_SPINLOCKSTATS where [spinlock name] like '%dbcc%';
 
 with spinlocks as (
-select first.[spinlock name] as spinlock_name
+select first.[name] as spinlock_name
 	,  cast(last.[spins] as float) - cast(first.[spins] as float) as spin_diff
 	, cast(last.[collisions] as float) - cast(first.[collisions] as float) as collision_diff
 	, cast((cast(last.[spins] as float) - cast(first.[spins] as bigint)) as float) 
@@ -211,10 +210,10 @@ select first.[spinlock name] as spinlock_name
 	as spindiff_per_collisiondiff
 from [tbl_SPINLOCKSTATS] as first 
 	join [tbl_SPINLOCKSTATS] as last
-		on first.[spinlock name] = last.[spinlock name]
+		on first.[name] = last.[name]
 		and first.runtime = (select min(runtime) from tbl_spinlockstats where runtime &gt;= @StartTime)
 		and last.runtime =  (select max(runtime) from tbl_spinlockstats where runtime &lt;= @EndTime)
-where first.[spinlock name] not like '%dbcc execution%' and  last.[spinlock name] not like '%dbcc execution%') 
+where first.[name] not like '%dbcc execution%' and  last.[name] not like '%dbcc execution%') 
 select TOP 10 row_number() over (order by spindiff_per_collisiondiff desc) as rownumber,spinlock_name,spin_diff, collision_diff,spindiff_per_collisiondiff
 into #temp
 from spinlocks
@@ -222,18 +221,23 @@ where spindiff_per_collisiondiff &gt; 0;
 
 
 --compute delta
-select  t2.runtime, t2.[spinlock name] as spinlock_name,  cast(cast(t2.spins as float) - cast(t1.spins as float) as bigint) 'delta_spins',  
-cast (t2.[spins/collision]  as float) 'spins_per_collision', cast(t2.[collisions] as float) collisions,
+select  t2.runtime, t2.[name] as spinlock_name,  cast(cast(t2.spins as float) - cast(t1.spins as float) as bigint) 'delta_spins',  
+cast (t2.[spins_per_collision]  as float) 'spins_per_collision', cast(t2.[collisions] as float) collisions,
 cast (cast(t2.Backoffs as float) - cast (t1.Backoffs as float) as bigint) 'delta_backoff'  
 from 
-(select row_number () over ( partition by [spinlock name]  order by    runtime) row, *  from [tbl_SPINLOCKSTATS] where runtime between @StartTime and @EndTime) t1
+(select row_number () over ( partition by [name]  order by    runtime) row, *  from [tbl_SPINLOCKSTATS] where runtime between @StartTime and @EndTime) t1
 join 
-(select row_number () over ( partition by [spinlock name]  order by    runtime) row, *  from [tbl_SPINLOCKSTATS]  where runtime between @StartTime and @EndTime) t2
-on t1.row +1 = t2.row and t1.[Spinlock Name]=t2.[Spinlock Name]
-where t1.[Spinlock Name] in (select spinlock_name from #temp)
+(select row_number () over ( partition by [name]  order by    runtime) row, *  from [tbl_SPINLOCKSTATS]  where runtime between @StartTime and @EndTime) t2
+on t1.row +1 = t2.row and t1.[name]=t2.[name]
+where t1.[name] in (select spinlock_name from #temp)
 order by runtime
 drop table #temp
-end</CommandText>
+end
+
+
+
+
+</CommandText>
       </Query>
       <Fields>
         <Field Name="runtime">
@@ -279,8 +283,7 @@ end</CommandText>
             <rd:UserDefined>true</rd:UserDefined>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>
---declare @StartTime datetime = '1990-1-1'
+        <CommandText>--declare @StartTime datetime = '1990-1-1'
 --declare @EndTime datetime = '2099-1-1'
 --declare @SpinlockName varchar(30) = 'lock_hash'
 
@@ -290,25 +293,21 @@ select @cpu_count =PropertyValue from tbl_ServerProperties where PropertyName = 
 
 if (object_id ('tbl_SPINLOCKSTATS') is not null)
 begin
-delete tbl_SPINLOCKSTATS where [spinlock name] like '%dbcc%';
-
 --compute delta
-select  t2.runtime, t2.[spinlock name] as spinlock_name,  cast(cast(t2.spins as float) - cast(t1.spins as float) as bigint) 'delta_spins',  
-cast (t2.[spins/collision]  as float) 'spins_per_collision', cast(t2.[collisions] as float) collisions,
-cast (cast(t2.Backoffs as float) - cast (t1.Backoffs as float) as bigint) 'delta_backoff' ,
+select  t2.runtime, t2.[name] as spinlock_name,  t2.spins  - t1.spins 'delta_spins',  
+t2.[spins_per_collision] 'spins_per_collision', t2.[collisions]  collisions,
+t2.Backoffs  - t1.Backoffs  'delta_backoff' ,
 datediff (ms, t1.runtime, t2.runtime) 'duration_ms',
-  cast(cast(cast(t2.spins as float) - cast(t1.spins as float) as bigint) /1.0/ datediff (ms, t1.runtime, t2.runtime) as bigint) 'delta_spins_per_ms',
-  cast(cast(cast(t2.spins as float) - cast(t1.spins as float) as bigint) /1.0/ datediff (ms, t1.runtime, t2.runtime) as bigint)/@cpu_count 'delta_spins_per_ms_per_cpu',
-
-(cast (cast(t2.Backoffs as float) - cast (t1.Backoffs as float) as bigint) ) / datediff (ms, t1.runtime, t2.runtime)  'delta_backoffs_per_ms',
-cast (cast(t2.[Sleep Time (ms)] as float) - cast (t1.[Sleep Time (ms)] as float) as bigint)  'sleep_time_ms'
-
+  cast ((t2.spins  - t1.spins ) /1.0/ datediff (ms, t1.runtime, t2.runtime) as bigint) 'delta_spins_per_ms',
+  cast( ((t2.spins  - t1.spins ) /1.0/ datediff (ms, t1.runtime, t2.runtime) )as bigint)/@cpu_count 'delta_spins_per_ms_per_cpu',
+  (t2.Backoffs  - t1.Backoffs ) / datediff (ms, t1.runtime, t2.runtime)  'delta_backoffs_per_ms',
+ t2.[sleep_time]- t1.[sleep_time]  'sleep_time_ms'
 from 
-(select row_number () over ( partition by [spinlock name]  order by    runtime) row, *  from [tbl_SPINLOCKSTATS] where runtime between @StartTime and @EndTime) t1
+(select row_number () over ( partition by [name]  order by    runtime) row, *  from [tbl_SPINLOCKSTATS] where runtime between @StartTime and @EndTime) t1
 join 
-(select row_number () over ( partition by [spinlock name]  order by    runtime) row, *  from [tbl_SPINLOCKSTATS]  where runtime between @StartTime and @EndTime) t2
-on t1.row +1 = t2.row and t1.[Spinlock Name]=t2.[Spinlock Name]
-where t1.[Spinlock Name] = @SpinlockName
+(select row_number () over ( partition by [name]  order by    runtime) row, *  from [tbl_SPINLOCKSTATS]  where runtime between @StartTime and @EndTime) t2
+on t1.row +1 = t2.row and t1.[name]=t2.[name]
+where t1.[name] = @SpinlockName
 order by runtime
 
 end</CommandText>
