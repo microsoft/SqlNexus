@@ -188,13 +188,12 @@ select  CategorySeq,Category, ReportName, ReportDisplayName, ReportDescription, 
     <DataSet Name="DataSet_SQLVersion">
       <Query>
         <DataSourceName>DataSource_Private</DataSourceName>
-        <CommandText>if object_id ('dbo.tblNexusInfo') is not null
+        <CommandText>if object_id ('dbo.tbl_ServerProperties') is not null
 begin
 	select case [PropertyValue] when '9' then '2005' when '8' then '' when '10' then '2008' when '10.50' then '2008 R2' when '11' then '2012'  when '12' then '2014' when '13' then '2016' when '14' then 'vNext' else null end as 'SQLVersion' from tbl_ServerProperties  where PropertyName='MajorVersion'
 end
 else
 	select '' as 'SQLVersion'
-
 </CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
