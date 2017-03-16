@@ -20,7 +20,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RowsetImportEngine", "Rowse
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NexusReports", "NexusReports\NexusReports.csproj", "{6C4E398F-8082-48B4-BA17-0096C2383DDA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinuxPerfImporter", "..\SqlNexus.modified\LinuxPerfImporter\LinuxPerfImporter.csproj", "{CCF72846-1645-4548-8E66-A2FFCE83692D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinuxPerfImporter", "LinuxPerfImporter\LinuxPerfImporter.csproj", "{CCF72846-1645-4548-8E66-A2FFCE83692D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

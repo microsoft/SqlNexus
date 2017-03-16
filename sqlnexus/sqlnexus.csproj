@@ -597,13 +597,13 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\SqlNexus.modified\LinuxPerfImporter\LinuxPerfImporter.csproj">
-      <Project>{ccf72846-1645-4548-8e66-a2ffce83692d}</Project>
-      <Name>LinuxPerfImporter</Name>
-    </ProjectReference>
     <ProjectReference Include="..\BulkLoadEx\BulkLoadEx.csproj">
       <Project>{F9069C48-39A6-4FB9-B4B8-D8D0034709A3}</Project>
       <Name>BulkLoadEx</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LinuxPerfImporter\LinuxPerfImporter.csproj">
+      <Project>{ccf72846-1645-4548-8e66-a2ffce83692d}</Project>
+      <Name>LinuxPerfImporter</Name>
     </ProjectReference>
     <ProjectReference Include="..\NexusInterfaces\NexusInterfaces.csproj">
       <Project>{2217E9CA-442E-46C5-AB6C-7A46AE41A22C}</Project>
