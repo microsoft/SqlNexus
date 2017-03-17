@@ -24,3 +24,5 @@ Please go to  [download](https://github.com/Microsoft/SqlNexus/releases) view re
 5. [Sqldiag data collection templates including performance scripts](https://github.com/Microsoft/SqlNexus/wiki/Data-Collection-Templates)
 6. [RML Utility/ReadTrace download](https://github.com/Microsoft/SqlNexus/wiki/RML-Utility)
 7. [Top Issues](https://github.com/Microsoft/SqlNexus/wiki/Top-Issues)
+
+More information and help can be found in the [wiki](https://github.com/Microsoft/SqlNexus/wiki)
