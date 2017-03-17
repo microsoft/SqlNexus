@@ -43,7 +43,7 @@ namespace LinuxPerfImporter.Model
         // class functions
         private List<string> GetFileContents()
         {
-            return new FileUtility().ReadFileByLine("pssdiag.conf");
+            return new FileUtility().ReadFileByLine("pssdiagimport.conf");
         }
         private void GetConfigVariables()
         {
@@ -133,20 +133,20 @@ namespace LinuxPerfImporter.Model
         private void GetTimeZone()
         {
             FileUtility fileUtility = new FileUtility();
-            int tz = Convert.ToInt16(fileUtility.ReadFileByLine("*timezone.out")[0].Substring(0, 3));
+            int tz = Convert.ToInt16(fileUtility.ReadFileByLine("*timezone.info")[0].Substring(0, 3));
 
             ConfigValues.TimeZone = tz;
         }
 
         private void GetMachineName()
         {
-            string[] splitChars = new string[] { "_machineconfig.log" };
+            string[] splitChars = new string[] { "_machineconfig.info" };
 
             LinuxPerfImortGlobals.log.WriteLog("Getting machine name ", "SetConfigVariables", "[Config]");
 
-            string machineName = Directory.GetFiles(".\\", "*_machineconfig.log")[0];
+            string machineName = Directory.GetFiles(".\\", "*_machineconfig.info")[0];
 
-            ConfigValues.MachineName = machineName.Substring(2, (machineName.Length - 20));
+            ConfigValues.MachineName = machineName.Substring(2, (machineName.Length - 21));
             
             LinuxPerfImortGlobals.log.WriteLog(ConfigValues.MachineName, "MachineName:GetMachineName", "[Config]");
         }

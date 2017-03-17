@@ -129,7 +129,7 @@ namespace LinuxPerfImporter.Utility
             try
             {
                 string currentFileName = GetFullFilePath(file);
-                string tsvFileName = currentFileName.Replace(".out", ".tsv");
+                string tsvFileName = currentFileName.Replace(".perf", ".tsv");
 
                 return tsvFileName;
             }

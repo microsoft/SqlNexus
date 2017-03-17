@@ -110,9 +110,9 @@ namespace LinuxPerfImporter
             Directory.SetCurrentDirectory(ConfigValues.WorkingDirectory);
 
             // This is where we log information about the linux performance importer. It will be placed in the directory with the pssdiag files.
-            LoggingConfig.LogFilePath = "Import.log";
+            LoggingConfig.LogFilePath = "pssdiaglinuximport.log";
 
-            var pssdiagConfFile = FileUtility.GetFullFilePath(".\\pssdiag.conf");
+            var pssdiagConfFile = FileUtility.GetFullFilePath(".\\pssdiagimport.conf");
 
             // Check to see if pssdiag.conf exists, if not, we exit.
             if (pssdiagConfFile == "false")
@@ -234,42 +234,42 @@ namespace LinuxPerfImporter
 
         public void ImportIo()
         {
-            string ioStatFileName = "*_iostat.out";
+            string ioStatFileName = "*_iostat.perf";
             LinuxOutFileIoStat ioStat = new LinuxOutFileIoStat(ioStatFileName);
             new FileUtility().WriteTsvFileByLine(ioStatFileName, ioStat.Header, ioStat.Metrics);
         }
 
         private static void ImportMemFree()
         {
-            string memFreeFileName = "*_memory_free.out";
+            string memFreeFileName = "*_memory_free.perf";
             LinuxOutFileMemFree memFree = new LinuxOutFileMemFree(memFreeFileName);
             new FileUtility().WriteTsvFileByLine(memFreeFileName, memFree.Header, memFree.Metrics);
         }
 
         private static void ImportMemSwap()
         {
-            string memSwapFileName = "*_memory_swap.out";
+            string memSwapFileName = "*_memory_swap.perf";
             LinuxOutFileMemSwap memSwap = new LinuxOutFileMemSwap(memSwapFileName);
             new FileUtility().WriteTsvFileByLine(memSwapFileName, memSwap.Header, memSwap.Metrics);
         }
 
         private static void ImportMp()
         {
-            string mpStatFileName = "*_mpstats_cpu.out";
+            string mpStatFileName = "*_mpstats_cpu.perf";
             LinuxOutFileMpStat mpStat = new LinuxOutFileMpStat(mpStatFileName);
             new FileUtility().WriteTsvFileByLine(mpStatFileName, mpStat.Header, mpStat.Metrics);
         }
 
         private static void ImportNet()
         {
-            string networkFileName = "*_network_stats.out";
+            string networkFileName = "*_network_stats.perf";
             LinuxOutFileNetwork network = new LinuxOutFileNetwork(networkFileName);
             new FileUtility().WriteTsvFileByLine(networkFileName, network.Header, network.Metrics);
         }
 
         private static void ImportPid()
         {
-            string pidStatFileName = "*_process_pidstat.out";
+            string pidStatFileName = "*_process_pidstat.perf";
             LinuxOutFilePidStat pidStat = new LinuxOutFilePidStat(pidStatFileName);
             new FileUtility().WriteTsvFileByLine(pidStatFileName, pidStat.Header, pidStat.Metrics);
         }
@@ -418,7 +418,7 @@ namespace LinuxPerfImporter
         /// <summary>Filemask (e.g. "*.trc") used to advertise the set of files that a given importer knows how to process</summary>
         public string[] SupportedMasks
         {
-            get { return new string[] { "*.OUT" }; }
+            get { return new string[] { "*.perf" }; }
         }
 
         /// <summary>Number of rows/lines/events processed from source file.  Used to communicate progress back to host.</summary>
