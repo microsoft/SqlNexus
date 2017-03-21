@@ -49,7 +49,7 @@ namespace LinuxPerfImporter.Model
             // progress.WriteTitle("Reading PID file, filtering results and adding to collection.",progressLine);
 
             // starting at the first line where # appears
-            for (int i = 3; i <= FileContents.Count - 1;)
+            for (int i = 2; i <= FileContents.Count - 1;)
             {
                 if (FileContents[i].StartsWith("#"))
                 {
@@ -134,7 +134,7 @@ namespace LinuxPerfImporter.Model
             {
                 StartingColumn = 4,
                 TrimColumn = 1,
-                StartingRow = 3,
+                StartingRow = 2,
                 FileContents = FileContents,
                 Devices = UniquePids.Select(x => x.Value + "#" + x.Key).ToList(),
                 ObjectName = "Process"

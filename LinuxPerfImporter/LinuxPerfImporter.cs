@@ -360,7 +360,7 @@ namespace LinuxPerfImporter
 
         public string Name
         {
-            get { return "Import Linux Performance Files (.out)"; }
+            get { return "Import Linux Performance Files (.perf)"; }
         }
 
         /// <summary>Set of true/false importer options (initialized in ctor)</summary>
