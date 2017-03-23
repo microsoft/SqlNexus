@@ -30,7 +30,7 @@ namespace LinuxPerfImporter.Model
         private List<PidProcessGroup> Processes = new List<PidProcessGroup>();
         private Dictionary<long, string> UniquePids;
         // number of metric that gets parsed.
-        private int MetricCount = 15;
+        private int MetricCount = 16;
 
         // class methods
         // Reads each line where there are metrics, creates a process object and adds it to the objects collection
