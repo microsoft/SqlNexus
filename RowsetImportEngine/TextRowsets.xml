@@ -1084,7 +1084,7 @@
       <Column name="cpu_time" type="RowsetImportEngine.BigIntColumn" />
       <Column name="logical_reads" type="RowsetImportEngine.BigIntColumn" />
       <Column name="total_elapsed_time" type="RowsetImportEngine.BigIntColumn" />
-      <Column name="QueryText" type="RowsetImportEngine.NVarCharColumn" length="4000" />
+      <Column name="QueryText" type="RowsetImportEngine.NVarCharColumn" length="-1" />
 
     </Rowset>
 
