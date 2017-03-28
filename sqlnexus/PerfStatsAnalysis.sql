@@ -2108,7 +2108,7 @@ as
 if exists ( select  *  from tbl_dm_db_stats_properties where (rows_sampled * 100.00)/ [rows] < 5.0 )
 begin
 	update tbl_AnalysisSummary
-	set status = 1
+	set status = 1, [Description]=[Description] + ' use query select *   from tbl_dm_db_stats_properties where (rows_sampled * 100.00)/ [rows] < 5.0 to identify tables with small sample sizes'
 	where Name='usp_SmallSampledStats'
 end
 
