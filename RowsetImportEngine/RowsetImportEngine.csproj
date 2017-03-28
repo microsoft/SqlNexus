@@ -160,6 +160,7 @@
     </Compile>
     <Content Include="TextRowsets.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="TextRowsetsCustom_Template.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

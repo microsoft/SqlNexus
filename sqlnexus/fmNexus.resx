@@ -192,42 +192,6 @@
   <metadata name="cmNav.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>261, 24</value>
   </metadata>
-  <data name="collapseAllToolStripMenuItem.ImageScaling" type="System.Windows.Forms.ToolStripItemImageScaling, System.Windows.Forms">
-    <value>None</value>
-  </data>
-  <data name="collapseAllToolStripMenuItem.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Fuchsia</value>
-  </data>
-  <data name="collapseAllToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>187, 22</value>
-  </data>
-  <data name="collapseAllToolStripMenuItem.Text" xml:space="preserve">
-    <value>Collapse all</value>
-  </data>
-  <data name="expandAllToolStripMenuItem.ImageScaling" type="System.Windows.Forms.ToolStripItemImageScaling, System.Windows.Forms">
-    <value>None</value>
-  </data>
-  <data name="expandAllToolStripMenuItem.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Fuchsia</value>
-  </data>
-  <data name="expandAllToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>187, 22</value>
-  </data>
-  <data name="expandAllToolStripMenuItem.Text" xml:space="preserve">
-    <value>Expand all</value>
-  </data>
-  <data name="hideReportNavigatorToolStripMenuItem.ImageScaling" type="System.Windows.Forms.ToolStripItemImageScaling, System.Windows.Forms">
-    <value>None</value>
-  </data>
-  <data name="hideReportNavigatorToolStripMenuItem.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Fuchsia</value>
-  </data>
-  <data name="hideReportNavigatorToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>187, 22</value>
-  </data>
-  <data name="hideReportNavigatorToolStripMenuItem.Text" xml:space="preserve">
-    <value>Hide report navigator</value>
-  </data>
   <data name="cmNav.Size" type="System.Drawing.Size, System.Drawing">
     <value>188, 70</value>
   </data>
@@ -239,6 +203,54 @@
   </data>
   <data name="paTasks.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="linkLabel2.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="linkLabel2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>32, 137</value>
+  </data>
+  <data name="linkLabel2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>124, 13</value>
+  </data>
+  <data name="linkLabel2.TabIndex" type="System.Int32, mscorlib">
+    <value>17</value>
+  </data>
+  <data name="linkLabel2.Text" xml:space="preserve">
+    <value>Launch Power BI reports</value>
+  </data>
+  <data name="&gt;&gt;linkLabel2.Name" xml:space="preserve">
+    <value>linkLabel2</value>
+  </data>
+  <data name="&gt;&gt;linkLabel2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.LinkLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;linkLabel2.Parent" xml:space="preserve">
+    <value>paTasksBody</value>
+  </data>
+  <data name="&gt;&gt;linkLabel2.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="pictureBox3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 137</value>
+  </data>
+  <data name="pictureBox3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>16, 16</value>
+  </data>
+  <data name="pictureBox3.TabIndex" type="System.Int32, mscorlib">
+    <value>16</value>
+  </data>
+  <data name="&gt;&gt;pictureBox3.Name" xml:space="preserve">
+    <value>pictureBox3</value>
+  </data>
+  <data name="&gt;&gt;pictureBox3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;pictureBox3.Parent" xml:space="preserve">
+    <value>paTasksBody</value>
+  </data>
+  <data name="&gt;&gt;pictureBox3.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <data name="llOpenReadTraceLog.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -268,7 +280,7 @@
     <value>paTasksBody</value>
   </data>
   <data name="&gt;&gt;llOpenReadTraceLog.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>2</value>
   </data>
   <data name="picOpenReadTraceLog.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -292,7 +304,7 @@
     <value>paTasksBody</value>
   </data>
   <data name="&gt;&gt;picOpenReadTraceLog.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>3</value>
   </data>
   <data name="llOpenNexusLog.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -322,7 +334,7 @@
     <value>paTasksBody</value>
   </data>
   <data name="&gt;&gt;llOpenNexusLog.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>4</value>
   </data>
   <data name="picOpenNexusLog.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -346,7 +358,7 @@
     <value>paTasksBody</value>
   </data>
   <data name="&gt;&gt;picOpenNexusLog.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>5</value>
   </data>
   <data name="pbCopy.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -373,7 +385,7 @@
     <value>paTasksBody</value>
   </data>
   <data name="&gt;&gt;pbCopy.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>6</value>
   </data>
   <data name="pbExport.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -400,7 +412,7 @@
     <value>paTasksBody</value>
   </data>
   <data name="&gt;&gt;pbExport.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>7</value>
   </data>
   <data name="pbPrint.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -427,7 +439,7 @@
     <value>paTasksBody</value>
   </data>
   <data name="&gt;&gt;pbPrint.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>8</value>
   </data>
   <data name="linkLabel1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -457,7 +469,7 @@
     <value>paTasksBody</value>
   </data>
   <data name="&gt;&gt;linkLabel1.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>9</value>
   </data>
   <data name="linkLabel8.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -487,7 +499,7 @@
     <value>paTasksBody</value>
   </data>
   <data name="&gt;&gt;linkLabel8.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>10</value>
   </data>
   <data name="llPrint.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -517,7 +529,7 @@
     <value>paTasksBody</value>
   </data>
   <data name="&gt;&gt;llPrint.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>11</value>
   </data>
   <data name="paTasksBody.Location" type="System.Drawing.Point, System.Drawing">
     <value>2, 22</value>
@@ -526,7 +538,7 @@
     <value>0, 88</value>
   </data>
   <data name="paTasksBody.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 141</value>
+    <value>180, 175</value>
   </data>
   <data name="paTasksBody.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -543,24 +555,6 @@
   <data name="&gt;&gt;paTasksBody.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="pbExpandTasks.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="pbExpandTasks.Location" type="System.Drawing.Point, System.Drawing">
-    <value>162, 3</value>
-  </data>
-  <data name="pbExpandTasks.Size" type="System.Drawing.Size, System.Drawing">
-    <value>17, 17</value>
-  </data>
-  <data name="pbExpandTasks.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
-    <value>AutoSize</value>
-  </data>
-  <data name="pbExpandTasks.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
-  </data>
-  <data name="pbExpandTasks.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
   <data name="&gt;&gt;pbExpandTasks.Name" xml:space="preserve">
     <value>pbExpandTasks</value>
   </data>
@@ -573,21 +567,6 @@
   <data name="&gt;&gt;pbExpandTasks.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="pbCollapseTasks.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="pbCollapseTasks.Location" type="System.Drawing.Point, System.Drawing">
-    <value>162, 3</value>
-  </data>
-  <data name="pbCollapseTasks.Size" type="System.Drawing.Size, System.Drawing">
-    <value>17, 17</value>
-  </data>
-  <data name="pbCollapseTasks.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
-    <value>AutoSize</value>
-  </data>
-  <data name="pbCollapseTasks.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
   <data name="&gt;&gt;pbCollapseTasks.Name" xml:space="preserve">
     <value>pbCollapseTasks</value>
   </data>
@@ -599,24 +578,6 @@
   </data>
   <data name="&gt;&gt;pbCollapseTasks.ZOrder" xml:space="preserve">
     <value>1</value>
-  </data>
-  <data name="llTasks.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
-  </data>
-  <data name="llTasks.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="llTasks.Location" type="System.Drawing.Point, System.Drawing">
-    <value>29, 5</value>
-  </data>
-  <data name="llTasks.Size" type="System.Drawing.Size, System.Drawing">
-    <value>100, 23</value>
-  </data>
-  <data name="llTasks.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="llTasks.Text" xml:space="preserve">
-    <value>Tasks</value>
   </data>
   <data name="&gt;&gt;llTasks.Name" xml:space="preserve">
     <value>llTasks</value>
@@ -661,7 +622,7 @@
     <value>12, 20, 3, 3</value>
   </data>
   <data name="paTasks.Size" type="System.Drawing.Size, System.Drawing">
-    <value>185, 166</value>
+    <value>185, 200</value>
   </data>
   <data name="paTasks.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -681,135 +642,6 @@
   <data name="paData.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="ll_CustomRowset.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="ll_CustomRowset.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="ll_CustomRowset.Location" type="System.Drawing.Point, System.Drawing">
-    <value>39, 38</value>
-  </data>
-  <data name="ll_CustomRowset.Size" type="System.Drawing.Size, System.Drawing">
-    <value>102, 13</value>
-  </data>
-  <data name="ll_CustomRowset.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
-  </data>
-  <data name="ll_CustomRowset.Text" xml:space="preserve">
-    <value>Edit Custom Rowset</value>
-  </data>
-  <data name="&gt;&gt;ll_CustomRowset.Name" xml:space="preserve">
-    <value>ll_CustomRowset</value>
-  </data>
-  <data name="&gt;&gt;ll_CustomRowset.Type" xml:space="preserve">
-    <value>System.Windows.Forms.LinkLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ll_CustomRowset.Parent" xml:space="preserve">
-    <value>paDataBody</value>
-  </data>
-  <data name="&gt;&gt;ll_CustomRowset.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="pictureBox2.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="pictureBox2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>7, 35</value>
-  </data>
-  <data name="pictureBox2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>16, 16</value>
-  </data>
-  <data name="pictureBox2.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
-    <value>StretchImage</value>
-  </data>
-  <data name="pictureBox2.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
-  </data>
-  <data name="&gt;&gt;pictureBox2.Name" xml:space="preserve">
-    <value>pictureBox2</value>
-  </data>
-  <data name="&gt;&gt;pictureBox2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;pictureBox2.Parent" xml:space="preserve">
-    <value>paDataBody</value>
-  </data>
-  <data name="&gt;&gt;pictureBox2.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="pictureBox1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="pictureBox1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>7, 13</value>
-  </data>
-  <data name="pictureBox1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>16, 16</value>
-  </data>
-  <data name="pictureBox1.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
-    <value>StretchImage</value>
-  </data>
-  <data name="pictureBox1.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
-  </data>
-  <data name="pictureBox1.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="&gt;&gt;pictureBox1.Name" xml:space="preserve">
-    <value>pictureBox1</value>
-  </data>
-  <data name="&gt;&gt;pictureBox1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;pictureBox1.Parent" xml:space="preserve">
-    <value>paDataBody</value>
-  </data>
-  <data name="&gt;&gt;pictureBox1.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="linkLabel6.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="linkLabel6.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="linkLabel6.Location" type="System.Drawing.Point, System.Drawing">
-    <value>39, 13</value>
-  </data>
-  <data name="linkLabel6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>36, 13</value>
-  </data>
-  <data name="linkLabel6.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="linkLabel6.Text" xml:space="preserve">
-    <value>Import</value>
-  </data>
-  <data name="&gt;&gt;linkLabel6.Name" xml:space="preserve">
-    <value>linkLabel6</value>
-  </data>
-  <data name="&gt;&gt;linkLabel6.Type" xml:space="preserve">
-    <value>System.Windows.Forms.LinkLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;linkLabel6.Parent" xml:space="preserve">
-    <value>paDataBody</value>
-  </data>
-  <data name="&gt;&gt;linkLabel6.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="paDataBody.Location" type="System.Drawing.Point, System.Drawing">
-    <value>2, 22</value>
-  </data>
-  <data name="paDataBody.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>0, 88</value>
-  </data>
-  <data name="paDataBody.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 90</value>
-  </data>
-  <data name="paDataBody.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
   <data name="&gt;&gt;paDataBody.Name" xml:space="preserve">
     <value>paDataBody</value>
   </data>
@@ -820,105 +652,6 @@
     <value>paData</value>
   </data>
   <data name="&gt;&gt;paDataBody.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="llData.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
-  </data>
-  <data name="llData.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="llData.Location" type="System.Drawing.Point, System.Drawing">
-    <value>29, 5</value>
-  </data>
-  <data name="llData.Size" type="System.Drawing.Size, System.Drawing">
-    <value>100, 23</value>
-  </data>
-  <data name="llData.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="llData.Text" xml:space="preserve">
-    <value>Data</value>
-  </data>
-  <data name="&gt;&gt;llData.Name" xml:space="preserve">
-    <value>llData</value>
-  </data>
-  <data name="&gt;&gt;llData.Type" xml:space="preserve">
-    <value>System.Windows.Forms.LinkLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;llData.Parent" xml:space="preserve">
-    <value>paDataHeader</value>
-  </data>
-  <data name="&gt;&gt;llData.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="pbCollapseData.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="pbCollapseData.Location" type="System.Drawing.Point, System.Drawing">
-    <value>162, 3</value>
-  </data>
-  <data name="pbCollapseData.Size" type="System.Drawing.Size, System.Drawing">
-    <value>17, 17</value>
-  </data>
-  <data name="pbCollapseData.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
-    <value>AutoSize</value>
-  </data>
-  <data name="pbCollapseData.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="&gt;&gt;pbCollapseData.Name" xml:space="preserve">
-    <value>pbCollapseData</value>
-  </data>
-  <data name="&gt;&gt;pbCollapseData.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;pbCollapseData.Parent" xml:space="preserve">
-    <value>paDataHeader</value>
-  </data>
-  <data name="&gt;&gt;pbCollapseData.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="pbExpandData.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="pbExpandData.Location" type="System.Drawing.Point, System.Drawing">
-    <value>162, 3</value>
-  </data>
-  <data name="pbExpandData.Size" type="System.Drawing.Size, System.Drawing">
-    <value>17, 17</value>
-  </data>
-  <data name="pbExpandData.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
-    <value>AutoSize</value>
-  </data>
-  <data name="pbExpandData.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="pbExpandData.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="&gt;&gt;pbExpandData.Name" xml:space="preserve">
-    <value>pbExpandData</value>
-  </data>
-  <data name="&gt;&gt;pbExpandData.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;pbExpandData.Parent" xml:space="preserve">
-    <value>paDataHeader</value>
-  </data>
-  <data name="&gt;&gt;pbExpandData.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="paDataHeader.Location" type="System.Drawing.Point, System.Drawing">
-    <value>2, -3</value>
-  </data>
-  <data name="paDataHeader.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>0, 22</value>
-  </data>
-  <data name="paDataHeader.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 25</value>
-  </data>
-  <data name="paDataHeader.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
   <data name="&gt;&gt;paDataHeader.Name" xml:space="preserve">
@@ -934,7 +667,7 @@
     <value>1</value>
   </data>
   <data name="paData.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 537</value>
+    <value>12, 571</value>
   </data>
   <data name="paData.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>12, 20, 3, 3</value>
@@ -960,135 +693,6 @@
   <data name="paReports.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="tvReports.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="tvReports.ImageIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <metadata name="imGlyphs.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>346, 24</value>
-  </metadata>
-  <data name="imGlyphs.ImageStream" mimetype="application/x-microsoft.net.object.binary.base64">
-    <value>
-        AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
-        LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZTeXN0
-        ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAADy
-        EQAAAk1TRnQBSQFMAgEBCwEAAdQBAAHUAQABEAEAARABAAT/AQkBAAj/AUIBTQE2AQQGAAE2AQQCAAEo
-        AwABQAMAATADAAEBAQABCAYAAQwYAAGAAgABgAMAAoABAAGAAwABgAEAAYABAAKAAgADwAEAAcAB3AHA
-        AQAB8AHKAaYBAAEzBQABMwEAATMBAAEzAQACMwIAAxYBAAMcAQADIgEAAykBAANVAQADTQEAA0IBAAM5
-        AQABgAF8Af8BAAJQAf8BAAGTAQAB1gEAAf8B7AHMAQABxgHWAe8BAAHWAucBAAGQAakBrQIAAf8BMwMA
-        AWYDAAGZAwABzAIAATMDAAIzAgABMwFmAgABMwGZAgABMwHMAgABMwH/AgABZgMAAWYBMwIAAmYCAAFm
-        AZkCAAFmAcwCAAFmAf8CAAGZAwABmQEzAgABmQFmAgACmQIAAZkBzAIAAZkB/wIAAcwDAAHMATMCAAHM
-        AWYCAAHMAZkCAALMAgABzAH/AgAB/wFmAgAB/wGZAgAB/wHMAQABMwH/AgAB/wEAATMBAAEzAQABZgEA
-        ATMBAAGZAQABMwEAAcwBAAEzAQAB/wEAAf8BMwIAAzMBAAIzAWYBAAIzAZkBAAIzAcwBAAIzAf8BAAEz
-        AWYCAAEzAWYBMwEAATMCZgEAATMBZgGZAQABMwFmAcwBAAEzAWYB/wEAATMBmQIAATMBmQEzAQABMwGZ
-        AWYBAAEzApkBAAEzAZkBzAEAATMBmQH/AQABMwHMAgABMwHMATMBAAEzAcwBZgEAATMBzAGZAQABMwLM
-        AQABMwHMAf8BAAEzAf8BMwEAATMB/wFmAQABMwH/AZkBAAEzAf8BzAEAATMC/wEAAWYDAAFmAQABMwEA
-        AWYBAAFmAQABZgEAAZkBAAFmAQABzAEAAWYBAAH/AQABZgEzAgABZgIzAQABZgEzAWYBAAFmATMBmQEA
-        AWYBMwHMAQABZgEzAf8BAAJmAgACZgEzAQADZgEAAmYBmQEAAmYBzAEAAWYBmQIAAWYBmQEzAQABZgGZ
-        AWYBAAFmApkBAAFmAZkBzAEAAWYBmQH/AQABZgHMAgABZgHMATMBAAFmAcwBmQEAAWYCzAEAAWYBzAH/
-        AQABZgH/AgABZgH/ATMBAAFmAf8BmQEAAWYB/wHMAQABzAEAAf8BAAH/AQABzAEAApkCAAGZATMBmQEA
-        AZkBAAGZAQABmQEAAcwBAAGZAwABmQIzAQABmQEAAWYBAAGZATMBzAEAAZkBAAH/AQABmQFmAgABmQFm
-        ATMBAAGZATMBZgEAAZkBZgGZAQABmQFmAcwBAAGZATMB/wEAApkBMwEAApkBZgEAA5kBAAKZAcwBAAKZ
-        Af8BAAGZAcwCAAGZAcwBMwEAAWYBzAFmAQABmQHMAZkBAAGZAswBAAGZAcwB/wEAAZkB/wIAAZkB/wEz
-        AQABmQHMAWYBAAGZAf8BmQEAAZkB/wHMAQABmQL/AQABzAMAAZkBAAEzAQABzAEAAWYBAAHMAQABmQEA
-        AcwBAAHMAQABmQEzAgABzAIzAQABzAEzAWYBAAHMATMBmQEAAcwBMwHMAQABzAEzAf8BAAHMAWYCAAHM
-        AWYBMwEAAZkCZgEAAcwBZgGZAQABzAFmAcwBAAGZAWYB/wEAAcwBmQIAAcwBmQEzAQABzAGZAWYBAAHM
-        ApkBAAHMAZkBzAEAAcwBmQH/AQACzAIAAswBMwEAAswBZgEAAswBmQEAA8wBAALMAf8BAAHMAf8CAAHM
-        Af8BMwEAAZkB/wFmAQABzAH/AZkBAAHMAf8BzAEAAcwC/wEAAcwBAAEzAQAB/wEAAWYBAAH/AQABmQEA
-        AcwBMwIAAf8CMwEAAf8BMwFmAQAB/wEzAZkBAAH/ATMBzAEAAf8BMwH/AQAB/wFmAgAB/wFmATMBAAHM
-        AmYBAAH/AWYBmQEAAf8BZgHMAQABzAFmAf8BAAH/AZkCAAH/AZkBMwEAAf8BmQFmAQAB/wKZAQAB/wGZ
-        AcwBAAH/AZkB/wEAAf8BzAIAAf8BzAEzAQAB/wHMAWYBAAH/AcwBmQEAAf8CzAEAAf8BzAH/AQAC/wEz
-        AQABzAH/AWYBAAL/AZkBAAL/AcwBAAJmAf8BAAFmAf8BZgEAAWYC/wEAAf8CZgEAAf8BZgH/AQAC/wFm
-        AQABIQEAAaUBAANfAQADdwEAA4YBAAOWAQADywEAA7IBAAPXAQAD3QEAA+MBAAPqAQAD8QEAA/gBAAHw
-        AfsB/wEAAaQCoAEAA4ADAAH/AgAB/wMAAv8BAAH/AwAB/wEAAf8BAAL/AgAD/wEAEP0wAAH9Aa4B/QGu
-        Af0BrgH9Aa4B/QGuAf0BrgH9Aa4B/QGuEAAQZhAAAewB/wn0AhkC8wH9BgABrQOLBYYBAAH3AvQB8AL0
-        AbwC8wG8AhkBvAEZAfABZhAAAf0B/wHvAa4B7wGuAe8BrgG1Aa4B9AHtAbUBrgEZAa4GAAHPAf8BuwW1
-        AYYBAAH3Af8B9AHwAvQB8AH0AfMBvAIZAbwBGQGTAWYQAAGRAf8BkQagAfcB9AEHAaABtQH0Af0GAAG0
-        Af8FtAG1AYYBAAJvAfAB8gLxA/AEvAEHAW8BZhAAAf0B/wEHBqABrgH0AfcBoAGuAfQBrgH3BWYBtAL/
-        AfQBGQHdAQkBtQGGAQACkwFvAbwC9AHwAfMB9AHwAvMB8AGTAbYBZhAAAZEB/wHtBqAB7wH0AQcBoAG1
-        AfQB/QH3Af8B8QLwAbwBtQH/AdUEtAG1AYYBAAG1Af8BGgFvAfIB9AG8AW8C8AEZAfMBvAFvARkBZhAA
-        Af0B/wEHAsMEoAGuAf8B9wGgAa4B9AGuAfcB/wG1A7QBtQT/AfMB3QG1AYYBAAG1AfMB8gEHAW8BBwFv
-        AZMBbwO8ApMBCQFmEAAB7QH/AfcEwwKgAe8B/wG8AaAB7wH/Af0BtQL/AfQB8wHxAQkB/wLWARkBtAGt
-        AosBAAEHAv8B8wEaAW8BtgH0ApMB9AHxAW8C8wFmEAAB/QH/AbwGwwGuAf8BtQG8Aa4B/wGuAbUB/wLc
-        AbUBtAEJBP8B1QEJAq0BAAEHAv8B8wH/AfIB8wH0AfMBbwHwAZMBBwLzAWYQAAH3Af8B9wbDAe8F/wH9
-        Ae8E/wHzAQkE/wHWAq0CAAEHAvMC8gPxAfABBwFvAZMDvAFsEAAB/QH/AbwGwwGRBf8BkQEHAf8BGQEJ
-        ARkB9wYJAbQDAAG8Av8B9AL/AfQB/wH0AfMCkwHzAfQBGQFmEAAB9wH/AbUBvAG1AbwB9wG8AfcB7wX/
-        Af0BuwT/AbUBvAGuAWYHAAG8Av8B9AL/AfQC/wL0AvMC9AFmEAAB/Q7/AZEBCQT/Ae8BkQFmCAAB8AS8
-        AgcBuwMHAu8BtQLvEAABtQH9AbUB/QH3Af0B9wH9AfcB/QH3Af0B9wH9AewB/QIJArsBBwG7AfcpABD9
-        MAAq/QEJAmwBiwHPMf0B9wVmAeoBrgHsAbQBiwGQAU8BbAGLAQcC/QH3C2YD/QHxAW4B6gESARQIQwL9
-        EJIB9wH/AvQBGQLzARkB9AK0AnEBrQFsAUkC/QH3AfMJ9wFmA/0B7ANZATgCMgUxAUMC/QGSDv8BkgH3
-        Af8BtQT3Ae8BBwG0AU8BcQK0AXEBTgL9AfcB9AEZAfMCGQTdAfcBZgP9AewBegNZAjIFMQFDAv0BkgH/
-        DPQB/wGSAfcB/wHvAVkCMgFTAfcB3QG0AVYBeAG6AbQBkAGXAv0B9wL0ARkB8wMZAt0B9wFmA/0B7AJ6
-        A1kCMgQxAUMC/QGSAf8M9AH/AZIB9wH/AbUBWQIyAVMB9wEZAd0BlwHCAQgBkQGzAZ0C/QH3AfQC1QHU
-        BK0B3QH3AWYD/QHsAZoCegNZAjIDMQFDAv0BkgH/DPQB/wGSAbUB/wHvAVkChgFZAfcCGQHdApgBlwG7
-        Ae0C/QH3Af8E9AHzAxkB9wFmA/0B7QGaA3oDWQIyAjEBQwL9AZIC/wP0Av8B9AH/AfQC/wH0Af8BkgHv
-        Af8B7wF6A1kB9wH0AhkC3QHvAfQB7AL9AbUB/wLVAdQErQEZAfcBZgP9ARwBoAGaA3oDWQIyATEBQwL9
-        AZIB/wz2Af8BkgG1Af8BBwF6AoYBWQH3AvQCGQHdAfcBGQFtAv0B7wT/A/QC8wH3AWYD/QEcAqABmgN6
-        AlkBOAIyARUC/QGSDv8BkgG7Af8BBwGgAZoCegH3Af8C9AIZAfcBGQFsAv0BtQH/AtUB1AStARkB9wFm
-        A/0BHAKgAW4B6wJtA0oBSwExARMC/QGSDv8BkgHvAf8BBwJFBksBTAFvAe0BGQFmAv0Buwb/A/QB9wFm
-        A/0BHAKgAXMBmQGaAnkBUgFKAUsBMQHqAv0Bkgb/CJIB/QG1Af8EBwPvArUC9wHtAfQBZgL9AbsB/wLV
-        AdQCrQH/AfQC9wFmA/0BHAOgAXMBoAHsAXkCSgF6AVkB6gL9AZIGmgGSA/8B9gL/AfcB/QG7Dv8BZgL9
-        AbsH/wH3A2YD/QHwAxwBcwKgAZkBSgPsAfEC/QGSBnoBkgb3Av0F1gHVA7QHrQL9AbsH/wG1AbwBZgHv
-        CP0DHAHxB/0Gkgn9AdYCCQXcAdYG1QGtAv0BCQf/AbUBZgHvI/0G1gLVA7QBswStAv0GCQG7AQcBuwHw
-        BP0BrgQJA7sHtQGuMAABrgEZAfMBBwFHAUwBGQKsAd0BnQEtAU8B3QEJAa4QABAHEGYBrgEZAfMBGgFN
-        AeMBGQKsAd0BmAEuAVUB3QEJAa4CAAH/A/kD/AP9AwIB/wIAA+wCAAPsAwAC7AEAAfcC9AHwAvQBvALz
-        AbwCGQG8ARkB8AFmAa4B8wH0BPMC0wEZAZgBVQGXAt0BrgIAAf8D+QP8A/0DAgH/AQcDBAHsAQcDBAHs
-        AQcDBAHsAQcB9wH/AfQB8AL0AfAB9AHzAbwCGQG8ARkBkwFmAa4B8wP0BPMBGQGYAVYBlwEZAd0BrgIA
-        AQcD+QP8A/0DAgEHAQADBAHsAQADBAHsAQADBAHsAQACbwHwAfIC8QPwBLwBBwFvAWYBrgX0BPMEGQHd
-        Aa4CAAH/A/kD/AP9AwIB/wEHAwQB7AEHAwQB7AEHAwQB7AEHApMBbwG8AvQB8AHzAfQB8ALzAfABkwG2
-        AWYBkQH0Ae0DDgESAfIBFAMOAZICGQGuAgAB/wP5A/wD/QMCAf8BAAMEAewBAAMEAewBAAMEAewBAAG1
-        Af8BGgFvAfIB9AG8AW8C8AEZAfMBvAFvARkBZgHsCPQE8wIZAa4CAAEHA/kD/AP9AwICBwMEAewBBwME
-        AewBBwMEAewBBwG1AfMB8gEHAW8BBwFvAZMBbwO8ApMBCQFmAZEB9AG8A+wB7wHzAfcD7AHwAfMBGQGu
-        AgAB/wP5A/wD/QMCAf8BAAMEAewBAAMEAewBAAMEAewBAAEHAv8B8wEaAW8BtgH0ApMB9AHxAW8C8wFm
-        Ae0F/wf0AfMBGQGuAgAB/wP5A/wB/wEHAf8DAgH/AQcDBAIHAwQB7AEHAwQB7AIHAv8B8wH/AfIB8wH0
-        AfMBbwHwAZMBBwLzAWYB9wH/AbwD7AHvAfQB9wPsAfAB9AHzAa4CAAEHA/kD/AMHAwIBBwYAAwQB7AEA
-        AwQB7AEAAQcC8wLyA/EB8AEHAW8BkwO8AWwB9wj/BfQB8wGuAgAC/wEHAf8D/AH/AQcB/wMCAf8GBwME
-        AewBBwMEAgcBvAL/AfQC/wH0Af8B9AHzApMB8wH0ARkBZgG1Af8B8AfsAfEB9AGuA2YCAAL/AQcB/wP8
-        Af8BBwL/AQcC/wYAAwQHAAG8Av8B9AL/AfQC/wL0AvMC9AFmAe8L/wH3AbwBrgH/AgAEBwP8FwcB8AS8
-        AgcBuwMHAu8BtQLvAbUG/wP0AvMBkQHwAv8CAAL/AQcC/wEHAv8BBwL/AQcC/yAAEP8CAAL/AQcC/wEH
-        Av8BBwL/AQcC/xAHEAABQgFNAT4HAAE+AwABKAMAAUADAAEwAwABAQEAAQEFAAGAAQEWAAP/BQAC/24A
-        Av8GAAL/hAABtgHbBP8KAAGAAQABxgE5BAABgAkAAYQBIQQAAYAHAAGAAQABhAEhDAABgAEAAYQBIQQA
-        AYAJAAH8ASEEAAGABwABgAEAAfwBfwwAAYABAAT/AgABgAMAAv8L
-</value>
-  </data>
-  <data name="tvReports.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="tvReports.SelectedImageIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="tvReports.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 270</value>
-  </data>
-  <data name="tvReports.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;tvReports.Name" xml:space="preserve">
-    <value>tvReports</value>
-  </data>
-  <data name="&gt;&gt;tvReports.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TreeView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tvReports.Parent" xml:space="preserve">
-    <value>paReportsBody</value>
-  </data>
-  <data name="&gt;&gt;tvReports.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="paReportsBody.Location" type="System.Drawing.Point, System.Drawing">
-    <value>2, 22</value>
-  </data>
-  <data name="paReportsBody.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>0, 270</value>
-  </data>
-  <data name="paReportsBody.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 270</value>
-  </data>
-  <data name="paReportsBody.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
   <data name="&gt;&gt;paReportsBody.Name" xml:space="preserve">
     <value>paReportsBody</value>
   </data>
@@ -1099,105 +703,6 @@
     <value>paReports</value>
   </data>
   <data name="&gt;&gt;paReportsBody.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="llReports.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
-  </data>
-  <data name="llReports.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="llReports.Location" type="System.Drawing.Point, System.Drawing">
-    <value>29, 5</value>
-  </data>
-  <data name="llReports.Size" type="System.Drawing.Size, System.Drawing">
-    <value>100, 23</value>
-  </data>
-  <data name="llReports.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="llReports.Text" xml:space="preserve">
-    <value>Reports</value>
-  </data>
-  <data name="&gt;&gt;llReports.Name" xml:space="preserve">
-    <value>llReports</value>
-  </data>
-  <data name="&gt;&gt;llReports.Type" xml:space="preserve">
-    <value>System.Windows.Forms.LinkLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;llReports.Parent" xml:space="preserve">
-    <value>paReportsHeader</value>
-  </data>
-  <data name="&gt;&gt;llReports.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="pbExpandReports.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="pbExpandReports.Location" type="System.Drawing.Point, System.Drawing">
-    <value>162, 3</value>
-  </data>
-  <data name="pbExpandReports.Size" type="System.Drawing.Size, System.Drawing">
-    <value>17, 17</value>
-  </data>
-  <data name="pbExpandReports.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
-    <value>AutoSize</value>
-  </data>
-  <data name="pbExpandReports.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="pbExpandReports.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="&gt;&gt;pbExpandReports.Name" xml:space="preserve">
-    <value>pbExpandReports</value>
-  </data>
-  <data name="&gt;&gt;pbExpandReports.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;pbExpandReports.Parent" xml:space="preserve">
-    <value>paReportsHeader</value>
-  </data>
-  <data name="&gt;&gt;pbExpandReports.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="pbCollapseReports.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="pbCollapseReports.Location" type="System.Drawing.Point, System.Drawing">
-    <value>162, 2</value>
-  </data>
-  <data name="pbCollapseReports.Size" type="System.Drawing.Size, System.Drawing">
-    <value>17, 17</value>
-  </data>
-  <data name="pbCollapseReports.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
-    <value>AutoSize</value>
-  </data>
-  <data name="pbCollapseReports.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;pbCollapseReports.Name" xml:space="preserve">
-    <value>pbCollapseReports</value>
-  </data>
-  <data name="&gt;&gt;pbCollapseReports.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;pbCollapseReports.Parent" xml:space="preserve">
-    <value>paReportsHeader</value>
-  </data>
-  <data name="&gt;&gt;pbCollapseReports.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="paReportsHeader.Location" type="System.Drawing.Point, System.Drawing">
-    <value>2, 0</value>
-  </data>
-  <data name="paReportsHeader.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>0, 22</value>
-  </data>
-  <data name="paReportsHeader.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
-  </data>
-  <data name="paReportsHeader.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
   <data name="&gt;&gt;paReportsHeader.Name" xml:space="preserve">
@@ -1425,6 +930,900 @@
   <data name="toolbarService.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>None</value>
   </data>
+  <data name="toolbarService.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="toolbarService.Size" type="System.Drawing.Size, System.Drawing">
+    <value>358, 25</value>
+  </data>
+  <data name="toolbarService.TabIndex" type="System.Int32, mscorlib">
+    <value>12</value>
+  </data>
+  <data name="toolbarService.Text" xml:space="preserve">
+    <value>toolStrip2</value>
+  </data>
+  <data name="&gt;&gt;toolbarService.Name" xml:space="preserve">
+    <value>toolbarService</value>
+  </data>
+  <data name="&gt;&gt;toolbarService.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolbarService.Parent" xml:space="preserve">
+    <value>toolStripContainer1.TopToolStripPanel</value>
+  </data>
+  <data name="&gt;&gt;toolbarService.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <metadata name="toolbarMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>3, 49</value>
+  </metadata>
+  <data name="toolbarMain.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>None</value>
+  </data>
+  <data name="toolbarMain.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 0</value>
+  </data>
+  <data name="toolbarMain.Size" type="System.Drawing.Size, System.Drawing">
+    <value>139, 25</value>
+  </data>
+  <data name="toolbarMain.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="toolbarMain.Text" xml:space="preserve">
+    <value>toolStrip1</value>
+  </data>
+  <data name="&gt;&gt;toolbarMain.Name" xml:space="preserve">
+    <value>toolbarMain</value>
+  </data>
+  <data name="&gt;&gt;toolbarMain.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolbarMain.Parent" xml:space="preserve">
+    <value>toolStripContainer1.TopToolStripPanel</value>
+  </data>
+  <data name="&gt;&gt;toolbarMain.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <metadata name="menuBarMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>0, 25</value>
+  </metadata>
+  <data name="menuBarMain.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>None</value>
+  </data>
+  <data name="menuBarMain.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 25</value>
+  </data>
+  <data name="menuBarMain.Size" type="System.Drawing.Size, System.Drawing">
+    <value>1265, 24</value>
+  </data>
+  <data name="menuBarMain.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="menuBarMain.Text" xml:space="preserve">
+    <value>menuStrip1</value>
+  </data>
+  <data name="&gt;&gt;menuBarMain.Name" xml:space="preserve">
+    <value>menuBarMain</value>
+  </data>
+  <data name="&gt;&gt;menuBarMain.Type" xml:space="preserve">
+    <value>System.Windows.Forms.MenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;menuBarMain.Parent" xml:space="preserve">
+    <value>toolStripContainer1.TopToolStripPanel</value>
+  </data>
+  <data name="&gt;&gt;menuBarMain.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <metadata name="toolbarReport.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>3, 0</value>
+  </metadata>
+  <data name="toolbarReport.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>None</value>
+  </data>
+  <data name="toolbarReport.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 49</value>
+  </data>
+  <data name="toolbarReport.Size" type="System.Drawing.Size, System.Drawing">
+    <value>1092, 25</value>
+  </data>
+  <data name="toolbarReport.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="&gt;&gt;toolbarReport.Name" xml:space="preserve">
+    <value>toolbarReport</value>
+  </data>
+  <data name="&gt;&gt;toolbarReport.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolbarReport.Parent" xml:space="preserve">
+    <value>toolStripContainer1.TopToolStripPanel</value>
+  </data>
+  <data name="&gt;&gt;toolbarReport.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;toolStripContainer1.TopToolStripPanel.Name" xml:space="preserve">
+    <value>toolStripContainer1.TopToolStripPanel</value>
+  </data>
+  <data name="&gt;&gt;toolStripContainer1.TopToolStripPanel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripContainer1.TopToolStripPanel.Parent" xml:space="preserve">
+    <value>toolStripContainer1</value>
+  </data>
+  <data name="&gt;&gt;toolStripContainer1.TopToolStripPanel.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;toolStripContainer1.Name" xml:space="preserve">
+    <value>toolStripContainer1</value>
+  </data>
+  <data name="&gt;&gt;toolStripContainer1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripContainer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripContainer1.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;toolStripContainer1.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="collapseAllToolStripMenuItem.ImageScaling" type="System.Windows.Forms.ToolStripItemImageScaling, System.Windows.Forms">
+    <value>None</value>
+  </data>
+  <data name="collapseAllToolStripMenuItem.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Fuchsia</value>
+  </data>
+  <data name="collapseAllToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>187, 22</value>
+  </data>
+  <data name="collapseAllToolStripMenuItem.Text" xml:space="preserve">
+    <value>Collapse all</value>
+  </data>
+  <data name="expandAllToolStripMenuItem.ImageScaling" type="System.Windows.Forms.ToolStripItemImageScaling, System.Windows.Forms">
+    <value>None</value>
+  </data>
+  <data name="expandAllToolStripMenuItem.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Fuchsia</value>
+  </data>
+  <data name="expandAllToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>187, 22</value>
+  </data>
+  <data name="expandAllToolStripMenuItem.Text" xml:space="preserve">
+    <value>Expand all</value>
+  </data>
+  <data name="hideReportNavigatorToolStripMenuItem.ImageScaling" type="System.Windows.Forms.ToolStripItemImageScaling, System.Windows.Forms">
+    <value>None</value>
+  </data>
+  <data name="hideReportNavigatorToolStripMenuItem.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Fuchsia</value>
+  </data>
+  <data name="hideReportNavigatorToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>187, 22</value>
+  </data>
+  <data name="hideReportNavigatorToolStripMenuItem.Text" xml:space="preserve">
+    <value>Hide report navigator</value>
+  </data>
+  <data name="pbExpandTasks.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="pbExpandTasks.Location" type="System.Drawing.Point, System.Drawing">
+    <value>162, 3</value>
+  </data>
+  <data name="pbExpandTasks.Size" type="System.Drawing.Size, System.Drawing">
+    <value>17, 17</value>
+  </data>
+  <data name="pbExpandTasks.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
+    <value>AutoSize</value>
+  </data>
+  <data name="pbExpandTasks.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="pbExpandTasks.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;pbExpandTasks.Name" xml:space="preserve">
+    <value>pbExpandTasks</value>
+  </data>
+  <data name="&gt;&gt;pbExpandTasks.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;pbExpandTasks.Parent" xml:space="preserve">
+    <value>paTasksHeader</value>
+  </data>
+  <data name="&gt;&gt;pbExpandTasks.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="pbCollapseTasks.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="pbCollapseTasks.Location" type="System.Drawing.Point, System.Drawing">
+    <value>162, 3</value>
+  </data>
+  <data name="pbCollapseTasks.Size" type="System.Drawing.Size, System.Drawing">
+    <value>17, 17</value>
+  </data>
+  <data name="pbCollapseTasks.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
+    <value>AutoSize</value>
+  </data>
+  <data name="pbCollapseTasks.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;pbCollapseTasks.Name" xml:space="preserve">
+    <value>pbCollapseTasks</value>
+  </data>
+  <data name="&gt;&gt;pbCollapseTasks.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;pbCollapseTasks.Parent" xml:space="preserve">
+    <value>paTasksHeader</value>
+  </data>
+  <data name="&gt;&gt;pbCollapseTasks.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="llTasks.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
+  </data>
+  <data name="llTasks.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="llTasks.Location" type="System.Drawing.Point, System.Drawing">
+    <value>29, 5</value>
+  </data>
+  <data name="llTasks.Size" type="System.Drawing.Size, System.Drawing">
+    <value>100, 23</value>
+  </data>
+  <data name="llTasks.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="llTasks.Text" xml:space="preserve">
+    <value>Tasks</value>
+  </data>
+  <data name="&gt;&gt;llTasks.Name" xml:space="preserve">
+    <value>llTasks</value>
+  </data>
+  <data name="&gt;&gt;llTasks.Type" xml:space="preserve">
+    <value>System.Windows.Forms.LinkLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;llTasks.Parent" xml:space="preserve">
+    <value>paTasksHeader</value>
+  </data>
+  <data name="&gt;&gt;llTasks.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;ll_CustomRowset.Name" xml:space="preserve">
+    <value>ll_CustomRowset</value>
+  </data>
+  <data name="&gt;&gt;ll_CustomRowset.Type" xml:space="preserve">
+    <value>System.Windows.Forms.LinkLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ll_CustomRowset.Parent" xml:space="preserve">
+    <value>paDataBody</value>
+  </data>
+  <data name="&gt;&gt;ll_CustomRowset.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;pictureBox2.Name" xml:space="preserve">
+    <value>pictureBox2</value>
+  </data>
+  <data name="&gt;&gt;pictureBox2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;pictureBox2.Parent" xml:space="preserve">
+    <value>paDataBody</value>
+  </data>
+  <data name="&gt;&gt;pictureBox2.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;pictureBox1.Name" xml:space="preserve">
+    <value>pictureBox1</value>
+  </data>
+  <data name="&gt;&gt;pictureBox1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;pictureBox1.Parent" xml:space="preserve">
+    <value>paDataBody</value>
+  </data>
+  <data name="&gt;&gt;pictureBox1.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;linkLabel6.Name" xml:space="preserve">
+    <value>linkLabel6</value>
+  </data>
+  <data name="&gt;&gt;linkLabel6.Type" xml:space="preserve">
+    <value>System.Windows.Forms.LinkLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;linkLabel6.Parent" xml:space="preserve">
+    <value>paDataBody</value>
+  </data>
+  <data name="&gt;&gt;linkLabel6.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="paDataBody.Location" type="System.Drawing.Point, System.Drawing">
+    <value>2, 22</value>
+  </data>
+  <data name="paDataBody.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>0, 88</value>
+  </data>
+  <data name="paDataBody.Size" type="System.Drawing.Size, System.Drawing">
+    <value>180, 90</value>
+  </data>
+  <data name="paDataBody.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;paDataBody.Name" xml:space="preserve">
+    <value>paDataBody</value>
+  </data>
+  <data name="&gt;&gt;paDataBody.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;paDataBody.Parent" xml:space="preserve">
+    <value>paData</value>
+  </data>
+  <data name="&gt;&gt;paDataBody.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="ll_CustomRowset.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="ll_CustomRowset.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="ll_CustomRowset.Location" type="System.Drawing.Point, System.Drawing">
+    <value>39, 38</value>
+  </data>
+  <data name="ll_CustomRowset.Size" type="System.Drawing.Size, System.Drawing">
+    <value>102, 13</value>
+  </data>
+  <data name="ll_CustomRowset.TabIndex" type="System.Int32, mscorlib">
+    <value>11</value>
+  </data>
+  <data name="ll_CustomRowset.Text" xml:space="preserve">
+    <value>Edit Custom Rowset</value>
+  </data>
+  <data name="&gt;&gt;ll_CustomRowset.Name" xml:space="preserve">
+    <value>ll_CustomRowset</value>
+  </data>
+  <data name="&gt;&gt;ll_CustomRowset.Type" xml:space="preserve">
+    <value>System.Windows.Forms.LinkLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ll_CustomRowset.Parent" xml:space="preserve">
+    <value>paDataBody</value>
+  </data>
+  <data name="&gt;&gt;ll_CustomRowset.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="pictureBox2.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="pictureBox2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 35</value>
+  </data>
+  <data name="pictureBox2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>16, 16</value>
+  </data>
+  <data name="pictureBox2.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
+    <value>StretchImage</value>
+  </data>
+  <data name="pictureBox2.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="&gt;&gt;pictureBox2.Name" xml:space="preserve">
+    <value>pictureBox2</value>
+  </data>
+  <data name="&gt;&gt;pictureBox2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;pictureBox2.Parent" xml:space="preserve">
+    <value>paDataBody</value>
+  </data>
+  <data name="&gt;&gt;pictureBox2.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="pictureBox1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="pictureBox1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 13</value>
+  </data>
+  <data name="pictureBox1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>16, 16</value>
+  </data>
+  <data name="pictureBox1.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
+    <value>StretchImage</value>
+  </data>
+  <data name="pictureBox1.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="pictureBox1.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;pictureBox1.Name" xml:space="preserve">
+    <value>pictureBox1</value>
+  </data>
+  <data name="&gt;&gt;pictureBox1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;pictureBox1.Parent" xml:space="preserve">
+    <value>paDataBody</value>
+  </data>
+  <data name="&gt;&gt;pictureBox1.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="linkLabel6.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="linkLabel6.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="linkLabel6.Location" type="System.Drawing.Point, System.Drawing">
+    <value>39, 13</value>
+  </data>
+  <data name="linkLabel6.Size" type="System.Drawing.Size, System.Drawing">
+    <value>36, 13</value>
+  </data>
+  <data name="linkLabel6.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="linkLabel6.Text" xml:space="preserve">
+    <value>Import</value>
+  </data>
+  <data name="&gt;&gt;linkLabel6.Name" xml:space="preserve">
+    <value>linkLabel6</value>
+  </data>
+  <data name="&gt;&gt;linkLabel6.Type" xml:space="preserve">
+    <value>System.Windows.Forms.LinkLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;linkLabel6.Parent" xml:space="preserve">
+    <value>paDataBody</value>
+  </data>
+  <data name="&gt;&gt;linkLabel6.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;llData.Name" xml:space="preserve">
+    <value>llData</value>
+  </data>
+  <data name="&gt;&gt;llData.Type" xml:space="preserve">
+    <value>System.Windows.Forms.LinkLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;llData.Parent" xml:space="preserve">
+    <value>paDataHeader</value>
+  </data>
+  <data name="&gt;&gt;llData.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;pbCollapseData.Name" xml:space="preserve">
+    <value>pbCollapseData</value>
+  </data>
+  <data name="&gt;&gt;pbCollapseData.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;pbCollapseData.Parent" xml:space="preserve">
+    <value>paDataHeader</value>
+  </data>
+  <data name="&gt;&gt;pbCollapseData.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;pbExpandData.Name" xml:space="preserve">
+    <value>pbExpandData</value>
+  </data>
+  <data name="&gt;&gt;pbExpandData.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;pbExpandData.Parent" xml:space="preserve">
+    <value>paDataHeader</value>
+  </data>
+  <data name="&gt;&gt;pbExpandData.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="paDataHeader.Location" type="System.Drawing.Point, System.Drawing">
+    <value>2, -3</value>
+  </data>
+  <data name="paDataHeader.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>0, 22</value>
+  </data>
+  <data name="paDataHeader.Size" type="System.Drawing.Size, System.Drawing">
+    <value>180, 25</value>
+  </data>
+  <data name="paDataHeader.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;paDataHeader.Name" xml:space="preserve">
+    <value>paDataHeader</value>
+  </data>
+  <data name="&gt;&gt;paDataHeader.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;paDataHeader.Parent" xml:space="preserve">
+    <value>paData</value>
+  </data>
+  <data name="&gt;&gt;paDataHeader.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="llData.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
+  </data>
+  <data name="llData.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="llData.Location" type="System.Drawing.Point, System.Drawing">
+    <value>29, 5</value>
+  </data>
+  <data name="llData.Size" type="System.Drawing.Size, System.Drawing">
+    <value>100, 23</value>
+  </data>
+  <data name="llData.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="llData.Text" xml:space="preserve">
+    <value>Data</value>
+  </data>
+  <data name="&gt;&gt;llData.Name" xml:space="preserve">
+    <value>llData</value>
+  </data>
+  <data name="&gt;&gt;llData.Type" xml:space="preserve">
+    <value>System.Windows.Forms.LinkLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;llData.Parent" xml:space="preserve">
+    <value>paDataHeader</value>
+  </data>
+  <data name="&gt;&gt;llData.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="pbCollapseData.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="pbCollapseData.Location" type="System.Drawing.Point, System.Drawing">
+    <value>162, 3</value>
+  </data>
+  <data name="pbCollapseData.Size" type="System.Drawing.Size, System.Drawing">
+    <value>17, 17</value>
+  </data>
+  <data name="pbCollapseData.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
+    <value>AutoSize</value>
+  </data>
+  <data name="pbCollapseData.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;pbCollapseData.Name" xml:space="preserve">
+    <value>pbCollapseData</value>
+  </data>
+  <data name="&gt;&gt;pbCollapseData.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;pbCollapseData.Parent" xml:space="preserve">
+    <value>paDataHeader</value>
+  </data>
+  <data name="&gt;&gt;pbCollapseData.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="pbExpandData.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="pbExpandData.Location" type="System.Drawing.Point, System.Drawing">
+    <value>162, 3</value>
+  </data>
+  <data name="pbExpandData.Size" type="System.Drawing.Size, System.Drawing">
+    <value>17, 17</value>
+  </data>
+  <data name="pbExpandData.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
+    <value>AutoSize</value>
+  </data>
+  <data name="pbExpandData.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="pbExpandData.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;pbExpandData.Name" xml:space="preserve">
+    <value>pbExpandData</value>
+  </data>
+  <data name="&gt;&gt;pbExpandData.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;pbExpandData.Parent" xml:space="preserve">
+    <value>paDataHeader</value>
+  </data>
+  <data name="&gt;&gt;pbExpandData.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;tvReports.Name" xml:space="preserve">
+    <value>tvReports</value>
+  </data>
+  <data name="&gt;&gt;tvReports.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TreeView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tvReports.Parent" xml:space="preserve">
+    <value>paReportsBody</value>
+  </data>
+  <data name="&gt;&gt;tvReports.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="paReportsBody.Location" type="System.Drawing.Point, System.Drawing">
+    <value>2, 22</value>
+  </data>
+  <data name="paReportsBody.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>0, 270</value>
+  </data>
+  <data name="paReportsBody.Size" type="System.Drawing.Size, System.Drawing">
+    <value>180, 270</value>
+  </data>
+  <data name="paReportsBody.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;paReportsBody.Name" xml:space="preserve">
+    <value>paReportsBody</value>
+  </data>
+  <data name="&gt;&gt;paReportsBody.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;paReportsBody.Parent" xml:space="preserve">
+    <value>paReports</value>
+  </data>
+  <data name="&gt;&gt;paReportsBody.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tvReports.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="tvReports.ImageIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <metadata name="imGlyphs.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>346, 24</value>
+  </metadata>
+  <data name="imGlyphs.ImageStream" mimetype="application/x-microsoft.net.object.binary.base64">
+    <value>
+        AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
+        LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZTeXN0
+        ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAADy
+        EQAAAk1TRnQBSQFMAgEBCwEAAfQBAAH0AQABEAEAARABAAT/AQkBAAj/AUIBTQE2AQQGAAE2AQQCAAEo
+        AwABQAMAATADAAEBAQABCAYAAQwYAAGAAgABgAMAAoABAAGAAwABgAEAAYABAAKAAgADwAEAAcAB3AHA
+        AQAB8AHKAaYBAAEzBQABMwEAATMBAAEzAQACMwIAAxYBAAMcAQADIgEAAykBAANVAQADTQEAA0IBAAM5
+        AQABgAF8Af8BAAJQAf8BAAGTAQAB1gEAAf8B7AHMAQABxgHWAe8BAAHWAucBAAGQAakBrQIAAf8BMwMA
+        AWYDAAGZAwABzAIAATMDAAIzAgABMwFmAgABMwGZAgABMwHMAgABMwH/AgABZgMAAWYBMwIAAmYCAAFm
+        AZkCAAFmAcwCAAFmAf8CAAGZAwABmQEzAgABmQFmAgACmQIAAZkBzAIAAZkB/wIAAcwDAAHMATMCAAHM
+        AWYCAAHMAZkCAALMAgABzAH/AgAB/wFmAgAB/wGZAgAB/wHMAQABMwH/AgAB/wEAATMBAAEzAQABZgEA
+        ATMBAAGZAQABMwEAAcwBAAEzAQAB/wEAAf8BMwIAAzMBAAIzAWYBAAIzAZkBAAIzAcwBAAIzAf8BAAEz
+        AWYCAAEzAWYBMwEAATMCZgEAATMBZgGZAQABMwFmAcwBAAEzAWYB/wEAATMBmQIAATMBmQEzAQABMwGZ
+        AWYBAAEzApkBAAEzAZkBzAEAATMBmQH/AQABMwHMAgABMwHMATMBAAEzAcwBZgEAATMBzAGZAQABMwLM
+        AQABMwHMAf8BAAEzAf8BMwEAATMB/wFmAQABMwH/AZkBAAEzAf8BzAEAATMC/wEAAWYDAAFmAQABMwEA
+        AWYBAAFmAQABZgEAAZkBAAFmAQABzAEAAWYBAAH/AQABZgEzAgABZgIzAQABZgEzAWYBAAFmATMBmQEA
+        AWYBMwHMAQABZgEzAf8BAAJmAgACZgEzAQADZgEAAmYBmQEAAmYBzAEAAWYBmQIAAWYBmQEzAQABZgGZ
+        AWYBAAFmApkBAAFmAZkBzAEAAWYBmQH/AQABZgHMAgABZgHMATMBAAFmAcwBmQEAAWYCzAEAAWYBzAH/
+        AQABZgH/AgABZgH/ATMBAAFmAf8BmQEAAWYB/wHMAQABzAEAAf8BAAH/AQABzAEAApkCAAGZATMBmQEA
+        AZkBAAGZAQABmQEAAcwBAAGZAwABmQIzAQABmQEAAWYBAAGZATMBzAEAAZkBAAH/AQABmQFmAgABmQFm
+        ATMBAAGZATMBZgEAAZkBZgGZAQABmQFmAcwBAAGZATMB/wEAApkBMwEAApkBZgEAA5kBAAKZAcwBAAKZ
+        Af8BAAGZAcwCAAGZAcwBMwEAAWYBzAFmAQABmQHMAZkBAAGZAswBAAGZAcwB/wEAAZkB/wIAAZkB/wEz
+        AQABmQHMAWYBAAGZAf8BmQEAAZkB/wHMAQABmQL/AQABzAMAAZkBAAEzAQABzAEAAWYBAAHMAQABmQEA
+        AcwBAAHMAQABmQEzAgABzAIzAQABzAEzAWYBAAHMATMBmQEAAcwBMwHMAQABzAEzAf8BAAHMAWYCAAHM
+        AWYBMwEAAZkCZgEAAcwBZgGZAQABzAFmAcwBAAGZAWYB/wEAAcwBmQIAAcwBmQEzAQABzAGZAWYBAAHM
+        ApkBAAHMAZkBzAEAAcwBmQH/AQACzAIAAswBMwEAAswBZgEAAswBmQEAA8wBAALMAf8BAAHMAf8CAAHM
+        Af8BMwEAAZkB/wFmAQABzAH/AZkBAAHMAf8BzAEAAcwC/wEAAcwBAAEzAQAB/wEAAWYBAAH/AQABmQEA
+        AcwBMwIAAf8CMwEAAf8BMwFmAQAB/wEzAZkBAAH/ATMBzAEAAf8BMwH/AQAB/wFmAgAB/wFmATMBAAHM
+        AmYBAAH/AWYBmQEAAf8BZgHMAQABzAFmAf8BAAH/AZkCAAH/AZkBMwEAAf8BmQFmAQAB/wKZAQAB/wGZ
+        AcwBAAH/AZkB/wEAAf8BzAIAAf8BzAEzAQAB/wHMAWYBAAH/AcwBmQEAAf8CzAEAAf8BzAH/AQAC/wEz
+        AQABzAH/AWYBAAL/AZkBAAL/AcwBAAJmAf8BAAFmAf8BZgEAAWYC/wEAAf8CZgEAAf8BZgH/AQAC/wFm
+        AQABIQEAAaUBAANfAQADdwEAA4YBAAOWAQADywEAA7IBAAPXAQAD3QEAA+MBAAPqAQAD8QEAA/gBAAHw
+        AfsB/wEAAaQCoAEAA4ADAAH/AgAB/wMAAv8BAAH/AwAB/wEAAf8BAAL/AgAD/wEAEP0wAAH9Aa4B/QGu
+        Af0BrgH9Aa4B/QGuAf0BrgH9Aa4B/QGuEAAQZhAAAewB/wn0AhkC8wH9BgABrQOLBYYBAAH3AvQB8AL0
+        AbwC8wG8AhkBvAEZAfABZhAAAf0B/wHvAa4B7wGuAe8BrgG1Aa4B9AHtAbUBrgEZAa4GAAHPAf8BuwW1
+        AYYBAAH3Af8B9AHwAvQB8AH0AfMBvAIZAbwBGQGTAWYQAAGRAf8BkQagAfcB9AEHAaABtQH0Af0GAAG0
+        Af8FtAG1AYYBAAJvAfAB8gLxA/AEvAEHAW8BZhAAAf0B/wEHBqABrgH0AfcBoAGuAfQBrgH3BWYBtAL/
+        AfQBGQHdAQkBtQGGAQACkwFvAbwC9AHwAfMB9AHwAvMB8AGTAbYBZhAAAZEB/wHtBqAB7wH0AQcBoAG1
+        AfQB/QH3Af8B8QLwAbwBtQH/AdUEtAG1AYYBAAG1Af8BGgFvAfIB9AG8AW8C8AEZAfMBvAFvARkBZhAA
+        Af0B/wEHAsMEoAGuAf8B9wGgAa4B9AGuAfcB/wG1A7QBtQT/AfMB3QG1AYYBAAG1AfMB8gEHAW8BBwFv
+        AZMBbwO8ApMBCQFmEAAB7QH/AfcEwwKgAe8B/wG8AaAB7wH/Af0BtQL/AfQB8wHxAQkB/wLWARkBtAGt
+        AosBAAEHAv8B8wEaAW8BtgH0ApMB9AHxAW8C8wFmEAAB/QH/AbwGwwGuAf8BtQG8Aa4B/wGuAbUB/wLc
+        AbUBtAEJBP8B1QEJAq0BAAEHAv8B8wH/AfIB8wH0AfMBbwHwAZMBBwLzAWYQAAH3Af8B9wbDAe8F/wH9
+        Ae8E/wHzAQkE/wHWAq0CAAEHAvMC8gPxAfABBwFvAZMDvAFsEAAB/QH/AbwGwwGRBf8BkQEHAf8BGQEJ
+        ARkB9wYJAbQDAAG8Av8B9AL/AfQB/wH0AfMCkwHzAfQBGQFmEAAB9wH/AbUBvAG1AbwB9wG8AfcB7wX/
+        Af0BuwT/AbUBvAGuAWYHAAG8Av8B9AL/AfQC/wL0AvMC9AFmEAAB/Q7/AZEBCQT/Ae8BkQFmCAAB8AS8
+        AgcBuwMHAu8BtQLvEAABtQH9AbUB/QH3Af0B9wH9AfcB/QH3Af0B9wH9AewB/QIJArsBBwG7AfcpABD9
+        MAAq/QEJAmwBiwHPMf0B9wVmAeoBrgHsAbQBiwGQAU8BbAGLAQcC/QH3C2YD/QHxAW4B6gESARQIQwL9
+        EJIB9wH/AvQBGQLzARkB9AK0AnEBrQFsAUkC/QH3AfMJ9wFmA/0B7ANZATgCMgUxAUMC/QGSDv8BkgH3
+        Af8BtQT3Ae8BBwG0AU8BcQK0AXEBTgL9AfcB9AEZAfMCGQTdAfcBZgP9AewBegNZAjIFMQFDAv0BkgH/
+        DPQB/wGSAfcB/wHvAVkCMgFTAfcB3QG0AVYBeAG6AbQBkAGXAv0B9wL0ARkB8wMZAt0B9wFmA/0B7AJ6
+        A1kCMgQxAUMC/QGSAf8M9AH/AZIB9wH/AbUBWQIyAVMB9wEZAd0BlwHCAQgBkQGzAZ0C/QH3AfQC1QHU
+        BK0B3QH3AWYD/QHsAZoCegNZAjIDMQFDAv0BkgH/DPQB/wGSAbUB/wHvAVkChgFZAfcCGQHdApgBlwG7
+        Ae0C/QH3Af8E9AHzAxkB9wFmA/0B7QGaA3oDWQIyAjEBQwL9AZIC/wP0Av8B9AH/AfQC/wH0Af8BkgHv
+        Af8B7wF6A1kB9wH0AhkC3QHvAfQB7AL9AbUB/wLVAdQErQEZAfcBZgP9ARwBoAGaA3oDWQIyATEBQwL9
+        AZIB/wz2Af8BkgG1Af8BBwF6AoYBWQH3AvQCGQHdAfcBGQFtAv0B7wT/A/QC8wH3AWYD/QEcAqABmgN6
+        AlkBOAIyARUC/QGSDv8BkgG7Af8BBwGgAZoCegH3Af8C9AIZAfcBGQFsAv0BtQH/AtUB1AStARkB9wFm
+        A/0BHAKgAW4B6wJtA0oBSwExARMC/QGSDv8BkgHvAf8BBwJFBksBTAFvAe0BGQFmAv0Buwb/A/QB9wFm
+        A/0BHAKgAXMBmQGaAnkBUgFKAUsBMQHqAv0Bkgb/CJIB/QG1Af8EBwPvArUC9wHtAfQBZgL9AbsB/wLV
+        AdQCrQH/AfQC9wFmA/0BHAOgAXMBoAHsAXkCSgF6AVkB6gL9AZIGmgGSA/8B9gL/AfcB/QG7Dv8BZgL9
+        AbsH/wH3A2YD/QHwAxwBcwKgAZkBSgPsAfEC/QGSBnoBkgb3Av0F1gHVA7QHrQL9AbsH/wG1AbwBZgHv
+        CP0DHAHxB/0Gkgn9AdYCCQXcAdYG1QGtAv0BCQf/AbUBZgHvI/0G1gLVA7QBswStAv0GCQG7AQcBuwHw
+        BP0BrgQJA7sHtQGuMAABrgEZAfMBBwFHAUwBGQKsAd0BnQEtAU8B3QEJAa4QABAHEGYBrgEZAfMBGgFN
+        AeMBGQKsAd0BmAEuAVUB3QEJAa4CAAH/A/kD/AP9AwIB/wIAA+wCAAPsAwAC7AEAAfcC9AHwAvQBvALz
+        AbwCGQG8ARkB8AFmAa4B8wH0BPMC0wEZAZgBVQGXAt0BrgIAAf8D+QP8A/0DAgH/AQcDBAHsAQcDBAHs
+        AQcDBAHsAQcB9wH/AfQB8AL0AfAB9AHzAbwCGQG8ARkBkwFmAa4B8wP0BPMBGQGYAVYBlwEZAd0BrgIA
+        AQcD+QP8A/0DAgEHAQADBAHsAQADBAHsAQADBAHsAQACbwHwAfIC8QPwBLwBBwFvAWYBrgX0BPMEGQHd
+        Aa4CAAH/A/kD/AP9AwIB/wEHAwQB7AEHAwQB7AEHAwQB7AEHApMBbwG8AvQB8AHzAfQB8ALzAfABkwG2
+        AWYBkQH0Ae0DDgESAfIBFAMOAZICGQGuAgAB/wP5A/wD/QMCAf8BAAMEAewBAAMEAewBAAMEAewBAAG1
+        Af8BGgFvAfIB9AG8AW8C8AEZAfMBvAFvARkBZgHsCPQE8wIZAa4CAAEHA/kD/AP9AwICBwMEAewBBwME
+        AewBBwMEAewBBwG1AfMB8gEHAW8BBwFvAZMBbwO8ApMBCQFmAZEB9AG8A+wB7wHzAfcD7AHwAfMBGQGu
+        AgAB/wP5A/wD/QMCAf8BAAMEAewBAAMEAewBAAMEAewBAAEHAv8B8wEaAW8BtgH0ApMB9AHxAW8C8wFm
+        Ae0F/wf0AfMBGQGuAgAB/wP5A/wB/wEHAf8DAgH/AQcDBAIHAwQB7AEHAwQB7AIHAv8B8wH/AfIB8wH0
+        AfMBbwHwAZMBBwLzAWYB9wH/AbwD7AHvAfQB9wPsAfAB9AHzAa4CAAEHA/kD/AMHAwIBBwYAAwQB7AEA
+        AwQB7AEAAQcC8wLyA/EB8AEHAW8BkwO8AWwB9wj/BfQB8wGuAgAC/wEHAf8D/AH/AQcB/wMCAf8GBwME
+        AewBBwMEAgcBvAL/AfQC/wH0Af8B9AHzApMB8wH0ARkBZgG1Af8B8AfsAfEB9AGuA2YCAAL/AQcB/wP8
+        Af8BBwL/AQcC/wYAAwQHAAG8Av8B9AL/AfQC/wL0AvMC9AFmAe8L/wH3AbwBrgH/AgAEBwP8FwcB8AS8
+        AgcBuwMHAu8BtQLvAbUG/wP0AvMBkQHwAv8CAAL/AQcC/wEHAv8BBwL/AQcC/yAAEP8CAAL/AQcC/wEH
+        Av8BBwL/AQcC/xAHEAABQgFNAT4HAAE+AwABKAMAAUADAAEwAwABAQEAAQEFAAGAAQEWAAP/BQAC/24A
+        Av8GAAL/hAABtgHbBP8KAAGAAQABxgE5BAABgAkAAYQBIQQAAYAHAAGAAQABhAEhDAABgAEAAYQBIQQA
+        AYAJAAH8ASEEAAGABwABgAEAAfwBfwwAAYABAAT/AgABgAMAAv8L
+</value>
+  </data>
+  <data name="tvReports.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="tvReports.SelectedImageIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="tvReports.Size" type="System.Drawing.Size, System.Drawing">
+    <value>180, 270</value>
+  </data>
+  <data name="tvReports.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;tvReports.Name" xml:space="preserve">
+    <value>tvReports</value>
+  </data>
+  <data name="&gt;&gt;tvReports.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TreeView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tvReports.Parent" xml:space="preserve">
+    <value>paReportsBody</value>
+  </data>
+  <data name="&gt;&gt;tvReports.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;llReports.Name" xml:space="preserve">
+    <value>llReports</value>
+  </data>
+  <data name="&gt;&gt;llReports.Type" xml:space="preserve">
+    <value>System.Windows.Forms.LinkLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;llReports.Parent" xml:space="preserve">
+    <value>paReportsHeader</value>
+  </data>
+  <data name="&gt;&gt;llReports.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;pbExpandReports.Name" xml:space="preserve">
+    <value>pbExpandReports</value>
+  </data>
+  <data name="&gt;&gt;pbExpandReports.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;pbExpandReports.Parent" xml:space="preserve">
+    <value>paReportsHeader</value>
+  </data>
+  <data name="&gt;&gt;pbExpandReports.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;pbCollapseReports.Name" xml:space="preserve">
+    <value>pbCollapseReports</value>
+  </data>
+  <data name="&gt;&gt;pbCollapseReports.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;pbCollapseReports.Parent" xml:space="preserve">
+    <value>paReportsHeader</value>
+  </data>
+  <data name="&gt;&gt;pbCollapseReports.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="paReportsHeader.Location" type="System.Drawing.Point, System.Drawing">
+    <value>2, 0</value>
+  </data>
+  <data name="paReportsHeader.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>0, 22</value>
+  </data>
+  <data name="paReportsHeader.Size" type="System.Drawing.Size, System.Drawing">
+    <value>180, 22</value>
+  </data>
+  <data name="paReportsHeader.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;paReportsHeader.Name" xml:space="preserve">
+    <value>paReportsHeader</value>
+  </data>
+  <data name="&gt;&gt;paReportsHeader.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;paReportsHeader.Parent" xml:space="preserve">
+    <value>paReports</value>
+  </data>
+  <data name="&gt;&gt;paReportsHeader.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="llReports.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
+  </data>
+  <data name="llReports.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="llReports.Location" type="System.Drawing.Point, System.Drawing">
+    <value>29, 5</value>
+  </data>
+  <data name="llReports.Size" type="System.Drawing.Size, System.Drawing">
+    <value>100, 23</value>
+  </data>
+  <data name="llReports.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="llReports.Text" xml:space="preserve">
+    <value>Reports</value>
+  </data>
+  <data name="&gt;&gt;llReports.Name" xml:space="preserve">
+    <value>llReports</value>
+  </data>
+  <data name="&gt;&gt;llReports.Type" xml:space="preserve">
+    <value>System.Windows.Forms.LinkLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;llReports.Parent" xml:space="preserve">
+    <value>paReportsHeader</value>
+  </data>
+  <data name="&gt;&gt;llReports.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="pbExpandReports.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="pbExpandReports.Location" type="System.Drawing.Point, System.Drawing">
+    <value>162, 3</value>
+  </data>
+  <data name="pbExpandReports.Size" type="System.Drawing.Size, System.Drawing">
+    <value>17, 17</value>
+  </data>
+  <data name="pbExpandReports.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
+    <value>AutoSize</value>
+  </data>
+  <data name="pbExpandReports.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="pbExpandReports.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;pbExpandReports.Name" xml:space="preserve">
+    <value>pbExpandReports</value>
+  </data>
+  <data name="&gt;&gt;pbExpandReports.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;pbExpandReports.Parent" xml:space="preserve">
+    <value>paReportsHeader</value>
+  </data>
+  <data name="&gt;&gt;pbExpandReports.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="pbCollapseReports.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="pbCollapseReports.Location" type="System.Drawing.Point, System.Drawing">
+    <value>162, 2</value>
+  </data>
+  <data name="pbCollapseReports.Size" type="System.Drawing.Size, System.Drawing">
+    <value>17, 17</value>
+  </data>
+  <data name="pbCollapseReports.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
+    <value>AutoSize</value>
+  </data>
+  <data name="pbCollapseReports.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;pbCollapseReports.Name" xml:space="preserve">
+    <value>pbCollapseReports</value>
+  </data>
+  <data name="&gt;&gt;pbCollapseReports.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;pbCollapseReports.Parent" xml:space="preserve">
+    <value>paReportsHeader</value>
+  </data>
+  <data name="&gt;&gt;pbCollapseReports.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
   <data name="tsbStart.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
@@ -1490,36 +1889,6 @@
   </data>
   <data name="tscbAutoUpdate.ToolTipText" xml:space="preserve">
     <value>Auto-update report frequency</value>
-  </data>
-  <data name="toolbarService.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="toolbarService.Size" type="System.Drawing.Size, System.Drawing">
-    <value>358, 25</value>
-  </data>
-  <data name="toolbarService.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
-  </data>
-  <data name="toolbarService.Text" xml:space="preserve">
-    <value>toolStrip2</value>
-  </data>
-  <data name="&gt;&gt;toolbarService.Name" xml:space="preserve">
-    <value>toolbarService</value>
-  </data>
-  <data name="&gt;&gt;toolbarService.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolbarService.Parent" xml:space="preserve">
-    <value>toolStripContainer1.TopToolStripPanel</value>
-  </data>
-  <data name="&gt;&gt;toolbarService.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <metadata name="toolbarMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>3, 49</value>
-  </metadata>
-  <data name="toolbarMain.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>None</value>
   </data>
   <data name="tspUnpin.ImageScaling" type="System.Windows.Forms.ToolStripItemImageScaling, System.Windows.Forms">
     <value>None</value>
@@ -1590,35 +1959,11 @@
   <data name="tspHelp.Text" xml:space="preserve">
     <value>Help</value>
   </data>
-  <data name="toolbarMain.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 0</value>
+  <data name="fileToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>37, 20</value>
   </data>
-  <data name="toolbarMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>139, 25</value>
-  </data>
-  <data name="toolbarMain.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="toolbarMain.Text" xml:space="preserve">
-    <value>toolStrip1</value>
-  </data>
-  <data name="&gt;&gt;toolbarMain.Name" xml:space="preserve">
-    <value>toolbarMain</value>
-  </data>
-  <data name="&gt;&gt;toolbarMain.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolbarMain.Parent" xml:space="preserve">
-    <value>toolStripContainer1.TopToolStripPanel</value>
-  </data>
-  <data name="&gt;&gt;toolbarMain.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <metadata name="menuBarMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>0, 25</value>
-  </metadata>
-  <data name="menuBarMain.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>None</value>
+  <data name="fileToolStripMenuItem.Text" xml:space="preserve">
+    <value>&amp;File</value>
   </data>
   <data name="connectToolStripMenuItem.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Fuchsia</value>
@@ -1668,11 +2013,11 @@
   <data name="exitToolStripMenuItem.Text" xml:space="preserve">
     <value>E&amp;xit</value>
   </data>
-  <data name="fileToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>37, 20</value>
+  <data name="editToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>39, 20</value>
   </data>
-  <data name="fileToolStripMenuItem.Text" xml:space="preserve">
-    <value>&amp;File</value>
+  <data name="editToolStripMenuItem.Text" xml:space="preserve">
+    <value>&amp;Edit</value>
   </data>
   <data name="copyToolStripMenuItem.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Black</value>
@@ -1692,11 +2037,17 @@
   <data name="getReportParametersToolStripMenuItem.Text" xml:space="preserve">
     <value>Get report parameters</value>
   </data>
-  <data name="editToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>39, 20</value>
+  <data name="viewToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>44, 20</value>
   </data>
-  <data name="editToolStripMenuItem.Text" xml:space="preserve">
-    <value>&amp;Edit</value>
+  <data name="viewToolStripMenuItem.Text" xml:space="preserve">
+    <value>&amp;View</value>
+  </data>
+  <data name="toolbarsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>163, 22</value>
+  </data>
+  <data name="toolbarsToolStripMenuItem.Text" xml:space="preserve">
+    <value>&amp;Toolbars</value>
   </data>
   <data name="mainMenuToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>196, 22</value>
@@ -1725,11 +2076,11 @@
   <data name="serviceToolStripMenuItem.Text" xml:space="preserve">
     <value>Service control buttons</value>
   </data>
-  <data name="toolbarsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="promptsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>163, 22</value>
   </data>
-  <data name="toolbarsToolStripMenuItem.Text" xml:space="preserve">
-    <value>&amp;Toolbars</value>
+  <data name="promptsToolStripMenuItem.Text" xml:space="preserve">
+    <value>Prompts</value>
   </data>
   <data name="askWhetherToStartTheSQLDiagCollectionServiceToolStripMenuItem.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -1749,23 +2100,17 @@
   <data name="askWhetherToStopTheSQLDiagCollectionServiceWhenExitingToolStripMenuItem.Text" xml:space="preserve">
     <value>Bypass prompt to stop the SQLDiag collection service</value>
   </data>
-  <data name="promptsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>163, 22</value>
-  </data>
-  <data name="promptsToolStripMenuItem.Text" xml:space="preserve">
-    <value>Prompts</value>
-  </data>
   <data name="tsiShowReportTabs.Size" type="System.Drawing.Size, System.Drawing">
     <value>163, 22</value>
   </data>
   <data name="tsiShowReportTabs.Text" xml:space="preserve">
     <value>Show report tabs</value>
   </data>
-  <data name="viewToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>44, 20</value>
+  <data name="windowToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>63, 20</value>
   </data>
-  <data name="viewToolStripMenuItem.Text" xml:space="preserve">
-    <value>&amp;View</value>
+  <data name="windowToolStripMenuItem.Text" xml:space="preserve">
+    <value>&amp;Window</value>
   </data>
   <data name="closeToolStripMenuItem2.Size" type="System.Drawing.Size, System.Drawing">
     <value>180, 22</value>
@@ -1785,11 +2130,11 @@
   <data name="closeAllToolStripMenuItem2.Text" xml:space="preserve">
     <value>Close all</value>
   </data>
-  <data name="windowToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>63, 20</value>
+  <data name="helpToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>44, 20</value>
   </data>
-  <data name="windowToolStripMenuItem.Text" xml:space="preserve">
-    <value>&amp;Window</value>
+  <data name="helpToolStripMenuItem.Text" xml:space="preserve">
+    <value>&amp;Help</value>
   </data>
   <data name="contentsToolStripMenuItem.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Fuchsia</value>
@@ -1832,42 +2177,6 @@
   </data>
   <data name="aboutToolStripMenuItem.Text" xml:space="preserve">
     <value>&amp;About</value>
-  </data>
-  <data name="helpToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>44, 20</value>
-  </data>
-  <data name="helpToolStripMenuItem.Text" xml:space="preserve">
-    <value>&amp;Help</value>
-  </data>
-  <data name="menuBarMain.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 25</value>
-  </data>
-  <data name="menuBarMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1265, 24</value>
-  </data>
-  <data name="menuBarMain.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="menuBarMain.Text" xml:space="preserve">
-    <value>menuStrip1</value>
-  </data>
-  <data name="&gt;&gt;menuBarMain.Name" xml:space="preserve">
-    <value>menuBarMain</value>
-  </data>
-  <data name="&gt;&gt;menuBarMain.Type" xml:space="preserve">
-    <value>System.Windows.Forms.MenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;menuBarMain.Parent" xml:space="preserve">
-    <value>toolStripContainer1.TopToolStripPanel</value>
-  </data>
-  <data name="&gt;&gt;menuBarMain.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <metadata name="toolbarReport.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>3, 0</value>
-  </metadata>
-  <data name="toolbarReport.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>None</value>
   </data>
   <data name="tsbDocMap.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -2034,6 +2343,15 @@
   <data name="tstbCopy.Text" xml:space="preserve">
     <value>Copy to clipboard</value>
   </data>
+  <data name="tsbExport.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Black</value>
+  </data>
+  <data name="tsbExport.Size" type="System.Drawing.Size, System.Drawing">
+    <value>29, 22</value>
+  </data>
+  <data name="tsbExport.Text" xml:space="preserve">
+    <value>Export</value>
+  </data>
   <data name="excelToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>167, 22</value>
   </data>
@@ -2082,14 +2400,14 @@
   <data name="TIFFToolStripMenuItem.Text" xml:space="preserve">
     <value>TIFF</value>
   </data>
-  <data name="tsbExport.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+  <data name="tstbEmail.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Black</value>
   </data>
-  <data name="tsbExport.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="tstbEmail.Size" type="System.Drawing.Size, System.Drawing">
     <value>29, 22</value>
   </data>
-  <data name="tsbExport.Text" xml:space="preserve">
-    <value>Export</value>
+  <data name="tstbEmail.Text" xml:space="preserve">
+    <value>Email reports</value>
   </data>
   <data name="emailReportToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>158, 22</value>
@@ -2102,15 +2420,6 @@
   </data>
   <data name="emailAllReportsToolStripMenuItem.Text" xml:space="preserve">
     <value>Email all reports</value>
-  </data>
-  <data name="tstbEmail.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Black</value>
-  </data>
-  <data name="tstbEmail.Size" type="System.Drawing.Size, System.Drawing">
-    <value>29, 22</value>
-  </data>
-  <data name="tstbEmail.Text" xml:space="preserve">
-    <value>Email reports</value>
   </data>
   <data name="toolStripSeparator4.Size" type="System.Drawing.Size, System.Drawing">
     <value>6, 25</value>
@@ -2220,54 +2529,18 @@
   <data name="tscCurrentDatabase.Size" type="System.Drawing.Size, System.Drawing">
     <value>240, 25</value>
   </data>
-  <data name="toolbarReport.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 49</value>
-  </data>
-  <data name="toolbarReport.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1092, 25</value>
-  </data>
-  <data name="toolbarReport.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
-  </data>
-  <data name="&gt;&gt;toolbarReport.Name" xml:space="preserve">
-    <value>toolbarReport</value>
-  </data>
-  <data name="&gt;&gt;toolbarReport.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolbarReport.Parent" xml:space="preserve">
-    <value>toolStripContainer1.TopToolStripPanel</value>
-  </data>
-  <data name="&gt;&gt;toolbarReport.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;toolStripContainer1.TopToolStripPanel.Name" xml:space="preserve">
-    <value>toolStripContainer1.TopToolStripPanel</value>
-  </data>
-  <data name="&gt;&gt;toolStripContainer1.TopToolStripPanel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolStripContainer1.TopToolStripPanel.Parent" xml:space="preserve">
-    <value>toolStripContainer1</value>
-  </data>
-  <data name="&gt;&gt;toolStripContainer1.TopToolStripPanel.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;toolStripContainer1.Name" xml:space="preserve">
-    <value>toolStripContainer1</value>
-  </data>
-  <data name="&gt;&gt;toolStripContainer1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripContainer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolStripContainer1.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;toolStripContainer1.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <metadata name="cmReport.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>554, 24</value>
   </metadata>
+  <data name="cmReport.Size" type="System.Drawing.Size, System.Drawing">
+    <value>188, 92</value>
+  </data>
+  <data name="&gt;&gt;cmReport.Name" xml:space="preserve">
+    <value>cmReport</value>
+  </data>
+  <data name="&gt;&gt;cmReport.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="reportParametersToolStripMenuItem.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
@@ -2294,15 +2567,6 @@
   </data>
   <data name="saveToClipboardToolStripMenuItem.Text" xml:space="preserve">
     <value>Save to Clipboard</value>
-  </data>
-  <data name="cmReport.Size" type="System.Drawing.Size, System.Drawing">
-    <value>188, 92</value>
-  </data>
-  <data name="&gt;&gt;cmReport.Name" xml:space="preserve">
-    <value>cmReport</value>
-  </data>
-  <data name="&gt;&gt;cmReport.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <metadata name="ps_Report.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>653, 24</value>

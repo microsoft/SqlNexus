@@ -42,6 +42,8 @@ namespace sqlnexus
             this.hideReportNavigatorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.paTasks = new System.Windows.Forms.Panel();
             this.paTasksBody = new System.Windows.Forms.Panel();
+            this.linkLabel2 = new System.Windows.Forms.LinkLabel();
+            this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.llOpenReadTraceLog = new System.Windows.Forms.LinkLabel();
             this.picOpenReadTraceLog = new System.Windows.Forms.PictureBox();
             this.llOpenNexusLog = new System.Windows.Forms.LinkLabel();
@@ -187,6 +189,7 @@ namespace sqlnexus
             this.cmNav.SuspendLayout();
             this.paTasks.SuspendLayout();
             this.paTasksBody.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picOpenReadTraceLog)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picOpenNexusLog)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbCopy)).BeginInit();
@@ -324,6 +327,8 @@ namespace sqlnexus
             // paTasksBody
             // 
             this.paTasksBody.BackColor = System.Drawing.Color.AliceBlue;
+            this.paTasksBody.Controls.Add(this.linkLabel2);
+            this.paTasksBody.Controls.Add(this.pictureBox3);
             this.paTasksBody.Controls.Add(this.llOpenReadTraceLog);
             this.paTasksBody.Controls.Add(this.picOpenReadTraceLog);
             this.paTasksBody.Controls.Add(this.llOpenNexusLog);
@@ -336,6 +341,21 @@ namespace sqlnexus
             this.paTasksBody.Controls.Add(this.llPrint);
             resources.ApplyResources(this.paTasksBody, "paTasksBody");
             this.paTasksBody.Name = "paTasksBody";
+            // 
+            // linkLabel2
+            // 
+            resources.ApplyResources(this.linkLabel2, "linkLabel2");
+            this.linkLabel2.Name = "linkLabel2";
+            this.linkLabel2.TabStop = true;
+            this.linkLabel2.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel2_LinkClicked_1);
+            // 
+            // pictureBox3
+            // 
+            this.pictureBox3.Image = global::sqlnexus.Properties.Resources.powerbi___Copy;
+            resources.ApplyResources(this.pictureBox3, "pictureBox3");
+            this.pictureBox3.Name = "pictureBox3";
+            this.pictureBox3.TabStop = false;
+            this.pictureBox3.Click += new System.EventHandler(this.pictureBox3_Click);
             // 
             // llOpenReadTraceLog
             // 
@@ -1467,6 +1487,7 @@ namespace sqlnexus
             this.paTasks.ResumeLayout(false);
             this.paTasksBody.ResumeLayout(false);
             this.paTasksBody.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picOpenReadTraceLog)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picOpenNexusLog)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbCopy)).EndInit();
@@ -1650,5 +1671,7 @@ namespace sqlnexus
         private System.Windows.Forms.LinkLabel llOpenNexusLog;
         private System.Windows.Forms.LinkLabel llOpenReadTraceLog;
         private System.Windows.Forms.PictureBox picOpenReadTraceLog;
+        private System.Windows.Forms.PictureBox pictureBox3;
+        private System.Windows.Forms.LinkLabel linkLabel2;
     }
 }

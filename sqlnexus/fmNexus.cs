@@ -3465,6 +3465,16 @@ namespace sqlnexus
         {
 
         }
+
+        private void linkLabel2_LinkClicked_1(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Globals.LuanchPowerBI();
+        }
+
+        private void pictureBox3_Click(object sender, EventArgs e)
+        {
+            Globals.LuanchPowerBI();
+        }
     
      
       

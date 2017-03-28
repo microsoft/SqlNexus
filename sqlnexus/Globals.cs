@@ -8,7 +8,7 @@ using System.Globalization;
 using System.Data;
 using System.Data.SqlClient;
 using Microsoft.Reporting.WinForms;
-
+using Microsoft.Win32;
 namespace sqlnexus
 {
 
@@ -66,5 +66,51 @@ namespace sqlnexus
                 return DialogResult.Cancel;
             }
         }
+
+        public static bool IsPowerBiDeskTopInstalled()
+        {
+            RegistryKey key = Registry.CurrentUser.OpenSubKey((@"Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.pbit"));
+            if (null == key)
+                return false;
+            else
+                return true;
+            
+        }
+
+        public static void LuanchPowerBI()
+        {
+            if (!IsPowerBiDeskTopInstalled())
+            {
+                MessageBox.Show("PowerBI Desktop is not installed.  Please download and install PowerBI Desktop before using this feature!");
+                                    
+            }
+            else
+            { 
+                Process.Start(@"Reports\SQL Nexus Power BI.pbit");
+            }
+
+        }
+        public static bool IsProgramInstalled (string ProgramDisplayName)
+        {
+
+            
+            foreach (var item in Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall").GetSubKeyNames())
+            {
+
+                object programName = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\" + item).GetValue("DisplayName");
+
+                Console.WriteLine(programName);
+
+                if (string.Equals(programName, ProgramDisplayName))
+                {
+            
+                    return true;
+                }
+            }
+            
+            return false;
+
+        }
+       
     }
 }
