@@ -43,7 +43,7 @@ namespace LinuxPerfImporter.Model
         // class functions
         private List<string> GetFileContents()
         {
-            return new FileUtility().ReadFileByLine("pssdiagimport.conf");
+            return new FileUtility().ReadFileByLine("pssdiag_importer.conf");
         }
         private void GetConfigVariables()
         {
