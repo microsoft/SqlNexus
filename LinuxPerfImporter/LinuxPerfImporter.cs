@@ -112,12 +112,12 @@ namespace LinuxPerfImporter
             // This is where we log information about the linux performance importer. It will be placed in the directory with the pssdiag files.
             LoggingConfig.LogFilePath = "pssdiaglinuximport.log";
 
-            var pssdiagConfFile = FileUtility.GetFullFilePath(".\\pssdiagimport.conf");
+            var pssdiagConfFile = FileUtility.GetFullFilePath(".\\pssdiag_importer.conf");
 
             // Check to see if pssdiag.conf exists, if not, we exit.
             if (pssdiagConfFile == "false")
             {
-                LinuxPerfImortGlobals.log.WriteLog("pssdiag.conf", "DOES NOT EXIST", "[Error]");
+                LinuxPerfImortGlobals.log.WriteLog("pssdiag_importer.conf", "DOES NOT EXIST", "[Error]");
                 return false;
             }
             else
