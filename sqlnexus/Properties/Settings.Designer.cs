@@ -133,7 +133,7 @@ namespace sqlnexus.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("240")]
+        [global::System.Configuration.DefaultSettingValueAttribute("6000")]
         public int QueryTimeout {
             get {
                 return ((int)(this["QueryTimeout"]));
