@@ -2005,6 +2005,11 @@ insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name,
 values ('4FE75D34-9AAE-440E-9758-1ABE2AA7B54D','Server Performance', 'W','Warning', 'usp_VirtualBytesLeak', 'Virtual bytes leak',  'Virtual bytes for SQL process were over 7TB.  This may indicate of virtual bytes leak. Please check perfmon counter.', 'https://support.microsoft.com/kb/3074434','https://support.microsoft.com/kb/3074434', '  jackli', 1, 100, 0)
 
 
+insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
+values ('952A2770-4031-4B4F-B56E-6A3A0970FA26','Server Performance', 'W','Warning', 'usp_ChangeTableCauseHighCPU', 'Change Table can cause high CPU',  'Change Table query can cause high CPU. ', 'https://support.microsoft.com/kb/3188672','https://support.microsoft.com/kb/3188672', '  jackli', 1, 100, 0)
+
+
+
 
 
 
@@ -2089,6 +2094,18 @@ go
 owner: jackli
 
 ****************************************************************************************************/
+go
+create procedure usp_ChangeTableCauseHighCPU
+as
+if exists (select * from readtrace.tblUniqueBatches where NormText like '%CHANGETABLE%') or exists (select * from readtrace.tblUniqueStatements where NormText like '%CHANGETABLE%')
+begin
+	update tbl_AnalysisSummary
+	set Status = 1
+	where  Name =  OBJECT_NAME(@@PROCID)
+
+end
+
+
 go
 create procedure usp_RedoThreadBlocked
 as
@@ -3186,6 +3203,8 @@ go
 exec usp_RedoThreadBlocked
 go
 exec usp_VirtualBytesLeak
+go
+exec usp_ChangeTableCauseHighCPU
 go
 /************************************************************
 owner: jaynar
