@@ -2001,6 +2001,10 @@ values ('6A67B697-F1AF-46D2-99D1-E7B6086B4D5D','Server Performance', 'W','Warnin
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
 values ('D3E36E57-4DDE-44D3-939F-13D2A2608F02','Server Performance', 'W','Warning', 'usp_RedoThreadBlocked', 'Redo Thread wait ',  'Redo Thread may have waited excessively.  check tbl_requests for command with DB STARTUP ', '','', '  jackli', 1, 100, 0)
 
+insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
+values ('4FE75D34-9AAE-440E-9758-1ABE2AA7B54D','Server Performance', 'W','Warning', 'usp_VirtualBytesLeak', 'Virtual bytes leak',  'Virtual bytes for SQL process were over 7TB.  This may indicate of virtual bytes leak. Please check perfmon counter.', 'https://support.microsoft.com/kb/3074434','https://support.microsoft.com/kb/3074434', '  jackli', 1, 100, 0)
+
+
 
 
 
@@ -2095,6 +2099,18 @@ begin
 	where  Name =  OBJECT_NAME(@@PROCID)
 
 end
+go
+--https://support.microsoft.com/en-us/help/3074434/fix-out-of-memory-error-when-the-virtual-address-space-of-the-sql-serv
+create procedure usp_VirtualBytesLeak
+as
+if exists (select   max(countervalue) from CounterDetails a join CounterData b on a.CounterID=b.CounterID  where CounterName ='Virtual Bytes' and InstanceName='sqlservr' and ObjectName='Process'  having   max(countervalue) > 7000000000000)
+begin
+	update tbl_AnalysisSummary
+	set Status = 1
+	where  Name =  OBJECT_NAME(@@PROCID)
+
+end
+
 go
 create procedure usp_AccessCheck
 as
@@ -3165,7 +3181,8 @@ exec usp_AccessCheck
 go
 exec usp_RedoThreadBlocked
 go
-
+exec usp_VirtualBytesLeak
+go
 /************************************************************
 owner: jaynar
 ***********************************************************/
