@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.Globalization;
 
-
+[assembly: System.Security.Permissions.PermissionSet(System.Security.Permissions.SecurityAction.RequestMinimum, Name = "FullTrust")]
 namespace NexusInterfaces
 {
     
@@ -218,7 +218,7 @@ namespace NexusInterfaces
         }
     }
 
-    [assembly:System.Security.Permissions.PermissionSet(System.Security.Permissions.SecurityAction.RequestMinimum, Name = "FullTrust")]
+    
     public class RuntimeEnv
     {
         private static RuntimeEnv m_singleton = new RuntimeEnv();

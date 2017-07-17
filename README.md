@@ -25,4 +25,12 @@ Please go to  [download](https://github.com/Microsoft/SqlNexus/releases) view re
 6. [RML Utility/ReadTrace download](https://github.com/Microsoft/SqlNexus/wiki/RML-Utility)
 7. [Top Issues](https://github.com/Microsoft/SqlNexus/wiki/Top-Issues)
 
+
+# Microsoft Code of Conduct
+This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+
+
+# License
+see License.md
+
 More information and help can be found in the [wiki](https://github.com/Microsoft/SqlNexus/wiki)

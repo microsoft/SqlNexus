@@ -1922,76 +1922,76 @@ go
 
 --select newid()
 /********************************************************
-owner: northamerica\jackli
+owner:   jackli
 *********************************************************/
 
 
 insert into tbl_Analysissummary (SolutionSourceId,Category, type,typedesc, Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('1BDE61F7-CE1D-4C99-ABFB-31344A3E317D', 'Server Performance', 'W','Warning', 'AutoCreateStats','Auto Create Statistics is disabled', 'Some databases have auto create statistics disabled. This can negative impact performance.  See Database Configuration report for details', '', 'http://aka.ms/AutoCreateStats', 'northamerica\jackli', 1, 99, 0)
+values ('1BDE61F7-CE1D-4C99-ABFB-31344A3E317D', 'Server Performance', 'W','Warning', 'AutoCreateStats','Auto Create Statistics is disabled', 'Some databases have auto create statistics disabled. This can negative impact performance.  See Database Configuration report for details', '', 'http://aka.ms/AutoCreateStats', '  jackli', 1, 99, 0)
 insert into tbl_Analysissummary (SolutionSourceId,Category, type,typedesc, Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('E5335E8F-91F8-4B7D-842C-8C004159C749', 'Server Performance', 'W','Warning', 'AutoUpdateStats','Auto Update Statistics is disabled', 'Some databases have auto create statistics disabled. This can negative impact performance.  See Database Configuration report for details', '', 'http://aka.ms/AutoUpdateStats', 'northamerica\jackli', 1, 99, 0)
+values ('E5335E8F-91F8-4B7D-842C-8C004159C749', 'Server Performance', 'W','Warning', 'AutoUpdateStats','Auto Update Statistics is disabled', 'Some databases have auto create statistics disabled. This can negative impact performance.  See Database Configuration report for details', '', 'http://aka.ms/AutoUpdateStats', '  jackli', 1, 99, 0)
 insert into tbl_Analysissummary (SolutionSourceId,Category, type,typedesc, Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('9E5F54A8-9B8B-46A5-B372-238E873F6277', 'Server Performance', 'W','Warning', 'PowerPlan','Power Plan not properly set', 'Power Plan is not set to high performance which can impact overall server performance.', '', 'http://aka.ms/PowerPlan', 'northamerica\jackli', 1, 100, 0)
+values ('9E5F54A8-9B8B-46A5-B372-238E873F6277', 'Server Performance', 'W','Warning', 'PowerPlan','Power Plan not properly set', 'Power Plan is not set to high performance which can impact overall server performance.', '', 'http://aka.ms/PowerPlan', '  jackli', 1, 100, 0)
 insert into tbl_Analysissummary (SolutionSourceId,Category, type,typedesc, Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('CCCDE188-8E68-4B87-9649-761AF3F48FC8','Server Performance', 'W','Warning', 'Trace Flag 4199', 'Trace flag 4199 not enabled', 'This trace flag is required to activiate all query optimizer fixes. Without this trace flag, none of the query optimizer fixes will be activated even you are on the latest hotfix or cumulative update. ', '', 'http://aka.ms/TF4199', 'northamerica\jackli', 1, 100, 0)
+values ('CCCDE188-8E68-4B87-9649-761AF3F48FC8','Server Performance', 'W','Warning', 'Trace Flag 4199', 'Trace flag 4199 not enabled', 'This trace flag is required to activiate all query optimizer fixes. Without this trace flag, none of the query optimizer fixes will be activated even you are on the latest hotfix or cumulative update. ', '', 'http://aka.ms/TF4199', '  jackli', 1, 100, 0)
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('D89F7B5E-25BA-460E-9628-F7B0F5E31FFE','Server Performance', 'W','Warning', 'Detailed XEvent Tracing','Some intensive XEvent tracing captured', 'Some intensive extended events (xevent) are active on the server.  For high volume systems, this can have negative performance impact. see pssdiag file *Profiler Traces_Startup.OUT for details', 'http://aka.ms/Xevents', 'http://aka.ms/Xevents', 'northamerica\jackli', 1, 200, 0)
+values ('D89F7B5E-25BA-460E-9628-F7B0F5E31FFE','Server Performance', 'W','Warning', 'Detailed XEvent Tracing','Some intensive XEvent tracing captured', 'Some intensive extended events (xevent) are active on the server.  For high volume systems, this can have negative performance impact. see pssdiag file *Profiler Traces_Startup.OUT for details', 'http://aka.ms/Xevents', 'http://aka.ms/Xevents', '  jackli', 1, 200, 0)
 insert into tbl_Analysissummary (SolutionSourceId,Category, type,typedesc, Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('3EAE7B17-7BE4-486D-98AC-309E74CE6771','Server Performance', 'W','Warning', 'Trace Flag 1118', 'Trace Flag 1118 not enabled', 'This trace flag help reduce tempdb contention. ', '', 'http://aka.ms/TF1118', 'northamerica\jackli', 1, 100, 0)
+values ('3EAE7B17-7BE4-486D-98AC-309E74CE6771','Server Performance', 'W','Warning', 'Trace Flag 1118', 'Trace Flag 1118 not enabled', 'This trace flag help reduce tempdb contention. ', '', 'http://aka.ms/TF1118', '  jackli', 1, 100, 0)
 
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('17C9E271-756E-46E8-A3D3-B9B15E5FA305','Server Performance', 'W', 'Warning', 'Trace Flag 8048', 'Trace flag 8048 not enabled', 'This trace flag partitions certain memory allocators by CPU and can improve performance for hihgly active servers.', '', 'http://aka.ms/TF8048', 'northamerica\jackli', 1, 100, 0)
+values ('17C9E271-756E-46E8-A3D3-B9B15E5FA305','Server Performance', 'W', 'Warning', 'Trace Flag 8048', 'Trace flag 8048 not enabled', 'This trace flag partitions certain memory allocators by CPU and can improve performance for hihgly active servers.', '', 'http://aka.ms/TF8048', '  jackli', 1, 100, 0)
 
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('AC4F983A-B8F9-4542-8971-B6052175F2B3','Server Performance', 'W','Warning', 'Trace Flag 9024', 'Trace flag 9024 not enabled', 'This trace flag can help reduce recovery time and log writes.', '', 'http://aka.ms/TF9024', 'northamerica\jackli', 1, 100, 0)
+values ('AC4F983A-B8F9-4542-8971-B6052175F2B3','Server Performance', 'W','Warning', 'Trace Flag 9024', 'Trace flag 9024 not enabled', 'This trace flag can help reduce recovery time and log writes.', '', 'http://aka.ms/TF9024', '  jackli', 1, 100, 0)
 
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('76F946D8-7AAD-400E-9CEF-1F071AA68868','Server Performance', 'W','Warning', 'Trace Flag 1236', 'Trace flag 1236 not enabled (sql 2014 SP1 and above, TF is not required)', 'This trace flag can help reduce contention on database lock for highly active servers.', '', 'http://aka.ms/TF1236', 'northamerica\jackli', 1, 100, 0)
+values ('76F946D8-7AAD-400E-9CEF-1F071AA68868','Server Performance', 'W','Warning', 'Trace Flag 1236', 'Trace flag 1236 not enabled (sql 2014 SP1 and above, TF is not required)', 'This trace flag can help reduce contention on database lock for highly active servers.', '', 'http://aka.ms/TF1236', '  jackli', 1, 100, 0)
 
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('047C814A-5D3D-4652-A2CF-A975399D11BF','Server Performance', 'I','Info', 'NonDefault_sp_configure', 'Some sp_configure values are not set to default.', 'Non Default values do not necessarily mean issues.  But please review Server Configuration report to make sure they are as intended', 'http://aka.ms/NondefaultConfigInt', 'http://aka.ms/NonDefaultConfig', 'northamerica\jackli', 1, 100, 0)
+values ('047C814A-5D3D-4652-A2CF-A975399D11BF','Server Performance', 'I','Info', 'NonDefault_sp_configure', 'Some sp_configure values are not set to default.', 'Non Default values do not necessarily mean issues.  But please review Server Configuration report to make sure they are as intended', 'http://aka.ms/NondefaultConfigInt', 'http://aka.ms/NonDefaultConfig', '  jackli', 1, 100, 0)
 
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('59B1DB60-ABC2-4981-A9EC-DF901C3A89B4','Server Performance', 'W','Warning', 'usp_RG_Idle', 'high RESOURCE_GOVERNOR_IDLE detected', 'High waits on RESOURCE_GOVERNOR_IDLE were deteted.  This is means CPU cap was configured for Resource Goverrnor and could force query to slowdown.  make sure CPU Cap for Resource Governor is properly configured. ', 'http://aka.ms/rgidle','http://aka.ms/rgidle', 'northamerica\jackli', 1, 100, 0)
-
-
-insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('773805A8-5DB4-4132-8488-E8FBDE57C67A','Server Performance', 'W','Warning', 'usp_HighCompile', 'Potential high compiles detected', 'Potential high compilation was detected. Please verify with perfmon data.  This can cause high CPU issue ', 'http://aka.ms/highcompile','http://aka.ms/highcompile', 'northamerica\jackli', 1, 100, 0)
+values ('59B1DB60-ABC2-4981-A9EC-DF901C3A89B4','Server Performance', 'W','Warning', 'usp_RG_Idle', 'high RESOURCE_GOVERNOR_IDLE detected', 'High waits on RESOURCE_GOVERNOR_IDLE were deteted.  This is means CPU cap was configured for Resource Goverrnor and could force query to slowdown.  make sure CPU Cap for Resource Governor is properly configured. ', 'http://aka.ms/rgidle','http://aka.ms/rgidle', '  jackli', 1, 100, 0)
 
 
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('F9BBF034-ACFE-4C98-AD32-6010573AFD3D','Server Performance', 'W','Warning', 'usp_HighCacheCount', 'High Cache Entries detected.', 'High number of SQL Server cache entries (Cache Object Counts) were detected.  This can cause high CPU and spinlock issue.', 'http://aka.ms/highcachecount','http://aka.ms/highcachecount', 'northamerica\jackli', 1, 100, 0)
+values ('773805A8-5DB4-4132-8488-E8FBDE57C67A','Server Performance', 'W','Warning', 'usp_HighCompile', 'Potential high compiles detected', 'Potential high compilation was detected. Please verify with perfmon data.  This can cause high CPU issue ', 'http://aka.ms/highcompile','http://aka.ms/highcompile', '  jackli', 1, 100, 0)
 
 
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('F9BBF034-ACFE-4C98-AD32-6010573AFD3D','Server Performance', 'W','Warning', 'usp_HighCacheCount', 'High Cache Entries detected.', 'High number of SQL Server cache entries (Cache Object Counts) were detected.  This can cause high CPU and spinlock issue.', 'http://aka.ms/highcachecount','http://aka.ms/highcachecount', 'northamerica\jackli', 1, 100, 0)
+values ('F9BBF034-ACFE-4C98-AD32-6010573AFD3D','Server Performance', 'W','Warning', 'usp_HighCacheCount', 'High Cache Entries detected.', 'High number of SQL Server cache entries (Cache Object Counts) were detected.  This can cause high CPU and spinlock issue.', 'http://aka.ms/highcachecount','http://aka.ms/highcachecount', '  jackli', 1, 100, 0)
 
 
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('64EEE25A-4B20-4C24-8F27-1E967011D69E','Server Performance', 'W','Warning', 'usp_HighStmtCount', 'Some queries had high statement execution count', 'Some queries had high number statement executions.  This makes it challenging to tune the queries. ', 'http://aka.ms/highstmtcount','http://aka.ms/highstmtcount', 'northamerica\jackli', 1, 100, 0)
+values ('F9BBF034-ACFE-4C98-AD32-6010573AFD3D','Server Performance', 'W','Warning', 'usp_HighCacheCount', 'High Cache Entries detected.', 'High number of SQL Server cache entries (Cache Object Counts) were detected.  This can cause high CPU and spinlock issue.', 'http://aka.ms/highcachecount','http://aka.ms/highcachecount', '  jackli', 1, 100, 0)
 
 
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('12145143-A34C-4393-BC77-74E3F3A74D5D','Server Performance', 'W','Warning', 'usp_ExessiveLockXevent', 'lock_acquired or lock_released xevent was detected. ',  'These events can cause high cpu or other performance issues ', 'http://aka.ms/lock_quired_xevent','http://aka.ms/lock_quired_xevent', 'northamerica\jackli', 1, 100, 0)
-
-insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('F9EF91B9-529B-4F72-8545-59689D43D37E','Server Performance', 'W','Warning', 'usp_McAFee_Intrusion', 'McAFee Host Intrusion Prevenstion loaded in SQL Process',  'Loading McAfee Host Intrusion Prevention into SQL can lead to performance and stability issues ', 'https://support.microsoft.com/en-us/kb/2033238','https://support.microsoft.com/en-us/kb/2033238', 'northamerica\jackli', 1, 100, 0)
+values ('64EEE25A-4B20-4C24-8F27-1E967011D69E','Server Performance', 'W','Warning', 'usp_HighStmtCount', 'Some queries had high statement execution count', 'Some queries had high number statement executions.  This makes it challenging to tune the queries. ', 'http://aka.ms/highstmtcount','http://aka.ms/highstmtcount', '  jackli', 1, 100, 0)
 
 
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('F332275E-9CF4-4CFA-935D-AE248B74ADE4','Query Performance', 'W','Warning', 'usp_BatchSort', 'Batch sort is detected in query plan(s)',  'Batch sort can cause high CPU or memory grant issues due to cardinality over-estimation ', 'http://aka.ms/batchsort','http://aka.ms/batchsort', 'northamerica\jackli', 1, 100, 0)
+values ('12145143-A34C-4393-BC77-74E3F3A74D5D','Server Performance', 'W','Warning', 'usp_ExessiveLockXevent', 'lock_acquired or lock_released xevent was detected. ',  'These events can cause high cpu or other performance issues ', 'http://aka.ms/lock_quired_xevent','http://aka.ms/lock_quired_xevent', '  jackli', 1, 100, 0)
+
+insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
+values ('F9EF91B9-529B-4F72-8545-59689D43D37E','Server Performance', 'W','Warning', 'usp_McAFee_Intrusion', 'McAFee Host Intrusion Prevenstion loaded in SQL Process',  'Loading McAfee Host Intrusion Prevention into SQL can lead to performance and stability issues ', 'https://support.microsoft.com/en-us/kb/2033238','https://support.microsoft.com/en-us/kb/2033238', '  jackli', 1, 100, 0)
 
 
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('B21D0648-90FD-463B-B32B-C9E710D62B63','Query Performance', 'W','Warning', 'usp_SmallSampledStats', 'Some statistics have sample size less than 5%',  'Default sample size is sufficient for most normal workloads. But unevenly distributed data may require larger sample size or full scan.', 'http://aka.ms/nexus/smallsamplestats','http://aka.ms/nexus/smallsamplestats', 'northamerica\jackli', 1, 100, 0)
+values ('F332275E-9CF4-4CFA-935D-AE248B74ADE4','Query Performance', 'W','Warning', 'usp_BatchSort', 'Batch sort is detected in query plan(s)',  'Batch sort can cause high CPU or memory grant issues due to cardinality over-estimation ', 'http://aka.ms/batchsort','http://aka.ms/batchsort', '  jackli', 1, 100, 0)
 
 
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('E3CECDDA-EBEB-4E69-940C-660813ED5D93','Query Performance', 'W','Warning', 'usp_DisabledIndex', 'Some indexes are disabled',  'Disabling indexes may cause poor query performance. check tbl_DisabledIndexes for details ', 'http://aka.ms/nexus/disabledindex','http://aka.ms/nexus/disabledindex', 'northamerica\jackli', 1, 100, 0)
+values ('B21D0648-90FD-463B-B32B-C9E710D62B63','Query Performance', 'W','Warning', 'usp_SmallSampledStats', 'Some statistics have sample size less than 5%',  'Default sample size is sufficient for most normal workloads. But unevenly distributed data may require larger sample size or full scan.', 'http://aka.ms/nexus/smallsamplestats','http://aka.ms/nexus/smallsamplestats', '  jackli', 1, 100, 0)
 
 
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('63C1DA9B-CAA5-4C9D-9CA0-3916ED6D5F98','Server Performance', 'W','Warning', 'usp_LongAutoUpdateStats', 'Long Auto update stats',  'Some auto statistics update took longer than 60 seconds.  Consider asynchronous stats update ', 'https://aka.ms/nexus/longautoupdatesats','https://aka.ms/nexus/longautoupdatesats', 'northamerica\jackli', 1, 100, 0)
+values ('E3CECDDA-EBEB-4E69-940C-660813ED5D93','Query Performance', 'W','Warning', 'usp_DisabledIndex', 'Some indexes are disabled',  'Disabling indexes may cause poor query performance. check tbl_DisabledIndexes for details ', 'http://aka.ms/nexus/disabledindex','http://aka.ms/nexus/disabledindex', '  jackli', 1, 100, 0)
+
+
+insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
+values ('63C1DA9B-CAA5-4C9D-9CA0-3916ED6D5F98','Server Performance', 'W','Warning', 'usp_LongAutoUpdateStats', 'Long Auto update stats',  'Some auto statistics update took longer than 60 seconds.  Consider asynchronous stats update ', 'https://aka.ms/nexus/longautoupdatesats','https://aka.ms/nexus/longautoupdatesats', '  jackli', 1, 100, 0)
 
 
 
@@ -1999,12 +1999,12 @@ go
 		
 
 /********************************************************
-owner: northamerica\ericbu
+owner:   ericbu
 *********************************************************/
 
 -- Added 5/27/2015
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('25678531-4722-48C4-94B0-026C2ED1021F','Server Performance', 'W','Warning', 'usp_HighRecompiles', 'Potential high Recompiles detected, 50+ per second', 'Potential high recompilations were detected. Please verify with perfmon data.  This can cause high CPU issues.', 'http://aka.ms/highstmtrecompile','', 'northamerica\ericbu', 1, 100, 0)
+values ('25678531-4722-48C4-94B0-026C2ED1021F','Server Performance', 'W','Warning', 'usp_HighRecompiles', 'Potential high Recompiles detected, 50+ per second', 'Potential high recompilations were detected. Please verify with perfmon data.  This can cause high CPU issues.', 'http://aka.ms/highstmtrecompile','', '  ericbu', 1, 100, 0)
 
 -- TBD Service Broker
 	
@@ -2013,45 +2013,45 @@ values ('25678531-4722-48C4-94B0-026C2ED1021F','Server Performance', 'W','Warnin
 go
 
 /**************************************************************************************************
-owner:northamerica\jaynar
+owner:  jaynar
 
 ***************************************************************************************************/
 
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('47377EC8-BE56-4C92-B0F3-85FC0485D83B','Server Performance', 'W','Warning', 'HugeGrant', 'Huge Memory Grant found', 'Queries with big memory grant found check the detail report', '/Pages1/Memory%20Grants.aspx','', 'northamerica\jaynar', 1, 100, 0)
+values ('47377EC8-BE56-4C92-B0F3-85FC0485D83B','Server Performance', 'W','Warning', 'HugeGrant', 'Huge Memory Grant found', 'Queries with big memory grant found check the detail report', '/Pages1/Memory%20Grants.aspx','', '  jaynar', 1, 100, 0)
 
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('FDBF24A1-3EBE-49F1-A02B-FD5686ACDAE9','Server Performance', 'W','Warning', 'Optimizer_Memory_Leak', 'Optimizer Memory Leak', 'MEMORYCLERK_SQLOPTIMIZER memory may be high.  This could be a leak issue which is fixed in SQL 2012 Sp1 CU3', 'http://support.microsoft.com/kb/2803065','http://support.microsoft.com/kb/2803065', 'northamerica\jaynar', 1, 100, 0)
+values ('FDBF24A1-3EBE-49F1-A02B-FD5686ACDAE9','Server Performance', 'W','Warning', 'Optimizer_Memory_Leak', 'Optimizer Memory Leak', 'MEMORYCLERK_SQLOPTIMIZER memory may be high.  This could be a leak issue which is fixed in SQL 2012 Sp1 CU3', 'http://support.microsoft.com/kb/2803065','http://support.microsoft.com/kb/2803065', '  jaynar', 1, 100, 0)
 
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('5E630273-C14F-4DCE-BDA0-24A1FD8E25CA','Server Performance', 'W','Warning', 'usp_IOAnalysis', 'Disk IO Analysis', 'The disk sec/transfer in following drives exceeded 20 ms, check the perfmon for complete analysis', '/sites/Onestop/CTSSQL/Pages/Slow%20Disk%20IO%20Issues.aspx','', 'northamerica\jaynar', 1, 100, 0)
+values ('5E630273-C14F-4DCE-BDA0-24A1FD8E25CA','Server Performance', 'W','Warning', 'usp_IOAnalysis', 'Disk IO Analysis', 'The disk sec/transfer in following drives exceeded 20 ms, check the perfmon for complete analysis', '/sites/Onestop/CTSSQL/Pages/Slow%20Disk%20IO%20Issues.aspx','', '  jaynar', 1, 100, 0)
 
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('5AE45557-E463-48D6-B135-11AADCB8642F','Server Performance', 'I','Info', 'usp_WarnmissingIndex', 'Missing Index detected', 'There are missing indexes detected.  Please review SQL Nexus report and make recommendations to your customer.', '/sites/Onestop/CTSSQL/Pages/Index%20Tuning.aspx','', 'northamerica\jaynar', 1, 100, 0)
+values ('5AE45557-E463-48D6-B135-11AADCB8642F','Server Performance', 'I','Info', 'usp_WarnmissingIndex', 'Missing Index detected', 'There are missing indexes detected.  Please review SQL Nexus report and make recommendations to your customer.', '/sites/Onestop/CTSSQL/Pages/Index%20Tuning.aspx','', '  jaynar', 1, 100, 0)
 
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('0C73F3D4-6CCC-4FC9-AE37-58110F9C15DB','Server Performance', 'I','Info', 'StaleStatswarning2008', 'Stale Stats warning 2008', 'Statistics of some tables has not been updated for over 7 days', '/sites/Onestop/CTSSQL/Pages/All%20about%20statistics.aspx','', 'northamerica\jaynar', 1, 100, 0)
+values ('0C73F3D4-6CCC-4FC9-AE37-58110F9C15DB','Server Performance', 'I','Info', 'StaleStatswarning2008', 'Stale Stats warning 2008', 'Statistics of some tables has not been updated for over 7 days', '/sites/Onestop/CTSSQL/Pages/All%20about%20statistics.aspx','', '  jaynar', 1, 100, 0)
 
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('010B3DBA-76CC-46C0-AC1B-3CAD09F95891','Server Performance', 'W','Warning', 'usp_SQLHighCPUconsumption', 'SQL High CPU consumption', 'CPU consumption on the SQL Server exceeded for an extended period of time', '/sites/Onestop/CTSSQL/Pages/perfcausemap_SQL%20vs%20non-SQL%20CPU.aspx','', 'northamerica\jaynar', 1, 100, 0)
+values ('010B3DBA-76CC-46C0-AC1B-3CAD09F95891','Server Performance', 'W','Warning', 'usp_SQLHighCPUconsumption', 'SQL High CPU consumption', 'CPU consumption on the SQL Server exceeded for an extended period of time', '/sites/Onestop/CTSSQL/Pages/perfcausemap_SQL%20vs%20non-SQL%20CPU.aspx','', '  jaynar', 1, 100, 0)
 
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('6C82DA17-D04C-4155-8702-19A9A1363A64','Server Performance', 'W','Warning', 'usp_KernelHighCPUconsumption', 'Kernel High CPU consumption', 'Kernel CPU consumption for SQL Server exceeded for an extended period of time.', '/sites/Onestop/CTSSQL/Pages/perfcausemap_SQL%20vs%20non-SQL%20CPU.aspx','', 'northamerica\jaynar', 1, 100, 0)
+values ('6C82DA17-D04C-4155-8702-19A9A1363A64','Server Performance', 'W','Warning', 'usp_KernelHighCPUconsumption', 'Kernel High CPU consumption', 'Kernel CPU consumption for SQL Server exceeded for an extended period of time.', '/sites/Onestop/CTSSQL/Pages/perfcausemap_SQL%20vs%20non-SQL%20CPU.aspx','', '  jaynar', 1, 100, 0)
 
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('6E19B301-E83B-4E5F-AF4E-A8DD2251C1B6','Server Performance', 'W','Warning', 'usp_Non_SQL_CPU_consumption', 'High non-SQL CPU consumption detected', 'Majority of the CPU consumed came from non SQL Server process. Review the perfmon data', '/sites/Onestop/CTSSQL/Pages/perfcausemap_SQL%20vs%20non-SQL%20CPU.aspx','', 'northamerica\jaynar', 1, 100, 0)
+values ('6E19B301-E83B-4E5F-AF4E-A8DD2251C1B6','Server Performance', 'W','Warning', 'usp_Non_SQL_CPU_consumption', 'High non-SQL CPU consumption detected', 'Majority of the CPU consumed came from non SQL Server process. Review the perfmon data', '/sites/Onestop/CTSSQL/Pages/perfcausemap_SQL%20vs%20non-SQL%20CPU.aspx','', '  jaynar', 1, 100, 0)
 
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('57CAA4BB-C7BD-4F96-8040-3224008A3F39','Server Performance', 'I','Info', 'XEventcrash', 'XEvent may cause SQL Server crash', 'XEvent session retrieving the Query Hash can result in SQL Server shutdown', '/Pages1/Known%20issues%20resulting%20SQL%20Server%20crashes%20or%20Terminations.aspx','http://support.microsoft.com/kb/3004355', 'northamerica\jaynar', 1, 100, 0)
+values ('57CAA4BB-C7BD-4F96-8040-3224008A3F39','Server Performance', 'I','Info', 'XEventcrash', 'XEvent may cause SQL Server crash', 'XEvent session retrieving the Query Hash can result in SQL Server shutdown', '/Pages1/Known%20issues%20resulting%20SQL%20Server%20crashes%20or%20Terminations.aspx','http://support.microsoft.com/kb/3004355', '  jaynar', 1, 100, 0)
 
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('607B17FD-98F1-498E-9B93-F16E5A155730','Server Performance', 'W','Warning', 'OracleLinkedServerIssue', 'Oracle Driver SQL Server crash', 'Oracle driver loaded in SQL Server memory space may cause SQL Server to crash, refer the KB for solution', '/Pages1/Known%20issues%20resulting%20SQL%20Server%20crashes%20or%20Terminations.aspx','http://support.microsoft.com/kb/2295405', 'northamerica\jaynar', 1, 100, 0)
+values ('607B17FD-98F1-498E-9B93-F16E5A155730','Server Performance', 'W','Warning', 'OracleLinkedServerIssue', 'Oracle Driver SQL Server crash', 'Oracle driver loaded in SQL Server memory space may cause SQL Server to crash, refer the KB for solution', '/Pages1/Known%20issues%20resulting%20SQL%20Server%20crashes%20or%20Terminations.aspx','http://support.microsoft.com/kb/2295405', '  jaynar', 1, 100, 0)
 
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('BBECDF81-DCCE-4E41-93C9-7EB9E11F53BD','Server Performance', 'W','Warning', 'usp_ExcessiveTrace_Warning', 'Excessive Trace Warning', 'Multiple traces were detected running on the server.  This can negatively impact server performance', '/sites/Onestop/CTSSQL/Pages/PerfCauseMap_SQLTRACE_LOCK.aspx','', 'northamerica\jaynar', 1, 100, 0)
+values ('BBECDF81-DCCE-4E41-93C9-7EB9E11F53BD','Server Performance', 'W','Warning', 'usp_ExcessiveTrace_Warning', 'Excessive Trace Warning', 'Multiple traces were detected running on the server.  This can negatively impact server performance', '/sites/Onestop/CTSSQL/Pages/PerfCauseMap_SQLTRACE_LOCK.aspx','', '  jaynar', 1, 100, 0)
 
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('948756B6-A67F-4CB1-86F9-1B22C26F0B9C','Server Performance', 'W','Warning', 'usp_Many_Traces_Used', 'Excessive Trace events collected', 'Multiple non default trace events  were detected running on the server.  This can negatively impact server performance', '/sites/Onestop/CTSSQL/Pages/PerfCauseMap_SQLTRACE_LOCK.aspx','', 'northamerica\jaynar', 1, 100, 0)
+values ('948756B6-A67F-4CB1-86F9-1B22C26F0B9C','Server Performance', 'W','Warning', 'usp_Many_Traces_Used', 'Excessive Trace events collected', 'Multiple non default trace events  were detected running on the server.  This can negatively impact server performance', '/sites/Onestop/CTSSQL/Pages/PerfCauseMap_SQLTRACE_LOCK.aspx','', '  jaynar', 1, 100, 0)
 
 
 
