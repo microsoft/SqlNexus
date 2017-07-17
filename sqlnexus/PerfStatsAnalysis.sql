@@ -2010,6 +2010,9 @@ insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name,
 values ('952A2770-4031-4B4F-B56E-6A3A0970FA26','Server Performance', 'W','Warning', 'usp_DeadlockTraceFlag', 'Trace flag 1222',  'Trace flag 1222 is meant for deadlock troubleshooting only. do NOT leave it on permanently ', 'https://blogs.msdn.microsoft.com/bobsql/2017/05/23/how-it-works-sql-server-deadlock-trace-flag-1222-output/','https://blogs.msdn.microsoft.com/bobsql/2017/05/23/how-it-works-sql-server-deadlock-trace-flag-1222-output/', '  jackli', 1, 100, 0)
 
 
+insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
+values ('0F58D750-92B4-43A9-BED1-95450EB63175','Server Performance', 'W','Warning', 'usp_PerfScriptsRunningLong', 'Perf scripts running long',  'run time gaps between DMV queries were exceptionally large.  Some of them took more than 120 seconds between runs. check tbl_requests.runtime for details. this can be system issue', '','', '  jackli', 1, 100, 0)
+
 
 
 
@@ -2097,6 +2100,24 @@ owner:jackli
 
 ****************************************************************************************************/
 go
+create procedure usp_PerfScriptsRunningLong
+as
+if exists (select * from 
+(select runtime, lag(runtime, 1, runtime) over (order by runtime) as prev_runtime,
+datediff (s, lag(runtime, 1, runtime) over (order by runtime), runtime) gap
+from  (select distinct runtime from tbl_REQUESTS ) t ) t2  where gap > 120
+)
+begin
+	update tbl_AnalysisSummary
+	set Status = 1
+	where  Name =  OBJECT_NAME(@@PROCID)
+
+end
+
+
+
+go
+
 create procedure usp_DeadlockTraceFlag
 as
 if exists (select * from tbl_TraceFlags where TraceFlag = 1222)
@@ -3178,6 +3199,8 @@ firiing rules
 
 owner:jackli
 **********************************************************/
+go
+exec usp_PerfScriptsRunningLong
 go
 exec usp_LongAutoUpdateStats
 go
