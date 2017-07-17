@@ -519,6 +519,16 @@ namespace sqlnexus
             tlpFiles.Visible = false;
             Application.DoEvents();
 
+
+            string[] XEFiles = Directory.GetFiles(cbPath.Text.Trim().Replace("\"", ""), "*pssdiag*.xel");
+            string[]  trcFiles = Directory.GetFiles(cbPath.Text.Trim().Replace("\"", ""), "*sp_trace*.trc");
+
+            if (XEFiles.Length >0 && trcFiles.Length >0)
+            {
+                Util.Logger.LogMessage("You have captured both trace and xeven files. import will fail! Please remove one of them before importing", MessageOptions.All);
+            }
+
+
             tlpFiles.RowCount = 1;
             tlpFiles.Controls.Clear();
 
