@@ -183,7 +183,7 @@ IF  OBJECT_ID ('tbl_OS_WAIT_STATS') IS NULL
     [signal_wait_time_ms] [bigint] NULL
   )
 GO
-IF AND OBJECT_ID ('tbl_SYSPERFINFO') IS NULL
+IF  OBJECT_ID ('tbl_SYSPERFINFO') IS NULL
   CREATE TABLE [dbo].[tbl_SYSPERFINFO] (
     [rownum] [bigint] IDENTITY NOT NULL,
     [runtime] [datetime] NULL,
@@ -1998,6 +1998,12 @@ insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name,
 values ('6A67B697-F1AF-46D2-99D1-E7B6086B4D5D','Server Performance', 'W','Warning', 'usp_AccessCheck', 'Access Check Configuration',  'access check cache bucket count and access check cache quota are not configured per best practice ', 'https://support.microsoft.com/kb/2964518','https://support.microsoft.com/kb/2964518', '  jackli', 1, 100, 0)
 
 
+insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
+values ('D3E36E57-4DDE-44D3-939F-13D2A2608F02','Server Performance', 'W','Warning', 'usp_RedoThreadBlocked', 'Redo Thread wait ',  'Redo Thread may have waited excessively.  check tbl_requests for command with DB STARTUP ', '','', '  jackli', 1, 100, 0)
+
+
+
+
 go
 		
 
@@ -2079,6 +2085,16 @@ go
 owner: jackli
 
 ****************************************************************************************************/
+go
+create procedure usp_RedoThreadBlocked
+as
+if exists (select * from tbl_requests where command = 'DB STARTUP' and wait_duration_ms > 15000)
+begin
+	update tbl_AnalysisSummary
+	set Status = 1
+	where  Name =  OBJECT_NAME(@@PROCID)
+
+end
 go
 create procedure usp_AccessCheck
 as
@@ -3146,6 +3162,8 @@ go
 exec usp_DisabledIndex
 go
 exec usp_AccessCheck
+go
+exec usp_RedoThreadBlocked
 go
 
 /************************************************************
