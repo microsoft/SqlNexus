@@ -2256,21 +2256,25 @@ create procedure proc_CheckTraceFlags
 as
 if (dbo.fn_CputhresheldCrossed() = 1)
 	begin
-		if not exists (select * from tbl_traceflags where TraceFlag = 4199)
+		declare @raise bit = 1
+		if exists (select * from tbl_ServerProperties where PropertyName='MajorVersion' and  cast(PropertyValue as int)  >=13)
+			set @raise = 0
+		if  exists (select * from tbl_ServerProperties where PropertyName='MajorVersion' and  cast(PropertyValue as int)  =12  )  and exists (select *   from tbl_ServerProperties where PropertyName='ProductLevel' and PropertyValue>='SP2')
+			set @raise = 0
+
+		if @raise = 1 and  not exists (select * from tbl_traceflags where TraceFlag = 4199)
 				update tbl_Analysissummary  set [status] = 1 	where Name = 'Trace Flag 4199'
 		
-		if not exists (select * from tbl_traceflags where TraceFlag = 1118)
+		if @raise = 1 and @raise = 1 and not exists (select * from tbl_traceflags where TraceFlag = 1118)
 			update tbl_Analysissummary  set [status] = 1 	where Name = 'Trace Flag 1118'
 
-		if not exists (select * from tbl_traceflags where TraceFlag = 8048)
+		if @raise = 1 and not exists (select * from tbl_traceflags where TraceFlag = 8048)
 			update tbl_Analysissummary  set [status] = 1 	where Name = 'Trace Flag 8048'
 
-		if not exists (select * from tbl_traceflags where TraceFlag = 1236)
+		if @raise = 1 and not exists (select * from tbl_traceflags where TraceFlag = 1236)
 			update tbl_Analysissummary  set [status] = 1 	where Name = 'Trace Flag 1236'
-		if not exists (select * from tbl_traceflags where TraceFlag = 9024)
+		if @raise = 1 and not exists (select * from tbl_traceflags where TraceFlag = 9024)
 			update tbl_Analysissummary  set [status] = 1 	where Name = 'Trace Flag 9024'
-
-		 
 	end
 
 	
