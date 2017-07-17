@@ -1994,6 +1994,9 @@ insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name,
 values ('63C1DA9B-CAA5-4C9D-9CA0-3916ED6D5F98','Server Performance', 'W','Warning', 'usp_LongAutoUpdateStats', 'Long Auto update stats',  'Some auto statistics update took longer than 60 seconds.  Consider asynchronous stats update ', 'https://aka.ms/nexus/longautoupdatesats','https://aka.ms/nexus/longautoupdatesats', '  jackli', 1, 100, 0)
 
 
+insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
+values ('6A67B697-F1AF-46D2-99D1-E7B6086B4D5D','Server Performance', 'W','Warning', 'usp_AccessCheck', 'Access Check Configuration',  'access check cache bucket count and access check cache quota are not configured per best practice ', 'https://support.microsoft.com/kb/2964518','https://support.microsoft.com/kb/2964518', '  jackli', 1, 100, 0)
+
 
 go
 		
@@ -2076,6 +2079,16 @@ go
 owner: jackli
 
 ****************************************************************************************************/
+go
+create procedure usp_AccessCheck
+as
+if not exists ( select * from tbl_Sys_Configurations where name= 'access check cache bucket count' and value_in_use = 256 )  or  not exists (select * from tbl_Sys_Configurations where name='access check cache quota' and value_in_use = 1024)
+begin
+	update tbl_AnalysisSummary
+	set Status = 1
+	where  Name =  OBJECT_NAME(@@PROCID)
+end
+
 go
 
 create procedure usp_LongAutoUpdateStats
@@ -3131,6 +3144,8 @@ exec usp_SmallSampledStats
 go
 
 exec usp_DisabledIndex
+go
+exec usp_AccessCheck
 go
 
 /************************************************************
