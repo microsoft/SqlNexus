@@ -2014,6 +2014,9 @@ insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name,
 values ('0F58D750-92B4-43A9-BED1-95450EB63175','Server Performance', 'W','Warning', 'usp_PerfScriptsRunningLong', 'Perf scripts running long',  'run time gaps between DMV queries were exceptionally large.  Some of them took more than 120 seconds between runs. check tbl_requests.runtime for details. this can be system issue', '','', '  jackli', 1, 100, 0)
 
 
+insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
+values ('062A4FCD-C2D9-4A08-B3B0-C57251223450','Server Performance', 'W','Warning', 'usp_AttendtionCausedBlocking', 'Attention causing blocking',  'Some timeouts/attentions could have caused blocking.  see readtrace.tblInterestingEvents and vw_HEAD_BLOCKER_SUMMARY', '','', '  jackli', 1, 100, 0)
+
 
 
 
@@ -2099,6 +2102,17 @@ go
 owner:jackli
 
 ****************************************************************************************************/
+go
+create procedure usp_AttendtionCausedBlocking
+as
+if exists (select *  from readtrace.tblInterestingEvents evt join  vw_HEAD_BLOCKER_SUMMARY bloc on evt.Session=bloc.head_blocker_session_id where eventid = 16 and evt.StartTime < bloc.runtime)
+begin
+	update tbl_AnalysisSummary
+	set Status = 1
+	where  Name =  OBJECT_NAME(@@PROCID)
+
+end
+
 go
 create procedure usp_PerfScriptsRunningLong
 as
@@ -3199,6 +3213,8 @@ firiing rules
 
 owner:jackli
 **********************************************************/
+go
+exec usp_AttendtionCausedBlocking
 go
 exec usp_PerfScriptsRunningLong
 go
