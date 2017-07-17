@@ -1922,7 +1922,7 @@ go
 
 --select newid()
 /********************************************************
-owner:   jackli
+owner:jackli
 *********************************************************/
 
 
@@ -2005,8 +2005,10 @@ insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name,
 values ('4FE75D34-9AAE-440E-9758-1ABE2AA7B54D','Server Performance', 'W','Warning', 'usp_VirtualBytesLeak', 'Virtual bytes leak',  'Virtual bytes for SQL process were over 7TB.  This may indicate of virtual bytes leak. Please check perfmon counter.', 'https://support.microsoft.com/kb/3074434','https://support.microsoft.com/kb/3074434', '  jackli', 1, 100, 0)
 
 
+
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('952A2770-4031-4B4F-B56E-6A3A0970FA26','Server Performance', 'W','Warning', 'usp_ChangeTableCauseHighCPU', 'Change Table can cause high CPU',  'Change Table query can cause high CPU. ', 'https://support.microsoft.com/kb/3188672','https://support.microsoft.com/kb/3188672', '  jackli', 1, 100, 0)
+values ('952A2770-4031-4B4F-B56E-6A3A0970FA26','Server Performance', 'W','Warning', 'usp_DeadlockTraceFlag', 'Trace flag 1222',  'Trace flag 1222 is meant for deadlock troubleshooting only. do NOT leave it on permanently ', 'https://blogs.msdn.microsoft.com/bobsql/2017/05/23/how-it-works-sql-server-deadlock-trace-flag-1222-output/','https://blogs.msdn.microsoft.com/bobsql/2017/05/23/how-it-works-sql-server-deadlock-trace-flag-1222-output/', '  jackli', 1, 100, 0)
+
 
 
 
@@ -2091,9 +2093,19 @@ go
 
 /***************************************************************************************************
 
-owner: jackli
+owner:jackli
 
 ****************************************************************************************************/
+go
+create procedure usp_DeadlockTraceFlag
+as
+if exists (select * from tbl_TraceFlags where TraceFlag = 1222)
+begin
+	update tbl_AnalysisSummary
+	set Status = 1
+	where  Name =  OBJECT_NAME(@@PROCID)
+
+end
 go
 create procedure usp_ChangeTableCauseHighCPU
 as
@@ -3164,7 +3176,7 @@ firiing rules
 
 /*********************************************************
 
-owner: jackli
+owner:jackli
 **********************************************************/
 go
 exec usp_LongAutoUpdateStats
@@ -3205,6 +3217,8 @@ go
 exec usp_VirtualBytesLeak
 go
 exec usp_ChangeTableCauseHighCPU
+go
+exec usp_DeadlockTraceFlag
 go
 /************************************************************
 owner: jaynar
