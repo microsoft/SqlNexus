@@ -984,7 +984,7 @@ namespace RowsetImportEngine
 
        private  bool IsLegalTableName(String s)
         {
-           //will not do anything. this has caused quite some questions on dsdbtool alias
+           //will not do anything. this has caused quite some questions on  alias
            /* 
            Regex re = new Regex(@"^[A-Za-z]\w+$");
             if (!re.IsMatch(s))
