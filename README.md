@@ -35,4 +35,3 @@ see License.md
 
 # More information
 More information and help can be found in the [wiki](https://github.com/Microsoft/SqlNexus/wiki)
-test
