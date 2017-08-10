@@ -2889,7 +2889,7 @@ drop table #tmpCounterDateTime
 end 
 go 
 
-Create procedure  usp_Non_SQL_CPU_consumption
+Create Procedure usp_Non_SQL_CPU_consumption
 as
 begin
 		declare @t_DisplayMessage nvarchar(1256)
@@ -2931,10 +2931,9 @@ begin
 		 
 		IF EXISTS ( SELECT * FROM sysobjects WHERE name = ltrim(rtrim('CounterData')))
 		begin
-			 
-			select   @SQLcpuCount  =   (count( distinct InstanceName)-1)
-			from counterdata dat inner join counterdetails dl on dat.counterid = dl.counterid 
-			where dl.objectname in ('Processor' )
+			--Fix: Issue #37, fixed negative number of CPUs
+			select @SQLcpuCount  =   Count(distinct scheduler_id) from tbl_dm_OS_Schedulers
+			 where status = 'VISIBLE ONLINE'
 		 End 	
 		IF EXISTS ( SELECT * FROM sysobjects WHERE name = ltrim(rtrim('CounterData')))
 			begin
@@ -2947,73 +2946,57 @@ begin
                                     and    cast ( counterValue as float )  >= @NonSQLCPU_threshold 
                                   )  a1,
                                   (
-                                  select  cast(CounterDateTime as  datetime) CounterDateTimeSQL
+								  --Fix: Issue #36, use distinct to avoid duplicates
+                                  select  distinct cast(CounterDateTime as  datetime) CounterDateTimeSQL
 							      from counterdata dat inner join counterdetails dli on dat.counterid = dli.counterid  
                                    where dli.objectname in ('Process' ) --'physicaldisk','Processor'
                                   and  dli.countername in ( '% User Time') 
                                    and dli.InstanceName like '%SQLservr%'
                                     and cast (counterValue as float )  <= @SQLCPU_threshold 
 								 )  b
-								 where cast(a1.CounterDateTimeTotal as  datetime) = cast(b.CounterDateTimeSQL as datetime)
+								 where a1.CounterDateTimeTotal =b.CounterDateTimeSQL
 
 								 
 			end
-
+	   
 		select  @is_Rulehit = COUNT(*) from #tmpCounterDateTime
 		if ( @is_Rulehit > 0)
-		begin
-		    				declare C_CounterDateTime cursor 
-                            for select 
-                                  CounterDateTime  
-                                   from #tmpCounterDateTime
- 
-                            open C_CounterDateTime
-                            fetch next from C_CounterDateTime into @T_CounterDateTime
-                            while (@@fetch_status = 0)
-                            Begin
-									 
+		BEGIN
+			--Fix: Issue #36, replace cursor with set logic
+            select avg(a1.counterValue)/@SQLcpuCount as avg_CPU, dt.CounterDateTime
+		  into #avg_CPU
+            from #tmpCounterDateTime dt inner join 
+			 (
+			 select cast(counterValue as decimal (38,2)) counterValue ,CounterDateTime
+				from counterdata dat inner join counterdetails dli on dat.counterid = dli.counterid  
+				where dli.objectname in ('Process' ) --'physicaldisk','Processor'
+			 and  dli.countername in ( '% User Time') 
+				and dli.InstanceName like '%_Total%'
+				and    cast ( counterValue as float )  >= @NonSQLCPU_threshold * @SQLcpuCount
+			 )  a1 on a1.CounterDateTime between (cast(dt.CounterDateTime as datetime)- '00:01:30')  and (cast(dt.CounterDateTime as datetime) + '00:01:30') 
+				inner join 
+			 (
+			 select  cast(counterValue as decimal (38,2)) counterValue,CounterDateTime
+			 from counterdata dat inner join counterdetails dli on dat.counterid = dli.counterid  
+				where dli.objectname in ('Process' ) --'physicaldisk','Processor'
+			 and  dli.countername in ( '% User Time') 
+				and dli.InstanceName like '%SQLservr%'
+				and cast (counterValue as float )  <= @SQLCPU_threshold * @SQLcpuCount
+			 )  b on b.CounterDateTime between (cast(dt.CounterDateTime as datetime) - '00:01:30')  and (cast(dt.CounterDateTime as datetime) + '00:01:30') 
+		  where a1.CounterDateTime= b.CounterDateTime
+		  group by dt.CounterDateTime
+		  
 									      
-                               select @t_AvgValue= avg(a1.counterValue)/@SQLcpuCount 
- 
-                                            from (
-										select cast(counterValue as decimal (38,2)) counterValue ,CounterDateTime
-										   from counterdata dat inner join counterdetails dli on dat.counterid = dli.counterid  
-										   where dli.objectname in ('Process' ) --'physicaldisk','Processor'
-										  and  dli.countername in ( '% User Time') 
-										   and dli.InstanceName like '%_Total%'
-											and    cast ( counterValue as float )  >= @NonSQLCPU_threshold 
-											and CounterDateTime between (cast(@T_CounterDateTime  as datetime) - '00:01:30')  and (cast(@T_CounterDateTime  as datetime) + '00:01:30') 
-										  )  a1,
-										  (
-										  select  cast(counterValue as decimal (38,2)) counterValue,CounterDateTime
-										  from counterdata dat inner join counterdetails dli on dat.counterid = dli.counterid  
-										   where dli.objectname in ('Process' ) --'physicaldisk','Processor'
-										  and  dli.countername in ( '% User Time') 
-										   and dli.InstanceName like '%SQLservr%'
-											and cast (counterValue as float )  <= @SQLCPU_threshold 
-											and CounterDateTime between (cast(@T_CounterDateTime  as datetime) - '00:01:30')  and (cast(@T_CounterDateTime  as datetime) + '00:01:30') 
-										 )  b
-									where cast(a1.CounterDateTime as  datetime) = cast(b.CounterDateTime as datetime)
-								 
-									          
-                                         if (@t_AvgValue > @CPU_threshold)
-                                         begin
-                                                      insert into #tmp values(@t_AvgValue,(cast(@T_CounterDateTime  as datetime) - '00:01:30')  , (cast(@T_CounterDateTime  as datetime) + '00:01:30') ,'Non-SQL CPU consumption was more than  '+ rtrim(cast (@t_AvgValue as char(5))) +'% for an extended period of time')
-                                         end
-                            fetch next from C_CounterDateTime into @T_CounterDateTime
-                            end
-                            close C_CounterDateTime
-                            deallocate C_CounterDateTime
-                            select  @is_Rulehit = COUNT(*) from #tmp 
-							if ( @is_Rulehit > 0) 
-								begin 
-									update tbl_AnalysisSummary
-										set [Status] = 1
-										where Name = 'usp_Non_SQL_CPU_consumption'
-								end 
+		  if ( exists (Select 1 from #avg_CPU where avg_CPU > @CPU_threshold))
+			 begin 
+				    update tbl_AnalysisSummary
+					   set [Status] = 1
+					   where Name = 'usp_Non_SQL_CPU_consumption'
+			 end 
 					 
 		end
-		drop table #tmp
+		Select * from #avg_CPU
+		drop table #avg_CPU
 		drop table #tmpCounterDateTime
 end
  
