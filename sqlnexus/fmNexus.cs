@@ -386,7 +386,8 @@ namespace sqlnexus
             // fmNexus can preseve a minimized state (e.g. START /MIN sqlnexus.exe ...). Low priority.
             this.WindowState = FormWindowState.Minimized;
             Application.DoEvents();
-            this.WindowState = FormWindowState.Maximized;
+            if (!Globals.NoWindow || !Globals.ConsoleMode)
+                this.WindowState = FormWindowState.Maximized;
 
             MakeTaskPaneImagesTransparent();
 

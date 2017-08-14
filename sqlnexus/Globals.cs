@@ -27,7 +27,7 @@ namespace sqlnexus
         public static bool QuietMode = false;
         public static bool ExceptionEncountered = false;
         public static bool IsNexusCoreImporterSuccessful = true;
-        
+        public static bool NoWindow = false;
 
         private static readonly string m_StartupPath = Application.StartupPath;
         private static readonly string m_AppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\sqlnexus";

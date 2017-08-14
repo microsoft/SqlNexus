@@ -267,7 +267,7 @@ namespace sqlnexus.Properties {
         ///end
         ///create database [{0}];
         ///--alter database [{0}] modify file (name=&apos;{0}&apos;, size=50MB)
-        ///--alter database [{0}] set recovery simple
+        ///alter database [{0}] set recovery simple
         ///
         ///.
         /// </summary>
@@ -2103,6 +2103,15 @@ namespace sqlnexus.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to /Q Quiet Mode.
+        /// </summary>
+        internal static string Usage_Quiet {
+            get {
+                return ResourceManager.GetString("Usage_Quiet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &quot;/Rreport&quot;\tSpecifies a report file name to run..
         /// </summary>
         internal static string Usage_RunReport {
@@ -2121,7 +2130,7 @@ namespace sqlnexus.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to sqlnexus.exe [ [ /S [ /E | /Uuser /Ppwd ] [/D&quot;database&quot;] ] | [/C&quot;connstr&quot;] ] [/Iinputpath] [/Ooutputpath] [/Rreport] [/X]\n.
+        ///   Looks up a localized string similar to sqlnexus.exe [ [ /S [ /E | /Uuser /Ppwd ] [/D&quot;database&quot;] ] | [/C&quot;connstr&quot;] ] [/Iinputpath] [/Ooutputpath] [/Rreport] [/X]\n [/Q].
         /// </summary>
         internal static string Usage_Summary {
             get {

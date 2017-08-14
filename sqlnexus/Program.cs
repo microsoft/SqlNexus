@@ -94,6 +94,7 @@ namespace sqlnexus
             Console.WriteLine(Util.ExpandEscapeStrings(sqlnexus.Properties.Resources.Usage_OutputPath));
             Console.WriteLine(Util.ExpandEscapeStrings(sqlnexus.Properties.Resources.Usage_ExitAfterProcessing));
             Console.WriteLine(Util.ExpandEscapeStrings(sqlnexus.Properties.Resources.Usage_Parameter));
+            Console.WriteLine(Util.ExpandEscapeStrings(sqlnexus.Properties.Resources.Usage_Quiet));
         }
 
         /// <summary>
@@ -165,6 +166,12 @@ namespace sqlnexus
                         {
                             Console.WriteLine(@"Command Line Arg (/E): UseWindowsAuth");
                             Globals.credentialMgr.WindowsAuth = true;
+                            break;
+                        }
+                    case 'Q':
+                        {
+                            Console.WriteLine(@"Command Line Arg (/Q): Minimize windows in console mode");
+                            Globals.NoWindow = true;
                             break;
                         }
                     case 'U':

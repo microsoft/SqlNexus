@@ -3185,7 +3185,25 @@ begin
 end
 
 
-go
+GO
+
+/********************************************************
+Owner: Louis Li
+********************************************************/
+
+select 
+	de.ObjectName,de.CounterName,de.InstanceName
+	,cast(cast(CounterDateTime as varchar(19)) as time) as CounterDateTime
+	,d.CounterValue
+	,'\'+objectname + case when InstanceName is NULL then '' else '(' + InstanceName + ')' end + '\' + CounterName as FullCounterName
+	,'\'+objectname + case when InstanceName is NULL then '' else '(*)' end + '\' + CounterName as FullCounterNameWithWildchar
+Into dbo.Counters
+from 
+	dbo.counterdata d inner join dbo.CounterDetails de
+		on d.CounterID = de.CounterID
+Order By
+	de.ObjectName, de.CounterName,de.instancename,d.CounterDateTime
+GO
 
 /********************************************************
 firiing rules
