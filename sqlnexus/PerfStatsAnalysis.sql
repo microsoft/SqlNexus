@@ -2183,15 +2183,24 @@ begin
 end
 
 go
+
+-- Changed usp_AccessCheck SP code to make sure we do not check this for SQL SERVER 2016 and later version
+
 create procedure usp_AccessCheck
 as
-if not exists ( select * from tbl_Sys_Configurations where name= 'access check cache bucket count' and value_in_use = 256 )  or  not exists (select * from tbl_Sys_Configurations where name='access check cache quota' and value_in_use = 1024)
-begin
-	update tbl_AnalysisSummary
-	set Status = 1
-	where  Name =  OBJECT_NAME(@@PROCID)
-end
 
+IF EXISTS (select * from tbl_ServerProperties where PropertyName='MajorVersion' and PropertyValue<13)
+
+begin
+
+	if not exists ( select * from tbl_Sys_Configurations where name= 'access check cache bucket count' and value_in_use = 256 )  or  not exists (select * from tbl_Sys_Configurations where name='access check cache quota' and value_in_use = 1024)
+	begin
+		update tbl_AnalysisSummary
+		set Status = 1
+		where  Name =  OBJECT_NAME(@@PROCID)
+	end
+
+end
 go
 
 create procedure usp_LongAutoUpdateStats
