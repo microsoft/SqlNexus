@@ -2083,7 +2083,14 @@ values ('948756B6-A67F-4CB1-86F9-1B22C26F0B9C','Server Performance', 'W','Warnin
 
 go
 
+/**************************************************************************************************
+owner:  VIRANA
 
+***************************************************************************************************/
+
+
+insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
+values ('6D4B332C-67A0-428D-A08C-A48A5327DE60','Query Performance', 'W','Warning', 'usp_oldce', 'Customer using oldCE for database', 'Customer not taking advantage of newCE', 'https://blogs.technet.microsoft.com/dataplatforminsider/2014/03/17/the-new-and-improved-cardinality-estimator-in-sql-server-2014','https://blogs.technet.microsoft.com/dataplatforminsider/2014/03/17/the-new-and-improved-cardinality-estimator-in-sql-server-2014', '  virana', 1, 100, 0)
 
 
 
@@ -3187,6 +3194,56 @@ end
 
 GO
 
+/**************************************************************************************************
+owner:  VIRANA
+
+***************************************************************************************************/
+
+
+CREATE PROCEDURE usp_oldce
+AS
+BEGIN
+	DECLARE @SQLVERSION INT
+	DECLARE @oldCE INT
+	DECLARE @database_id INT
+
+	IF EXISTS (
+			SELECT 1
+			FROM sys.Tables
+			WHERE NAME = N'tbl_SCRIPT_ENVIRONMENT_DETAILS'
+			)
+	BEGIN
+		SELECT @SQLVERSION = LEFT(VALUE, 2)
+		FROM tbl_SCRIPT_ENVIRONMENT_DETAILS
+		WHERE NAME LIKE 'SQL Version%'
+	END
+
+	IF EXISTS (
+			SELECT 1
+			FROM sys.Tables
+			WHERE NAME = N'tbl_SysDatabases'
+			)
+	BEGIN
+		SELECT TOP 1 @database_id = database_id
+		FROM [dbo].[tbl_SysDatabases]
+		WHERE compatibility_level < 120
+	END
+
+	IF (
+			@SQLVERSION >= 12
+			AND @database_id > 0
+			)
+	BEGIN
+		UPDATE tbl_AnalysisSummary
+		SET [Status] = 1
+		WHERE NAME = 'usp_oldce'
+	END
+END
+
+
+GO
+
+
 /********************************************************
 Owner: Louis Li
 ********************************************************/
@@ -3307,3 +3364,11 @@ go
 exec usp_HighRecompiles
 go
 
+/**************************************************************************************************
+owner:  VIRANA
+
+***************************************************************************************************/
+
+go
+exec usp_oldce
+go
