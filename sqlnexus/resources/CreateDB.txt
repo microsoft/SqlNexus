@@ -1,7 +1,7 @@
 use master
 if db_id ('{0}') is null
 begin
-	create database [{0}];
+	create database [{0}] collate Latin1_General_CI_AS;
 	alter database [{0}] modify file (name='{0}', size=50MB)
 	alter database [{0}] set recovery simple
 end
