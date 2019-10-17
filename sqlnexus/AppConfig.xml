@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<config>
+    
+  <importers>
+
+    <importer name="Rowset Importer"  ude="true">
+      <files>
+        <file pattern="sp_blocker_pss80.out" include="false"/>
+        <file pattern="##" include="false"/>
+        <file pattern="sqldmp" include="false"/>
+        <file pattern="sqldump" include="false"/>
+      </files>
+    </importer>
+
+    <importer name="DiagScan"  ude="true">
+      
+    </importer>
+    
+    <importer name="ReadTrace (SQL Profiler TRC Files)" ude="false">
+       </importer>
+    <importer name="BLG Blaster (Perfmon/Sysmon BLG files)" ude="true">
+    </importer>
+
+
+    <rawfile tablename="tblTopSqlPlan" mask="*.sqlplan"> </rawfile>
+    
+  </importers>
+
+  
+  
+</config>

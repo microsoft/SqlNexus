@@ -1,0 +1,912 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{5E93D061-FEC5-46AD-A765-8A62B394437C}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>sqlnexus</RootNamespace>
+    <AssemblyName>sqlnexus</AssemblyName>
+    <ApplicationIcon>nexus.ico</ApplicationIcon>
+    <StartupObject>
+    </StartupObject>
+    <RunPostBuildEvent>Always</RunPostBuildEvent>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <ManifestCertificateThumbprint>2AA98B6209BFD7D716FF5FC64685E1D03CAB96FD</ManifestCertificateThumbprint>
+    <ManifestKeyFile>sqlnexus_TemporaryKey.pfx</ManifestKeyFile>
+    <GenerateManifests>true</GenerateManifests>
+    <SignManifests>false</SignManifests>
+    <TargetZone>LocalIntranet</TargetZone>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>4.0</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+    <PublishUrl>\\myserver\myshare\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Unc</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateMode>Background</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <SupportUrl>http://www.codeplex.com/sqlnexus</SupportUrl>
+    <ProductName>SQL Nexus</ProductName>
+    <PublisherName>SQL Nexus</PublisherName>
+    <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
+    <WebPage>publish.htm</WebPage>
+    <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
+    <ApplicationRevision>8</ApplicationRevision>
+    <ApplicationVersion>6.0.0.8</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;BETA</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>SqlNexus.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.ReportViewer.Common, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.WebForms.140.1000.523\lib\net40\Microsoft.ReportViewer.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.DataVisualization, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.WebForms.140.1000.523\lib\net40\Microsoft.ReportViewer.DataVisualization.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.Design, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.WebForms.140.1000.523\lib\net40\Microsoft.ReportViewer.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.ProcessingObjectModel, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.WebForms.140.1000.523\lib\net40\Microsoft.ReportViewer.ProcessingObjectModel.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.WebDesign, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.WebForms.140.1000.523\lib\net40\Microsoft.ReportViewer.WebDesign.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.WebForms, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.WebForms.140.1000.523\lib\net40\Microsoft.ReportViewer.WebForms.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.WinForms, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.WebForms.140.1000.523\lib\net40\Microsoft.ReportViewer.WinForms.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Types, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SqlServer.Types.14.0.314.76\lib\net40\Microsoft.SqlServer.Types.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ClickOnce\ClickOnce.cs" />
+    <Compile Include="CredentialManager.cs" />
+    <Compile Include="DependencyManager.cs" />
+    <Compile Include="DiagConfig.cs" />
+    <Compile Include="FileImporter.cs" />
+    <Compile Include="filemgr.cs" />
+    <Compile Include="fmAbout.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fmAbout.Designer.cs">
+      <DependentUpon>fmAbout.cs</DependentUpon>
+    </Compile>
+    <Compile Include="fmConnect.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fmConnect.Designer.cs">
+      <DependentUpon>fmConnect.cs</DependentUpon>
+    </Compile>
+    <Compile Include="fmCustomRowset.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fmCustomRowset.Designer.cs">
+      <DependentUpon>fmCustomRowset.cs</DependentUpon>
+    </Compile>
+    <Compile Include="fmImport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fmImport.Designer.cs">
+      <DependentUpon>fmImport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="fmLoginEx.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fmLoginEx.designer.cs">
+      <DependentUpon>fmLoginEx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="fmNexus.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fmNexus.Designer.cs">
+      <DependentUpon>fmNexus.cs</DependentUpon>
+    </Compile>
+    <Compile Include="fmReportParameters.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fmReportParameters.Designer.cs">
+      <DependentUpon>fmReportParameters.cs</DependentUpon>
+    </Compile>
+    <Compile Include="fmSelectInstance.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fmSelectInstance.designer.cs">
+      <DependentUpon>fmSelectInstance.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmImportSummary.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Globals.cs" />
+    <Compile Include="NexusInfo.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="fmAbout.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>fmAbout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="fmConnect.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>fmConnect.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="fmCustomRowset.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>fmCustomRowset.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="fmImport.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>fmImport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="fmLoginEx.resx">
+      <DependentUpon>fmLoginEx.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="fmNexus.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>fmNexus.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="fmReportParameters.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>fmReportParameters.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="fmSelectInstance.resx">
+      <DependentUpon>fmSelectInstance.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmImportSummary.resx">
+      <DependentUpon>frmImportSummary.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Content Include="AppConfig.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Query Hash_C.rdlC">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Sysprocesses_C.rdlC">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Spinlock Stats_C.rdlC">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Blocking and Wait Statistics_C.rdlC">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Bottleneck Analysis_C.rdlC">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\WaitDetails_C.rdlC">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Errors and Warnings_C.rdlC">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Loaded Modules_C.rdlC">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Missing Indexes_C.rdlC">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Other Waits_C.rdlC">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Perfmon_C.rdlC">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Virtual File Stats_C.rdlC">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Memory Brokers_C.rdlC">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Query Execution Memory_C.rdlC">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\SysIndexes_C.rdlC">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Memory Clerks_C.rdlC">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Working Set Trim_C.rdlC">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Perfmon_CPU_C.rdlC">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Perfmon_IO_C.rdlC">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Perfmon_Memory_C.rdlC">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Perfmon_Network_C.rdlC">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\AnalysisSummary_C.rdlC">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\DatabaseConfiguration_C.rdlC">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\LockSummary_C.rdlC">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Query Execution Memory Details_C.rdlC">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\ServerConfiguration_C.rdlC">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Spinlock Details_C.rdlC">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\TopPlanAnalysis_C.rdlC">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\WASD_Connection_Stats_C.rdlC">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\WASD_Deadlocks_C.rdlC">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\WASD_Event_Log_C.rdlC">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\WASD_ResourceStats_C.rdlC">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\WASD_ResourceUsage_C.rdlC">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Query_Store_C.rdlC">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Query_Store_Details_C.rdlC">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Active Queries_C.rdlC">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\System_Requests_C.rdlC">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Active Traces and XEvents_C.rdlC">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Virtual File Stats Details_C.rdlC">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <EmbeddedResource Include="SQLScripts.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>SQLScripts.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserInstruction.resx">
+      <DependentUpon>UserInstruction.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Content Include="Reports\Blocking Runtime Detail_C.rdlC">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Blocking Chain Detail_C.rdlC">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="PostProcess.cmd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="ReportFileManager.cs" />
+    <Compile Include="Settings.cs" />
+    <Compile Include="Spinner.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Spinner.Designer.cs">
+      <DependentUpon>Spinner.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SqlInstances.cs" />
+    <Compile Include="SQLScripts.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SQLScripts.resx</DependentUpon>
+    </Compile>
+    <Compile Include="SqlServerTypes\Loader.cs" />
+    <Compile Include="UserInstruction.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserInstruction.Designer.cs">
+      <DependentUpon>UserInstruction.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities.cs" />
+    <None Include="Reports\PAL_C.rdlC">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Reports\PAL_sub_C.rdlC">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="SqlNexus.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sqlserver.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Build\build.cmd" />
+    <Content Include="MissingAssemblyFiles.htm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="nexus.ico" />
+    <Content Include="PerfStatsAnalysis.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <BaseApplicationManifest Include="Properties\app.manifest" />
+    <Content Include="ReportFileControl.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\Instructions.rdl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Docs\Analysis.doc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\SQL Perf Main.rdl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="Resources\CreateDB.txt" />
+    <None Include="Resources\UpdateTraceStats.txt" />
+    <None Include="Resources\HelpManageRowSet.txt" />
+    <None Include="Resources\CreateDropDB.txt" />
+    <None Include="Resources\TextFile1.txt" />
+    <None Include="Resources\InitDB.txt" />
+    <None Include="Resources\powerbi.png" />
+    <None Include="Resources\powerbi - Copy.png" />
+    <Content Include="SQLNexus_PreProcessing.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SqlServerTypes\readme.htm" />
+    <Content Include="SqlServerTypes\x64\msvcr120.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SqlServerTypes\x64\SqlServerSpatial140.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SqlServerTypes\x86\msvcr120.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SqlServerTypes\x86\SqlServerSpatial140.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TextRowsets.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="TextRowsetsCustom_Template.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="TraceAnalysis.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="PreBuild.cmd" />
+    <None Include="Resources\pinkbutton.gif" />
+    <None Include="Resources\RecordHS.png" />
+    <None Include="Resources\StopHS.png" />
+    <None Include="Resources\saveHS1.bmp" />
+    <None Include="Resources\collapse_tran.bmp" />
+    <None Include="Resources\expand_tran.bmp" />
+    <None Include="Resources\otheroptions.ico" />
+    <None Include="Resources\INFO1.ICO" />
+    <None Include="Resources\earth.gif" />
+    <None Include="Resources\RadialChartHS.png" />
+    <None Include="Resources\openHS.png" />
+    <None Include="Resources\book.jpg" />
+    <None Include="Resources\pagelayout.bmp" />
+    <None Include="Resources\CopyHS.png" />
+    <None Include="Resources\DataContainer_MoveFirsHS.png" />
+    <None Include="Resources\DataContainer_MoveFirstHS.png" />
+    <None Include="Resources\DataContainer_MoveLastHS.png" />
+    <None Include="Resources\DataContainer_MoveNextHS.png" />
+    <None Include="Resources\LegendHS.png" />
+    <None Include="Resources\PlayHS.png" />
+    <None Include="Resources\PieChart3DHS.png" />
+    <None Include="Resources\PieChartHS.png" />
+    <None Include="Resources\PrintSetupHS.png" />
+    <None Include="Resources\PrintHS.png" />
+    <None Include="Resources\PrintPreviewHS.png" />
+    <None Include="Resources\GoToPrevious.png" />
+    <None Include="Resources\FillLeftHS.BMP" />
+    <None Include="Resources\PrintPreviewHS.bmp" />
+    <None Include="Resources\PrintHS.bmp" />
+    <None Include="Resources\ZoomHS.bmp" />
+    <None Include="Resources\PageSetup.BMP" />
+    <None Include="Resources\Relationships.bmp" />
+    <None Include="Resources\RefreshDocView.bmp" />
+    <None Include="Resources\PrintSetup.bmp" />
+    <None Include="Resources\Print.bmp" />
+    <None Include="Resources\OrgChart.bmp" />
+    <None Include="Resources\DataContainer_MovePrevious.bmp" />
+    <None Include="Resources\DataContainer_MoveNext.bmp" />
+    <None Include="Resources\DataContainer_MoveFirst.bmp" />
+    <None Include="Resources\DataContainer_MoveLast.bmp" />
+    <None Include="Resources\GoToNextRecord.bmp" />
+    <None Include="Resources\GoToPreviousRecord.bmp" />
+    <None Include="Resources\Book_angleHS.bmp" />
+    <None Include="Resources\DialHS.bmp" />
+    <None Include="Resources\ShowRulelinesHS.bmp" />
+    <None Include="Resources\OptionsHS.bmp" />
+    <None Include="Resources\saveHS.bmp" />
+    <None Include="Resources\Collapse_large_left.bmp" />
+    <None Include="Resources\Collapse_large_right.bmp" />
+    <None Include="Resources\HLP.BMP" />
+    <None Include="Resources\PieChart.bmp" />
+    <None Include="Resources\PieChart3D.bmp" />
+    <None Include="Resources\Graph.bmp" />
+    <None Include="Resources\RecordHS.bmp" />
+    <None Include="Resources\PauseRecorderHS.bmp" />
+    <None Include="Resources\InsertTabControlHS.BMP" />
+    <None Include="Resources\graphhs.bmp" />
+    <None Include="Resources\GRAPH07.ICO" />
+    <None Include="Resources\Web_WebConfig.ico" />
+    <None Include="Resources\warning.ico" />
+    <None Include="Resources\textdoc.ico" />
+    <None Include="Resources\searchweb.ico" />
+    <None Include="Resources\question.ico" />
+    <None Include="Resources\none.ico" />
+    <None Include="Resources\mail.ico" />
+    <None Include="Resources\IPML.ICO" />
+    <None Include="Resources\INFO.ICO" />
+    <None Include="Resources\help.ico" />
+    <None Include="Resources\globe.ico" />
+    <None Include="Resources\error.ico" />
+    <None Include="Resources\delete_16x.ico" />
+    <None Include="Resources\GRAPH08.ICO" />
+    <None Include="Resources\PublicQueue.ico" />
+    <None Include="Resources\performance.ico" />
+    <None Include="Resources\Messages.ico" />
+    <None Include="Resources\eventlogWarn.ico" />
+    <None Include="Resources\eventlogSuccessAudit.ico" />
+    <None Include="Resources\eventlogInfo.ico" />
+    <None Include="Resources\eventlogFailureAudit.ico" />
+    <None Include="Resources\eventlogError.ico" />
+    <None Include="Resources\eventlog.ico" />
+    <None Include="Resources\VSProject_genericproject.ico" />
+    <None Include="Resources\SingleMessage.ico" />
+    <None Include="Resources\serviceunknown.ico" />
+    <None Include="Resources\servicestopped.ico" />
+    <None Include="Resources\servicerunning.ico" />
+    <None Include="Resources\servicepaused.ico" />
+    <None Include="Resources\Webcontrol_Paginator.bmp" />
+    <None Include="Resources\Webcontrol_Gridview.bmp" />
+    <None Include="Resources\Webcontrol_Content.bmp" />
+    <None Include="Resources\VSProject_report.bmp" />
+    <None Include="Resources\VSProject_form.bmp" />
+    <None Include="Resources\VSProject_database.bmp" />
+    <None Include="Resources\none.bmp" />
+    <None Include="Resources\infoBubble.bmp" />
+    <None Include="Resources\HelpFile.bmp" />
+    <None Include="Resources\Help.bmp" />
+    <None Include="Resources\GoLtrHS.bmp" />
+    <None Include="Resources\genericInternet.bmp" />
+    <None Include="Resources\Expanded.bmp" />
+    <None Include="Resources\Error.bmp" />
+    <None Include="Resources\delete.bmp" />
+    <None Include="Resources\CriticalError.bmp" />
+    <None Include="Resources\Control_TreeView.bmp" />
+    <None Include="Resources\Control_TabControl.bmp" />
+    <None Include="Resources\Control_Form.bmp" />
+    <None Include="Resources\Control_ErrorProvider.bmp" />
+    <None Include="Resources\Control_DataGridView.bmp" />
+    <None Include="Resources\Control_DataGrid.bmp" />
+    <None Include="Resources\Collapsed.bmp" />
+    <None Include="Resources\Webcontrol_Xmldatasrc.bmp" />
+    <None Include="Resources\Webcontrol_Webpartzone.bmp" />
+    <None Include="Resources\Webcontrol_Webpartmgr.bmp" />
+    <None Include="Resources\Webcontrol_Sqldatasrc.bmp" />
+    <None Include="Resources\Warning.bmp" />
+    <None Include="Resources\SuccessComplete.bmp" />
+    <None Include="Resources\Stop.bmp" />
+    <None Include="Resources\Serious.bmp" />
+    <None Include="Resources\Run.bmp" />
+    <None Include="Resources\RolledBack.bmp" />
+    <None Include="Resources\Retry.bmp" />
+    <None Include="Resources\Progress.bmp" />
+    <None Include="Resources\Pause.bmp" />
+    <None Include="Resources\Output.bmp" />
+    <None Include="Resources\OK.bmp" />
+    <None Include="Resources\Input.bmp" />
+    <None Include="Resources\Critical.bmp" />
+    <None Include="Resources\Expand_small.bmp" />
+    <None Include="Resources\Collapse_small.bmp" />
+    <None Include="Resources\Expand_large.bmp" />
+    <None Include="Resources\Collapse_large.bmp" />
+    <None Include="Resources\WebInsertHyperlinkHS.bmp" />
+    <None Include="Resources\TableHS.bmp" />
+    <None Include="Resources\StopHS.bmp" />
+    <None Include="Resources\ShowGridlinesHS.bmp" />
+    <None Include="Resources\SaveAsWebPageHS.bmp" />
+    <None Include="Resources\RightArrowHS.bmp" />
+    <None Include="Resources\RightArrow2HS.bmp" />
+    <None Include="Resources\PropertiesHS.BMP" />
+    <None Include="Resources\PlayHS.bmp" />
+    <None Include="Resources\PauseHS.bmp" />
+    <None Include="Resources\DataContainer_MoveNextHS.bmp" />
+    <None Include="Resources\InsertHyperlinkHS.bmp" />
+    <None Include="Resources\GoRtlHS.bmp" />
+    <None Include="Resources\PieChartHS.bmp" />
+    <None Include="Resources\PieChart3DHS.bmp" />
+    <None Include="Resources\NewMessageHS.bmp" />
+    <None Include="Resources\OrganizerHS.BMP" />
+    <None Include="Resources\NewReportHS.bmp" />
+    <None Include="Resources\eps_open_largelHS.bmp" />
+    <None Include="Resources\eps_closedHS.bmp" />
+    <None Include="Resources\EnvelopeHS.bmp" />
+    <None Include="Resources\CopyHS.bmp" />
+    <None Include="Resources\Book_StackOfReportsHS.BMP" />
+    <None Include="Resources\book_reportHS.bmp" />
+    <None Include="Resources\status_anim.gif" />
+    <Content Include="sqlnexus.chm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="VBIDE">
+      <Guid>{0002E157-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>5</VersionMajor>
+      <VersionMinor>3</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+    </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BulkLoadEx\BulkLoadEx.csproj">
+      <Project>{F9069C48-39A6-4FB9-B4B8-D8D0034709A3}</Project>
+      <Name>BulkLoadEx</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NexusInterfaces\NexusInterfaces.csproj">
+      <Project>{2217E9CA-442E-46C5-AB6C-7A46AE41A22C}</Project>
+      <Name>NexusInterfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PerfmonImporter\PerfmonImporter.csproj">
+      <Project>{0EFB7F6E-11F8-48C4-B4F4-EC526952CA38}</Project>
+      <Name>PerfmonImporter</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ReadTraceNexusImporter\ReadTraceNexusImporter.csproj">
+      <Project>{06414177-D179-413B-BC5A-5709E79D6EB2}</Project>
+      <Name>ReadTraceNexusImporter</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RowsetImportEngine\RowsetImportEngine.csproj">
+      <Project>{8DB02D0C-68F3-4762-9BC9-AA3DF2B91F4B}</Project>
+      <Name>RowsetImportEngine</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.ReportViewer.10.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft Visual Studio 2010 Report Viewer</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.VSTORuntime.4.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft Visual Studio 2010 Tools for Office Runtime %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <PublishFile Include="AppConfig.xml">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>File</FileType>
+    </PublishFile>
+    <PublishFile Include="Microsoft.Vbe.Interop">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>Assembly</FileType>
+    </PublishFile>
+    <PublishFile Include="PostProcess.cmd">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>File</FileType>
+    </PublishFile>
+    <PublishFile Include="Reports\AnalysisSummary_C.rdlC">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>File</FileType>
+    </PublishFile>
+    <PublishFile Include="Reports\Blocking and Wait Statistics_C.rdlC">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>File</FileType>
+    </PublishFile>
+    <PublishFile Include="Reports\Blocking Chain Detail_C.rdlC">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>File</FileType>
+    </PublishFile>
+    <PublishFile Include="Reports\Blocking Runtime Detail_C.rdlC">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>File</FileType>
+    </PublishFile>
+    <PublishFile Include="Reports\Bottleneck Analysis_C.rdlC">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>File</FileType>
+    </PublishFile>
+    <PublishFile Include="Reports\DatabaseConfiguration_C.rdlC">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>File</FileType>
+    </PublishFile>
+    <PublishFile Include="Reports\Errors and Warnings_C.rdlC">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>File</FileType>
+    </PublishFile>
+    <PublishFile Include="Reports\Instructions.rdl">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>File</FileType>
+    </PublishFile>
+    <PublishFile Include="Reports\Loaded Modules_C.rdlC">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>File</FileType>
+    </PublishFile>
+    <PublishFile Include="Reports\LockSummary_C.rdlC">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>File</FileType>
+    </PublishFile>
+    <PublishFile Include="Reports\Query_Store_C.rdlC">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>File</FileType>
+    </PublishFile>
+    <PublishFile Include="Reports\Query_Store_Details_C.rdlC">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>File</FileType>
+    </PublishFile>
+    <PublishFile Include="Reports\ServerConfiguration_C.rdlC">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>File</FileType>
+    </PublishFile>
+    <PublishFile Include="Reports\Spinlock Details_C.rdlC">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>File</FileType>
+    </PublishFile>
+    <PublishFile Include="Reports\TopPlanAnalysis_C.rdlC">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>File</FileType>
+    </PublishFile>
+    <PublishFile Include="TextRowsets.xml">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>File</FileType>
+    </PublishFile>
+    <PublishFile Include="TextRowsetsCustom_Template.xml">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>File</FileType>
+    </PublishFile>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PreBuildEvent>"$(ProjectDir)PreBuild.cmd" "$(ProjectDir)" "$(TargetDir)" &gt; "$(ProjectDir)PreBuild.log" 2&gt;&amp;1</PreBuildEvent>
+    <PostBuildEvent>"$(ProjectDir)PostBuild.cmd"  "$(SolutionName)"  "$(SolutionDir)\Dependencies"  "$(SolutionDir)\RowsetImportEngine\bin\$(ConfigurationName)"  "$(TargetDir)"  &gt; "$(ProjectDir)PostBuild.log" 2&gt;&amp;1</PostBuildEvent>
+  </PropertyGroup>
+</Project>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?> 
+
+<!-- 
+
+This file must be renamed to TextRowsetsCustom.XML before RowsetImport will 
+find it. 
+
+To define a new custom rowset, at a minimum you must specify the table name 
+("tbl_MYSAMPLETABLE") and the rowset identifier in the Rowset element. You 
+don't need to define any columns if you don't mind them getting imported as 
+varchar. 
+
+-->
+
+
+
+<TextImport>
+  <KnownRowsets>
+
+    <Rowset name="tbl_MYSAMPLETABLE" enabled="true" identifier="-- INSERT ROWSET IDENTIFYING STRING HERE" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="runtime"              type="RowsetImportEngine.DateTimeColumn" /> 
+        <Column name="sample_int_col"       type="RowsetImportEngine.IntColumn" /> 
+        <Column name="sample_bigint_col"    type="RowsetImportEngine.BigIntColumn" /> 
+        <Column name="sample_nvarchar_col"  type="RowsetImportEngine.NVarCharColumn" /> 
+        <Column name="sample_varchar_col"   type="RowsetImportEngine.VarCharColumn" /> 
+        <Column name="sample_varbinary_col" type="RowsetImportEngine.VarBinaryColumn" /> 
+        <Column name="sample_datetime_col"  type="RowsetImportEngine.DateTimeColumn" /> 
+        <Column name="sample_float_col"     type="RowsetImportEngine.FloatColumn" /> 
+        <Column name="sample_decimal_col"   type="RowsetImportEngine.DecimalColumn" /> 
+      </KnownColumns>
+    </Rowset>
+
+  </KnownRowsets>
+</TextImport>
