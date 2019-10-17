@@ -1729,7 +1729,7 @@ if
 			inner join sys.columns tblSC
 					
 					on  tblSIC.object_id = tblSC.object_id
-					and tblSIC.key_ordinal = tblSC.column_id
+					and tblSIC.column_id = tblSC.column_id
 
 			where tblSIC.key_ordinal = 1 
 
