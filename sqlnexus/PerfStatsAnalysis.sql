@@ -1687,12 +1687,16 @@ alter column CounterDateTime varchar(24)
 go
 
 -- daniel adeniji 2019-19-17
--- adding index to CounterData
+-- adding index to Table - CounterData, Index on Column CounterDateTime
 if 
 	(
+
+		-- Object Exists - dbo.CounterData
 		( 
 			object_id('dbo.CounterData') is not null 
 		)
+		-- dbo.CounterData
+		-- Index does not exist on column CounterDateTime
 		and not exists
 		(
 			select 
@@ -1739,6 +1743,11 @@ begin
 
 	print 'Add index to Table - dbo.CounterData || Column CounterDateTime ....'
 
+	create index [INDX_CounterDateTime]
+	on [dbo].[CounterData]
+	(
+		[CounterDateTime]
+	)
 
 	print 'Added index to Table - dbo.CounterData || Column CounterDateTime'
 
@@ -2604,12 +2613,12 @@ go
 if object_id('[dbo].[usp_IOAnalysis]') is null
 begin
 
-	exec('create procedure [usp_IOAnalysis] as ')
+	exec('create procedure [dbo].[usp_IOAnalysis] as ')
 
 end
 go
 
-alter procedure [usp_IOAnalysis] 
+alter procedure [dbo].[usp_IOAnalysis] 
 as
 begin
 
@@ -2696,7 +2705,11 @@ begin
 
     set @i = 0
 
-    select @i= Count(*)  from sys.objects where name =  'CounterData' 
+    select @i= Count(*)  
+	
+	from   sys.objects 
+	
+	where  [name] = 'CounterData' 
  
     if @i > 0 
     begin
@@ -2733,7 +2746,7 @@ begin
 			2019-10-17 03:20 AM dadeniji
 			Only add entries with valid timestamp
 		*/
-		--and  isDate(dat.CounterDateTime) = 1
+		and  isDate(dat.CounterDateTime) = 1
 
 		group by 
 			  ObjectName
@@ -2749,7 +2762,9 @@ begin
 			
     end
   
-    select  @is_Rulehit = COUNT(*) from #tmp
+    select  @is_Rulehit = COUNT(*) 
+	from    #tmp
+
     
 	if ( @is_Rulehit > 0)
     begin
