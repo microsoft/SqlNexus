@@ -837,7 +837,7 @@
 
 
 
-    <Rowset name="tbl_dm_db_stats_properties" enabled="true" identifier="-- sys.tbl_dm_db_stats_properties for" type="RowsetImportEngine.TextRowset">
+    <Rowset name="tbl_dm_db_stats_properties" enabled="true" identifier="-- sys.dm_db_stats_properties" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
         <Column name="database_name"       type="RowsetImportEngine.VarCharColumn" />
         <Column name="Object_Name"    type="RowsetImportEngine.VarCharColumn" />
@@ -1990,6 +1990,31 @@
 
     </Rowset>
 
+    <Rowset name="tbl_high_cpu_queries" enabled="true" identifier="--  high_cpu_queries --" type="RowsetImportEngine.TextRowset">
+      <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+      <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+      <Column name="runtime_utc" type="RowsetImportEngine.DateTimeColumn" />
+      <Column name="session_id" type="RowsetImportEngine.IntColumn" />
+      <Column name="request_start_time" type="RowsetImportEngine.DateTimeColumn" />
+      <Column name="cpu_time" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="total_elapsed_time" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="logical_reads" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="status"  type="RowsetImportEngine.NVarCharColumn" length="30" />
+      <Column name="command"  type="RowsetImportEngine.NVarCharColumn" length="32" />
+      <Column name="wait_type"  type="RowsetImportEngine.NVarCharColumn" length="60" />
+      <Column name="wait_time_ms" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="scheduler_id" type="RowsetImportEngine.IntColumn" />
+      <Column name="granted_query_memory" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="task_state"  type="RowsetImportEngine.NVarCharColumn" length="120" />
+      <Column name="context_switches_count" type="RowsetImportEngine.IntColumn" />
+      <Column name="batch_text" type="RowsetImportEngine.NVarCharColumn" length="3000"/>
+      <Column name="program_name" type="RowsetImportEngine.NVarCharColumn" />
+      <Column name="host_name" type="RowsetImportEngine.NVarCharColumn" length="128"/>
+      <Column name="host_process_id" type="RowsetImportEngine.IntColumn" />
+      <Column name="net_packet_size" type="RowsetImportEngine.IntColumn" />
+      <Column name="client_net_address"   type="RowsetImportEngine.VarCharColumn" length="48"/>
+      <Column name="active_statement_text"     type="RowsetImportEngine.VarCharColumn" />
+    </Rowset>
 
   </KnownRowsets>
 </TextImport>
