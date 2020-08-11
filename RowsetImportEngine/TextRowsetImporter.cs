@@ -379,11 +379,18 @@ namespace RowsetImportEngine
                             SqlStmt += "(53)";		// always use max float
                             break;
                         case SqlDbType.VarChar:
-                        case SqlDbType.NVarChar:
                         case SqlDbType.VarBinary:
-                            if (len > 0)
+                            if (len > 0 && len <= 8000)
                                 SqlStmt += "(" + len + ")";
-                            else if (len == Column.SQL_MAX_LENGTH)
+                            else if (len == Column.SQL_MAX_LENGTH || len > 8000)
+                                SqlStmt += "(max)";
+                            else
+                                SqlStmt += "(" + DEFAULT_NONTAB_COLUMN_LEN + ")";
+                            break;
+                        case SqlDbType.NVarChar:
+                            if (len > 0 && len <= 4000)
+                                SqlStmt += "(" + len + ")";
+                            else if (len == Column.SQL_MAX_LENGTH || len > 4000)
                                 SqlStmt += "(max)";
                             else
                                 SqlStmt += "(" + DEFAULT_NONTAB_COLUMN_LEN + ")";
