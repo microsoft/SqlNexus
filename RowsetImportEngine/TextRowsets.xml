@@ -1020,6 +1020,7 @@
 	  <KnownColumns>
 		  <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
 		  <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+      <Column name="stmt_text" type="RowsetImportEngine.VarCharColumn" length="-1" />
 		  <Column name="statement_start_offset"  type="RowsetImportEngine.IntColumn" />
 		  <Column name="statement_end_offset" type="RowsetImportEngine.IntColumn" />
 		  <Column name="plan_generation_num"  type="RowsetImportEngine.BigIntColumn" />
@@ -1043,7 +1044,6 @@
 		  <Column name="min_logical_reads"  type="RowsetImportEngine.BigIntColumn" />
 		  <Column name="max_logical_reads"  type="RowsetImportEngine.BigIntColumn" />
 		  <Column name="total_clr_time"  type="RowsetImportEngine.BigIntColumn" />
-		  <Column name="last_clr_time"  type="RowsetImportEngine.BigIntColumn" />
 		  <Column name="min_clr_time"  type="RowsetImportEngine.BigIntColumn" />
 		  <Column name="max_clr_time"  type="RowsetImportEngine.BigIntColumn" />
 		  <Column name="total_elapsed_time"  type="RowsetImportEngine.BigIntColumn" />
@@ -1058,11 +1058,12 @@
 		  <Column name="DurationRank" type="RowsetImportEngine.IntColumn" />
 		  <Column name="objectid" type="RowsetImportEngine.IntColumn" />
 		  <Column name="query_hash"   type="RowsetImportEngine.VarBinaryColumn" />
-		  <Column name="query_plan_hash"   type="RowsetImportEngine.VarBinaryColumn" />
+		  <Column name="query_plan_hash"   type="RowsetImportEngine.VarBinaryColumn"/>
 		  <Column name="size_in_kb" type="RowsetImportEngine.IntColumn" />
 	  </KnownColumns>
   </Rowset>
-    
+  <!--> Below one is unused column so used stmt_text in place of min_clr_time in above table -->
+  <!--Column name="min_clr_time"  type="RowsetImportEngine.BigIntColumn" /-->  
     
     <Rowset name="tbl_workingset_trimming" enabled="true" identifier="-- memory_workingset_trimming" type="RowsetImportEngine.TextRowset">
       <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
