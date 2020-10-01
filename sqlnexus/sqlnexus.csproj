@@ -379,12 +379,12 @@
       <DependentUpon>UserInstruction.cs</DependentUpon>
     </Compile>
     <Compile Include="Utilities.cs" />
-    <None Include="Reports\PAL_C.rdlC">
+    <Content Include="Reports\PAL_C.rdlC">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Reports\PAL_sub_C.rdlC">
+    </Content>
+    <Content Include="Reports\PAL_sub_C.rdlC">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    </Content>
     <None Include="SqlNexus.snk" />
   </ItemGroup>
   <ItemGroup>
