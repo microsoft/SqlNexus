@@ -406,7 +406,7 @@ namespace ReadTrace
             string args = String.Format("-S\"{0}\" \"-d{1}\" {2} -T18 -T28 -T29 \"-I{3}\" {4} {5} {6} \"-o{7}\" {8} {9} {10}",
                 this.sqlServer,                                                 // -S{0}                            SQL Server name 
                 this.database,                                                  // -d{1}                            Database name
-                (this.useWindowsAuth ? "-E" : String.Format("-U\"%s\" -P\"%s\"", this.sqlLogin, this.sqlPassword)), // {2} = -E (or) -Uuser -PPassword  Credentials
+                (this.useWindowsAuth ? "-E" : String.Format("-U\"{0}\" -P\"{1}\"", this.sqlLogin, this.sqlPassword)), // {2} = -E (or) -Uuser -PPassword  Credentials
                 firstTrcFile,                                                   // -I{3}                            Profiler trace file
                 ((bool)this.options[OPTION_OUTPUT_RML] ? "" : "-f"),            // {4} = -f                         Optional: enable RML file generation
                 ((bool)this.options[OPTION_OUTPUT_SPID_TRC] ? "-M" : ""),       // {5} = -M                         Optional: output spid-specific .trc files
