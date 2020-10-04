@@ -706,21 +706,13 @@ namespace sqlnexus
             DiagConfig config = new DiagConfig(srcPath);
 
             nInfo.SetAttribute("SQLVersion", config.SQLVersion);
-            {
-                Label la = new Label();
-                la.Name = "FileName1";
-                la.Text = "SQL Base*.XEL";
-                AddLabel(0, "SQL Base*.XEL");
-                
-            }
-           
             EnumFiles();
 
             //AddLabel();
             bool RunScripts = true;
             bool Success = false;
 
-            CustomImporter CI = new CustomImporter();
+            SQLBaseXELImporter CI = new SQLBaseXELImporter();
             CI.SQLBaseImport(Globals.credentialMgr.ConnectionString, Globals.credentialMgr.Server,
                                                     Globals.credentialMgr.WindowsAuth,
                                                     Globals.credentialMgr.User,
