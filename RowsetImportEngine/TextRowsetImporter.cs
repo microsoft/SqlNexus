@@ -379,11 +379,18 @@ namespace RowsetImportEngine
                             SqlStmt += "(53)";		// always use max float
                             break;
                         case SqlDbType.VarChar:
-                        case SqlDbType.NVarChar:
                         case SqlDbType.VarBinary:
-                            if (len > 0)
+                            if (len > 0 && len <= 8000)
                                 SqlStmt += "(" + len + ")";
-                            else if (len == Column.SQL_MAX_LENGTH)
+                            else if (len == Column.SQL_MAX_LENGTH || len > 8000)
+                                SqlStmt += "(max)";
+                            else
+                                SqlStmt += "(" + DEFAULT_NONTAB_COLUMN_LEN + ")";
+                            break;
+                        case SqlDbType.NVarChar:
+                            if (len > 0 && len <= 4000)
+                                SqlStmt += "(" + len + ")";
+                            else if (len == Column.SQL_MAX_LENGTH || len > 4000)
                                 SqlStmt += "(max)";
                             else
                                 SqlStmt += "(" + DEFAULT_NONTAB_COLUMN_LEN + ")";
@@ -995,31 +1002,31 @@ namespace RowsetImportEngine
             return true;
         }
 
-		// The list of rowsets we know how to interpret and their properties are stored in XML files. 
-		// Read the file and use the info to populate the KnownRowsets collection. 
-		private bool ReadRowsetPropertiesFromXml (string sXmlRowsetFile, bool bOptional)
-		{
-			ColumnTypes ct = new ColumnTypes();
-			RowsetTypes rt = new RowsetTypes();
-			TextRowset rowset = null;
-			Column col = null;
-			string RowsetName = "";
-			string RowsetType = "";
-			string RowsetIdentifier = "";
-			string ColumnName = "";
-			string ColumnType = "";
-			string ColumnDefineToken = "";
-			string ColumnValueToken = "";
-			string ColumnRowsetLevel = "";
-			int ColumnLength = 0;
-			string sXmlRowsetFile2 = "";
-			bool RowsetEnabled = true;
-			System.Xml.XmlTextReader xr = null;
+        // The list of rowsets we know how to interpret and their properties are stored in XML files. 
+        // Read the file and use the info to populate the KnownRowsets collection. 
+        private bool ReadRowsetPropertiesFromXml(string sXmlRowsetFile, bool bOptional)
+        {
+            ColumnTypes ct = new ColumnTypes();
+            RowsetTypes rt = new RowsetTypes();
+            TextRowset rowset = null;
+            Column col = null;
+            string RowsetName = "";
+            string RowsetType = "";
+            string RowsetIdentifier = "";
+            string ColumnName = "";
+            string ColumnType = "";
+            string ColumnDefineToken = "";
+            string ColumnValueToken = "";
+            string ColumnRowsetLevel = "";
+            int ColumnLength = 0;
+            string sXmlRowsetFile2 = "";
+            bool RowsetEnabled = true;
+            System.Xml.XmlTextReader xr = null;
 
-			// First check the .exe dir for TextRowsets.xml.  If not found, check current directory. 
-			sXmlRowsetFile2 = Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath) + @"\" + sXmlRowsetFile;
+            // First check the .exe dir for TextRowsets.xml.  If not found, check current directory. 
+            sXmlRowsetFile2 = Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath) + @"\" + sXmlRowsetFile;
             String sXmlRowsetFile3 = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\sqlnexus\" + sXmlRowsetFile;
-			//need some special handling of TextRowsets.xml
+            //need some special handling of TextRowsets.xml
 
             /*
              * do not use resource file for ease of editing
@@ -1034,7 +1041,7 @@ namespace RowsetImportEngine
                 xr = new XmlTextReader(sXmlRowsetFile2);
             else if (File.Exists(sXmlRowsetFile))
                 xr = new XmlTextReader(sXmlRowsetFile);
-            else if (File.Exists (sXmlRowsetFile3))
+            else if (File.Exists(sXmlRowsetFile3))
                 xr = new XmlTextReader(sXmlRowsetFile3);
             else
             {
@@ -1048,171 +1055,164 @@ namespace RowsetImportEngine
                 return bOptional;
             }
 
-			try
-			{
-				xr.Read();
-				while (!xr.EOF)
-				{
-					if (xr.IsStartElement("Rowset"))
-					{
-						// Read rowset attributes
-						while (xr.MoveToNextAttribute())
-						{
-							switch (xr.Name) 
-							{
-								case "name": RowsetName = xr.Value; break;
+            try
+            {
+                xr.Read();
+                while (!xr.EOF)
+                {
+                    if (xr.IsStartElement("Rowset"))
+                    {
+                        // Read rowset attributes
+                        while (xr.MoveToNextAttribute())
+                        {
+                            switch (xr.Name)
+                            {
+                                case "name": RowsetName = xr.Value; break;
 
-								case "type": RowsetType = xr.Value; break;
-								case "identifier": RowsetIdentifier = xr.Value; break;
-								// if enabled="false", skip this rowset
-								case "enabled": 
-									if (xr.Value.Trim().ToUpper().Equals("FALSE"))
-										RowsetEnabled = false;
-									else
-										RowsetEnabled = true;
-									break;
-							}
+                                case "type": RowsetType = xr.Value; break;
+                                case "identifier": RowsetIdentifier = xr.Value; break;
+                                // if enabled="false", skip this rowset
+                                case "enabled":
+                                    if (xr.Value.Trim().ToUpper().Equals("FALSE"))
+                                        RowsetEnabled = false;
+                                    else
+                                        RowsetEnabled = true;
+                                    break;
+                            }
                             if (!IsLegalTableName(RowsetName))
                             {
 
                                 this.logger.LogMessage("you have provided an illegal table name (likely in your TextRowsetsCustom.xml). consider deleting that file from %appdata%\\sqlnexus directory \r\n " + RowsetName, MessageOptions.Silent, TraceEventType.Information);
-                                  
+
                                 //just log it and don't fail
                                 //return false;
                             }
 
-						}
-
-						// If the rowset is defined but not enabled, skip it. 
-						if (!RowsetEnabled)
-						{
-							xr.Skip();
-							// Default to enabled for next rowset
-							RowsetEnabled = true;
-							continue;
-						}
-
-						// Locate the matching rowset class
-						bool RowsetFound = false;
-						foreach (TextRowset r in rt.KnownRowsetTypes)
-						{
-							if (r.GetType().ToString() == RowsetType)
-							{	// found the rowset type -- make a copy to add to the KnownRowsets collection
-								RowsetFound = true;
-								rowset = (TextRowset)(r.Copy());
-								rowset.Name = RowsetName;
-								rowset.Identifer = RowsetIdentifier;
-								break;
-							}
-						}
-						if (!RowsetFound)
-						{	// We didn't find the rowset type -- skip column processing for the rowset. 
-							xr.Skip();
-							continue;
-						}
-					
-						// Read past the KnownColumns element until we reach the Columns list.  Keep an eye out 
-						// for a new Rowset (it's possible that a rowset could not have any KnownColumns).
-						while (!xr.EOF && !xr.Name.Equals("Column") && !xr.Name.Equals("Rowset") && xr.Read()) {}
-						// Read in each column
-						while (xr.IsStartElement("Column") && !xr.EOF)
-						{
-							ColumnName="";			ColumnLength=0;
-							ColumnType="";			ColumnDefineToken="";
-							ColumnValueToken="";	ColumnRowsetLevel="false";
-
-							// Read column attributes
-							while (xr.MoveToNextAttribute())
-							{
-								switch (xr.Name) 
-								{
-									case "name": ColumnName = xr.Value; break;
-									case "type": ColumnType = xr.Value; break;
-									case "length": ColumnLength = Convert.ToInt32(xr.Value,10); break;
-									case "rowsetlevel": ColumnRowsetLevel = xr.Value; break;
-									case "definetoken": ColumnDefineToken = xr.Value; break;
-									case "valuetoken": ColumnValueToken = xr.Value; break;
-								}
-								if (("" != ColumnDefineToken) || ("" != ColumnValueToken))
-									rowset.UsesTokens = true;
-							}
-							// Locate the matching column class
-							bool ColumnFound = false;
-							foreach (Column c in ct.KnownColumnTypes)
-							{
-								if (c.GetType().ToString() == ColumnType)
-								{	// found the column type -- make a copy to add to the KnownColumns collection
-									ColumnFound = true;
-									col = (Column)(c.Copy());
-									col.Name = ColumnName;
-									col.DefineToken = ColumnDefineToken;
-									col.ValueToken = ColumnValueToken;
-									// Some rowsets (e.g. DBCC INPUTBUFFER) have variable-width columns. For these 
-									// columns, TextRowsets.xml allows specifying a column width wide enough to 
-									// accommodate all possible widths.  If a col width was specified, we'll use it 
-									// instead of basing SQL column width on the width of the column in the input file. 
-									
-                                    //this is to allow NVARCHAR(MAX)
-                                    //if (ColumnLength>0) 
-										col.SqlColumnLength = ColumnLength;
-									// We normally determine column width dynamically based on the observed column 
-									// header width in the input file. However, non-tabular rowsets don't have column 
-									// headers, so we always need to set their column width explicitly. 
-									if (!rowset.TablularRowset)
-									{
-										if (ColumnLength>0)
-											col.Length = ColumnLength;
-										else
-											col.Length = DEFAULT_NONTAB_COLUMN_LEN;
-									}
-									col.RowsetLevel = ColumnRowsetLevel.Trim().ToUpper().Equals("TRUE") ? true : false;
-									rowset.KnownColumns.Add(col);
-									break;
-								}
-							}
-							if (!ColumnFound)
-							{	// We didn't find the column type -- skip it. 
-								xr.Skip();
-							}
-							xr.Read();
-						}
-
-                        //need to validate varchar max
-
-
-
-                        for (int i = 0; i < rowset.KnownColumns.Count; i++)
-                        {
-                            if (((Column)rowset.KnownColumns[i]).SqlColumnLength == Column.SQL_MAX_LENGTH && i != (rowset.KnownColumns.Count - 1))
-                            {
-                                
-                                this.logger.LogMessage("Error: only last column is allowed to have max length of -1");
-                                throw new ArgumentException("Error: only last column is allowed to have max length of -1");
-                            }
                         }
 
-                            // If we get here we should have a valid TextRowset with a populated KnownColumns collection.
-                            // Add the rowset to the KnownRowsets collection. 
-                            this.KnownRowsets.Add(rowset);
-						if (!rowset.TablularRowset)
-							this.KnownNonTabularRowsets.Add(rowset);
-					}
-					// Make sure we don't read past a rowset or past the end of the file. 
-					if (!xr.EOF)
-					{
-						if (!xr.EOF && !xr.IsStartElement("Rowset"))
-							xr.Read();
-					}
-				}
-				return true;
-			}
-			catch (Exception e)
-			{
+                        // If the rowset is defined but not enabled, skip it. 
+                        if (!RowsetEnabled)
+                        {
+                            xr.Skip();
+                            // Default to enabled for next rowset
+                            RowsetEnabled = true;
+                            continue;
+                        }
+
+                        // Locate the matching rowset class
+                        bool RowsetFound = false;
+                        foreach (TextRowset r in rt.KnownRowsetTypes)
+                        {
+                            if (r.GetType().ToString() == RowsetType)
+                            {   // found the rowset type -- make a copy to add to the KnownRowsets collection
+                                RowsetFound = true;
+                                rowset = (TextRowset)(r.Copy());
+                                rowset.Name = RowsetName;
+                                rowset.Identifer = RowsetIdentifier;
+                                break;
+                            }
+                        }
+                        if (!RowsetFound)
+                        {   // We didn't find the rowset type -- skip column processing for the rowset. 
+                            xr.Skip();
+                            continue;
+                        }
+
+                        // Read past the KnownColumns element until we reach the Columns list.  Keep an eye out 
+                        // for a new Rowset (it's possible that a rowset could not have any KnownColumns).
+                        while (!xr.EOF && !xr.Name.Equals("Column") && !xr.Name.Equals("Rowset") && xr.Read()) { }
+                        // Read in each column
+                        while (xr.IsStartElement("Column") && !xr.EOF)
+                        {
+                            ColumnName = "";
+                            ColumnLength = 0;
+                            ColumnType = "";
+                            ColumnDefineToken = "";
+                            ColumnValueToken = "";
+                            ColumnRowsetLevel = "false";
+
+                            // Read column attributes
+                            while (xr.MoveToNextAttribute())
+                            {
+                                switch (xr.Name)
+                                {
+                                    case "name": ColumnName = xr.Value; break;
+                                    case "type": ColumnType = xr.Value; break;
+                                    case "length": ColumnLength = Convert.ToInt32(xr.Value, 10); break;
+                                    case "rowsetlevel": ColumnRowsetLevel = xr.Value; break;
+                                    case "definetoken": ColumnDefineToken = xr.Value; break;
+                                    case "valuetoken": ColumnValueToken = xr.Value; break;
+                                }
+                                if (("" != ColumnDefineToken) || ("" != ColumnValueToken))
+                                    rowset.UsesTokens = true;
+                            }
+                            // Locate the matching column class
+                            bool ColumnFound = false;
+                            foreach (Column c in ct.KnownColumnTypes)
+                            {
+                                if (c.GetType().ToString() == ColumnType)
+                                {   // found the column type -- make a copy to add to the KnownColumns collection
+                                    ColumnFound = true;
+                                    col = (Column)(c.Copy());
+                                    col.Name = ColumnName;
+                                    col.DefineToken = ColumnDefineToken;
+                                    col.ValueToken = ColumnValueToken;
+                                    // Some rowsets (e.g. DBCC INPUTBUFFER) have variable-width columns. For these 
+                                    // columns, TextRowsets.xml allows specifying a column width wide enough to 
+                                    // accommodate all possible widths.  If a col width was specified, we'll use it 
+                                    // instead of basing SQL column width on the width of the column in the input file. 
+
+                                    //this is to allow NVARCHAR(MAX)
+                                    //if (ColumnLength>0) 
+                                    col.SqlColumnLength = ColumnLength;
+                                    // We normally determine column width dynamically based on the observed column 
+                                    // header width in the input data file. However, non-tabular rowsets don't have column 
+                                    // headers, so we always need to set their column width explicitly. 
+                                    if (!rowset.TabularRowset)
+                                    {
+                                        if (ColumnLength > 0)
+                                            col.Length = ColumnLength;
+                                        else
+                                            col.Length = DEFAULT_NONTAB_COLUMN_LEN;
+                                    }
+                                    col.RowsetLevel = ColumnRowsetLevel.Trim().ToUpper().Equals("TRUE") ? true : false;
+                                    rowset.KnownColumns.Add(col);
+                                    break;
+                                }
+                            }
+                            if (!ColumnFound)
+                            {   // We didn't find the column type -- skip it. 
+                                xr.Skip();
+                            }
+                            xr.Read();
+
+                        }//end while
+
+
+                        // If we get here we should have a valid TextRowset with a populated KnownColumns collection.
+                        // Add the rowset to the KnownRowsets collection. 
+                        this.KnownRowsets.Add(rowset);
+
+                        if (!rowset.TabularRowset)
+                            this.KnownNonTabularRowsets.Add(rowset);
+                    }
+                    // Make sure we don't read past a rowset or past the end of the file. 
+                    if (!xr.EOF)
+                    {
+                        if (!xr.EOF && !xr.IsStartElement("Rowset"))
+                            xr.Read();
+                    }
+                }
+                return true;
+            }
+            catch (Exception e)
+            {
                 ErrorDialog ed = new ErrorDialog(e, false, this.logger);
-				ed.Handle();
-				return false;
-			}
-		}
+                ed.Handle();
+                return false;
+            }
+        }
+
 		private void WriteRowsetPropertiesToXml ()
 		{
             throw new NotImplementedException("this method is not implemented");
