@@ -103,7 +103,7 @@
   <ItemGroup>
     <Compile Include="ClickOnce\ClickOnce.cs" />
     <Compile Include="CredentialManager.cs" />
-    <Compile Include="SQLBaseXELImporter.cs" />
+    <Compile Include="CustomXELImporter.cs" />
     <Compile Include="DependencyManager.cs" />
     <Compile Include="DiagConfig.cs" />
     <Compile Include="FileImporter.cs" />

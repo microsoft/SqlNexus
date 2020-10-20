@@ -712,7 +712,7 @@ namespace sqlnexus
             bool RunScripts = true;
             bool Success = false;
 
-            SQLBaseXELImporter CI = new SQLBaseXELImporter();
+            CustomXELImporter CI = new CustomXELImporter();
             CI.SQLBaseImport(Globals.credentialMgr.ConnectionString, Globals.credentialMgr.Server,
                                                     Globals.credentialMgr.WindowsAuth,
                                                     Globals.credentialMgr.User,

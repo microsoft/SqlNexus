@@ -12,7 +12,7 @@ using System.Windows.Forms;
 
 namespace sqlnexus
 {
-   public class SQLBaseXELImporter 
+   public class CustomXELImporter 
     {
       
 
