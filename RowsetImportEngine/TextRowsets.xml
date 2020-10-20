@@ -837,7 +837,7 @@
 
 
 
-    <Rowset name="tbl_dm_db_stats_properties" enabled="true" identifier="-- sys.dm_db_stats_properties" type="RowsetImportEngine.TextRowset">
+    <Rowset name="tbl_dm_db_stats_properties_for_master" enabled="true" identifier="-- sys.dm_db_stats_properties for database name [master]  database id: 1 --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
         <Column name="database_name"       type="RowsetImportEngine.VarCharColumn" />
         <Column name="Object_Name"    type="RowsetImportEngine.VarCharColumn" />
