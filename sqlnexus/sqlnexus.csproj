@@ -396,13 +396,17 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Reports\PowerBIReports\Performance Reports.pbit">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Reports\PowerBIReports\ReadTrace Reports.pbit">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Reports\PowerBIReports\SQL Perfmon Viewer.pbit" />
-    <None Include="Reports\PowerBIReports\System Health Session.pbit" />
+    <None Include="Reports\PowerBIReports\SQL Perfmon Viewer.pbit">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Reports\PowerBIReports\System Health Session.pbit">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="SqlNexus.snk" />
   </ItemGroup>
   <ItemGroup>
