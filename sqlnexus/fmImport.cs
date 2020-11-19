@@ -95,8 +95,8 @@ namespace sqlnexus
 
             if (    FileName.ToUpper().IndexOf("SQLDMP") >= 0 ||  //dump log file
                     FileName.ToUpper().IndexOf("SQLDUMP") >= 0 ||  //dump log file
-                    FileName.ToUpper().IndexOf(@"##") >= 0   // internal files. no need to import
-
+                    FileName.ToUpper().IndexOf(@"##") >= 0  || // internal files. no need to import  
+                    FileName.IndexOf("SQL_Base_Errorlog")>=0
                 )
             
             {
@@ -706,12 +706,20 @@ namespace sqlnexus
             DiagConfig config = new DiagConfig(srcPath);
 
             nInfo.SetAttribute("SQLVersion", config.SQLVersion);
-
-
             EnumFiles();
 
+            //AddLabel();
             bool RunScripts = true;
             bool Success = false;
+
+            CustomXELImporter CI = new CustomXELImporter();
+            CI.SQLBaseImport(Globals.credentialMgr.ConnectionString, Globals.credentialMgr.Server,
+                                                    Globals.credentialMgr.WindowsAuth,
+                                                    Globals.credentialMgr.User,
+                                                    Globals.credentialMgr.Password,
+                                                    Globals.credentialMgr.Database, srcPath);
+        
+            
             try
             {
                 int j = 0;
@@ -760,6 +768,8 @@ namespace sqlnexus
 
                             //Import the data
                             Success = ri.DoImport();
+
+
 
                             if (ri.Name.ToLower().Contains("rowset"))
                             {

@@ -69,30 +69,64 @@ namespace sqlnexus
 
         public static bool IsPowerBiDeskTopInstalled()
         {
-            RegistryKey key = Registry.CurrentUser.OpenSubKey((@"Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.pbit"));
-            if (null == key)
-                return false;
-            else
-                return true;
-            
+            string RegNameValue = "DisplayName";
+            string AppDisplayName = "Microsoft Power BI Desktop (x64)";
+            RegistryKey MainKey = Registry.LocalMachine;
+            MainKey = MainKey.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall");
+
+            foreach (string SubKey in MainKey.GetSubKeyNames())
+            {
+                RegistryKey ChildKeys = MainKey.OpenSubKey(SubKey);
+                string[] ValueNames = ChildKeys.GetValueNames();
+                foreach (var ValueName in ValueNames)
+                {
+                    if(ValueName == RegNameValue)
+                    {
+                       string value= ChildKeys.GetValue(RegNameValue).ToString();
+                        if (value == AppDisplayName)
+                            return true;
+                    }
+
+                }
+                
+            }
+            return false;
+
+
         }
 
         public static void LuanchPowerBI()
         {
             if (!IsPowerBiDeskTopInstalled())
             {
-                MessageBox.Show("PowerBI Desktop is not installed.  Please download and install PowerBI Desktop before using this feature!");
+                MessageBox.Show("PowerBI Desktop is not installed.Please download and install PowerBI Desktop before using this feature!. https://www.microsoft.com/en-us/download/details.aspx?id=58494");
                                     
             }
             else
-            { 
-                Process.Start(@"Reports\SQL Nexus Power BI.pbit");
+            {
+                for (int index = Application.OpenForms.Count - 1; index >= 0; index--)
+                {
+                    if (Application.OpenForms[index].Name == "fmPBReports")
+                    {
+                        
+                        Application.OpenForms[index].Focus();
+
+                    }
+                    else {
+                        fmPBReports pbReports = new fmPBReports();
+                        pbReports.Show();
+                    }
+                    
+                }
+
+          
+
             }
 
         }
-        public static bool IsProgramInstalled (string ProgramDisplayName)
+        public static bool IsProgramInstalled (string ProgramDisplayName) // This method fails if we dont have a "DisplayName" RegSubkey in the Main Key
         {
-
+            
             
             foreach (var item in Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall").GetSubKeyNames())
             {

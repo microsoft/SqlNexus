@@ -34,7 +34,7 @@ namespace NexusInterfaces
 
             if (fileName == null || !File.Exists(fileName))
             {
-                Util.Logger.LogMessage(String.Format("File {0} doesn't exist yet. {1}",ErrorMessage), MessageOptions.All);
+                Util.Logger.LogMessage(String.Format("File {0} doesn't exist yet. {1}", fileName,ErrorMessage), MessageOptions.All);
                 return;
             }
             ProcessStartInfo pi = new ProcessStartInfo("notepad.exe", fileName);

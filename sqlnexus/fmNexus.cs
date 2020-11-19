@@ -3476,10 +3476,8 @@ namespace sqlnexus
         {
             Globals.LuanchPowerBI();
         }
-    
-     
+
       
-     
     }
 
     /// <summary>

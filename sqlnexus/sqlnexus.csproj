@@ -27,10 +27,10 @@
     </UpgradeBackupLocation>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <TargetFrameworkProfile />
-    <PublishUrl>\\myserver\myshare\</PublishUrl>
+    <PublishUrl>C:\NexusTest\</PublishUrl>
     <Install>true</Install>
-    <InstallFrom>Unc</InstallFrom>
-    <UpdateEnabled>true</UpdateEnabled>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
     <UpdateMode>Background</UpdateMode>
     <UpdateInterval>7</UpdateInterval>
     <UpdateIntervalUnits>Days</UpdateIntervalUnits>
@@ -40,11 +40,10 @@
     <SupportUrl>http://www.codeplex.com/sqlnexus</SupportUrl>
     <ProductName>SQL Nexus</ProductName>
     <PublisherName>SQL Nexus</PublisherName>
-    <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>1</ApplicationRevision>
-    <ApplicationVersion>6.20.10.1</ApplicationVersion>
+    <ApplicationRevision>19</ApplicationRevision>
+    <ApplicationVersion>6.20.11.19</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -103,6 +102,7 @@
   <ItemGroup>
     <Compile Include="ClickOnce\ClickOnce.cs" />
     <Compile Include="CredentialManager.cs" />
+    <Compile Include="CustomXELImporter.cs" />
     <Compile Include="DependencyManager.cs" />
     <Compile Include="DiagConfig.cs" />
     <Compile Include="FileImporter.cs" />
@@ -142,6 +142,12 @@
     </Compile>
     <Compile Include="fmNexus.Designer.cs">
       <DependentUpon>fmNexus.cs</DependentUpon>
+    </Compile>
+    <Compile Include="fmPBReports.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fmPBReports.Designer.cs">
+      <DependentUpon>fmPBReports.cs</DependentUpon>
     </Compile>
     <Compile Include="fmReportParameters.cs">
       <SubType>Form</SubType>
@@ -185,6 +191,9 @@
     <EmbeddedResource Include="fmNexus.resx">
       <SubType>Designer</SubType>
       <DependentUpon>fmNexus.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="fmPBReports.resx">
+      <DependentUpon>fmPBReports.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="fmReportParameters.resx">
       <SubType>Designer</SubType>
@@ -385,6 +394,18 @@
     <Content Include="Reports\PAL_sub_C.rdlC">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Reports\PowerBIReports\Performance Reports.pbit">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Reports\PowerBIReports\ReadTrace Reports.pbit">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Reports\PowerBIReports\SQL Perfmon Viewer.pbit">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Reports\PowerBIReports\System Health Session.pbit">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="SqlNexus.snk" />
   </ItemGroup>
   <ItemGroup>
