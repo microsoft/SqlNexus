@@ -1649,20 +1649,19 @@
       <Column name="DiagDate" type="RowsetImportEngine.DateTimeColumn" />
     </Rowset>
 
-   <!-- <Rowset name="tbl_dm_db_stats_properties" enabled="true" identifier="-sys.dm_db_stats_properties-" type="RowsetImportEngine.TextRowset">
+   <Rowset name="tbl_dm_db_stats_properties" enabled="true" identifier="-sys.dm_db_stats_properties-" type="RowsetImportEngine.TextRowset">
     	<Column name="database_id" type="RowsetImportEngine.IntColumn" />
-     <Column name="database_name" type="RowsetImportEngine.NVarCharColumn" />
-     <Column name="object_name" type="RowsetImportEngine.NVarCharColumn" />
+      <Column name="database_name" type="RowsetImportEngine.NVarCharColumn" />
+      <Column name="object_name" type="RowsetImportEngine.NVarCharColumn" />
       <Column name="object_id" type="RowsetImportEngine.IntColumn" />
       <Column name="stats_id" type="RowsetImportEngine.IntColumn" />
       <Column name="last_updated" type="RowsetImportEngine.DateTimeColumn" />
-     <Column name="rows" type="RowsetImportEngine.IntColumn" />
-    <Column name="rows_sampled" type="RowsetImportEngine.IntColumn" />
+      <Column name="rows" type="RowsetImportEngine.IntColumn" />
+      <Column name="rows_sampled" type="RowsetImportEngine.IntColumn" />
       <Column name="steps" type="RowsetImportEngine.IntColumn" />
       <Column name="unfiltered_rows" type="RowsetImportEngine.IntColumn" />
       <Column name="modification_counter" type="RowsetImportEngine.IntColumn" />
-    
-    </Rowset> -->
+    </Rowset>
     
     
   <Rowset name="tbl_DisabledIndexes" enabled="true" identifier="--disabled indexes--" type="RowsetImportEngine.TextRowset">
