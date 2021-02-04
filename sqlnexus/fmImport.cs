@@ -56,17 +56,6 @@ namespace sqlnexus
         ProgressBar currBar = null;
         Label currLabel = null;
 
-        private void AddLabel(int row, string msg)
-        {
-            Label la = new Label();
-            la.AutoSize = true;
-            tlpFiles.Controls.Add(la, 2, row);
-            la.Text = msg;
-//            la.Dock = DockStyle.Fill;
-//            la.TextAlign = ContentAlignment.MiddleLeft;
-            la.Anchor = AnchorStyles.Left;
-            la.Location = new Point(0, 3);
-        }
 
 
         private bool BlockPerfStatsSnapshot(string FileName)
@@ -115,7 +104,7 @@ namespace sqlnexus
                 return;
             }
             int i = tlpFiles.RowCount-1;
-
+            
             
             if (Importer is INexusFileImporter)
             {
@@ -171,34 +160,45 @@ namespace sqlnexus
         private void AddFileRow(int row, string labelText, INexusImporter Importer)
         {
             tlpFiles.RowCount += 1;
-            //LinkLabel la = new LinkLabel();
-            Label la = new Label();
-            //Label lbl;
-            la.Name = "FileNameLabel";
-            
-            
-            la.AutoSize = true;
-            //la.LinkBehavior = LinkBehavior.NeverUnderline;
-            tlpFiles.Controls.Add(la, 0, row);
-            la.Text = labelText; //+"(" + Importer.Name + ")";
-            
-            la.Anchor = AnchorStyles.Left;
-            la.Location = new Point(0, 3);
 
-            la.Tag = Importer;
 
-            //la.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llTemplate_LinkClicked);
+            //first column - files processed
+            Label lab1 = new Label();
+            if (Importer == null)
+            {
+                lab1.Name = "NotAFileLabel"; //used for showing progress in non-file import scenarios, like running T-SQL
+            }
+            else
+            {
+                lab1.Name = "FileNameLabel";
+            }
 
+            lab1.AutoSize = true;
+            tlpFiles.Controls.Add(lab1, 0, row);
+            lab1.Text = labelText; //+"(" + Importer.Name + ")";
+            lab1.Anchor = AnchorStyles.Left;
+            lab1.Location = new Point(0, 3);
+            if (Importer != null)
+                lab1.Tag = Importer;
+
+
+            //second column - progress bar
             ProgressBar pb = new ProgressBar();
             tlpFiles.Controls.Add(pb, 1, row);
             pb.Height = 13;
             pb.MarqueeAnimationSpeed = 25;
-            /*Label lblImporterName = new Label();
-            lblImporterName.Name = "Importer Name";
-            lblImporterName.Text = Importer.Name;
-            tlpFiles.Controls.Add(lblImporterName);*/
-            AddLabel(row, "");
+            
+
+            //third column - lines processed. starts blank and filled dynamically as files are processed
+            Label lab2 = new Label();
+            lab2.AutoSize = true;
+            tlpFiles.Controls.Add(lab2, 2, row);
+            lab2.Text = "";
+            lab2.Anchor = AnchorStyles.Left;
+            lab2.Location = new Point(0, 3);
         }
+
+
         int ticks = Environment.TickCount;
 
         private delegate void UpdateProgressDelegate(object[] args);
@@ -209,9 +209,13 @@ namespace sqlnexus
                 INexusFileImporter rif = (args[0] as INexusFileImporter);
                 int PctComplete;
                 // Make sure we don't divide by 0 if someone points us at a 0 byte file. 
-                if (rif.FileSize > 0) PctComplete = (int)(((decimal)rif.CurrentPosition) / rif.FileSize * 100);
+                if (rif.FileSize > 0)
+                    PctComplete = (int)(((decimal)rif.CurrentPosition) / rif.FileSize * 100);
                 else PctComplete = 0;
-                if (PctComplete > 100) PctComplete = 100;
+
+                if (PctComplete > 100)
+                    PctComplete = 100;
+
                 currBar.Value = PctComplete;
             }
             else
@@ -672,7 +676,7 @@ namespace sqlnexus
             // Close any open reports based on the data that we're about to overwrite
             fmNexus.singleton.CloseAll();
 
-            string srcPath = Path.GetFullPath(cbPath.Text.Trim().Replace("\"",""));
+            string srcPath = Path.GetFullPath(cbPath.Text.Trim());
             /*
             string pathFromCmd = Globals.PathsToImport.Dequeue();
             if (pathFromCmd != null)
@@ -684,10 +688,8 @@ namespace sqlnexus
             sqlnexus.Properties.Settings.Default.ImportPath = srcPath;
             if (srcPath[srcPath.Length - 1] != '\\')
                 srcPath += '\\';
-            if (-1 == cbPath.Items.IndexOf(srcPath))
-            {
-                cbPath.Items.Add(srcPath);
-            }
+
+            //find the instance name by locating it inside ##SQLDIAG.LOG
             instances = new SqlInstances(srcPath);
 
             if (instances.Count > 1 && Globals.QuietMode)
@@ -706,7 +708,19 @@ namespace sqlnexus
             DiagConfig config = new DiagConfig(srcPath);
 
             nInfo.SetAttribute("SQLVersion", config.SQLVersion);
+
+            //enumerate the files to process and add them to list for processing
             EnumFiles();
+
+
+            //AddFileRow will add 1 to the count of rows in listview 
+            AddFileRow((tlpFiles.RowCount - 1), "Running PerfStats Analysis", null);
+
+            //save the contol index after the files have been enumerated and 1 more row added to tablePanel for Perfstats analysis progress
+            //we use -3 because each row contains 3 controls and we get to the first control of the three (0-index base) 
+
+            int perfAnalysisCtrlIndx = tlpFiles.Controls.Count - 3;
+
 
             //AddLabel();
             bool RunScripts = true;
@@ -720,6 +734,7 @@ namespace sqlnexus
                                                     Globals.credentialMgr.Database, srcPath);
         
             
+            
             try
             {
                 int j = 0;
@@ -730,10 +745,10 @@ namespace sqlnexus
                     {
                         System.Diagnostics.Debug.Assert((null != tlpFiles.Controls[i + 1]) && (null != tlpFiles.Controls[i + 2]));
                         //LinkLabel ll = (LinkLabel)tlpFiles.Controls[i];
-                        Label ll = (Label)tlpFiles.Controls[i];
-                        currBar = (ProgressBar)tlpFiles.Controls[i + 1];
+                        Label ll = (Label)tlpFiles.Controls[i];   
+                        currBar = (ProgressBar)tlpFiles.Controls[i + 1];  
                         currBar.Value = 0;
-                        currLabel = (Label)tlpFiles.Controls[i + 2];
+                        currLabel = (Label)tlpFiles.Controls[i + 2];   
 
                         int ticks = Environment.TickCount;
                         
@@ -841,8 +856,16 @@ namespace sqlnexus
                         }
                         ri = null;
                         j++;
+
+                    } //end of if (Name == "FileNameLabel")
+
+                    else if  (tlpFiles.Controls[i].Name == "NotAFileLabel")
+                    {
+                        currLabel = (Label)tlpFiles.Controls[i + 2];
+                        currLabel.Text = "Please wait for this step to complete...";
+                        Application.DoEvents();
                     }
-                }
+                } //end of for loop
 
 
                 MainForm.LogMessage("RawFileImporter starting");
@@ -850,6 +873,8 @@ namespace sqlnexus
                 rawfileimporter.DoImport();
                 MainForm.LogMessage("RawFileImporter completed");
 
+
+                //post-process execution (call PostProcess.cmd)
                 StringBuilder output = new StringBuilder();
 
                 ProcessStartInfo psi = new ProcessStartInfo();
@@ -884,15 +909,20 @@ namespace sqlnexus
                 MainForm.LogMessage("End of  PostProcess output");
 
 
-                
-                //if (RunScripts)
-                //{
-                   // RunPostScripts();
-                //}
 
-                //run post script just once
-                    RunScript("PerfStatsAnalysis.sql");
-                
+                //run Perfstats Analysis script just once
+
+                MainForm.LogMessage("Running Perfstats Analysis");
+                currBar = (ProgressBar)tlpFiles.Controls[perfAnalysisCtrlIndx + 1];
+                currBar.Value = 10;
+                Application.DoEvents();
+                RunScript("PerfStatsAnalysis.sql");
+                currBar.Value = 100;
+                currLabel = (Label)tlpFiles.Controls[perfAnalysisCtrlIndx + 2];
+                currLabel.Text = "Analysis Done.";
+                MainForm.LogMessage("End of Perfstats Analysis");
+
+
                 //Refresh reports list in case provider changed it
                 MainForm.EnumReports();
 
@@ -916,7 +946,8 @@ namespace sqlnexus
                 }
 
 
-            }
+            }//try block
+
             catch (Exception ex)
             {
                 MainForm.LogMessage("Import failed.");

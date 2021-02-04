@@ -528,7 +528,7 @@ namespace ReadTrace
 
         public string Name
         {
-            get { return "ReadTrace (SQL Profiler TRC Files)"; }
+            get { return "ReadTrace (SQL XEL/TRC Files)"; }
         }
 
         /// <summary>Set of true/false importer options (initialized in ctor)</summary>
