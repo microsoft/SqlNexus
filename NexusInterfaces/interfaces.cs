@@ -111,7 +111,7 @@ namespace NexusInterfaces
         {
             get;
         }
-        bool Canceled 			 // Will be set to true if the current import has been canceled
+        bool Cancelled 			 // Will be set to true if the current import has been cancelled
         {
             get;
         }

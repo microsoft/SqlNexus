@@ -122,7 +122,7 @@ namespace sqlnexus
                         continue;
                     }
 
-                    AddFileRow(i, Path.GetFileName(f), Importer);
+                    AddFileRow(i, Path.GetFileName(f), Importer, "");
                     i++;
 
                 }
@@ -138,11 +138,11 @@ namespace sqlnexus
                     {
                         if (Mask.ToUpper().Contains("XEL"))
                         {
-                            AddFileRow(i, instances.SelectedXEventFileMask, Importer);
+                            AddFileRow(i, instances.SelectedXEventFileMask, Importer, "");
                         }
                         else
                         {
-                            AddFileRow(i, instances.SelectedTraceFileMask, Importer);
+                            AddFileRow(i, instances.SelectedTraceFileMask, Importer, "");
                         }
                         
                         
@@ -150,23 +150,24 @@ namespace sqlnexus
                     }
                     else
                     { 
-                        AddFileRow(i, Mask, Importer);
+                        AddFileRow(i, Mask, Importer,"");
                     }
 
                 }
             }
         }
 
-        private void AddFileRow(int row, string labelText, INexusImporter Importer)
+        private void AddFileRow(int row, string labelText, INexusImporter Importer, string RowType)
         {
             tlpFiles.RowCount += 1;
 
+            //if RowType parameter is blank, then we must have a valid Importer
 
             //first column - files processed
             Label lab1 = new Label();
             if (Importer == null)
             {
-                lab1.Name = "NotAFileLabel"; //used for showing progress in non-file import scenarios, like running T-SQL
+                lab1.Name = RowType; //used for showing progress in non-file import scenarios, like running T-SQL
             }
             else
             {
@@ -266,7 +267,6 @@ namespace sqlnexus
                     msg = "Idle.";
                     break;
                 case ImportState.Importing:
-
                     msg = "Importing...";
                     break;
                 case ImportState.OpeningFile:
@@ -593,8 +593,9 @@ namespace sqlnexus
                 return;
             }
 
+            btnClose.Visible = false;
             DoImport();
-           // nInfo.SetAttribute("Nexus Version", Application.ProductVersion);
+            btnClose.Visible = true;
         }
 
         private void DoImport()
@@ -603,7 +604,7 @@ namespace sqlnexus
                 return;
             if (!tlpFiles.Visible)
             {
-                this.Height = 500;
+                this.Height = 550;
                 this.Width = 850;
                 this.FormBorderStyle = FormBorderStyle.Sizable;
                 tlpFiles.Visible = true;
@@ -712,14 +713,21 @@ namespace sqlnexus
             //enumerate the files to process and add them to list for processing
             EnumFiles();
 
+            //add individual rows for each of these so they show up as progress bars in the summary window listview
+            string rawFileImprtStr = "RawFileImport";
+            AddFileRow((tlpFiles.RowCount - 1), "Raw file import", null, rawFileImprtStr);
+            
+            string postProcessStr = "PostProcess";
+            AddFileRow((tlpFiles.RowCount - 1), "Post-Import processing ", null, postProcessStr);
 
-            //AddFileRow will add 1 to the count of rows in listview 
-            AddFileRow((tlpFiles.RowCount - 1), "Running PerfStats Analysis", null);
+            string perfStatsAnalysisStr = "PerfStatsAnalysis";
+            AddFileRow((tlpFiles.RowCount - 1), "Running perfstats analysis", null, perfStatsAnalysisStr);
 
-            //save the contol index after the files have been enumerated and 1 more row added to tablePanel for Perfstats analysis progress
-            //we use -3 because each row contains 3 controls and we get to the first control of the three (0-index base) 
+            string runtimeCountStr = "RuntimeCount";
+            AddFileRow((tlpFiles.RowCount - 1), "Counting unique runtime snapshots", null, runtimeCountStr);
 
-            int perfAnalysisCtrlIndx = tlpFiles.Controls.Count - 3;
+            string enumReportsStr = "EnumReports";
+            AddFileRow((tlpFiles.RowCount - 1), "Enumerating reports", null, enumReportsStr);
 
 
             //AddLabel();
@@ -738,6 +746,7 @@ namespace sqlnexus
             try
             {
                 int j = 0;
+
                 for (int i = 0; i < tlpFiles.Controls.Count; i++)
                 {
                     //if (tlpFiles.Controls[i] is LinkLabel)
@@ -806,10 +815,10 @@ namespace sqlnexus
                         currBar.Style = ProgressBarStyle.Blocks;
                         string msg;
                         msg = "(Importer:" + ri.Name + ") ";
-                        if (ri.Canceled)	// different msg if import was canceled.
+                        if (ri.Cancelled)	// different msg if import was canceled.
                         {
                             RunScripts = false;
-                            msg += "Canceled. (" + (Environment.TickCount - ticks) / 1000 + " sec, ";
+                            msg += "Cancelled. (" + (Environment.TickCount - ticks) / 1000 + " sec, ";
                             if (ri is INexusFileImporter)
                             {
                                 msg += this.currBar.Value.ToString() + "% complete)";
@@ -859,92 +868,130 @@ namespace sqlnexus
 
                     } //end of if (Name == "FileNameLabel")
 
-                    else if  (tlpFiles.Controls[i].Name == "NotAFileLabel")
+                    else if  (tlpFiles.Controls[i].Name == rawFileImprtStr)
                     {
+                        int rawfileStartTicks = Environment.TickCount;
+
+                        currBar = (ProgressBar)tlpFiles.Controls[i + 1];
+                        currBar.Value = 10;
+
+                        currLabel = (Label)tlpFiles.Controls[i + 2];
+                        currLabel.Text = "Please wait for raw file import to complete...";
+                        
+                        Application.DoEvents();
+                        //raw file importer
+                        MainForm.LogMessage("RawFileImporter starting");
+                        RawFileImporter rawfileimporter = new RawFileImporter(Globals.credentialMgr.Server, Globals.credentialMgr.Database, srcPath);
+                        
+                        //do the raw file import
+                        string statusStr = rawfileimporter.DoImport();
+
+                        currBar.Value = 100;
+                        MainForm.LogMessage("RawFileImporter completed");
+
+                        string rawfileMsg = "(Importer:" + rawFileImprtStr + ") " + "Done. (" + (Environment.TickCount - rawfileStartTicks) / 1000 + " sec), " + statusStr +".";
+                        currLabel.Text = rawfileMsg;
+                    }
+
+                    else if (tlpFiles.Controls[i].Name == postProcessStr)
+                    {
+                        //run Perfstats Analysis script just once
+                        currBar = (ProgressBar)tlpFiles.Controls[i + 1];
+                        currBar.Value = 10;
+
+                        currLabel = (Label)tlpFiles.Controls[i + 2];
+                        currLabel.Text = "Please wait for post-import process step to complete...";
+
+                        MainForm.LogMessage("Running Post-Import processing...");
+                        Application.DoEvents();
+
+                        //run Post-processing
+                        RunPostProcessing(srcPath);
+
+                        currBar.Value = 100;
+                        currLabel.Text = "(Post-import Processing) Done.";
+                        MainForm.LogMessage("End of Post-Import processing");
+                    }
+
+                    else if (tlpFiles.Controls[i].Name == perfStatsAnalysisStr)
+                    {
+                        //run Perfstats Analysis script just once
+                        currBar = (ProgressBar)tlpFiles.Controls[i + 1];
+                        currBar.Value = 10;
+
+                        currLabel = (Label)tlpFiles.Controls[i + 2];
+                        currLabel.Text = "Please wait for PerfStats analysis step to complete...";
+
+                        MainForm.LogMessage("Running Perfstats Analysis");
+                        Application.DoEvents();
+                        
+                        //do the analysis
+                        RunScript("PerfStatsAnalysis.sql");
+
+                        currBar.Value = 100;
+                        currLabel.Text = "(PerfStatsAnalysis) Done.";
+                        MainForm.LogMessage("End of Perfstats Analysis");
+
+                    }
+
+                    else if (tlpFiles.Controls[i].Name == runtimeCountStr)
+                    {
+                        int runtimeStartTicks = Environment.TickCount;
+                        //run Perfstats Analysis script just once
+                        currBar = (ProgressBar)tlpFiles.Controls[i + 1];
+                        currBar.Value = 10;
+
                         currLabel = (Label)tlpFiles.Controls[i + 2];
                         currLabel.Text = "Please wait for this step to complete...";
+
+                        MainForm.LogMessage("Running count of runtimes captured in the data");
                         Application.DoEvents();
+
+                        //do the runtime count
+                        string runtimesRet = RuntimeCount(startTicks);
+
+                        currBar.Value = 100;
+
+                        string runtimeMsg = "(" + runtimeCountStr + ") " + "Done. (" + (Environment.TickCount - runtimeStartTicks) / 1000 + " sec), " + runtimesRet + ".";
+                        currLabel.Text = runtimeMsg;
+                        MainForm.LogMessage("End of counting runtimes");
+
                     }
+
+                    else if (tlpFiles.Controls[i].Name == enumReportsStr)
+                    {
+                        int enumReportsStartTicks = Environment.TickCount;
+                        //run Perfstats Analysis script just once
+                        currBar = (ProgressBar)tlpFiles.Controls[i + 1];
+                        currBar.Value = 10;
+
+                        currLabel = (Label)tlpFiles.Controls[i + 2];
+                        currLabel.Text = "Please wait reports enumeration step to complete...";
+
+                        MainForm.LogMessage("Enumerating reports");
+                        Application.DoEvents();
+
+                        
+                        //Refresh reports list in case provider changed it
+                        MainForm.EnumReports();
+
+                        currBar.Value = 100;
+
+                        string runtimeMsg = "(" + enumReportsStr + ") " + "Done. (" + (Environment.TickCount - enumReportsStartTicks) / 1000 + " sec) ";
+                        currLabel.Text = runtimeMsg;
+                        MainForm.LogMessage("End of report enumeration");
+
+                    }
+
                 } //end of for loop
 
 
-                MainForm.LogMessage("RawFileImporter starting");
-                RawFileImporter rawfileimporter = new RawFileImporter(Globals.credentialMgr.Server, Globals.credentialMgr.Database, srcPath);
-                rawfileimporter.DoImport();
-                MainForm.LogMessage("RawFileImporter completed");
-
-
-                //post-process execution (call PostProcess.cmd)
-                StringBuilder output = new StringBuilder();
-
-                ProcessStartInfo psi = new ProcessStartInfo();
-                psi.CreateNoWindow = true;
-                psi.RedirectStandardOutput = true;
-                psi.RedirectStandardInput = true;
-                psi.UseShellExecute = false;
-                psi.Arguments = string.Format("{0} {1} \"{2}\"", Globals.credentialMgr.Server, Globals.credentialMgr.Database, srcPath);
-                MainForm.LogMessage("PostProcess argument " + psi.Arguments);
-                psi.FileName = "PostProcess.cmd";
-
-                Process process = new Process();
-                process.StartInfo = psi;
-
-                process.EnableRaisingEvents = true;
-
-                process.OutputDataReceived += new DataReceivedEventHandler
-                (
-                    delegate(object sender, DataReceivedEventArgs e)
-                    {
-                        output.Append(e.Data);
-                    }
-                );
-                process.Start();
-                process.BeginOutputReadLine();
-                process.WaitForExit();
-                process.CancelOutputRead();
-                
-                MainForm.LogMessage("PostProcess output");
-
-                MainForm.LogMessage(output.ToString());
-                MainForm.LogMessage("End of  PostProcess output");
 
 
 
-                //run Perfstats Analysis script just once
 
-                MainForm.LogMessage("Running Perfstats Analysis");
-                currBar = (ProgressBar)tlpFiles.Controls[perfAnalysisCtrlIndx + 1];
-                currBar.Value = 10;
-                Application.DoEvents();
-                RunScript("PerfStatsAnalysis.sql");
-                currBar.Value = 100;
-                currLabel = (Label)tlpFiles.Controls[perfAnalysisCtrlIndx + 2];
-                currLabel.Text = "Analysis Done.";
-                MainForm.LogMessage("End of Perfstats Analysis");
-
-
-                //Refresh reports list in case provider changed it
-                MainForm.EnumReports();
-
-                //if (Globals.ReportExportPath != null)
-                  //  MainForm.ProcessReportQueue();
-
-                MainForm.LogMessage(String.Format("Import complete. Total import time: {0} seconds", (Environment.TickCount - startTicks) / 1000));
-
-                SqlConnection conn = new SqlConnection(Globals.credentialMgr.ConnectionString);
-                SqlCommand cmd = conn.CreateCommand();
-                cmd.CommandText = "select count (distinct runtime) 'NumberOfRuntimes' from tbl_PERF_STATS_SCRIPT_RUNTIMES";
-                conn.Open();
-                Int32 NumberOfRuntimes = (Int32)cmd.ExecuteScalar();
-
-                conn.Close();
-
-                if (NumberOfRuntimes < 5)
-                {
-                    MainForm.LogMessage("The data was captured for a very short period of time.  Some reports may fail", MessageOptions.Both);
-
-                }
-
+              
+ 
 
             }//try block
 
@@ -969,6 +1016,68 @@ namespace sqlnexus
             }
         }
 
+        private void RunPostProcessing(string sourcePath)
+        {
+
+            //post-process execution (call PostProcess.cmd)
+            StringBuilder output = new StringBuilder();
+
+            ProcessStartInfo psi = new ProcessStartInfo();
+            psi.CreateNoWindow = true;
+            psi.RedirectStandardOutput = true;
+            psi.RedirectStandardInput = true;
+            psi.UseShellExecute = false;
+            psi.Arguments = string.Format("{0} {1} \"{2}\"", Globals.credentialMgr.Server, Globals.credentialMgr.Database, sourcePath);
+            MainForm.LogMessage("PostProcess argument " + psi.Arguments);
+            psi.FileName = "PostProcess.cmd";
+
+            Process process = new Process();
+            process.StartInfo = psi;
+
+            process.EnableRaisingEvents = true;
+
+            process.OutputDataReceived += new DataReceivedEventHandler
+            (
+                delegate (object sender, DataReceivedEventArgs e)
+                {
+                    output.Append(e.Data);
+                }
+            );
+            process.Start();
+            process.BeginOutputReadLine();
+            process.WaitForExit();
+            process.CancelOutputRead();
+        }
+
+
+        private string RuntimeCount(int initialTicks)
+        {
+            string retString = "";
+            string lessThanFive = "The data was captured for a very short period of time.  Some reports may fail";
+
+            MainForm.LogMessage(String.Format("Import complete. Total import time: {0} seconds", (Environment.TickCount - initialTicks) / 1000));
+
+            SqlConnection conn = new SqlConnection(Globals.credentialMgr.ConnectionString);
+            SqlCommand cmd = conn.CreateCommand();
+            cmd.CommandText = "select count (distinct runtime) 'NumberOfRuntimes' from tbl_PERF_STATS_SCRIPT_RUNTIMES";
+            conn.Open();
+            Int32 NumberOfRuntimes = (Int32)cmd.ExecuteScalar();
+
+            conn.Close();
+
+            if (NumberOfRuntimes < 5)
+            {
+                MainForm.LogMessage(lessThanFive, MessageOptions.Both);
+                retString = lessThanFive;
+            }
+            else
+            {
+                retString = NumberOfRuntimes.ToString() + " runtimes found.";
+            }
+
+            return retString; 
+
+        }
 
         private void RunPostScripts()
         {
@@ -1196,6 +1305,10 @@ namespace sqlnexus
 
         }
 
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 
     

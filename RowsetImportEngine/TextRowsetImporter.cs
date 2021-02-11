@@ -160,17 +160,17 @@ namespace RowsetImportEngine
             }
         }
 
-        private bool canceled = false;
+        private bool cancelled = false;
         /// <summary> Will be set to true if the current import has been canceled </summary>
-        public bool Canceled
+        public bool Cancelled
         {
             get
             {
-                return canceled;
+                return cancelled;
             }
             set
             {
-                canceled = value;
+                cancelled = value;
             }
         }
 
@@ -332,7 +332,7 @@ namespace RowsetImportEngine
 		/// </summary>
 		public void Cancel() 
 		{
-			this.Canceled = true;
+			this.Cancelled = true;
 		}
 		/// <summary>
         /// Set initial importer state
@@ -342,7 +342,7 @@ namespace RowsetImportEngine
 			TotalRowsInserted = 0;
 			TotalLinesProcessed = 0;
 			TotalRowsInsertedAtLastFlushCheck = 0;
-			Canceled = false;
+			Cancelled = false;
 			KnownRowsets.Clear();
 			KnownNonTabularRowsets.Clear();
 			DefinedTokens.Clear();
@@ -679,7 +679,7 @@ namespace RowsetImportEngine
 						lineprev1=line;
 					}
 					// Make sure the host hasn't asked us to stop. 
-					if (this.Canceled) 
+					if (this.Cancelled) 
 					{
 						this.State = ImportState.Canceling;
 						break;

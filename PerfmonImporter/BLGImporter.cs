@@ -80,7 +80,7 @@ namespace PerfmonImporter
 
             // Init status members
             state = ImportState.Idle;
-            canceled = false;
+            cancelled = false;
             knownRowsets = new ArrayList();
             totalRowsInserted = 0;
             totalLinesProcessed = 0;				
@@ -138,16 +138,16 @@ namespace PerfmonImporter
             }
         }
 
-        bool canceled = false;
-        public bool Canceled
+        bool cancelled = false;
+        public bool Cancelled
         {
             get 
             { 
-                return canceled; 
+                return cancelled; 
             }
             set
             {
-                canceled = value;
+                cancelled = value;
             }
         }
 
@@ -300,7 +300,7 @@ namespace PerfmonImporter
                 //{
                 //	throw new Exception ("Failed to generate reduced counter list.");
                 //}
-                if (canceled)
+                if (cancelled)
                 {
                     break;
                 }
@@ -313,7 +313,7 @@ namespace PerfmonImporter
 
         public void Cancel()
         {
-            canceled = true; 
+            cancelled = true; 
         }
 
         public event EventHandler StatusChanged;

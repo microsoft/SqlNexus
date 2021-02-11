@@ -37,6 +37,7 @@ namespace sqlnexus
             this.tsiDropDBBeforeImporting = new System.Windows.Forms.ToolStripMenuItem();
             this.tsiSaveOptions = new System.Windows.Forms.ToolStripMenuItem();
             this.tsiUseDefaultOptions = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnClose = new System.Windows.Forms.Button();
             this.cbPath = new System.Windows.Forms.ComboBox();
             this.llOptions = new System.Windows.Forms.LinkLabel();
             this.btPath = new System.Windows.Forms.Button();
@@ -60,6 +61,7 @@ namespace sqlnexus
             // 
             this.paTop.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.paTop.ContextMenuStrip = this.cmOptions;
+            this.paTop.Controls.Add(this.btnClose);
             this.paTop.Controls.Add(this.cbPath);
             this.paTop.Controls.Add(this.llOptions);
             this.paTop.Controls.Add(this.btPath);
@@ -111,6 +113,23 @@ namespace sqlnexus
             this.tsiUseDefaultOptions.Size = new System.Drawing.Size(254, 22);
             this.tsiUseDefaultOptions.Text = "Restore Default Options";
             // 
+            // btnClose
+            // 
+            this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnClose.BackColor = System.Drawing.SystemColors.Control;
+            this.btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnClose.Image = global::sqlnexus.Properties.Resources.CriticalError;
+            this.btnClose.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnClose.Location = new System.Drawing.Point(376, 56);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Size = new System.Drawing.Size(75, 25);
+            this.btnClose.TabIndex = 6;
+            this.btnClose.Text = " Close";
+            this.btnClose.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnClose.UseVisualStyleBackColor = false;
+            this.btnClose.Visible = false;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            // 
             // cbPath
             // 
             this.cbPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -155,7 +174,7 @@ namespace sqlnexus
             this.tsbGo.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.tsbGo.Image = global::sqlnexus.Properties.Resources.PlayHS1;
             this.tsbGo.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.tsbGo.Location = new System.Drawing.Point(342, 58);
+            this.tsbGo.Location = new System.Drawing.Point(295, 56);
             this.tsbGo.Name = "tsbGo";
             this.tsbGo.Size = new System.Drawing.Size(75, 25);
             this.tsbGo.TabIndex = 4;
@@ -302,5 +321,6 @@ namespace sqlnexus
         private System.Windows.Forms.ToolStripMenuItem tsiSaveOptions;
         private System.Windows.Forms.ToolStripMenuItem tsiUseDefaultOptions;
         private System.Windows.Forms.ToolStripMenuItem tsiDropDBBeforeImporting;
+        private System.Windows.Forms.Button btnClose;
     }
 }

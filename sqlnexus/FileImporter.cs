@@ -28,8 +28,10 @@ namespace sqlnexus
             
         }
 
-        public void DoImport()
+        public string DoImport()
         {
+            int fileCntr = 0;
+            string retStr = "";
 
             foreach (RawFile rawfile in m_FileManager.RawFileList)
             {
@@ -39,12 +41,24 @@ namespace sqlnexus
 
                  foreach (string file in files)
                  {
+                    ImportFile(rawfile.TableName, file);
+                    fileCntr++;
+                }
 
-                     ImportFile(rawfile.TableName, file);
-                 }
+                
+            } //end of foreach
 
+            
+            if (fileCntr > 0)
+            {
+                retStr = fileCntr.ToString() + " raw files processed";
+            }
+            else
+            {
+                retStr = "No raw files processed";
             }
 
+            return retStr;
         }
 
         public void CreateTable(string tableName)

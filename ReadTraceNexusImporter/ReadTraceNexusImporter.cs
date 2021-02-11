@@ -354,7 +354,7 @@ namespace ReadTrace
         /// the host will wait until <c>DoImport()</c> returns.</remarks>
         public void Cancel()
         {
-            Canceled = true;
+            Cancelled = true;
             State = ImportState.Canceling;
             Util.Logger.LogMessage("ReadTraceNexusImporter - Received cancel request");
             try
@@ -372,7 +372,7 @@ namespace ReadTrace
         }
 
         /// <summary>True if the import has been asked to cancel an in-progress load. Set by the <c>Cancel</c> method.</summary>
-        public bool Canceled
+        public bool Cancelled
         {
             get { return canceled; }
             set { canceled = value; }
