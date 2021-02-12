@@ -30,7 +30,7 @@ namespace NexusInterfaces
         void LogMessage(string msg);
         void LogMessage(string msg, MessageOptions options);
 
-        void LogMessage(string msg, MessageOptions options, TraceEventType eventtype);
+        void LogMessage(string msg, MessageOptions options, TraceEventType eventtype, string title);
         void LogMessage(string msg, string[] args);
         void LogMessage(string msg, string[] args, MessageOptions options, TraceEventType eventtype);
         void ClearMessage();

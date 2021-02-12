@@ -41,9 +41,10 @@ namespace NexusInterfaces
         }
         public void  ExecuteSqlScript(String script)
         {
+            string dlgTitle = "SQL Script Execution Failure";
             ExecuteBatches(ParseBatches(script));
 
-            Util.Logger.LogMessage (m_ErrorMessages.ToString(), MessageOptions.Silent, ( (m_Success == true ) ? TraceEventType.Information: TraceEventType.Error));
+            Util.Logger.LogMessage (m_ErrorMessages.ToString(), MessageOptions.Silent, ( (m_Success == true ) ? TraceEventType.Information: TraceEventType.Error), dlgTitle);
         }
         private String[] ParseBatches(string scriptText)
         {
@@ -70,9 +71,10 @@ namespace NexusInterfaces
             }
             catch (Exception ex)
             {
+                string dlgTitle = "Failed to Get DataTable";
                 m_Success = false;
                 m_ErrorMessages.AppendFormat("{0} \r\n", ex.ToString());
-                Util.Logger.LogMessage (m_ErrorMessages.ToString(), MessageOptions.Silent, (m_Success == true? TraceEventType.Information: TraceEventType.Error));
+                Util.Logger.LogMessage (m_ErrorMessages.ToString(), MessageOptions.Silent, (m_Success == true? TraceEventType.Information: TraceEventType.Error), dlgTitle);
                 throw ex;
             }
             

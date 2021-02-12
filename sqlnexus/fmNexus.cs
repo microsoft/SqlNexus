@@ -177,7 +177,7 @@ namespace sqlnexus
 
         }   
  
-        public void LogMessage(string msg, MessageOptions options, TraceEventType eventtype)
+        public void LogMessage(string msg, MessageOptions options, TraceEventType eventtype, string title)
         {
 #if DEBUG
             msg = String.Format("[{0}] {1}", GetCallingFunction() , msg);
@@ -192,12 +192,20 @@ namespace sqlnexus
                 Application.DoEvents();
             }
             Trace.Flush();
-            if ((options & MessageOptions.Dialog) == MessageOptions.Dialog && Globals.ConsoleMode ==false)
-                MessageBox.Show(/*this,*/ msg, sqlnexus.Properties.Resources.Msg_Nexus);
+
+            if ((options & MessageOptions.Dialog) == MessageOptions.Dialog && Globals.ConsoleMode == false && String.IsNullOrWhiteSpace(title))
+            {
+                MessageBox.Show(msg, sqlnexus.Properties.Resources.Msg_Nexus);
+            }
+            else if ((options & MessageOptions.Dialog) == MessageOptions.Dialog && Globals.ConsoleMode == false)
+            {
+                MessageBox.Show(msg, title,MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
+
         public DialogResult LogMessage(string msg, string title, MessageBoxButtons buttons)
         {
-            LogMessage(title + " " + msg, MessageOptions.Silent | MessageOptions.StatusBar, TraceEventType.Warning);
+            LogMessage(title + " " + msg, MessageOptions.Silent | MessageOptions.StatusBar, TraceEventType.Warning, String.Empty);
             return MessageBox.Show(msg, title, buttons);
 
         }
@@ -209,12 +217,12 @@ namespace sqlnexus
             // with string.Format if they want to), so double-up backslashes. 
             string m = msg.Replace(@"\", @"\\");
             m = string.Format(m, args);
-            LogMessage(m, options, eventtype);
+            LogMessage(m, options, eventtype, String.Empty);
         }
 
         public void LogMessage(string msg, MessageOptions options)
         {
-            LogMessage(msg, options, TraceEventType.Information);
+            LogMessage(msg, options, TraceEventType.Information, String.Empty);
         }
 
         public void LogMessage(string msg, string[] args, MessageOptions options)
@@ -229,7 +237,7 @@ namespace sqlnexus
 
         public void LogMessage(string msg)
         {
-            LogMessage(msg, MessageOptions.Both, TraceEventType.Information);
+            LogMessage(msg, MessageOptions.Both, TraceEventType.Information, String.Empty);
         }
 
         public void ClearMessage()
@@ -433,34 +441,6 @@ namespace sqlnexus
           
             if (!Globals.ConsoleMode)
             {
-                //EULA is governed by codeplex. 
-                /*
-                    try
-                    {
-                        // Check to see whether the user has already acknowledged the EULA
-                        int regValEula = (int)Registry.GetValue(REG_HKCU_APP_KEY, "EulaAccepted", 0);
-                        if (0 == regValEula)
-                        {
-                            DialogResult res = fmEula.ShowPrompt();
-                            if (DialogResult.Yes == res)
-                            {
-                                LogMessage("EULA was accepted");
-                                Registry.SetValue(REG_HKCU_APP_KEY, "EulaAccepted", 1, RegistryValueKind.DWord);
-                            }
-                            else
-                            {
-                                LogMessage("EULA was not accepted. Exiting.");
-                                Application.Exit();
-                                return;
-                            }
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        LogMessage("Failed to show EULA. Exception: " + ex.ToString());
-                        this.Close();
-                    }
-                */
 
                 if (DialogResult.OK != ShowConnectionDlg())
                 {   // User clicked Cancel on connection dialog
@@ -469,7 +449,8 @@ namespace sqlnexus
                 }
                 if (Util.GetReadTracePath() == null)
                 {
-                    LogMessage("Unable to locate readtrace.  Nexus won't be able to load or analyze profiler trace data.", MessageOptions.All);
+                    string dlgTitle = "Cannot Locate ReadTrace Path";
+                    LogMessage("Unable to locate readtrace.  Nexus won't be able to load or analyze profiler trace data.", MessageOptions.All, TraceEventType.Error, dlgTitle);
                 }
                 else if (File.Exists(Application.StartupPath + @"\readtracenexusimporter.dll") == true)
                 {
@@ -480,11 +461,12 @@ namespace sqlnexus
                 }
                 else
                 {
-                    LogMessage("found readtrace path but readtracenexusimporter.dll is not available");
+                    LogMessage("Found readtrace path but ReadtraceNexusimporter.dll is not Available");
                 }
                 if (Util.GetReadTracePath() != null && !File.Exists(Util.GetReadTraceExe()))
                 {
-                    LogMessage("SQL Nexus located readtrace path as " + Util.GetReadTracePath() + ". But it can't locate readtrace.exe in this directory. You have incorrect installation or this is an old trace80trace installation.  Trace import won't work", MessageOptions.All);
+                    string dlgTitle = "Cannot Find ReadTrace.exe";
+                    LogMessage("SQL Nexus located readtrace path as " + Util.GetReadTracePath() + " but it can't locate Readtrace.exe in this directory.\n\rYou have incorrect installation.  Trace import won't work", MessageOptions.All, TraceEventType.Error, dlgTitle);
                 }
 
                 
@@ -3280,13 +3262,15 @@ namespace sqlnexus
             catch (SqlException sqlEx)
             {
                 success = false;
+                string dlgTitle = "Database Creation Failure";
+
                 if (dbName.ToUpper() == "SQLNEXUS")
                 {
-                    LogMessage(String.Format(Properties.Resources.Error_Nexus_CreateDBFailure, dbName, Globals.credentialMgr.Server, sqlEx.Message), MessageOptions.Silent, TraceEventType.Error);
+                    LogMessage(String.Format(Properties.Resources.Error_Nexus_CreateDBFailure, dbName, Globals.credentialMgr.Server, sqlEx.Message), MessageOptions.Silent, TraceEventType.Error, dlgTitle);
                 }
                 else
                 {
-                    LogMessage(String.Format(Properties.Resources.Error_Nexus_CreateDBFailure, dbName, Globals.credentialMgr.Server, sqlEx.Message), MessageOptions.All, TraceEventType.Error);
+                    LogMessage(String.Format(Properties.Resources.Error_Nexus_CreateDBFailure, dbName, Globals.credentialMgr.Server, sqlEx.Message), MessageOptions.All, TraceEventType.Error, dlgTitle);
                 }
 
             }

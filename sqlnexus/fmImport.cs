@@ -604,8 +604,10 @@ namespace sqlnexus
                 return;
             if (!tlpFiles.Visible)
             {
-                this.Height = 550;
-                this.Width = 850;
+                this.Left = 400;
+                this.Top = 200;
+                this.Height = 650;
+                this.Width = 1100;
                 this.FormBorderStyle = FormBorderStyle.Sizable;
                 tlpFiles.Visible = true;
                 ssStatus.Visible = true;
@@ -977,7 +979,7 @@ namespace sqlnexus
 
                         currBar.Value = 100;
 
-                        string runtimeMsg = "(" + enumReportsStr + ") " + "Done. (" + (Environment.TickCount - enumReportsStartTicks) / 1000 + " sec) ";
+                        string runtimeMsg = "(" + enumReportsStr + ") " + "Done. (" + (Environment.TickCount - enumReportsStartTicks) / 1000 + " sec). Import Complete!";
                         currLabel.Text = runtimeMsg;
                         MainForm.LogMessage("End of report enumeration");
 

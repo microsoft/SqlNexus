@@ -1081,8 +1081,8 @@ namespace RowsetImportEngine
                             }
                             if (!IsLegalTableName(RowsetName))
                             {
-
-                                this.logger.LogMessage("you have provided an illegal table name (likely in your TextRowsetsCustom.xml). consider deleting that file from %appdata%\\sqlnexus directory \r\n " + RowsetName, MessageOptions.Silent, TraceEventType.Information);
+                                string dlgTitle = "Incorrect Table Name";
+                                this.logger.LogMessage("You provided an illegal table name (likely in your TextRowsetsCustom.xml).\n\r Consider deleting that file from %appdata%\\sqlnexus directory \r\n " + RowsetName, MessageOptions.Silent, TraceEventType.Information, dlgTitle);
 
                                 //just log it and don't fail
                                 //return false;
