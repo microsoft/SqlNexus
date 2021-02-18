@@ -615,7 +615,8 @@ namespace sqlnexus
 
             MainForm.LogMessage("Starting import...");
 
-            if (tsiDropDBBeforeImporting.Checked == true || ImportOptions.IsEnabled("DropDbBeforeImporting"))
+            
+            if (tsiDropDBBeforeImporting.Checked == true || ImportOptions.IsEnabled("DropDbBeforeImporting") || Globals.DropExistingDb == true)
             {
 
                 if (Globals.ConsoleMode == false)

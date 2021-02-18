@@ -95,6 +95,7 @@ namespace sqlnexus
             Console.WriteLine(Util.ExpandEscapeStrings(sqlnexus.Properties.Resources.Usage_ExitAfterProcessing));
             Console.WriteLine(Util.ExpandEscapeStrings(sqlnexus.Properties.Resources.Usage_Parameter));
             Console.WriteLine(Util.ExpandEscapeStrings(sqlnexus.Properties.Resources.Usage_Quiet));
+            Console.WriteLine(Util.ExpandEscapeStrings(sqlnexus.Properties.Resources.Drop_Existing_Database));
         }
 
         /// <summary>
@@ -108,7 +109,7 @@ namespace sqlnexus
             // TODO: print out command line params as they are processed
             // TODO: exit if -? passed
             //Special case usage info
-            if ((1 == args.Length) && (("/?" == args[0]) || ("-?" == args[0])))
+            if ((1 == args.Length) && (("/?" == args[0]) || ("-?" == args[0]) || ("--help" == args[0]) ))
             {
                 ShowUsage();
                 return false;
@@ -224,6 +225,12 @@ namespace sqlnexus
                             string param = tmpStr.Substring(0, tmpStr.IndexOf('='));
                             string val = tmpStr.Substring(tmpStr.IndexOf('=')+1);
                             Globals.UserSuppliedReportParameters.Add(param, val);
+                            break;
+                        }
+                    case 'G':
+                        {
+                            Console.WriteLine(@"Command Line Arg (/G)" + arg.Substring(2));
+                            Globals.DropExistingDb = true;
                             break;
                         }
                     default:

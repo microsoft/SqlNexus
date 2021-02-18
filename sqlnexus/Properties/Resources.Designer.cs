@@ -418,6 +418,15 @@ namespace sqlnexus.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to /G\tDrop the existing SQLNexus database before importing..
+        /// </summary>
+        internal static string Drop_Existing_Database {
+            get {
+                return ResourceManager.GetString("Drop_Existing_Database", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap earth {
@@ -2040,7 +2049,7 @@ namespace sqlnexus.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &quot;/Cconnstring&quot;\tSpecifies the SqlClient ConnectionString to use (can be used instead of /S /E)..
+        ///   Looks up a localized string similar to /C&quot;connstring&quot;\tSpecifies the SqlClient ConnectionString to use (can be used instead of /S /E)..
         /// </summary>
         internal static string Usage_ConnectStr {
             get {
@@ -2067,7 +2076,7 @@ namespace sqlnexus.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &quot;/Ipath&quot;\tImport SQL diagnostic data from this path.
+        ///   Looks up a localized string similar to /I&quot;path&quot;\tImport SQL diagnostic data from this path.
         /// </summary>
         internal static string Usage_InputPath {
             get {
@@ -2076,7 +2085,7 @@ namespace sqlnexus.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &quot;/Opath&quot;\tSpecifies an export path for reports executed via /R.
+        ///   Looks up a localized string similar to /O&quot;path&quot;\tSpecifies an export path for reports executed via /R.
         /// </summary>
         internal static string Usage_OutputPath {
             get {
@@ -2112,7 +2121,7 @@ namespace sqlnexus.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &quot;/Rreport&quot;\tSpecifies a report file name to run..
+        ///   Looks up a localized string similar to /R&quot;report&quot;\tSpecifies a report file name to run..
         /// </summary>
         internal static string Usage_RunReport {
             get {
@@ -2121,7 +2130,7 @@ namespace sqlnexus.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to /Sserver\tSpecifies a SQL Server name to connect to..
+        ///   Looks up a localized string similar to /S&quot;server&quot;\tSpecifies a SQL Server name to connect to..
         /// </summary>
         internal static string Usage_Server {
             get {
