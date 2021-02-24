@@ -215,7 +215,7 @@ namespace sqlnexus
                             //fixing 2256
                             String ipath = arg.Substring(2).Replace("\"", "");
                             Globals.PathsToImport.Enqueue(ipath);
-                            Globals.QuietMode = true;
+                            Globals.QuietMode = true; //JOTODO: check if this should be kept - I think we should remove and let the /Q option do its work. Provided that /Q works
                             break;
                         }
                     case 'V':

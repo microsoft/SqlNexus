@@ -418,7 +418,7 @@ namespace sqlnexus.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to /G\tDrop the existing SQLNexus database before importing..
+        ///   Looks up a localized string similar to /G\t\tDrop the existing SQLNexus database before importing..
         /// </summary>
         internal static string Drop_Existing_Database {
             get {
@@ -2112,7 +2112,7 @@ namespace sqlnexus.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to /Q Quiet Mode.
+        ///   Looks up a localized string similar to /Q\t\tQuiet Mode.
         /// </summary>
         internal static string Usage_Quiet {
             get {

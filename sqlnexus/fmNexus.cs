@@ -499,6 +499,8 @@ namespace sqlnexus
                 {
                     EnumReports();
 ////                    InitCollectorService();
+
+                    //if running in console mode (command line) , call ProcessReportQueue()
                     if (Globals.ConsoleMode)
                     {
                         ProcessReportQueue();
@@ -616,12 +618,14 @@ namespace sqlnexus
             ToggleTabs(this.tsiShowReportTabs.Checked);
         }
 
+
         public  void ProcessReportQueue()
         {
             try
             {
                 foreach (string path in Globals.PathsToImport)
                 {
+                    //JOTODO: call KeepDB and check if db is not empty. If it is not, return false and quit - somehow out of the loop?
                     fmImport.ImportFiles(this, path);
                 }
                 foreach (string rpt in Globals.ReportsToRun)

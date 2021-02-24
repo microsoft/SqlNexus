@@ -32,8 +32,12 @@ namespace sqlnexus
         }
         public static void ImportFiles(fmNexus mainform, string path)
         {
+            
             fmImport fmi = new fmImport(mainform);
             fmi.cbPath.Text = path;
+
+            if (true == fmi.KeepPriorNonEmptyDb())
+                return;
 
             if (Globals.QuietMode == true)
             {
@@ -557,12 +561,13 @@ namespace sqlnexus
                 if (Globals.QuietMode == true)
                 {
                     FileMgr mgr = new FileMgr();
-                    Importer imp = mgr[prod.Name];
+                    Importer imp = mgr[prod.Name];  //JOTODO: this may need to be verified if valid - at least it is not clean
                     if (imp != null)
                     {
                         Enabled = imp.ude;
+                        Util.Logger.LogMessage("Silent option; importer " + imp.Name + " enabled = " + imp.ude);
                     }
-                    Util.Logger.LogMessage("Silent option; importer " + imp.Name + " enabled = " + imp.ude);
+                   
                 }
 
 
@@ -580,13 +585,26 @@ namespace sqlnexus
 
         Dictionary<string, string[]> PostScripts = new Dictionary<string,string[]>();
 
-        private void tsbGo_Click(object sender, EventArgs e)
+        public bool KeepPriorNonEmptyDb()
         {
-            
+            //db has been imported into before and user did not request a drop db
             NexusInfo nInfo = new NexusInfo(Globals.credentialMgr.ConnectionString, this.MainForm);
             if (nInfo.HasNexusInfo() && (!tsiDropDBBeforeImporting.Checked) && !ImportOptions.IsEnabled("DropDbBeforeImporting"))
             {
-               MainForm.LogMessage("This database already have Nexus data. please choose or create a different database for fresh data load", MessageOptions.All);
+                MainForm.LogMessage("This database already contains Nexus data. Please choose or create a different database for a fresh data load", MessageOptions.All);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private void tsbGo_Click(object sender, EventArgs e)
+        {
+            
+            if (true == KeepPriorNonEmptyDb() )
+            { 
                 this.Visible = false;
                 this.Dispose();
                 MainForm.BringToFront();
@@ -647,6 +665,7 @@ namespace sqlnexus
                 {
                     conn.Open();
                     cmd.ExecuteNonQuery();
+                    MainForm.LogMessage("Dropped and created a new database: " + Globals.credentialMgr.Database);
                 }
                 catch (SqlException sqlex)
                 {
