@@ -621,11 +621,15 @@ namespace sqlnexus
 
         public  void ProcessReportQueue()
         {
+            //JOTODO: with KeepPriorNonEmptyDb() handle exiting the app gracefully
+            fmImport fmi_local = new fmImport(this);
+
+            if (true == fmi_local.KeepPriorNonEmptyDb())
+                return;
             try
             {
                 foreach (string path in Globals.PathsToImport)
                 {
-                    //JOTODO: call KeepDB and check if db is not empty. If it is not, return false and quit - somehow out of the loop?
                     fmImport.ImportFiles(this, path);
                 }
                 foreach (string rpt in Globals.ReportsToRun)
