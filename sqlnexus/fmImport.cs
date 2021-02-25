@@ -587,7 +587,7 @@ namespace sqlnexus
             NexusInfo nInfo = new NexusInfo(Globals.credentialMgr.ConnectionString, this.MainForm);
 
             //db has been imported into before and user did not request a drop db
-            if (nInfo.HasNexusInfo() && ((!tsiDropDBBeforeImporting.Checked && !ImportOptions.IsEnabled("DropDbBeforeImporting") ) || !Globals.DropExistingDb) )
+            if (nInfo.HasNexusInfo() &&  (!tsiDropDBBeforeImporting.Checked && !ImportOptions.IsEnabled("DropDbBeforeImporting")) && !Globals.DropExistingDb )
             {
                 MainForm.LogMessage("This database already contains Nexus data. Please choose or create a different database for a fresh data load", MessageOptions.All);
                 return true;

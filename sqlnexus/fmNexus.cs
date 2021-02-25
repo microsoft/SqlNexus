@@ -503,7 +503,13 @@ namespace sqlnexus
                     //if running in console mode (command line) , call ProcessReportQueue()
                     if (Globals.ConsoleMode)
                     {
-                        ProcessReportQueue();
+                        //if it didn't process reports (due to db already present and contains nexus data) quit
+                        if (false == ProcessReportQueue())
+                        {
+                            Thread.Sleep(500);
+                            Application.Exit();
+                        }
+
                         // If we were passed /X, exit after importing data and exporting reports
                         if (Globals.ExitAfterProcessingReports)
                             Application.Exit();
@@ -619,13 +625,13 @@ namespace sqlnexus
         }
 
 
-        public  void ProcessReportQueue()
+        public  bool ProcessReportQueue()
         {
             //JOTODO: with KeepPriorNonEmptyDb() handle exiting the app gracefully
             fmImport fmi_local = new fmImport(this);
 
             if (true == fmi_local.KeepPriorNonEmptyDb())
-                return;
+                return false;
             try
             {
                 foreach (string path in Globals.PathsToImport)
@@ -645,6 +651,8 @@ namespace sqlnexus
             {
                 Globals.HandleException(ex, this, this);
             }
+
+            return true;
         }
 
         private void InitCollectorService()
@@ -2460,7 +2468,7 @@ namespace sqlnexus
                 ps_Report.PageSettings = ps;
                 if (DialogResult.OK == ps_Report.ShowDialog(this))
                 {
-                    //TODO:  Figure out what the heck to do here
+                    //TODO:  Figure out what to do here
                 }
             }
             catch (Exception ex)
