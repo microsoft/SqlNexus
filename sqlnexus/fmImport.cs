@@ -586,16 +586,32 @@ namespace sqlnexus
         {
             NexusInfo nInfo = new NexusInfo(Globals.credentialMgr.ConnectionString, this.MainForm);
 
-            //db has been imported into before and user did not request a drop db
-            if (nInfo.HasNexusInfo() &&  (!tsiDropDBBeforeImporting.Checked && !ImportOptions.IsEnabled("DropDbBeforeImporting")) && !Globals.DropExistingDb )
+            if (Globals.ConsoleMode)
             {
-                MainForm.LogMessage("This database already contains Nexus data. Please choose or create a different database for a fresh data load", MessageOptions.All);
-                return true;
+                if (nInfo.HasNexusInfo() && !Globals.DropExistingDb)
+                {
+                    MainForm.LogMessage(String.Format("Database '{0}' already contains Nexus data. Please choose or create a different database for a fresh data load", (Globals.credentialMgr.Database !=null)? Globals.credentialMgr.Database:" "), MessageOptions.All);
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
             else
             {
-                return false;
+                //db has been imported into before and user did not request a drop db
+                if (nInfo.HasNexusInfo() && (!tsiDropDBBeforeImporting.Checked && !ImportOptions.IsEnabled("DropDbBeforeImporting")) )
+                {
+                    MainForm.LogMessage(String.Format("Database '{0}' already contains Nexus data. Please choose or create a different database for a fresh data load", (Globals.credentialMgr.Database != null) ? Globals.credentialMgr.Database : " "), MessageOptions.All);
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
+            
         }
 
         private void tsbGo_Click(object sender, EventArgs e)
@@ -1136,12 +1152,13 @@ namespace sqlnexus
             {
                 this.Cursor = Cursors.WaitCursor;
                 Application.DoEvents();
-                MainForm.LogMessage(string.Format("Executing {0}...", scriptname));
-               // Server srv = new Server(Globals.Server);
-                
-                
+
+                MainForm.LogMessage("Db name = '" + Globals.credentialMgr.Database + "'");
+                MainForm.LogMessage(string.Format("Executing {0} ...", scriptname, Globals.credentialMgr.Database));
+               
+                // Server srv = new Server(Globals.Server);
                 //Database db = srv.Databases[Globals.Database];
-                MainForm.LogMessage("db name = " + Globals.credentialMgr.Database);
+                
 
                 if (-1 == scriptname.IndexOf('\\'))
                 {
