@@ -627,9 +627,9 @@ namespace sqlnexus
 
         public  bool ProcessReportQueue()
         {
-            //JOTODO: with KeepPriorNonEmptyDb() handle exiting the app gracefully
             fmImport fmi_local = new fmImport(this);
 
+            //if Db exists and has nexus data imported in it, quit processing (return false)
             if (true == fmi_local.KeepPriorNonEmptyDb())
                 return false;
             try
