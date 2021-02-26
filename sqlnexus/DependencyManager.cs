@@ -11,8 +11,8 @@ using System.Windows.Forms;
     public class DependencyManager
     {
 
-        public static void CheckReportViewer()
-        {
+        public static void CheckReportViewer()  //JOTODO: Should we revive this code?? see https://github.com/microsoft/SqlNexus/issues/93
+    {
             
             // not checking on report viewer given that 10.0 or 11 report reviewer controls are common nowadays
             /*
