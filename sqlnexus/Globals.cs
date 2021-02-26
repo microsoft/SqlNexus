@@ -24,7 +24,7 @@ namespace sqlnexus
         public static Boolean ConsoleMode = false;
         private  static string m_connectionString;
         public static CredentialManager credentialMgr = new CredentialManager();
-        public static bool QuietMode = false;
+        public static bool QuietNonInteractiveMode = false;
         public static bool ExceptionEncountered = false;
         public static bool IsNexusCoreImporterSuccessful = true;
         public static bool NoWindow = false;

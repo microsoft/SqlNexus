@@ -2112,7 +2112,7 @@ namespace sqlnexus.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to /Q\t\tQuiet Mode.
+        ///   Looks up a localized string similar to /Q\t\tQuiet Mode - minimize windows in console mode.
         /// </summary>
         internal static string Usage_Quiet {
             get {

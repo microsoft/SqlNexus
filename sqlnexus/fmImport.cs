@@ -16,7 +16,7 @@ using NexusInterfaces;
 using System.Text.RegularExpressions;
 namespace sqlnexus
 {
-    public partial class fmImport : Form
+        public partial class fmImport : Form
     {
         private List<ToolStripMenuItem> m_OptionList = new List<ToolStripMenuItem>();
         private SqlInstances instances;
@@ -36,7 +36,7 @@ namespace sqlnexus
             fmImport fmi = new fmImport(mainform);
             fmi.cbPath.Text = path;
 
-            if (Globals.QuietMode == true)
+            if (Globals.QuietNonInteractiveMode == true)
             {
                 fmi.EnumImporters();
             }
@@ -555,7 +555,7 @@ namespace sqlnexus
 
                 //this is used for silent ude import which is controlled by AppConfig.xml
                 //we will override user options regardless
-                if (Globals.QuietMode == true)
+                if (Globals.QuietNonInteractiveMode == true)
                 {
                     FileMgr mgr = new FileMgr();
                     Importer imp = mgr[prod.Name];  //JOTODO: this may need to be verified if valid - at least it is not clean
@@ -729,7 +729,7 @@ namespace sqlnexus
             //find the instance name by locating it inside ##SQLDIAG.LOG
             instances = new SqlInstances(srcPath);
 
-            if (instances.Count > 1 && Globals.QuietMode)
+            if (instances.Count > 1 && Globals.QuietNonInteractiveMode)
             {
                 //get first instance for quiet mode (list already sorted;
                 MainForm.LogMessage("quiet mode. Silently select first instance (sorted) for instance: " + instances.InstanceList()[0], MessageOptions.Silent);
@@ -1021,14 +1021,6 @@ namespace sqlnexus
 
                 } //end of for loop
 
-
-
-
-
-
-              
- 
-
             }//try block
 
             catch (Exception ex)
@@ -1045,7 +1037,7 @@ namespace sqlnexus
                 this.Cursor = Cursors.Default;
                 Application.DoEvents();
 
-                if (Globals.QuietMode == true)
+                if (Globals.QuietNonInteractiveMode == true)
                 {
                     Application.Exit();
                 }
