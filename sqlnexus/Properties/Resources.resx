@@ -818,6 +818,6 @@
     <value>/Q\t\tQuiet Mode - minimize windows in console mode</value>
   </data>
   <data name="Drop_Existing_Database" xml:space="preserve">
-    <value>/G\t\tDrop the existing SQLNexus database before importing.</value>
+    <value>/N\t\tCreate a new SQLNexus database before importing (drop existing).</value>
   </data>
 </root>

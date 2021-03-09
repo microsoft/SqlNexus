@@ -227,9 +227,9 @@ namespace sqlnexus
                             Globals.UserSuppliedReportParameters.Add(param, val);
                             break;
                         }
-                    case 'G':
+                    case 'N':
                         {
-                            Console.WriteLine(@"Command Line Arg (/G)" + arg.Substring(2));
+                            Console.WriteLine(@"Command Line Arg (/N)" + arg.Substring(2));
                             Globals.DropExistingDb = true;
                             break;
                         }

@@ -418,7 +418,7 @@ namespace sqlnexus.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to /G\t\tDrop the existing SQLNexus database before importing..
+        ///   Looks up a localized string similar to /N\t\tCreate a new SQLNexus database before importing (drop existing)..
         /// </summary>
         internal static string Drop_Existing_Database {
             get {
