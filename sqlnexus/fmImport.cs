@@ -558,13 +558,13 @@ namespace sqlnexus
                 if (Globals.QuietNonInteractiveMode == true)
                 {
                     FileMgr mgr = new FileMgr();
-                    Importer imp = mgr[prod.Name];  //JOTODO: this may need to be verified if valid - at least it is not clean
+                    Importer imp = mgr[prod.Name];  
                     if (imp != null)
                     {
                         Enabled = imp.ude;
                         Util.Logger.LogMessage("Silent option; importer " + imp.Name + " enabled = " + imp.ude);
                     }
-                   
+                    
                 }
 
 

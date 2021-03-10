@@ -63,11 +63,17 @@ namespace sqlnexus
 
         public void CreateTable(string tableName)
         {
-            string strSql = string.Format("create table [{0}] (id int identity primary key, FileName nvarchar(max), FileContent nvarchar(max))", tableName);
+            string tsqlStr = @"if OBJECT_ID ('{0}', 'U') is null
+                                begin
+	                                create table [{0}] (id int identity primary key, FileName nvarchar(max), FileContent nvarchar(max))
+                                end";
+            //string strSql = string.Format("create table [{0}] (id int identity primary key, FileName nvarchar(max), FileContent nvarchar(max))", tableName);
+            string strSql = string.Format(tsqlStr, tableName);
 
+            Util.Logger.LogMessage(string.Format("creating table [{0}]", tableName));
             m_Csql.ExecuteSqlScript(strSql);
 
-            
+
         }
 
         public void ImportFile(string tableName, string FileName)
