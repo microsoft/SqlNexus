@@ -295,3 +295,9 @@ namespace sqlnexus
         }
     }
 }
+
+
+//JOTODO: Once import is complete and person closes Import screen, switch to PerfMain RDL automatically
+//JOTODO: Once import is complete and person closes Import screen, make the Open Nexus logs and surrounding buttons/links clickable or available
+//JOTODO: Command line switch for SQL Nexus log output path  - /O does that trick. So we just expanded the text of the -help command
+//JOTODO: Use date_and_time in the SQLnexus.log naming to help make it unique and be identified easily by name - MAKE IT a COMMAND LINE swtich???

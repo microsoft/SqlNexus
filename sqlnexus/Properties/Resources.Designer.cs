@@ -244,12 +244,18 @@ namespace sqlnexus.Properties {
         ///   Looks up a localized string similar to use master
         ///if db_id (&apos;{0}&apos;) is null
         ///begin
-        ///	create database [{0}];
-        ///	alter database [{0}] modify file (name=&apos;{0}&apos;, size=50MB)
-        ///	alter database [{0}] set recovery simple
+        ///	CREATE DATABASE [{0}];
+        ///	ALTER DATABASE [{0}] SET RECOVERY SIMPLE
+        ///
+        ///	BEGIN TRY
+        ///	  ALTER DATABASE [{0}] MODIFY FILE (name=&apos;{0}&apos;, size=50MB)
+        ///	END TRY
+        ///
+        ///	BEGIN CATCH  
+        ///		--print no error - very rarely would MODIFY FILE fail 
+        ///	END CATCH  
         ///end
-        ///--else  
-        ///	-- alter database [{0}] set recovery simple
+        ///
         ///.
         /// </summary>
         internal static string CreateDB {
@@ -266,7 +272,6 @@ namespace sqlnexus.Properties {
         ///	drop database [{0}];
         ///end
         ///create database [{0}];
-        ///--alter database [{0}] modify file (name=&apos;{0}&apos;, size=50MB)
         ///alter database [{0}] set recovery simple
         ///
         ///.
@@ -2085,7 +2090,7 @@ namespace sqlnexus.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to /O&quot;path&quot;\tSpecifies an export path for reports executed via /R.
+        ///   Looks up a localized string similar to /O&quot;path&quot;\tSpecifies an export path for reports executed via /R. Also this is where the sqlnexus.log would get created.
         /// </summary>
         internal static string Usage_OutputPath {
             get {
