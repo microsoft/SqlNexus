@@ -316,8 +316,37 @@
       <Column name="forced_grant_count"  type="RowsetImportEngine.IntColumn" />
       <Column name="Object_Name"   type="RowsetImportEngine.VarCharColumn" length="128" />
     </Rowset>
-    
-    
+
+
+    <Rowset name="tbl_dm_os_ring_buffers_mem" enabled="true" identifier="-- sys.dm_os_ring_buffers (RING_BUFFER_RESOURCE_MONITOR and RING_BUFFER_MEMORY_BROKER)" type="RowsetImportEngine.TextRowset">
+      <Column name="runtime" type="RowsetImportEngine.DateTimeColumn"/>
+      <Column name="record_time" type="RowsetImportEngine.DateTimeColumn"/>
+      <Column name="record_timestamp" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="cur_timestamp" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="ring_buffer_address" type="RowsetImportEngine.VarBinaryColumn" />
+      <Column name="ring_buffer_type"   type="RowsetImportEngine.VarCharColumn" length="64" />
+      <Column name="timestamp" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="record" type="RowsetImportEngine.VarCharColumn" length="-1" />
+    </Rowset>
+
+
+    <Rowset name="tbl_dm_os_memory_objects" enabled="true" identifier="-- sys.dm_os_memory_objects (total memory by type, >1MB)" type="RowsetImportEngine.TextRowset">
+      <Column name="runtime" type="RowsetImportEngine.DateTimeColumn"/>
+      <Column name="total_bytes_used" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="type"   type="RowsetImportEngine.VarCharColumn" length="64" />
+    </Rowset>
+
+    <Rowset name="tbl_dm_os_memory_pools" enabled="true" identifier="-- dm_os_memory_pools" type="RowsetImportEngine.TextRowset">
+      <Column name="runtime" type="RowsetImportEngine.DateTimeColumn"/>
+      <Column name="memory_pool_address" type="RowsetImportEngine.VarBinaryColumn" />
+      <Column name="pool_id" type="RowsetImportEngine.IntColumn" />
+      <Column name="type"   type="RowsetImportEngine.VarCharColumn" length="64" />
+      <Column name="name" type="RowsetImportEngine.VarCharColumn" length="256" />
+      <Column name="max_free_entries_count" type="RowsetImportEngine.IntColumn" />
+      <Column name="free_entries_count" type="RowsetImportEngine.IntColumn" />
+      <Column name="removed_in_all_rounds_count" type="RowsetImportEngine.IntColumn" />
+    </Rowset>
+
     <Rowset name="tbl_sysaltfiles" enabled="true" identifier="--> sysaltfiles" type="RowsetImportEngine.TextRowset">
     </Rowset>
 
