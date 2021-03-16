@@ -84,6 +84,7 @@ namespace NexusInterfaces
         private  void ExecuteBatches(string[] batches)
         {
             string batchText;
+            string upperBatchText;
             SqlConnection conn = new SqlConnection(m_ConnStringBuilder.ConnectionString);
             conn.InfoMessage += new SqlInfoMessageEventHandler(OnInfoMessage);
             conn.Open();  //we want this exception to pop up when we can't make a connection
@@ -115,11 +116,12 @@ namespace NexusInterfaces
                         batchText = batchText.Replace("*****", "*");
                         batchText = batchText.Replace("  ", " ");
 
-                        int position = batchText.IndexOf("owner:");
+                        upperBatchText = batchText.ToUpper();
+
+                        int position = upperBatchText.IndexOf("OWNER:");
                         if (position > -1)
                         {
-                            //batchText = batchText.Substring(0, position) + batchText.Substring(position + 20);
-                            batchText = "owner of script found here";
+                            batchText = "'Script owner found in a comment here'";
                         }
                         m_ErrorMessages.AppendFormat("Starting execution of {0} \r\n", batchText);
 

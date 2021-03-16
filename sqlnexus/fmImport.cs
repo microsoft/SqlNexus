@@ -732,7 +732,7 @@ namespace sqlnexus
             if (instances.Count > 1 && Globals.QuietNonInteractiveMode)
             {
                 //get first instance for quiet mode (list already sorted;
-                MainForm.LogMessage("quiet mode. Silently select first instance (sorted) for instance: " + instances.InstanceList()[0], MessageOptions.Silent);
+                MainForm.LogMessage("Quiet mode. Silently selecting the first instance found in a sorted list. Instance name: " + instances.InstanceList()[0], MessageOptions.Silent);
                 instances.InstanceToImport = instances.InstanceList()[0];
             }
             else if (instances.Count > 1)
