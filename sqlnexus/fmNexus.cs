@@ -3207,6 +3207,9 @@ namespace sqlnexus
                         fmImportForm.Show(this);
                 fmImportForm.BringToFront();
             }
+
+            // enable the panel that shows nexus and rml utils logs after import dialog closes
+            paTasksBody.Enabled = true;
         }
 
         private void fmNexus_FormClosed(object sender, FormClosedEventArgs e)
@@ -3477,7 +3480,6 @@ namespace sqlnexus
             Globals.LuanchPowerBI();
         }
 
-      
     }
 
     /// <summary>
