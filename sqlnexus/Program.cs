@@ -298,7 +298,4 @@ namespace sqlnexus
 
 
 //JOTODO: Once import is complete and person closes Import screen, switch to PerfMain RDL automatically
-//JOTODO: Once import is complete and person closes Import screen, make the Open Nexus logs and surrounding buttons/links clickable or available
-//JOTODO: Use date_and_time in the SQLnexus.log naming to help make it unique and be identified easily by name - MAKE IT a COMMAND LINE swtich???
 //JOTODO: figure out the Query Execution Memory_C.rdl report bottom table - max grant - seems inaccurate
-//JOTODO: Ensure the the proper links are disabled while importing (File, Import button , etc are enabled) and proper are enabled - like logs for nexus and rml
