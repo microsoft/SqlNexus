@@ -979,7 +979,8 @@ namespace sqlnexus
             {
                 toolbarReport.Visible = false;
                 this.editToolStripMenuItem.Enabled = false;
-                paTasksBody.Enabled = false;
+                //disable the panel with all the logs - Nexus, RML, copy to clipboard. For now we don't want this functionality
+                //paTasksBody.Enabled = false;
             }
         }
 
@@ -3207,9 +3208,6 @@ namespace sqlnexus
                         fmImportForm.Show(this);
                 fmImportForm.BringToFront();
             }
-
-            // enable the panel that shows nexus and rml utils logs after import dialog closes
-            paTasksBody.Enabled = true;
         }
 
         private void fmNexus_FormClosed(object sender, FormClosedEventArgs e)
