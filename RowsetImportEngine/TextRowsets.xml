@@ -261,6 +261,22 @@
       <Column name="name" type="RowsetImportEngine.VarCharColumn" />
    </Rowset>
 
+    <Rowset name="tbl_dm_os_loaded_modules" enabled="true" identifier="-- sys.dm_os_loaded_modules --" type="RowsetImportEngine.TextRowset">
+      <Column name="runtime" type="RowsetImportEngine.DateTimeColumn"/>
+      <Column name="base_address" type="RowsetImportEngine.VarBinaryColumn" />
+      <Column name="file_version" type="RowsetImportEngine.VarCharColumn" />
+      <Column name="product_version" type="RowsetImportEngine.VarCharColumn" />
+      <Column name="debug" type="RowsetImportEngine.IntColumn" />
+      <Column name="patched"  type="RowsetImportEngine.IntColumn" />
+      <Column name="prerelease"  type="RowsetImportEngine.IntColumn" />
+      <Column name="private_build"  type="RowsetImportEngine.IntColumn" />
+      <Column name="special_build"  type="RowsetImportEngine.IntColumn" />
+      <Column name="language"  type="RowsetImportEngine.BigIntColumn" />
+      <Column name="company" type="RowsetImportEngine.VarCharColumn" />
+      <Column name="description" type="RowsetImportEngine.VarCharColumn" />
+      <Column name="name" type="RowsetImportEngine.VarCharColumn" />
+    </Rowset>
+
 
 
     <Rowset name="tbl_Query_Execution_Memory" enabled="true" identifier="-- query execution memory --" type="RowsetImportEngine.TextRowset">

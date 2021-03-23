@@ -1694,7 +1694,7 @@ set CounterDateTime = REPLACE(CounterDateTime, char(0), '')
 go
 --clean up spinlock
 if OBJECT_ID ('tbl_SPINLOCKSTATS') is not null 
-	delete tbl_SPINLOCKSTATS where [spinlock name] like '%dbcc%'
+	delete tbl_SPINLOCKSTATS where [name] like '%dbcc%'
 go
 
  
