@@ -428,9 +428,9 @@ namespace sqlnexus
             RuntimeEnv.Env.NexusLogFile =logFileFullPath;
             InitializeLog(logFileFullPath);
             LogMessage("sqlnexus.exe running at: " + Application.ExecutablePath + " version " + Application.ProductVersion);
-#if BETA
-            LogMessage("This is a beta version");
-#endif 
+//#if BETA
+//            LogMessage("This is a beta version");
+//#endif 
             InitAppEnvironment();
            
             // Kick off async (background) ClickOnce autoupdate check.  Results of check will be 
