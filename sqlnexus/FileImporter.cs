@@ -22,7 +22,8 @@ namespace sqlnexus
             m_ServerName = ServerName;
             m_DatabaseName = DatabaseName;
             m_Importpath = ImportPath;
-            string ConnString = string.Format("Data Source={0}; Initial Catalog={1};Integrated Security=SSPI", m_ServerName, m_DatabaseName);
+            //string ConnString = string.Format("Data Source={0}; Initial Catalog={1};Integrated Security=SSPI", m_ServerName, m_DatabaseName);
+            string ConnString = string.Format(Globals.credentialMgr.ConnectionString);
             m_Csql = new CSql(ConnString);
         
             
@@ -82,7 +83,8 @@ namespace sqlnexus
 
             StreamReader sr = new StreamReader(FileName);
             string content = sr.ReadToEnd();
-            SqlConnection conn = new SqlConnection(string.Format("Data Source={0}; Initial Catalog={1}; Integrated Security=SSPI", m_ServerName, m_DatabaseName));
+            //SqlConnection conn = new SqlConnection(string.Format("Data Source={0}; Initial Catalog={1}; Integrated Security=SSPI", m_ServerName, m_DatabaseName));
+            SqlConnection conn = new SqlConnection(Globals.credentialMgr.ConnectionString);
             conn.Open();
             SqlCommand cmd = conn.CreateCommand();
             cmd.CommandText = string.Format("insert into [{0}] (FileName,FileContent) values (@FileName,@FileContent)", tableName);

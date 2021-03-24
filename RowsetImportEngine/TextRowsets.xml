@@ -246,7 +246,7 @@
     </Rowset>
 
     
-   <Rowset name="tbl_dm_os_loaded_modules" enabled="true" identifier="-- sys.dm_os_loaded_modules (non-Microsoft)" type="RowsetImportEngine.TextRowset">
+   <Rowset name="tbl_dm_os_loaded_modules_non_microsoft" enabled="true" identifier="-- sys.dm_os_loaded_modules (non-Microsoft)" type="RowsetImportEngine.TextRowset">
       <Column name="runtime" type="RowsetImportEngine.DateTimeColumn"/>
       <Column name="base_address" type="RowsetImportEngine.VarBinaryColumn" />
      <Column name="file_version" type="RowsetImportEngine.VarCharColumn" />

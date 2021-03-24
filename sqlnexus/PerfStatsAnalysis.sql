@@ -1681,16 +1681,17 @@ BEGIN
 	inner join 
 	(select [DATABASE], [file], [dbid], [fileid]  from tbl_FileStats where runtime = (select min(runtime) from tbl_FileStats) ) t2 on t1.dbid =t2.dbid and t1.fileid=t2.fileid
 END
-
-
 go
---fixing 
 
-alter table CounterData
-alter column CounterDateTime varchar(24)
-go
-update CounterData
-set CounterDateTime = REPLACE(CounterDateTime, char(0), '')
+
+if OBJECT_ID ('CounterData') is not null 
+begin
+	alter table CounterData
+		alter column CounterDateTime varchar(24);
+
+	update CounterData
+	set CounterDateTime = REPLACE(CounterDateTime, char(0), '')
+end
 go
 --clean up spinlock
 if OBJECT_ID ('tbl_SPINLOCKSTATS') is not null 
@@ -2112,15 +2113,20 @@ owner:jackli
 go
 create procedure usp_AttendtionCausedBlocking
 as
-if exists (select *  from readtrace.tblInterestingEvents evt join  vw_HEAD_BLOCKER_SUMMARY bloc on evt.Session=bloc.head_blocker_session_id where eventid = 16 and evt.StartTime < bloc.runtime)
 begin
-	update tbl_AnalysisSummary
-	set Status = 1
-	where  Name =  OBJECT_NAME(@@PROCID)
+	if (OBJECT_ID ('[readtrace].[tblInterestingEvents]') is not null) 
+	begin
+		if exists (select *  from readtrace.tblInterestingEvents evt join  vw_HEAD_BLOCKER_SUMMARY bloc on evt.Session=bloc.head_blocker_session_id where eventid = 16 and evt.StartTime < bloc.runtime)
+		begin
+			update tbl_AnalysisSummary
+			set Status = 1
+			where  Name =  OBJECT_NAME(@@PROCID)
 
+		end
+	end
 end
+GO
 
-go
 create procedure usp_PerfScriptsRunningLong
 as
 if exists (select * from 
@@ -2148,12 +2154,15 @@ end
 go
 create procedure usp_ChangeTableCauseHighCPU
 as
-if exists (select * from readtrace.tblUniqueBatches where NormText like '%CHANGETABLE%') or exists (select * from readtrace.tblUniqueStatements where NormText like '%CHANGETABLE%')
+if (OBJECT_ID ('[readtrace].[tblUniqueBatches]') is not null) 
 begin
-	update tbl_AnalysisSummary
-	set Status = 1
-	where  Name =  OBJECT_NAME(@@PROCID)
+	if exists (select * from readtrace.tblUniqueBatches where NormText like '%CHANGETABLE%') or exists (select * from readtrace.tblUniqueStatements where NormText like '%CHANGETABLE%')
+	begin
+		update tbl_AnalysisSummary
+		set Status = 1
+		where  Name =  OBJECT_NAME(@@PROCID)
 
+	end
 end
 go
 
@@ -2170,14 +2179,16 @@ go
 --https://support.microsoft.com/en-us/help/3074434/fix-out-of-memory-error-when-the-virtual-address-space-of-the-sql-serv
 create procedure usp_VirtualBytesLeak
 as
-if exists (select   max(countervalue) from CounterDetails a join CounterData b on a.CounterID=b.CounterID  where CounterName ='Virtual Bytes' and InstanceName='sqlservr' and ObjectName='Process'  having   max(countervalue) > 7000000000000)
+if (OBJECT_ID ('CounterDetails') is not null) and (OBJECT_ID ('CounterData') is not null) 
 begin
-	update tbl_AnalysisSummary
-	set Status = 1
-	where  Name =  OBJECT_NAME(@@PROCID)
+	if exists (select   max(countervalue) from CounterDetails a join CounterData b on a.CounterID=b.CounterID  where CounterName ='Virtual Bytes' and InstanceName='sqlservr' and ObjectName='Process'  having   max(countervalue) > 7000000000000)
+	begin
+		update tbl_AnalysisSummary
+		set Status = 1
+		where  Name =  OBJECT_NAME(@@PROCID)
 
+	end
 end
-
 go
 
 -- Changed usp_AccessCheck SP code to make sure we do not check this for SQL SERVER 2016 and later version
@@ -2202,14 +2213,17 @@ go
 create procedure usp_LongAutoUpdateStats
 as
 begin
-declare @statstext nvarchar(max)
-select @statstext = textdata  from readtrace.tblInterestingEvents  where eventid=58 and (duration/1000.00/1000.00) > 60 order by duration desc
-	if @statstext is not null
-		begin
-			update tbl_AnalysisSummary
-			set status = 1, Description = 'Some auto statistics update took longer than 60 seconds.  Consider asynchronous stats update.' +  @statstext + ' is an example'
-			where Name='usp_LongAutoUpdateStats'
-		end
+if (OBJECT_ID ('[readtrace].[tblInterestingEvents]') is not null) 
+begin
+	declare @statstext nvarchar(max)
+	select @statstext = textdata  from readtrace.tblInterestingEvents  where eventid=58 and (duration/1000.00/1000.00) > 60 order by duration desc
+		if @statstext is not null
+			begin
+				update tbl_AnalysisSummary
+				set status = 1, Description = 'Some auto statistics update took longer than 60 seconds.  Consider asynchronous stats update.' +  @statstext + ' is an example'
+				where Name='usp_LongAutoUpdateStats'
+			end
+	end
 end
 go
 
@@ -2273,38 +2287,40 @@ go
 create procedure usp_HighCacheCount 
 as
 begin
-
-	if ( select max(cast(countervalue as float)) from CounterDetails c join CounterData dat on c.CounterID = dat.CounterID where CounterName = 'Cache Object Counts') > 100000
+	if (OBJECT_ID ('CounterDetails') is not null) and (OBJECT_ID ('CounterData') is not null) 
 	begin
-		update tbl_analysissummary
-		set [status]=1
-		where name ='usp_HighCacheCount'
-	end 
+		if ( select max(cast(countervalue as float)) from CounterDetails c join CounterData dat on c.CounterID = dat.CounterID where CounterName = 'Cache Object Counts') > 100000
+		begin
+			update tbl_analysissummary
+			set [status]=1
+			where name ='usp_HighCacheCount'
+		end 
+	end
 end
 
 go
 create procedure usp_HighStmtCount
 as
 begin
+	if (OBJECT_ID ('[readtrace].[tblStatements]') is not null) 
+	begin
+		if (select max(StmtCount) from (select BatchSeq , count (*) 'StmtCount' from readtrace.tblStatements group by BatchSeq ) t) > 1000
+		 begin
 
-if (select max(StmtCount) from (select BatchSeq , count (*) 'StmtCount' from readtrace.tblStatements group by BatchSeq ) t) > 1000
- begin
+			declare @query nvarchar(max)
 
-	declare @query nvarchar(max)
+			select @query = NormText from readtrace.tblBatches bat join readtrace.tblUniqueBatches ub on bat.hashid = ub.HashID
+			where bat.BatchSeq in (
+			select top 1 bat.BatchSeq from readtrace.tblStatements st join readtrace.tblBatches bat on st.BatchSeq = bat.BatchSeq 
+			group by bat.BatchSeq
+			order by count (*)  desc
+			)
 
-	select @query = NormText from readtrace.tblBatches bat join readtrace.tblUniqueBatches ub on bat.hashid = ub.HashID
-	where bat.BatchSeq in (
-	select top 1 bat.BatchSeq from readtrace.tblStatements st join readtrace.tblBatches bat on st.BatchSeq = bat.BatchSeq 
-	group by bat.BatchSeq
-	order by count (*)  desc
-	)
-
-	update tbl_Analysissummary  set [status] = 1,
-	[Description] = [Description] + ' here is an example query: ' + @query
-	where Name = 'usp_HighStmtCount'
-
-
- end
+			update tbl_Analysissummary  set [status] = 1,
+			[Description] = [Description] + ' here is an example query: ' + @query
+			where Name = 'usp_HighStmtCount'
+		 end
+	 end
 end
 go
 
@@ -2356,16 +2372,16 @@ go
 create procedure usp_HighCompile  --author:jackli
 as
 begin
-
-if ( select max(cast(countervalue as float)) from CounterDetails c join CounterData dat on c.CounterID = dat.CounterID where CounterName = 'SQL Compilations/sec') > 300
-begin
-	update tbl_analysissummary
-	set [status]=1
-	where name ='usp_HighCompile'
-end 
-
+	if (OBJECT_ID ('CounterDetails') is not null) and (OBJECT_ID ('CounterData') is not null) 
+	begin
+		if ( select max(cast(countervalue as float)) from CounterDetails c join CounterData dat on c.CounterID = dat.CounterID where CounterName = 'SQL Compilations/sec') > 300
+		begin
+			update tbl_analysissummary
+			set [status]=1
+			where name ='usp_HighCompile'
+		end 
+	end
 end
-
 
 go
 create procedure usp_RG_Idle 
@@ -2996,7 +3012,8 @@ begin
 		  where a1.CounterDateTime= b.CounterDateTime
 		  group by dt.CounterDateTime
 		  
-									      
+	if (OBJECT_ID ('[tempdb].[dbo].[#avg_CPU]') is not null) 
+	begin								      
 		  if ( exists (Select 1 from #avg_CPU where avg_CPU > @CPU_threshold))
 			 begin 
 				    update tbl_AnalysisSummary
@@ -3007,6 +3024,7 @@ begin
 		end
 		Select * from #avg_CPU
 		drop table #avg_CPU
+	end
 		drop table #tmpCounterDateTime
 end
  
@@ -3079,22 +3097,22 @@ go
 Create procedure OracleLinkedServerIssue  
 as  
 Begin 
-declare @i  int 
-set @i = 0 
-select @i= Count(*)  from sys.objects where name = ltrim(rtrim('tbl_dm_exec_query_memory_grants')) 
-if @i > 0  
-begin 
-set @i = 0 
- select @i= count(*) from    [dbo].[tbl_loaded_modules] 
-where name like '%OraOLEDButl11%' or name like '%OraOLEDBrst11%' or name like '%OraOLEDBrst10%' 
-if @i > 0  
+	declare @i  int 
+	set @i = 0 
+	select @i= Count(*)  from sys.objects where name = ltrim(rtrim('tbl_dm_exec_query_memory_grants')) 
+	if @i > 0  
 	begin 
+	set @i = 0 
+	 select @i= count(*) from    [dbo].[tbl_dm_os_loaded_modules] 
+	where name like '%OraOLEDButl11%' or name like '%OraOLEDBrst11%' or name like '%OraOLEDBrst10%' 
+	if @i > 0  
+		begin 
 	
-	update tbl_AnalysisSummary
-			set [Status] = 1
-			where Name = 'OracleLinkedServerIssue'
+		update tbl_AnalysisSummary
+				set [Status] = 1
+				where Name = 'OracleLinkedServerIssue'
+		end 
 	end 
-end 
 End  
 go
 
@@ -3185,16 +3203,17 @@ begin
 	-- Fires when ...
 	-- MAX SQL Re-Compilations/sec > 100
 	-- AVG SQL Re-Compilations/sec > 50
-	IF (select max(cast(dat.countervalue as float)) from CounterDetails c join CounterData dat on c.CounterID = dat.CounterID where c.CounterName = 'SQL Re-Compilations/sec') > 100
-	AND ( select avg(cast(dat.countervalue as float)) from CounterDetails c join CounterData dat on c.CounterID = dat.CounterID where c.CounterName = 'SQL Re-Compilations/sec') > 50
-	BEGIN
-		update tbl_analysissummary
-		set [status]=1
-		where name ='usp_HighRecompiles'
-	END 
+	if (OBJECT_ID ('CounterDetails') is not null) and (OBJECT_ID ('CounterData') is not null) 
+	begin
+		IF (select max(cast(dat.countervalue as float)) from CounterDetails c join CounterData dat on c.CounterID = dat.CounterID where c.CounterName = 'SQL Re-Compilations/sec') > 100
+		AND ( select avg(cast(dat.countervalue as float)) from CounterDetails c join CounterData dat on c.CounterID = dat.CounterID where c.CounterName = 'SQL Re-Compilations/sec') > 50
+		BEGIN
+			update tbl_analysissummary
+			set [status]=1
+			where name ='usp_HighRecompiles'
+		END 
+	end
 end
-
-
 GO
 
 /**************************************************************************************************
@@ -3250,23 +3269,25 @@ GO
 /********************************************************
 Owner: Louis Li
 ********************************************************/
-
-select 
-	de.ObjectName,de.CounterName,de.InstanceName
-	,cast(cast(CounterDateTime as varchar(19)) as time) as CounterDateTime
-	,d.CounterValue
-	,'\'+objectname + case when InstanceName is NULL then '' else '(' + InstanceName + ')' end + '\' + CounterName as FullCounterName
-	,'\'+objectname + case when InstanceName is NULL then '' else '(*)' end + '\' + CounterName as FullCounterNameWithWildchar
-Into dbo.Counters
-from 
-	dbo.counterdata d inner join dbo.CounterDetails de
-		on d.CounterID = de.CounterID
-Order By
-	de.ObjectName, de.CounterName,de.instancename,d.CounterDateTime
+if (OBJECT_ID ('CounterDetails') is not null) and (OBJECT_ID ('CounterData') is not null) 
+begin
+	select 
+		de.ObjectName,de.CounterName,de.InstanceName
+		,cast(cast(CounterDateTime as varchar(19)) as time) as CounterDateTime
+		,d.CounterValue
+		,'\'+objectname + case when InstanceName is NULL then '' else '(' + InstanceName + ')' end + '\' + CounterName as FullCounterName
+		,'\'+objectname + case when InstanceName is NULL then '' else '(*)' end + '\' + CounterName as FullCounterNameWithWildchar
+	Into dbo.Counters
+	from 
+		dbo.counterdata d inner join dbo.CounterDetails de
+			on d.CounterID = de.CounterID
+	Order By
+		de.ObjectName, de.CounterName,de.instancename,d.CounterDateTime
+end
 GO
 
 /********************************************************
-firiing rules
+firing rules
 ********************************************************/
 
 
