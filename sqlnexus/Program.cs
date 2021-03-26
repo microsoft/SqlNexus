@@ -299,4 +299,4 @@ namespace sqlnexus
 
 
 //JOTODO: Once import is complete and person closes Import screen, switch to PerfMain RDL automatically
-//JOTODO: figure out the Query Execution Memory_C.rdl report bottom table - max grant - seems inaccurate
+//JOTODO: Deal with DoEvents and see if we can speed things up and improve progress bar experience

@@ -684,22 +684,61 @@ namespace RowsetImportEngine
 						this.State = ImportState.Canceling;
 						break;
 					}
-					
-					// If our parent provided us with a progress update delegate, notify him of % complete status
-					if (0 == (this.TotalLinesProcessed % 100))
-					{
-						if (0 == this.CurrentPosition)
-							PercentComplete = 0;
-						else if (0 == this.FileSize)
-							PercentComplete = 100;
-						else 
-							PercentComplete = Convert.ToInt32 (Convert.ToInt64 (100) * this.CurrentPosition / this.FileSize);
-						if (!(null == m_ProgressUpdateFunction))
-						{
-							m_ProgressUpdateFunction (PercentComplete);
-						}
-					}
-				}
+
+
+                    // If our parent provided us with a progress update delegate, notify him of % complete status
+                    bool ShouldUpdate = false;
+
+                    if (this.TotalLinesProcessed > 100000)
+                    {
+                        if (0 == (this.TotalLinesProcessed % 10000))
+                        {
+                            ShouldUpdate = true;
+                        }
+
+                    }
+                    else if (this.TotalLinesProcessed > 30000)
+                    {
+                        if (0 == (this.TotalLinesProcessed % 5000))
+                        {
+                            ShouldUpdate = true;
+                        }
+
+                    }
+
+                    else if (this.TotalLinesProcessed > 10000)
+                    {
+                        if (0 == (this.TotalLinesProcessed % 3000))
+                        {
+                            ShouldUpdate = true;
+                        }
+
+                    }
+                    else 
+                    {
+                        if (0 == (this.TotalLinesProcessed % 1000))
+                        {
+                            ShouldUpdate = true;
+                        }
+                    }
+
+                    //now update progress of rows processed
+                    if (ShouldUpdate == true)
+                    {
+                        if (0 == this.CurrentPosition)
+                            PercentComplete = 0;
+                        else if (0 == this.FileSize)
+                            PercentComplete = 100;
+                        else
+                            PercentComplete = Convert.ToInt32(Convert.ToInt64(100) * this.CurrentPosition / this.FileSize);
+                        if (!(null == m_ProgressUpdateFunction))
+                        {
+                            m_ProgressUpdateFunction(PercentComplete);
+                        }
+                    } //end of if totallinesprocessed
+
+                } //end of while
+
 				return;
 			}
 			catch (Exception e)
