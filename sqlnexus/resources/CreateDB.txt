@@ -1,9 +1,15 @@
 use master
 if db_id ('{0}') is null
 begin
-	create database [{0}];
-	alter database [{0}] modify file (name='{0}', size=50MB)
-	alter database [{0}] set recovery simple
+	CREATE DATABASE [{0}];
+	ALTER DATABASE [{0}] SET RECOVERY SIMPLE
+
+	BEGIN TRY
+	  ALTER DATABASE [{0}] MODIFY FILE (name='{0}', size=50MB)
+	END TRY
+
+	BEGIN CATCH  
+		--print no error - very rarely would MODIFY FILE fail 
+	END CATCH  
 end
---else  
-	-- alter database [{0}] set recovery simple
+

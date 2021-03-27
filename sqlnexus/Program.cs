@@ -95,6 +95,7 @@ namespace sqlnexus
             Console.WriteLine(Util.ExpandEscapeStrings(sqlnexus.Properties.Resources.Usage_ExitAfterProcessing));
             Console.WriteLine(Util.ExpandEscapeStrings(sqlnexus.Properties.Resources.Usage_Parameter));
             Console.WriteLine(Util.ExpandEscapeStrings(sqlnexus.Properties.Resources.Usage_Quiet));
+            Console.WriteLine(Util.ExpandEscapeStrings(sqlnexus.Properties.Resources.Drop_Existing_Database));
         }
 
         /// <summary>
@@ -108,7 +109,7 @@ namespace sqlnexus
             // TODO: print out command line params as they are processed
             // TODO: exit if -? passed
             //Special case usage info
-            if ((1 == args.Length) && (("/?" == args[0]) || ("-?" == args[0])))
+            if ((1 == args.Length) && (("/?" == args[0]) || ("-?" == args[0]) || ("--help" == args[0]) ))
             {
                 ShowUsage();
                 return false;
@@ -214,7 +215,7 @@ namespace sqlnexus
                             //fixing 2256
                             String ipath = arg.Substring(2).Replace("\"", "");
                             Globals.PathsToImport.Enqueue(ipath);
-                            Globals.QuietMode = true;
+                            Globals.QuietNonInteractiveMode = true; 
                             break;
                         }
                     case 'V':
@@ -224,6 +225,12 @@ namespace sqlnexus
                             string param = tmpStr.Substring(0, tmpStr.IndexOf('='));
                             string val = tmpStr.Substring(tmpStr.IndexOf('=')+1);
                             Globals.UserSuppliedReportParameters.Add(param, val);
+                            break;
+                        }
+                    case 'N':
+                        {
+                            Console.WriteLine(@"Command Line Arg (/N)" + arg.Substring(2));
+                            Globals.DropExistingDb = true;
                             break;
                         }
                     default:
@@ -241,8 +248,9 @@ namespace sqlnexus
             {
                 String CreateDB = string.Format(SQLScripts.CreateDB, Globals.credentialMgr.Database);
                 Console.WriteLine("Creating Database" + CreateDB);
-                String connstring = string.Format("Data Source={0};Initial Catalog=master;Integrated Security=SSPI", Globals.credentialMgr.Server);
-                SqlConnection conn = new SqlConnection(connstring);
+                //String connstring = string.Format("Data Source={0};Initial Catalog=master;Integrated Security=SSPI", Globals.credentialMgr.Server);
+                //SqlConnection conn = new SqlConnection(connstring);
+                SqlConnection conn = new SqlConnection(Globals.credentialMgr.ConnectionString);
                 conn.Open();
                 SqlCommand cmd = conn.CreateCommand();
                 cmd.CommandText = CreateDB;
@@ -288,3 +296,6 @@ namespace sqlnexus
         }
     }
 }
+
+
+//JOTODO: Once import is complete and person closes Import screen, switch to PerfMain RDL automatically

@@ -24,10 +24,11 @@ namespace sqlnexus
         public static Boolean ConsoleMode = false;
         private  static string m_connectionString;
         public static CredentialManager credentialMgr = new CredentialManager();
-        public static bool QuietMode = false;
+        public static bool QuietNonInteractiveMode = false;
         public static bool ExceptionEncountered = false;
         public static bool IsNexusCoreImporterSuccessful = true;
         public static bool NoWindow = false;
+        public static bool DropExistingDb = false;
 
         private static readonly string m_StartupPath = Application.StartupPath;
         private static readonly string m_AppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\sqlnexus";

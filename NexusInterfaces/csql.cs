@@ -41,9 +41,10 @@ namespace NexusInterfaces
         }
         public void  ExecuteSqlScript(String script)
         {
+            string dlgTitle = "SQL Script Execution Failure";
             ExecuteBatches(ParseBatches(script));
 
-            Util.Logger.LogMessage (m_ErrorMessages.ToString(), MessageOptions.Silent, ( (m_Success == true ) ? TraceEventType.Information: TraceEventType.Error));
+            Util.Logger.LogMessage (m_ErrorMessages.ToString(), MessageOptions.Silent, ( (m_Success == true ) ? TraceEventType.Information: TraceEventType.Error), dlgTitle);
         }
         private String[] ParseBatches(string scriptText)
         {
@@ -70,9 +71,10 @@ namespace NexusInterfaces
             }
             catch (Exception ex)
             {
+                string dlgTitle = "Failed to Get DataTable";
                 m_Success = false;
                 m_ErrorMessages.AppendFormat("{0} \r\n", ex.ToString());
-                Util.Logger.LogMessage (m_ErrorMessages.ToString(), MessageOptions.Silent, (m_Success == true? TraceEventType.Information: TraceEventType.Error));
+                Util.Logger.LogMessage (m_ErrorMessages.ToString(), MessageOptions.Silent, (m_Success == true? TraceEventType.Information: TraceEventType.Error), dlgTitle);
                 throw ex;
             }
             
@@ -81,7 +83,8 @@ namespace NexusInterfaces
         }
         private  void ExecuteBatches(string[] batches)
         {
-
+            string batchText;
+            string upperBatchText;
             SqlConnection conn = new SqlConnection(m_ConnStringBuilder.ConnectionString);
             conn.InfoMessage += new SqlInfoMessageEventHandler(OnInfoMessage);
             conn.Open();  //we want this exception to pop up when we can't make a connection
@@ -100,11 +103,32 @@ namespace NexusInterfaces
                         cmd.CommandText = bat;
                         cmd.Connection = conn;
                         cmd.CommandTimeout = 0;
-                        cmd.ExecuteNonQuery();
+
+                        //printing the fact that batch is being executed
+                        if (String.IsNullOrEmpty(bat))
+                            batchText = "Empty Batch";
+                        else if (bat.Length <= 100)
+                            batchText = bat;
+                        else
+                            batchText = bat.Substring(0, 100);
+
+                        batchText = batchText.Replace("\r\n", " ");
+                        batchText = batchText.Replace("*****", "*");
+                        batchText = batchText.Replace("  ", " ");
+
+                        upperBatchText = batchText.ToUpper();
+
+                        int position = upperBatchText.IndexOf("OWNER:");
+                        if (position > -1)
+                        {
+                            batchText = "'Script owner found in a comment here'";
+                        }
+                        m_ErrorMessages.AppendFormat("Starting execution of {0} \r\n", batchText);
+
                         SqlDataReader dr = cmd.ExecuteReader();
                         while (dr.NextResult())
                         {
-                        m_ErrorMessages.AppendFormat("{0} \r\n", GetStringFromReader(dr));
+                            m_ErrorMessages.AppendFormat("{0} \r\n", GetStringFromReader(dr));
                         }
                         
                         

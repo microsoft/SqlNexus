@@ -57,7 +57,7 @@ namespace RowsetImportEngine
 			if (this.isIgnorable)
 				msg += "\n\nDo you want to try to continue anyway?";
             else
-                msg += "\n\nImport canceled.";
+                msg += "\n\nImport cancelled.";
 			
 			buttons = 
 				isIgnorable ? 

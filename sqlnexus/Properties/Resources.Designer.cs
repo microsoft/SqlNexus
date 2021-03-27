@@ -244,12 +244,18 @@ namespace sqlnexus.Properties {
         ///   Looks up a localized string similar to use master
         ///if db_id (&apos;{0}&apos;) is null
         ///begin
-        ///	create database [{0}];
-        ///	alter database [{0}] modify file (name=&apos;{0}&apos;, size=50MB)
-        ///	alter database [{0}] set recovery simple
+        ///	CREATE DATABASE [{0}];
+        ///	ALTER DATABASE [{0}] SET RECOVERY SIMPLE
+        ///
+        ///	BEGIN TRY
+        ///	  ALTER DATABASE [{0}] MODIFY FILE (name=&apos;{0}&apos;, size=50MB)
+        ///	END TRY
+        ///
+        ///	BEGIN CATCH  
+        ///		--print no error - very rarely would MODIFY FILE fail 
+        ///	END CATCH  
         ///end
-        ///--else  
-        ///	-- alter database [{0}] set recovery simple
+        ///
         ///.
         /// </summary>
         internal static string CreateDB {
@@ -266,7 +272,6 @@ namespace sqlnexus.Properties {
         ///	drop database [{0}];
         ///end
         ///create database [{0}];
-        ///--alter database [{0}] modify file (name=&apos;{0}&apos;, size=50MB)
         ///alter database [{0}] set recovery simple
         ///
         ///.
@@ -414,6 +419,15 @@ namespace sqlnexus.Properties {
             get {
                 object obj = ResourceManager.GetObject("DialHS", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /N\t\tCreate a new SQLNexus database before importing (drop existing)..
+        /// </summary>
+        internal static string Drop_Existing_Database {
+            get {
+                return ResourceManager.GetString("Drop_Existing_Database", resourceCulture);
             }
         }
         
@@ -2040,7 +2054,7 @@ namespace sqlnexus.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &quot;/Cconnstring&quot;\tSpecifies the SqlClient ConnectionString to use (can be used instead of /S /E)..
+        ///   Looks up a localized string similar to /C&quot;connstring&quot;\tSpecifies the SqlClient ConnectionString to use (can be used instead of /S /E)..
         /// </summary>
         internal static string Usage_ConnectStr {
             get {
@@ -2067,7 +2081,7 @@ namespace sqlnexus.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &quot;/Ipath&quot;\tImport SQL diagnostic data from this path.
+        ///   Looks up a localized string similar to /I&quot;path&quot;\tImport SQL diagnostic data from this path.
         /// </summary>
         internal static string Usage_InputPath {
             get {
@@ -2076,7 +2090,7 @@ namespace sqlnexus.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &quot;/Opath&quot;\tSpecifies an export path for reports executed via /R.
+        ///   Looks up a localized string similar to /O&quot;path&quot;\tSpecifies an export path for reports executed via /R. Also this is where the sqlnexus.log would get created.
         /// </summary>
         internal static string Usage_OutputPath {
             get {
@@ -2103,7 +2117,7 @@ namespace sqlnexus.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to /Q Quiet Mode.
+        ///   Looks up a localized string similar to /Q\t\tQuiet Mode - minimize windows in console mode.
         /// </summary>
         internal static string Usage_Quiet {
             get {
@@ -2112,7 +2126,7 @@ namespace sqlnexus.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &quot;/Rreport&quot;\tSpecifies a report file name to run..
+        ///   Looks up a localized string similar to /R&quot;report&quot;\tSpecifies a report file name to run..
         /// </summary>
         internal static string Usage_RunReport {
             get {
@@ -2121,7 +2135,7 @@ namespace sqlnexus.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to /Sserver\tSpecifies a SQL Server name to connect to..
+        ///   Looks up a localized string similar to /S&quot;server&quot;\tSpecifies a SQL Server name to connect to..
         /// </summary>
         internal static string Usage_Server {
             get {

@@ -30,7 +30,7 @@ namespace NexusInterfaces
         void LogMessage(string msg);
         void LogMessage(string msg, MessageOptions options);
 
-        void LogMessage(string msg, MessageOptions options, TraceEventType eventtype);
+        void LogMessage(string msg, MessageOptions options, TraceEventType eventtype, string title);
         void LogMessage(string msg, string[] args);
         void LogMessage(string msg, string[] args, MessageOptions options, TraceEventType eventtype);
         void ClearMessage();
@@ -111,7 +111,7 @@ namespace NexusInterfaces
         {
             get;
         }
-        bool Canceled 			 // Will be set to true if the current import has been canceled
+        bool Cancelled 			 // Will be set to true if the current import has been cancelled
         {
             get;
         }

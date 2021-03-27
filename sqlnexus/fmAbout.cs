@@ -83,7 +83,6 @@ namespace sqlnexus
             if (this.Opacity != opacityMax)
             {
                 this.Opacity += opacityInc;
-//                Application.DoEvents();
             }
             else if (0 == this.Opacity)
                 Close();
