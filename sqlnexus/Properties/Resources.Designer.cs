@@ -2144,7 +2144,7 @@ namespace sqlnexus.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to sqlnexus.exe [ [ /S [ /E | /Uuser /Ppwd ] [/D&quot;database&quot;] ] | [/C&quot;connstr&quot;] ] [/Iinputpath] [/Ooutputpath] [/Rreport] [/X]\n [/Q].
+        ///   Looks up a localized string similar to sqlnexus.exe [ [ /S [ /E | /Uuser /Ppwd ] [/D&quot;database&quot;] ] | [/C&quot;connstr&quot;] ] [/I&quot;inputpath&quot;] [/O&quot;outputpath&quot;] [/Rreport] [/X] [/Q] [/N].
         /// </summary>
         internal static string Usage_Summary {
             get {
