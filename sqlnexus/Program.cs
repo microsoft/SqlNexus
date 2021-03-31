@@ -247,10 +247,14 @@ namespace sqlnexus
 
             if (!string.IsNullOrEmpty(Globals.credentialMgr.Database))
             {
+                String currentDb = Globals.credentialMgr.Database;
                 String CreateDB = string.Format(SQLScripts.CreateDB, Globals.credentialMgr.Database);
                 Console.WriteLine("Creating Database" + CreateDB);
                 //String connstring = string.Format("Data Source={0};Initial Catalog=master;Integrated Security=SSPI", Globals.credentialMgr.Server);
                 //SqlConnection conn = new SqlConnection(connstring);
+
+                //set the db to 'master' to be able to create a new Nexus db
+                Globals.credentialMgr.Database = "master";
                 SqlConnection conn = new SqlConnection(Globals.credentialMgr.ConnectionString);
                 conn.Open();
                 SqlCommand cmd = conn.CreateCommand();
@@ -258,7 +262,8 @@ namespace sqlnexus
 
                 cmd.ExecuteNonQuery();
 
-                
+                //reset the Nexus db name that the user selected
+                Globals.credentialMgr.Database = currentDb;
             }
 
             return true;

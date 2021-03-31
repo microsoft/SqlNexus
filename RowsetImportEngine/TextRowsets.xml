@@ -460,16 +460,19 @@
     
     </Rowset>
 
-    <Rowset name="tbl_HEADBLOCKERSUMMARY" enabled="true" identifier="-- headblockersummary" type="RowsetImportEngine.TextRowset">
+    <Rowset name="tbl_HEADBLOCKERSUMMARY" enabled="true" identifier="-- headblockersummary --" type="RowsetImportEngine.TextRowset">
       <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
       <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
       <Column name="head_blocker_session_id" type="RowsetImportEngine.IntColumn" />
       <Column name="blocked_task_count" type="RowsetImportEngine.IntColumn" />
       <Column name="tot_wait_duration_ms" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="blocking_resource_wait_type" type="RowsetImportEngine.VarCharColumn" length="40"/>
       <Column name="avg_wait_duration_ms" type="RowsetImportEngine.BigIntColumn" />
       <Column name="max_wait_duration_ms" type="RowsetImportEngine.BigIntColumn" />
       <Column name="max_blocking_chain_depth" type="RowsetImportEngine.IntColumn" />
+      <Column name="head_blocker_proc_name" type="RowsetImportEngine.VarCharColumn" length="64"/>
       <Column name="head_blocker_proc_objid" type="RowsetImportEngine.IntColumn" />
+      <Column name="stmt_text" type="RowsetImportEngine.VarCharColumn" length="1024"/>
 	    <Column name="head_blocker_plan_handle" type="RowsetImportEngine.VarBinaryColumn" />
     </Rowset>
 
@@ -532,8 +535,7 @@
         <Column name="type"    type="RowsetImportEngine.VarCharColumn" />
         <Column name="name"  type="RowsetImportEngine.VarCharColumn" />
         <Column name="memory_node_id"   type="RowsetImportEngine.IntColumn" />
-        <Column name="single_pages_kb" type="RowsetImportEngine.BigIntColumn" />
-        <Column name="multi_pages_kb"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="pages_kb" type="RowsetImportEngine.BigIntColumn" />
         <Column name="virtual_memory_reserved_kb"     type="RowsetImportEngine.BigIntColumn" />
         <Column name="virtual_memory_committed_kb"   type="RowsetImportEngine.BigIntColumn" />
         <Column name="awe_allocated_kb"   type="RowsetImportEngine.BigIntColumn" />

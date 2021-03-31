@@ -1186,7 +1186,7 @@ namespace sqlnexus
 
                 if (!File.Exists(FullScriptName))
                 {
-                    MainForm.LogMessage("Script " + FullScriptName + "doesn't exist", MessageOptions.All);
+                    MainForm.LogMessage("Script '" + FullScriptName + "' doesn't exist", MessageOptions.All);
                     return;
 
                 }

@@ -798,7 +798,7 @@ namespace RowsetImportEngine
 					// Create table in SQL if this is the first time we've run into it. 
 					if (!this.CurrentRowset.HasBeenEncountered)
 					{
-                        logger.LogMessage("First time encoutering row identifier" + RowsetIdentifier);
+                        logger.LogMessage("First time encoutering row identifier '" + RowsetIdentifier + "'");
 						CreateTable();
 					}
 					// If we don't have an in-progress bulk load for the rowset, start one. 
