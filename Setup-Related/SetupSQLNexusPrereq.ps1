@@ -117,7 +117,7 @@ elseif
     
     #pop a dialog to ask them to continue or not
     Add-Type -AssemblyName System.Windows.Forms
-    $result = [System.Windows.Forms.MessageBox]::Show(“Continue with uninstallation of RML Utils version: ” + $RMLsw_found64bit.DisplayVersion + "?",”Uninstall”, “YesNo” , “Information” , “Button1”)
+    $result = [System.Windows.Forms.MessageBox]::Show(“Continue with uninstallation of RML Utils version: " + $RMLsw_found64bit.DisplayVersion + "?","Uninstall", “YesNo" , “Information" , “Button1")
 
     if($result -ne $null)
     {
@@ -151,7 +151,7 @@ elseif
     
     #pop a dialog to ask them to continue or not
     Add-Type -AssemblyName System.Windows.Forms
-    $result = [System.Windows.Forms.MessageBox]::Show(“Continue with uninstallation of RML Utils version: ” + $RMLsw_found64bit.DisplayVersion + "?",”Uninstall”, “YesNo” , “Information” , “Button1”)
+    $result = [System.Windows.Forms.MessageBox]::Show(“Continue with uninstallation of RML Utils version: " + $RMLsw_found64bit.DisplayVersion + "?","Uninstall", “YesNo" , “Information" , “Button1")
 
     if($result -ne $null)
     {
