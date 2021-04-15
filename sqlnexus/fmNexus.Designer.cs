@@ -992,36 +992,36 @@ namespace sqlnexus
                 resources.ApplyResources(this.toolbarReport, "toolbarReport");
                 this.toolbarReport.ImageScalingSize = new System.Drawing.Size(20, 20);
                 this.toolbarReport.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsbDocMap,
-            this.toolStripSeparator1,
-            this.tsbFirst,
-            this.tsbPrev,
-            this.tstbPage,
-            this.tslaPages,
-            this.tsbNext,
-            this.tsbLast,
-            this.toolStripSeparator2,
-            this.tsbBack,
-            this.tsbStopAct,
-            this.tsbRefresh,
-            this.toolStripSeparator3,
-            this.tstbParams,
-            this.toolStripSeparator7,
-            this.tsbPrint,
-            this.tsbLayout,
-            this.tsbPageSetup,
-            this.toolStripSeparator6,
-            this.tstbCopy,
-            this.tsbExport,
-            this.tstbEmail,
-            this.toolStripSeparator4,
-            this.tscZoom,
-            this.tstbFind,
-            this.tsbFind,
-            this.toolStripSeparator5,
-            this.tsbFindNext,
-            this.tsLabelCurDB,
-            this.tscCurrentDatabase});
+                    this.tsbDocMap,
+                    this.toolStripSeparator1,
+                    this.tsbFirst,
+                    this.tsbPrev,
+                    this.tstbPage,
+                    this.tslaPages,
+                    this.tsbNext,
+                    this.tsbLast,
+                    this.toolStripSeparator2,
+                    this.tsbBack,
+                    this.tsbStopAct,
+                    this.tsbRefresh,
+                    this.toolStripSeparator3,
+                    this.tstbParams,
+                    this.toolStripSeparator7,
+                    this.tsbPrint,
+                    this.tsbLayout,
+                    this.tsbPageSetup,
+                    this.toolStripSeparator6,
+                    this.tstbCopy,
+                    this.tsbExport,
+                    this.tstbEmail,
+                    this.toolStripSeparator4,
+                    this.tscZoom,
+                    this.tstbFind,
+                    this.tsbFind,
+                    this.toolStripSeparator5,
+                    this.tsbFindNext,
+                    this.tsLabelCurDB,
+                    this.tscCurrentDatabase});
                 this.toolbarReport.Name = "toolbarReport";
                 this.toolbarReport.Visible = global::sqlnexus.Properties.Settings.Default.ShowReportToolbar;
                 this.toolbarReport.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.toolbarReport_ItemClicked);
@@ -1171,14 +1171,14 @@ namespace sqlnexus
                 // 
                 this.tsbExport.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
                 this.tsbExport.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.excelToolStripMenuItem,
-            this.acrobatPDFFileToolStripMenuItem,
-            this.jPEGToolStripMenuItem,
-            this.bitmapToolStripMenuItem,
-            this.windowsEMFToolStripMenuItem,
-            this.GIFToolStripMenuItem,
-            this.PNGToolStripMenuItem,
-            this.TIFFToolStripMenuItem});
+                    this.excelToolStripMenuItem,
+                    this.acrobatPDFFileToolStripMenuItem,
+                    this.jPEGToolStripMenuItem,
+                    this.bitmapToolStripMenuItem,
+                    this.windowsEMFToolStripMenuItem,
+                    this.GIFToolStripMenuItem,
+                    this.PNGToolStripMenuItem,
+                    this.TIFFToolStripMenuItem});
                 this.tsbExport.Image = global::sqlnexus.Properties.Resources.saveHS;
                 resources.ApplyResources(this.tsbExport, "tsbExport");
                 this.tsbExport.Name = "tsbExport";
@@ -1243,8 +1243,8 @@ namespace sqlnexus
                 // 
                 this.tstbEmail.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
                 this.tstbEmail.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.emailReportToolStripMenuItem,
-            this.emailAllReportsToolStripMenuItem});
+                    this.emailReportToolStripMenuItem,
+                    this.emailAllReportsToolStripMenuItem});
                 this.tstbEmail.Image = global::sqlnexus.Properties.Resources.eps_open_largelHS;
                 resources.ApplyResources(this.tstbEmail, "tstbEmail");
                 this.tstbEmail.Name = "tstbEmail";
@@ -1270,15 +1270,15 @@ namespace sqlnexus
                 // 
                 this.tscZoom.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
                 this.tscZoom.Items.AddRange(new object[] {
-            resources.GetString("tscZoom.Items"),
-            resources.GetString("tscZoom.Items1"),
-            resources.GetString("tscZoom.Items2"),
-            resources.GetString("tscZoom.Items3"),
-            resources.GetString("tscZoom.Items4"),
-            resources.GetString("tscZoom.Items5"),
-            resources.GetString("tscZoom.Items6"),
-            resources.GetString("tscZoom.Items7"),
-            resources.GetString("tscZoom.Items8")});
+                    resources.GetString("tscZoom.Items"),
+                    resources.GetString("tscZoom.Items1"),
+                    resources.GetString("tscZoom.Items2"),
+                    resources.GetString("tscZoom.Items3"),
+                    resources.GetString("tscZoom.Items4"),
+                    resources.GetString("tscZoom.Items5"),
+                    resources.GetString("tscZoom.Items6"),
+                    resources.GetString("tscZoom.Items7"),
+                    resources.GetString("tscZoom.Items8")});
                 this.tscZoom.Name = "tscZoom";
                 resources.ApplyResources(this.tscZoom, "tscZoom");
                 this.tscZoom.SelectedIndexChanged += new System.EventHandler(this.tscZoom_SelectedIndexChanged);
@@ -1334,14 +1334,14 @@ namespace sqlnexus
                 resources.ApplyResources(this.toolbarMain, "toolbarMain");
                 this.toolbarMain.ImageScalingSize = new System.Drawing.Size(20, 20);
                 this.toolbarMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tspUnpin,
-            this.tstbConnect,
-            this.tspPin,
-            this.tstbOpen,
-            this.toolStripSeparator8,
-            this.tstbRunAll,
-            this.toolStripSeparator9,
-            this.tspHelp});
+                    this.tspUnpin,
+                    this.tstbConnect,
+                    this.tspPin,
+                    this.tstbOpen,
+                    this.toolStripSeparator8,
+                    this.tstbRunAll,
+                    this.toolStripSeparator9,
+                    this.tspHelp});
                 this.toolbarMain.Name = "toolbarMain";
                 this.toolbarMain.Visible = global::sqlnexus.Properties.Settings.Default.ShowStandardToolbar;
                 // 
@@ -1407,10 +1407,10 @@ namespace sqlnexus
                 // 
                 this.cmReport.ImageScalingSize = new System.Drawing.Size(20, 20);
                 this.cmReport.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.reportParametersToolStripMenuItem,
-            this.closeToolStripMenuItem,
-            this.closeAllButThisToolStripMenuItem,
-            this.saveToClipboardToolStripMenuItem});
+                    this.reportParametersToolStripMenuItem,
+                    this.closeToolStripMenuItem,
+                    this.closeAllButThisToolStripMenuItem,
+                    this.saveToClipboardToolStripMenuItem});
                 this.cmReport.Name = "contextMenuStrip1";
                 resources.ApplyResources(this.cmReport, "cmReport");
                 // 
@@ -1537,8 +1537,7 @@ namespace sqlnexus
 
             catch (System.Exception ex)
             {
-                LogMessage("Initializing component failed with eerror" + ex.Message, NexusInterfaces.MessageOptions.Both);
-                throw;
+                LogMessage("Initializing component failed with error: \n\r" + ex.Message + "\n\r \n\rPlease install the component and retry", NexusInterfaces.MessageOptions.All);
             }
         }
 
