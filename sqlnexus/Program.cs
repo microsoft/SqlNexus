@@ -144,6 +144,15 @@ namespace sqlnexus
                     }
                 }
 
+                string arg_slash_validation = arg.Replace("/","");
+
+                if (arg.Length - arg_slash_validation.Length > 1)
+                {
+                    Console.WriteLine(sqlnexus.Properties.Resources.Msg_InvalidSwitch + arg.Substring(0,2));
+                    Console.WriteLine("Possible reason: An extra backslash exists at the end of " + arg.Substring(0, 2) + " parameter in your command");
+                    return false;
+                }
+
                 switch (switchChar)
                 {
                     case 'C':
@@ -213,8 +222,11 @@ namespace sqlnexus
                     case 'I':
                         {
                             Console.WriteLine(@"Command Line Arg (/I): InputPath=" + arg.Substring(2));
-                            //fixing 2256
-                            String ipath = arg.Substring(2).Replace("\"", "");
+                            
+                            String ipath = arg.Substring(2).Replace("\"", "").Trim();
+                            if (ipath.EndsWith(@"\"))
+                                ipath =  ipath.Substring(0, ipath.Length-1);
+
                             Globals.PathsToImport.Enqueue(ipath);
                             Globals.QuietNonInteractiveMode = true; 
                             break;
