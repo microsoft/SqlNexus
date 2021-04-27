@@ -2230,7 +2230,7 @@ namespace sqlnexus.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Because you have enabled drop database before importing.  Nexus is about to drop your current database &quot;{0}&quot;.   This operation can&apos;t be recovered.  Are you sure you want to do this?.
+        ///   Looks up a localized string similar to Because you have enabled drop database before importing, SQL Nexus is about to drop your current database &quot;{0}&quot;.   This operation can&apos;t be undone.  Are you sure you want to do this?.
         /// </summary>
         internal static string Warning_ToDropDB {
             get {
