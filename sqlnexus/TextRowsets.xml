@@ -2149,6 +2149,14 @@
       <Column name="active_statement_text"     type="RowsetImportEngine.VarCharColumn" />
     </Rowset>
 
+    <Rowset name="tbl_server_times" enabled="true" identifier="-- server_times --" type="RowsetImportEngine.InputbuffersRowset">
+      <KnownColumns>
+        <Column name="server_time" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="utc_time" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="time_delta_hours" type="RowsetImportEngine.IntColumn" />
+      </KnownColumns>
+    </Rowset>
+    
   </KnownRowsets>
 </TextImport>
 
