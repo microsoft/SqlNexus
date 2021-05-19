@@ -131,7 +131,7 @@ elseif
 
             #now install RML Utils
             Write-Host "  Launching RML Utilities installation after uninstallation of previous version" -BackgroundColor DarkYellow
-            Start-Process -FilePath "cmd" -ArgumentList "/C \\dsdb\Products\RML\setup.cmd" -Wait
+            Start-Process -FilePath "msiexec.exe" -ArgumentList "/i https://download.microsoft.com/download/7/A/D/7ADE5D8B-47AB-4E94-BAD0-5416D6B6D383/RMLSetup.msi" -Wait
 
         }
         else #result is 'No'
@@ -164,14 +164,14 @@ elseif
             start-process "msiexec.exe" -arg "/X $tmpUninstStr" -Wait
 
             #now install RML Utils
-			$rml_utils_installation_file = "$env:temp\RMLSetup_AMD64.msi"
-			Write-Host "  Downloading RML Utilities from the Web..." -BackgroundColor DarkYellow
-			DownloadNexusPrereqFile -url "https://github.com/microsoft/SqlNexus/releases/download/09.04.0097/RMLSetup_AMD64.msi" -destination_file $rml_utils_installation_file
-			Start-Sleep -Seconds 1
-			Write-Host "  Launching RML Utilities installation" -BackgroundColor DarkYellow
-			Start-Process -FilePath "msiexec" -ArgumentList "/i $rml_utils_installation_file /lv $env:temp\RMLSetup_AMD64_Install.log" -Wait
-			Write-Host "  Removing the downloaded RML Utilities installation file..." -BackgroundColor DarkYellow
-			Remove-Item -Path $rml_utils_installation_file
+		$rml_utils_installation_file = "$env:temp\RMLSetup_AMD64.msi"
+		Write-Host "  Downloading RML Utilities from the Web..." -BackgroundColor DarkYellow
+		DownloadNexusPrereqFile -url "https://download.microsoft.com/download/7/A/D/7ADE5D8B-47AB-4E94-BAD0-5416D6B6D383/RMLSetup.msi" -destination_file $rml_utils_installation_file
+		Start-Sleep -Seconds 1
+		Write-Host "  Launching RML Utilities installation" -BackgroundColor DarkYellow
+		Start-Process -FilePath "msiexec" -ArgumentList "/i $rml_utils_installation_file /lv $env:temp\RMLSetup_AMD64_Install.log" -Wait
+		Write-Host "  Removing the downloaded RML Utilities installation file..." -BackgroundColor DarkYellow
+		Remove-Item -Path $rml_utils_installation_file
 
         }
         else #result is 'No'
