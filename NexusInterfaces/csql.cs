@@ -48,10 +48,7 @@ namespace NexusInterfaces
         }
         private String[] ParseBatches(string scriptText)
         {
-            Regex blank = new Regex("\r\n\\s+\rn");
-            scriptText = blank.Replace(scriptText, "");
             Regex reg1 = new Regex("\r\n\\s*go\\s*\r\n*", RegexOptions.IgnoreCase);
-
             return reg1.Split(scriptText);
 
         }
