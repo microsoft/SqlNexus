@@ -2958,7 +2958,7 @@ begin
 		IF EXISTS ( SELECT * FROM sysobjects WHERE name = ltrim(rtrim('CounterData')))
 		begin
 			--Fix: Issue #37, fixed negative number of CPUs
-			select @SQLcpuCount  =   Count(distinct scheduler_id) from tbl_dm_OS_Schedulers
+			select @SQLcpuCount  =   Count(distinct scheduler_id) from tbl_dm_os_schedulers_snapshot
 			 where status = 'VISIBLE ONLINE'
 		 End 	
 		IF EXISTS ( SELECT * FROM sysobjects WHERE name = ltrim(rtrim('CounterData')))

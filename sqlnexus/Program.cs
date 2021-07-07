@@ -81,8 +81,9 @@ namespace sqlnexus
         public static void ShowUsage()
         {
             // logger isn't hooked up to log file at this point and we're definitely running from the command line...
-            Console.WriteLine(Util.ExpandEscapeStrings(sqlnexus.Properties.Resources.Msg_Nexus));
+            //Console.WriteLine(Util.ExpandEscapeStrings(sqlnexus.Properties.Resources.Msg_Nexus));
             Console.WriteLine(Util.ExpandEscapeStrings(sqlnexus.Properties.Resources.Usage_Summary));
+            Console.WriteLine("");
             Console.WriteLine(Util.ExpandEscapeStrings(sqlnexus.Properties.Resources.Usage_Server));
             Console.WriteLine(Util.ExpandEscapeStrings(sqlnexus.Properties.Resources.Usage_Database));
             Console.WriteLine(Util.ExpandEscapeStrings(sqlnexus.Properties.Resources.Usage_WindowsAuth));
@@ -141,6 +142,15 @@ namespace sqlnexus
                         Console.WriteLine(sqlnexus.Properties.Resources.Error_CmdLineNoSpaces);
                         return false;
                     }
+                }
+
+                string arg_slash_validation = arg.Replace("/","");
+
+                if (arg.Length - arg_slash_validation.Length > 1)
+                {
+                    Console.WriteLine(sqlnexus.Properties.Resources.Msg_InvalidSwitch + arg.Substring(0,2));
+                    Console.WriteLine("Possible reason: An extra backslash exists at the end of " + arg.Substring(0, 2) + " parameter in your command");
+                    return false;
                 }
 
                 switch (switchChar)
@@ -212,8 +222,11 @@ namespace sqlnexus
                     case 'I':
                         {
                             Console.WriteLine(@"Command Line Arg (/I): InputPath=" + arg.Substring(2));
-                            //fixing 2256
-                            String ipath = arg.Substring(2).Replace("\"", "");
+                            
+                            String ipath = arg.Substring(2).Replace("\"", "").Trim();
+                            if (ipath.EndsWith(@"\"))
+                                ipath =  ipath.Substring(0, ipath.Length-1);
+
                             Globals.PathsToImport.Enqueue(ipath);
                             Globals.QuietNonInteractiveMode = true; 
                             break;
@@ -246,10 +259,14 @@ namespace sqlnexus
 
             if (!string.IsNullOrEmpty(Globals.credentialMgr.Database))
             {
+                String currentDb = Globals.credentialMgr.Database;
                 String CreateDB = string.Format(SQLScripts.CreateDB, Globals.credentialMgr.Database);
                 Console.WriteLine("Creating Database" + CreateDB);
                 //String connstring = string.Format("Data Source={0};Initial Catalog=master;Integrated Security=SSPI", Globals.credentialMgr.Server);
                 //SqlConnection conn = new SqlConnection(connstring);
+
+                //set the db to 'master' to be able to create a new Nexus db
+                Globals.credentialMgr.Database = "master";
                 SqlConnection conn = new SqlConnection(Globals.credentialMgr.ConnectionString);
                 conn.Open();
                 SqlCommand cmd = conn.CreateCommand();
@@ -257,7 +274,8 @@ namespace sqlnexus
 
                 cmd.ExecuteNonQuery();
 
-                
+                //reset the Nexus db name that the user selected
+                Globals.credentialMgr.Database = currentDb;
             }
 
             return true;
