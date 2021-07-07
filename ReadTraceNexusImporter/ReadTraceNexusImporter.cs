@@ -599,7 +599,7 @@ namespace ReadTrace
         /// <summary>Filemask (e.g. "*.trc") used to advertise the set of files that a given importer knows how to process</summary>
         public string[] SupportedMasks
         {
-            get { return new string[] { "*.TRC", "*pssdiag*.xel" }; }
+            get { return new string[] { "*.TRC", "*pssdiag*.xel", "*LogScout*.xel" }; }
         }
 
         /// <summary>Number of rows/lines/events processed from source file.  Used to communicate progress back to host.</summary>

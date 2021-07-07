@@ -330,10 +330,64 @@
       <Column name="waiter_count"  type="RowsetImportEngine.IntColumn" />
       <Column name="timeout_error_count"  type="RowsetImportEngine.IntColumn" />
       <Column name="forced_grant_count"  type="RowsetImportEngine.IntColumn" />
-      <Column name="Object_Name"   type="RowsetImportEngine.VarCharColumn" length="128" />
     </Rowset>
 
 
+    <Rowset name="tbl_Query_Execution_Memory_MemScript" enabled="true" identifier="-- query execution memory mem_script--" type="RowsetImportEngine.TextRowset">
+      <Column name="runtime" type="RowsetImportEngine.DateTimeColumn"/>
+      <Column name="session_id" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="blocking_session_id" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="cpu_time" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="total_elapsed_time" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="reads" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="writes" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="logical_reads" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="row_count" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="wait_time" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="wait_type" type="RowsetImportEngine.NVarCharColumn"  length="64"  />
+      <Column name="command" type="RowsetImportEngine.NVarCharColumn"  length="64"  />
+      <Column name="text" type="RowsetImportEngine.NVarCharColumn"  length="2000"  />
+      <Column name="login_time" type="RowsetImportEngine.DateTimeColumn"/>
+      <Column name="name" type="RowsetImportEngine.NVarCharColumn"  length="128"  />
+      <Column name="login_name" type="RowsetImportEngine.NVarCharColumn"  length="128"  />
+      <Column name="host_name" type="RowsetImportEngine.NVarCharColumn"  length="128"  />
+      <Column name="nt_domain" type="RowsetImportEngine.NVarCharColumn"  length="128"  />
+      <Column name="nt_user_name" type="RowsetImportEngine.NVarCharColumn"  length="128"  />
+      <Column name="status"   type="RowsetImportEngine.VarCharColumn" length="30" />
+      <Column name="client_net_address"   type="RowsetImportEngine.VarCharColumn" length="30" />
+      <Column name="program_name" type="RowsetImportEngine.NVarCharColumn"  length="128"  />
+      <Column name="client_interface_name"   type="RowsetImportEngine.VarCharColumn" length="32" />
+      <Column name="last_request_start_time" type="RowsetImportEngine.DateTimeColumn"/>
+      <Column name="last_request_end_time" type="RowsetImportEngine.DateTimeColumn"/>
+      <Column name="connect_time" type="RowsetImportEngine.DateTimeColumn"/>
+      <Column name="last_read" type="RowsetImportEngine.DateTimeColumn"/>
+      <Column name="last_write" type="RowsetImportEngine.DateTimeColumn"/>
+      <Column name="dop"  type="RowsetImportEngine.IntColumn" />
+      <Column name="request_time" type="RowsetImportEngine.DateTimeColumn"/>
+      <Column name="grant_time" type="RowsetImportEngine.DateTimeColumn"/>
+      <Column name="requested_memory_mb" type="RowsetImportEngine.FloatColumn" />
+      <Column name="granted_memory_mb" type="RowsetImportEngine.FloatColumn" />
+      <Column name="required_memory_mb" type="RowsetImportEngine.FloatColumn" />
+      <Column name="max_used_memory_mb" type="RowsetImportEngine.FloatColumn" />
+      <Column name="query_cost" type="RowsetImportEngine.FloatColumn" />
+      <Column name="timeout_sec"  type="RowsetImportEngine.IntColumn" />
+      <Column name="resource_semaphore_id"  type="RowsetImportEngine.IntColumn" />
+      <Column name="wait_time_ms" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="Next Candidate for Memory Grant" type="RowsetImportEngine.NVarCharColumn"  length="2000"  />
+      <Column name="server_target_memory_mb"  type="RowsetImportEngine.IntColumn" />
+      <Column name="server_max_target_memory_mb"  type="RowsetImportEngine.IntColumn" />
+      <Column name="server_total_memory_mb"  type="RowsetImportEngine.IntColumn" />
+      <Column name="server_available_memory_mb"  type="RowsetImportEngine.IntColumn" />
+      <Column name="server_granted_memory_mb"  type="RowsetImportEngine.IntColumn" />
+      <Column name="server_used_memory_mb"  type="RowsetImportEngine.IntColumn" />
+      <Column name="grantee_count"  type="RowsetImportEngine.IntColumn" />
+      <Column name="waiter_count"  type="RowsetImportEngine.IntColumn" />
+      <Column name="timeout_error_count"  type="RowsetImportEngine.IntColumn" />
+      <Column name="forced_grant_count"  type="RowsetImportEngine.IntColumn" />
+      <Column name="Object_Name"   type="RowsetImportEngine.VarCharColumn" length="128" />
+    </Rowset>
+    
+    
     <Rowset name="tbl_dm_os_ring_buffers_mem" enabled="true" identifier="-- sys.dm_os_ring_buffers (RING_BUFFER_RESOURCE_MONITOR and RING_BUFFER_MEMORY_BROKER)" type="RowsetImportEngine.TextRowset">
       <Column name="runtime" type="RowsetImportEngine.DateTimeColumn"/>
       <Column name="record_time" type="RowsetImportEngine.DateTimeColumn"/>
@@ -460,16 +514,19 @@
     
     </Rowset>
 
-    <Rowset name="tbl_HEADBLOCKERSUMMARY" enabled="true" identifier="-- headblockersummary" type="RowsetImportEngine.TextRowset">
+    <Rowset name="tbl_HEADBLOCKERSUMMARY" enabled="true" identifier="-- headblockersummary --" type="RowsetImportEngine.TextRowset">
       <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
       <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
       <Column name="head_blocker_session_id" type="RowsetImportEngine.IntColumn" />
       <Column name="blocked_task_count" type="RowsetImportEngine.IntColumn" />
       <Column name="tot_wait_duration_ms" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="blocking_resource_wait_type" type="RowsetImportEngine.VarCharColumn" length="40"/>
       <Column name="avg_wait_duration_ms" type="RowsetImportEngine.BigIntColumn" />
       <Column name="max_wait_duration_ms" type="RowsetImportEngine.BigIntColumn" />
       <Column name="max_blocking_chain_depth" type="RowsetImportEngine.IntColumn" />
+      <Column name="head_blocker_proc_name" type="RowsetImportEngine.VarCharColumn" length="64"/>
       <Column name="head_blocker_proc_objid" type="RowsetImportEngine.IntColumn" />
+      <Column name="stmt_text" type="RowsetImportEngine.VarCharColumn" length="1024"/>
 	    <Column name="head_blocker_plan_handle" type="RowsetImportEngine.VarBinaryColumn" />
     </Rowset>
 
@@ -532,8 +589,7 @@
         <Column name="type"    type="RowsetImportEngine.VarCharColumn" />
         <Column name="name"  type="RowsetImportEngine.VarCharColumn" />
         <Column name="memory_node_id"   type="RowsetImportEngine.IntColumn" />
-        <Column name="single_pages_kb" type="RowsetImportEngine.BigIntColumn" />
-        <Column name="multi_pages_kb"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="pages_kb" type="RowsetImportEngine.BigIntColumn" />
         <Column name="virtual_memory_reserved_kb"     type="RowsetImportEngine.BigIntColumn" />
         <Column name="virtual_memory_committed_kb"   type="RowsetImportEngine.BigIntColumn" />
         <Column name="awe_allocated_kb"   type="RowsetImportEngine.BigIntColumn" />
@@ -2093,6 +2149,14 @@
       <Column name="active_statement_text"     type="RowsetImportEngine.VarCharColumn" />
     </Rowset>
 
+    <Rowset name="tbl_server_times" enabled="true" identifier="-- server_times --" type="RowsetImportEngine.InputbuffersRowset">
+      <KnownColumns>
+        <Column name="server_time" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="utc_time" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="time_delta_hours" type="RowsetImportEngine.IntColumn" />
+      </KnownColumns>
+    </Rowset>
+    
   </KnownRowsets>
 </TextImport>
 
