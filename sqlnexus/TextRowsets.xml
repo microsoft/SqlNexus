@@ -2110,7 +2110,7 @@
     </Rowset>
 
 
-        <Rowset name="tbl_dm_os_performance_counters" enabled="true" identifier="-- sql server performance counters --" type="RowsetImportEngine.TextRowset">
+    <Rowset name="tbl_dm_os_performance_counters" enabled="true" identifier="-- sql server performance counters --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
         <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
         <Column name="object_name" type="RowsetImportEngine.NVarCharColumn" />
@@ -2156,7 +2156,26 @@
         <Column name="time_delta_hours" type="RowsetImportEngine.IntColumn" />
       </KnownColumns>
     </Rowset>
-    
+
+    <Rowset name="tbl_query_never_completes" enabled="true" identifier="-- neverending_query --" type="RowsetImportEngine.InputbuffersRowset">
+      <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+      <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+      <Column name="runtime_utc" type="RowsetImportEngine.DateTimeColumn" />
+      <Column name="session_id" type="RowsetImportEngine.IntColumn" />
+      <Column name="query_text" type="RowsetImportEngine.NVarCharColumn" length="256"/>
+      <Column name="physical_operator_name" type="RowsetImportEngine.NVarCharColumn" length="256"/>
+      <Column name="node_id" type="RowsetImportEngine.IntColumn" />
+      <Column name="row_count" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="rewind_count" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="rebind_count" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="end_of_scan_count" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="estimate_row_count" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="cpu_time" type="RowsetImportEngine.IntColumn" />
+      <Column name="total_elapsed_time" type="RowsetImportEngine.IntColumn" />
+    </Rowset>
+
+
+
   </KnownRowsets>
 </TextImport>
 

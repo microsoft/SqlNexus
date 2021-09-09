@@ -2157,7 +2157,7 @@
       </KnownColumns>
     </Rowset>
 
-    <Rowset name="tbl_high_cpu_query_never_completes" enabled="true" identifier="-- neverending_query --" type="RowsetImportEngine.InputbuffersRowset">
+    <Rowset name="tbl_query_never_completes" enabled="true" identifier="-- neverending_query --" type="RowsetImportEngine.InputbuffersRowset">
       <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
       <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
       <Column name="runtime_utc" type="RowsetImportEngine.DateTimeColumn" />
@@ -2173,8 +2173,6 @@
       <Column name="cpu_time" type="RowsetImportEngine.IntColumn" />
       <Column name="total_elapsed_time" type="RowsetImportEngine.IntColumn" />
     </Rowset>
-
-
 
   </KnownRowsets>
 </TextImport>
