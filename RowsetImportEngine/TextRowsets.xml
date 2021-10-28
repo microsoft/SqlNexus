@@ -2169,7 +2169,7 @@
       </KnownColumns>
     </Rowset>
     <!--Not importing , is it due to no result set-->
-    <Rowset name="tbl_db_TDE_Info" enabled="true" identifier="--sys.dm_database_encryption_keys  Transparent Database Encryption (TDE) information --" type="RowsetImportEngine.InputbuffersRowset">
+    <Rowset name="tbl_db_TDE_Info" enabled="true" identifier="-- sys.dm_database_encryption_keys TDE --" type="RowsetImportEngine.InputbuffersRowset">
       <KnownColumns>
         <Column name="database_name" type="RowsetImportEngine.NVarCharColumn"/>
         <Column name="database_id" type="RowsetImportEngine.IntColumn"/>
@@ -2188,7 +2188,7 @@
     </Rowset>
 
     <!--Not importing , is it due to no result set-->
-    <Rowset name="tbl_server_audit_status" enabled="true" identifier="--sys.dm_server_audit_status --" type="RowsetImportEngine.InputbuffersRowset">
+    <Rowset name="tbl_server_audit_status" enabled="true" identifier="-- sys.dm_server_audit_status --" type="RowsetImportEngine.InputbuffersRowset">
       <KnownColumns>
         <Column name="audit_id" type="RowsetImportEngine.IntColumn"/>
         <Column name="name" type="RowsetImportEngine.NVarCharColumn"/>
@@ -2202,7 +2202,7 @@
     </Rowset>
 
     <!--Not importing , no result set-->
-    <Rowset name="tbl_CPU_Consuming_procedures" enabled="true" identifier="--top 10 CPU consuming procedures --" type="RowsetImportEngine.InputbuffersRowset">
+    <Rowset name="tbl_CPU_Consuming_procedures" enabled="true" identifier="-- top 10 CPU consuming procedures --" type="RowsetImportEngine.InputbuffersRowset">
       <KnownColumns>
         <Column name="object_id" type="RowsetImportEngine.IntColumn"/>
         <Column name="database_id" type="RowsetImportEngine.IntColumn"/>
@@ -2217,6 +2217,23 @@
       </KnownColumns>
     </Rowset>
 
+  <Rowset name="tbl_CPU_Consuming_triggers" enabled="true" identifier="-- top 10 CPU consuming triggers --" type="RowsetImportEngine.InputbuffersRowset">
+      <KnownColumns>
+        <Column name="object_id" type="RowsetImportEngine.IntColumn"/>
+        <Column name="database_id" type="RowsetImportEngine.IntColumn"/>
+        <Column name="db name" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="proc name" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="cached_time" type="RowsetImportEngine.DateTimeColumn"/>
+        <Column name="last_execution_time" type="RowsetImportEngine.DateTimeColumn"/>
+        <Column name="total_elapsed_time" type="RowsetImportEngine.BigIntColumn"/>
+        <Column name="avg_elapsed_time" type="RowsetImportEngine.BigIntColumn"/>
+        <Column name="last_elapsed_time" type="RowsetImportEngine.BigIntColumn"/>
+        <Column name="execution_count" type="RowsetImportEngine.BigIntColumn"/>
+      </KnownColumns>
+    </Rowset>
+
+    
+      
     <!--Not importing , result set is there in .out file-->
     <Rowset name="tbl_query_plan_hash_and_query_hash" enabled="true" identifier="-- top 10 CPU by query_plan_hash and query_hash --" type="RowsetImportEngine.InputbuffersRowset">
       <KnownColumns>
@@ -2258,7 +2275,7 @@
     </Rowset>
 
     <!--Not importing , no result set -->
-    <Rowset name="tbl_hadron_replica_info" enabled="true" identifier="--hadron replica info--" type="RowsetImportEngine.InputbuffersRowset">
+    <Rowset name="tbl_hadron_replica_info" enabled="true" identifier="-- hadron replica info --" type="RowsetImportEngine.InputbuffersRowset">
       <KnownColumns>
         <Column name="ag_name" type="RowsetImportEngine.VarCharColumn" length="256" />
         <Column name="replica_server_name" type="RowsetImportEngine.NVarCharColumn"/>
