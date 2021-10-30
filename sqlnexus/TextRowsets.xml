@@ -2149,7 +2149,7 @@
       <Column name="active_statement_text"     type="RowsetImportEngine.VarCharColumn" />
     </Rowset>
 
-    <Rowset name="tbl_server_times" enabled="true" identifier="-- server_times --" type="RowsetImportEngine.InputbuffersRowset">
+    <Rowset name="tbl_server_times" enabled="true" identifier="-- server_times --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
         <Column name="server_time" type="RowsetImportEngine.DateTimeColumn" />
         <Column name="utc_time" type="RowsetImportEngine.DateTimeColumn" />
@@ -2157,19 +2157,19 @@
       </KnownColumns>
     </Rowset>
     
-    <!--Added on 25 Oct 2021 for SQL Server Perf Stats Snapshot.sql-->
-    <!--imorting only master tabe-->
-    <Rowset name="tbl_database_options" enabled="true" identifier="-- Current database options --" type="RowsetImportEngine.InputbuffersRowset">
+
+    <Rowset name="tbl_database_options" enabled="true" identifier="-- Current database options --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
         <Column name="name" type="RowsetImportEngine.NVarCharColumn"/>
         <Column name="dbid" type="RowsetImportEngine.IntColumn"/>
         <Column name="cmptlevel" type="RowsetImportEngine.IntColumn"/>
-        <Column name="db_size_in_mb" type="RowsetImportEngine.IntColumn"/>
-        <Column name="status" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="db_size_in_mb" type="RowsetImportEngine.BigIntColumn"/>
+        <Column name="status" type="RowsetImportEngine.NVarCharColumn" length="512"/>
       </KnownColumns>
     </Rowset>
+    
     <!--Not importing , is it due to no result set-->
-    <Rowset name="tbl_db_TDE_Info" enabled="true" identifier="-- sys.dm_database_encryption_keys TDE --" type="RowsetImportEngine.InputbuffersRowset">
+    <Rowset name="tbl_db_TDE_Info" enabled="true" identifier="-- sys.dm_database_encryption_keys TDE --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
         <Column name="database_name" type="RowsetImportEngine.NVarCharColumn"/>
         <Column name="database_id" type="RowsetImportEngine.IntColumn"/>
@@ -2188,7 +2188,7 @@
     </Rowset>
 
     <!--Not importing , is it due to no result set-->
-    <Rowset name="tbl_server_audit_status" enabled="true" identifier="-- sys.dm_server_audit_status --" type="RowsetImportEngine.InputbuffersRowset">
+    <Rowset name="tbl_server_audit_status" enabled="true" identifier="-- sys.dm_server_audit_status --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
         <Column name="audit_id" type="RowsetImportEngine.IntColumn"/>
         <Column name="name" type="RowsetImportEngine.NVarCharColumn"/>
@@ -2202,7 +2202,7 @@
     </Rowset>
 
     <!--Not importing , no result set-->
-    <Rowset name="tbl_CPU_Consuming_procedures" enabled="true" identifier="-- top 10 CPU consuming procedures --" type="RowsetImportEngine.InputbuffersRowset">
+    <Rowset name="tbl_CPU_Consuming_procedures" enabled="true" identifier="-- top 10 CPU consuming procedures --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
         <Column name="object_id" type="RowsetImportEngine.IntColumn"/>
         <Column name="database_id" type="RowsetImportEngine.IntColumn"/>
@@ -2217,7 +2217,7 @@
       </KnownColumns>
     </Rowset>
 
-  <Rowset name="tbl_CPU_Consuming_triggers" enabled="true" identifier="-- top 10 CPU consuming triggers --" type="RowsetImportEngine.InputbuffersRowset">
+  <Rowset name="tbl_CPU_Consuming_triggers" enabled="true" identifier="-- top 10 CPU consuming triggers --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
         <Column name="object_id" type="RowsetImportEngine.IntColumn"/>
         <Column name="database_id" type="RowsetImportEngine.IntColumn"/>
@@ -2235,7 +2235,7 @@
     
       
     <!--Not importing , result set is there in .out file-->
-    <Rowset name="tbl_query_plan_hash_and_query_hash" enabled="true" identifier="-- top 10 CPU by query_plan_hash and query_hash --" type="RowsetImportEngine.InputbuffersRowset">
+    <Rowset name="tbl_query_plan_hash_and_query_hash" enabled="true" identifier="-- top 10 CPU by query_plan_hash and query_hash --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
         <Column name="query_plan_hash" type="RowsetImportEngine.VarBinaryColumn"/>
         <Column name="query_hash" type="RowsetImportEngine.VarBinaryColumn"/>
@@ -2249,7 +2249,7 @@
     </Rowset>
 
     <!--Not importing , result set is there in .out file-->
-    <Rowset name="tbl_Logicalreads_query_plan_hash_and_query_hash" enabled="true" identifier="-- top 10 logical reads by query_plan_hash and query_hash --" type="RowsetImportEngine.InputbuffersRowset">
+    <Rowset name="tbl_Logicalreads_query_plan_hash_and_query_hash" enabled="true" identifier="-- top 10 logical reads by query_plan_hash and query_hash --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
         <Column name="query_plan_hash" type="RowsetImportEngine.VarBinaryColumn"/>
         <Column name="query_hash" type="RowsetImportEngine.VarBinaryColumn"/>
@@ -2262,7 +2262,7 @@
     </Rowset>
 
     <!--Not importing , result set is there in .out file-->
-    <Rowset name="tbl_elapsedTime_query_plan_hash_and_query_hash" enabled="true" identifier="-- top 10 logical reads by query_plan_hash and query_hash --" type="RowsetImportEngine.InputbuffersRowset">
+    <Rowset name="tbl_elapsedTime_query_plan_hash_and_query_hash" enabled="true" identifier="-- top 10 logical reads by query_plan_hash and query_hash --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
         <Column name="query_plan_hash" type="RowsetImportEngine.VarBinaryColumn"/>
         <Column name="query_hash" type="RowsetImportEngine.VarBinaryColumn"/>
@@ -2275,7 +2275,7 @@
     </Rowset>
 
     <!--Not importing , no result set -->
-    <Rowset name="tbl_hadron_replica_info" enabled="true" identifier="-- hadron replica info --" type="RowsetImportEngine.InputbuffersRowset">
+    <Rowset name="tbl_hadron_replica_info" enabled="true" identifier="-- hadron replica info --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
         <Column name="ag_name" type="RowsetImportEngine.VarCharColumn" length="256" />
         <Column name="replica_server_name" type="RowsetImportEngine.NVarCharColumn"/>
@@ -2287,7 +2287,7 @@
     </Rowset>
 
     <!--Not importing , no result set -->
-    <Rowset name="tbl_availability_groups" enabled="true" identifier="-- sys.availability_groups --" type="RowsetImportEngine.InputbuffersRowset">
+    <Rowset name="tbl_availability_groups" enabled="true" identifier="-- sys.availability_groups --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
         <Column name="group_id" type="RowsetImportEngine.VarBinaryColumn"/>
         <Column name="name" type="RowsetImportEngine.VarCharColumn" length="256" />
@@ -2306,7 +2306,7 @@
     </Rowset>
 
     <!--Not importing , no result set -->
-    <Rowset name="tbl_hadr_cluster" enabled="true" identifier="-- sys.dm_hadr_cluster --" type="RowsetImportEngine.InputbuffersRowset">
+    <Rowset name="tbl_hadr_cluster" enabled="true" identifier="-- sys.dm_hadr_cluster --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
         <Column name="cluster_name" type="RowsetImportEngine.NVarCharColumn" length="256"/>
         <Column name="quorum_type" type="RowsetImportEngine.IntColumn"/>
@@ -2317,7 +2317,7 @@
     </Rowset>
 
     <!--Not importing , no result set -->
-    <Rowset name="tbl_hadr_cluster_members" enabled="true" identifier="-- sys.dm_hadr_cluster_members --" type="RowsetImportEngine.InputbuffersRowset">
+    <Rowset name="tbl_hadr_cluster_members" enabled="true" identifier="-- sys.dm_hadr_cluster_members --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
         <Column name="member_name" type="RowsetImportEngine.NVarCharColumn"/>
         <Column name="member_type" type="RowsetImportEngine.IntColumn"/>
@@ -2328,7 +2328,7 @@
     </Rowset>
 
     <!--Not importing , no result set -->
-    <Rowset name="tbl_hadr_cluster_networks" enabled="true" identifier="-- sys.dm_hadr_cluster_networks --" type="RowsetImportEngine.InputbuffersRowset">
+    <Rowset name="tbl_hadr_cluster_networks" enabled="true" identifier="-- sys.dm_hadr_cluster_networks --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
         <Column name="member_name" type="RowsetImportEngine.NVarCharColumn"/>
         <Column name="network_subnet_ip" type="RowsetImportEngine.NVarCharColumn"/>
@@ -2339,7 +2339,7 @@
       </KnownColumns>
     </Rowset>
     <!--Not importing , no result set -->
-    <Rowset name="tbl_availability_replicas" enabled="true" identifier="-- sys.availability_replicas --" type="RowsetImportEngine.InputbuffersRowset">
+    <Rowset name="tbl_availability_replicas" enabled="true" identifier="-- sys.availability_replicas --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
         <Column name="replica_id" type="RowsetImportEngine.VarBinaryColumn"/>
         <Column name="group_id" type="RowsetImportEngine.VarBinaryColumn"/>
