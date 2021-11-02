@@ -927,48 +927,6 @@
       </KnownColumns>
     </Rowset>
 
-    <Rowset name="tbl_Top10_CPU_Queries_ByQueryHash" enabled="true" identifier="-- top 10 CPU by query_hash" type="RowsetImportEngine.TextRowset">
-      <KnownColumns>
-        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
-        <Column name="query_hash"       type="RowsetImportEngine.VarCharColumn" />
-        <Column name="disctinct query_plan_hash count"    type="RowsetImportEngine.IntColumn" />
-        <Column name="execution_count"  type="RowsetImportEngine.IntColumn" />
-        <Column name="total_worker_time"   type="RowsetImportEngine.BigIntColumn" />
-        <Column name="total_elapsed_time" type="RowsetImportEngine.BigIntColumn" />
-        <Column name="total_logical_reads"  type="RowsetImportEngine.BigIntColumn" />
-        <Column name="sample_statement_text"     type="RowsetImportEngine.VarCharColumn" />
-        <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
-      </KnownColumns>
-    </Rowset>
-
-
-    <Rowset name="tbl_Top10_LogicalReads_Queries_ByQueryHash" enabled="true" identifier="-- top 10 logical reads by query_hash" type="RowsetImportEngine.TextRowset">
-      <KnownColumns>
-        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
-        <Column name="query_hash"       type="RowsetImportEngine.VarCharColumn" />
-        <Column name="disctinct query_plan_hash count"    type="RowsetImportEngine.IntColumn" />
-        <Column name="execution_count"  type="RowsetImportEngine.IntColumn" />
-        <Column name="total_worker_time"   type="RowsetImportEngine.BigIntColumn" />
-        <Column name="total_elapsed_time" type="RowsetImportEngine.BigIntColumn" />
-        <Column name="total_logical_reads"  type="RowsetImportEngine.BigIntColumn" />
-        <Column name="sample_statement_text"     type="RowsetImportEngine.VarCharColumn" />
-        <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
-      </KnownColumns>
-    </Rowset>
-
-    <Rowset name="tbl_Top10_Duration_Queries_ByQueryHash" enabled="true" identifier="-- top 10 elapsed time by query_hash" type="RowsetImportEngine.TextRowset">
-      <KnownColumns>
-        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
-        <Column name="query_hash"       type="RowsetImportEngine.VarCharColumn" />
-        <Column name="disctinct query_plan_hash count"    type="RowsetImportEngine.IntColumn" />
-        <Column name="execution_count"  type="RowsetImportEngine.IntColumn" />
-        <Column name="total_worker_time"   type="RowsetImportEngine.BigIntColumn" />
-        <Column name="total_elapsed_time" type="RowsetImportEngine.BigIntColumn" />
-        <Column name="total_logical_reads"  type="RowsetImportEngine.BigIntColumn" />
-        <Column name="sample_statement_text"     type="RowsetImportEngine.VarCharColumn" />
-        <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
-      </KnownColumns>
-    </Rowset>
 
 
     <Rowset name="tbl_MissingIndexes" enabled="true" identifier="-- Missing Indexes --" type="RowsetImportEngine.TextRowset">
@@ -2205,8 +2163,9 @@
     </Rowset>
 
     <!--Not importing , no result set-->
-    <Rowset name="tbl_CPU_Consuming_procedures" enabled="true" identifier="-- top 10 CPU consuming procedures --" type="RowsetImportEngine.TextRowset">
+    <Rowset name="tbl_Top10_CPU_Consuming_Procedures" enabled="true" identifier="-- top 10 CPU consuming procedures --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
         <Column name="object_id" type="RowsetImportEngine.IntColumn"/>
         <Column name="database_id" type="RowsetImportEngine.IntColumn"/>
         <Column name="db name" type="RowsetImportEngine.NVarCharColumn"/>
@@ -2220,8 +2179,9 @@
       </KnownColumns>
     </Rowset>
 
-  <Rowset name="tbl_CPU_Consuming_triggers" enabled="true" identifier="-- top 10 CPU consuming triggers --" type="RowsetImportEngine.TextRowset">
+  <Rowset name="tbl_Top10_CPU_Consuming_Triggers" enabled="true" identifier="-- top 10 CPU consuming triggers --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
         <Column name="object_id" type="RowsetImportEngine.IntColumn"/>
         <Column name="database_id" type="RowsetImportEngine.IntColumn"/>
         <Column name="db name" type="RowsetImportEngine.NVarCharColumn"/>
@@ -2232,14 +2192,59 @@
         <Column name="avg_elapsed_time" type="RowsetImportEngine.BigIntColumn"/>
         <Column name="last_elapsed_time" type="RowsetImportEngine.BigIntColumn"/>
         <Column name="execution_count" type="RowsetImportEngine.BigIntColumn"/>
+      </KnownColumns>
+    </Rowset>
+
+        <Rowset name="tbl_Hist_Top10_CPU_Queries_ByQueryHash" enabled="true" identifier="-- top 10 CPU by query_hash --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="query_hash"       type="RowsetImportEngine.VarCharColumn" />
+        <Column name="disctinct query_plan_hash count"    type="RowsetImportEngine.IntColumn" />
+        <Column name="execution_count"  type="RowsetImportEngine.IntColumn" />
+        <Column name="total_worker_time"   type="RowsetImportEngine.BigIntColumn" />
+        <Column name="total_elapsed_time" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="total_logical_reads"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="sample_statement_text"     type="RowsetImportEngine.VarCharColumn" />
+      </KnownColumns>
+    </Rowset>
+
+
+    <Rowset name="tbl_Hist_Top10_LogicalReads_Queries_ByQueryHash" enabled="true" identifier="-- top 10 logical reads by query_hash --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="query_hash"       type="RowsetImportEngine.VarCharColumn" />
+        <Column name="disctinct query_plan_hash count"    type="RowsetImportEngine.IntColumn" />
+        <Column name="execution_count"  type="RowsetImportEngine.IntColumn" />
+        <Column name="total_worker_time"   type="RowsetImportEngine.BigIntColumn" />
+        <Column name="total_elapsed_time" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="total_logical_reads"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="sample_statement_text"     type="RowsetImportEngine.VarCharColumn" />
+      </KnownColumns>
+    </Rowset>
+
+    <Rowset name="tbl_Hist_Top10_ElapsedTime_Queries_ByQueryHash" enabled="true" identifier="-- top 10 elapsed time by query_hash --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="query_hash"       type="RowsetImportEngine.VarCharColumn" />
+        <Column name="disctinct query_plan_hash count"    type="RowsetImportEngine.IntColumn" />
+        <Column name="execution_count"  type="RowsetImportEngine.IntColumn" />
+        <Column name="total_worker_time"   type="RowsetImportEngine.BigIntColumn" />
+        <Column name="total_elapsed_time" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="total_logical_reads"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="sample_statement_text"     type="RowsetImportEngine.VarCharColumn" />
       </KnownColumns>
     </Rowset>
 
     
       
     <!--Not importing , result set is there in .out file-->
-    <Rowset name="tbl_query_plan_hash_and_query_hash" enabled="true" identifier="-- top 10 CPU by query_plan_hash and query_hash --" type="RowsetImportEngine.TextRowset">
+    <Rowset name="tbl_Hist_Top10_CPU_Queries_by_Planhash_and_Queryhash" enabled="true" identifier="-- top 10 CPU by query_plan_hash and query_hash --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
+        <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
         <Column name="query_plan_hash" type="RowsetImportEngine.VarBinaryColumn"/>
         <Column name="query_hash" type="RowsetImportEngine.VarBinaryColumn"/>
         <Column name="distinct query_plan_hash count" type="RowsetImportEngine.IntColumn"/>
@@ -2252,8 +2257,10 @@
     </Rowset>
 
     <!--Not importing , result set is there in .out file-->
-    <Rowset name="tbl_Logicalreads_query_plan_hash_and_query_hash" enabled="true" identifier="-- top 10 logical reads by query_plan_hash and query_hash --" type="RowsetImportEngine.TextRowset">
+    <Rowset name="tbl_Hist_Top10_LogicalReads_Queries_by_Planhash_and_Queryhash" enabled="true" identifier="-- top 10 logical reads by query_plan_hash and query_hash --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
+        <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
         <Column name="query_plan_hash" type="RowsetImportEngine.VarBinaryColumn"/>
         <Column name="query_hash" type="RowsetImportEngine.VarBinaryColumn"/>
         <Column name="execution_count" type="RowsetImportEngine.BigIntColumn"/>
@@ -2265,8 +2272,10 @@
     </Rowset>
 
     <!--Not importing , result set is there in .out file-->
-    <Rowset name="tbl_elapsedTime_query_plan_hash_and_query_hash" enabled="true" identifier="-- top 10 logical reads by query_plan_hash and query_hash --" type="RowsetImportEngine.TextRowset">
+    <Rowset name="tbl_Hist_Top10_ElapsedTime_Queries_by_Planhash_and_Queryhash" enabled="true" identifier="-- top 10 elapsed time  by query_plan_hash and query_hash --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
+        <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
         <Column name="query_plan_hash" type="RowsetImportEngine.VarBinaryColumn"/>
         <Column name="query_hash" type="RowsetImportEngine.VarBinaryColumn"/>
         <Column name="execution_count" type="RowsetImportEngine.BigIntColumn"/>
@@ -2280,6 +2289,7 @@
     <!--Not importing , no result set -->
     <Rowset name="tbl_hadron_replica_info" enabled="true" identifier="-- hadron replica info --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
         <Column name="ag_name" type="RowsetImportEngine.VarCharColumn" length="256" />
         <Column name="replica_server_name" type="RowsetImportEngine.NVarCharColumn"/>
         <Column name="is_ag_replica_local" type="RowsetImportEngine.IntColumn"/>
@@ -2292,6 +2302,7 @@
     <!--Not importing , no result set -->
     <Rowset name="tbl_availability_groups" enabled="true" identifier="-- sys.availability_groups --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
         <Column name="group_id" type="RowsetImportEngine.VarBinaryColumn"/>
         <Column name="name" type="RowsetImportEngine.VarCharColumn" length="256" />
         <Column name="resource_id" type="RowsetImportEngine.NVarCharColumn"/>
@@ -2311,6 +2322,7 @@
     <!--Not importing , no result set -->
     <Rowset name="tbl_hadr_cluster" enabled="true" identifier="-- sys.dm_hadr_cluster --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
         <Column name="cluster_name" type="RowsetImportEngine.NVarCharColumn" length="256"/>
         <Column name="quorum_type" type="RowsetImportEngine.IntColumn"/>
         <Column name="quorum_type_desc" type="RowsetImportEngine.NVarCharColumn"/>
@@ -2322,6 +2334,7 @@
     <!--Not importing , no result set -->
     <Rowset name="tbl_hadr_cluster_members" enabled="true" identifier="-- sys.dm_hadr_cluster_members --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
         <Column name="member_name" type="RowsetImportEngine.NVarCharColumn"/>
         <Column name="member_type" type="RowsetImportEngine.IntColumn"/>
         <Column name="member_type_desc" type="RowsetImportEngine.NVarCharColumn"/>
@@ -2333,6 +2346,7 @@
     <!--Not importing , no result set -->
     <Rowset name="tbl_hadr_cluster_networks" enabled="true" identifier="-- sys.dm_hadr_cluster_networks --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
         <Column name="member_name" type="RowsetImportEngine.NVarCharColumn"/>
         <Column name="network_subnet_ip" type="RowsetImportEngine.NVarCharColumn"/>
         <Column name="network_subnet_ipv4_mask" type="RowsetImportEngine.NVarCharColumn"/>
@@ -2344,6 +2358,7 @@
     <!--Not importing , no result set -->
     <Rowset name="tbl_availability_replicas" enabled="true" identifier="-- sys.availability_replicas --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
         <Column name="replica_id" type="RowsetImportEngine.VarBinaryColumn"/>
         <Column name="group_id" type="RowsetImportEngine.VarBinaryColumn"/>
         <Column name="replica_metadata_id" type="RowsetImportEngine.IntColumn"/>
