@@ -927,7 +927,7 @@
       </KnownColumns>
     </Rowset>
 
-    <Rowset name="tbl_TopNCPUByQueryHash" enabled="true" identifier="-- top 10 CPU by query_hash" type="RowsetImportEngine.TextRowset">
+    <Rowset name="tbl_Top10_CPU_Queries_ByQueryHash" enabled="true" identifier="-- top 10 CPU by query_hash" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
         <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
         <Column name="query_hash"       type="RowsetImportEngine.VarCharColumn" />
@@ -937,11 +937,13 @@
         <Column name="total_elapsed_time" type="RowsetImportEngine.BigIntColumn" />
         <Column name="total_logical_reads"  type="RowsetImportEngine.BigIntColumn" />
         <Column name="sample_statement_text"     type="RowsetImportEngine.VarCharColumn" />
+        <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+      <Column name="imported_date" type="RowsetImportEngine.VarCharColumn" length="32" valuetoken="IMPORTDATE" />
       </KnownColumns>
     </Rowset>
 
 
-    <Rowset name="tbl_TopNLogicalReadsByQueryHash" enabled="true" identifier="-- top 10 logical reads by query_hash" type="RowsetImportEngine.TextRowset">
+    <Rowset name="tbl_Top10_LogicalReads_Queries_ByQueryHash" enabled="true" identifier="-- top 10 logical reads by query_hash" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
         <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
         <Column name="query_hash"       type="RowsetImportEngine.VarCharColumn" />
@@ -951,10 +953,12 @@
         <Column name="total_elapsed_time" type="RowsetImportEngine.BigIntColumn" />
         <Column name="total_logical_reads"  type="RowsetImportEngine.BigIntColumn" />
         <Column name="sample_statement_text"     type="RowsetImportEngine.VarCharColumn" />
+        <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+        <Column name="imported_date" type="RowsetImportEngine.VarCharColumn" length="32" valuetoken="IMPORTDATE" />
       </KnownColumns>
     </Rowset>
 
-    <Rowset name="tbl_TopNDurationByQueryHash" enabled="true" identifier="-- top 10 elapsed time by query_hash" type="RowsetImportEngine.TextRowset">
+    <Rowset name="tbl_Top10_Duration_Queries_ByQueryHash" enabled="true" identifier="-- top 10 elapsed time by query_hash" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
         <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
         <Column name="query_hash"       type="RowsetImportEngine.VarCharColumn" />
@@ -964,6 +968,8 @@
         <Column name="total_elapsed_time" type="RowsetImportEngine.BigIntColumn" />
         <Column name="total_logical_reads"  type="RowsetImportEngine.BigIntColumn" />
         <Column name="sample_statement_text"     type="RowsetImportEngine.VarCharColumn" />
+        <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+        <Column name="imported_date" type="RowsetImportEngine.VarCharColumn" length="32" valuetoken="IMPORTDATE" />
       </KnownColumns>
     </Rowset>
 
