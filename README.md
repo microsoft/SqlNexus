@@ -16,7 +16,7 @@ Current release is 7.21.03.26. Please go to [latest release](https://github.com/
 
 # Common Tasks
 
-1. [Getting Started](https://github.com/Microsoft/SqlNexus/wiki/Getting-Started)
+1. [How To Use SQL Nexus](https://github.com/microsoft/SqlNexus/wiki/How-to-use-SQL-Nexus)
 2. [How to Videos](https://github.com/Microsoft/SqlNexus/wiki/How-To-Videos)
 3. [Frequently asked questions(FAQ)](https://github.com/Microsoft/SqlNexus/wiki/FAQ)
 4. [Installation](https://github.com/Microsoft/SqlNexus/wiki/Installation)
