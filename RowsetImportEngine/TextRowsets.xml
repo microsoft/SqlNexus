@@ -2128,6 +2128,7 @@
       <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
       <Column name="runtime_utc" type="RowsetImportEngine.DateTimeColumn" />
       <Column name="session_id" type="RowsetImportEngine.IntColumn" />
+      <Column name="os_thread_id" type="RowsetImportEngine.IntColumn" />
       <Column name="request_start_time" type="RowsetImportEngine.DateTimeColumn" />
       <Column name="cpu_time" type="RowsetImportEngine.BigIntColumn" />
       <Column name="total_elapsed_time" type="RowsetImportEngine.BigIntColumn" />
