@@ -1691,6 +1691,14 @@ begin
 
 	update CounterData
 	set CounterDateTime = REPLACE(CounterDateTime, char(0), '')
+
+	create index [INDX_CounterDateTime]
+	on [dbo].[CounterData]
+	(
+		[CounterDateTime]
+	)
+
+	print 'Added index to Table - dbo.CounterData || Column CounterDateTime'
 end
 go
 --clean up spinlock
@@ -2546,7 +2554,7 @@ begin
 end
 go
 
-Create  procedure  [usp_IOAnalysis] 
+create  procedure  [dbo].[usp_IOAnalysis] 
 as
 begin
        
@@ -3369,7 +3377,7 @@ go
 exec StaleStatswarning2008
 go
 
-exec usp_IOAnalysis
+exec dbo.usp_IOAnalysis
 go
 
 exec usp_WarnmissingIndex
