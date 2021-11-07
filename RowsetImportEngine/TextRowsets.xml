@@ -2172,7 +2172,7 @@
       <Column name="active_statement_text"     type="RowsetImportEngine.VarCharColumn" />
     </Rowset>
 
-    <Rowset name="tbl_server_times" enabled="true" identifier="-- server_times --" type="RowsetImportEngine.InputbuffersRowset">
+    <Rowset name="tbl_server_times" enabled="true" identifier="-- server_times --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
         <Column name="server_time" type="RowsetImportEngine.DateTimeColumn" />
         <Column name="utc_time" type="RowsetImportEngine.DateTimeColumn" />
@@ -2180,7 +2180,7 @@
       </KnownColumns>
     </Rowset>
 
-    <Rowset name="tbl_query_never_completes" enabled="true" identifier="-- neverending_query --" type="RowsetImportEngine.InputbuffersRowset">
+    <Rowset name="tbl_CPU_bound_query_never_completes" enabled="true" identifier="-- neverending_query --" type="RowsetImportEngine.TextRowset">
       <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
       <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
       <Column name="runtime_utc" type="RowsetImportEngine.DateTimeColumn" />
