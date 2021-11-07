@@ -446,6 +446,7 @@
     <Content Include="SQLNexus_PreProcessing.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Tests\Post-Import-Test.sql" />
     <Content Include="TextRowsets.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
