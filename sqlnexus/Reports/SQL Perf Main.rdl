@@ -123,10 +123,6 @@ values ('System_Requests_C', 'System Thread CPU Consumption', 'System Thread CPU
 insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
 values ('Active Traces and XEvents_C', 'Active Trace and XEvent Report', 'Active Trace and XEvent report',  1|2|4|8, 'Performance', 'dbo.tbl_profiler_trace_summary', 3000, 'Perf Stats Collector', 1,3000)
 
-insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
-values ('PAL_C', 'PerfMon Charts', 'View Performance Counter Analysis based on PAL threshold',  1|2|4|8, 'Performance', 'dbo.CounterData', 3000, 'Perf Stats Collector', 1,3000)
-
-
 
 
 
