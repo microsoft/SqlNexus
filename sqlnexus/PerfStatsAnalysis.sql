@@ -2780,7 +2780,7 @@ create procedure  [usp_SQLHighCPUconsumption]
 as
 set nocount on
 begin
-	IF ((OBJECT_ID ('counterdata') IS NOT NULL) and (OBJECT_ID ('counterdetails') IS NOT NULL))
+	IF ((OBJECT_ID ('counterdata') IS NOT NULL) and (OBJECT_ID ('counterdetails') IS NOT NULL) and (OBJECT_ID ('tbl_AnalysisSummary') IS NOT NULL))
 	begin
 		declare @t_CBeginTime datetime 
 		declare @is_Rulehit int 
@@ -2794,7 +2794,7 @@ begin
 		set @cpuCount = 1 
 	
 
-		create table #tmpCounterDateTime (CounterDateTime varchar(100), InstanceIndex int) 
+		create table #tmpCounterDateTime (CounterDateTime datetime, InstanceIndex int) 
 
 		--get the CPUs
 		SELECT @cpuCount = count (distinct InstanceName) 
@@ -2816,8 +2816,9 @@ begin
 			and detl.InstanceName like '%sqlservr%' 
 			and    counterValue > @CPU_threshold 
 
-		select  @is_Rulehit = COUNT(*) from #tmpCounterDateTime 
-		select @t_CBeginTime = min (CounterDateTime) from #tmpCounterDateTime 
+		create clustered index dt_idx_kernel on #tmpCounterDateTime (CounterDateTime)
+
+		select  @is_Rulehit = COUNT(*), @t_CBeginTime = min (CounterDateTime) from #tmpCounterDateTime 
 
 		if ( @is_Rulehit > 0) 
 		begin 
@@ -2869,74 +2870,54 @@ Create procedure  [usp_KernelHighCPUconsumption]
 as 
 set nocount on
 begin 
-    IF ((OBJECT_ID ('counterdata') IS NOT NULL) and (OBJECT_ID ('counterdetails') IS NOT NULL))
+    IF ((OBJECT_ID ('counterdata') IS NOT NULL) and (OBJECT_ID ('counterdetails') IS NOT NULL) and (OBJECT_ID ('tbl_AnalysisSummary') IS NOT NULL))
 	begin
-		declare @t_DisplayMessage nvarchar(1256) 
-		declare @t_BeginTime datetime 
-		declare @t_EndTime datetime 
-		declare @t_IncTime datetime 
-		declare @t_avg decimal (38,2) 
-		declare @t_min decimal (38,2) 
-		declare @t_max decimal (38,2) 
 		declare @is_Rulehit int 
 		declare @t_CBeginTime datetime  
-		declare @message_Number  int 
 		declare @CPU_threshold decimal (38,2) 
-		declare @T_CounterDateTime nvarchar(256) 
+		declare @T_CounterDateTime datetime
 		declare @t_AvgValue int 
-		declare @counter int 
-		declare @i  int 
 		declare @cpu_count int
+		declare @InstanceIndex int
 	
-		set @counter = 0 
 		set @is_Rulehit = 0 
-		set @t_DisplayMessage = '' 
-		set @message_Number = 1 
-		set @t_avg = 0 
-		set @t_min = 0 
-		set @t_max = 0 
-		set @i = 0 
 
-
-		select  @cpu_count  = round( (max(CounterValue) /100) , 0)
-		from	counterdata dat 
-				inner join counterdetails dli on dat.counterid = dli.counterid   
-		where dli.objectname in ('Process' ) 
-				and dli.countername in ( '% Processor Time')  
-				and InstanceName = '_Total'
+		
+		--get the CPUs
+		SELECT @cpu_count  = count (distinct InstanceName) 
+				from counterdata dat inner join counterdetails dli on dat.counterid = dli.counterid   
+				where dli.objectname in ('Processor' ) 
+					and  dli.countername in ( '% User Time')  
+					and dli.InstanceName not like '_Total%' 
 
 		set @CPU_threshold = 30.0 * @cpu_count
 
-		create table #tmp (cnt_avg int, b_CounterDateTime datetime, e_CounterDateTime datetime,Outmsg varchar(100)) 
-		create table #tmpCounterDateTime (CounterDateTime varchar(100)) 
+		--create table #tmp (cnt_avg int, b_CounterDateTime datetime, e_CounterDateTime datetime,Outmsg varchar(100)) 
+		create table #tmpCounterDateTime (CounterDateTime datetime, InstanceIndex int) 
 	
 	
-		select @i= Count(*)  from sys.objects where name =  'CounterData'  
+		insert into #tmpCounterDateTime (CounterDateTime, InstanceIndex) 
+		select convert(datetime, CounterDateTime), isnull (InstanceIndex, 0)   
+		from	counterdata dat 
+			inner join counterdetails dli on dat.counterid = dli.counterid   
+		where dli.objectname in ('Process' ) --'physicaldisk','Processor' 
+				and dli.countername in ( '% Privileged Time')  
+				and dli.InstanceName like '%SQLservr%' 
+				and counterValue  > @CPU_threshold  
 
-		if @i > 0  
-		begin 
-			insert into #tmpCounterDateTime (CounterDateTime) 
-			select  CounterDateTime   
-			from	counterdata dat 
-				inner join counterdetails dli on dat.counterid = dli.counterid   
-			where dli.objectname in ('Process' ) --'physicaldisk','Processor' 
-					and dli.countername in ( '% Privileged Time')  
-					and dli.InstanceName like '%SQLservr%' 
-					and cast (counterValue as decimal (20,2)  ) > @CPU_threshold  
-                                  
-		end 
-		select  @is_Rulehit = COUNT(*) from #tmpCounterDateTime 
-		select @t_CBeginTime = min (cast(CounterDateTime  as datetime)) from #tmpCounterDateTime 
+		create clustered index dt_idx_sqluser on #tmpCounterDateTime (CounterDateTime)
+		
+		select  @is_Rulehit = COUNT(*), @t_CBeginTime = min (CounterDateTime) from #tmpCounterDateTime 
 
 		if ( @is_Rulehit > 0) 
 		begin  
 			DECLARE c_counterdatetime CURSOR FOR
-			  SELECT counterdatetime
+			  SELECT counterdatetime, InstanceIndex
 			  FROM   #tmpcounterdatetime
 
 			OPEN c_counterdatetime
 
-			FETCH next FROM c_counterdatetime INTO @T_CounterDateTime
+			FETCH next FROM c_counterdatetime INTO @T_CounterDateTime, @InstanceIndex
 
 			WHILE ( @@fetch_status = 0 )
 			  BEGIN
@@ -2947,35 +2928,28 @@ begin
 				  WHERE  dli.objectname IN ( 'Process' ) --'physicaldisk','Processor' 
 						 AND dli.countername IN ( '% Privileged Time' )
 						 AND dli.instancename LIKE '%SQLservr%'
-						 AND counterdatetime BETWEEN (Cast(@T_CounterDateTime AS DATETIME) - '00:01:30' )
-													 AND ( Cast(@T_CounterDateTime AS DATETIME)+ '00:01:30' )
+						 AND counterdatetime BETWEEN (@T_CounterDateTime - '00:01:30' )
+													 AND ( @T_CounterDateTime + '00:01:30')
+						and isnull (dli.InstanceIndex, 0) = @InstanceIndex  -- this would impact perf potentially, but alternatives are ugly
 
 				  IF ( Cast (@t_AvgValue AS DECIMAL (38, 2)) > @CPU_threshold )
 					BEGIN
-						INSERT INTO #tmp
-						VALUES     (@t_AvgValue,
-									( Cast(@T_CounterDateTime AS DATETIME) - '00:01:30' ),
-									( Cast(@T_CounterDateTime AS DATETIME) + '00:01:30' ),
-									' Kernel CPU consumption for SQL Server exceeded '+ Rtrim(Cast (@t_AvgValue AS CHAR(5)))
-									+ '% for an extended period of time')
+						update tbl_AnalysisSummary
+						set [Status] = 1,
+						Description =  'Kernel CPU utilization from SQL Server was at least ' + convert(varchar, ROUND(@t_AvgValue/@cpu_count,0)) + '% of overall capacity for an extended period of time'
+						where Name = 'usp_KernelHighCPUconsumption'
+
+						--if we found one event of extended CPU utilization, break
+						break
 					END
 
-				  FETCH next FROM c_counterdatetime INTO @T_CounterDateTime
+				  FETCH next FROM c_counterdatetime INTO @T_CounterDateTime, @InstanceIndex
 			  END
 
 			CLOSE c_counterdatetime
 			DEALLOCATE c_counterdatetime 
 
-			select  @is_Rulehit = COUNT(*) from #tmp 
-			if ( @is_Rulehit > 0) 
-			begin 
-				update tbl_AnalysisSummary
-					set [Status] = 1
-					where Name = 'usp_KernelHighCPUconsumption'
-			end 
 		end 
-	
-		drop table #tmp 
 		drop table #tmpCounterDateTime 
 	end
 end 
