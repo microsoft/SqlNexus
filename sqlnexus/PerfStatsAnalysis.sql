@@ -2802,7 +2802,11 @@ begin
 				where dli.objectname in ('Processor' ) 
 					and  dli.countername in ( '% User Time')  
 					and dli.InstanceName not like '_Total%' 
-
+		
+		if ((isnumeric(@cpuCount) = 0) or (@cpuCount < 1))
+		begin
+			set @cpuCount = 1
+		end
 
 		--set threshold at 80% of total CPU capacity
 		set @CPU_threshold = 80 * @cpuCount
@@ -2862,9 +2866,7 @@ begin
 		drop table #tmpCounterDateTime 
 	end
 end
-
-
-go 
+GO
 
 Create procedure  [usp_KernelHighCPUconsumption]  
 as 
@@ -2889,6 +2891,11 @@ begin
 				where dli.objectname in ('Processor' ) 
 					and  dli.countername in ( '% User Time')  
 					and dli.InstanceName not like '_Total%' 
+		
+		if ((isnumeric(@cpu_count) = 0) or (@cpu_count < 1))
+		begin
+			set @cpu_count = 1
+		end
 
 		set @CPU_threshold = 30.0 * @cpu_count
 
@@ -3362,7 +3369,7 @@ exec proc_AutoStats
 go
 exec proc_nondefaultConfigDetected
 go
-exec usp_ExessiveLockXevent
+--exec usp_ExessiveLockXevent
 go
 exec usp_McAFee_Intrusion
 go
