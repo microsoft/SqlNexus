@@ -443,6 +443,9 @@
     <None Include="Resources\InitDB.txt" />
     <None Include="Resources\powerbi.png" />
     <None Include="Resources\powerbi - Copy.png" />
+    <Content Include="SQLNexus_PostProcessing.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="SQLNexus_PreProcessing.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
