@@ -3369,7 +3369,7 @@ exec proc_AutoStats
 go
 exec proc_nondefaultConfigDetected
 go
---exec usp_ExessiveLockXevent
+exec usp_ExcessiveLockXevent
 go
 exec usp_McAFee_Intrusion
 go
