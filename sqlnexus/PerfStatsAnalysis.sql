@@ -2585,110 +2585,80 @@ begin
 end
 go
 
-create  procedure  [dbo].[usp_IOAnalysis] 
+USE [pssdiag_Perfmon]
+GO
+/****** Object:  StoredProcedure [dbo].[usp_IOAnalysis]    Script Date: 1/26/2022 3:03:56 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER  procedure  [dbo].[usp_IOAnalysis] 
 as
 begin
-       
-             declare @t_DisplayMessage nvarchar(1256)
-             declare @t_InstanceName varchar(100)
-             declare @t_ObjectName varchar(100)
-             declare @t_CounterName varchar(100)
-             declare @t_avg decimal (38,2)
-             declare @t_BeginTime datetime
-             declare @t_EndTime datetime
-             declare @is_Rulehit int
-             declare @message_Number int
-             declare @IO_threshold decimal (38,2)
-             declare @T_CounterDateTime nvarchar(256)
-             declare @T_AvgDateTime datetime
-             set @IO_threshold = 0.020
-                    set @is_Rulehit = 0
-                    set @t_DisplayMessage = ''
-                    set @message_Number = 1
-                    
-                    set @t_ObjectName = ''
-                    set  @t_CounterName = ''
-                    set @t_InstanceName  = ''
-                    
-                    set @t_avg = 0
-                    
-             Create table #tmp (ObjectName varchar(100),CounterName varchar(100), InstanceName varchar(100),avg  decimal (38,2), min decimal (38,2),max  decimal (38,2),CounterDateTime varchar(100))
-             Create table #tmpDisplayRecords (ObjectName varchar(100),CounterName varchar(100), InstanceName varchar(100),avg  decimal (38,2),tBegintime datetime, tEndtime datetime)
-             declare @i  int
-             set @i = 0
-             select @i= Count(*)  from sys.objects where name =  'CounterData' 
- 
-             if @i > 0 
-                    begin
-                           insert into #tmp (ObjectName,CounterName,InstanceName,avg,min, max,CounterDateTime) select SUBSTRING(ObjectName, 1, 15) ObjectName ,SUBSTRING(CounterName, 1, 25) CounterName ,SUBSTRING(COALESCE (InstanceName, ''), 1,10)  'InstanceName',   
-                                          cast (avg(counterValue)  as decimal (38,6))  'avg', 
-                                         LEFT(  MIN(cast (counterValue as decimal (38,2))),20) 'min', 
-                                         LEFT(  MAX(cast (counterValue as decimal (38,2))),20) 'max' ,
-                                        CounterDateTime 
-                                         from counterdata dat inner join counterdetails dl on dat.counterid = dl.counterid  
-                                         where dl.objectname in ('logicaldisk'  ) 
-                                         and  dl.countername in (  'Avg. Disk sec/Transfer' )  
-                                         group by ObjectName, CounterName, InstanceName ,CounterDateTime
-                                        having  cast (avg(counterValue)  as decimal (38,6))  >= @IO_threshold
-                                        order by InstanceName  
-                    end
-  
-        select  @is_Rulehit = COUNT(*) from #tmp
-             if ( @is_Rulehit > 0)
-             begin
-             
-             
-                    declare C_CounterDateTime cursor 
-                            for select 
-                                  CounterDateTime  
-                                   from #tmp
+    IF ((OBJECT_ID ('counterdata') IS NOT NULL) and (OBJECT_ID ('counterdetails') IS NOT NULL) and (OBJECT_ID ('tbl_AnalysisSummary') IS NOT NULL))
+	begin
 
-                            open C_CounterDateTime
-                            fetch next from C_CounterDateTime into @T_CounterDateTime
-                            while (@@fetch_status = 0)
-                            Begin
-                                                            
-                                                                     insert into #tmpDisplayRecords (ObjectName,CounterName,InstanceName,avg,tBegintime,tEndtime)
-                                                                     select SUBSTRING(ObjectName, 1, 15) ObjectName ,SUBSTRING(CounterName, 1, 25) CounterName ,SUBSTRING(COALESCE (InstanceName, ''), 1,10)  'InstanceName',   
-                                                                                               cast (avg(counterValue)  as decimal (38,6))  'avg',
-                                                                                             (cast(@T_CounterDateTime  as datetime) - '00:00:30'),
-                                                                                             (cast(@T_CounterDateTime  as datetime) + '00:00:30')
-                                                                     from counterdata dat inner join counterdetails dli on dat.counterid = dli.counterid  
-                                                                     where dli.objectname in ('logicaldisk'  ) 
-                                                                     and  dli.countername in (  'Avg. Disk sec/Transfer' )  
-                                                                     and ltrim(rtrim(SUBSTRING(COALESCE (InstanceName, ''), 1,10))) <> '_Total'
-                                                                     and CounterDateTime between (cast(@T_CounterDateTime  as datetime) - '00:00:30')  and (cast(@T_CounterDateTime  as datetime) + '00:00:30') 
-                                                                     group by ObjectName, CounterName, InstanceName                      
-                                                                     having    cast (avg(counterValue)  as decimal (38,6))  >= @IO_threshold
-                                                                      
-                                     
-                            fetch next from C_CounterDateTime into @T_CounterDateTime
-                            end
-                            close C_CounterDateTime
-                            deallocate C_CounterDateTime
-                           
-                           
+		declare @max_sec_transfer decimal (12,3)	
+		
+		declare @IO_threshold decimal (12,3)
+		declare @T_CounterDateTime datetime
+		set @IO_threshold = 0.020
+
+		Create table #tmp (CounterDateTime datetime, CounterValue decimal (12,3))
+
+		insert into #tmp (CounterDateTime, CounterValue) 
+		SELECT convert(datetime, CounterDateTime), CounterValue
+		FROM counterdata dat INNER JOIN counterdetails dl ON dat.counterid = dl.counterid  
+		WHERE dl.objectname in ('logicaldisk') 
+				AND dl.countername in ('Avg. Disk sec/Transfer')
+				AND counterValue >= @IO_threshold
+
+		IF (@@ROWCOUNT > 0 )
+		begin
              
-                                
-              
-             select  @is_Rulehit = COUNT(*) from #tmpDisplayRecords
-             if ( @is_Rulehit > 0)
-              begin 
-									update tbl_AnalysisSummary
-										set [Status] = 1
-										where Name = 'usp_IOAnalysis'
-								end 
-					 
-                    
-                    drop table #tmp
-                    drop table #tmpDisplayRecords
-                     
- 
-             end
- 
+			declare C_CounterDateTime cursor for select DISTINCT CounterDateTime from #tmp
+
+			open C_CounterDateTime
+			fetch next from C_CounterDateTime into @T_CounterDateTime
+
+			while (@@fetch_status = 0)
+			Begin
+                                                            
+				--insert into #tmpDisplayRecords (ObjectName,CounterName,InstanceName,avg)
+				IF EXISTS 
+				(SELECT 1
+					FROM counterdata dat INNER JOIN counterdetails dli 
+						ON dat.counterid = dli.counterid  
+					WHERE dli.objectname in ('logicaldisk') 
+						and  dli.countername in ('Avg. Disk sec/Transfer')  
+					and ltrim(rtrim(SUBSTRING(COALESCE (InstanceName, ''), 1,10))) <> '_Total'
+					and CounterDateTime between (@T_CounterDateTime - '00:00:30')  and (@T_CounterDateTime  + '00:00:30') 
+					GROUP BY ObjectName, CounterName, InstanceName                      
+					HAVING    cast (avg(counterValue)  as decimal (12,3))  >= @IO_threshold
+                )
+				begin 
+					SELECT @max_sec_transfer = countervalue
+					FROM #tmp
+
+					update tbl_AnalysisSummary
+						set [Status] = 1,
+						Description = 'The "Avg. Disk sec/transfer" on some drives exceeded 20 ms, with max value found = '+ convert (varchar, @max_sec_transfer) + ' sec/transfer. Check the Perfmon for complete analysis'
+						where Name = 'usp_IOAnalysis'
+					
+					BREAK -- we found one value, so we can quit the loop
+				end 
+				                                    
+				fetch next from C_CounterDateTime into @T_CounterDateTime
+			end
+        
+			close C_CounterDateTime
+			deallocate C_CounterDateTime
+                           
+			drop table #tmp
+		end
+	end
 end
 go
-
 
 Create procedure [usp_WarnmissingIndex]  
 as 
