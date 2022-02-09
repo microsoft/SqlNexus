@@ -287,29 +287,40 @@ namespace sqlnexus
         [STAThread]
         static int Main(string[] args)
         {
-            //UnhandledExceptionHandler eh = new UnhandledExceptionHandler();
+           
+            try
+            {   
+
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+                DependencyManager.CheckReportViewer();
+
+                //initialize the main form
+                fmNexus fmN = new fmNexus();
             
-            //Application.ThreadException += new ThreadExceptionEventHandler(eh.OnThreadException);
+                
 
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            DependencyManager.CheckReportViewer();
-            fmNexus fmN = new fmNexus();
-
-            if (0 != args.Length)
-            {
-                Globals.ConsoleMode = true;
-                if (!ProcessCmdLine(args, fmN))
+                if (0 != args.Length)
                 {
-                    return (int)ProgramExitCodes.UserCancel;
+                    Globals.ConsoleMode = true;
+                    if (!ProcessCmdLine(args, fmN))
+                    {
+                        return (int)ProgramExitCodes.UserCancel;
+                    }
                 }
+                else
+                {
+                    FreeConsole();
+                }
+                Application.Run(fmN);
             }
-            else
+            
+            catch (Exception ex)
             {
-                FreeConsole();
+                Console.WriteLine(string.Format("Exception encountered in Main(): [{0}]", ex.Message));
+                Console.WriteLine(string.Format("{0}", ex.StackTrace));
             }
-            Application.Run(fmN);
-            //return (int)(Globals.ExceptionEncountered ? ProgramExitCodes.Exception : ProgramExitCodes.Normal);
+
             return (int)(Globals.IsNexusCoreImporterSuccessful ? ProgramExitCodes.Normal : ProgramExitCodes.Exception);
         }
     }

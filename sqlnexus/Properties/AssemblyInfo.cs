@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Microsoft")]
 [assembly: AssemblyProduct("sqlnexus")]
-[assembly: AssemblyCopyright("Copyright © 2021 Microsoft")]
+[assembly: AssemblyCopyright("Copyright © 2022 Microsoft")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -29,5 +29,5 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("7.21.07.07")]
-[assembly: AssemblyFileVersion("7.21.07.07")]
+[assembly: AssemblyVersion("7.22.02.09")]
+[assembly: AssemblyFileVersion("7.22.02.09")]

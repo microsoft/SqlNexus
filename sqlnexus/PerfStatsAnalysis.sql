@@ -1691,6 +1691,14 @@ begin
 
 	update CounterData
 	set CounterDateTime = REPLACE(CounterDateTime, char(0), '')
+
+	create index [INDX_CounterDateTime]
+	on [dbo].[CounterData]
+	(
+		[CounterDateTime]
+	)
+
+	print 'Added index to Table - dbo.CounterData || Column CounterDateTime'
 end
 go
 --clean up spinlock
@@ -1973,7 +1981,7 @@ values ('64EEE25A-4B20-4C24-8F27-1E967011D69E','Server Performance', 'W','Warnin
 
 
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('12145143-A34C-4393-BC77-74E3F3A74D5D','Server Performance', 'W','Warning', 'usp_ExessiveLockXevent', 'lock_acquired or lock_released xevent was detected. ',  'These events can cause high cpu or other performance issues ', 'http://aka.ms/lock_quired_xevent','http://aka.ms/lock_quired_xevent', '  jackli', 1, 100, 0)
+values ('12145143-A34C-4393-BC77-74E3F3A74D5D','Server Performance', 'W','Warning', 'usp_ExcessiveLockXevent', 'lock_acquired or lock_released xevent was detected. ',  'These events can cause high cpu or other performance issues ', 'http://aka.ms/lock_quired_xevent','http://aka.ms/lock_quired_xevent', '  jackli', 1, 100, 0)
 
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
 values ('F9EF91B9-529B-4F72-8545-59689D43D37E','Server Performance', 'W','Warning', 'usp_McAFee_Intrusion', 'McAFee Host Intrusion Prevenstion loaded in SQL Process',  'Loading McAfee Host Intrusion Prevention into SQL can lead to performance and stability issues ', 'https://support.microsoft.com/en-us/kb/2033238','https://support.microsoft.com/en-us/kb/2033238', '  jackli', 1, 100, 0)
@@ -2041,7 +2049,6 @@ go
 
 /**************************************************************************************************
 owner:  jaynar
-
 ***************************************************************************************************/
 
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
@@ -2144,14 +2151,18 @@ go
 
 create procedure usp_DeadlockTraceFlag
 as
-if exists (select * from tbl_TraceFlags where TraceFlag = 1222)
+IF ((OBJECT_ID ('tbl_TraceFlags') IS NOT NULL) and (OBJECT_ID ('tbl_AnalysisSummary') IS NOT NULL))
 begin
-	update tbl_AnalysisSummary
-	set Status = 1
-	where  Name =  OBJECT_NAME(@@PROCID)
-
+	if exists (select * from tbl_TraceFlags where TraceFlag in (1204, 1222))
+	begin
+		update tbl_AnalysisSummary
+		set Status = 1
+		where  Name =  OBJECT_NAME(@@PROCID)
+	end
 end
 go
+
+
 create procedure usp_ChangeTableCauseHighCPU
 as
 if (OBJECT_ID ('[readtrace].[tblUniqueBatches]') is not null) 
@@ -2195,25 +2206,27 @@ go
 
 create procedure usp_AccessCheck
 as
-
-IF EXISTS (select * from tbl_ServerProperties where PropertyName='MajorVersion' and PropertyValue<13)
-
+IF ((OBJECT_ID ('tbl_ServerProperties') IS NOT NULL) and (OBJECT_ID ('tbl_Sys_Configurations') IS NOT NULL) 
+	and (OBJECT_ID ('tbl_AnalysisSummary') IS NOT NULL))
 begin
-
-	if not exists ( select * from tbl_Sys_Configurations where name= 'access check cache bucket count' and value_in_use = 256 )  or  not exists (select * from tbl_Sys_Configurations where name='access check cache quota' and value_in_use = 1024)
+	IF EXISTS (select * from tbl_ServerProperties where PropertyName='MajorVersion' and PropertyValue<13)
 	begin
-		update tbl_AnalysisSummary
-		set Status = 1
-		where  Name =  OBJECT_NAME(@@PROCID)
-	end
 
+		if not exists ( select * from tbl_Sys_Configurations where name= 'access check cache bucket count' and value_in_use = 256 )  or  not exists (select * from tbl_Sys_Configurations where name='access check cache quota' and value_in_use = 1024)
+		begin
+			update tbl_AnalysisSummary
+			set Status = 1
+			where  Name =  OBJECT_NAME(@@PROCID)
+		end
+	end
 end
+
 go
 
 create procedure usp_LongAutoUpdateStats
 as
 begin
-if (OBJECT_ID ('[readtrace].[tblInterestingEvents]') is not null) 
+if ((OBJECT_ID ('[readtrace].[tblInterestingEvents]') is not null) and (OBJECT_ID ('tbl_AnalysisSummary') IS NOT NULL))
 begin
 	declare @statstext nvarchar(max)
 	select @statstext = textdata  from readtrace.tblInterestingEvents  where eventid=58 and (duration/1000.00/1000.00) > 60 order by duration desc
@@ -2230,24 +2243,28 @@ go
 
 create procedure usp_DisabledIndex
 as
-if exists ( select  *  from tbl_DisabledIndexes)
+IF ((OBJECT_ID ('tbl_DisabledIndexes') IS NOT NULL) and (OBJECT_ID ('tbl_AnalysisSummary') IS NOT NULL))
 begin
-	update tbl_AnalysisSummary
-	set status = 1
-	where Name='usp_DisabledIndex'
+	if exists ( select  *  from tbl_DisabledIndexes)
+	begin
+		update tbl_AnalysisSummary
+		set status = 1
+		where Name='usp_DisabledIndex'
+	end
 end
 
 go
 create procedure usp_SmallSampledStats
 as
-if exists ( select  *  from tbl_dm_db_stats_properties where (rows_sampled * 100.00)/ [rows] < 5.0 )
+IF ((OBJECT_ID ('tbl_dm_db_stats_properties') IS NOT NULL) and (OBJECT_ID ('tbl_AnalysisSummary') IS NOT NULL))
 begin
-	update tbl_AnalysisSummary
-	set status = 1, [Description]=[Description] + ' use query select *   from tbl_dm_db_stats_properties where (rows_sampled * 100.00)/ [rows] < 5.0 to identify tables with small sample sizes'
-	where Name='usp_SmallSampledStats'
+	if exists ( select  *  from tbl_dm_db_stats_properties where (rows_sampled * 100.00)/ [rows] < 5.0 )
+	begin
+		update tbl_AnalysisSummary
+		set status = 1, [Description]=[Description] + ' use query select *   from tbl_dm_db_stats_properties where (rows_sampled * 100.00)/ [rows] < 5.0 to identify tables with small sample sizes'
+		where Name='usp_SmallSampledStats'
+	end
 end
-
-
 
 go
 create procedure usp_BatchSort
@@ -2264,24 +2281,29 @@ create procedure usp_BatchSort
 	where name = 'usp_BatchSort'
  end
 
-
-
 go
+
 create procedure usp_McAFee_Intrusion
 as
-	 if exists (select * from tbl_dm_os_loaded_modules  where name like '%HcThe%' or name like '%HcApi%' or name like '%HcSql%')
-	 begin
-		update tbl_analysissummary 		set [status]=1  		where name ='usp_McAFee_Intrusion'
+IF ((OBJECT_ID ('tbl_dm_os_loaded_modules') IS NOT NULL) and (OBJECT_ID ('tbl_AnalysisSummary') IS NOT NULL))
+begin
+	if exists (select name from tbl_dm_os_loaded_modules  where name like '%HcThe%' or name like '%HcApi%' or name like '%HcSql%')
+	begin
+		update tbl_AnalysisSummary 		set [status]=1  		where name ='usp_McAFee_Intrusion'
 	end
+end
 
 go
 
-create procedure usp_ExessiveLockXevent
+create procedure usp_ExcessiveLockXevent
 as
- if exists (select * from tbl_Xevents where event_name in ('lock_released', 'lock_acquired'))
- begin
-	update tbl_analysissummary 		set [status]=1  		where name ='usp_ExessiveLockXevent'
- end
+IF ((OBJECT_ID ('tbl_Xevents') IS NOT NULL) and (OBJECT_ID ('tbl_AnalysisSummary') IS NOT NULL))
+begin
+	if exists (select * from tbl_Xevents where event_name in ('lock_released', 'lock_acquired'))
+	begin
+		update tbl_AnalysisSummary	set [status]=1  		where name ='usp_ExcessiveLockXevent'
+	end
+end
 
 go
 create procedure usp_HighCacheCount 
@@ -2344,29 +2366,31 @@ end
 go
 create procedure proc_CheckTraceFlags
 as
-if (dbo.fn_CputhresheldCrossed() = 1)
-	begin
-		declare @raise bit = 1
-		if exists (select * from tbl_ServerProperties where PropertyName='MajorVersion' and  cast(PropertyValue as int)  >=13)
-			set @raise = 0
-		if  exists (select * from tbl_ServerProperties where PropertyName='MajorVersion' and  cast(PropertyValue as int)  =12  )  and exists (select *   from tbl_ServerProperties where PropertyName='ProductLevel' and PropertyValue>='SP2')
-			set @raise = 0
+IF ((OBJECT_ID ('tbl_ServerProperties') IS NOT NULL) and (OBJECT_ID ('tbl_AnalysisSummary') IS NOT NULL))
+begin
+	if (dbo.fn_CputhresheldCrossed() = 1)
+		begin
+			declare @raise bit = 1
+			if exists (select * from tbl_ServerProperties where PropertyName='MajorVersion' and  cast(PropertyValue as int)  >=13)
+				set @raise = 0
+			if  exists (select * from tbl_ServerProperties where PropertyName='MajorVersion' and  cast(PropertyValue as int)  =12  )  and exists (select *   from tbl_ServerProperties where PropertyName='ProductLevel' and PropertyValue>='SP2')
+				set @raise = 0
 
-		if @raise = 1 and  not exists (select * from tbl_traceflags where TraceFlag = 4199)
-				update tbl_Analysissummary  set [status] = 1 	where Name = 'Trace Flag 4199'
+			if @raise = 1 and  not exists (select * from tbl_traceflags where TraceFlag = 4199)
+					update tbl_Analysissummary  set [status] = 1 	where Name = 'Trace Flag 4199'
 		
-		if @raise = 1 and @raise = 1 and not exists (select * from tbl_traceflags where TraceFlag = 1118)
-			update tbl_Analysissummary  set [status] = 1 	where Name = 'Trace Flag 1118'
+			if @raise = 1 and @raise = 1 and not exists (select * from tbl_traceflags where TraceFlag = 1118)
+				update tbl_Analysissummary  set [status] = 1 	where Name = 'Trace Flag 1118'
 
-		if @raise = 1 and not exists (select * from tbl_traceflags where TraceFlag = 8048)
-			update tbl_Analysissummary  set [status] = 1 	where Name = 'Trace Flag 8048'
+			if @raise = 1 and not exists (select * from tbl_traceflags where TraceFlag = 8048)
+				update tbl_Analysissummary  set [status] = 1 	where Name = 'Trace Flag 8048'
 
-		if @raise = 1 and not exists (select * from tbl_traceflags where TraceFlag = 1236)
-			update tbl_Analysissummary  set [status] = 1 	where Name = 'Trace Flag 1236'
-		if @raise = 1 and not exists (select * from tbl_traceflags where TraceFlag = 9024)
-			update tbl_Analysissummary  set [status] = 1 	where Name = 'Trace Flag 9024'
-	end
-
+			if @raise = 1 and not exists (select * from tbl_traceflags where TraceFlag = 1236)
+				update tbl_Analysissummary  set [status] = 1 	where Name = 'Trace Flag 1236'
+			if @raise = 1 and not exists (select * from tbl_traceflags where TraceFlag = 9024)
+				update tbl_Analysissummary  set [status] = 1 	where Name = 'Trace Flag 9024'
+		end
+end
 go
 
 create procedure usp_HighCompile  --author:jackli
@@ -2400,62 +2424,77 @@ go
 
 create procedure proc_ExcessiveXevents
 as
-
-if exists (
-	select * from tbl_xevents
-	where  event_name in
-	('query_pre_execution_showplan', 'query_post_execution_showplan','query_post_compilation_showplan','lock_acquired','sql_statement_starting','sql_statement_completed','sp_statement_starting','sp_statement_completed')
-)
+IF ((OBJECT_ID ('tbl_XEvents') IS NOT NULL) and (OBJECT_ID ('tbl_AnalysisSummary') IS NOT NULL))
 begin
-	update tbl_analysissummary
-	set [status]=1
-	where name ='Detailed XEvent Tracing'
+	if exists (
+		select event_name from tbl_XEvents
+		where  event_name in
+		('query_pre_execution_showplan', 'query_post_execution_showplan','query_post_compilation_showplan','lock_acquired','sql_statement_starting','sql_statement_completed','sp_statement_starting','sp_statement_completed')
+	)
+	begin
+		update tbl_analysissummary
+		set [status]=1
+		where name ='Detailed XEvent Tracing'
+	end
 end
 
 go
 
 create procedure proc_PowerPlan
 as
-if not exists (select * from tbl_PowerPlan where ActivePlanName like '%High Performance%')
+
+IF ((OBJECT_ID ('tbl_PowerPlan') IS NOT NULL) and (OBJECT_ID ('tbl_AnalysisSummary') IS NOT NULL))
 begin
-	update 	 tbl_AnalysisSummary
-	set status = 1
-	where name = 'PowerPlan'
+	if not exists (select * from tbl_PowerPlan where ActivePlanName like '%High Performance%')
+	begin
+		update 	 tbl_AnalysisSummary
+		set status = 1
+		where name = 'PowerPlan'
+	end
 end
+
 go
 
 create procedure proc_AutoStats
 as
-update tbl_SysDatabases set is_auto_update_stats_on = 0
-where name = 'notexist'
-select * from tbl_AnalysisSummary
-if exists (select * from tbl_SysDatabases where is_auto_create_stats_on=0)
-	update tbl_AnalysisSummary 
-	set [status]=1
-	where Name='AutoCreateStats'
+IF ((OBJECT_ID ('tbl_SysDatabases') IS NOT NULL) and (OBJECT_ID ('tbl_AnalysisSummary') IS NOT NULL))
+begin
+	update tbl_SysDatabases set is_auto_update_stats_on = 0
+	where name = 'notexist'
+	select * from tbl_AnalysisSummary
+	if exists (select * from tbl_SysDatabases where is_auto_create_stats_on=0)
+		update tbl_AnalysisSummary 
+		set [status]=1
+		where Name='AutoCreateStats'
 
 
-if exists (select * from tbl_SysDatabases where is_auto_update_stats_on=0)
-	update tbl_AnalysisSummary 
-	set [status]=1
-	where Name='AutoUpdateStats'
-
+	if exists (select * from tbl_SysDatabases where is_auto_update_stats_on=0)
+		update tbl_AnalysisSummary 
+		set [status]=1
+		where Name='AutoUpdateStats'
+end
 
 go
 
 
 create procedure proc_nondefaultConfigDetected
 as
-if exists (
-select * from tbl_Sys_Configurations con join tblDefaultConfigures def on con.name = def.[Configuration Option]
-where value_in_use <> DefaultOption
-and name not in ('show advanced options', 'Agent XPs','show advanced options')
-)
+IF ((OBJECT_ID ('tbl_Sys_Configurations') IS NOT NULL) and (OBJECT_ID ('tbl_AnalysisSummary') IS NOT NULL))
 begin
-update tbl_AnalysisSummary
-set [Status] = 1
-where Name = 'NonDefault_sp_configure'
+	if exists (
+		select value_in_use from tbl_Sys_Configurations con join tblDefaultConfigures def on con.name = def.[Configuration Option]
+		where value_in_use <> DefaultOption
+		and name not in ('show advanced options', 'Agent XPs','show advanced options')
+	)
+	begin
+		update tbl_AnalysisSummary
+		set [Status] = 1
+		where Name = 'NonDefault_sp_configure'
+	end
+
 end
+
+
 go
 
 
@@ -2546,110 +2585,80 @@ begin
 end
 go
 
-Create  procedure  [usp_IOAnalysis] 
+USE [pssdiag_Perfmon]
+GO
+/****** Object:  StoredProcedure [dbo].[usp_IOAnalysis]    Script Date: 1/26/2022 3:03:56 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER  procedure  [dbo].[usp_IOAnalysis] 
 as
 begin
-       
-             declare @t_DisplayMessage nvarchar(1256)
-             declare @t_InstanceName varchar(100)
-             declare @t_ObjectName varchar(100)
-             declare @t_CounterName varchar(100)
-             declare @t_avg decimal (38,2)
-             declare @t_BeginTime datetime
-             declare @t_EndTime datetime
-             declare @is_Rulehit int
-             declare @message_Number int
-             declare @IO_threshold decimal (38,2)
-             declare @T_CounterDateTime nvarchar(256)
-             declare @T_AvgDateTime datetime
-             set @IO_threshold = 0.020
-                    set @is_Rulehit = 0
-                    set @t_DisplayMessage = ''
-                    set @message_Number = 1
-                    
-                    set @t_ObjectName = ''
-                    set  @t_CounterName = ''
-                    set @t_InstanceName  = ''
-                    
-                    set @t_avg = 0
-                    
-             Create table #tmp (ObjectName varchar(100),CounterName varchar(100), InstanceName varchar(100),avg  decimal (38,2), min decimal (38,2),max  decimal (38,2),CounterDateTime varchar(100))
-             Create table #tmpDisplayRecords (ObjectName varchar(100),CounterName varchar(100), InstanceName varchar(100),avg  decimal (38,2),tBegintime datetime, tEndtime datetime)
-             declare @i  int
-             set @i = 0
-             select @i= Count(*)  from sys.objects where name =  'CounterData' 
- 
-             if @i > 0 
-                    begin
-                           insert into #tmp (ObjectName,CounterName,InstanceName,avg,min, max,CounterDateTime) select SUBSTRING(ObjectName, 1, 15) ObjectName ,SUBSTRING(CounterName, 1, 25) CounterName ,SUBSTRING(COALESCE (InstanceName, ''), 1,10)  'InstanceName',   
-                                          cast (avg(counterValue)  as decimal (38,6))  'avg', 
-                                         LEFT(  MIN(cast (counterValue as decimal (38,2))),20) 'min', 
-                                         LEFT(  MAX(cast (counterValue as decimal (38,2))),20) 'max' ,
-                                        CounterDateTime 
-                                         from counterdata dat inner join counterdetails dl on dat.counterid = dl.counterid  
-                                         where dl.objectname in ('logicaldisk'  ) 
-                                         and  dl.countername in (  'Avg. Disk sec/Transfer' )  
-                                         group by ObjectName, CounterName, InstanceName ,CounterDateTime
-                                        having  cast (avg(counterValue)  as decimal (38,6))  >= @IO_threshold
-                                        order by InstanceName  
-                    end
-  
-        select  @is_Rulehit = COUNT(*) from #tmp
-             if ( @is_Rulehit > 0)
-             begin
-             
-             
-                    declare C_CounterDateTime cursor 
-                            for select 
-                                  CounterDateTime  
-                                   from #tmp
+    IF ((OBJECT_ID ('counterdata') IS NOT NULL) and (OBJECT_ID ('counterdetails') IS NOT NULL) and (OBJECT_ID ('tbl_AnalysisSummary') IS NOT NULL))
+	begin
 
-                            open C_CounterDateTime
-                            fetch next from C_CounterDateTime into @T_CounterDateTime
-                            while (@@fetch_status = 0)
-                            Begin
-                                                            
-                                                                     insert into #tmpDisplayRecords (ObjectName,CounterName,InstanceName,avg,tBegintime,tEndtime)
-                                                                     select SUBSTRING(ObjectName, 1, 15) ObjectName ,SUBSTRING(CounterName, 1, 25) CounterName ,SUBSTRING(COALESCE (InstanceName, ''), 1,10)  'InstanceName',   
-                                                                                               cast (avg(counterValue)  as decimal (38,6))  'avg',
-                                                                                             (cast(@T_CounterDateTime  as datetime) - '00:00:30'),
-                                                                                             (cast(@T_CounterDateTime  as datetime) + '00:00:30')
-                                                                     from counterdata dat inner join counterdetails dli on dat.counterid = dli.counterid  
-                                                                     where dli.objectname in ('logicaldisk'  ) 
-                                                                     and  dli.countername in (  'Avg. Disk sec/Transfer' )  
-                                                                     and ltrim(rtrim(SUBSTRING(COALESCE (InstanceName, ''), 1,10))) <> '_Total'
-                                                                     and CounterDateTime between (cast(@T_CounterDateTime  as datetime) - '00:00:30')  and (cast(@T_CounterDateTime  as datetime) + '00:00:30') 
-                                                                     group by ObjectName, CounterName, InstanceName                      
-                                                                     having    cast (avg(counterValue)  as decimal (38,6))  >= @IO_threshold
-                                                                      
-                                     
-                            fetch next from C_CounterDateTime into @T_CounterDateTime
-                            end
-                            close C_CounterDateTime
-                            deallocate C_CounterDateTime
-                           
-                           
+		declare @max_sec_transfer decimal (12,3)	
+		
+		declare @IO_threshold decimal (12,3)
+		declare @T_CounterDateTime datetime
+		set @IO_threshold = 0.020
+
+		Create table #tmp (CounterDateTime datetime, CounterValue decimal (12,3))
+
+		insert into #tmp (CounterDateTime, CounterValue) 
+		SELECT convert(datetime, CounterDateTime), CounterValue
+		FROM counterdata dat INNER JOIN counterdetails dl ON dat.counterid = dl.counterid  
+		WHERE dl.objectname in ('logicaldisk') 
+				AND dl.countername in ('Avg. Disk sec/Transfer')
+				AND counterValue >= @IO_threshold
+
+		IF (@@ROWCOUNT > 0 )
+		begin
              
-                                
-              
-             select  @is_Rulehit = COUNT(*) from #tmpDisplayRecords
-             if ( @is_Rulehit > 0)
-              begin 
-									update tbl_AnalysisSummary
-										set [Status] = 1
-										where Name = 'usp_IOAnalysis'
-								end 
-					 
-                    
-                    drop table #tmp
-                    drop table #tmpDisplayRecords
-                     
- 
-             end
- 
+			declare C_CounterDateTime cursor for select DISTINCT CounterDateTime from #tmp
+
+			open C_CounterDateTime
+			fetch next from C_CounterDateTime into @T_CounterDateTime
+
+			while (@@fetch_status = 0)
+			Begin
+                                                            
+				--insert into #tmpDisplayRecords (ObjectName,CounterName,InstanceName,avg)
+				IF EXISTS 
+				(SELECT 1
+					FROM counterdata dat INNER JOIN counterdetails dli 
+						ON dat.counterid = dli.counterid  
+					WHERE dli.objectname in ('logicaldisk') 
+						and  dli.countername in ('Avg. Disk sec/Transfer')  
+					and ltrim(rtrim(SUBSTRING(COALESCE (InstanceName, ''), 1,10))) <> '_Total'
+					and CounterDateTime between (@T_CounterDateTime - '00:00:30')  and (@T_CounterDateTime  + '00:00:30') 
+					GROUP BY ObjectName, CounterName, InstanceName                      
+					HAVING    cast (avg(counterValue)  as decimal (12,3))  >= @IO_threshold
+                )
+				begin 
+					SELECT @max_sec_transfer = countervalue
+					FROM #tmp
+
+					update tbl_AnalysisSummary
+						set [Status] = 1,
+						Description = 'The "Avg. Disk sec/transfer" on some drives exceeded 20 ms, with max value found = '+ convert (varchar, @max_sec_transfer) + ' sec/transfer. Check the Perfmon for complete analysis'
+						where Name = 'usp_IOAnalysis'
+					
+					BREAK -- we found one value, so we can quit the loop
+				end 
+				                                    
+				fetch next from C_CounterDateTime into @T_CounterDateTime
+			end
+        
+			close C_CounterDateTime
+			deallocate C_CounterDateTime
+                           
+			drop table #tmp
+		end
+	end
 end
 go
-
 
 Create procedure [usp_WarnmissingIndex]  
 as 
@@ -2738,181 +2747,190 @@ end
 Go 
 
 create procedure  [usp_SQLHighCPUconsumption]  
-as 
-begin 
-declare @t_DisplayMessage nvarchar(1256) 
-declare @t_BeginTime datetime 
-declare @t_EndTime datetime 
-declare @t_IncTime datetime 
-declare @t_CBeginTime datetime 
-declare @t_avg decimal (38,2) 
-declare @t_min decimal (38,2) 
-declare @t_max decimal (38,2) 
-declare @is_Rulehit int 
-declare @cpuCount int 
-declare @message_Number int 
-declare @CPU_threshold decimal (38,2) 
-declare @T_CounterDateTime nvarchar(256) 
-    declare @t_AvgValue int 
-    declare @counter int 
-	set @counter = 0 
-	set @CPU_threshold = 80 
-	set @is_Rulehit = 0 
-	set @cpuCount = 1 
-	set @t_DisplayMessage = '' 
-	set @message_Number = 1 
-	set @t_avg = 0 
-	set @t_min = 0 
-	set @t_max = 0 
-	set @CPU_threshold = 80  
-	set @cpuCount = 1 
-	Create table #tmp (cnt_avg int, b_CounterDateTime datetime, e_CounterDateTime datetime,Outmsg varchar(1000)) 
-	Create table #tmpCounterDateTime (CounterDateTime varchar(100)) 
-	declare @i  int 
-	set @i = 0 
-	select @i= Count(*)  from sys.objects where name =  'CounterData'  
+as
+set nocount on
+begin
+	IF ((OBJECT_ID ('counterdata') IS NOT NULL) and (OBJECT_ID ('counterdetails') IS NOT NULL) and (OBJECT_ID ('tbl_AnalysisSummary') IS NOT NULL))
+	begin
+		declare @t_CBeginTime datetime 
+		declare @is_Rulehit int 
+		declare @cpuCount int 
+		declare @CPU_threshold decimal (20,2) 
+		declare @T_CounterDateTime datetime
+		declare @t_AvgValue int 
+		declare @InstanceIndex int
 
+		set @is_Rulehit = 0 
+		set @cpuCount = 1 
+	
 
-if @i > 0  
-begin 
-	select   @cpuCount =   (count( distinct InstanceName)-1) 
-	from counterdata dat inner join counterdetails dl on dat.counterid = dl.counterid  
-	where dl.objectname in ('Processor' ) 
- 
- 	insert into #tmpCounterDateTime (CounterDateTime) select  
-									  CounterDateTime   
-									  from counterdata dat inner join counterdetails dli on dat.counterid = dli.counterid   
-									   where dli.objectname in ('Process' )   
-									  and  dli.countername in ( '% User Time')  
-									   and dli.InstanceName like '%SQLservr%' 
-									  and    cast (counterValue as bigint ) /@cpuCount > @CPU_threshold  
-end 
+		create table #tmpCounterDateTime (CounterDateTime datetime, InstanceIndex int) 
 
-select  @is_Rulehit = COUNT(*) from #tmpCounterDateTime 
-select @t_CBeginTime = min (cast(CounterDateTime  as datetime)) from #tmpCounterDateTime 
-if ( @is_Rulehit > 0) 
-begin 
- print  @t_CBeginTime  
-		declare C_CounterDateTime cursor  
-                            for select  
-                                  CounterDateTime   
-                                   from #tmpCounterDateTime 
-                            open C_CounterDateTime 
-                            fetch next from C_CounterDateTime into @T_CounterDateTime 
-                            while (@@fetch_status = 0) 
-                            Begin 
-                                  select  
-                                           @t_AvgValue =avg(  cast (counterValue as bigint ) /@cpuCount)      
-                                          from counterdata dat inner join counterdetails dli on dat.counterid = dli.counterid   
-                                          where dli.objectname in ('Process' ) --'physicaldisk','Processor' 
-                                         and  dli.countername in ( '% User Time')  
-                                          and dli.InstanceName like '%SQLservr%' 
-                                        and CounterDateTime between (cast(@T_CounterDateTime  as datetime) - '00:01:30')  and (cast(@T_CounterDateTime  as datetime) + '00:01:30')  
-                                         if (@t_AvgValue > @CPU_threshold) 
-                                         begin 
-print @t_AvgValue  
-                                                      insert into #tmp values(@t_AvgValue,(cast(@T_CounterDateTime  as datetime) - '00:01:30')  , (cast(@T_CounterDateTime  as datetime) + '00:01:30') ,'The CPU consumption on  SQL Server exceeded '+ rtrim(cast (@t_AvgValue as char(5))) +'% for an extended period of time') 
-                                         end 
-                            fetch next from C_CounterDateTime into @T_CounterDateTime 
-                          end 
-                            close C_CounterDateTime 
-                            deallocate C_CounterDateTime 
+		--get the CPUs
+		SELECT @cpuCount = count (distinct InstanceName) 
+				from counterdata dat inner join counterdetails dli on dat.counterid = dli.counterid   
+				where dli.objectname in ('Processor' ) 
+					and  dli.countername in ( '% User Time')  
+					and dli.InstanceName not like '_Total%' 
+		
+		if ((isnumeric(@cpuCount) = 0) or (@cpuCount < 1))
+		begin
+			set @cpuCount = 1
+		end
 
-	select  @is_Rulehit = COUNT(*) from #tmp 
-	if ( @is_Rulehit > 0) 
+		--set threshold at 80% of total CPU capacity
+		set @CPU_threshold = 80 * @cpuCount
+
+ 		insert into #tmpCounterDateTime (CounterDateTime, InstanceIndex) 
+		select convert(datetime, CounterDateTime), isnull (InstanceIndex, 0)    
+		from counterdata dat 
+				inner join counterdetails detl on dat.counterid = detl.counterid   
+		where detl.objectname in ('Process' )   
+			and  detl.countername in ( '% User Time')  
+			and detl.InstanceName like '%sqlservr%' 
+			and    counterValue > @CPU_threshold 
+
+		create clustered index dt_idx_kernel on #tmpCounterDateTime (CounterDateTime)
+
+		select  @is_Rulehit = COUNT(*), @t_CBeginTime = min (CounterDateTime) from #tmpCounterDateTime 
+
+		if ( @is_Rulehit > 0) 
 		begin 
-			update tbl_AnalysisSummary
-				set [Status] = 1
-				where Name = 'usp_SQLHighCPUconsumption'
+			declare C_CounterDateTime cursor for select CounterDateTime, InstanceIndex from #tmpCounterDateTime 
+
+			open C_CounterDateTime 
+			
+			fetch next from C_CounterDateTime into @T_CounterDateTime, @InstanceIndex
+
+			while (@@fetch_status = 0) 
+			begin 
+
+				--approximate algorithm - if avg CPU usage over a 3 min period exceeds the threshold - this means is prolonged
+				--walk the time windows one at a time in a cursor
+				select  @t_AvgValue =avg( cast (counterValue as bigint ))      
+				from counterdata dat inner join counterdetails dli on dat.counterid = dli.counterid   
+				where dli.objectname in ('Process' ) 
+					and  dli.countername in ( '% User Time')  
+					and dli.InstanceName like '%SQLservr%' 
+					and CounterDateTime between (@T_CounterDateTime - '00:01:30')  and (@T_CounterDateTime  + '00:01:30') 
+					and isnull (dli.InstanceIndex, 0) = @InstanceIndex  -- this would impact perf potentially, but alternatives are ugly
+				
+				if (@t_AvgValue > @CPU_threshold) 
+				begin 
+					update tbl_AnalysisSummary
+					set [Status] = 1, 
+					Description =  'CPU utilization from SQL Server was at least ' + convert(varchar, ROUND(@t_AvgValue/@cpuCount,0)) + '% of overall capacity for an extended period of time'
+					where Name = 'usp_SQLHighCPUconsumption'
+					
+					--if we found one event of extended CPU utilization, break
+					break
+				end 
+				
+				fetch next from C_CounterDateTime into @T_CounterDateTime , @InstanceIndex
+			end 
+			
+			close C_CounterDateTime 
+			deallocate C_CounterDateTime 
 		end 
-end 
-drop table #tmp 
-drop table #tmpCounterDateTime 
-end 
-
-
-go 
+		
+		drop table #tmpCounterDateTime 
+	end
+end
+GO
 
 Create procedure  [usp_KernelHighCPUconsumption]  
 as 
+set nocount on
 begin 
-declare @t_DisplayMessage nvarchar(1256) 
-declare @t_BeginTime datetime 
-declare @t_EndTime datetime 
-declare @t_IncTime datetime 
-declare @t_avg decimal (38,2) 
-declare @t_min decimal (38,2) 
-declare @t_max decimal (38,2) 
-declare @is_Rulehit int 
-declare @t_CBeginTime datetime  
-declare @message_Number  int 
-declare @CPU_threshold decimal (38,2) 
-declare @T_CounterDateTime nvarchar(256) 
-    declare @t_AvgValue int 
-    declare @counter int 
-set @counter = 0 
-set @CPU_threshold = 1 
-set @is_Rulehit = 0 
-set @t_DisplayMessage = '' 
-set @message_Number = 1 
-set @t_avg = 0 
-set @t_min = 0 
-set @t_max = 0 
-Create table #tmp (cnt_avg int, b_CounterDateTime datetime, e_CounterDateTime datetime,Outmsg varchar(100)) 
-Create table #tmpCounterDateTime (CounterDateTime varchar(100)) 
-set @CPU_threshold = 30.0  
-declare @i  int 
-set @i = 0 
-select @i= Count(*)  from sys.objects where name =  'CounterData '  
-if @i > 0  
-begin 
-insert into #tmpCounterDateTime (CounterDateTime) select  
-                                  CounterDateTime   
-                                   from counterdata dat inner join counterdetails dli on dat.counterid = dli.counterid   
-                                   where dli.objectname in ('Process' ) --'physicaldisk','Processor' 
-                                  and  dli.countername in ( '% Privileged Time')  
-                                   and dli.InstanceName like '%SQLservr%' 
-								    and   LEFT(  cast (counterValue as decimal (38,2)  ),5) > @CPU_threshold  
-                                  
-end 
-select  @is_Rulehit = COUNT(*) from #tmpCounterDateTime 
-select @t_CBeginTime = min (cast(CounterDateTime  as datetime)) from #tmpCounterDateTime 
-if ( @is_Rulehit > 0) 
-begin  
-declare C_CounterDateTime cursor  
-                            for select  
-                                  CounterDateTime   
-                                   from #tmpCounterDateTime 
-                            open C_CounterDateTime 
-                            fetch next from C_CounterDateTime into @T_CounterDateTime 
-                            while (@@fetch_status = 0) 
-                            Begin 
-                                  select  
-                                           @t_AvgValue = LEFT(  cast (avg(counterValue)  as decimal (38,2)),20)      
-                                          from counterdata dat inner join counterdetails dli on dat.counterid = dli.counterid   
-                                          where dli.objectname in ('Process' ) --'physicaldisk','Processor' 
-                                         and  dli.countername in ( '% Privileged Time')  
-                                          and dli.InstanceName like '%SQLservr%' 
-                                         and CounterDateTime between (cast(@T_CounterDateTime  as datetime) - '00:01:30')  and (cast(@T_CounterDateTime  as datetime) + '00:01:30')  
-                                         if (CAST ( @t_AvgValue as decimal (38,2)) > @CPU_threshold) 
-                                         begin 
-                                                      insert into #tmp values(@t_AvgValue,(cast(@T_CounterDateTime  as datetime) - '00:01:30')  , (cast(@T_CounterDateTime  as datetime) + '00:01:30') ,' Kernel CPU consumption for SQL Server exceeded '+ rtrim(cast (@t_AvgValue as char(5))) +'% for an extended period of time') 
-                                         end 
-                            fetch next from C_CounterDateTime into @T_CounterDateTime 
-                            end 
-                            close C_CounterDateTime 
-                            deallocate C_CounterDateTime 
-select  @is_Rulehit = COUNT(*) from #tmp 
-	if ( @is_Rulehit > 0) 
-		begin 
-			update tbl_AnalysisSummary
-				set [Status] = 1
-				where Name = 'usp_KernelHighCPUconsumption'
+    IF ((OBJECT_ID ('counterdata') IS NOT NULL) and (OBJECT_ID ('counterdetails') IS NOT NULL) and (OBJECT_ID ('tbl_AnalysisSummary') IS NOT NULL))
+	begin
+		declare @is_Rulehit int 
+		declare @t_CBeginTime datetime  
+		declare @CPU_threshold decimal (38,2) 
+		declare @T_CounterDateTime datetime
+		declare @t_AvgValue int 
+		declare @cpu_count int
+		declare @InstanceIndex int
+	
+		set @is_Rulehit = 0 
+
+		
+		--get the CPUs
+		SELECT @cpu_count  = count (distinct InstanceName) 
+				from counterdata dat inner join counterdetails dli on dat.counterid = dli.counterid   
+				where dli.objectname in ('Processor' ) 
+					and  dli.countername in ( '% User Time')  
+					and dli.InstanceName not like '_Total%' 
+		
+		if ((isnumeric(@cpu_count) = 0) or (@cpu_count < 1))
+		begin
+			set @cpu_count = 1
+		end
+
+		set @CPU_threshold = 30.0 * @cpu_count
+
+		--create table #tmp (cnt_avg int, b_CounterDateTime datetime, e_CounterDateTime datetime,Outmsg varchar(100)) 
+		create table #tmpCounterDateTime (CounterDateTime datetime, InstanceIndex int) 
+	
+	
+		insert into #tmpCounterDateTime (CounterDateTime, InstanceIndex) 
+		select convert(datetime, CounterDateTime), isnull (InstanceIndex, 0)   
+		from	counterdata dat 
+			inner join counterdetails dli on dat.counterid = dli.counterid   
+		where dli.objectname in ('Process' ) --'physicaldisk','Processor' 
+				and dli.countername in ( '% Privileged Time')  
+				and dli.InstanceName like '%SQLservr%' 
+				and counterValue  > @CPU_threshold  
+
+		create clustered index dt_idx_sqluser on #tmpCounterDateTime (CounterDateTime)
+		
+		select  @is_Rulehit = COUNT(*), @t_CBeginTime = min (CounterDateTime) from #tmpCounterDateTime 
+
+		if ( @is_Rulehit > 0) 
+		begin  
+			DECLARE c_counterdatetime CURSOR FOR
+			  SELECT counterdatetime, InstanceIndex
+			  FROM   #tmpcounterdatetime
+
+			OPEN c_counterdatetime
+
+			FETCH next FROM c_counterdatetime INTO @T_CounterDateTime, @InstanceIndex
+
+			WHILE ( @@fetch_status = 0 )
+			  BEGIN
+				  SELECT @t_AvgValue = Cast (Avg(countervalue) AS DECIMAL (20, 2))
+				  FROM   counterdata dat
+						 INNER JOIN counterdetails dli
+								 ON dat.counterid = dli.counterid
+				  WHERE  dli.objectname IN ( 'Process' ) --'physicaldisk','Processor' 
+						 AND dli.countername IN ( '% Privileged Time' )
+						 AND dli.instancename LIKE '%SQLservr%'
+						 AND counterdatetime BETWEEN (@T_CounterDateTime - '00:01:30' )
+													 AND ( @T_CounterDateTime + '00:01:30')
+						and isnull (dli.InstanceIndex, 0) = @InstanceIndex  -- this would impact perf potentially, but alternatives are ugly
+
+				  IF ( Cast (@t_AvgValue AS DECIMAL (38, 2)) > @CPU_threshold )
+					BEGIN
+						update tbl_AnalysisSummary
+						set [Status] = 1,
+						Description =  'Kernel CPU utilization from SQL Server was at least ' + convert(varchar, ROUND(@t_AvgValue/@cpu_count,0)) + '% of overall capacity for an extended period of time'
+						where Name = 'usp_KernelHighCPUconsumption'
+
+						--if we found one event of extended CPU utilization, break
+						break
+					END
+
+				  FETCH next FROM c_counterdatetime INTO @T_CounterDateTime, @InstanceIndex
+			  END
+
+			CLOSE c_counterdatetime
+			DEALLOCATE c_counterdatetime 
+
 		end 
+		drop table #tmpCounterDateTime 
+	end
 end 
-drop table #tmp 
-drop table #tmpCounterDateTime 
-end 
+
 go 
 
 Create Procedure usp_Non_SQL_CPU_consumption
@@ -3096,24 +3114,25 @@ go
 
 Create procedure OracleLinkedServerIssue  
 as  
-Begin 
-	declare @i  int 
-	set @i = 0 
-	select @i= Count(*)  from sys.objects where name = ltrim(rtrim('tbl_dm_exec_query_memory_grants')) 
-	if @i > 0  
+begin
+	IF ((OBJECT_ID ('tbl_dm_os_loaded_modules') IS NOT NULL) and (OBJECT_ID ('tbl_AnalysisSummary') IS NOT NULL))
 	begin 
-	set @i = 0 
-	 select @i= count(*) from    [dbo].[tbl_dm_os_loaded_modules] 
-	where name like '%OraOLEDButl11%' or name like '%OraOLEDBrst11%' or name like '%OraOLEDBrst10%' 
-	if @i > 0  
+		declare @i  int 
+		set @i = 0 
+		
+		select @i= count(*) 
+		from    [dbo].[tbl_dm_os_loaded_modules] 
+		where name like '%OraOLEDButl11%' or name like '%OraOLEDBrst11%' or name like '%OraOLEDBrst10%' 
+
+		if (@i > 0 )
 		begin 
-	
-		update tbl_AnalysisSummary
-				set [Status] = 1
-				where Name = 'OracleLinkedServerIssue'
+			update tbl_AnalysisSummary
+			set [Status] = 1
+			where Name = 'OracleLinkedServerIssue'
 		end 
-	end 
-End  
+	end  
+end
+
 go
 
 create procedure  [usp_ExcessiveTrace_Warning]
@@ -3320,7 +3339,7 @@ exec proc_AutoStats
 go
 exec proc_nondefaultConfigDetected
 go
-exec usp_ExessiveLockXevent
+exec usp_ExcessiveLockXevent
 go
 exec usp_McAFee_Intrusion
 go
@@ -3369,7 +3388,7 @@ go
 exec StaleStatswarning2008
 go
 
-exec usp_IOAnalysis
+exec dbo.usp_IOAnalysis
 go
 
 exec usp_WarnmissingIndex

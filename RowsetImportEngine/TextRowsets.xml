@@ -1221,10 +1221,8 @@
 
 
     <Rowset name="tbl_StartupParameters" enabled="true" identifier="--Startup Parameters--" type="RowsetImportEngine.TextRowset">
-
       <Column name="ArgsName" type="RowsetImportEngine.NVarCharColumn" length="200" />
       <Column name="ArgsValue" type="RowsetImportEngine.NVarCharColumn" length="200"  />
-
     </Rowset>
 
 
@@ -1241,14 +1239,13 @@
       <Column name="Status" type="RowsetImportEngine.BigIntColumn" />
       <Column name="Global" type="RowsetImportEngine.BigIntColumn" />
       <Column name="Session" type="RowsetImportEngine.BigIntColumn" />
-      
     </Rowset>
 
 
     <Rowset name="tbl_XEvents" enabled="true" identifier="--XEvent Session Details--" type="RowsetImportEngine.TextRowset">
       <Column name="session_name" type="RowsetImportEngine.NVarCharColumn" length="200"  />
       <Column name="event_name" type="RowsetImportEngine.NVarCharColumn" length="200"  />
-
+      <Column name="expensive_event" type="RowsetImportEngine.IntColumn" />
     </Rowset>
 
 
@@ -1503,10 +1500,35 @@
         <Column name="traceid"  type="RowsetImportEngine.BigIntColumn" />
         <Column name="property"  type="RowsetImportEngine.BigIntColumn" />
         <Column name="value"   type="RowsetImportEngine.VarCharColumn" />
+      </KnownColumns>
+    </Rowset>
 
+    <Rowset name="tbl_profiler_trace_event_details" enabled="true" identifier="--trace event details--" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="trace_id"  type="RowsetImportEngine.IntColumn" />
+        <Column name="status"  type="RowsetImportEngine.IntColumn" />
+        <Column name="path"   type="RowsetImportEngine.VarCharColumn" />
+        <Column name="max_size"  type="RowsetImportEngine.BigIntColumn" />      
+        <Column name="start_time" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="stop_time" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="max_files"  type="RowsetImportEngine.IntColumn" />
+        <Column name="is_rowset"  type="RowsetImportEngine.IntColumn" />
+        <Column name="is_rollover"  type="RowsetImportEngine.IntColumn" />
+        <Column name="is_shutdown"  type="RowsetImportEngine.IntColumn" />
+        <Column name="is_default"  type="RowsetImportEngine.IntColumn" />
+        <Column name="buffer_count"  type="RowsetImportEngine.IntColumn" />
+        <Column name="buffer_size"  type="RowsetImportEngine.IntColumn" />
+        <Column name="last_event_time" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="event_count"  type="RowsetImportEngine.IntColumn" />
+        <Column name="trace_event_id"  type="RowsetImportEngine.IntColumn" />
+        <Column name="trace_event_name"   type="RowsetImportEngine.VarCharColumn" />
+        <Column name="trace_column_id"  type="RowsetImportEngine.IntColumn" />
+        <Column name="trace_column_name"   type="RowsetImportEngine.VarCharColumn" />
+        <Column name="expensive_event"  type="RowsetImportEngine.IntColumn" />
       </KnownColumns>
     </Rowset>
     
+      
       <Rowset name="tbl_dm_os_ring_buffers_conn" enabled="True" identifier="-- dm_os_ring_buffers --" type="RowsetImportEngine.TextRowset">
 	  <KnownColumns>
       <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
@@ -2071,7 +2093,7 @@
     </Rowset>
 
 
-        <Rowset name="tbl_dm_os_performance_counters" enabled="true" identifier="-- sql server performance counters --" type="RowsetImportEngine.TextRowset">
+    <Rowset name="tbl_dm_os_performance_counters" enabled="true" identifier="-- sql server performance counters --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
         <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
         <Column name="object_name" type="RowsetImportEngine.NVarCharColumn" />
@@ -2089,6 +2111,7 @@
       <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
       <Column name="runtime_utc" type="RowsetImportEngine.DateTimeColumn" />
       <Column name="session_id" type="RowsetImportEngine.IntColumn" />
+      <Column name="os_thread_id" type="RowsetImportEngine.IntColumn" />
       <Column name="request_start_time" type="RowsetImportEngine.DateTimeColumn" />
       <Column name="cpu_time" type="RowsetImportEngine.BigIntColumn" />
       <Column name="total_elapsed_time" type="RowsetImportEngine.BigIntColumn" />
@@ -2117,6 +2140,24 @@
         <Column name="time_delta_hours" type="RowsetImportEngine.IntColumn" />
       </KnownColumns>
     </Rowset>
+
+    <Rowset name="tbl_CPU_bound_query_never_completes" enabled="true" identifier="-- neverending_query --" type="RowsetImportEngine.TextRowset">
+      <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+      <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+      <Column name="runtime_utc" type="RowsetImportEngine.DateTimeColumn" />
+      <Column name="session_id" type="RowsetImportEngine.IntColumn" />
+      <Column name="query_text" type="RowsetImportEngine.NVarCharColumn" length="256"/>
+      <Column name="physical_operator_name" type="RowsetImportEngine.NVarCharColumn" length="256"/>
+      <Column name="node_id" type="RowsetImportEngine.IntColumn" />
+      <Column name="row_count" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="rewind_count" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="rebind_count" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="end_of_scan_count" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="estimate_row_count" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="cpu_time" type="RowsetImportEngine.IntColumn" />
+      <Column name="total_elapsed_time" type="RowsetImportEngine.IntColumn" />
+    </Rowset>
+
     
 
     <Rowset name="tbl_database_options" enabled="true" identifier="-- Current database options --" type="RowsetImportEngine.TextRowset">
