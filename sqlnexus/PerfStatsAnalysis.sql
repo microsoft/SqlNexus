@@ -617,7 +617,71 @@ IF NOT EXISTS (SELECT * FROM sys.columns WHERE [object_id] = OBJECT_ID ('tbl_OS_
 		'QDS_CLEANUP_STALE_QUERIES_TASK_MAIN_LOOP_SLEEP',
 		'QDS_PERSIST_TASK_MAIN_LOOP_SLEEP',
 		'PREEMPTIVE_XE_DISPATCHER',
-		'SP_SERVER_DIAGNOSTICS_SLEEP'
+		'SP_SERVER_DIAGNOSTICS_SLEEP',
+		'SOS_WORK_DISPATCHER',
+		'HADR_DB_COMMAND',
+		'HADR_TRANSPORT_SESSION',
+		'HADR_CLUSAPI_CALL',
+		'HADR_WORK_POOL',
+		'HADR_WORK_QUEUE',
+		'HADR_LOGCAPTURE_SYNC',
+		'HADR_AG_MUTEX',
+		'HADR_FILESTREAM_MANAGER',
+		'HADR_FILESTREAM_BLOCK_FLUSH',
+		'HADR_FILESTREAM_IOMGR',
+		'HADR_FILESTREAM_IOMGR_IOCOMPLETION',
+		'HADR_FILESTREAM_PREPROC',
+		'HADR_DB_OP_START_SYNC',
+		'HADR_DB_OP_COMPLETION_SYNC',
+		'HADR_LOGPROGRESS_SYNC',
+		'HADR_TRANSPORT_DBRLIST',
+		'HADR_CONNECTIVITY_INFO',
+		'HADR_AR_UNLOAD_COMPLETED',
+		'HADR_PARTNER_SYNC',
+		'HADR_DBSTATECHANGE_SYNC',
+		'HADR_FILESTREAM_FILE_REQUEST',
+		'HADR_REPLICAINFO_SYNC',
+		'HADR_COMPRESSED_CACHE_SYNC',
+		'HADR_AR_MANAGER_MUTEX',
+		'HADR_NOTIFICATION_WORKER_TERMINATION_SYNC',
+		'HADR_NOTIFICATION_DEQUEUE',
+		'HADR_ARCONTROLLER_NOTIFICATIONS_SUBSCRIBER_LIST',
+		'HADR_DBR_SUBSCRIBER_FILTER_LIST',
+		'HADR_DBR_SUBSCRIBER',
+		'HADR_NOTIFICATION_WORKER_STARTUP_SYNC',
+		'HADR_NOTIFICATION_WORKER_EXCLUSIVE_ACCESS',
+		'HADR_RECOVERY_WAIT_FOR_UNDO',
+		'HADR_DATABASE_WAIT_FOR_RESTART',
+		'HADR_DATABASE_WAIT_FOR_RECOVERY',
+		'HADR_XRF_STACK_ACCESS',
+		'HADR_RECOVERY_WAIT_FOR_CONNECTION',
+		'HADR_TRANSPORT_FLOW_CONTROL',
+		'HADR_DATABASE_FLOW_CONTROL',
+		'HADR_DATABASE_WAIT_FOR_TRANSITION_TO_VERSIONING',
+		'HADR_BACKUP_BULK_LOCK',
+		'HADR_BACKUP_QUEUE',
+		'HADR_LOGCAPTURE_WAIT',
+		'HADR_AR_CRITICAL_SECTION_ENTRY',
+		'HADR_TDS_LISTENER_SYNC',
+		'HADR_READ_ALL_NETWORKS',
+		'HADR_TDS_LISTENER_SYNC_PROCESSING',
+		'HADR_TIMER_TASK',
+		'HADR_GROUP_COMMIT',
+		'HADR_SYNCHRONIZING_THROTTLE',
+		'HADR_DATABASE_VERSIONING_STATE',
+		'HADR_FILESTREAM_FILE_CLOSE',
+		'HADR_FABRIC_CALLBACK',
+		'HADR_DBSEEDING',
+		'HADR_DBSEEDING_LIST',
+		'HADR_THROTTLE_LOG_RATE_GOVERNOR',
+		'HADR_SEEDING_LIMIT_BACKUPS',
+		'HADR_SEEDING_CANCELLATION',
+		'HADR_SEEDING_SYNC_COMPLETION',
+		'HADR_SEEDING_TIMEOUT_TASK',
+		'HADR_SEEDING_FILE_LIST',
+		'HADR_SEEDING_WAIT_FOR_COMPLETION',
+		'HADR_DBHEALTH_INFOMAP_ACCESS',
+		'HADR_SEEDING_READY_FOR_RESTORE_STREAM'
 	) 
       THEN 'IGNORABLE'
     ELSE wait_type 
@@ -2585,8 +2649,6 @@ begin
 end
 go
 
-USE [pssdiag_Perfmon]
-GO
 /****** Object:  StoredProcedure [dbo].[usp_IOAnalysis]    Script Date: 1/26/2022 3:03:56 PM ******/
 SET ANSI_NULLS ON
 GO
@@ -2933,117 +2995,94 @@ end
 
 go 
 
-Create Procedure usp_Non_SQL_CPU_consumption
+CREATE PROCEDURE usp_Non_SQL_CPU_consumption
 as
+SET NOCOUNT ON
 begin
-		declare @t_DisplayMessage nvarchar(1256)
-		declare @t_BeginTime datetime
-		declare @t_EndTime datetime
-		declare @t_IncTime datetime
-		declare @t_avg decimal (38,2)
-		declare @t_min decimal (38,2)
-		declare @t_max decimal (38,2)
-		declare @is_Rulehit int
-		declare @cpuCount int
-		declare @message_Number int
-		declare @CPU_threshold decimal (38,2)
-		declare @T_CounterDateTime nvarchar(256)
-	    declare @t_AvgValue int
-	    declare @counter int
-	    declare @SQLcpuCount int
-	    declare @TotalcpuCount int
-		declare @NonSQLCPU_threshold decimal (38,2)
-		declare @SQLCPU_threshold decimal (38,2)
-			set @SQLcpuCount = 16
-			set @NonSQLCPU_threshold = 80.0		
-			set @SQLCPU_threshold = 50.0
-			set @counter = 0
-			set @CPU_threshold = 80.0
-			set @TotalcpuCount = 1
+	IF ((OBJECT_ID ('counterdata') IS NOT NULL) and (OBJECT_ID ('counterdetails') IS NOT NULL) and (OBJECT_ID ('tbl_AnalysisSummary') IS NOT NULL))
+	begin
+		declare @t_CBeginTime datetime 
+		declare @is_Rulehit int 
+		declare @cpuCount int 
+		declare @CPU_threshold decimal (20,2) 
+		declare @T_CounterDateTime datetime
+		declare @t_AvgValue int 
 		
-			set @is_Rulehit = 0
-			set @cpuCount = 1
-			set @t_DisplayMessage = ' Temp'
-			set @message_Number = 1
-			
-			set @t_avg = 0
-			set @t_min = 0
-			set @t_max = 0
-			set @SQLcpuCount = 1
-		Create table #tmp (cnt_avg int, b_CounterDateTime datetime, e_CounterDateTime datetime,Outmsg varchar(100))
-		Create table #tmpCounterDateTime (CounterDateTime varchar(100))
-		 
-		IF EXISTS ( SELECT * FROM sysobjects WHERE name = ltrim(rtrim('CounterData')))
-		begin
-			--Fix: Issue #37, fixed negative number of CPUs
-			select @SQLcpuCount  =   Count(distinct scheduler_id) from tbl_dm_os_schedulers_snapshot
-			 where status = 'VISIBLE ONLINE'
-		 End 	
-		IF EXISTS ( SELECT * FROM sysobjects WHERE name = ltrim(rtrim('CounterData')))
-			begin
-				insert into #tmpCounterDateTime (CounterDateTime) select CounterDateTimeTotal from (
-								select cast(CounterDateTime as  datetime) CounterDateTimeTotal
-								   from counterdata dat inner join counterdetails dli on dat.counterid = dli.counterid  
-                                   where dli.objectname in ('Process' ) --'physicaldisk','Processor'
-                                  and  dli.countername in ( '% User Time') 
-                                   and dli.InstanceName like '%_Total%'
-                                    and    cast ( counterValue as float )  >= @NonSQLCPU_threshold 
-                                  )  a1,
-                                  (
-								  --Fix: Issue #36, use distinct to avoid duplicates
-                                  select  distinct cast(CounterDateTime as  datetime) CounterDateTimeSQL
-							      from counterdata dat inner join counterdetails dli on dat.counterid = dli.counterid  
-                                   where dli.objectname in ('Process' ) --'physicaldisk','Processor'
-                                  and  dli.countername in ( '% User Time') 
-                                   and dli.InstanceName like '%SQLservr%'
-                                    and cast (counterValue as float )  <= @SQLCPU_threshold 
-								 )  b
-								 where a1.CounterDateTimeTotal =b.CounterDateTimeSQL
 
-								 
-			end
-	   
-		select  @is_Rulehit = COUNT(*) from #tmpCounterDateTime
-		if ( @is_Rulehit > 0)
-		BEGIN
-			--Fix: Issue #36, replace cursor with set logic
-            select avg(a1.counterValue)/@SQLcpuCount as avg_CPU, dt.CounterDateTime
-		  into #avg_CPU
-            from #tmpCounterDateTime dt inner join 
-			 (
-			 select cast(counterValue as decimal (38,2)) counterValue ,CounterDateTime
-				from counterdata dat inner join counterdetails dli on dat.counterid = dli.counterid  
-				where dli.objectname in ('Process' ) --'physicaldisk','Processor'
-			 and  dli.countername in ( '% User Time') 
-				and dli.InstanceName like '%_Total%'
-				and    cast ( counterValue as float )  >= @NonSQLCPU_threshold * @SQLcpuCount
-			 )  a1 on a1.CounterDateTime between (cast(dt.CounterDateTime as datetime)- '00:01:30')  and (cast(dt.CounterDateTime as datetime) + '00:01:30') 
-				inner join 
-			 (
-			 select  cast(counterValue as decimal (38,2)) counterValue,CounterDateTime
-			 from counterdata dat inner join counterdetails dli on dat.counterid = dli.counterid  
-				where dli.objectname in ('Process' ) --'physicaldisk','Processor'
-			 and  dli.countername in ( '% User Time') 
-				and dli.InstanceName like '%SQLservr%'
-				and cast (counterValue as float )  <= @SQLCPU_threshold * @SQLcpuCount
-			 )  b on b.CounterDateTime between (cast(dt.CounterDateTime as datetime) - '00:01:30')  and (cast(dt.CounterDateTime as datetime) + '00:01:30') 
-		  where a1.CounterDateTime= b.CounterDateTime
-		  group by dt.CounterDateTime
-		  
-	if (OBJECT_ID ('[tempdb].[dbo].[#avg_CPU]') is not null) 
-	begin								      
-		  if ( exists (Select 1 from #avg_CPU where avg_CPU > @CPU_threshold))
-			 begin 
-				    update tbl_AnalysisSummary
-					   set [Status] = 1
-					   where Name = 'usp_Non_SQL_CPU_consumption'
-			 end 
-					 
+		set @is_Rulehit = 0 
+		set @cpuCount = 1 
+	
+		create table #tmpCounterDateTime (CounterDateTime datetime, NonSQLCpu int)
+
+		--get the CPUs
+		SELECT @cpuCount = count (distinct InstanceName) 
+				from counterdata dat inner join counterdetails dli on dat.counterid = dli.counterid   
+				where dli.objectname in ('Processor' ) 
+					and  dli.countername in ( '% User Time')  
+					and dli.InstanceName not like '_Total%' 
+		
+		if ((isnumeric(@cpuCount) = 0) or (@cpuCount < 1))
+		begin
+			set @cpuCount = 1
 		end
-		Select * from #avg_CPU
-		drop table #avg_CPU
+
+		--set threshold at 80% of total CPU capacity
+		set @CPU_threshold = 80 * @cpuCount
+
+ 		insert into #tmpCounterDateTime (CounterDateTime, NonSQLCpu) 
+		SELECT CONVERT(datetime, CounterDateTime), SUM (dat.CounterValue) 
+		FROM counterdata dat 
+				INNER JOIN counterdetails detl on dat.counterid = detl.counterid   
+		WHERE detl.objectname in ('Process')   
+				and  detl.countername in ('% User Time')  
+                and (detl.InstanceName not like '%_Total%'
+				and detl.InstanceName not like '%sqlservr%'  
+				and detl.InstanceName != 'Idle')
+		GROUP BY CounterDateTime
+
+
+		create clustered index dt_idx_nonsqlcpu on #tmpCounterDateTime (CounterDateTime)
+
+		select  @is_Rulehit = COUNT(*), @t_CBeginTime = min (CounterDateTime) from #tmpCounterDateTime 
+
+		if ( @is_Rulehit > 0) 
+		begin 
+			declare C_CounterDateTime cursor for 
+				SELECT CounterDateTime FROM #tmpCounterDateTime WHERE NonSQLCpu > @CPU_threshold 
+
+			open C_CounterDateTime 
+			
+			fetch next from C_CounterDateTime into @T_CounterDateTime
+
+			while (@@fetch_status = 0) 
+			begin 
+
+				--approximate algorithm - if avg CPU usage over a 3 min period exceeds the threshold - this means is prolonged
+				--walk the time windows one at a time in a cursor
+				SELECT  @t_AvgValue = AVG (NonSQLCpu)      
+				FROM #tmpCounterDateTime
+				WHERE CounterDateTime between (@T_CounterDateTime - '00:01:30')  and (@T_CounterDateTime  + '00:01:30') 
+				
+				if (@t_AvgValue > @CPU_threshold) 
+				begin 
+					update tbl_AnalysisSummary
+					set [Status] = 1, 
+					Description =  'Non-SQL CPU utilization on the system was at least ' + convert(varchar, ROUND(@t_AvgValue/@cpuCount,0)) + '% of overall CPU capacity for an extended period of time'
+					where Name = 'usp_Non_SQL_CPU_consumption'
+					
+					--if we found one event of extended CPU utilization, break
+					break
+				end 
+				
+				fetch next from C_CounterDateTime into @T_CounterDateTime
+			end 
+			
+			close C_CounterDateTime 
+			deallocate C_CounterDateTime 
+		end 
+		
+		drop table #tmpCounterDateTime 
 	end
-		drop table #tmpCounterDateTime
 end
  
 go
