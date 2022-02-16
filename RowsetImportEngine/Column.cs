@@ -484,11 +484,11 @@ namespace RowsetImportEngine
 					if (tmpstr.Length > this.Length) tmpstr = tmpstr.Substring(0, this.Length);
 					// Convert the hex string to a byte array. 
 					byte[] bytearray = new byte[(tmpstr.Length / 2)];
-                    byte result;
 
                     for (int i = 0; i < (tmpstr.Length - 1); i += 2)
 					{
                         string byteStr = tmpstr.Substring(i, 2);
+                        byte result;
                         if (!byte.TryParse(byteStr, System.Globalization.NumberStyles.HexNumber, null as IFormatProvider, out result))
                         {
                             return null;
