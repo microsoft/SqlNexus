@@ -147,6 +147,7 @@
     <Compile Include="ErrorDialog.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Helpers\ConvertHelper.cs" />
     <Compile Include="Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

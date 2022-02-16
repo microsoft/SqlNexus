@@ -1,6 +1,7 @@
 using System;
 using System.Data;
 using System.Text.RegularExpressions;
+using RowsetImportEngine.Helpers;
 
 // TODO: Need both DateTimeColumn and FloatColumn (for waitstats). 
 // TODO: Add error log text file showing the first 100 rows that a problem occurred on (flag in ). 
@@ -177,26 +178,27 @@ namespace RowsetImportEngine
 		// The base class does not provide any data validation. 
 		public override object ValidateData(object columndata)
 		{
-			try
-			{
-				// Query Analyzer and osql format dates like this: 
-				//		2004-07-12 23:26:18.850
-				// The specific formatting is left up to the SQL ODBC driver. 
-				// TODO: Verify whether SQLODBC date formatting depends on the system locale. Do we need a way to specify formatting or LCID? 
+            return ConvertHelper.ValidateData<DateTime>(columndata, out data);
+   //         try
+			//{
+			//	// Query Analyzer and osql format dates like this: 
+			//	//		2004-07-12 23:26:18.850
+			//	// The specific formatting is left up to the SQL ODBC driver. 
+			//	// TODO: Verify whether SQLODBC date formatting depends on the system locale. Do we need a way to specify formatting or LCID? 
 
-				// Unfortunately, the framework's DateTime value only has second-level precision. Use 
-				// Convert.ToDateTime just to validate that the format of the datetime string is valid, 
-				// but actually store the string value so we can pass the milliseconds portion intact 
-				// to SQL. 
-				Convert.ToDateTime(columndata);
-				data = columndata.ToString();
-				return data;
-			}
-			catch
-			{
-				data = null;
-				return null;
-			}
+			//	// Unfortunately, the framework's DateTime value only has second-level precision. Use 
+			//	// Convert.ToDateTime just to validate that the format of the datetime string is valid, 
+			//	// but actually store the string value so we can pass the milliseconds portion intact 
+			//	// to SQL. 
+			//	Convert.ToDateTime(columndata);
+			//	data = columndata.ToString();
+			//	return data;
+			//}
+			//catch
+			//{
+			//	data = null;
+			//	return null;
+			//}
 		}
 		public override Column Copy()
 		{
@@ -311,18 +313,19 @@ namespace RowsetImportEngine
 		}
 		public override object ValidateData(object columndata)
 		{
-			try 
-			{
-				data = Convert.ToInt32 (columndata);
-				return data;
-			}
-			catch
-			{
-				// Set to null otherwise. 
-				data = null;
-				return null;
-			}
-		}
+            return ConvertHelper.ValidateData<int>(columndata, out data);
+            //try 
+            //{
+            //	data = Convert.ToInt32 (columndata);
+            //	return data;
+            //}
+            //catch
+            //{
+            //	// Set to null otherwise. 
+            //	data = null;
+            //	return null;
+            //}
+        }
 		public override Column Copy()
 		{
 			IntColumn newcol = new IntColumn();
@@ -350,22 +353,23 @@ namespace RowsetImportEngine
 		}
 		public override object ValidateData(object columndata)
 		{
-			try 
-			{
-				data = Convert.ToInt64 (columndata);
-                return data;
-                // TODO: change validation to use tryparse to cut down on frequent "normal" parse exceptions (e.g. "NULL" in an int col)
-                //if (!Int64.TryParse(columndata, out data))
-                //    data = null;
-                //return data;
-			}
-			catch
-			{
-				// Set to null otherwise. 
-				data = null;
-				return null;
-			}
-		}
+            return ConvertHelper.ValidateData<long>(columndata, out data);
+            //try 
+            //{
+            //	data = Convert.ToInt64 (columndata);
+            //             return data;
+            //             // TODO: change validation to use tryparse to cut down on frequent "normal" parse exceptions (e.g. "NULL" in an int col)
+            //             //if (!Int64.TryParse(columndata, out data))
+            //             //    data = null;
+            //             //return data;
+            //}
+            //catch
+            //{
+            //	// Set to null otherwise. 
+            //	data = null;
+            //	return null;
+            //}
+        }
 		public BigIntColumn() : base() {}
 		public BigIntColumn(string Name, int Length, int SqlColumnLength, bool RowsetLevel) : base(Name, Length, SqlColumnLength, RowsetLevel) {}
 	}
@@ -387,22 +391,23 @@ namespace RowsetImportEngine
 		}
 		public override object ValidateData(object columndata)
 		{
-			// QA and osql will format floats in one of the following ways: 
-			//		123.45
-			//		1.2345E-10
-			// Convert.ToDouble(string) will understand both of these. 
-			try 
-			{
-				data = Convert.ToDouble(columndata);
-				return data;
-			}
-			catch
-			{
-				// Set to null otherwise. 
-				data = null;
-				return data;
-			}
-		}
+            return ConvertHelper.ValidateData<double>(columndata, out data);
+            //// QA and osql will format floats in one of the following ways: 
+            ////		123.45
+            ////		1.2345E-10
+            //// Convert.ToDouble(string) will understand both of these. 
+            //try 
+            //{
+            //	data = Convert.ToDouble(columndata);
+            //	return data;
+            //}
+            //catch
+            //{
+            //	// Set to null otherwise. 
+            //	data = null;
+            //	return data;
+            //}
+        }
 		public FloatColumn() : base() {}
 		public FloatColumn(string Name, int Length, int SqlColumnLength, bool RowsetLevel) : base(Name, Length, SqlColumnLength, RowsetLevel) {}
 	}
@@ -424,18 +429,19 @@ namespace RowsetImportEngine
 		}
 		public override object ValidateData(object columndata)
 		{
-			try 
-			{
-				data = Convert.ToDecimal(columndata);
-				return data;
-			}
-			catch
-			{
-				// Set to null otherwise. 
-				data = null;
-				return data;
-			}
-		}
+            return ConvertHelper.ValidateData<decimal>(columndata, out data);
+            //try 
+            //{
+            //	data = Convert.ToDecimal(columndata);
+            //	return data;
+            //}
+            //catch
+            //{
+            //	// Set to null otherwise. 
+            //	data = null;
+            //	return data;
+            //}
+        }
 		public DecimalColumn() : base() {}
 		public DecimalColumn(string Name, int Length, int SqlColumnLength, bool RowsetLevel) : base(Name, Length, SqlColumnLength, RowsetLevel) {}
 	}
@@ -457,14 +463,20 @@ namespace RowsetImportEngine
 		}
 		public override object ValidateData(object columndata)
 		{
-			// For now we require that the binary value is being provided in hex string form, e.g. "1a2b3c" or "0x1a2b3c". 
-			if (columndata == null || "String" == columndata.GetType().Name)
+            data = null;
+            // For now we require that the binary value is being provided in hex string form, e.g. "1a2b3c" or "0x1a2b3c". 
+            bool isString = columndata is string;
+            if (isString)
 			{
 				try
 				{
-					string tmpstr = (string)Convert.ChangeType(columndata, typeof(string));
-					// Remove "0x" prefix if exists. 
-					if ((columndata as string).Substring (0,2).ToUpper().Equals("0X"))
+                    if (columndata.Equals("NULL"))
+                    {
+                        return null;
+                    }
+                    string tmpstr = columndata as string;
+                    // Remove "0x" prefix if exists. 
+                    if ((columndata as string).Substring (0,2).ToUpper().Equals("0X"))
 						tmpstr = tmpstr.Substring(2);
 					// Add a leading zero to complete a byte, if necessary. 
 					if ((tmpstr.Length % 2) > 0) tmpstr = "0" + tmpstr; 
@@ -474,23 +486,24 @@ namespace RowsetImportEngine
 					byte[] bytearray = new byte[(tmpstr.Length / 2)];
 					for (int i = 0; i < (tmpstr.Length - 1); i += 2)
 					{
-						bytearray[i/2] = Convert.ToByte (tmpstr.Substring(i, 2), 16);
-					}
-					data = bytearray;
-					return data;
+                        string byteStr = tmpstr.Substring(i, 2);
+                        if (!byte.TryParse(byteStr, System.Globalization.NumberStyles.HexNumber, null as IFormatProvider, out byte result))
+                        {
+                            return null;
+                        }
+                        bytearray[i / 2] = result;
+                    }
+                    data = bytearray;
+                    return data;
 				}
 				catch
 				{
-					// Caller tried to set the column data to a string that was not a valid sequence of hex digits.
-					//throw (new System.InvalidCastException("VarBinaryColumn  set to invalid hex string value."));
-					data = null;
+					// Some unexpected exception during conversion process.
 					return null;
 				}
 			} 
 			else	// Caller tried to set the column data to something other than a string.
 			{
-				//throw (new System.InvalidCastException("VarBinaryColumn  must be set to a hex string value."));
-				data = null;
 				return null;
 			}
 		}
