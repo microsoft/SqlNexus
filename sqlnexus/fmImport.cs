@@ -1064,29 +1064,29 @@ namespace sqlnexus
 
             ProcessStartInfo psi = new ProcessStartInfo();
             psi.CreateNoWindow = true;
-            psi.RedirectStandardOutput = true;
-            psi.RedirectStandardInput = true;
+            //psi.RedirectStandardOutput = true;
+            //psi.RedirectStandardInput = true;
             psi.UseShellExecute = false;
             psi.Arguments = string.Format("{0} {1} \"{2}\"", Globals.credentialMgr.Server, Globals.credentialMgr.Database, sourcePath);
-            MainForm.LogMessage("PostProcess argument " + psi.Arguments);
+            MainForm.LogMessage("Executing: PostProcess.cmd " + psi.Arguments);
             psi.FileName = "PostProcess.cmd";
 
             Process process = new Process();
             process.StartInfo = psi;
 
-            process.EnableRaisingEvents = true;
+            //process.EnableRaisingEvents = true;
 
-            process.OutputDataReceived += new DataReceivedEventHandler
-            (
-                delegate (object sender, DataReceivedEventArgs e)
-                {
-                    output.Append(e.Data);
-                }
-            );
+            //process.OutputDataReceived += new DataReceivedEventHandler
+            //(
+            //    delegate (object sender, DataReceivedEventArgs e)
+            //    {
+            //        output.Append(e.Data);
+            //    }
+            //);
             process.Start();
-            process.BeginOutputReadLine();
+            //process.BeginOutputReadLine();
             process.WaitForExit();
-            process.CancelOutputRead();
+            //process.CancelOutputRead();
         }
 
 
