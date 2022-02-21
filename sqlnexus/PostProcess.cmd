@@ -1,10 +1,10 @@
-﻿@echo off
+@echo off
 
 set SQLServer=%1
 set Database=%2
 set ImportPath=%3
 
-echo %SQLServer% %Database% %ImportPath%
+@echo %date% %time% parameters: %SQLServer% %Database% %ImportPath% > %temp%\sqlnexus_postprocessing.out
 
 
 
@@ -16,7 +16,7 @@ if "%servername%"=="" goto usage
 if "%filepath%"=="" goto usage
 
 
-@echo %date% %time% SQL Nexus PostProcessing > %temp%\sqlnexus_postprocessing.out
+@echo %date% %time% SQL Nexus PostProcessing >> %temp%\sqlnexus_postprocessing.out
 
 @echo %date% %time% Creating tblPlansTemp >> %temp%\sqlnexus_postprocessing.out
 sqlcmd.exe -S%SQLServer% -E -d%Database% -Q"create table tblPlansTemp (sqlplan xml)"
@@ -34,13 +34,11 @@ rem sqlcmd.exe -S%SQLServer% -E -otoptables.out -Q"set QUOTED_IDENTIFIER on; WIT
 
 @echo %date% %time% SQL Nexus PostProcessing complete >> %temp%\sqlnexus_postprocessing.out
 
-
-goto :eof
+goto end
 
 :usage
-
 echo Usage:  %~n0 servername filepath
 
-:eof
+:end
 
 endlocal

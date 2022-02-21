@@ -1060,12 +1060,13 @@ namespace sqlnexus
         {
 
             //post-process execution (call PostProcess.cmd)
-            StringBuilder output = new StringBuilder();
+            StringBuilder output_stream = new StringBuilder();
+            StringBuilder error_stream = new StringBuilder();
 
             ProcessStartInfo psi = new ProcessStartInfo();
             psi.CreateNoWindow = true;
-            //psi.RedirectStandardOutput = true;
-            //psi.RedirectStandardInput = true;
+            psi.RedirectStandardOutput = true;
+            psi.RedirectStandardError = true;
             psi.UseShellExecute = false;
             psi.Arguments = string.Format("{0} {1} \"{2}\"", Globals.credentialMgr.Server, Globals.credentialMgr.Database, sourcePath);
             MainForm.LogMessage("Executing: PostProcess.cmd " + psi.Arguments);
@@ -1074,19 +1075,44 @@ namespace sqlnexus
             Process process = new Process();
             process.StartInfo = psi;
 
-            //process.EnableRaisingEvents = true;
+            process.EnableRaisingEvents = true;
 
-            //process.OutputDataReceived += new DataReceivedEventHandler
-            //(
-            //    delegate (object sender, DataReceivedEventArgs e)
-            //    {
-            //        output.Append(e.Data);
-            //    }
-            //);
+            process.ErrorDataReceived += new DataReceivedEventHandler
+                (
+                    delegate (object sender, DataReceivedEventArgs ea)
+                    {
+                        error_stream.Append(ea.Data);
+                    }
+
+                );
+
+            process.OutputDataReceived += new DataReceivedEventHandler
+            (
+                delegate (object sender, DataReceivedEventArgs e)
+                {
+                    output_stream.Append(e.Data);
+                }
+            );
+
             process.Start();
-            //process.BeginOutputReadLine();
+            process.BeginOutputReadLine();
             process.WaitForExit();
-            //process.CancelOutputRead();
+
+            if ((error_stream != null) & (error_stream.Length != 0 ))
+            {
+                MainForm.LogMessage("PostProcess error output: " + output_stream.ToString());
+            }
+
+            if ((output_stream != null) & (output_stream.Length != 0 ))
+            {
+                MainForm.LogMessage("PostProcess console output: " + output_stream.ToString());
+            }
+
+
+            process.CancelOutputRead();
+            process.Close();
+            
+
         }
 
 
