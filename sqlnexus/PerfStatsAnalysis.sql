@@ -2831,9 +2831,9 @@ begin
 		--get the CPUs
 		SELECT @cpuCount = count (distinct InstanceName) 
 				from counterdata dat inner join counterdetails dli on dat.counterid = dli.counterid   
-				where dli.objectname in ('Processor' ) 
+				where dli.objectname in ('Processor Information') 
 					and  dli.countername in ( '% User Time')  
-					and dli.InstanceName not like '_Total%' 
+					and dli.InstanceName not in ('_Total' , '0,_Total')
 		
 		if ((isnumeric(@cpuCount) = 0) or (@cpuCount < 1))
 		begin
@@ -2847,7 +2847,7 @@ begin
 		select convert(datetime, CounterDateTime), isnull (InstanceIndex, 0)    
 		from counterdata dat 
 				inner join counterdetails detl on dat.counterid = detl.counterid   
-		where detl.objectname in ('Process' )   
+		where detl.objectname in ('Process')   
 			and  detl.countername in ( '% User Time')  
 			and detl.InstanceName like '%sqlservr%' 
 			and    counterValue > @CPU_threshold 
@@ -2877,8 +2877,10 @@ begin
 					and CounterDateTime between (@T_CounterDateTime - '00:01:30')  and (@T_CounterDateTime  + '00:01:30') 
 					and isnull (dli.InstanceIndex, 0) = @InstanceIndex  -- this would impact perf potentially, but alternatives are ugly
 				
+
 				if (@t_AvgValue > @CPU_threshold) 
 				begin 
+
 					update tbl_AnalysisSummary
 					set [Status] = 1, 
 					Description =  'CPU utilization from one or more SQL Server(s) was at least ' + convert(varchar, ROUND(@t_AvgValue/@cpuCount,0)) + '% of overall capacity for an extended period of time (3 min)'
@@ -2898,6 +2900,7 @@ begin
 		drop table #tmpCounterDateTime 
 	end
 end
+
 GO
 
 Create procedure  [usp_KernelHighCPUconsumption]  
@@ -2918,11 +2921,11 @@ begin
 
 		
 		--get the CPUs
-		SELECT @cpu_count  = count (distinct InstanceName) 
+		SELECT @cpu_count = count (distinct InstanceName) 
 				from counterdata dat inner join counterdetails dli on dat.counterid = dli.counterid   
-				where dli.objectname in ('Processor' ) 
+				where dli.objectname in ('Processor Information') 
 					and  dli.countername in ( '% User Time')  
-					and dli.InstanceName not like '_Total%' 
+					and dli.InstanceName not in ('_Total' , '0,_Total')
 		
 		if ((isnumeric(@cpu_count) = 0) or (@cpu_count < 1))
 		begin
@@ -2939,7 +2942,7 @@ begin
 		select convert(datetime, CounterDateTime), isnull (InstanceIndex, 0)   
 		from	counterdata dat 
 			inner join counterdetails dli on dat.counterid = dli.counterid   
-		where dli.objectname in ('Process' ) --'physicaldisk','Processor' 
+		where dli.objectname in ('Process') --'physicaldisk','Processor' 
 				and dli.countername in ( '% Privileged Time')  
 				and dli.InstanceName like '%SQLservr%' 
 				and counterValue  > @CPU_threshold  
