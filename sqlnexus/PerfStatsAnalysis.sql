@@ -2849,7 +2849,7 @@ begin
 				inner join counterdetails detl on dat.counterid = detl.counterid   
 		where detl.objectname in ('Process')   
 			and  detl.countername in ( '% User Time')  
-			and detl.InstanceName like '%sqlservr%' 
+			and detl.InstanceName like 'sqlservr%' 
 			and    counterValue > @CPU_threshold 
 
 		create clustered index dt_idx_kernel on #tmpCounterDateTime (CounterDateTime)
@@ -2873,7 +2873,7 @@ begin
 				from counterdata dat inner join counterdetails dli on dat.counterid = dli.counterid   
 				where dli.objectname in ('Process' ) 
 					and  dli.countername in ( '% User Time')  
-					and dli.InstanceName like '%SQLservr%' 
+					and dli.InstanceName like 'sqlservr%' 
 					and CounterDateTime between (@T_CounterDateTime - '00:01:30')  and (@T_CounterDateTime  + '00:01:30') 
 					and isnull (dli.InstanceIndex, 0) = @InstanceIndex  -- this would impact perf potentially, but alternatives are ugly
 				
@@ -2944,7 +2944,7 @@ begin
 			inner join counterdetails dli on dat.counterid = dli.counterid   
 		where dli.objectname in ('Process') --'physicaldisk','Processor' 
 				and dli.countername in ( '% Privileged Time')  
-				and dli.InstanceName like '%SQLservr%' 
+				and dli.InstanceName like 'sqlservr%' 
 				and counterValue  > @CPU_threshold  
 
 		create clustered index dt_idx_sqluser on #tmpCounterDateTime (CounterDateTime)
@@ -2969,7 +2969,7 @@ begin
 								 ON dat.counterid = dli.counterid
 				  WHERE  dli.objectname IN ( 'Process' ) --'physicaldisk','Processor' 
 						 AND dli.countername IN ( '% Privileged Time' )
-						 AND dli.instancename LIKE '%SQLservr%'
+						 AND dli.instancename LIKE 'sqlservr%'
 						 AND counterdatetime BETWEEN (@T_CounterDateTime - '00:01:30' )
 													 AND ( @T_CounterDateTime + '00:01:30')
 						and isnull (dli.InstanceIndex, 0) = @InstanceIndex  -- this would impact perf potentially, but alternatives are ugly
@@ -3019,10 +3019,10 @@ begin
 
 		--get the CPUs
 		SELECT @cpuCount = count (distinct InstanceName) 
-				from counterdata dat inner join counterdetails dli on dat.counterid = dli.counterid   
-				where dli.objectname in ('Processor' ) 
-					and  dli.countername in ( '% User Time')  
-					and dli.InstanceName not like '_Total%' 
+		FROM counterdata dat inner join counterdetails dli on dat.counterid = dli.counterid   
+		WHERE dli.objectname in ('Processor Information') 
+			AND  dli.countername in ( '% User Time')  
+			AND dli.InstanceName not in ('_Total' , '0,_Total')
 		
 		if ((isnumeric(@cpuCount) = 0) or (@cpuCount < 1))
 		begin
@@ -3039,7 +3039,7 @@ begin
 		WHERE detl.objectname in ('Process')   
 				and  detl.countername in ('% User Time')  
                 and (detl.InstanceName not like '%_Total%'
-				and detl.InstanceName not like '%sqlservr%'  
+				and detl.InstanceName not like 'sqlservr%'  
 				and detl.InstanceName != 'Idle')
 		GROUP BY CounterDateTime
 
