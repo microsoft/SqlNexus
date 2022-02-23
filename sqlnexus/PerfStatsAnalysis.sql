@@ -2808,6 +2808,15 @@ begin
 end 
 Go 
 
+--create an index to help speed up lookup of CPU count
+IF (OBJECT_ID ('counterdetails') IS NOT NULL) 
+begin
+	create index procCount_idx on counterdetails (objectname)
+	include (countername, instancename)
+	WHERE objectname in ('Processor Information') 
+		AND  countername in ( '% User Time')   
+end
+
 create procedure  [usp_SQLHighCPUconsumption]  
 as
 set nocount on
@@ -2833,7 +2842,8 @@ begin
 				from counterdata dat inner join counterdetails dli on dat.counterid = dli.counterid   
 				where dli.objectname in ('Processor Information') 
 					and  dli.countername in ( '% User Time')  
-					and dli.InstanceName not in ('_Total' , '0,_Total')
+					AND dli.InstanceName not like ('%_Total%')
+					
 		
 		if ((isnumeric(@cpuCount) = 0) or (@cpuCount < 1))
 		begin
@@ -2922,10 +2932,10 @@ begin
 		
 		--get the CPUs
 		SELECT @cpu_count = count (distinct InstanceName) 
-				from counterdata dat inner join counterdetails dli on dat.counterid = dli.counterid   
-				where dli.objectname in ('Processor Information') 
-					and  dli.countername in ( '% User Time')  
-					and dli.InstanceName not in ('_Total' , '0,_Total')
+				FROM counterdata dat INNER JOIN counterdetails dli ON dat.counterid = dli.counterid   
+				WHERE dli.objectname in ('Processor Information') 
+					AND  dli.countername IN ( '% User Time')  
+					AND dli.InstanceName NOT LIKE ('%_Total%')
 		
 		if ((isnumeric(@cpu_count) = 0) or (@cpu_count < 1))
 		begin
@@ -3019,10 +3029,10 @@ begin
 
 		--get the CPUs
 		SELECT @cpuCount = count (distinct InstanceName) 
-		FROM counterdata dat inner join counterdetails dli on dat.counterid = dli.counterid   
-		WHERE dli.objectname in ('Processor Information') 
-			AND  dli.countername in ( '% User Time')  
-			AND dli.InstanceName not in ('_Total' , '0,_Total')
+		FROM counterdata dat INNER JOIN counterdetails dli ON dat.counterid = dli.counterid   
+		WHERE dli.objectname IN ('Processor Information') 
+			AND  dli.countername IN ( '% User Time')  
+			AND dli.InstanceName NOT LIKE ('%_Total%')
 		
 		if ((isnumeric(@cpuCount) = 0) or (@cpuCount < 1))
 		begin
