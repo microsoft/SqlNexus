@@ -631,8 +631,8 @@ namespace RowsetImportEngine
 													c.Data = DateTime.Now.ToUniversalTime().ToString("yyyy-mm-dd hh:mm:ss");
 													break;
 												case "ROWNUMBER":
-													c.Data = this.CurrentRowset.RowsInserted;
-													break;
+													c.Data = this.CurrentRowset.RowsInserted.ToString(); //have to make a string because ValidateData() would fail to convert from long to long
+                                                    break;
 												default:
 													c.Data = null;
 													break;
