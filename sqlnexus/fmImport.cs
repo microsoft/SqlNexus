@@ -1100,12 +1100,12 @@ namespace sqlnexus
 
             if ((error_stream != null) & (error_stream.Length != 0 ))
             {
-                MainForm.LogMessage("PostProcess error output: " + output_stream.ToString());
+                MainForm.LogMessage("PostProcess error output: " + error_stream.ToString());
             }
 
             if ((output_stream != null) & (output_stream.Length != 0 ))
             {
-                MainForm.LogMessage("PostProcess console output: " + output_stream.ToString());
+                MainForm.LogMessage("PostProcess console output: " + output_stream.ToString().Replace("+++", "\r\n\t"));
             }
 
 
