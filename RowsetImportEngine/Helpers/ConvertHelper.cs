@@ -15,6 +15,10 @@ namespace RowsetImportEngine.Helpers
                 {
                     data = (T)converter.ConvertFrom(columndata);
                 }
+                else if (converter != null && converter.IsValid(columndata.ToString()))
+                {
+                    data = (T)converter.ConvertFrom(columndata.ToString());
+                }
 
                 return data;
             }
