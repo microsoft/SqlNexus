@@ -2838,17 +2838,66 @@ begin
 		create table #tmpCounterDateTime (CounterDateTime datetime, InstanceIndex int) 
 
 		--get the CPUs
-		SELECT @cpuCount = count (distinct InstanceName) 
-				from counterdata dat inner join counterdetails dli on dat.counterid = dli.counterid   
-				where dli.objectname in ('Processor Information') 
-					and  dli.countername in ( '% User Time')  
-					AND dli.InstanceName not like ('%_Total%')
-					
+
+		--try to find CPU count different possible ways.  if we get zero or null, try another way
 		
-		if ((isnumeric(@cpuCount) = 0) or (@cpuCount < 1))
-		begin
-			set @cpuCount = 1
-		end
+		DECLARE @schedCount int = 0
+		IF EXISTS (SELECT 1 FROM sys.Tables WHERE NAME = N'tbl_ServerProperties')
+		--#1 try 
+		BEGIN
+			--make sure there is only 1 distinct row (this process might get more than 1 server...probably FCI situtation when it does)
+			DECLARE @cpuRows int = 0;
+			--unless there is more than 1 row
+			SELECT DISTINCT @cpuRows = COUNT(PropertyValue)
+			FROM [tbl_ServerProperties] WHERE PropertyName in ('cpu_count')
+			IF (@cpuRows = 1) --then we are OK to use the number
+			BEGIN
+				SELECT DISTINCT @cpuCount = PropertyValue
+				FROM [tbl_ServerProperties] WHERE PropertyName in ('cpu_count')
+				SELECT DISTINCT @schedCount = PropertyValue
+				FROM [tbl_ServerProperties] WHERE PropertyName in ('number of visible schedulers')
+			END
+		END -- END #1
+		-- #2 try
+		IF @cpuCount = 0 OR @cpuCount is null
+		-- still didnt get CPUs, try again
+		BEGIN
+			--consider doing this now 
+			IF (OBJECT_ID ('counterdetails') IS NOT NULL)
+			BEGIN
+				IF 0 = (SELECT COUNT(*)
+					FROM sys.indexes 
+					WHERE object_id = OBJECT_ID('dbo.counterdetails')
+					AND name='procCount_idx')
+				BEGIN
+					CREATE INDEX procCount_idx on counterdetails (objectname)
+					INCLUDE (countername, instancename)
+					WHERE objectname in ('Processor Information')
+					AND countername in ( '% User Time')
+				END
+				--as long as table existed, and we either created index or it is already there, try to get CPUs
+				SELECT @cpuCount = count (DISTINCT InstanceName)
+				FROM counterdata dat INNER JOIN counterdetails dli on dat.counterid = dli.counterid
+				WHERE dli.objectname in ('Processor Information')
+					AND dli.countername in ( '% User Time')
+					AND dli.InstanceName not like ('%_Total%')
+			END
+		END  --END #2
+		-- #3 TRY  ******
+		IF @cpuCount = 0 OR @cpuCount is null
+		-- still didnt get CPUs, try again
+		BEGIN
+			SELECT @cpuCount = cast(max(countervalue)/100 as int)
+			  FROM [dbo].[CounterData] cdat JOIN [dbo].[CounterDetails] cdet ON cdat.CounterID = cdet.CounterID
+			  WHERE ObjectName='Process' 
+				  AND CounterName='% Processor Time' 
+				  AND InstanceName = '_Total' and countervalue !=0
+		END --END #3
+
+		--did we get any count > 0...if CPU is zero, need to RETURN or break out of report and not run it as our divisor wont work correctly
+		
+		IF (@cpuCount = 0 OR @cpuCount is null)
+			RETURN
 
 		--set threshold at 80% of total CPU capacity
 		set @CPU_threshold = 80 * @cpuCount
@@ -2919,30 +2968,81 @@ set nocount on
 begin 
     IF ((OBJECT_ID ('counterdata') IS NOT NULL) and (OBJECT_ID ('counterdetails') IS NOT NULL) and (OBJECT_ID ('tbl_AnalysisSummary') IS NOT NULL))
 	begin
-		declare @is_Rulehit int 
-		declare @t_CBeginTime datetime  
-		declare @CPU_threshold decimal (38,2) 
-		declare @T_CounterDateTime datetime
-		declare @t_AvgValue int 
-		declare @cpu_count int
-		declare @InstanceIndex int
-	
-		set @is_Rulehit = 0 
+		DECLARE @is_Rulehit int 
+		DECLARE @t_CBeginTime datetime  
+		DECLARE @CPU_threshold decimal (38,2) 
+		DECLARE @T_CounterDateTime datetime
+		DECLARE @t_AvgValue int 
+		DECLARE @cpuCount int = 0
+		DECLARE @InstanceIndex int
+		DECLARE @schedCount int = 0
+
+		SET @is_Rulehit = 0 
 
 		
 		--get the CPUs
-		SELECT @cpu_count = count (distinct InstanceName) 
-				FROM counterdata dat INNER JOIN counterdetails dli ON dat.counterid = dli.counterid   
-				WHERE dli.objectname in ('Processor Information') 
-					AND  dli.countername IN ( '% User Time')  
-					AND dli.InstanceName NOT LIKE ('%_Total%')
+		--try to find CPU count different possible ways.  if we get zero or null, try another way
 		
-		if ((isnumeric(@cpu_count) = 0) or (@cpu_count < 1))
-		begin
-			set @cpu_count = 1
-		end
+		
+		IF EXISTS (SELECT 1 FROM sys.Tables WHERE NAME = N'tbl_ServerProperties')
+		--#1 try 
+		BEGIN
+			--make sure there is only 1 distinct row (this process might get more than 1 server...probably FCI situtation when it does)
+			DECLARE @cpuRows int = 0;
+			--unless there is more than 1 row
+			SELECT DISTINCT @cpuRows = COUNT(PropertyValue)
+			FROM [tbl_ServerProperties] WHERE PropertyName in ('cpu_count')
+			IF (@cpuRows = 1) --then we are OK to use the number
+			BEGIN
+				SELECT DISTINCT @cpuCount = PropertyValue
+				FROM [tbl_ServerProperties] WHERE PropertyName in ('cpu_count')
+				SELECT DISTINCT @schedCount = PropertyValue
+				FROM [tbl_ServerProperties] WHERE PropertyName in ('number of visible schedulers')
+			END
+		END -- END #1
+		-- #2 try
+		IF @cpuCount = 0 OR @cpuCount is null
+		-- still didnt get CPUs, try again
+		BEGIN
+			--consider doing this now 
+			IF (OBJECT_ID ('counterdetails') IS NOT NULL)
+			BEGIN
+				IF 0 = (SELECT COUNT(*)
+					FROM sys.indexes 
+					WHERE object_id = OBJECT_ID('dbo.counterdetails')
+					AND name='procCount_idx')
+				BEGIN
+					CREATE INDEX procCount_idx on counterdetails (objectname)
+					INCLUDE (countername, instancename)
+					WHERE objectname in ('Processor Information')
+					AND countername in ( '% User Time')
+				END
+				--as long as table existed, and we either created index or it is already there, try to get CPUs
+				SELECT @cpuCount = count (DISTINCT InstanceName)
+				FROM counterdata dat INNER JOIN counterdetails dli on dat.counterid = dli.counterid
+				WHERE dli.objectname in ('Processor Information')
+					AND dli.countername in ( '% User Time')
+					AND dli.InstanceName not like ('%_Total%')
+			END
+		END  --END #2
+		-- #3 TRY  ******
+		IF @cpuCount = 0 OR @cpuCount is null
+		-- still didnt get CPUs, try again
+		BEGIN
+			SELECT @cpuCount = cast(max(countervalue)/100 as int)
+			  FROM [dbo].[CounterData] cdat JOIN [dbo].[CounterDetails] cdet ON cdat.CounterID = cdet.CounterID
+			  WHERE ObjectName='Process' 
+				  AND CounterName='% Processor Time' 
+				  AND InstanceName = '_Total' and countervalue !=0
+		END --END #3
 
-		set @CPU_threshold = 30.0 * @cpu_count
+		--did we get any count > 0...if CPU is zero, need to RETURN or break out of report and not run it as our divisor wont work correctly
+		
+		IF (@cpuCount = 0 OR @cpuCount is null)
+			RETURN
+
+		--set CPU threshold
+		set @CPU_threshold = 30.0 * @cpuCount
 
 		--create table #tmp (cnt_avg int, b_CounterDateTime datetime, e_CounterDateTime datetime,Outmsg varchar(100)) 
 		create table #tmpCounterDateTime (CounterDateTime datetime, InstanceIndex int) 
@@ -2988,7 +3088,7 @@ begin
 					BEGIN
 						update tbl_AnalysisSummary
 						set [Status] = 1,
-						Description =  'Kernel CPU utilization from SQL Server was at least ' + convert(varchar, ROUND(@t_AvgValue/@cpu_count,0)) + '% of overall capacity for an extended period of time (3 min.)'
+						Description =  'Kernel CPU utilization from SQL Server was at least ' + convert(varchar, ROUND(@t_AvgValue/@cpuCount,0)) + '% of overall capacity for an extended period of time (3 min.)'
 						where Name = 'usp_KernelHighCPUconsumption'
 
 						--if we found one event of extended CPU utilization, break
@@ -3028,16 +3128,65 @@ begin
 		create table #tmpCounterDateTime (CounterDateTime datetime, NonSQLCpu int)
 
 		--get the CPUs
-		SELECT @cpuCount = count (distinct InstanceName) 
-		FROM counterdata dat INNER JOIN counterdetails dli ON dat.counterid = dli.counterid   
-		WHERE dli.objectname IN ('Processor Information') 
-			AND  dli.countername IN ( '% User Time')  
-			AND dli.InstanceName NOT LIKE ('%_Total%')
+		--try to find CPU count different possible ways.  if we get zero or null, try another way
+
+		DECLARE @schedCount int = 0
+		IF EXISTS (SELECT 1 FROM sys.Tables WHERE NAME = N'tbl_ServerProperties')
+		--#1 try 
+		BEGIN
+			--make sure there is only 1 distinct row (this process might get more than 1 server...probably FCI situtation when it does)
+			DECLARE @cpuRows int = 0;
+			--unless there is more than 1 row
+			SELECT DISTINCT @cpuRows = COUNT(PropertyValue)
+			FROM [tbl_ServerProperties] WHERE PropertyName in ('cpu_count')
+			IF (@cpuRows = 1) --then we are OK to use the number
+			BEGIN
+				SELECT DISTINCT @cpuCount = PropertyValue
+				FROM [tbl_ServerProperties] WHERE PropertyName in ('cpu_count')
+				SELECT DISTINCT @schedCount = PropertyValue
+				FROM [tbl_ServerProperties] WHERE PropertyName in ('number of visible schedulers')
+			END
+		END -- END #1
+		-- #2 try
+		IF @cpuCount = 0 OR @cpuCount is null
+		-- still didnt get CPUs, try again
+		BEGIN
+			--consider doing this now 
+			IF (OBJECT_ID ('counterdetails') IS NOT NULL)
+			BEGIN
+				IF 0 = (SELECT COUNT(*)
+					FROM sys.indexes 
+					WHERE object_id = OBJECT_ID('dbo.counterdetails')
+					AND name='procCount_idx')
+				BEGIN
+					CREATE INDEX procCount_idx on counterdetails (objectname)
+					INCLUDE (countername, instancename)
+					WHERE objectname in ('Processor Information')
+					AND countername in ( '% User Time')
+				END
+				--as long as table existed, and we either created index or it is already there, try to get CPUs
+				SELECT @cpuCount = count (DISTINCT InstanceName)
+				FROM counterdata dat INNER JOIN counterdetails dli on dat.counterid = dli.counterid
+				WHERE dli.objectname in ('Processor Information')
+					AND dli.countername in ( '% User Time')
+					AND dli.InstanceName not like ('%_Total%')
+			END
+		END  --END #2
+		-- #3 TRY  ******
+		IF @cpuCount = 0 OR @cpuCount is null
+		-- still didnt get CPUs, try again
+		BEGIN
+			SELECT @cpuCount = cast(max(countervalue)/100 as int)
+			  FROM [dbo].[CounterData] cdat JOIN [dbo].[CounterDetails] cdet ON cdat.CounterID = cdet.CounterID
+			  WHERE ObjectName='Process' 
+				  AND CounterName='% Processor Time' 
+				  AND InstanceName = '_Total' and countervalue !=0
+		END --END #3
+
+		--did we get any count > 0...if CPU is zero, need to RETURN or break out of report and not run it as our divisor wont work correctly
 		
-		if ((isnumeric(@cpuCount) = 0) or (@cpuCount < 1))
-		begin
-			set @cpuCount = 1
-		end
+		IF (@cpuCount = 0 OR @cpuCount is null)
+			RETURN
 
 		--set threshold at 80% of total CPU capacity
 		set @CPU_threshold = 80 * @cpuCount
