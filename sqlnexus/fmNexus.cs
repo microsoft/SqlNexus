@@ -287,7 +287,7 @@ namespace sqlnexus
 
         private void UpdateTitle()
         {
-            this.Text = sqlnexus.Properties.Resources.Msg_Nexus + " - " + CurrentReport.DisplayName;
+            this.Text = sqlnexus.Properties.Resources.Msg_Nexus + " " + Application.ProductVersion.ToString() + " - " + CurrentReport.DisplayName;
         }
 
         public void StartStopSpinner(bool start, Spinner spinner)
