@@ -1,0 +1,2432 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+
+<TextImport>
+  <KnownRowsets>
+
+    <Rowset name="tbl_IMPORTEDFILES" enabled="true" identifier="-- Script Source --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="script_name" type="RowsetImportEngine.VarCharColumn" length="80" definetoken="SCRIPTNAME" />
+        <Column name="revision" type="RowsetImportEngine.VarCharColumn" length="40" definetoken="REVISION" />
+        <Column name="imported_by" type="RowsetImportEngine.VarCharColumn" length="80" valuetoken="USERNAME" />
+        <Column name="imported_date" type="RowsetImportEngine.VarCharColumn" length="32" valuetoken="IMPORTDATE" />
+        <Column name="input_file_name" type="RowsetImportEngine.VarCharColumn" length="512" valuetoken="INPUTFILENAME" />
+      </KnownColumns>
+    </Rowset>
+
+    <Rowset name="tbl_SCRIPT_ENVIRONMENT_DETAILS" enabled="true" identifier="-- Script and Environment Details --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="script_name" type="RowsetImportEngine.VarCharColumn" length="80" valuetoken="SCRIPTNAME" />
+        <Column name="Name" type="RowsetImportEngine.VarCharColumn" length="60"  />
+        <Column name="Value" type="RowsetImportEngine.NVarCharColumn" length="256"  />
+      </KnownColumns>
+    </Rowset>
+
+    <Rowset name="tbl_SYSPERFINFO" enabled="true" identifier="-- sysperfinfo" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="object_name" type="RowsetImportEngine.VarCharColumn" />
+        <Column name="counter_name" type="RowsetImportEngine.VarCharColumn" />
+        <Column name="instance_name" type="RowsetImportEngine.VarCharColumn" />
+        <Column name="cntr_value" type="RowsetImportEngine.BigIntColumn" />
+      </KnownColumns>
+    </Rowset>
+
+    <Rowset name="tbl_SYSPERFINFO" enabled="true" identifier="-- sysperfinfo" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="object_name" type="RowsetImportEngine.VarCharColumn" />
+        <Column name="counter_name" type="RowsetImportEngine.VarCharColumn" />
+        <Column name="instance_name" type="RowsetImportEngine.VarCharColumn" />
+        <Column name="cntr_value" type="RowsetImportEngine.BigIntColumn" />
+      </KnownColumns>
+    </Rowset>
+
+    <Rowset name="tbl_SQL_CPU_HEALTH" enabled="true" identifier="-- Recent SQL Processor Utilization (Health Records) --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="record_id" type="RowsetImportEngine.IntColumn" />
+        <Column name="EventTime" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="system_idle_cpu" type="RowsetImportEngine.IntColumn" />
+        <Column name="sql_cpu_utilization" type="RowsetImportEngine.IntColumn" />
+      </KnownColumns>
+    </Rowset>
+
+
+    <Rowset name="tbl_RUNTIMES" enabled="true" identifier="Start time:" type="RowsetImportEngine.SimpleMessageRowset">
+      <KnownColumns>
+        <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" length="24" definetoken="RUNTIME" />
+        <Column name="source_script" type="RowsetImportEngine.VarCharColumn" length="80" valuetoken="SCRIPTNAME" />
+      </KnownColumns>
+    </Rowset>
+
+    <Rowset name="tbl_DEBUGPRINT" enabled="true" identifier="DebugPrint:" type="RowsetImportEngine.SimpleMessageRowset">
+      <KnownColumns>
+        <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+        <Column name="runtime" type="RowsetImportEngine.VarCharColumn" length="24" valuetoken="RUNTIME"/>
+        <Column name="source_script" type="RowsetImportEngine.VarCharColumn" length="80" valuetoken="SCRIPTNAME" />
+        <Column name="debug_message" type="RowsetImportEngine.VarCharColumn" length="4000" />
+      </KnownColumns>
+    </Rowset>
+
+    <Rowset name="tbl_WAITSTATS" enabled="true" identifier="DBCC SQLPERF(WAITSTATS)" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" valuetoken="RUNTIME" />
+        <Column name="Requests" type="RowsetImportEngine.FloatColumn" />
+        <Column name="Wait Time" type="RowsetImportEngine.FloatColumn" />
+        <Column name="Signal Wait Time" type="RowsetImportEngine.FloatColumn" />
+      </KnownColumns>
+    </Rowset>
+
+    <Rowset name="tbl_SYSPROCESSES" enabled="true" identifier="SYSPROCESSES" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" valuetoken="RUNTIME" />
+        <Column name="spid" type="RowsetImportEngine.IntColumn" />
+        <Column name="blocked" type="RowsetImportEngine.IntColumn" />
+        <Column name="open_tran" type="RowsetImportEngine.IntColumn" />
+        <Column name="program_name" type="RowsetImportEngine.NVarCharColumn" />
+        <Column name="waittime" type="RowsetImportEngine.IntColumn" />
+        <Column name="waittype" type="RowsetImportEngine.VarBinaryColumn" />
+        <Column name="cpu" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="physical_io" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="memusage" type="RowsetImportEngine.IntColumn" />
+        <Column name="dbid" type="RowsetImportEngine.IntColumn" />
+        <Column name="ecid" type="RowsetImportEngine.IntColumn" />
+        <Column name="kpid" type="RowsetImportEngine.IntColumn" />
+      </KnownColumns>
+    </Rowset>
+
+    <Rowset name="tbl_INPUTBUFFERS" enabled="true" identifier="DBCC INPUTBUFFER FOR SPID" type="RowsetImportEngine.InputbuffersRowset">
+      <KnownColumns>
+        <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" valuetoken="RUNTIME" />
+        <Column name="spid" type="RowsetImportEngine.IntColumn" rowsetlevel="true" />
+        <Column name="EventType" type="RowsetImportEngine.VarCharColumn" length="20" />
+        <Column name="Parameters" type="RowsetImportEngine.IntColumn" />
+        <Column name="EventInfo" type="RowsetImportEngine.VarCharColumn" length="4000" />
+      </KnownColumns>
+    </Rowset>
+
+    <Rowset name="tbl_DBCC_OPENTRAN_RAW" enabled="true" identifier="DBCC OPENTRAN FOR" type="RowsetImportEngine.DbccOpentranRowset">
+      <KnownColumns>
+        <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" valuetoken="RUNTIME" />
+        <Column name="dbid" type="RowsetImportEngine.BigIntColumn" rowsetlevel="true" />
+        <Column name="TranInfo" type="RowsetImportEngine.NVarCharColumn" length="2000" />
+      </KnownColumns>
+    </Rowset>
+
+    <Rowset name="tbl_SYSLOCKINFO" enabled="false" identifier="SYSLOCKINFO" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" valuetoken="RUNTIME" />
+        <Column name="spid" type="RowsetImportEngine.IntColumn" />
+        <Column name="ecid" type="RowsetImportEngine.IntColumn" />
+        <Column name="dbid" type="RowsetImportEngine.IntColumn" />
+        <Column name="ObjId" type="RowsetImportEngine.IntColumn" />
+        <Column name="IndId" type="RowsetImportEngine.IntColumn" />
+        <Column name="TransID" type="RowsetImportEngine.BigIntColumn" />
+      </KnownColumns>
+    </Rowset>
+
+    <Rowset name="tbl_UMSSTATS" enabled="true" identifier="Statistic                        Value" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" valuetoken="RUNTIME" />
+      </KnownColumns>
+    </Rowset>
+
+    <Rowset name="tbl_SPINLOCKSTATS2" enabled="true" identifier="--  dm_os_spinlock_stats(NOTexist) --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" valuetoken="RUNTIME" />
+        <Column name="collisions" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="spins" type="RowsetImportEngine.BigIntColumn"  />
+        <Column name="spins_per_collision" type="RowsetImportEngine.BigIntColumn"  />
+        <Column name="sleep_time" type="RowsetImportEngine.BigIntColumn"  />
+        <Column name="backoffs" type="RowsetImportEngine.BigIntColumn"  />
+        <Column name="name" type="RowsetImportEngine.VarCharColumn"  />
+      
+      </KnownColumns>
+    </Rowset>
+
+   
+    
+    
+    <Rowset name="tbl_SPINLOCKSTATS" enabled="true" identifier="--  dm_os_spinlock_stats --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="collisions" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="spins" type="RowsetImportEngine.BigIntColumn"  />
+        <Column name="spins_per_collision" type="RowsetImportEngine.BigIntColumn"  />
+        <Column name="sleep_time" type="RowsetImportEngine.BigIntColumn"  />
+        <Column name="backoffs" type="RowsetImportEngine.BigIntColumn"  />
+        <Column name="name" type="RowsetImportEngine.VarCharColumn"  />
+      
+      </KnownColumns>
+    </Rowset>
+        
+      
+    
+    <Rowset name="tbl_MEMORYSTATUS_BUF_DISTRIBUTION" enabled="true" identifier="Buffer Distribution" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" valuetoken="RUNTIME" />
+        <Column name="Buffers" type="RowsetImportEngine.IntColumn" />
+      </KnownColumns>
+    </Rowset>
+    <Rowset name="tbl_MEMORYSTATUS_BUF_COUNTS" enabled="true" identifier="Buffer Counts" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" valuetoken="RUNTIME" />
+        <Column name="Buffers" type="RowsetImportEngine.IntColumn" />
+      </KnownColumns>
+    </Rowset>
+    <Rowset name="tbl_MEMORYSTATUS_PROC_CACHE" enabled="true" identifier="Procedure Cache" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" valuetoken="RUNTIME" />
+        <Column name="Value" type="RowsetImportEngine.IntColumn" />
+      </KnownColumns>
+    </Rowset>
+    <Rowset name="tbl_MEMORYSTATUS_DYNAMIC_MEM_MGR" enabled="true" identifier="Dynamic Memory Manager" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" valuetoken="RUNTIME" />
+        <Column name="Buffers" type="RowsetImportEngine.IntColumn" />
+      </KnownColumns>
+    </Rowset>
+    <Rowset name="tbl_MEMORYSTATUS_GLOBAL_MEM_OBJ" enabled="true" identifier="Global Memory Objects" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" valuetoken="RUNTIME" />
+        <Column name="Buffers" type="RowsetImportEngine.IntColumn" />
+      </KnownColumns>
+    </Rowset>
+    <Rowset name="tbl_MEMORYSTATUS_QUERY_MEM_OBJ" enabled="true" identifier="Query Memory Objects" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" valuetoken="RUNTIME" />
+        <Column name="Value" type="RowsetImportEngine.IntColumn" />
+      </KnownColumns>
+    </Rowset>
+    <Rowset name="tbl_MEMORYSTATUS_OPTIMIZATION_QUEUE" enabled="true" identifier="Optimization Queue" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" valuetoken="RUNTIME" />
+        <Column name="Value" type="RowsetImportEngine.IntColumn" />
+      </KnownColumns>
+    </Rowset>
+
+    <Rowset name="tbl_ERRORLOGS_RAW" enabled="true" identifier="--make it invalid ContinuationRow" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+      </KnownColumns>
+    </Rowset>
+
+    <Rowset name="tbl_SPCONFIGURE" enabled="true" identifier="sp_configure" type="RowsetImportEngine.TextRowset">
+    </Rowset>
+
+    
+
+    <Rowset name="tbl_loaded_modules" enabled="true" identifier="-> sys.dm_os_loaded_modules" type="RowsetImportEngine.TextRowset">
+      <Column name="base_address" type="RowsetImportEngine.VarBinaryColumn" />
+	    <Column name="debug" type="RowsetImportEngine.IntColumn" />
+	    <Column name="patched"  type="RowsetImportEngine.IntColumn" />
+	    <Column name="prerelease"  type="RowsetImportEngine.IntColumn" />
+	    <Column name="private_build"  type="RowsetImportEngine.IntColumn" />
+	    <Column name="special_build"  type="RowsetImportEngine.IntColumn" />
+	    <Column name="language"  type="RowsetImportEngine.BigIntColumn" />
+    </Rowset>
+
+    
+   <Rowset name="tbl_dm_os_loaded_modules_non_microsoft" enabled="true" identifier="-- sys.dm_os_loaded_modules (non-Microsoft)" type="RowsetImportEngine.TextRowset">
+      <Column name="runtime" type="RowsetImportEngine.DateTimeColumn"/>
+      <Column name="base_address" type="RowsetImportEngine.VarBinaryColumn" />
+     <Column name="file_version" type="RowsetImportEngine.VarCharColumn" />
+     <Column name="product_version" type="RowsetImportEngine.VarCharColumn" />
+     <Column name="debug" type="RowsetImportEngine.IntColumn" />
+	    <Column name="patched"  type="RowsetImportEngine.IntColumn" />
+	    <Column name="prerelease"  type="RowsetImportEngine.IntColumn" />
+	    <Column name="private_build"  type="RowsetImportEngine.IntColumn" />
+	    <Column name="special_build"  type="RowsetImportEngine.IntColumn" />
+	    <Column name="language"  type="RowsetImportEngine.BigIntColumn" />
+      <Column name="company" type="RowsetImportEngine.VarCharColumn" />
+      <Column name="name" type="RowsetImportEngine.VarCharColumn" />
+   </Rowset>
+
+    <Rowset name="tbl_dm_os_loaded_modules" enabled="true" identifier="-- sys.dm_os_loaded_modules --" type="RowsetImportEngine.TextRowset">
+      <Column name="runtime" type="RowsetImportEngine.DateTimeColumn"/>
+      <Column name="base_address" type="RowsetImportEngine.VarBinaryColumn" />
+      <Column name="file_version" type="RowsetImportEngine.VarCharColumn" />
+      <Column name="product_version" type="RowsetImportEngine.VarCharColumn" />
+      <Column name="debug" type="RowsetImportEngine.IntColumn" />
+      <Column name="patched"  type="RowsetImportEngine.IntColumn" />
+      <Column name="prerelease"  type="RowsetImportEngine.IntColumn" />
+      <Column name="private_build"  type="RowsetImportEngine.IntColumn" />
+      <Column name="special_build"  type="RowsetImportEngine.IntColumn" />
+      <Column name="language"  type="RowsetImportEngine.BigIntColumn" />
+      <Column name="company" type="RowsetImportEngine.VarCharColumn" />
+      <Column name="description" type="RowsetImportEngine.VarCharColumn" />
+      <Column name="name" type="RowsetImportEngine.VarCharColumn" />
+    </Rowset>
+
+
+
+    <Rowset name="tbl_Query_Execution_Memory" enabled="true" identifier="-- query execution memory --" type="RowsetImportEngine.TextRowset">
+      <Column name="runtime" type="RowsetImportEngine.DateTimeColumn"/>
+      <Column name="session_id" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="blocking_session_id" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="cpu_time" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="total_elapsed_time" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="reads" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="writes" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="logical_reads" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="row_count" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="wait_time" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="wait_type" type="RowsetImportEngine.NVarCharColumn"  length="64"  />
+      <Column name="command" type="RowsetImportEngine.NVarCharColumn"  length="64"  />
+      <Column name="text" type="RowsetImportEngine.NVarCharColumn"  length="2000"  />
+      <Column name="login_time" type="RowsetImportEngine.DateTimeColumn"/>
+      <Column name="name" type="RowsetImportEngine.NVarCharColumn"  length="128"  />
+      <Column name="login_name" type="RowsetImportEngine.NVarCharColumn"  length="128"  />
+      <Column name="host_name" type="RowsetImportEngine.NVarCharColumn"  length="128"  />
+      <Column name="nt_domain" type="RowsetImportEngine.NVarCharColumn"  length="128"  />
+      <Column name="nt_user_name" type="RowsetImportEngine.NVarCharColumn"  length="128"  />
+      <Column name="status"   type="RowsetImportEngine.VarCharColumn" length="30" />
+      <Column name="client_net_address"   type="RowsetImportEngine.VarCharColumn" length="30" />
+      <Column name="program_name" type="RowsetImportEngine.NVarCharColumn"  length="128"  />
+      <Column name="client_interface_name"   type="RowsetImportEngine.VarCharColumn" length="32" />
+      <Column name="last_request_start_time" type="RowsetImportEngine.DateTimeColumn"/>
+      <Column name="last_request_end_time" type="RowsetImportEngine.DateTimeColumn"/>
+      <Column name="connect_time" type="RowsetImportEngine.DateTimeColumn"/>
+      <Column name="last_read" type="RowsetImportEngine.DateTimeColumn"/>
+      <Column name="last_write" type="RowsetImportEngine.DateTimeColumn"/>
+      <Column name="dop"  type="RowsetImportEngine.IntColumn" />
+      <Column name="request_time" type="RowsetImportEngine.DateTimeColumn"/>
+      <Column name="grant_time" type="RowsetImportEngine.DateTimeColumn"/>
+      <Column name="requested_memory_mb" type="RowsetImportEngine.FloatColumn" />
+      <Column name="granted_memory_mb" type="RowsetImportEngine.FloatColumn" />
+      <Column name="required_memory_mb" type="RowsetImportEngine.FloatColumn" />
+      <Column name="max_used_memory_mb" type="RowsetImportEngine.FloatColumn" />
+      <Column name="query_cost" type="RowsetImportEngine.FloatColumn" />
+      <Column name="timeout_sec"  type="RowsetImportEngine.IntColumn" />
+      <Column name="resource_semaphore_id"  type="RowsetImportEngine.IntColumn" />
+      <Column name="wait_time_ms" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="Next Candidate for Memory Grant" type="RowsetImportEngine.NVarCharColumn"  length="2000"  />
+      <Column name="server_target_memory_mb"  type="RowsetImportEngine.IntColumn" />
+      <Column name="server_max_target_memory_mb"  type="RowsetImportEngine.IntColumn" />
+      <Column name="server_total_memory_mb"  type="RowsetImportEngine.IntColumn" />
+      <Column name="server_available_memory_mb"  type="RowsetImportEngine.IntColumn" />
+      <Column name="server_granted_memory_mb"  type="RowsetImportEngine.IntColumn" />
+      <Column name="server_used_memory_mb"  type="RowsetImportEngine.IntColumn" />
+      <Column name="grantee_count"  type="RowsetImportEngine.IntColumn" />
+      <Column name="waiter_count"  type="RowsetImportEngine.IntColumn" />
+      <Column name="timeout_error_count"  type="RowsetImportEngine.IntColumn" />
+      <Column name="forced_grant_count"  type="RowsetImportEngine.IntColumn" />
+    </Rowset>
+
+
+    <Rowset name="tbl_Query_Execution_Memory_MemScript" enabled="true" identifier="-- query execution memory mem_script--" type="RowsetImportEngine.TextRowset">
+      <Column name="runtime" type="RowsetImportEngine.DateTimeColumn"/>
+      <Column name="session_id" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="blocking_session_id" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="cpu_time" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="total_elapsed_time" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="reads" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="writes" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="logical_reads" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="row_count" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="wait_time" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="wait_type" type="RowsetImportEngine.NVarCharColumn"  length="64"  />
+      <Column name="command" type="RowsetImportEngine.NVarCharColumn"  length="64"  />
+      <Column name="text" type="RowsetImportEngine.NVarCharColumn"  length="2000"  />
+      <Column name="login_time" type="RowsetImportEngine.DateTimeColumn"/>
+      <Column name="name" type="RowsetImportEngine.NVarCharColumn"  length="128"  />
+      <Column name="login_name" type="RowsetImportEngine.NVarCharColumn"  length="128"  />
+      <Column name="host_name" type="RowsetImportEngine.NVarCharColumn"  length="128"  />
+      <Column name="nt_domain" type="RowsetImportEngine.NVarCharColumn"  length="128"  />
+      <Column name="nt_user_name" type="RowsetImportEngine.NVarCharColumn"  length="128"  />
+      <Column name="status"   type="RowsetImportEngine.VarCharColumn" length="30" />
+      <Column name="client_net_address"   type="RowsetImportEngine.VarCharColumn" length="30" />
+      <Column name="program_name" type="RowsetImportEngine.NVarCharColumn"  length="128"  />
+      <Column name="client_interface_name"   type="RowsetImportEngine.VarCharColumn" length="32" />
+      <Column name="last_request_start_time" type="RowsetImportEngine.DateTimeColumn"/>
+      <Column name="last_request_end_time" type="RowsetImportEngine.DateTimeColumn"/>
+      <Column name="connect_time" type="RowsetImportEngine.DateTimeColumn"/>
+      <Column name="last_read" type="RowsetImportEngine.DateTimeColumn"/>
+      <Column name="last_write" type="RowsetImportEngine.DateTimeColumn"/>
+      <Column name="dop"  type="RowsetImportEngine.IntColumn" />
+      <Column name="request_time" type="RowsetImportEngine.DateTimeColumn"/>
+      <Column name="grant_time" type="RowsetImportEngine.DateTimeColumn"/>
+      <Column name="requested_memory_mb" type="RowsetImportEngine.FloatColumn" />
+      <Column name="granted_memory_mb" type="RowsetImportEngine.FloatColumn" />
+      <Column name="required_memory_mb" type="RowsetImportEngine.FloatColumn" />
+      <Column name="max_used_memory_mb" type="RowsetImportEngine.FloatColumn" />
+      <Column name="query_cost" type="RowsetImportEngine.FloatColumn" />
+      <Column name="timeout_sec"  type="RowsetImportEngine.IntColumn" />
+      <Column name="resource_semaphore_id"  type="RowsetImportEngine.IntColumn" />
+      <Column name="wait_time_ms" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="Next Candidate for Memory Grant" type="RowsetImportEngine.NVarCharColumn"  length="2000"  />
+      <Column name="server_target_memory_mb"  type="RowsetImportEngine.IntColumn" />
+      <Column name="server_max_target_memory_mb"  type="RowsetImportEngine.IntColumn" />
+      <Column name="server_total_memory_mb"  type="RowsetImportEngine.IntColumn" />
+      <Column name="server_available_memory_mb"  type="RowsetImportEngine.IntColumn" />
+      <Column name="server_granted_memory_mb"  type="RowsetImportEngine.IntColumn" />
+      <Column name="server_used_memory_mb"  type="RowsetImportEngine.IntColumn" />
+      <Column name="grantee_count"  type="RowsetImportEngine.IntColumn" />
+      <Column name="waiter_count"  type="RowsetImportEngine.IntColumn" />
+      <Column name="timeout_error_count"  type="RowsetImportEngine.IntColumn" />
+      <Column name="forced_grant_count"  type="RowsetImportEngine.IntColumn" />
+      <Column name="Object_Name"   type="RowsetImportEngine.VarCharColumn" length="128" />
+    </Rowset>
+    
+    
+    <Rowset name="tbl_dm_os_ring_buffers_mem" enabled="true" identifier="-- sys.dm_os_ring_buffers (RING_BUFFER_RESOURCE_MONITOR and RING_BUFFER_MEMORY_BROKER)" type="RowsetImportEngine.TextRowset">
+      <Column name="runtime" type="RowsetImportEngine.DateTimeColumn"/>
+      <Column name="record_time" type="RowsetImportEngine.DateTimeColumn"/>
+      <Column name="record_timestamp" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="cur_timestamp" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="ring_buffer_address" type="RowsetImportEngine.VarBinaryColumn" />
+      <Column name="ring_buffer_type"   type="RowsetImportEngine.VarCharColumn" length="64" />
+      <Column name="timestamp" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="record" type="RowsetImportEngine.VarCharColumn" length="-1" />
+    </Rowset>
+
+
+    <Rowset name="tbl_dm_os_memory_objects" enabled="true" identifier="-- sys.dm_os_memory_objects (total memory by type, >1MB)" type="RowsetImportEngine.TextRowset">
+      <Column name="runtime" type="RowsetImportEngine.DateTimeColumn"/>
+      <Column name="total_bytes_used" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="type"   type="RowsetImportEngine.VarCharColumn" length="64" />
+    </Rowset>
+
+    <Rowset name="tbl_dm_os_memory_pools" enabled="true" identifier="-- dm_os_memory_pools" type="RowsetImportEngine.TextRowset">
+      <Column name="runtime" type="RowsetImportEngine.DateTimeColumn"/>
+      <Column name="memory_pool_address" type="RowsetImportEngine.VarBinaryColumn" />
+      <Column name="pool_id" type="RowsetImportEngine.IntColumn" />
+      <Column name="type"   type="RowsetImportEngine.VarCharColumn" length="64" />
+      <Column name="name" type="RowsetImportEngine.VarCharColumn" length="256" />
+      <Column name="max_free_entries_count" type="RowsetImportEngine.IntColumn" />
+      <Column name="free_entries_count" type="RowsetImportEngine.IntColumn" />
+      <Column name="removed_in_all_rounds_count" type="RowsetImportEngine.IntColumn" />
+    </Rowset>
+
+    <Rowset name="tbl_sysaltfiles" enabled="true" identifier="--> sysaltfiles" type="RowsetImportEngine.TextRowset">
+    </Rowset>
+
+    <Rowset name="tbl_StartupParameters" enabled="true" identifier="--Startup Parameters--" type="RowsetImportEngine.TextRowset">
+      <Column name="ArgsName" type="RowsetImportEngine.NVarCharColumn" length="32" />
+      <Column name="ArgsValue" type="RowsetImportEngine.NVarCharColumn" length="256"  />
+
+    </Rowset>
+
+
+    <Rowset name="tbl_SPHELPDB" enabled="true" identifier="sp_helpdb" type="RowsetImportEngine.TextRowset">
+    </Rowset>
+
+    <Rowset name="tbl_XPMSVER" enabled="true" identifier="xp_msver" type="RowsetImportEngine.TextRowset">
+      <Column name="Index" type="RowsetImportEngine.IntColumn" />
+      <Column name="Internal_Value" type="RowsetImportEngine.BigIntColumn" />
+    </Rowset>
+
+    
+    <Rowset name="tbl_REQUESTS" enabled="true" identifier="-- requests" type="RowsetImportEngine.TextRowset">
+      <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+      <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+      <Column name="session_id" type="RowsetImportEngine.IntColumn" />
+      <Column name="ecid" type="RowsetImportEngine.IntColumn" />
+      <Column name="blocking_session_id" type="RowsetImportEngine.IntColumn" />
+      <Column name="blocking_ecid" type="RowsetImportEngine.IntColumn" />
+      <Column name="wait_duration_ms" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="open_trans" type="RowsetImportEngine.IntColumn" />
+      <Column name="is_user_process" type="RowsetImportEngine.IntColumn" />
+      <Column name="request_cpu_time" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="request_logical_reads" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="request_reads" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="request_writes" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="memory_usage" type="RowsetImportEngine.IntColumn" />
+      <Column name="session_cpu_time" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="session_reads" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="session_writes" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="session_logical_reads" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="total_scheduled_time" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="last_request_start_time" type="RowsetImportEngine.DateTimeColumn" />
+      <Column name="last_request_end_time" type="RowsetImportEngine.DateTimeColumn" />
+      <Column name="session_row_count" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="prev_error" type="RowsetImportEngine.IntColumn" />
+      <Column name="open_resultsets" type="RowsetImportEngine.IntColumn" />
+      <Column name="request_total_elapsed_time" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="percent_complete" type="RowsetImportEngine.IntColumn" />
+      <Column name="estimated_completion_time" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="transaction_begin_time" type="RowsetImportEngine.DateTimeColumn" />
+      <Column name="request_start_time" type="RowsetImportEngine.DateTimeColumn" />
+      <Column name="statement_start_offset" type="RowsetImportEngine.IntColumn" />
+      <Column name="statement_end_offset" type="RowsetImportEngine.IntColumn" />
+      <Column name="database_id" type="RowsetImportEngine.IntColumn" />
+      <Column name="user_id" type="RowsetImportEngine.IntColumn" />
+      <Column name="executing_managed_code" type="RowsetImportEngine.IntColumn" />
+      <Column name="pending_io_count" type="RowsetImportEngine.IntColumn" />
+      <Column name="login_time" type="RowsetImportEngine.DateTimeColumn" />
+      <Column name="host_process_id" type="RowsetImportEngine.IntColumn" />
+      <Column name="net_packet_size" type="RowsetImportEngine.IntColumn" />
+      <Column name="scheduler_id" type="RowsetImportEngine.IntColumn" />
+      <Column name="is_preemptive" type="RowsetImportEngine.IntColumn" />
+      <Column name="is_sick" type="RowsetImportEngine.IntColumn" />
+      <Column name="last_worker_exception" type="RowsetImportEngine.IntColumn" />
+      <Column name="last_exception_address" type="RowsetImportEngine.VarBinaryColumn" />
+      <Column name="os_thread_id" type="RowsetImportEngine.IntColumn" />
+      <Column name="total_elapsed_time" type="RowsetImportEngine.BigIntColumn" />
+	    <Column name="last_request_start_time" type="RowsetImportEngine.DateTimeColumn" />
+	    <Column name="last_request_end_time" type="RowsetImportEngine.DateTimeColumn" />
+	    <Column name="est_completion_time" type="RowsetImportEngine.BigIntColumn" />
+	    <Column name="group_id" type="RowsetImportEngine.IntColumn" />
+	    <Column name="query_hash" type="RowsetImportEngine.VarBinaryColumn" />
+	    <Column name="query_plan_hash" type="RowsetImportEngine.VarBinaryColumn" />
+	    <Column name="plan_handle" type="RowsetImportEngine.VarBinaryColumn" />
+    </Rowset>
+
+    <Rowset name="tbl_NOTABLEACTIVEQUERIES" enabled="true" identifier="-- notableactivequeries" type="RowsetImportEngine.TextRowset">
+      <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+      <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+      <Column name="session_id" type="RowsetImportEngine.IntColumn" />
+      <Column name="ecid" type="RowsetImportEngine.IntColumn" />
+      <Column name="plan_total_exec_count" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="plan_total_cpu_ms" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="plan_total_duration_ms" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="plan_total_physical_reads" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="plan_total_logical_writes" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="plan_total_logical_reads" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="objectid" type="RowsetImportEngine.IntColumn" />
+    
+     	<Column name="plan_handle" type="RowsetImportEngine.VarBinaryColumn" />
+	    <Column name="group_id" type="RowsetImportEngine.IntColumn" />
+	    <Column name="statement_start_offset"  type="RowsetImportEngine.IntColumn" />
+	    <Column name="statement_end_offset" type="RowsetImportEngine.IntColumn" />
+	    <Column name="plan_generation_num"  type="RowsetImportEngine.BigIntColumn" />
+	    <Column name="creation_time" type="RowsetImportEngine.DateTimeColumn" />
+
+    
+    </Rowset>
+
+    <Rowset name="tbl_HEADBLOCKERSUMMARY" enabled="true" identifier="-- headblockersummary --" type="RowsetImportEngine.TextRowset">
+      <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+      <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+      <Column name="head_blocker_session_id" type="RowsetImportEngine.IntColumn" />
+      <Column name="blocked_task_count" type="RowsetImportEngine.IntColumn" />
+      <Column name="tot_wait_duration_ms" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="blocking_resource_wait_type" type="RowsetImportEngine.VarCharColumn" length="40"/>
+      <Column name="avg_wait_duration_ms" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="max_wait_duration_ms" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="max_blocking_chain_depth" type="RowsetImportEngine.IntColumn" />
+      <Column name="head_blocker_proc_name" type="RowsetImportEngine.VarCharColumn" length="64"/>
+      <Column name="head_blocker_proc_objid" type="RowsetImportEngine.IntColumn" />
+      <Column name="stmt_text" type="RowsetImportEngine.VarCharColumn" length="1024"/>
+	    <Column name="head_blocker_plan_handle" type="RowsetImportEngine.VarBinaryColumn" />
+    </Rowset>
+
+    <Rowset name="tbl_OS_WAIT_STATS" enabled="true" identifier="-- dm_os_wait_stats" type="RowsetImportEngine.TextRowset">
+      <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+      <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+      <Column name="waiting_tasks_count" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="wait_time_ms" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="max_wait_time_ms" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="signal_wait_time_ms" type="RowsetImportEngine.BigIntColumn" />
+    </Rowset>
+
+    <Rowset name="tbl_SYSOBJECTS" enabled="true" identifier="-- .dbo.sysobjects" type="RowsetImportEngine.TextRowset">
+      <Column name="dbid" type="RowsetImportEngine.IntColumn" />
+      <Column name="id" type="RowsetImportEngine.IntColumn" />
+      <Column name="type" type="RowsetImportEngine.VarCharColumn" />
+      <Column name="name" type="RowsetImportEngine.NVarCharColumn" />
+      <Column name="xtype" type="RowsetImportEngine.VarCharColumn" />
+      <Column name="uid" type="RowsetImportEngine.IntColumn" />
+      <Column name="status" type="RowsetImportEngine.IntColumn" />
+    </Rowset>
+
+
+    <Rowset name="tbl_RDTSCTEST" enabled="true" identifier="-- Current CPU Speeds --" type="RowsetImportEngine.TextRowset">
+      <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+      <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+      <Column name="CPU" type="RowsetImportEngine.IntColumn" />
+      <Column name="ExpectedMHz" type="RowsetImportEngine.IntColumn" />
+      <Column name="ActualMHz" type="RowsetImportEngine.IntColumn" />
+      <Column name="RDSCTicks" type="RowsetImportEngine.VarBinaryColumn" />
+      <Column name="DriftMS" type="RowsetImportEngine.DecimalColumn" />
+    </Rowset>
+
+    <Rowset name="tbl_DM_OS_MEMORY_CLERKS" enabled="true" identifier="-- sys.dm_os_memory_clerks_old_not_use" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="memory_clerk_address"       type="RowsetImportEngine.VarCharColumn" />
+        <Column name="type"    type="RowsetImportEngine.VarCharColumn" />
+        <Column name="name"  type="RowsetImportEngine.VarCharColumn" />
+        <Column name="memory_node_id"   type="RowsetImportEngine.IntColumn" />
+        <Column name="single_pages_kb" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="multi_pages_kb"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="virtual_memory_reserved_kb"     type="RowsetImportEngine.BigIntColumn" />
+        <Column name="virtual_memory_committed_kb"   type="RowsetImportEngine.BigIntColumn" />
+        <Column name="awe_allocated_kb"   type="RowsetImportEngine.BigIntColumn" />
+        <Column name="shared_memory_reserved_kb"   type="RowsetImportEngine.BigIntColumn" />
+        <Column name="shared_memory_committed_kb"   type="RowsetImportEngine.BigIntColumn" />
+        <Column name="page_size_bytes"   type="RowsetImportEngine.IntColumn" />
+        <Column name="page_allocator_address"   type="RowsetImportEngine.VarCharColumn" />
+        <Column name="host_address"   type="RowsetImportEngine.VarCharColumn" />
+      </KnownColumns>
+    </Rowset>
+
+    <Rowset name="tbl_DM_OS_MEMORY_CLERKS" enabled="true" identifier="-- dm_os_memory_clerks" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="memory_clerk_address"       type="RowsetImportEngine.VarCharColumn" />
+        <Column name="type"    type="RowsetImportEngine.VarCharColumn" />
+        <Column name="name"  type="RowsetImportEngine.VarCharColumn" />
+        <Column name="memory_node_id"   type="RowsetImportEngine.IntColumn" />
+        <Column name="pages_kb" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="virtual_memory_reserved_kb"     type="RowsetImportEngine.BigIntColumn" />
+        <Column name="virtual_memory_committed_kb"   type="RowsetImportEngine.BigIntColumn" />
+        <Column name="awe_allocated_kb"   type="RowsetImportEngine.BigIntColumn" />
+        <Column name="shared_memory_reserved_kb"   type="RowsetImportEngine.BigIntColumn" />
+        <Column name="shared_memory_committed_kb"   type="RowsetImportEngine.BigIntColumn" />
+        <Column name="page_size_bytes"   type="RowsetImportEngine.IntColumn" />
+        <Column name="page_allocator_address"   type="RowsetImportEngine.VarCharColumn" />
+        <Column name="host_address"   type="RowsetImportEngine.VarCharColumn" />
+      </KnownColumns>
+    </Rowset>
+
+    <Rowset name="tbl_DM_OS_MEMORY_CACHE_COUNTERS" enabled="true" identifier="-- dm_os_memory_cache_counters" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="cache_address"       type="RowsetImportEngine.VarCharColumn" />
+        <Column name="name"  type="RowsetImportEngine.VarCharColumn" />
+        <Column name="type"    type="RowsetImportEngine.VarCharColumn" />
+        <Column name="single_pages_kb" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="multi_pages_kb"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="single_pages_in_use_kb" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="multi_pages_in_use_kb"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="entries_count"   type="RowsetImportEngine.BigIntColumn" />
+        <Column name="entries_in_use_count"   type="RowsetImportEngine.BigIntColumn" />
+      </KnownColumns>
+    </Rowset>
+
+    <Rowset name="tbl_DM_OS_MEMORY_CACHE_COUNTERS" enabled="true" identifier="-- sys.dm_os_memory_cache_counters" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="cache_address"       type="RowsetImportEngine.VarCharColumn" />
+        <Column name="name"  type="RowsetImportEngine.VarCharColumn" />
+        <Column name="type"    type="RowsetImportEngine.VarCharColumn" />
+        <Column name="single_pages_kb" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="multi_pages_kb"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="single_pages_in_use_kb" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="multi_pages_in_use_kb"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="entries_count"   type="RowsetImportEngine.BigIntColumn" />
+        <Column name="entries_in_use_count"   type="RowsetImportEngine.BigIntColumn" />
+      </KnownColumns>
+    </Rowset>
+
+    <Rowset name="tbl_DM_OS_MEMORY_CACHE_CLOCK_HANDS" enabled="true" identifier="-- dm_os_memory_cache_clock_hands" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="cache_address"       type="RowsetImportEngine.VarCharColumn" />
+        <Column name="name"  type="RowsetImportEngine.VarCharColumn" />
+        <Column name="type"    type="RowsetImportEngine.VarCharColumn" />
+        <Column name="clock_hand"    type="RowsetImportEngine.VarCharColumn" />
+        <Column name="clock_status"    type="RowsetImportEngine.VarCharColumn" />
+        <Column name="rounds_count" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="removed_all_rounds_count"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="updated_last_round_count" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="removed_last_round_count"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="last_tick_time"   type="RowsetImportEngine.BigIntColumn" />
+        <Column name="round_start_time"   type="RowsetImportEngine.BigIntColumn" />
+        <Column name="last_round_start_time"   type="RowsetImportEngine.BigIntColumn" />
+      </KnownColumns>
+    </Rowset>
+
+    <Rowset name="tbl_DM_OS_MEMORY_CACHE_CLOCK_HANDS" enabled="true" identifier="-- sys.dm_os_memory_cache_clock_hands" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="cache_address"       type="RowsetImportEngine.VarCharColumn" />
+        <Column name="name"  type="RowsetImportEngine.VarCharColumn" />
+        <Column name="type"    type="RowsetImportEngine.VarCharColumn" />
+        <Column name="clock_hand"    type="RowsetImportEngine.VarCharColumn" />
+        <Column name="clock_status"    type="RowsetImportEngine.VarCharColumn" />
+        <Column name="rounds_count" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="removed_all_rounds_count"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="updated_last_round_count" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="removed_last_round_count"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="last_tick_time"   type="RowsetImportEngine.BigIntColumn" />
+        <Column name="round_start_time"   type="RowsetImportEngine.BigIntColumn" />
+        <Column name="last_round_start_time"   type="RowsetImportEngine.BigIntColumn" />
+      </KnownColumns>
+    </Rowset>
+
+    <Rowset name="tbl_DM_OS_MEMORY_CACHE_CLOCK_HANDS" enabled="true" identifier="-- sys.dm_os_memory_cache_clock_hands" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="cache_address"       type="RowsetImportEngine.VarCharColumn" />
+        <Column name="name"  type="RowsetImportEngine.VarCharColumn" />
+        <Column name="type"    type="RowsetImportEngine.VarCharColumn" />
+        <Column name="clock_hand"    type="RowsetImportEngine.VarCharColumn" />
+        <Column name="clock_status"    type="RowsetImportEngine.VarCharColumn" />
+        <Column name="rounds_count" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="removed_all_rounds_count"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="updated_last_round_count" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="removed_last_round_count"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="last_tick_time"   type="RowsetImportEngine.BigIntColumn" />
+        <Column name="round_start_time"   type="RowsetImportEngine.BigIntColumn" />
+        <Column name="last_round_start_time"   type="RowsetImportEngine.BigIntColumn" />
+      </KnownColumns>
+    </Rowset>
+
+    <Rowset name="tbl_DM_OS_MEMORY_CACHE_HASH_TABLES" enabled="true" identifier="-- dm_os_memory_cache_hash_tables" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="cache_address"       type="RowsetImportEngine.VarCharColumn" />
+        <Column name="name"  type="RowsetImportEngine.VarCharColumn" />
+        <Column name="type"    type="RowsetImportEngine.VarCharColumn" />
+        <Column name="table_level"    type="RowsetImportEngine.BigIntColumn" />
+        <Column name="buckets_count"    type="RowsetImportEngine.BigIntColumn" />
+        <Column name="buckets_in_use_count" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="buckets_min_length"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="buckets_max_length" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="buckets_avg_length"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="buckets_max_length_ever"   type="RowsetImportEngine.BigIntColumn" />
+        <Column name="hits_count"   type="RowsetImportEngine.BigIntColumn" />
+        <Column name="misses_count"   type="RowsetImportEngine.BigIntColumn" />
+        <Column name="buckets_avg_scan_hit_length"   type="RowsetImportEngine.BigIntColumn" />
+        <Column name="buckets_avg_scan_miss_length"   type="RowsetImportEngine.BigIntColumn" />
+      </KnownColumns>
+    </Rowset>
+
+
+    <Rowset name="tbl_DM_OS_MEMORY_CACHE_HASH_TABLES" enabled="true" identifier="-- sys.dm_os_memory_cache_hash_tables" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="cache_address"       type="RowsetImportEngine.VarCharColumn" />
+        <Column name="name"  type="RowsetImportEngine.VarCharColumn" />
+        <Column name="type"    type="RowsetImportEngine.VarCharColumn" />
+        <Column name="table_level"    type="RowsetImportEngine.BigIntColumn" />
+        <Column name="buckets_count"    type="RowsetImportEngine.BigIntColumn" />
+        <Column name="buckets_in_use_count" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="buckets_min_length"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="buckets_max_length" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="buckets_avg_length"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="buckets_max_length_ever"   type="RowsetImportEngine.BigIntColumn" />
+        <Column name="hits_count"   type="RowsetImportEngine.BigIntColumn" />
+        <Column name="misses_count"   type="RowsetImportEngine.BigIntColumn" />
+        <Column name="buckets_avg_scan_hit_length"   type="RowsetImportEngine.BigIntColumn" />
+        <Column name="buckets_avg_scan_miss_length"   type="RowsetImportEngine.BigIntColumn" />
+      </KnownColumns>
+    </Rowset>
+
+
+    <Rowset name="tblErrorlog" enabled="true" identifier="-- ERRORLOG ROWSET" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="rownum" type="RowsetImportEngine.BigIntColumn"  valuetoken="ROWNUMBER" />
+        <Column name="C" type="RowsetImportEngine.IntColumn" />
+        <Column name="LogDate" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="ProcessInfo"       type="RowsetImportEngine.VarCharColumn" />
+        <Column name="Text"  type="RowsetImportEngine.VarCharColumn" />
+      </KnownColumns>
+    </Rowset>
+
+    <Rowset name="tbl_FileStats" enabled="true" identifier="-- File Stats (full)" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="rownum" type="RowsetImportEngine.BigIntColumn"  valuetoken="ROWNUMBER" />
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="database"       type="RowsetImportEngine.VarCharColumn" />
+        <Column name="file"       type="RowsetImportEngine.VarCharColumn" />
+        <Column name="DbId"    type="RowsetImportEngine.IntColumn" />
+        <Column name="FileId"    type="RowsetImportEngine.IntColumn" />
+        <Column name="AvgIOTimeMS"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="TimeStamp"    type="RowsetImportEngine.IntColumn" />
+        <Column name="NumberReads"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="BytesRead"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="IoStallReadMS"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="NumberWrites"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="BytesWritten"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="IoStallWriteMS"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="IoStallMS"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="BytesOnDisk"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="type"    type="RowsetImportEngine.IntColumn" />
+        <Column name="type_desc"       type="RowsetImportEngine.VarCharColumn" />
+        <Column name="data_space_id"    type="RowsetImportEngine.IntColumn" />
+        <Column name="state"    type="RowsetImportEngine.IntColumn" />
+        <Column name="state_desc"       type="RowsetImportEngine.VarCharColumn" />
+        <Column name="size"    type="RowsetImportEngine.IntColumn" />
+        <Column name="max_size"    type="RowsetImportEngine.IntColumn" />
+        <Column name="growth"    type="RowsetImportEngine.IntColumn" />
+        <Column name="is_sparse"    type="RowsetImportEngine.IntColumn" />
+        <Column name="is_percent_growth"    type="RowsetImportEngine.IntColumn" />
+      </KnownColumns>
+    </Rowset>
+
+
+    <Rowset name="tbl_DM_OS_MEMORY_CACHE_ENTRIES" enabled="true" identifier="-- dm_os_memory_cache_entries" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="cache_address"       type="RowsetImportEngine.VarCharColumn" />
+        <Column name="name"  type="RowsetImportEngine.VarCharColumn" />
+        <Column name="type"    type="RowsetImportEngine.VarCharColumn" />
+        <Column name="entry_address"       type="RowsetImportEngine.VarCharColumn" />
+        <Column name="entry_data_address"       type="RowsetImportEngine.VarCharColumn" />
+        <Column name="in_use_count"    type="RowsetImportEngine.IntColumn" />
+        <Column name="is_dirty"    type="RowsetImportEngine.IntColumn" />
+        <Column name="disk_ios_count" type="RowsetImportEngine.IntColumn" />
+        <Column name="context_switches_count"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="original_cost" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="current_cost"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="memory_object_address"   type="RowsetImportEngine.VarCharColumn" />
+        <Column name="pages_allocated_count"   type="RowsetImportEngine.BigIntColumn" />
+        <Column name="entry_data"       type="RowsetImportEngine.VarCharColumn" />
+      </KnownColumns>
+    </Rowset>
+
+
+    <Rowset name="tbl_DM_OS_MEMORY_CACHE_ENTRIES" enabled="true" identifier="-- sys.dm_os_memory_cache_entries" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="cache_address"       type="RowsetImportEngine.VarCharColumn" />
+        <Column name="name"  type="RowsetImportEngine.VarCharColumn" />
+        <Column name="type"    type="RowsetImportEngine.VarCharColumn" />
+        <Column name="entry_address"       type="RowsetImportEngine.VarCharColumn" />
+        <Column name="entry_data_address"       type="RowsetImportEngine.VarCharColumn" />
+        <Column name="in_use_count"    type="RowsetImportEngine.IntColumn" />
+        <Column name="is_dirty"    type="RowsetImportEngine.IntColumn" />
+        <Column name="disk_ios_count" type="RowsetImportEngine.IntColumn" />
+        <Column name="context_switches_count"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="original_cost" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="current_cost"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="memory_object_address"   type="RowsetImportEngine.VarCharColumn" />
+        <Column name="pages_allocated_count"   type="RowsetImportEngine.BigIntColumn" />
+        <Column name="entry_data"       type="RowsetImportEngine.VarCharColumn" />
+      </KnownColumns>
+    </Rowset>
+
+    <Rowset name="tbl_DM_EXEC_CACHED_PLANS" enabled="true" identifier="-- dm_exec_cached_plans" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="bucketid"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="refcounts" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="usecounts"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="size_in_bytes"   type="RowsetImportEngine.BigIntColumn" />
+        <Column name="memory_object_address"   type="RowsetImportEngine.VarCharColumn" />
+        <Column name="cacheobjtype"   type="RowsetImportEngine.VarCharColumn" />
+        <Column name="objtype"   type="RowsetImportEngine.VarCharColumn" />
+        <Column name="plan_handle"   type="RowsetImportEngine.VarCharColumn" />
+        <Column name="dbid"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="objectid"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="stmt_text"       type="RowsetImportEngine.VarCharColumn" />
+      </KnownColumns>
+    </Rowset>
+
+    <Rowset name="tbl_DM_EXEC_QUERY_STATS" enabled="true" identifier="-- dm_exec_query_stats" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="sql_handle"   type="RowsetImportEngine.VarCharColumn" />
+        <Column name="statement_start_offset"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="statement_end_offset" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="plan_generation_num"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="plan_handle"   type="RowsetImportEngine.VarCharColumn" />
+        <Column name="creation_time"   type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="last_execution_time"   type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="execution_count"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="total_worker_time"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="last_worker_time"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="min_worker_time"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="max_worker_time"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="total_physical_reads"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="last_physical_reads"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="min_physical_reads"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="max_physical_reads"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="total_logical_writes"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="last_logical_writes"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="min_logical_writes"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="max_logical_writes"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="total_logical_reads"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="last_logical_reads"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="min_logical_reads"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="max_logical_reads"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="total_clr_time"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="last_clr_time"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="min_clr_time"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="max_clr_time"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="total_elapsed_time"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="last_elapsed_time"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="min_elapsed_time"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="max_elapsed_time"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="stmt_text"       type="RowsetImportEngine.VarCharColumn" />
+      </KnownColumns>
+    </Rowset>
+
+    <Rowset name="tbl_DM_OS_MEMORY_OBJECTS" enabled="true" identifier="-- dm_os_memory_objects" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="memory_object_address"   type="RowsetImportEngine.VarCharColumn" />
+        <Column name="parent_address"   type="RowsetImportEngine.VarCharColumn" />
+        <Column name="pages_allocated_count"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="creation_options" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="bytes_used"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="type"   type="RowsetImportEngine.VarCharColumn" />
+        <Column name="name"   type="RowsetImportEngine.VarCharColumn" />
+        <Column name="memory_node_id"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="creation_time" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="page_size_in_bytes"   type="RowsetImportEngine.BigIntColumn" />
+        <Column name="max_pages_allocated_count"   type="RowsetImportEngine.BigIntColumn" />
+        <Column name="page_allocator_address"   type="RowsetImportEngine.VarCharColumn" />
+        <Column name="creation_stack_address"   type="RowsetImportEngine.VarCharColumn" />
+        <Column name="sequence_num"  type="RowsetImportEngine.BigIntColumn" />
+      </KnownColumns>
+    </Rowset>
+
+    <Rowset name="tbl_DM_EXEC_CONNECTIONS" enabled="true" identifier="-- dm_exec_connections" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="session_id"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="most_recent_session_id" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="connect_time" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="net_transport"   type="RowsetImportEngine.VarCharColumn" />
+        <Column name="protocol_type"   type="RowsetImportEngine.VarCharColumn" />
+        <Column name="protocol_version"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="endpoint_id"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="encrypt_option"   type="RowsetImportEngine.VarCharColumn" />
+        <Column name="auth_scheme"   type="RowsetImportEngine.VarCharColumn" />
+        <Column name="node_affinity"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="num_reads"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="num_writes"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="last_read" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="last_write" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="net_packet_size"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="client_net_address"   type="RowsetImportEngine.VarCharColumn" />
+        <Column name="client_tcp_port"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="local_net_address"   type="RowsetImportEngine.VarCharColumn" />
+        <Column name="local_tcp_port"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="connection_id"   type="RowsetImportEngine.VarCharColumn" />
+        <Column name="parent_connection_id"   type="RowsetImportEngine.VarCharColumn" />
+        <Column name="most_recent_sql_handle"   type="RowsetImportEngine.VarCharColumn" />
+      </KnownColumns>
+    </Rowset>
+
+
+
+    <Rowset name="tbl_MissingIndexes" enabled="true" identifier="-- Missing Indexes --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="index_group_handle"       type="RowsetImportEngine.VarCharColumn" />
+        <Column name="index_handle"    type="RowsetImportEngine.VarCharColumn" />
+        <Column name="improvement_measure"  type="RowsetImportEngine.FloatColumn" />
+        <Column name="create_index_statement"  type="RowsetImportEngine.VarCharColumn" />
+        <Column name="group_handle" type="RowsetImportEngine.VarCharColumn" />
+        <Column name="unique_compiles" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="user_seeks" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="user_scans" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="last_user_seek" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="last_user_scan" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="avg_total_user_cost" type="RowsetImportEngine.FloatColumn" />
+        <Column name="avg_user_impact" type="RowsetImportEngine.FloatColumn" />
+        <Column name="system_seeks" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="system_scans" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="last_system_seek" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="last_system_scan" type="RowsetImportEngine.DateTimeColumn" />
+
+        <Column name="avg_total_system_cost" type="RowsetImportEngine.FloatColumn" />
+        <Column name="avg_system_impact" type="RowsetImportEngine.FloatColumn" />
+        <Column name="database_id" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="object_id" type="RowsetImportEngine.BigIntColumn" />
+      </KnownColumns>
+    </Rowset>
+
+
+
+    <Rowset name="tbl_dm_db_stats_properties_for_master" enabled="true" identifier="-- sys.dm_db_stats_properties for database name [master]  database id: 1 --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="database_name"       type="RowsetImportEngine.VarCharColumn" />
+        <Column name="Object_Name"    type="RowsetImportEngine.VarCharColumn" />
+        <Column name="object_id" type="RowsetImportEngine.IntColumn" />
+        <Column name="stats_id" type="RowsetImportEngine.IntColumn" />
+        <Column name="name" type="RowsetImportEngine.VarCharColumn" />
+        <Column name="filter_definition" type="RowsetImportEngine.VarCharColumn" />
+        <Column name="last_updated" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="rows" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="rows_sampled" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="steps" type="RowsetImportEngine.IntColumn" />
+        <Column name="unfiltered_rows" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="modification_counter" type="RowsetImportEngine.BigIntColumn" />
+      </KnownColumns>
+    </Rowset>
+
+    <Rowset name="tbl_SYSINDEXES" enabled="true" identifier="-- STATS_DATE and rowmodctr (remove this rowset)" type="RowsetImportEngine.TextRowset">
+      <Column name="dbid" type="RowsetImportEngine.IntColumn" />
+      <Column name="id" type="RowsetImportEngine.IntColumn" />
+      <Column name="indid" type="RowsetImportEngine.IntColumn" />
+      <Column name="name" type="RowsetImportEngine.NVarCharColumn" />
+      <Column name="minlen" type="RowsetImportEngine.IntColumn" />
+      <Column name="dpages" type="RowsetImportEngine.IntColumn" />
+      <Column name="reserved" type="RowsetImportEngine.IntColumn" />
+      <Column name="used" type="RowsetImportEngine.IntColumn" />
+      <Column name="rowcnt" type="RowsetImportEngine.IntColumn" />
+      <Column name="rowmodctr" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="row_mod2" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="stats_updated" type="RowsetImportEngine.DateTimeColumn" />
+
+    </Rowset>
+
+    <Rowset name="tbl_OS_WAIT_STATS" enabled="true" identifier="-- dm_db_wait_stats" type="RowsetImportEngine.TextRowset">
+      <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+      <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+      <Column name="waiting_tasks_count" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="wait_time_ms" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="max_wait_time_ms" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="signal_wait_time_ms" type="RowsetImportEngine.BigIntColumn" />
+    </Rowset>
+
+    <Rowset name="tbl_RESOURCE_STATS" enabled="true" identifier="-- sys.resource_stats" type="RowsetImportEngine.TextRowset">
+      <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+      <Column name="database_name" type="RowsetImportEngine.VarCharColumn" />
+      <Column name="start_time" type="RowsetImportEngine.DateTimeColumn" />
+      <Column name="Average_CPU_Cores_Used" type="RowsetImportEngine.FloatColumn" />
+      <Column name="Maximum_CPU_Cores_Used" type="RowsetImportEngine.FloatColumn" />
+      <Column name="Average_Read_IOPS" type="RowsetImportEngine.FloatColumn" />
+      <Column name="Maximum_Read_IOPS" type="RowsetImportEngine.FloatColumn" />
+      <Column name="Average_Write_IOPS" type="RowsetImportEngine.FloatColumn" />
+      <Column name="Maximum_Write_IOPS" type="RowsetImportEngine.FloatColumn" />
+      <Column name="Average_Memory_Used_GB" type="RowsetImportEngine.FloatColumn" />
+      <Column name="Maximum_Memory_Used_GB" type="RowsetImportEngine.FloatColumn" />
+      <Column name="Average_Session_Count" type="RowsetImportEngine.IntColumn" />
+      <Column name="Maximum_Session_Count" type="RowsetImportEngine.IntColumn" />
+      <Column name="Average_Workers_Count" type="RowsetImportEngine.IntColumn" />
+      <Column name="Maximum_Workers_Count" type="RowsetImportEngine.IntColumn" />
+    </Rowset>
+
+    <Rowset name="tbl_RESOURCE_USAGE" enabled="true" identifier="-- sys.resource_usage" type="RowsetImportEngine.TextRowset">
+      <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+      <Column name="database_name" type="RowsetImportEngine.VarCharColumn" />
+      <Column name="start_time" type="RowsetImportEngine.DateTimeColumn" />
+      <Column name="Average_usage_in_seconds" type="RowsetImportEngine.IntColumn" />
+      <Column name="Average_storage_in_megabytes" type="RowsetImportEngine.FloatColumn" />
+    </Rowset>
+
+
+    <Rowset name="tbl_DB_CONN_STATS" enabled="true" identifier="-- sys.database_connection_stats" type="RowsetImportEngine.TextRowset">
+      <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+      <Column name="database_name" type="RowsetImportEngine.VarCharColumn" />
+      <Column name="start_time" type="RowsetImportEngine.DateTimeColumn" />
+      <Column name="end_time" type="RowsetImportEngine.DateTimeColumn" />
+      <Column name="success_count" type="RowsetImportEngine.IntColumn" />
+      <Column name="total_failure_count" type="RowsetImportEngine.IntColumn" />
+      <Column name="connection_failure_count" type="RowsetImportEngine.IntColumn" />
+      <Column name="terminated_failure_count" type="RowsetImportEngine.IntColumn" />
+      <Column name="throttled_failure_count" type="RowsetImportEngine.IntColumn" />
+
+    </Rowset>
+
+    <Rowset name="tbl_EVENT_LOG" enabled="true" identifier="-- sys.event_log" type="RowsetImportEngine.TextRowset">
+      <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+      <Column name="database_name" type="RowsetImportEngine.VarCharColumn" />
+      <Column name="start_time" type="RowsetImportEngine.DateTimeColumn" />
+      <Column name="end_time" type="RowsetImportEngine.DateTimeColumn" />
+      <Column name="event_category" type="RowsetImportEngine.NVarCharColumn" length="64" />
+      <Column name="event_type" type="RowsetImportEngine.NVarCharColumn" length="64" />
+      <Column name="event_subtype" type="RowsetImportEngine.IntColumn" />
+      <Column name="event_subtype_desc" type="RowsetImportEngine.NVarCharColumn" length="64" />
+      <Column name="severity" type="RowsetImportEngine.IntColumn" />
+      <Column name="event_count" type="RowsetImportEngine.IntColumn" />
+      <Column name="description" type="RowsetImportEngine.NVarCharColumn" />
+      <Column name="additional_data" type="RowsetImportEngine.VarCharColumn" length="8000" />
+    </Rowset>
+
+
+    <Rowset name="tbl_sp_configure" enabled="true" identifier=" -> sp_configure" type="RowsetImportEngine.TextRowset">
+
+    </Rowset>
+
+    <Rowset name="tbl_dm_os_memory_brokers" enabled="true" identifier="-- dm_os_memory_brokers --" type="RowsetImportEngine.TextRowset">
+      <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+    </Rowset>
+
+    <Rowset name="tbl_dm_exec_query_memory_grants" enabled="true" identifier="-- dm_exec_query_memory_grants --" type="RowsetImportEngine.TextRowset">
+      <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+    	<Column name="session_id" type="RowsetImportEngine.IntColumn" />
+	    <Column name="request_id" type="RowsetImportEngine.IntColumn" />
+	    <Column name="scheduler_id" type="RowsetImportEngine.IntColumn" />
+	    <Column name="dop" type="RowsetImportEngine.IntColumn" />
+	    <Column name="request_time" type="RowsetImportEngine.DateTimeColumn" />
+	    <Column name="grant_time" type="RowsetImportEngine.DateTimeColumn" />
+	    <Column name="requested_memory_kb"  type="RowsetImportEngine.BigIntColumn" />
+	    <Column name="granted_memory_kb"  type="RowsetImportEngine.BigIntColumn" />
+	    <Column name="required_memory_kb"  type="RowsetImportEngine.BigIntColumn" />
+	    <Column name="used_memory_kb"  type="RowsetImportEngine.BigIntColumn" />
+	    <Column name="max_used_memory_kb"  type="RowsetImportEngine.BigIntColumn" />
+	    <Column name="query_cost"  type="RowsetImportEngine.FloatColumn" />
+	    <Column name="timeout_sec"  type="RowsetImportEngine.IntColumn" />
+	    <Column name="resource_semaphore_id"  type="RowsetImportEngine.IntColumn" />
+	    <Column name="queue_id"  type="RowsetImportEngine.IntColumn" />
+	    <Column name="wait_order"  type="RowsetImportEngine.IntColumn" />
+	    <Column name="is_next_candidate"  type="RowsetImportEngine.IntColumn" />
+	    <Column name="wait_time_ms"  type="RowsetImportEngine.BigIntColumn" />
+	    <Column name="group_id" type="RowsetImportEngine.IntColumn" />
+	    <Column name="pool_id"  type="RowsetImportEngine.IntColumn" />
+	    <Column name="is_small"  type="RowsetImportEngine.IntColumn" />
+	    <Column name="ideal_memory_kb"  type="RowsetImportEngine.IntColumn" />
+	    <Column name="plan_handle" type="RowsetImportEngine.VarBinaryColumn" />
+	    <Column name="sql_handle" type="RowsetImportEngine.VarBinaryColumn" />
+    </Rowset>
+
+
+    <Rowset name="tbl_dm_exec_query_resource_semaphores" enabled="true" identifier="-- dm_exec_query_resource_semaphores --" type="RowsetImportEngine.TextRowset">
+      <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+    
+    	<Column name="resource_semaphore_id" type="RowsetImportEngine.IntColumn" />
+	    <Column name="target_memory_kb"  type="RowsetImportEngine.BigIntColumn" />
+	    <Column name="max_target_memory_kb"  type="RowsetImportEngine.BigIntColumn" />
+	    <Column name="total_memory_kb"  type="RowsetImportEngine.BigIntColumn" />
+	    <Column name="available_memory_kb"  type="RowsetImportEngine.BigIntColumn" />
+	    <Column name="granted_memory_kb"  type="RowsetImportEngine.BigIntColumn" />
+	    <Column name="used_memory_kb"  type="RowsetImportEngine.BigIntColumn" />
+	    <Column name="grantee_count"  type="RowsetImportEngine.IntColumn" />
+	    <Column name="waiter_count"  type="RowsetImportEngine.IntColumn" />
+	    <Column name="timeout_error_count"  type="RowsetImportEngine.BigIntColumn" />
+	    <Column name="forced_grant_count"  type="RowsetImportEngine.BigIntColumn" />
+	    <Column name="pool_id"  type="RowsetImportEngine.IntColumn" />
+    
+    </Rowset>
+
+    
+
+  <Rowset name="tbl_TopN_QueryPlanStats" enabled="true" identifier="-- Top N Query Plan Statistics --" type="RowsetImportEngine.TextRowset">
+	  <KnownColumns>
+		  <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+		  <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+      <Column name="stmt_text" type="RowsetImportEngine.VarCharColumn" length="-1" />
+		  <Column name="statement_start_offset"  type="RowsetImportEngine.IntColumn" />
+		  <Column name="statement_end_offset" type="RowsetImportEngine.IntColumn" />
+		  <Column name="plan_generation_num"  type="RowsetImportEngine.BigIntColumn" />
+		  <Column name="plan_handle"   type="RowsetImportEngine.VarBinaryColumn" />
+		  <Column name="creation_time"   type="RowsetImportEngine.DateTimeColumn" />
+		  <Column name="last_execution_time"   type="RowsetImportEngine.DateTimeColumn" />
+		  <Column name="total_worker_time"  type="RowsetImportEngine.BigIntColumn" />
+		  <Column name="last_worker_time"  type="RowsetImportEngine.BigIntColumn" />
+		  <Column name="min_worker_time"  type="RowsetImportEngine.BigIntColumn" />
+		  <Column name="max_worker_time"  type="RowsetImportEngine.BigIntColumn" />
+		  <Column name="total_physical_reads"  type="RowsetImportEngine.BigIntColumn" />
+		  <Column name="last_physical_reads"  type="RowsetImportEngine.BigIntColumn" />
+		  <Column name="min_physical_reads"  type="RowsetImportEngine.BigIntColumn" />
+		  <Column name="max_physical_reads"  type="RowsetImportEngine.BigIntColumn" />
+		  <Column name="total_logical_writes"  type="RowsetImportEngine.BigIntColumn" />
+		  <Column name="last_logical_writes"  type="RowsetImportEngine.BigIntColumn" />
+		  <Column name="min_logical_writes"  type="RowsetImportEngine.BigIntColumn" />
+		  <Column name="max_logical_writes"  type="RowsetImportEngine.BigIntColumn" />
+		  <Column name="total_logical_reads"  type="RowsetImportEngine.BigIntColumn" />
+		  <Column name="last_logical_reads"  type="RowsetImportEngine.BigIntColumn" />
+		  <Column name="min_logical_reads"  type="RowsetImportEngine.BigIntColumn" />
+		  <Column name="max_logical_reads"  type="RowsetImportEngine.BigIntColumn" />
+		  <Column name="total_clr_time"  type="RowsetImportEngine.BigIntColumn" />
+		  <Column name="min_clr_time"  type="RowsetImportEngine.BigIntColumn" />
+		  <Column name="max_clr_time"  type="RowsetImportEngine.BigIntColumn" />
+		  <Column name="total_elapsed_time"  type="RowsetImportEngine.BigIntColumn" />
+		  <Column name="last_elapsed_time"  type="RowsetImportEngine.BigIntColumn" />
+		  <Column name="min_elapsed_time"  type="RowsetImportEngine.BigIntColumn" />
+		  <Column name="max_elapsed_time"  type="RowsetImportEngine.BigIntColumn" />
+		  <Column name="usecounts" type="RowsetImportEngine.BigIntColumn" />
+		  <Column name="tot_cpu_ms" type="RowsetImportEngine.BigIntColumn" />
+		  <Column name="tot_duration_ms" type="RowsetImportEngine.BigIntColumn" />
+		  <Column name="CpuRank" type="RowsetImportEngine.IntColumn" />
+		  <Column name="PhysicalReadsRank" type="RowsetImportEngine.IntColumn" />
+		  <Column name="DurationRank" type="RowsetImportEngine.IntColumn" />
+		  <Column name="objectid" type="RowsetImportEngine.IntColumn" />
+		  <Column name="query_hash"   type="RowsetImportEngine.VarBinaryColumn" />
+		  <Column name="query_plan_hash"   type="RowsetImportEngine.VarBinaryColumn"/>
+		  <Column name="size_in_kb" type="RowsetImportEngine.IntColumn" />
+	  </KnownColumns>
+  </Rowset>
+  <!--> Below one is unused column so used stmt_text in place of min_clr_time in above table -->
+  <!--Column name="min_clr_time"  type="RowsetImportEngine.BigIntColumn" /-->  
+    
+    <Rowset name="tbl_workingset_trimming" enabled="true" identifier="-- memory_workingset_trimming" type="RowsetImportEngine.TextRowset">
+      <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+    </Rowset>
+
+
+    <Rowset name="tbl_PowerPlan" enabled="true" identifier="--- Power Plan ---" type="RowsetImportEngine.TextRowset">
+      <Column name="ActivePlanName" type="RowsetImportEngine.VarCharColumn" />
+    </Rowset>
+
+
+    <Rowset name="tbl_ThreadStats" enabled="true" identifier="-- Thread Statistics" type="RowsetImportEngine.TextRowset">
+      <Column name="runtime" type="RowsetImportEngine.DateTimeColumn"/>
+      <Column name="os_thread_id" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="scheduler_id" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="session_id" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="request_id" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="command" type="RowsetImportEngine.NVarCharColumn" length="1024" />
+      <Column name="cpu_time" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="logical_reads" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="total_elapsed_time" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="QueryText" type="RowsetImportEngine.NVarCharColumn" length="-1" />
+
+    </Rowset>
+
+
+    <Rowset name="tbl_LockSummary" enabled="true" identifier="-- Lock summary --" type="RowsetImportEngine.TextRowset">
+      <Column name="runtime" type="RowsetImportEngine.DateTimeColumn"/>
+      <Column name="Resource_database_id" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="resource_type" type="RowsetImportEngine.NVarCharColumn" length="100" />
+      <Column name="request_mode" type="RowsetImportEngine.NVarCharColumn" length="20"  />
+      <Column name="request_status"  type="RowsetImportEngine.NVarCharColumn" length="20" />
+      <Column name="LockCount"  type="RowsetImportEngine.BigIntColumn" />
+
+    </Rowset>
+
+    <Rowset name="tbl_ServerProperties" enabled="true" identifier="--ServerProperty--" type="RowsetImportEngine.TextRowset">
+      <Column name="PropertyName" type="RowsetImportEngine.NVarCharColumn" length="200" />
+      <Column name="PropertyValue" type="RowsetImportEngine.NVarCharColumn" length="200"  />
+    </Rowset>
+
+
+    <Rowset name="tbl_Sys_Configurations" enabled="true" identifier="--sys.configurations--" type="RowsetImportEngine.TextRowset">
+
+      <Column name="configuration_id" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="name" type="RowsetImportEngine.NVarCharColumn" length="200" />
+      <Column name="value" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="minimum" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="maximum" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="value_in_use" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="configuration_id" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="description" type="RowsetImportEngine.NVarCharColumn" length="400"  />
+
+      <Column name="is_dynamic" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="is_advanced" type="RowsetImportEngine.BigIntColumn" />
+
+    </Rowset>
+
+
+    <Rowset name="tbl_StartupParameters" enabled="true" identifier="--Startup Parameters--" type="RowsetImportEngine.TextRowset">
+      <Column name="ArgsName" type="RowsetImportEngine.NVarCharColumn" length="200" />
+      <Column name="ArgsValue" type="RowsetImportEngine.NVarCharColumn" length="200"  />
+    </Rowset>
+
+
+
+    <Rowset name="tbl_DatabaseFiles" enabled="true" identifier="--database files--" type="RowsetImportEngine.TextRowset">
+    </Rowset>
+
+    <Rowset name="tbl_SysDatabases" enabled="true" identifier="--sys.databases_ex--" type="RowsetImportEngine.TextRowset">
+    </Rowset>
+
+
+    <Rowset name="tbl_TraceFlags" enabled="true" identifier="--traceflags--" type="RowsetImportEngine.TextRowset">
+      <Column name="TraceFlag" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="Status" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="Global" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="Session" type="RowsetImportEngine.BigIntColumn" />
+    </Rowset>
+
+
+    <Rowset name="tbl_XEvents" enabled="true" identifier="--XEvent Session Details--" type="RowsetImportEngine.TextRowset">
+      <Column name="session_name" type="RowsetImportEngine.NVarCharColumn" length="200"  />
+      <Column name="event_name" type="RowsetImportEngine.NVarCharColumn" length="200"  />
+      <Column name="expensive_event" type="RowsetImportEngine.IntColumn" />
+    </Rowset>
+
+
+    <Rowset name="tbl_availability_groups" enabled="true" identifier="--sys.availability_groups--" type="RowsetImportEngine.TextRowset">
+    </Rowset>
+
+    <Rowset name="tbl_dm_hadr_availability_replica_states" enabled="true" identifier="--sys.dm_hadr_availability_replica_states--" type="RowsetImportEngine.TextRowset">
+    </Rowset>
+    
+    <Rowset name="tbl_availability_replicas" enabled="true" identifier="--sys.availability_replicas--" type="RowsetImportEngine.TextRowset">
+    </Rowset>
+    
+
+   <Rowset name="tbl_dm_os_sys_info" enabled="True" identifier="-- sys.dm_os_sys_info" type="RowsetImportEngine.TextRowset">
+	<KnownColumns>
+		<Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+		<Column name="cpu_ticks" type="RowsetImportEngine.BigIntColumn" />
+		<Column name="ms_ticks" type="RowsetImportEngine.BigIntColumn" />
+		<Column name="cpu_count" type="RowsetImportEngine.IntColumn" />
+		<Column name="cpu_ticks_in_ms" type="RowsetImportEngine.BigIntColumn" />
+		<!-- 2005 only-->
+		<Column name="hyperthread_ratio" type="RowsetImportEngine.IntColumn" />
+		<Column name="physical_memory_in_bytes" type="RowsetImportEngine.BigIntColumn" />
+		<!-- 2005,2008,2008R2 only-->
+		<Column name="virtual_memory_in_bytes" type="RowsetImportEngine.BigIntColumn" />
+		<!-- 2005,2008,2008R2 only-->
+		<Column name="bpool_committed" type="RowsetImportEngine.IntColumn" />
+		<!-- 2005,2008,2008R2 only-->
+		<Column name="bpool_commit_target" type="RowsetImportEngine.IntColumn" />
+		<!-- 2005,2008,2008R2 only-->
+		<Column name="bpool_visible" type="RowsetImportEngine.IntColumn" />
+		<!-- 2005,2008,2008R2 only-->
+		<Column name="physical_memory_kb" type="RowsetImportEngine.BigIntColumn" />
+		<!-- 2012+ only-->
+		<Column name="virtual_memory_kb" type="RowsetImportEngine.BigIntColumn" />
+		<!-- 2012+ only-->
+		<Column name="committed_kb" type="RowsetImportEngine.IntColumn" />
+		<!-- 2012+ only-->
+		<Column name="committed_target_kb" type="RowsetImportEngine.IntColumn" />
+		<!-- 2012+ only-->
+		<Column name="visible_target_kb" type="RowsetImportEngine.IntColumn" />
+		<!-- 2012+ only-->
+		<Column name="stack_size_in_bytes" type="RowsetImportEngine.IntColumn" />
+		<Column name="os_quantum" type="RowsetImportEngine.BigIntColumn" />
+		<Column name="os_error_mode" type="RowsetImportEngine.IntColumn" />
+		<Column name="os_priority_class" type="RowsetImportEngine.IntColumn" />
+		<Column name="max_workers_count" type="RowsetImportEngine.IntColumn" />
+		<Column name="scheduler_count" type="RowsetImportEngine.IntColumn" />
+		<Column name="scheduler_total_count" type="RowsetImportEngine.IntColumn" />
+		<Column name="deadlock_monitor_serial_number" type="RowsetImportEngine.IntColumn" />
+		<Column name="sqlserver_start_time_ms_ticks" type="RowsetImportEngine.BigIntColumn" />
+		<!-- 2008+ only-->
+		<Column name="sqlserver_start_time" type="RowsetImportEngine.DateTimeColumn" />
+		<!-- 2008+ only-->
+		<Column name="affinity_type" type="RowsetImportEngine.IntColumn" />
+		<!-- 2008 R2+ only-->
+		<Column name="process_kernel_time_ms" type="RowsetImportEngine.BigIntColumn" />
+		<!-- 2008 R2+ only-->
+		<Column name="process_user_time_ms" type="RowsetImportEngine.BigIntColumn" />
+		<!-- 2008 R2+ only-->
+		<Column name="time_source" type="RowsetImportEngine.IntColumn" />
+		<!-- 2008 R2+ only-->
+		<Column name="virtual_machine_type" type="RowsetImportEngine.IntColumn" />
+		<!-- 2008 R2+ only-->
+	</KnownColumns>
+</Rowset>
+
+    
+  <Rowset name="tbl_dm_os_nodes" enabled="True" identifier="-- sys.dm_os_nodes --" type="RowsetImportEngine.TextRowset">
+	  <KnownColumns>
+		  <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+		  <Column name="node_id" type="RowsetImportEngine.IntColumn" />
+		  <Column name="memory_object_address" type="RowsetImportEngine.VarBinaryColumn" />
+		  <Column name="memory_clerk_address" type="RowsetImportEngine.VarBinaryColumn" />
+		  <Column name="io_completion_worker_address" type="RowsetImportEngine.VarBinaryColumn" />
+		  <Column name="memory_node_id" type="RowsetImportEngine.IntColumn" />
+		  <Column name="cpu_affinity_mask" type="RowsetImportEngine.BigIntColumn" />
+		  <Column name="online_scheduler_count" type="RowsetImportEngine.IntColumn" />
+		  <Column name="idle_scheduler_count" type="RowsetImportEngine.IntColumn" />
+		  <Column name="active_worker_count" type="RowsetImportEngine.IntColumn" />
+		  <Column name="avg_load_balance" type="RowsetImportEngine.IntColumn" />
+		  <Column name="timer_task_affinity_mask" type="RowsetImportEngine.BigIntColumn" />
+		  <Column name="permanent_task_affinity_mask" type="RowsetImportEngine.BigIntColumn" />
+		  <Column name="resource_monitor_state" type="RowsetImportEngine.IntColumn" />
+		  <Column name="online_scheduler_mask" type="RowsetImportEngine.BigIntColumn" />
+		  <Column name="processor_group" type="RowsetImportEngine.IntColumn" />
+	  </KnownColumns>
+  </Rowset>
+
+
+    <Rowset name="tbl_Thread_Stats_Snapshot" enabled="true" identifier="-- Thread Stats --" type="RowsetImportEngine.TextRowset">
+    </Rowset>
+
+    
+
+    <Rowset name="tbl_dm_os_schedulers_snapshot" enabled="true" identifier="--sys.dm_os_schedulers--" type="RowsetImportEngine.TextRowset">
+      <Column name="scheduler_address" type="RowsetImportEngine.VarBinaryColumn"  />
+      <Column name="parent_node_id" type="RowsetImportEngine.IntColumn" />
+      <Column name="scheduler_id" type="RowsetImportEngine.IntColumn" />
+      <Column name="cpu_id" type="RowsetImportEngine.IntColumn" />
+      <Column name="status" type="RowsetImportEngine.NVarCharColumn" length="40"  />
+      <Column name="is_online" type="RowsetImportEngine.IntColumn" />
+      <Column name="is_idle" type="RowsetImportEngine.IntColumn" />
+      <Column name="preemptive_switches_count" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="context_switches_count" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="idle_switches_count" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="current_tasks_count" type="RowsetImportEngine.IntColumn" />
+      <Column name="runnable_tasks_count" type="RowsetImportEngine.IntColumn" />
+      <Column name="current_workers_count" type="RowsetImportEngine.IntColumn" />
+      <Column name="active_workers_count" type="RowsetImportEngine.IntColumn" />
+      <Column name="work_queue_count" type="RowsetImportEngine.IntColumn" />
+      <Column name="pending_disk_io_count" type="RowsetImportEngine.IntColumn" />
+      <Column name="load_factor" type="RowsetImportEngine.IntColumn" />
+      <Column name="yield_count" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="last_timer_activity" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="failed_to_create_worker" type="RowsetImportEngine.IntColumn" />
+      <Column name="active_worker_address" type="RowsetImportEngine.VarBinaryColumn" />
+      <Column name="memory_object_address" type="RowsetImportEngine.VarBinaryColumn" />
+      <Column name="task_memory_object_address" type="RowsetImportEngine.VarBinaryColumn" />
+      <Column name="quantum_length_us" type="RowsetImportEngine.IntColumn" />
+      <Column name="total_cpu_usage_ms" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="total_cpu_idle_capped_ms " type="RowsetImportEngine.BigIntColumn" />
+      <Column name="total_scheduler_delay_ms " type="RowsetImportEngine.BigIntColumn" />
+
+    </Rowset>
+
+    
+    
+     <Rowset name="tbl_Thread_Stats" enabled="true" identifier="-- Thread Statistics --" type="RowsetImportEngine.TextRowset">
+    </Rowset>
+
+
+     <Rowset name="tbl_System_Requests" enabled="true" identifier="-- System Requests --" type="RowsetImportEngine.TextRowset">
+      <Column name="runtime" type="RowsetImportEngine.DateTimeColumn"/>
+      <Column name="os_thread_id" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="session_id" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="request_id" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="start_time" type="RowsetImportEngine.DateTimeColumn"/> 
+      <Column name="status" type="RowsetImportEngine.NVarCharColumn" length="20"  />
+      <Column name="command" type="RowsetImportEngine.NVarCharColumn" length="200"  />
+      <Column name="cpu_time" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="blocking_session_id" type="RowsetImportEngine.IntColumn" />
+      <Column name="wait_time" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="open_transaction_count" type="RowsetImportEngine.IntColumn" />
+      <Column name="logical_reads" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="reads" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="writes" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="granted_query_memory" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="total_elapsed_time" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="session_row_count" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="prev_error" type="RowsetImportEngine.IntColumn" />
+      <Column name="open_resultsets" type="RowsetImportEngine.IntColumn" />
+      <Column name="request_total_elapsed_time" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="percent_complete" type="RowsetImportEngine.IntColumn" />
+      <Column name="estimated_completion_time" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="statement_start_offset" type="RowsetImportEngine.IntColumn" />
+      <Column name="statement_end_offset" type="RowsetImportEngine.IntColumn" />
+      <Column name="open_resultset_count" type="RowsetImportEngine.IntColumn" />
+      <Column name="executing_managed_code" type="RowsetImportEngine.IntColumn" />
+      <Column name="text_size" type="RowsetImportEngine.IntColumn" />
+      <Column name="scheduler_id" type="RowsetImportEngine.IntColumn" />
+      <Column name="database_id" type="RowsetImportEngine.IntColumn" />
+      <Column name="user_id" type="RowsetImportEngine.IntColumn" />
+      <Column name="transaction_id" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="task_address" type="RowsetImportEngine.VarBinaryColumn" />
+      <Column name="group_id" type="RowsetImportEngine.IntColumn" />
+      <Column name="query_hash" type="RowsetImportEngine.VarBinaryColumn" />
+      <Column name="query_plan_hash" type="RowsetImportEngine.VarBinaryColumn" />
+      <Column name="context_info" type="RowsetImportEngine.VarBinaryColumn" />
+      <Column name="plan_handle" type="RowsetImportEngine.VarBinaryColumn" />
+      <Column name="sql_handle" type="RowsetImportEngine.VarBinaryColumn" />
+      <Column name="date_first" type="RowsetImportEngine.IntColumn" />
+      <Column name="quoted_identifier" type="RowsetImportEngine.IntColumn" />
+      <Column name="arithabort" type="RowsetImportEngine.IntColumn" />
+      <Column name="ansi_null_dflt_on" type="RowsetImportEngine.IntColumn" />
+      <Column name="ansi_defaults" type="RowsetImportEngine.IntColumn" />
+      <Column name="ansi_warnings" type="RowsetImportEngine.IntColumn" />
+      <Column name="ansi_padding" type="RowsetImportEngine.IntColumn" />
+      <Column name="ansi_nulls" type="RowsetImportEngine.IntColumn" />
+      <Column name="concat_null_yields_null" type="RowsetImportEngine.IntColumn" />
+      <Column name="transaction_isolation_level" type="RowsetImportEngine.IntColumn" />
+      <Column name="lock_timeout" type="RowsetImportEngine.IntColumn" />
+      <Column name="deadlock_priority" type="RowsetImportEngine.IntColumn" />
+      <Column name="row_count" type="RowsetImportEngine.IntColumn" />
+      <Column name="prev_error" type="RowsetImportEngine.IntColumn" />
+      <Column name="nest_level" type="RowsetImportEngine.IntColumn" />
+     
+    </Rowset>
+    
+    
+
+     <Rowset name="tbl_sysperfinfo" enabled="true" identifier="-- sysperfinfo_raw (general perf subset) --" type="RowsetImportEngine.TextRowset">
+      <Column name="runtime" type="RowsetImportEngine.DateTimeColumn"/>
+       <Column name="object_name" type="RowsetImportEngine.NVarCharColumn" length="200"  />
+       <Column name="counter_name" type="RowsetImportEngine.NVarCharColumn" length="200"  />
+       <Column name="instance_name" type="RowsetImportEngine.NVarCharColumn" length="200"  />
+       <Column name="cntr_value" type="RowsetImportEngine.FloatColumn" />
+      
+    </Rowset>
+    
+
+
+    
+     <Rowset name="tbl_dm_os_latch_stats" enabled="true" identifier="-- sys.dm_os_latch_stats --" type="RowsetImportEngine.TextRowset">
+      <Column name="runtime" type="RowsetImportEngine.DateTimeColumn"/>
+       <Column name="latch_class" type="RowsetImportEngine.NVarCharColumn" length="200"  />
+       <Column name="waiting_requests_count" type="RowsetImportEngine.FloatColumn" />
+       <Column name="wait_time_ms" type="RowsetImportEngine.FloatColumn" />
+       <Column name="max_wait_time_ms" type="RowsetImportEngine.FloatColumn" />
+      
+    </Rowset>
+    
+
+
+     <Rowset name="tbl_PlanCache_Stats" enabled="true" identifier="-- Plan Cache Stats --" type="RowsetImportEngine.TextRowset">
+      <Column name="runtime" type="RowsetImportEngine.DateTimeColumn"/>
+       <Column name="objtype" type="RowsetImportEngine.NVarCharColumn" length="200"  />
+       		<Column name="Cache_Size_MB" type="RowsetImportEngine.DecimalColumn" />
+       <Column name="Entry_Count" type="RowsetImportEngine.FloatColumn" />
+      
+    </Rowset>
+
+
+  <Rowset name="tbl_dm_db_file_space_usage" enabled="True" identifier="-- dm_db_file_space_usage --" type="RowsetImportEngine.TextRowset">
+	  <KnownColumns>
+		  <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+		  <Column name="database_id" type="RowsetImportEngine.IntColumn" />
+		  <Column name="file_id" type="RowsetImportEngine.IntColumn" />
+		  <Column name="filegroup_id" type="RowsetImportEngine.IntColumn" />
+		  <Column name="total_page_count" type="RowsetImportEngine.BigIntColumn" />
+		  <Column name="allocated_extent_page_count" type="RowsetImportEngine.BigIntColumn" />
+		  <Column name="unallocated_extent_page_count" type="RowsetImportEngine.BigIntColumn" />
+		  <Column name="version_store_reserved_page_count" type="RowsetImportEngine.BigIntColumn" />
+		  <Column name="user_object_reserved_page_count" type="RowsetImportEngine.BigIntColumn" />
+		  <Column name="internal_object_reserved_page_count" type="RowsetImportEngine.BigIntColumn" />
+		  <Column name="mixed_extent_page_count" type="RowsetImportEngine.BigIntColumn" />
+	  </KnownColumns>
+  </Rowset>
+
+  <Rowset name="tbl_dm_exec_cursors" enabled="True" identifier="-- dm_exec_cursors(0) --" type="RowsetImportEngine.TextRowset">
+	  <KnownColumns>
+		  <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+		  <Column name="count" type="RowsetImportEngine.IntColumn" />
+		  <Column name="open count" type="RowsetImportEngine.IntColumn" />
+		  <Column name="oldest create" type="RowsetImportEngine.DateTimeColumn" />
+	  </KnownColumns>
+  </Rowset>
+
+
+    <Rowset name="tbl_profiler_trace_summary" enabled="true" identifier="--profiler trace summary" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="traceid"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="property"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="value"   type="RowsetImportEngine.VarCharColumn" />
+      </KnownColumns>
+    </Rowset>
+
+    <Rowset name="tbl_profiler_trace_event_details" enabled="true" identifier="--trace event details--" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="trace_id"  type="RowsetImportEngine.IntColumn" />
+        <Column name="status"  type="RowsetImportEngine.IntColumn" />
+        <Column name="path"   type="RowsetImportEngine.VarCharColumn" />
+        <Column name="max_size"  type="RowsetImportEngine.BigIntColumn" />      
+        <Column name="start_time" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="stop_time" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="max_files"  type="RowsetImportEngine.IntColumn" />
+        <Column name="is_rowset"  type="RowsetImportEngine.IntColumn" />
+        <Column name="is_rollover"  type="RowsetImportEngine.IntColumn" />
+        <Column name="is_shutdown"  type="RowsetImportEngine.IntColumn" />
+        <Column name="is_default"  type="RowsetImportEngine.IntColumn" />
+        <Column name="buffer_count"  type="RowsetImportEngine.IntColumn" />
+        <Column name="buffer_size"  type="RowsetImportEngine.IntColumn" />
+        <Column name="last_event_time" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="event_count"  type="RowsetImportEngine.IntColumn" />
+        <Column name="trace_event_id"  type="RowsetImportEngine.IntColumn" />
+        <Column name="trace_event_name"   type="RowsetImportEngine.VarCharColumn" />
+        <Column name="trace_column_id"  type="RowsetImportEngine.IntColumn" />
+        <Column name="trace_column_name"   type="RowsetImportEngine.VarCharColumn" />
+        <Column name="expensive_event"  type="RowsetImportEngine.IntColumn" />
+      </KnownColumns>
+    </Rowset>
+    
+      
+      <Rowset name="tbl_dm_os_ring_buffers_conn" enabled="True" identifier="-- dm_os_ring_buffers --" type="RowsetImportEngine.TextRowset">
+	  <KnownColumns>
+      <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+		  <Column name="ring_buffer_address" type="RowsetImportEngine.VarCharColumn" />
+      <Column name="ring_buffer_type" type="RowsetImportEngine.VarCharColumn" />
+      <Column name="timestamp"  type="RowsetImportEngine.BigIntColumn" />
+      <Column name="record" type="RowsetImportEngine.VarCharColumn" length="-1"/>
+	  </KnownColumns>
+  </Rowset>
+
+    <Rowset name="tbl_ring_buffer_temp" enabled="True" identifier="-- ringbuffer --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        
+        <Column name="ring_buffer_address" type="RowsetImportEngine.VarCharColumn" />
+        <Column name="ring_buffer_type" type="RowsetImportEngine.VarCharColumn" />
+        <Column name="timestamp"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="record" type="RowsetImportEngine.VarCharColumn" length="-1"/>
+      </KnownColumns>
+    </Rowset>
+
+
+
+    <Rowset name="tbl_trace_event_details" enabled="true" identifier="--trace event details" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="trace_id"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="status"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="path"   type="RowsetImportEngine.VarCharColumn" />
+        <Column name="max_size"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="start_time"   type="RowsetImportEngine.VarCharColumn" />
+        <Column name="stop_time"   type="RowsetImportEngine.VarCharColumn" />
+        <Column name="max_files"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="is_rowset"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="is_rollover"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="is_shutdown"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="is_default"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="buffer_count"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="buffer_size"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="last_event_time"  type="RowsetImportEngine.VarCharColumn" />
+        <Column name="event_count"   type="RowsetImportEngine.BigIntColumn" />
+        <Column name="trace_event_id"   type="RowsetImportEngine.BigIntColumn" />
+        <Column name="trace_event_name"  type="RowsetImportEngine.VarCharColumn" />
+        <Column name="trace_column_id"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="trace_column_name"   type="RowsetImportEngine.VarCharColumn" />
+        <Column name="expensive_event"  type="RowsetImportEngine.BigIntColumn" />
+
+
+      </KnownColumns>
+    </Rowset>
+
+  <Rowset name="tbl_dm_os_memory_nodes" enabled="True" identifier="-- sys.dm_os_memory_nodes --" type="RowsetImportEngine.TextRowset">
+	  <KnownColumns>
+		  <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+		  <Column name="memory_node_id" type="RowsetImportEngine.IntColumn" />
+		  <Column name="memory_node_id" type="RowsetImportEngine.IntColumn" />
+		  <Column name="virtual_address_space_reserved_kb" type="RowsetImportEngine.BigIntColumn" />
+		  <Column name="virtual_address_space_committed_kb" type="RowsetImportEngine.BigIntColumn" />
+		  <Column name="locked_page_allocations_kb" type="RowsetImportEngine.BigIntColumn" />
+		  <Column name="single_pages_kb" type="RowsetImportEngine.BigIntColumn" />
+		  <!-- 2008,2008R2 only-->
+		  <Column name="multi_pages_kb" type="RowsetImportEngine.BigIntColumn" />
+		  <!-- 2008,2008R2 only-->
+		  <Column name="pages_kb" type="RowsetImportEngine.BigIntColumn" />
+		  <!-- 2012+ only-->
+		  <Column name="shared_memory_reserved_kb" type="RowsetImportEngine.BigIntColumn" />
+		  <Column name="shared_memory_committed_kb" type="RowsetImportEngine.BigIntColumn" />
+		  <Column name="cpu_affinity_mask" type="RowsetImportEngine.BigIntColumn" />
+		  <Column name="online_scheduler_mask" type="RowsetImportEngine.BigIntColumn" />
+		  <Column name="processor_group" type="RowsetImportEngine.IntColumn" />
+		  <Column name="foreign_committed_kb" type="RowsetImportEngine.BigIntColumn" />
+	  </KnownColumns>
+  </Rowset>
+
+  <Rowset name="tbl_resource_governor_configuration" enabled="True" identifier="-- sys.resource_governor_configuration --" type="RowsetImportEngine.TextRowset">
+	  <KnownColumns>
+		  <Column name="classifier_function_id" type="RowsetImportEngine.IntColumn" />
+		  <Column name="is_enabled" type="RowsetImportEngine.IntColumn" />
+		  <Column name="max_outstanding_io_per_volume" type="RowsetImportEngine.IntColumn" />
+	  </KnownColumns>
+  </Rowset>
+    
+  <Rowset name="tbl_resource_governor_workload_groups" enabled="True" identifier="-- sys.resource_governor_workload_groups --" type="RowsetImportEngine.TextRowset">
+	  <KnownColumns>
+		  <Column name="group_id" type="RowsetImportEngine.IntColumn" />
+		  <Column name="request_max_memory_grant_percent" type="RowsetImportEngine.IntColumn" />
+		  <Column name="request_max_cpu_time_sec" type="RowsetImportEngine.IntColumn" />
+		  <Column name="request_memory_grant_timeout_sec" type="RowsetImportEngine.IntColumn" />
+		  <Column name="max_dop" type="RowsetImportEngine.IntColumn" />
+		  <Column name="group_max_requests" type="RowsetImportEngine.IntColumn" />
+		  <Column name="pool_id" type="RowsetImportEngine.IntColumn" />
+		  <Column name="statistics_start_time" type="RowsetImportEngine.DateTimeColumn" />
+		  <Column name="total_request_count" type="RowsetImportEngine.BigIntColumn" />
+		  <Column name="total_queued_request_count" type="RowsetImportEngine.BigIntColumn" />
+		  <Column name="active_request_count" type="RowsetImportEngine.IntColumn" />
+		  <Column name="queued_request_count" type="RowsetImportEngine.IntColumn" />
+		  <Column name="total_cpu_limit_violation_count" type="RowsetImportEngine.BigIntColumn" />
+		  <Column name="total_cpu_usage_ms" type="RowsetImportEngine.BigIntColumn" />
+		  <Column name="max_request_cpu_time_ms" type="RowsetImportEngine.BigIntColumn" />
+		  <Column name="blocked_task_count" type="RowsetImportEngine.IntColumn" />
+		  <Column name="total_lock_wait_count" type="RowsetImportEngine.BigIntColumn" />
+		  <Column name="total_lock_wait_time_ms" type="RowsetImportEngine.BigIntColumn" />
+		  <Column name="total_query_optimization_count" type="RowsetImportEngine.BigIntColumn" />
+		  <Column name="total_suboptimal_plan_generation_count" type="RowsetImportEngine.BigIntColumn" />
+		  <Column name="total_reduced_memgrant_count" type="RowsetImportEngine.BigIntColumn" />
+		  <Column name="max_request_grant_memory_kb" type="RowsetImportEngine.BigIntColumn" />
+		  <Column name="active_parallel_thread_count" type="RowsetImportEngine.BigIntColumn" />
+	  </KnownColumns>
+  </Rowset>
+    
+    
+<Rowset name="tbl_resource_governor_resource_pools" enabled="True" identifier="-- sys.resource_governor_resource_pools --" type="RowsetImportEngine.TextRowset">
+	<KnownColumns>
+		<Column name="pool_id" type="RowsetImportEngine.IntColumn" />
+		<Column name="min_cpu_percent" type="RowsetImportEngine.IntColumn" />
+		<Column name="max_cpu_percent" type="RowsetImportEngine.IntColumn" />
+		<Column name="min_memory_percent" type="RowsetImportEngine.IntColumn" />
+		<Column name="max_memory_percent" type="RowsetImportEngine.IntColumn" />
+		<Column name="min_iops_per_volume" type="RowsetImportEngine.IntColumn" />
+		<Column name="max_iops_per_volume" type="RowsetImportEngine.IntColumn" />
+		<Column name="cap_cpu_percent" type="RowsetImportEngine.IntColumn" />
+		<!-- 2012+ only-->
+		<Column name="statistics_start_time" type="RowsetImportEngine.DateTimeColumn" />
+		<Column name="total_cpu_usage_ms" type="RowsetImportEngine.BigIntColumn" />
+		<Column name="cache_memory_kb" type="RowsetImportEngine.BigIntColumn" />
+		<Column name="compile_memory_kb" type="RowsetImportEngine.BigIntColumn" />
+		<Column name="used_memgrant_kb" type="RowsetImportEngine.BigIntColumn" />
+		<Column name="total_memgrant_count" type="RowsetImportEngine.BigIntColumn" />
+		<Column name="total_memgrant_timeout_count" type="RowsetImportEngine.BigIntColumn" />
+		<Column name="active_memgrant_count" type="RowsetImportEngine.BigIntColumn" />
+		<Column name="active_memgrant_kb" type="RowsetImportEngine.BigIntColumn" />
+		<Column name="memgrant_waiter_count" type="RowsetImportEngine.IntColumn" />
+		<Column name="max_memory_kb" type="RowsetImportEngine.BigIntColumn" />
+		<Column name="used_memory_kb" type="RowsetImportEngine.BigIntColumn" />
+		<Column name="target_memory_kb" type="RowsetImportEngine.BigIntColumn" />
+		<Column name="out_of_memory_count" type="RowsetImportEngine.BigIntColumn" />
+		<Column name="read_io_queued_total" type="RowsetImportEngine.IntColumn" />
+		<Column name="read_io_throttled_total" type="RowsetImportEngine.IntColumn" />
+		<!-- Rest of columns below are 2014+ only-->
+		<Column name="min_iops_per_volume" type="RowsetImportEngine.IntColumn" />
+		<Column name="max_iops_per_volume" type="RowsetImportEngine.IntColumn" />
+		<Column name="read_io_issued_total" type="RowsetImportEngine.IntColumn" />
+		<Column name="read_io_completed_total" type="RowsetImportEngine.IntColumn" />
+		<Column name="read_bytes_total" type="RowsetImportEngine.BigIntColumn" />
+		<Column name="read_io_stall_total_ms" type="RowsetImportEngine.BigIntColumn" />
+		<Column name="read_io_stall_queued_ms" type="RowsetImportEngine.BigIntColumn" />
+		<Column name="write_io_queued_total" type="RowsetImportEngine.IntColumn" />
+		<Column name="write_io_issued_total" type="RowsetImportEngine.IntColumn" />
+		<Column name="write_io_completed_total" type="RowsetImportEngine.IntColumn" />
+		<Column name="write_io_throttled_total" type="RowsetImportEngine.IntColumn" />
+		<Column name="write_bytes_total" type="RowsetImportEngine.BigIntColumn" />
+		<Column name="write_io_stall_total_ms" type="RowsetImportEngine.BigIntColumn" />
+		<Column name="write_io_stall_queued_ms" type="RowsetImportEngine.BigIntColumn" />
+		<Column name="io_issue_violations_total" type="RowsetImportEngine.IntColumn" />
+		<Column name="io_issue_delay_total_ms" type="RowsetImportEngine.BigIntColumn" />
+	</KnownColumns>
+</Rowset>
+
+    
+    <Rowset name="tbl_dbm_partner_time" enabled="true" identifier="dbm_partner_time" type="RowsetImportEngine.TextRowset">
+	  <Column name="dbm_partner_time_utc" type="RowsetImportEngine.DateTimeColumn" />
+	  <Column name="spid" type="RowsetImportEngine.IntColumn" />
+	  <Column name="count" type="RowsetImportEngine.IntColumn" />
+  </Rowset>
+
+    <Rowset name="tbl_dbm_timeout_connections" enabled="true" identifier="--MS_CSS_Monitor_DBM_Timeouts_connections--" type="RowsetImportEngine.TextRowset">
+	<Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+	<Column name="is_accept" type="RowsetImportEngine.IntColumn" />
+	<Column name="last_collection" type="RowsetImportEngine.DateTimeColumn" />
+	<Column name="client_tcp_port" type="RowsetImportEngine.IntColumn" />
+	<Column name="local_tcp_port" type="RowsetImportEngine.IntColumn" />
+	<Column name="connect_time" type="RowsetImportEngine.DateTimeColumn" />
+	<Column name="total_bytes_received" type="RowsetImportEngine.BigIntColumn" />
+	<Column name="total_bytes_sent" type="RowsetImportEngine.BigIntColumn" />
+	<Column name="max_received" type="RowsetImportEngine.BigIntColumn" />
+	<Column name="max_sent" type="RowsetImportEngine.BigIntColumn" />
+	<Column name="avg_received" type="RowsetImportEngine.BigIntColumn" />
+	<Column name="avg_sent" type="RowsetImportEngine.BigIntColumn" />
+	<Column name="max_received_dt" type="RowsetImportEngine.DateTimeColumn" />
+	<Column name="max_sent_dt" type="RowsetImportEngine.DateTimeColumn" />
+	<Column name="initial_received" type="RowsetImportEngine.BigIntColumn" />
+	<Column name="initial_sent" type="RowsetImportEngine.BigIntColumn" />
+	<Column name="first_collect" type="RowsetImportEngine.DateTimeColumn" />
+	<Column name="output_row" type="RowsetImportEngine.IntColumn" />
+</Rowset>
+
+<Rowset name="tbl_dbm_perf_control" enabled="true" identifier="--DBM perf script control comment--" type="RowsetImportEngine.TextRowset">
+	<Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+</Rowset>
+  
+  <Rowset name="tbl_dbm_perf_connection" enabled="true" identifier="--DBM perf script connection comment--" type="RowsetImportEngine.TextRowset">
+	<Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+</Rowset>
+    
+    
+    
+  <Rowset name="tbl_dbm_perf_executions" enabled="true" identifier="--DBM wait and exec summary--" type="RowsetImportEngine.TextRowset">
+	  <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+	  <Column name="count" type="RowsetImportEngine.IntColumn" />
+	  <Column name="wait_time" type="RowsetImportEngine.BigIntColumn" />
+	  <Column name="max_wait" type="RowsetImportEngine.BigIntColumn" />
+	  <Column name="max_wait_dt" type="RowsetImportEngine.DateTimeColumn" />
+	  <Column name="avg_wait_time" type="RowsetImportEngine.BigIntColumn" />
+	  <Column name="exec_time" type="RowsetImportEngine.BigIntColumn" />
+	  <Column name="max_exec" type="RowsetImportEngine.BigIntColumn" />
+	  <Column name="max_exec_dt" type="RowsetImportEngine.DateTimeColumn" />
+	  <Column name="avg_exec_time" type="RowsetImportEngine.BigIntColumn" />
+  </Rowset>
+
+
+  <Rowset name="tbl_database_mirroring" enabled="true" identifier="--sys.database_mirroring--" type="RowsetImportEngine.TextRowset">
+	  <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+	  <Column name="dbid" type="RowsetImportEngine.IntColumn" />
+	  <Column name="state" type="RowsetImportEngine.IntColumn" />
+	  <Column name="role" type="RowsetImportEngine.IntColumn" />
+	  <Column name="role_seq" type="RowsetImportEngine.IntColumn" />
+	  <Column name="safety" type="RowsetImportEngine.IntColumn" />
+	  <Column name="safety_seq" type="RowsetImportEngine.IntColumn" />
+	  <Column name="wit_state" type="RowsetImportEngine.IntColumn" />
+	  <Column name="timeout" type="RowsetImportEngine.IntColumn" />
+  </Rowset>
+
+  <Rowset name="tbl_dm_db_mirroring_connections" enabled="true" identifier="--sys.dm_db_mirroring_connections--" type="RowsetImportEngine.TextRowset">
+	  <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+	  <Column name="is_accept" type="RowsetImportEngine.IntColumn" />
+	  <Column name="state" type="RowsetImportEngine.IntColumn" />
+	  <Column name="total_bytes_received" type="RowsetImportEngine.BigIntColumn" />
+	  <Column name="total_bytes_sent" type="RowsetImportEngine.BigIntColumn" />
+	  <Column name="dbmc_connect_time_utc" type="RowsetImportEngine.DateTimeColumn" />
+	  <Column name="exec_connect_time" type="RowsetImportEngine.DateTimeColumn" />
+  </Rowset>
+
+    
+    <Rowset name="tbl_DiagInfo" enabled="true" identifier="-- DiagInfo --" type="RowsetImportEngine.TextRowset">
+      <Column name="DiagVersion" type="RowsetImportEngine.IntColumn" />
+      <Column name="DiagDate" type="RowsetImportEngine.DateTimeColumn" />
+    </Rowset>
+
+   <Rowset name="tbl_dm_db_stats_properties" enabled="true" identifier="-sys.dm_db_stats_properties-" type="RowsetImportEngine.TextRowset">
+    	<Column name="database_id" type="RowsetImportEngine.IntColumn" />
+      <Column name="database_name" type="RowsetImportEngine.NVarCharColumn" />
+      <Column name="schema_name" type="RowsetImportEngine.NVarCharColumn" />
+      <Column name="object_name" type="RowsetImportEngine.NVarCharColumn" />
+      <Column name="object_id" type="RowsetImportEngine.IntColumn" />
+      <Column name="stats_id" type="RowsetImportEngine.IntColumn" />
+      <Column name="statistics_name" type="RowsetImportEngine.NVarCharColumn" /
+      <Column name="last_updated" type="RowsetImportEngine.DateTimeColumn" />
+      <Column name="rows" type="RowsetImportEngine.IntColumn" />
+      <Column name="rows_sampled" type="RowsetImportEngine.IntColumn" />
+      <Column name="steps" type="RowsetImportEngine.IntColumn" />
+      <Column name="unfiltered_rows" type="RowsetImportEngine.IntColumn" />
+      <Column name="modification_counter" type="RowsetImportEngine.IntColumn" />
+    </Rowset>
+    
+    
+  <Rowset name="tbl_DisabledIndexes" enabled="true" identifier="--disabled indexes--" type="RowsetImportEngine.TextRowset">
+    	<Column name="database_id" type="RowsetImportEngine.IntColumn" />
+     <Column name="database_name" type="RowsetImportEngine.NVarCharColumn" />
+     <Column name="object_name" type="RowsetImportEngine.NVarCharColumn" />
+      <Column name="object_id" type="RowsetImportEngine.IntColumn" />
+      <Column name="index_id" type="RowsetImportEngine.IntColumn" />
+     <Column name="type" type="RowsetImportEngine.IntColumn" />
+     <Column name="type_desc" type="RowsetImportEngine.NVarCharColumn" />
+
+          
+   <Column name="is_unique" type="RowsetImportEngine.IntColumn" />
+    <Column name="data_space_id" type="RowsetImportEngine.IntColumn" />
+    <Column name="ignore_dup_key" type="RowsetImportEngine.IntColumn" />
+    <Column name="is_primary_key" type="RowsetImportEngine.IntColumn" />
+    <Column name="is_unique_constraint" type="RowsetImportEngine.IntColumn" />
+  <Column name="fill_factor" type="RowsetImportEngine.IntColumn" />
+    <Column name="is_padded" type="RowsetImportEngine.IntColumn" />
+    <Column name="is_disabled" type="RowsetImportEngine.IntColumn" />
+    
+    <Column name="is_hypothetical" type="RowsetImportEngine.IntColumn" />
+    <Column name="allow_row_locks" type="RowsetImportEngine.IntColumn" />
+    <Column name="allow_page_locks" type="RowsetImportEngine.IntColumn" />
+    <Column name="has_filter" type="RowsetImportEngine.IntColumn" />
+    
+    <Column name="filter_definition" type="RowsetImportEngine.NVarCharColumn" />
+      
+  
+    </Rowset>
+    
+    
+
+    
+  <Rowset name="tbl_QDS_Query_Stats" enabled="true" identifier="-- QDS Query Stats --" type="RowsetImportEngine.TextRowset">
+		
+	
+	  <Column name="database_id" type="RowsetImportEngine.IntColumn" />
+    <Column name="database_name" type="RowsetImportEngine.VarCharColumn" />
+    <Column name="query_id" type="RowsetImportEngine.IntColumn" />
+    <Column name="query_id" type="RowsetImportEngine.IntColumn" />
+    <Column name="query_hash" type="RowsetImportEngine.VarBinaryColumn" />
+     <Column name="count_executions" type="RowsetImportEngine.IntColumn" />
+    <Column name="avg_duration" type="RowsetImportEngine.IntColumn" />
+    <Column name="min_duration" type="RowsetImportEngine.IntColumn" />
+    <Column name="max_duration" type="RowsetImportEngine.IntColumn" />
+    <Column name="avg_cpu_time" type="RowsetImportEngine.IntColumn" />
+    <Column name="min_cpu_time" type="RowsetImportEngine.IntColumn" />
+    <Column name="max_cpu_time" type="RowsetImportEngine.IntColumn" />
+    <Column name="avg_logical_io_reads" type="RowsetImportEngine.IntColumn" />
+    <Column name="min_logical_io_reads" type="RowsetImportEngine.IntColumn" />
+    <Column name="max_logical_io_reads" type="RowsetImportEngine.IntColumn" />
+    <Column name="avg_logical_io_writes" type="RowsetImportEngine.IntColumn" />
+    <Column name="min_logical_io_writes" type="RowsetImportEngine.IntColumn" />
+    <Column name="max_logical_io_writes" type="RowsetImportEngine.IntColumn" />
+    <Column name="avg_physical_io_reads" type="RowsetImportEngine.IntColumn" />
+    <Column name="min_physical_io_reads" type="RowsetImportEngine.IntColumn" />
+    <Column name="max_physical_io_reads" type="RowsetImportEngine.IntColumn" />
+     <Column name="avg_query_max_used_memory" type="RowsetImportEngine.IntColumn" />
+    <Column name="min_query_max_used_memory" type="RowsetImportEngine.IntColumn" />
+    <Column name="max_query_max_used_memory" type="RowsetImportEngine.IntColumn" />
+    <Column name="plan_id" type="RowsetImportEngine.IntColumn" />
+    <Column name="query_plan_hash" type="RowsetImportEngine.VarBinaryColumn" />
+    <Column name="query_sql_text" type="RowsetImportEngine.VarCharColumn" length="-1" />
+    
+         
+    </Rowset>
+
+  <Rowset name="tbl_query_store_runtime_stats_interval" enabled="true" identifier="--sys.query_store_runtime_stats_interval--" type="RowsetImportEngine.TextRowset">
+    <Column name="dbid" type="RowsetImportEngine.IntColumn" />
+    <Column name="dbname" type="RowsetImportEngine.VarCharColumn" length="256" />
+    <Column name="runtime_stats_interval_id" type="RowsetImportEngine.BigIntColumn" />
+    <Column name="start_time" type="RowsetImportEngine.DateTimeOffsetColumn" />
+    <Column name="end_time" type="RowsetImportEngine.DateTimeOffsetColumn" />
+    <Column name="comment"  type="RowsetImportEngine.VarCharColumn" length="-1" />
+    </Rowset>
+
+
+    <Rowset name="tbl_query_store_runtime_stats" enabled="true" identifier="--sys.query_store_runtime_stats--" type="RowsetImportEngine.TextRowset">
+      <Column name="dbid" type="RowsetImportEngine.IntColumn" />
+      <Column name="dbname" type="RowsetImportEngine.VarCharColumn" length="256" />
+      
+      <Column name="runtime_stats_id" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="plan_id" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="runtime_stats_interval_id" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="execution_type" type="RowsetImportEngine.IntColumn" />
+      <Column name="execution_type_desc"  type="RowsetImportEngine.VarCharColumn" length="120" />
+      
+   
+      <Column name="first_execution_time" type="RowsetImportEngine.DateTimeOffsetColumn" />
+      <Column name="last_execution_time" type="RowsetImportEngine.DateTimeOffsetColumn" />
+      <Column name="count_executions" type="RowsetImportEngine.BigIntColumn" />
+
+      <Column name="avg_duration" type="RowsetImportEngine.FloatColumn" />
+      <Column name="last_duration" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="min_duration" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="max_duration" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="stdev_duration" type="RowsetImportEngine.FloatColumn" />
+
+      <Column name="avg_cpu_time" type="RowsetImportEngine.FloatColumn" />
+      <Column name="last_cpu_time" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="min_cpu_time" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="max_cpu_time" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="stdev_cpu_time" type="RowsetImportEngine.FloatColumn" />
+
+      <Column name="avg_logical_io_reads" type="RowsetImportEngine.FloatColumn" />
+      <Column name="last_logical_io_reads" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="min_logical_io_reads" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="max_logical_io_reads" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="stdev_logical_io_reads" type="RowsetImportEngine.FloatColumn" />
+
+      <Column name="avg_logical_io_writes" type="RowsetImportEngine.FloatColumn" />
+      <Column name="last_logical_io_writes" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="min_logical_io_writes" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="max_logical_io_writes" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="stdev_logical_io_writes" type="RowsetImportEngine.FloatColumn" />
+
+      <Column name="avg_physical_io_reads" type="RowsetImportEngine.FloatColumn" />
+      <Column name="last_physical_io_reads" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="min_physical_io_reads" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="max_physical_io_reads" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="stdev_physical_io_reads" type="RowsetImportEngine.FloatColumn" />
+
+
+
+      <Column name="avg_clr_time" type="RowsetImportEngine.FloatColumn" />
+      <Column name="last_clr_time" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="min_clr_time" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="max_clr_time" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="stdev_clr_time" type="RowsetImportEngine.FloatColumn" />
+
+
+
+      <Column name="avg_dop" type="RowsetImportEngine.FloatColumn" />
+      <Column name="last_dop" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="min_dop" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="max_dop" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="stdev_dop" type="RowsetImportEngine.FloatColumn" />
+
+
+      <Column name="avg_query_max_used_memory" type="RowsetImportEngine.FloatColumn" />
+      <Column name="last_query_max_used_memory" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="min_query_max_used_memory" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="max_query_max_used_memory" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="stdev_query_max_used_memory" type="RowsetImportEngine.FloatColumn" />
+
+
+
+      <Column name="avg_rowcount" type="RowsetImportEngine.FloatColumn" />
+      <Column name="last_rowcount" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="min_rowcount" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="max_rowcount" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="stdev_rowcount" type="RowsetImportEngine.FloatColumn" />
+
+    </Rowset>
+
+
+
+    <Rowset name="tbl_query_store_runtime_stats_interval" enabled="true" identifier="--sys.query_store_runtime_stats_interval--" type="RowsetImportEngine.TextRowset">
+      <Column name="dbid" type="RowsetImportEngine.IntColumn" />
+      <Column name="dbname" type="RowsetImportEngine.VarCharColumn" length="256" />
+      <Column name="runtime_stats_interval_id" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="start_time" type="RowsetImportEngine.DateTimeOffsetColumn" />
+      <Column name="end_time" type="RowsetImportEngine.DateTimeOffsetColumn" />
+      <Column name="comment"  type="RowsetImportEngine.VarCharColumn" length="-1" />
+    </Rowset>
+
+
+    <Rowset name="tbl_query_store_query" enabled="true" identifier="--sys.query_store_query--" type="RowsetImportEngine.TextRowset">
+      <Column name="dbid" type="RowsetImportEngine.IntColumn" />
+      <Column name="dbname" type="RowsetImportEngine.VarCharColumn" length="256" />
+
+      <Column name="query_id" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="query_text_id" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="context_settings_id" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="object_id" type="RowsetImportEngine.BigIntColumn" />
+
+      <Column name="batch_sql_handle" type="RowsetImportEngine.VarBinaryColumn" length="44" />
+      <Column name="query_hash" type="RowsetImportEngine.VarBinaryColumn" length="8" />
+
+
+      <Column name="is_internal_query" type="RowsetImportEngine.IntColumn" />
+      <Column name="query_parameterization_type" type="RowsetImportEngine.IntColumn" />
+      <Column name="query_parameterization_type_desc"  type="RowsetImportEngine.VarCharColumn" length="120" />
+
+      <Column name="initial_compile_start_time" type="RowsetImportEngine.DateTimeOffsetColumn" />
+      <Column name="last_compile_start_time" type="RowsetImportEngine.DateTimeOffsetColumn" />
+      <Column name="last_execution_time" type="RowsetImportEngine.DateTimeOffsetColumn" />
+
+      <Column name="last_compile_batch_sql_handle" type="RowsetImportEngine.VarBinaryColumn" length="44" />
+
+      <Column name="last_compile_batch_offset_start" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="last_compile_batch_offset_end" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="count_compiles" type="RowsetImportEngine.BigIntColumn" />
+
+
+      <Column name="avg_compile_duration" type="RowsetImportEngine.FloatColumn" />
+      <Column name="last_compile_duration" type="RowsetImportEngine.BigIntColumn" />
+
+
+      <Column name="avg_bind_duration" type="RowsetImportEngine.FloatColumn" />
+      <Column name="last_bind_duration" type="RowsetImportEngine.BigIntColumn" />
+
+
+      <Column name="avg_bind_cpu_time" type="RowsetImportEngine.FloatColumn" />
+      <Column name="last_bind_cpu_time" type="RowsetImportEngine.BigIntColumn" />
+
+      <Column name="avg_optimize_duration" type="RowsetImportEngine.FloatColumn" />
+      <Column name="last_optimize_duration" type="RowsetImportEngine.BigIntColumn" />
+
+
+      <Column name="avg_optimize_cpu_time" type="RowsetImportEngine.FloatColumn" />
+      <Column name="last_optimize_cpu_time" type="RowsetImportEngine.BigIntColumn" />
+
+      <Column name="avg_compile_memory_kb" type="RowsetImportEngine.FloatColumn" />
+      <Column name="last_compile_memory_kb" type="RowsetImportEngine.BigIntColumn" />
+
+
+     
+      <Column name="max_compile_memory_kb" type="RowsetImportEngine.BigIntColumn" />
+
+      <Column name="is_clouddb_internal_query" type="RowsetImportEngine.IntColumn" />
+
+
+    </Rowset>
+
+
+
+    <Rowset name="tbl_query_store_query_text" enabled="true" identifier="--sys.query_store_query_text--" type="RowsetImportEngine.TextRowset">
+      <Column name="dbid" type="RowsetImportEngine.IntColumn" />
+      <Column name="dbname" type="RowsetImportEngine.VarCharColumn" length="256" />
+
+      <Column name="query_text_id" type="RowsetImportEngine.IntColumn" />
+      <Column name="statement_sql_handle" type="RowsetImportEngine.VarBinaryColumn" length="44" />
+      <Column name="is_part_of_encrypted_module" type="RowsetImportEngine.IntColumn" />
+      <Column name="has_restricted_text" type="RowsetImportEngine.IntColumn" />
+
+      <Column name="query_sql_text"  type="RowsetImportEngine.VarCharColumn" length="-1" />
+      
+    </Rowset>
+
+
+    
+    <Rowset name="tbl_query_store_plan" enabled="true" identifier="--sys.query_store_plan--" type="RowsetImportEngine.TextRowset">
+      <Column name="dbid" type="RowsetImportEngine.IntColumn" />
+      <Column name="dbname" type="RowsetImportEngine.VarCharColumn" length="256" />
+      <Column name="plan_id" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="query_id" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="plan_group_id" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="engine_version"  type="RowsetImportEngine.VarCharColumn" length="64" />
+      <Column name="compatibility_level" type="RowsetImportEngine.IntColumn" />
+      <Column name="query_plan_hash" type="RowsetImportEngine.VarBinaryColumn" length="8" />
+      <Column name="is_forced_plan" type="RowsetImportEngine.IntColumn" />
+      
+    </Rowset>
+
+
+    <!-- Hekaton related rowsets-->
+  
+<Rowset name="tbl_dm_xtp_gc_stats" enabled="true" identifier="--sys.dm_xtp_gc_stats --" type="RowsetImportEngine.TextRowset">
+      <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+      <Column name="rows_examined" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="rows_no_sweep_needed" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="rows_first_in_bucket" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="rows_first_in_bucket_removed" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="rows_marked_for_unlink" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="parallel_assist_count"  type="RowsetImportEngine.BigIntColumn" />
+      <Column name="idle_worker_count" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="sweep_scans_started" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="sweep_scan_retries" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="sweep_rows_touched"  type="RowsetImportEngine.BigIntColumn" />
+      <Column name="sweep_rows_expiring" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="sweep_rows_expired" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="sweep_rows_expired_removed" type="RowsetImportEngine.BigIntColumn" />      
+    </Rowset>
+
+    <Rowset name="tbl_xtp_gc_queue_stats" enabled="true" identifier="--sys.dm_xtp_gc_queue_stats --" type="RowsetImportEngine.TextRowset">
+      <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+      <Column name="queue_id" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="total_enqueues" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="total_dequeues" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="current_queue_depth" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="maximum_queue_depth" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="last_service_ticks"  type="RowsetImportEngine.BigIntColumn" />
+    </Rowset>
+
+    <Rowset name="tbl_db_xtp_table_memory_stats" enabled="true" identifier="--sys.dm_db_xtp_table_memory_stats --" type="RowsetImportEngine.TextRowset">
+      <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+      <Column name="database_name" type="RowsetImportEngine.VarCharColumn" length="256" />
+      <Column name="object_id" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="memory_allocated_for_table_kb" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="memory_used_by_table_kb" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="memory_allocated_for_indexes_kb" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="memory_used_by_indexes_kb"  type="RowsetImportEngine.BigIntColumn" />
+    </Rowset>
+
+    <Rowset name="tbl_xtp_system_memory_consumers" enabled="true" identifier="--sys.dm_xtp_system_memory_consumers --" type="RowsetImportEngine.TextRowset">
+      <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+      <Column name="memory_consumer_id" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="memory_consumer_type" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="memory_consumer_type_desc" type="RowsetImportEngine.VarCharColumn" length="256" />
+      <Column name="memory_consumer_desc" type="RowsetImportEngine.VarCharColumn" length="256" />
+      <Column name="lookaside_id" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="pagepool_id" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="allocated_bytes" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="used_bytes"  type="RowsetImportEngine.BigIntColumn" />
+      <Column name="allocation_count" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="partition_count" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="sizeclass_count" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="min_sizeclass"  type="RowsetImportEngine.BigIntColumn" />
+      <Column name="max_sizeclass" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="memory_consumer_address" type="RowsetImportEngine.VarBinaryColumn" />
+    </Rowset>
+
+
+    <Rowset name="tbl_dm_os_performance_counters" enabled="true" identifier="-- sql server performance counters --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="object_name" type="RowsetImportEngine.NVarCharColumn" />
+        <Column name="counter_name" type="RowsetImportEngine.NVarCharColumn" />
+        <Column name="instance_name" type="RowsetImportEngine.NVarCharColumn" />
+        <Column name="cntr_value" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="cntr_type" type="RowsetImportEngine.BigIntColumn" />
+      </KnownColumns>
+
+
+    </Rowset>
+
+    <Rowset name="tbl_high_cpu_queries" enabled="true" identifier="--  high_cpu_queries --" type="RowsetImportEngine.TextRowset">
+      <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+      <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+      <Column name="runtime_utc" type="RowsetImportEngine.DateTimeColumn" />
+      <Column name="session_id" type="RowsetImportEngine.IntColumn" />
+      <Column name="os_thread_id" type="RowsetImportEngine.IntColumn" />
+      <Column name="request_start_time" type="RowsetImportEngine.DateTimeColumn" />
+      <Column name="cpu_time" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="total_elapsed_time" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="logical_reads" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="status"  type="RowsetImportEngine.NVarCharColumn" length="30" />
+      <Column name="command"  type="RowsetImportEngine.NVarCharColumn" length="32" />
+      <Column name="wait_type"  type="RowsetImportEngine.NVarCharColumn" length="60" />
+      <Column name="wait_time_ms" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="scheduler_id" type="RowsetImportEngine.IntColumn" />
+      <Column name="granted_query_memory" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="task_state"  type="RowsetImportEngine.NVarCharColumn" length="120" />
+      <Column name="context_switches_count" type="RowsetImportEngine.IntColumn" />
+      <Column name="batch_text" type="RowsetImportEngine.NVarCharColumn" length="3000"/>
+      <Column name="program_name" type="RowsetImportEngine.NVarCharColumn" />
+      <Column name="host_name" type="RowsetImportEngine.NVarCharColumn" length="128"/>
+      <Column name="host_process_id" type="RowsetImportEngine.IntColumn" />
+      <Column name="net_packet_size" type="RowsetImportEngine.IntColumn" />
+      <Column name="client_net_address"   type="RowsetImportEngine.VarCharColumn" length="48"/>
+      <Column name="active_statement_text"     type="RowsetImportEngine.VarCharColumn" />
+    </Rowset>
+
+    <Rowset name="tbl_server_times" enabled="true" identifier="-- server_times --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="server_time" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="utc_time" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="time_delta_hours" type="RowsetImportEngine.IntColumn" />
+      </KnownColumns>
+    </Rowset>
+
+    <Rowset name="tbl_CPU_bound_query_never_completes" enabled="true" identifier="-- neverending_query --" type="RowsetImportEngine.TextRowset">
+      <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+      <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+      <Column name="runtime_utc" type="RowsetImportEngine.DateTimeColumn" />
+      <Column name="session_id" type="RowsetImportEngine.IntColumn" />
+      <Column name="query_text" type="RowsetImportEngine.NVarCharColumn" length="256"/>
+      <Column name="physical_operator_name" type="RowsetImportEngine.NVarCharColumn" length="256"/>
+      <Column name="node_id" type="RowsetImportEngine.IntColumn" />
+      <Column name="row_count" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="rewind_count" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="rebind_count" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="end_of_scan_count" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="estimate_row_count" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="cpu_time" type="RowsetImportEngine.IntColumn" />
+      <Column name="total_elapsed_time" type="RowsetImportEngine.IntColumn" />
+    </Rowset>
+
+    
+
+    <Rowset name="tbl_database_options" enabled="true" identifier="-- Current database options --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="name" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="dbid" type="RowsetImportEngine.IntColumn"/>
+        <Column name="cmptlevel" type="RowsetImportEngine.IntColumn"/>
+        <Column name="db_size_in_mb" type="RowsetImportEngine.BigIntColumn"/>
+        <Column name="status" type="RowsetImportEngine.NVarCharColumn" length="512"/>
+      </KnownColumns>
+    </Rowset>
+    
+    <!--Not importing , is it due to no result set-->
+    <Rowset name="tbl_db_TDE_Info" enabled="true" identifier="-- sys.dm_database_encryption_keys TDE --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="database_name" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="database_id" type="RowsetImportEngine.IntColumn"/>
+        <Column name="encryption_state" type="RowsetImportEngine.IntColumn"/>
+        <Column name="create_date" type="RowsetImportEngine.DateTimeColumn"/>
+        <Column name="regenerate_date" type="RowsetImportEngine.DateTimeColumn"/>
+        <Column name="modify_date" type="RowsetImportEngine.DateTimeColumn"/>
+        <Column name="set_date" type="RowsetImportEngine.DateTimeColumn"/>
+        <Column name="opened_date" type="RowsetImportEngine.DateTimeColumn"/>
+        <Column name="key_algorithm" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="key_length" type="RowsetImportEngine.IntColumn"/>
+        <Column name="encryptor_thumbprint" type="RowsetImportEngine.VarBinaryColumn"/>
+        <Column name="encryptor_type" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="percent_complete" type="RowsetImportEngine.IntColumn"/>
+      </KnownColumns>
+    </Rowset>
+
+    <!--Not importing , is it due to no result set-->
+    <Rowset name="tbl_server_audit_status" enabled="true" identifier="-- sys.dm_server_audit_status --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="audit_id" type="RowsetImportEngine.IntColumn"/>
+        <Column name="name" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="status" type="RowsetImportEngine.IntColumn"/>
+        <Column name="status_desc" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="status_time" type="RowsetImportEngine.DateTimeColumn"/>
+        <Column name="event_session_address" type="RowsetImportEngine.VarBinaryColumn"/>
+        <Column name="audit_file_path" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="audit_file_size" type="RowsetImportEngine.BigIntColumn"/>        
+      </KnownColumns>
+    </Rowset>
+
+    <!--Not importing , no result set-->
+    <Rowset name="tbl_Top10_CPU_Consuming_Procedures" enabled="true" identifier="-- top 10 CPU consuming procedures --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="object_id" type="RowsetImportEngine.IntColumn"/>
+        <Column name="database_id" type="RowsetImportEngine.IntColumn"/>
+        <Column name="db name" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="proc name" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="cached_time" type="RowsetImportEngine.DateTimeColumn"/>
+        <Column name="last_execution_time" type="RowsetImportEngine.DateTimeColumn"/>
+        <Column name="total_elapsed_time" type="RowsetImportEngine.BigIntColumn"/>
+        <Column name="avg_elapsed_time" type="RowsetImportEngine.BigIntColumn"/>
+        <Column name="last_elapsed_time" type="RowsetImportEngine.BigIntColumn"/>
+        <Column name="execution_count" type="RowsetImportEngine.BigIntColumn"/>
+      </KnownColumns>
+    </Rowset>
+
+  <Rowset name="tbl_Top10_CPU_Consuming_Triggers" enabled="true" identifier="-- top 10 CPU consuming triggers --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="object_id" type="RowsetImportEngine.IntColumn"/>
+        <Column name="database_id" type="RowsetImportEngine.IntColumn"/>
+        <Column name="db name" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="proc name" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="cached_time" type="RowsetImportEngine.DateTimeColumn"/>
+        <Column name="last_execution_time" type="RowsetImportEngine.DateTimeColumn"/>
+        <Column name="total_elapsed_time" type="RowsetImportEngine.BigIntColumn"/>
+        <Column name="avg_elapsed_time" type="RowsetImportEngine.BigIntColumn"/>
+        <Column name="last_elapsed_time" type="RowsetImportEngine.BigIntColumn"/>
+        <Column name="execution_count" type="RowsetImportEngine.BigIntColumn"/>
+      </KnownColumns>
+    </Rowset>
+
+        <Rowset name="tbl_Hist_Top10_CPU_Queries_ByQueryHash" enabled="true" identifier="-- top 10 CPU by query_hash --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="query_hash"       type="RowsetImportEngine.VarCharColumn" />
+        <Column name="disctinct query_plan_hash count"    type="RowsetImportEngine.IntColumn" />
+        <Column name="execution_count"  type="RowsetImportEngine.IntColumn" />
+        <Column name="total_worker_time"   type="RowsetImportEngine.BigIntColumn" />
+        <Column name="total_elapsed_time" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="total_logical_reads"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="sample_statement_text"     type="RowsetImportEngine.VarCharColumn" />
+      </KnownColumns>
+    </Rowset>
+
+
+    <Rowset name="tbl_Hist_Top10_LogicalReads_Queries_ByQueryHash" enabled="true" identifier="-- top 10 logical reads by query_hash --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="query_hash"       type="RowsetImportEngine.VarCharColumn" />
+        <Column name="disctinct query_plan_hash count"    type="RowsetImportEngine.IntColumn" />
+        <Column name="execution_count"  type="RowsetImportEngine.IntColumn" />
+        <Column name="total_worker_time"   type="RowsetImportEngine.BigIntColumn" />
+        <Column name="total_elapsed_time" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="total_logical_reads"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="sample_statement_text"     type="RowsetImportEngine.VarCharColumn" />
+      </KnownColumns>
+    </Rowset>
+
+    <Rowset name="tbl_Hist_Top10_ElapsedTime_Queries_ByQueryHash" enabled="true" identifier="-- top 10 elapsed time by query_hash --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="query_hash"       type="RowsetImportEngine.VarCharColumn" />
+        <Column name="disctinct query_plan_hash count"    type="RowsetImportEngine.IntColumn" />
+        <Column name="execution_count"  type="RowsetImportEngine.IntColumn" />
+        <Column name="total_worker_time"   type="RowsetImportEngine.BigIntColumn" />
+        <Column name="total_elapsed_time" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="total_logical_reads"  type="RowsetImportEngine.BigIntColumn" />
+        <Column name="sample_statement_text"     type="RowsetImportEngine.VarCharColumn" />
+      </KnownColumns>
+    </Rowset>
+
+    
+      
+    <!--Not importing , result set is there in .out file-->
+    <Rowset name="tbl_Hist_Top10_CPU_Queries_by_Planhash_and_Queryhash" enabled="true" identifier="-- top 10 CPU by query_plan_hash and query_hash --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="query_plan_hash" type="RowsetImportEngine.VarBinaryColumn"/>
+        <Column name="query_hash" type="RowsetImportEngine.VarBinaryColumn"/>
+        <Column name="distinct query_plan_hash count" type="RowsetImportEngine.IntColumn"/>
+        <Column name="execution_count" type="RowsetImportEngine.BigIntColumn"/>
+        <Column name="total_worker_time" type="RowsetImportEngine.BigIntColumn"/>
+        <Column name="total_elapsed_time" type="RowsetImportEngine.BigIntColumn"/>
+        <Column name="total_logical_reads" type="RowsetImportEngine.BigIntColumn"/>
+        <Column name="sample_statement_text" type="RowsetImportEngine.NVarCharColumn"/>
+      </KnownColumns>
+    </Rowset>
+
+    <!--Not importing , result set is there in .out file-->
+    <Rowset name="tbl_Hist_Top10_LogicalReads_Queries_by_Planhash_and_Queryhash" enabled="true" identifier="-- top 10 logical reads by query_plan_hash and query_hash --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="query_plan_hash" type="RowsetImportEngine.VarBinaryColumn"/>
+        <Column name="query_hash" type="RowsetImportEngine.VarBinaryColumn"/>
+        <Column name="execution_count" type="RowsetImportEngine.BigIntColumn"/>
+        <Column name="total_worker_time" type="RowsetImportEngine.BigIntColumn"/>
+        <Column name="total_elapsed_time" type="RowsetImportEngine.BigIntColumn"/>
+        <Column name="total_logical_reads" type="RowsetImportEngine.BigIntColumn"/>
+        <Column name="sample_statement_text" type="RowsetImportEngine.NVarCharColumn"/>
+      </KnownColumns>
+    </Rowset>
+
+    <!--Not importing , result set is there in .out file-->
+    <Rowset name="tbl_Hist_Top10_ElapsedTime_Queries_by_Planhash_and_Queryhash" enabled="true" identifier="-- top 10 elapsed time  by query_plan_hash and query_hash --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="query_plan_hash" type="RowsetImportEngine.VarBinaryColumn"/>
+        <Column name="query_hash" type="RowsetImportEngine.VarBinaryColumn"/>
+        <Column name="execution_count" type="RowsetImportEngine.BigIntColumn"/>
+        <Column name="total_worker_time" type="RowsetImportEngine.BigIntColumn"/>
+        <Column name="total_elapsed_time" type="RowsetImportEngine.BigIntColumn"/>
+        <Column name="total_logical_reads" type="RowsetImportEngine.BigIntColumn"/>
+        <Column name="sample_statement_text" type="RowsetImportEngine.NVarCharColumn"/>
+      </KnownColumns>
+    </Rowset>
+
+    <!--Not importing , no result set -->
+    <Rowset name="tbl_hadron_replica_info" enabled="true" identifier="-- hadron replica info --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="ag_name" type="RowsetImportEngine.VarCharColumn" length="256" />
+        <Column name="replica_server_name" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="is_ag_replica_local" type="RowsetImportEngine.IntColumn"/>
+        <Column name="ag_replica_role_desc" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="ag_replica_operational_state_desc" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="ag_replica_connected_state_desc" type="RowsetImportEngine.NVarCharColumn"/>
+      </KnownColumns>
+    </Rowset>
+
+    <!--Not importing , no result set -->
+    <Rowset name="tbl_availability_groups" enabled="true" identifier="-- sys.availability_groups --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="group_id" type="RowsetImportEngine.VarBinaryColumn"/>
+        <Column name="name" type="RowsetImportEngine.VarCharColumn" length="256" />
+        <Column name="resource_id" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="resource_group_id" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="failure_condition_level" type="RowsetImportEngine.IntColumn"/>
+        <Column name="health_check_timeout" type="RowsetImportEngine.IntColumn"/>
+        <Column name="automated_backup_preference" type="RowsetImportEngine.IntColumn"/>
+        <Column name="automated_backup_preference_desc" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="version" type="RowsetImportEngine.IntColumn"/>
+        <Column name="basic_features" type="RowsetImportEngine.IntColumn"/>
+        <Column name="dtc_support" type="RowsetImportEngine.IntColumn"/>
+        <Column name="db_failover" type="RowsetImportEngine.IntColumn"/>
+        <Column name="is_distributed" type="RowsetImportEngine.IntColumn"/>
+      </KnownColumns>
+    </Rowset>
+
+    <!--Not importing , no result set -->
+    <Rowset name="tbl_hadr_cluster" enabled="true" identifier="-- sys.dm_hadr_cluster --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="cluster_name" type="RowsetImportEngine.NVarCharColumn" length="256"/>
+        <Column name="quorum_type" type="RowsetImportEngine.IntColumn"/>
+        <Column name="quorum_type_desc" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="quorum_state" type="RowsetImportEngine.IntColumn"/>
+        <Column name="quorum_state_desc" type="RowsetImportEngine.NVarCharColumn"/>        
+      </KnownColumns>
+    </Rowset>
+
+    <!--Not importing , no result set -->
+    <Rowset name="tbl_hadr_cluster_members" enabled="true" identifier="-- sys.dm_hadr_cluster_members --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="member_name" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="member_type" type="RowsetImportEngine.IntColumn"/>
+        <Column name="member_type_desc" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="member_state" type="RowsetImportEngine.IntColumn"/>
+        <Column name="number_of_quorum_votes" type="RowsetImportEngine.NVarCharColumn"/>
+      </KnownColumns>
+    </Rowset>
+
+    <!--Not importing , no result set -->
+    <Rowset name="tbl_hadr_cluster_networks" enabled="true" identifier="-- sys.dm_hadr_cluster_networks --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="member_name" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="network_subnet_ip" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="network_subnet_ipv4_mask" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="network_subnet_prefix_length" type="RowsetImportEngine.IntColumn"/>
+        <Column name="is_public" type="RowsetImportEngine.IntColumn"/>
+        <Column name="is_ipv4" type="RowsetImportEngine.IntColumn"/>
+      </KnownColumns>
+    </Rowset>
+    <!--Not importing , no result set -->
+    <Rowset name="tbl_availability_replicas" enabled="true" identifier="-- sys.availability_replicas --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="replica_id" type="RowsetImportEngine.VarBinaryColumn"/>
+        <Column name="group_id" type="RowsetImportEngine.VarBinaryColumn"/>
+        <Column name="replica_metadata_id" type="RowsetImportEngine.IntColumn"/>
+        <Column name="replica_server_name" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="owner_sid" type="RowsetImportEngine.VarBinaryColumn"/>
+        <Column name="endpoint_url" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="availability_mode" type="RowsetImportEngine.IntColumn"/>
+        <Column name="availability_mode_desc" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="failover_mode" type="RowsetImportEngine.IntColumn"/>
+        <Column name="failover_mode_desc" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="session_timeout" type="RowsetImportEngine.IntColumn"/>
+        <Column name="primary_role_allow_connections" type="RowsetImportEngine.IntColumn"/>
+        <Column name="primary_role_allow_connections_desc" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="secondary_role_allow_connections" type="RowsetImportEngine.IntColumn"/>
+        <Column name="secondary_role_allow_connections_desc" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="create_date" type="RowsetImportEngine.DateTimeColumn"/>
+        <Column name="modify_date" type="RowsetImportEngine.DateTimeColumn"/>
+        <Column name="backup_priority" type="RowsetImportEngine.IntColumn"/>
+        <Column name="read_only_routing_url" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="seeding_mode" type="RowsetImportEngine.IntColumn"/>
+        <Column name="seeding_mode_desc" type="RowsetImportEngine.NVarCharColumn"/> 
+      </KnownColumns>
+    </Rowset>   
+    
+  </KnownRowsets>
+</TextImport>
+
+
