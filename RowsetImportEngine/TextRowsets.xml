@@ -1772,7 +1772,7 @@
       <Column name="object_name" type="RowsetImportEngine.NVarCharColumn" />
       <Column name="object_id" type="RowsetImportEngine.IntColumn" />
       <Column name="stats_id" type="RowsetImportEngine.IntColumn" />
-      <Column name="statistics_name" type="RowsetImportEngine.NVarCharColumn" /
+      <Column name="statistics_name" type="RowsetImportEngine.NVarCharColumn" />
       <Column name="last_updated" type="RowsetImportEngine.DateTimeColumn" />
       <Column name="rows" type="RowsetImportEngine.IntColumn" />
       <Column name="rows_sampled" type="RowsetImportEngine.IntColumn" />
