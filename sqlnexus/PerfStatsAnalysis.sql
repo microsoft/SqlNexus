@@ -2824,7 +2824,7 @@ begin
 		declare @InstanceIndex int
 
 		set @is_Rulehit = 0 
-		set @cpuCount = 1 
+		set @cpuCount = 0 
 	
 
 		create table #tmpCounterDateTime (CounterDateTime datetime, InstanceIndex int) 
@@ -3115,7 +3115,7 @@ begin
 		
 
 		set @is_Rulehit = 0 
-		set @cpuCount = 1 
+		set @cpuCount = 0 
 	
 		create table #tmpCounterDateTime (CounterDateTime datetime, NonSQLCpu int)
 
