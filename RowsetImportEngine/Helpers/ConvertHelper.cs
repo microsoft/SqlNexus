@@ -18,6 +18,14 @@ namespace RowsetImportEngine.Helpers
                 {
                     data = (T)converter.ConvertFrom(columndata);
                 }
+                else if (converter != null && columndata != null)
+                {
+                    if (converter.IsValid(columndata.ToString()))
+                    {
+                        data = (T)converter.ConvertFrom(columndata.ToString());
+                    }
+                    
+                }
 
                 return data;
             }
