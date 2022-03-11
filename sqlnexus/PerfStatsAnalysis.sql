@@ -2005,77 +2005,77 @@ owner:jackli
 
 
 insert into tbl_Analysissummary (SolutionSourceId,Category, type,typedesc, Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('1BDE61F7-CE1D-4C99-ABFB-31344A3E317D', 'Server Performance', 'W','Warning', 'AutoCreateStats','Auto Create Statistics is disabled', 'Some databases have auto create statistics disabled. This can negative impact performance.  See Database Configuration report for details', '', 'http://aka.ms/AutoCreateStats', '  jackli', 1, 99, 0)
+values ('1BDE61F7-CE1D-4C99-ABFB-31344A3E317D', 'Server Performance', 'W','Warning', 'AutoCreateStats','Auto Create Statistics is disabled', 'Some databases have auto create statistics disabled. This can negative impact performance.  See Database Configuration report for details', '', 'https://docs.microsoft.com/sql/relational-databases/statistics/statistics#auto_create_statistics_async', '  jackli', 1, 99, 0)
 insert into tbl_Analysissummary (SolutionSourceId,Category, type,typedesc, Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('E5335E8F-91F8-4B7D-842C-8C004159C749', 'Server Performance', 'W','Warning', 'AutoUpdateStats','Auto Update Statistics is disabled', 'Some databases have auto create statistics disabled. This can negative impact performance.  See Database Configuration report for details', '', 'http://aka.ms/AutoUpdateStats', '  jackli', 1, 99, 0)
+values ('E5335E8F-91F8-4B7D-842C-8C004159C749', 'Server Performance', 'W','Warning', 'AutoUpdateStats','Auto Update Statistics is disabled', 'Some databases have auto create statistics disabled. This can negative impact performance.  See Database Configuration report for details', '', 'https://docs.microsoft.com/sql/relational-databases/statistics/statistics#auto_update_statistics_async', '  jackli', 1, 99, 0)
 insert into tbl_Analysissummary (SolutionSourceId,Category, type,typedesc, Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('9E5F54A8-9B8B-46A5-B372-238E873F6277', 'Server Performance', 'W','Warning', 'PowerPlan','Power Plan not properly set', 'Power Plan is not set to high performance which can impact overall server performance.', '', 'http://aka.ms/PowerPlan', '  jackli', 1, 100, 0)
+values ('9E5F54A8-9B8B-46A5-B372-238E873F6277', 'Server Performance', 'W','Warning', 'PowerPlan','Power Plan not properly set', 'Power Plan is not set to High Performance which can impact overall server performance.', '', 'https://docs.microsoft.com/troubleshoot/windows-server/performance/slow-performance-when-using-power-plan', '  jackli', 1, 100, 0)
 insert into tbl_Analysissummary (SolutionSourceId,Category, type,typedesc, Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('CCCDE188-8E68-4B87-9649-761AF3F48FC8','Server Performance', 'W','Warning', 'Trace Flag 4199', 'Trace flag 4199 not enabled', 'This trace flag is required to activiate all query optimizer fixes. Without this trace flag, none of the query optimizer fixes will be activated even you are on the latest hotfix or cumulative update. ', '', 'http://aka.ms/TF4199', '  jackli', 1, 100, 0)
+values ('CCCDE188-8E68-4B87-9649-761AF3F48FC8','Server Performance', 'W','Warning', 'Trace Flag 4199', 'Trace flag 4199 not enabled', 'This trace flag is required to activiate all query optimizer fixes. Without this trace flag, none of the query optimizer fixes will be activated even you are on the latest hotfix or cumulative update. ', '', 'https://docs.microsoft.com/sql/t-sql/database-console-commands/dbcc-traceon-trace-flags-transact-sql#tf4199', '  jackli', 1, 100, 0)
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('D89F7B5E-25BA-460E-9628-F7B0F5E31FFE','Server Performance', 'W','Warning', 'Detailed XEvent Tracing','Some intensive XEvent tracing captured', 'Some intensive extended events (xevent) are active on the server.  For high volume systems, this can have negative performance impact. see pssdiag file *Profiler Traces_Startup.OUT for details', 'http://aka.ms/Xevents', 'http://aka.ms/Xevents', '  jackli', 1, 200, 0)
+values ('D89F7B5E-25BA-460E-9628-F7B0F5E31FFE','Server Performance', 'W','Warning', 'Detailed XEvent Tracing','Some intensive XEvent tracing captured', 'Some high-impact Extended Events (XEvents) are active on the server.  For high volume systems, this can have negative performance impact. Turn off query_pre_execution_showplan, query_post_execution_showplan,query_post_compilation_showplan,lock_acquired,sql_statement_starting,sql_statement_completed,sp_statement_starting, and sp_statement_completed to reduce impact. See pssdiag file *Profiler Traces_Startup.OUT for details', '', '', '  jackli', 1, 200, 0)
 insert into tbl_Analysissummary (SolutionSourceId,Category, type,typedesc, Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('3EAE7B17-7BE4-486D-98AC-309E74CE6771','Server Performance', 'W','Warning', 'Trace Flag 1118', 'Trace Flag 1118 not enabled', 'This trace flag help reduce tempdb contention. ', '', 'http://aka.ms/TF1118', '  jackli', 1, 100, 0)
+values ('3EAE7B17-7BE4-486D-98AC-309E74CE6771','Server Performance', 'W','Warning', 'Trace Flag 1118', 'Trace Flag 1118 not enabled', 'This trace flag help reduce tempdb contention. ', '', 'https://docs.microsoft.com/sql/t-sql/database-console-commands/dbcc-traceon-trace-flags-transact-sql#tf1118', '  jackli', 1, 100, 0)
 
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('17C9E271-756E-46E8-A3D3-B9B15E5FA305','Server Performance', 'W', 'Warning', 'Trace Flag 8048', 'Trace flag 8048 not enabled', 'This trace flag partitions certain memory allocators by CPU and can improve performance for hihgly active servers.', '', 'http://aka.ms/TF8048', '  jackli', 1, 100, 0)
+values ('17C9E271-756E-46E8-A3D3-B9B15E5FA305','Server Performance', 'W', 'Warning', 'Trace Flag 8048', 'Trace flag 8048 not enabled', 'This trace flag partitions certain memory allocators by CPU and can improve performance for hihgly active servers.', '', 'https://docs.microsoft.com/sql/t-sql/database-console-commands/dbcc-traceon-trace-flags-transact-sql#tf8048', '  jackli', 1, 100, 0)
 
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('AC4F983A-B8F9-4542-8971-B6052175F2B3','Server Performance', 'W','Warning', 'Trace Flag 9024', 'Trace flag 9024 not enabled', 'This trace flag can help reduce recovery time and log writes.', '', 'http://aka.ms/TF9024', '  jackli', 1, 100, 0)
+values ('AC4F983A-B8F9-4542-8971-B6052175F2B3','Server Performance', 'W','Warning', 'Trace Flag 9024', 'Trace flag 9024 not enabled', 'This trace flag can help reduce recovery time and log writes.', '', 'https://docs.microsoft.com/sql/t-sql/database-console-commands/dbcc-traceon-trace-flags-transact-sql#tf9024', '  jackli', 1, 100, 0)
 
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('76F946D8-7AAD-400E-9CEF-1F071AA68868','Server Performance', 'W','Warning', 'Trace Flag 1236', 'Trace flag 1236 not enabled (sql 2014 SP1 and above, TF is not required)', 'This trace flag can help reduce contention on database lock for highly active servers.', '', 'http://aka.ms/TF1236', '  jackli', 1, 100, 0)
+values ('76F946D8-7AAD-400E-9CEF-1F071AA68868','Server Performance', 'W','Warning', 'Trace Flag 1236', 'Trace flag 1236 not enabled (sql 2014 SP1 and above, TF is not required)', 'This trace flag can help reduce contention on database lock for highly active servers.', '', 'https://docs.microsoft.com/sql/t-sql/database-console-commands/dbcc-traceon-trace-flags-transact-sql#tf1236', '  jackli', 1, 100, 0)
 
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('047C814A-5D3D-4652-A2CF-A975399D11BF','Server Performance', 'I','Info', 'NonDefault_sp_configure', 'Some sp_configure values are not set to default.', 'Non Default values do not necessarily mean issues.  But please review Server Configuration report to make sure they are as intended', 'http://aka.ms/NondefaultConfigInt', 'http://aka.ms/NonDefaultConfig', '  jackli', 1, 100, 0)
+values ('047C814A-5D3D-4652-A2CF-A975399D11BF','Server Performance', 'I','Info', 'NonDefault_sp_configure', 'Some sp_configure values are not set to default.', 'Non Default values do not necessarily mean issues.  But please review Server Configuration report to make sure they are as intended', '', '', '  jackli', 1, 100, 0)
 
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('59B1DB60-ABC2-4981-A9EC-DF901C3A89B4','Server Performance', 'W','Warning', 'usp_RG_Idle', 'high RESOURCE_GOVERNOR_IDLE detected', 'High waits on RESOURCE_GOVERNOR_IDLE were deteted.  This is means CPU cap was configured for Resource Goverrnor and could force query to slowdown.  make sure CPU Cap for Resource Governor is properly configured. ', 'http://aka.ms/rgidle','http://aka.ms/rgidle', '  jackli', 1, 100, 0)
-
-
-insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('773805A8-5DB4-4132-8488-E8FBDE57C67A','Server Performance', 'W','Warning', 'usp_HighCompile', 'Potential high compiles detected', 'Potential high compilation was detected. Please verify with perfmon data.  This can cause high CPU issue ', 'http://aka.ms/highcompile','http://aka.ms/highcompile', '  jackli', 1, 100, 0)
+values ('59B1DB60-ABC2-4981-A9EC-DF901C3A89B4','Server Performance', 'W','Warning', 'usp_RG_Idle', 'high RESOURCE_GOVERNOR_IDLE detected', 'High waits on RESOURCE_GOVERNOR_IDLE were deteted.  This is means CPU cap was configured for Resource Goverrnor and could force query to slowdown.  Make sure CPU cap for Resource Governor is properly configured. ', '','', '  jackli', 1, 100, 0)
 
 
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('F9BBF034-ACFE-4C98-AD32-6010573AFD3D','Server Performance', 'W','Warning', 'usp_HighCacheCount', 'High Cache Entries detected.', 'High number of SQL Server cache entries (Cache Object Counts) were detected.  This can cause high CPU and spinlock issue.', 'http://aka.ms/highcachecount','http://aka.ms/highcachecount', '  jackli', 1, 100, 0)
-
-insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('64EEE25A-4B20-4C24-8F27-1E967011D69E','Server Performance', 'W','Warning', 'usp_HighStmtCount', 'Some queries had high statement execution count', 'Some queries had high number statement executions.  This makes it challenging to tune the queries. ', 'http://aka.ms/highstmtcount','http://aka.ms/highstmtcount', '  jackli', 1, 100, 0)
+values ('773805A8-5DB4-4132-8488-E8FBDE57C67A','Server Performance', 'W','Warning', 'usp_HighCompile', 'Potential high compiles detected', 'Potential high compilation was detected. Please verify with Perfmon counters data.  This can cause high CPU issues', '','', '  jackli', 1, 100, 0)
 
 
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('12145143-A34C-4393-BC77-74E3F3A74D5D','Server Performance', 'W','Warning', 'usp_ExcessiveLockXevent', 'lock_acquired or lock_released xevent was detected. ',  'These events can cause high cpu or other performance issues ', 'http://aka.ms/lock_quired_xevent','http://aka.ms/lock_quired_xevent', '  jackli', 1, 100, 0)
+values ('F9BBF034-ACFE-4C98-AD32-6010573AFD3D','Server Performance', 'W','Warning', 'usp_HighCacheCount', 'High Cache Entries detected.', 'High number of SQL Server cache entries (Cache Object Counts) were detected.  This can cause high CPU and spinlock issue.', '','https://support.microsoft.com/en-us/topic/kb3026083-fix-sos-cachestore-spinlock-contention-on-ad-hoc-sql-server-plan-cache-causes-high-cpu-usage-in-sql-server-798ca4a5-3813-a3d2-f9c4-89eb1128fe68', '  jackli', 1, 100, 0)
 
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('F9EF91B9-529B-4F72-8545-59689D43D37E','Server Performance', 'W','Warning', 'usp_McAFee_Intrusion', 'McAFee Host Intrusion Prevenstion loaded in SQL Process',  'Loading McAfee Host Intrusion Prevention into SQL can lead to performance and stability issues ', 'https://support.microsoft.com/en-us/kb/2033238','https://support.microsoft.com/en-us/kb/2033238', '  jackli', 1, 100, 0)
-
-
-insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('F332275E-9CF4-4CFA-935D-AE248B74ADE4','Query Performance', 'W','Warning', 'usp_BatchSort', 'Batch sort is detected in query plan(s)',  'Batch sort can cause high CPU or memory grant issues due to cardinality over-estimation ', 'http://aka.ms/batchsort','http://aka.ms/batchsort', '  jackli', 1, 100, 0)
+values ('64EEE25A-4B20-4C24-8F27-1E967011D69E','Server Performance', 'W','Warning', 'usp_HighStmtCount', 'Some queries had high statement execution count', 'Some queries had high number statement executions.  This makes it challenging to tune the queries. ', '','', '  jackli', 1, 100, 0)
 
 
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('B21D0648-90FD-463B-B32B-C9E710D62B63','Query Performance', 'W','Warning', 'usp_SmallSampledStats', 'Some statistics have sample size less than 5%',  'Default sample size is sufficient for most normal workloads. But unevenly distributed data may require larger sample size or full scan.', 'http://aka.ms/nexus/smallsamplestats','http://aka.ms/nexus/smallsamplestats', '  jackli', 1, 100, 0)
+values ('12145143-A34C-4393-BC77-74E3F3A74D5D','Server Performance', 'W','Warning', 'usp_ExcessiveLockXevent', 'lock_acquired or lock_released xevent was detected. ',  'These events can cause high cpu or other performance issues. Turn lock_acquired or lock_released xevent off if not needed or use for very brief periods', '','', '  jackli', 1, 100, 0)
+
+insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
+values ('F9EF91B9-529B-4F72-8545-59689D43D37E','Server Performance', 'W','Warning', 'usp_McAFee_Intrusion', 'McAFee Host Intrusion Prevenstion loaded in SQL Process',  'Loading McAfee Host Intrusion Prevention into SQL can lead to performance and stability issues ', '','https://docs.microsoft.com/troubleshoot/sql/performance/performance-consistency-issues-filter-drivers-modules', '  jackli', 1, 100, 0)
 
 
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('E3CECDDA-EBEB-4E69-940C-660813ED5D93','Query Performance', 'W','Warning', 'usp_DisabledIndex', 'Some indexes are disabled',  'Disabling indexes may cause poor query performance. check tbl_DisabledIndexes for details ', 'http://aka.ms/nexus/disabledindex','http://aka.ms/nexus/disabledindex', '  jackli', 1, 100, 0)
+values ('F332275E-9CF4-4CFA-935D-AE248B74ADE4','Query Performance', 'W','Warning', 'usp_BatchSort', 'Batch sort is detected in query plan(s)',  'Batch sort can cause high CPU or memory grant issues due to cardinality over-estimation ', '','https://docs.microsoft.com/troubleshoot/sql/performance/decreased-perf-high-cpu-optimized-nested-loop', '  jackli', 1, 100, 0)
 
 
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('63C1DA9B-CAA5-4C9D-9CA0-3916ED6D5F98','Server Performance', 'W','Warning', 'usp_LongAutoUpdateStats', 'Long Auto update stats',  'Some auto statistics update took longer than 60 seconds.  Consider asynchronous stats update ', 'https://aka.ms/nexus/longautoupdatesats','https://aka.ms/nexus/longautoupdatesats', '  jackli', 1, 100, 0)
+values ('B21D0648-90FD-463B-B32B-C9E710D62B63','Query Performance', 'W','Warning', 'usp_SmallSampledStats', 'Some statistics have sample size less than 5%',  'Default sample size is sufficient for most normal workloads. But unevenly distributed data may require larger sample size or Full Scan sampling.', '','', '  jackli', 1, 100, 0)
 
 
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('6A67B697-F1AF-46D2-99D1-E7B6086B4D5D','Server Performance', 'W','Warning', 'usp_AccessCheck', 'Access Check Configuration',  'access check cache bucket count and access check cache quota are not configured per best practice ', 'https://support.microsoft.com/kb/2964518','https://support.microsoft.com/kb/2964518', '  jackli', 1, 100, 0)
+values ('E3CECDDA-EBEB-4E69-940C-660813ED5D93','Query Performance', 'W','Warning', 'usp_DisabledIndex', 'Some indexes are disabled',  'Disabling indexes may cause poor query performance. Check tbl_DisabledIndexes for details ', '','http://aka.ms/nexus/disabledindex', '  jackli', 1, 100, 0)
 
 
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('D3E36E57-4DDE-44D3-939F-13D2A2608F02','Server Performance', 'W','Warning', 'usp_RedoThreadBlocked', 'Redo Thread wait ',  'Redo Thread may have waited excessively.  check tbl_requests for command with DB STARTUP ', '','', '  jackli', 1, 100, 0)
+values ('63C1DA9B-CAA5-4C9D-9CA0-3916ED6D5F98','Server Performance', 'W','Warning', 'usp_LongAutoUpdateStats', 'Long Auto update stats',  'Some auto statistics update took longer than 60 seconds.  Consider asynchronous stats update ', '','https://docs.microsoft.com/sql/relational-databases/statistics/statistics#auto_update_statistics_async', '  jackli', 1, 100, 0)
+
 
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('4FE75D34-9AAE-440E-9758-1ABE2AA7B54D','Server Performance', 'W','Warning', 'usp_VirtualBytesLeak', 'Virtual bytes leak',  'Virtual bytes for SQL process were over 7TB.  This may indicate of virtual bytes leak. Please check perfmon counter.', 'https://support.microsoft.com/kb/3074434','https://support.microsoft.com/kb/3074434', '  jackli', 1, 100, 0)
+values ('6A67B697-F1AF-46D2-99D1-E7B6086B4D5D','Server Performance', 'W','Warning', 'usp_AccessCheck', 'Access Check Configuration',  'access check cache bucket count and access check cache quota are not configured per best practice ', '','https://docs.microsoft.com/en-us/troubleshoot/sql/performance/recommended-updates-configuration-options', '  jackli', 1, 100, 0)
+
+
+insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
+values ('D3E36E57-4DDE-44D3-939F-13D2A2608F02','Server Performance', 'W','Warning', 'usp_RedoThreadBlocked', 'Redo Thread wait ',  'Redo Thread may have waited excessively.  Check tbl_requests for command with DB STARTUP ', '','', '  jackli', 1, 100, 0)
+
+insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
+values ('4FE75D34-9AAE-440E-9758-1ABE2AA7B54D','Server Performance', 'W','Warning', 'usp_VirtualBytesLeak', 'Virtual bytes leak',  'Virtual bytes for SQL process were over 7TB.  This may indicate of virtual bytes leak. Please check perfmon counter.', '','https://support.microsoft.com/kb/3074434', '  jackli', 1, 100, 0)
 
 
 
@@ -2103,7 +2103,7 @@ owner:   ericbu
 
 -- Added 5/27/2015
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('25678531-4722-48C4-94B0-026C2ED1021F','Server Performance', 'W','Warning', 'usp_HighRecompiles', 'Potential high Recompiles detected, 50+ per second', 'Potential high recompilations were detected. Please verify with perfmon data.  This can cause high CPU issues.', 'http://aka.ms/highstmtrecompile','', '  ericbu', 1, 100, 0)
+values ('25678531-4722-48C4-94B0-026C2ED1021F','Server Performance', 'W','Warning', 'usp_HighRecompiles', 'Potential high Recompiles detected, 50+ per second', 'Potential high recompilations were detected. Please verify with perfmon data.  This can cause high CPU issues.', '','', '  ericbu', 1, 100, 0)
 
 -- TBD Service Broker
 	
@@ -2122,34 +2122,34 @@ insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name,
 values ('FDBF24A1-3EBE-49F1-A02B-FD5686ACDAE9','Server Performance', 'W','Warning', 'Optimizer_Memory_Leak', 'Optimizer Memory Leak', 'MEMORYCLERK_SQLOPTIMIZER memory may be high.  This could be a leak issue which is fixed in SQL 2012 Sp1 CU3', 'http://support.microsoft.com/kb/2803065','http://support.microsoft.com/kb/2803065', '  jaynar', 1, 100, 0)
 
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('5E630273-C14F-4DCE-BDA0-24A1FD8E25CA','Server Performance', 'W','Warning', 'usp_IOAnalysis', 'Disk IO Analysis', 'The disk sec/transfer in following drives exceeded 20 ms, check the perfmon for complete analysis', '/sites/Onestop/CTSSQL/Pages/Slow%20Disk%20IO%20Issues.aspx','', '  jaynar', 1, 100, 0)
+values ('5E630273-C14F-4DCE-BDA0-24A1FD8E25CA','Server Performance', 'W','Warning', 'usp_IOAnalysis', 'Disk IO Analysis', 'The disk sec/transfer in following drives exceeded 20 ms, check the perfmon for complete analysis', '','https://docs.microsoft.com/en-us/troubleshoot/sql/performance/troubleshoot-sql-io-performance', '  jaynar', 1, 100, 0)
 
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('5AE45557-E463-48D6-B135-11AADCB8642F','Server Performance', 'I','Info', 'usp_WarnmissingIndex', 'Missing Index detected', 'There are missing indexes detected.  Please review SQL Nexus report and make recommendations to your customer.', '/sites/Onestop/CTSSQL/Pages/Index%20Tuning.aspx','', '  jaynar', 1, 100, 0)
+values ('5AE45557-E463-48D6-B135-11AADCB8642F','Server Performance', 'I','Info', 'usp_WarnmissingIndex', 'Missing Index detected', 'There are missing indexes detected.  Please review SQL Nexus report and make recommendations to your customer.', '','', '  jaynar', 1, 100, 0)
 
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('0C73F3D4-6CCC-4FC9-AE37-58110F9C15DB','Server Performance', 'I','Info', 'StaleStatswarning2008', 'Stale Stats warning 2008', 'Statistics of some tables has not been updated for over 7 days', '/sites/Onestop/CTSSQL/Pages/All%20about%20statistics.aspx','', '  jaynar', 1, 100, 0)
+values ('0C73F3D4-6CCC-4FC9-AE37-58110F9C15DB','Server Performance', 'I','Info', 'StaleStatswarning2008', 'Stale Stats warning 2008', 'Statistics of some tables has not been updated for over 7 days', '','https://docs.microsoft.com/sql/relational-databases/statistics/statistics#UpdateStatistics', 'jaynar', 1, 100, 0)
 
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('010B3DBA-76CC-46C0-AC1B-3CAD09F95891','Server Performance', 'W','Warning', 'usp_SQLHighCPUconsumption', 'SQL High CPU consumption', 'CPU consumption on the SQL Server exceeded for an extended period of time', '/sites/Onestop/CTSSQL/Pages/perfcausemap_SQL%20vs%20non-SQL%20CPU.aspx','', '  jaynar', 1, 100, 0)
+values ('010B3DBA-76CC-46C0-AC1B-3CAD09F95891','Server Performance', 'W','Warning', 'usp_SQLHighCPUconsumption', 'SQL High CPU consumption', 'CPU consumption from SQL Server was excessive (>80%) for an extended period of time', '','https://docs.microsoft.com/en-us/troubleshoot/sql/performance/troubleshoot-high-cpu-usage-issues', '  jaynar', 1, 100, 0)
 
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('6C82DA17-D04C-4155-8702-19A9A1363A64','Server Performance', 'W','Warning', 'usp_KernelHighCPUconsumption', 'Kernel High CPU consumption', 'Kernel CPU consumption for SQL Server exceeded for an extended period of time.', '/sites/Onestop/CTSSQL/Pages/perfcausemap_SQL%20vs%20non-SQL%20CPU.aspx','', '  jaynar', 1, 100, 0)
+values ('6C82DA17-D04C-4155-8702-19A9A1363A64','Server Performance', 'W','Warning', 'usp_KernelHighCPUconsumption', 'Kernel High CPU consumption', 'Kernel CPU consumption for SQL Server exceeded for an extended period of time.', '','', '  jaynar', 1, 100, 0)
 
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('6E19B301-E83B-4E5F-AF4E-A8DD2251C1B6','Server Performance', 'W','Warning', 'usp_Non_SQL_CPU_consumption', 'High non-SQL CPU consumption detected', 'Majority of the CPU consumed came from non SQL Server process. Review the perfmon data', '/sites/Onestop/CTSSQL/Pages/perfcausemap_SQL%20vs%20non-SQL%20CPU.aspx','', '  jaynar', 1, 100, 0)
+values ('6E19B301-E83B-4E5F-AF4E-A8DD2251C1B6','Server Performance', 'W','Warning', 'usp_Non_SQL_CPU_consumption', 'High non-SQL CPU consumption detected', 'Much of the CPU utilization came from non-SQL Server process(es). Review the perfmon data to identify which processes caused this (Process object)', '','', '  jaynar', 1, 100, 0)
 
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('57CAA4BB-C7BD-4F96-8040-3224008A3F39','Server Performance', 'I','Info', 'XEventcrash', 'XEvent may cause SQL Server crash', 'XEvent session retrieving the Query Hash can result in SQL Server shutdown', '/Pages1/Known%20issues%20resulting%20SQL%20Server%20crashes%20or%20Terminations.aspx','http://support.microsoft.com/kb/3004355', '  jaynar', 1, 100, 0)
+values ('57CAA4BB-C7BD-4F96-8040-3224008A3F39','Server Performance', 'I','Info', 'XEventcrash', 'XEvent may cause SQL Server crash', 'XEvent session retrieving the Query Hash can result in SQL Server shutdown', '','http://support.microsoft.com/kb/3004355', '  jaynar', 1, 100, 0)
 
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('607B17FD-98F1-498E-9B93-F16E5A155730','Server Performance', 'W','Warning', 'OracleLinkedServerIssue', 'Oracle Driver SQL Server crash', 'Oracle driver loaded in SQL Server memory space may cause SQL Server to crash, refer the KB for solution', '/Pages1/Known%20issues%20resulting%20SQL%20Server%20crashes%20or%20Terminations.aspx','http://support.microsoft.com/kb/2295405', '  jaynar', 1, 100, 0)
+values ('607B17FD-98F1-498E-9B93-F16E5A155730','Server Performance', 'W','Warning', 'OracleLinkedServerIssue', 'Oracle Driver SQL Server crash', 'Oracle driver loaded in SQL Server memory space may cause SQL Server to crash, refer the KB for solution', '','https://docs.microsoft.com/en-US/troubleshoot/sql/admin/crashes-run-oracle-linked-server-query', '  jaynar', 1, 100, 0)
 
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('BBECDF81-DCCE-4E41-93C9-7EB9E11F53BD','Server Performance', 'W','Warning', 'usp_ExcessiveTrace_Warning', 'Excessive Trace Warning', 'Multiple traces were detected running on the server.  This can negatively impact server performance', '/sites/Onestop/CTSSQL/Pages/PerfCauseMap_SQLTRACE_LOCK.aspx','', '  jaynar', 1, 100, 0)
+values ('BBECDF81-DCCE-4E41-93C9-7EB9E11F53BD','Server Performance', 'W','Warning', 'usp_ExcessiveTrace_Warning', 'Excessive Trace Warning', 'Multiple traces were detected running on the server.  This can negatively impact server performance', '','', '  jaynar', 1, 100, 0)
 
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('948756B6-A67F-4CB1-86F9-1B22C26F0B9C','Server Performance', 'W','Warning', 'usp_Many_Traces_Used', 'Excessive Trace events collected', 'Multiple non default trace events  were detected running on the server.  This can negatively impact server performance', '/sites/Onestop/CTSSQL/Pages/PerfCauseMap_SQLTRACE_LOCK.aspx','', '  jaynar', 1, 100, 0)
+values ('948756B6-A67F-4CB1-86F9-1B22C26F0B9C','Server Performance', 'W','Warning', 'usp_Many_Traces_Used', 'Excessive Trace events collected', 'Multiple non default trace events  were detected running on the server.  This can negatively impact server performance', '','', '  jaynar', 1, 100, 0)
 
 
 
@@ -2162,7 +2162,7 @@ owner:  VIRANA
 
 
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('6D4B332C-67A0-428D-A08C-A48A5327DE60','Query Performance', 'W','Warning', 'usp_oldce', 'Customer using oldCE for database', 'Customer not taking advantage of newCE', 'https://blogs.technet.microsoft.com/dataplatforminsider/2014/03/17/the-new-and-improved-cardinality-estimator-in-sql-server-2014','https://blogs.technet.microsoft.com/dataplatforminsider/2014/03/17/the-new-and-improved-cardinality-estimator-in-sql-server-2014', '  virana', 1, 100, 0)
+values ('6D4B332C-67A0-428D-A08C-A48A5327DE60','Query Performance', 'W','Warning', 'usp_oldce', 'Customer using oldCE for database', 'Customer not taking advantage of newCE', '','https://cloudblogs.microsoft.com/sqlserver/2014/03/17/the-new-and-improved-cardinality-estimator-in-sql-server-2014/', '  virana', 1, 100, 0)
 
 
 
@@ -2654,7 +2654,7 @@ SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-ALTER  procedure  [dbo].[usp_IOAnalysis] 
+CREATE  procedure  [dbo].[usp_IOAnalysis] 
 as
 begin
     IF ((OBJECT_ID ('counterdata') IS NOT NULL) and (OBJECT_ID ('counterdetails') IS NOT NULL) and (OBJECT_ID ('tbl_AnalysisSummary') IS NOT NULL))
@@ -2808,6 +2808,7 @@ begin
 end 
 Go 
 
+
 create procedure  [usp_SQLHighCPUconsumption]  
 as
 set nocount on
@@ -2823,22 +2824,72 @@ begin
 		declare @InstanceIndex int
 
 		set @is_Rulehit = 0 
-		set @cpuCount = 1 
+		set @cpuCount = 0 
 	
 
 		create table #tmpCounterDateTime (CounterDateTime datetime, InstanceIndex int) 
 
 		--get the CPUs
-		SELECT @cpuCount = count (distinct InstanceName) 
-				from counterdata dat inner join counterdetails dli on dat.counterid = dli.counterid   
-				where dli.objectname in ('Processor' ) 
-					and  dli.countername in ( '% User Time')  
-					and dli.InstanceName not like '_Total%' 
+
+		--try to find CPU count different possible ways.  if we get zero or null, try another way
 		
-		if ((isnumeric(@cpuCount) = 0) or (@cpuCount < 1))
-		begin
-			set @cpuCount = 1
-		end
+		DECLARE @schedCount int = 0
+		IF EXISTS (SELECT 1 FROM sys.Tables WHERE NAME = N'tbl_ServerProperties')
+		--#1 try 
+		BEGIN
+			--make sure there is only 1 distinct row (this process might get more than 1 server...probably FCI situtation when it does)
+			DECLARE @cpuRows int = 0;
+			--unless there is more than 1 row
+			SELECT DISTINCT @cpuRows = COUNT(PropertyValue)
+			FROM [tbl_ServerProperties] WHERE PropertyName in ('cpu_count')
+			IF (@cpuRows = 1) --then we are OK to use the number
+			BEGIN
+				SELECT DISTINCT @cpuCount = PropertyValue
+				FROM [tbl_ServerProperties] WHERE PropertyName in ('cpu_count')
+				SELECT DISTINCT @schedCount = PropertyValue
+				FROM [tbl_ServerProperties] WHERE PropertyName in ('number of visible schedulers')
+			END
+		END -- END #1
+		-- #2 try
+		IF @cpuCount = 0 OR @cpuCount is null
+		-- still didnt get CPUs, try again
+		BEGIN
+			--consider doing this now 
+			IF (OBJECT_ID ('counterdetails') IS NOT NULL)
+			BEGIN
+				IF 0 = (SELECT COUNT(*)
+					FROM sys.indexes 
+					WHERE object_id = OBJECT_ID('dbo.counterdetails')
+					AND name='procCount_idx')
+				BEGIN
+					CREATE INDEX procCount_idx on counterdetails (objectname)
+					INCLUDE (countername, instancename)
+					WHERE objectname in ('Processor Information')
+						AND countername in ( '% User Time')
+				END
+				--as long as table existed, and we either created index or it is already there, try to get CPUs
+				SELECT @cpuCount = count (DISTINCT InstanceName)
+				FROM counterdata dat INNER JOIN counterdetails dli on dat.counterid = dli.counterid
+				WHERE dli.objectname in ('Processor Information')
+					AND dli.countername in ( '% User Time')
+					AND dli.InstanceName not like ('%_Total%')
+			END
+		END  --END #2
+		-- #3 TRY  ******
+		IF @cpuCount = 0 OR @cpuCount is null
+		-- still didnt get CPUs, try again
+		BEGIN
+			SELECT @cpuCount = cast(max(countervalue)/100 as int)
+			  FROM [dbo].[CounterData] cdat JOIN [dbo].[CounterDetails] cdet ON cdat.CounterID = cdet.CounterID
+			  WHERE ObjectName='Process' 
+				  AND CounterName='% Processor Time' 
+				  AND InstanceName = '_Total' and countervalue !=0
+		END --END #3
+
+		--did we get any count > 0...if CPU is zero, need to RETURN or break out of report and not run it as our divisor wont work correctly
+		
+		IF (@cpuCount = 0 OR @cpuCount is null)
+			RETURN
 
 		--set threshold at 80% of total CPU capacity
 		set @CPU_threshold = 80 * @cpuCount
@@ -2847,9 +2898,9 @@ begin
 		select convert(datetime, CounterDateTime), isnull (InstanceIndex, 0)    
 		from counterdata dat 
 				inner join counterdetails detl on dat.counterid = detl.counterid   
-		where detl.objectname in ('Process' )   
+		where detl.objectname in ('Process')   
 			and  detl.countername in ( '% User Time')  
-			and detl.InstanceName like '%sqlservr%' 
+			and detl.InstanceName like 'sqlservr%' 
 			and    counterValue > @CPU_threshold 
 
 		create clustered index dt_idx_kernel on #tmpCounterDateTime (CounterDateTime)
@@ -2873,15 +2924,17 @@ begin
 				from counterdata dat inner join counterdetails dli on dat.counterid = dli.counterid   
 				where dli.objectname in ('Process' ) 
 					and  dli.countername in ( '% User Time')  
-					and dli.InstanceName like '%SQLservr%' 
+					and dli.InstanceName like 'sqlservr%' 
 					and CounterDateTime between (@T_CounterDateTime - '00:01:30')  and (@T_CounterDateTime  + '00:01:30') 
 					and isnull (dli.InstanceIndex, 0) = @InstanceIndex  -- this would impact perf potentially, but alternatives are ugly
 				
+
 				if (@t_AvgValue > @CPU_threshold) 
 				begin 
+
 					update tbl_AnalysisSummary
 					set [Status] = 1, 
-					Description =  'CPU utilization from SQL Server was at least ' + convert(varchar, ROUND(@t_AvgValue/@cpuCount,0)) + '% of overall capacity for an extended period of time'
+					Description =  'CPU utilization from one or more SQL Server(s) was at least ' + convert(varchar, ROUND(@t_AvgValue/@cpuCount,0)) + '% of overall capacity for an extended period of time (3 min)'
 					where Name = 'usp_SQLHighCPUconsumption'
 					
 					--if we found one event of extended CPU utilization, break
@@ -2898,6 +2951,7 @@ begin
 		drop table #tmpCounterDateTime 
 	end
 end
+
 GO
 
 Create procedure  [usp_KernelHighCPUconsumption]  
@@ -2906,30 +2960,81 @@ set nocount on
 begin 
     IF ((OBJECT_ID ('counterdata') IS NOT NULL) and (OBJECT_ID ('counterdetails') IS NOT NULL) and (OBJECT_ID ('tbl_AnalysisSummary') IS NOT NULL))
 	begin
-		declare @is_Rulehit int 
-		declare @t_CBeginTime datetime  
-		declare @CPU_threshold decimal (38,2) 
-		declare @T_CounterDateTime datetime
-		declare @t_AvgValue int 
-		declare @cpu_count int
-		declare @InstanceIndex int
-	
-		set @is_Rulehit = 0 
+		DECLARE @is_Rulehit int 
+		DECLARE @t_CBeginTime datetime  
+		DECLARE @CPU_threshold decimal (38,2) 
+		DECLARE @T_CounterDateTime datetime
+		DECLARE @t_AvgValue int 
+		DECLARE @cpuCount int = 0
+		DECLARE @InstanceIndex int
+		DECLARE @schedCount int = 0
+
+		SET @is_Rulehit = 0 
 
 		
 		--get the CPUs
-		SELECT @cpu_count  = count (distinct InstanceName) 
-				from counterdata dat inner join counterdetails dli on dat.counterid = dli.counterid   
-				where dli.objectname in ('Processor' ) 
-					and  dli.countername in ( '% User Time')  
-					and dli.InstanceName not like '_Total%' 
+		--try to find CPU count different possible ways.  if we get zero or null, try another way
 		
-		if ((isnumeric(@cpu_count) = 0) or (@cpu_count < 1))
-		begin
-			set @cpu_count = 1
-		end
+		
+		IF EXISTS (SELECT 1 FROM sys.Tables WHERE NAME = N'tbl_ServerProperties')
+		--#1 try 
+		BEGIN
+			--make sure there is only 1 distinct row (this process might get more than 1 server...probably FCI situtation when it does)
+			DECLARE @cpuRows int = 0;
+			--unless there is more than 1 row
+			SELECT DISTINCT @cpuRows = COUNT(PropertyValue)
+			FROM [tbl_ServerProperties] WHERE PropertyName in ('cpu_count')
+			IF (@cpuRows = 1) --then we are OK to use the number
+			BEGIN
+				SELECT DISTINCT @cpuCount = PropertyValue
+				FROM [tbl_ServerProperties] WHERE PropertyName in ('cpu_count')
+				SELECT DISTINCT @schedCount = PropertyValue
+				FROM [tbl_ServerProperties] WHERE PropertyName in ('number of visible schedulers')
+			END
+		END -- END #1
+		-- #2 try
+		IF @cpuCount = 0 OR @cpuCount is null
+		-- still didnt get CPUs, try again
+		BEGIN
+			--consider doing this now 
+			IF (OBJECT_ID ('counterdetails') IS NOT NULL)
+			BEGIN
+				IF 0 = (SELECT COUNT(*)
+					FROM sys.indexes 
+					WHERE object_id = OBJECT_ID('dbo.counterdetails')
+					AND name='procCount_idx')
+				BEGIN
+					CREATE INDEX procCount_idx on counterdetails (objectname)
+					INCLUDE (countername, instancename)
+					WHERE objectname in ('Processor Information')
+					AND countername in ( '% User Time')
+				END
+				--as long as table existed, and we either created index or it is already there, try to get CPUs
+				SELECT @cpuCount = count (DISTINCT InstanceName)
+				FROM counterdata dat INNER JOIN counterdetails dli on dat.counterid = dli.counterid
+				WHERE dli.objectname in ('Processor Information')
+					AND dli.countername in ( '% User Time')
+					AND dli.InstanceName not like ('%_Total%')
+			END
+		END  --END #2
+		-- #3 TRY  ******
+		IF @cpuCount = 0 OR @cpuCount is null
+		-- still didnt get CPUs, try again
+		BEGIN
+			SELECT @cpuCount = cast(max(countervalue)/100 as int)
+			  FROM [dbo].[CounterData] cdat JOIN [dbo].[CounterDetails] cdet ON cdat.CounterID = cdet.CounterID
+			  WHERE ObjectName='Process' 
+				  AND CounterName='% Processor Time' 
+				  AND InstanceName = '_Total' and countervalue !=0
+		END --END #3
 
-		set @CPU_threshold = 30.0 * @cpu_count
+		--did we get any count > 0...if CPU is zero, need to RETURN or break out of report and not run it as our divisor wont work correctly
+		
+		IF (@cpuCount = 0 OR @cpuCount is null)
+			RETURN
+
+		--set CPU threshold
+		set @CPU_threshold = 30.0 * @cpuCount
 
 		--create table #tmp (cnt_avg int, b_CounterDateTime datetime, e_CounterDateTime datetime,Outmsg varchar(100)) 
 		create table #tmpCounterDateTime (CounterDateTime datetime, InstanceIndex int) 
@@ -2939,9 +3044,9 @@ begin
 		select convert(datetime, CounterDateTime), isnull (InstanceIndex, 0)   
 		from	counterdata dat 
 			inner join counterdetails dli on dat.counterid = dli.counterid   
-		where dli.objectname in ('Process' ) --'physicaldisk','Processor' 
+		where dli.objectname in ('Process') --'physicaldisk','Processor' 
 				and dli.countername in ( '% Privileged Time')  
-				and dli.InstanceName like '%SQLservr%' 
+				and dli.InstanceName like 'sqlservr%' 
 				and counterValue  > @CPU_threshold  
 
 		create clustered index dt_idx_sqluser on #tmpCounterDateTime (CounterDateTime)
@@ -2966,7 +3071,7 @@ begin
 								 ON dat.counterid = dli.counterid
 				  WHERE  dli.objectname IN ( 'Process' ) --'physicaldisk','Processor' 
 						 AND dli.countername IN ( '% Privileged Time' )
-						 AND dli.instancename LIKE '%SQLservr%'
+						 AND dli.instancename LIKE 'sqlservr%'
 						 AND counterdatetime BETWEEN (@T_CounterDateTime - '00:01:30' )
 													 AND ( @T_CounterDateTime + '00:01:30')
 						and isnull (dli.InstanceIndex, 0) = @InstanceIndex  -- this would impact perf potentially, but alternatives are ugly
@@ -2975,7 +3080,7 @@ begin
 					BEGIN
 						update tbl_AnalysisSummary
 						set [Status] = 1,
-						Description =  'Kernel CPU utilization from SQL Server was at least ' + convert(varchar, ROUND(@t_AvgValue/@cpu_count,0)) + '% of overall capacity for an extended period of time'
+						Description =  'Kernel CPU utilization from SQL Server was at least ' + convert(varchar, ROUND(@t_AvgValue/@cpuCount,0)) + '% of overall capacity for an extended period of time (3 min.)'
 						where Name = 'usp_KernelHighCPUconsumption'
 
 						--if we found one event of extended CPU utilization, break
@@ -3010,21 +3115,70 @@ begin
 		
 
 		set @is_Rulehit = 0 
-		set @cpuCount = 1 
+		set @cpuCount = 0 
 	
 		create table #tmpCounterDateTime (CounterDateTime datetime, NonSQLCpu int)
 
 		--get the CPUs
-		SELECT @cpuCount = count (distinct InstanceName) 
-				from counterdata dat inner join counterdetails dli on dat.counterid = dli.counterid   
-				where dli.objectname in ('Processor' ) 
-					and  dli.countername in ( '% User Time')  
-					and dli.InstanceName not like '_Total%' 
+		--try to find CPU count different possible ways.  if we get zero or null, try another way
+
+		DECLARE @schedCount int = 0
+		IF EXISTS (SELECT 1 FROM sys.Tables WHERE NAME = N'tbl_ServerProperties')
+		--#1 try 
+		BEGIN
+			--make sure there is only 1 distinct row (this process might get more than 1 server...probably FCI situtation when it does)
+			DECLARE @cpuRows int = 0;
+			--unless there is more than 1 row
+			SELECT DISTINCT @cpuRows = COUNT(PropertyValue)
+			FROM [tbl_ServerProperties] WHERE PropertyName in ('cpu_count')
+			IF (@cpuRows = 1) --then we are OK to use the number
+			BEGIN
+				SELECT DISTINCT @cpuCount = PropertyValue
+				FROM [tbl_ServerProperties] WHERE PropertyName in ('cpu_count')
+				SELECT DISTINCT @schedCount = PropertyValue
+				FROM [tbl_ServerProperties] WHERE PropertyName in ('number of visible schedulers')
+			END
+		END -- END #1
+		-- #2 try
+		IF @cpuCount = 0 OR @cpuCount is null
+		-- still didnt get CPUs, try again
+		BEGIN
+			--consider doing this now 
+			IF (OBJECT_ID ('counterdetails') IS NOT NULL)
+			BEGIN
+				IF 0 = (SELECT COUNT(*)
+					FROM sys.indexes 
+					WHERE object_id = OBJECT_ID('dbo.counterdetails')
+					AND name='procCount_idx')
+				BEGIN
+					CREATE INDEX procCount_idx on counterdetails (objectname)
+					INCLUDE (countername, instancename)
+					WHERE objectname in ('Processor Information')
+					AND countername in ( '% User Time')
+				END
+				--as long as table existed, and we either created index or it is already there, try to get CPUs
+				SELECT @cpuCount = count (DISTINCT InstanceName)
+				FROM counterdata dat INNER JOIN counterdetails dli on dat.counterid = dli.counterid
+				WHERE dli.objectname in ('Processor Information')
+					AND dli.countername in ( '% User Time')
+					AND dli.InstanceName not like ('%_Total%')
+			END
+		END  --END #2
+		-- #3 TRY  ******
+		IF @cpuCount = 0 OR @cpuCount is null
+		-- still didnt get CPUs, try again
+		BEGIN
+			SELECT @cpuCount = cast(max(countervalue)/100 as int)
+			  FROM [dbo].[CounterData] cdat JOIN [dbo].[CounterDetails] cdet ON cdat.CounterID = cdet.CounterID
+			  WHERE ObjectName='Process' 
+				  AND CounterName='% Processor Time' 
+				  AND InstanceName = '_Total' and countervalue !=0
+		END --END #3
+
+		--did we get any count > 0...if CPU is zero, need to RETURN or break out of report and not run it as our divisor wont work correctly
 		
-		if ((isnumeric(@cpuCount) = 0) or (@cpuCount < 1))
-		begin
-			set @cpuCount = 1
-		end
+		IF (@cpuCount = 0 OR @cpuCount is null)
+			RETURN
 
 		--set threshold at 80% of total CPU capacity
 		set @CPU_threshold = 80 * @cpuCount
@@ -3036,7 +3190,7 @@ begin
 		WHERE detl.objectname in ('Process')   
 				and  detl.countername in ('% User Time')  
                 and (detl.InstanceName not like '%_Total%'
-				and detl.InstanceName not like '%sqlservr%'  
+				and detl.InstanceName not like 'sqlservr%'  
 				and detl.InstanceName != 'Idle')
 		GROUP BY CounterDateTime
 
@@ -3067,7 +3221,7 @@ begin
 				begin 
 					update tbl_AnalysisSummary
 					set [Status] = 1, 
-					Description =  'Non-SQL CPU utilization on the system was at least ' + convert(varchar, ROUND(@t_AvgValue/@cpuCount,0)) + '% of overall CPU capacity for an extended period of time'
+					Description =  'Non-SQL CPU utilization on the system was at least ' + convert(varchar, ROUND(@t_AvgValue/@cpuCount,0)) + '% of overall CPU capacity for an extended period of time (3 min.)'
 					where Name = 'usp_Non_SQL_CPU_consumption'
 					
 					--if we found one event of extended CPU utilization, break
