@@ -2654,7 +2654,7 @@ SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-ALTER  procedure  [dbo].[usp_IOAnalysis] 
+CREATE  procedure  [dbo].[usp_IOAnalysis] 
 as
 begin
     IF ((OBJECT_ID ('counterdata') IS NOT NULL) and (OBJECT_ID ('counterdetails') IS NOT NULL) and (OBJECT_ID ('tbl_AnalysisSummary') IS NOT NULL))
@@ -2808,14 +2808,6 @@ begin
 end 
 Go 
 
---create an index to help speed up lookup of CPU count
-IF (OBJECT_ID ('counterdetails') IS NOT NULL) 
-begin
-	create index procCount_idx on counterdetails (objectname)
-	include (countername, instancename)
-	WHERE objectname in ('Processor Information') 
-		AND  countername in ( '% User Time')   
-end
 
 create procedure  [usp_SQLHighCPUconsumption]  
 as
@@ -2873,7 +2865,7 @@ begin
 					CREATE INDEX procCount_idx on counterdetails (objectname)
 					INCLUDE (countername, instancename)
 					WHERE objectname in ('Processor Information')
-					AND countername in ( '% User Time')
+						AND countername in ( '% User Time')
 				END
 				--as long as table existed, and we either created index or it is already there, try to get CPUs
 				SELECT @cpuCount = count (DISTINCT InstanceName)
