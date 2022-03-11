@@ -1766,7 +1766,8 @@
     </Rowset>
 
    <Rowset name="tbl_dm_db_stats_properties" enabled="true" identifier="-- sys.dm_db_stats_properties --" type="RowsetImportEngine.TextRowset">
-    	<Column name="database_id" type="RowsetImportEngine.IntColumn" />
+    	<Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
+      <Column name="database_id" type="RowsetImportEngine.IntColumn" />
       <Column name="database_name" type="RowsetImportEngine.NVarCharColumn" />
       <Column name="schema_name" type="RowsetImportEngine.NVarCharColumn" />
       <Column name="object_name" type="RowsetImportEngine.NVarCharColumn" />
