@@ -1612,12 +1612,16 @@
   <Rowset name="tbl_resource_governor_workload_groups" enabled="True" identifier="-- sys.resource_governor_workload_groups --" type="RowsetImportEngine.TextRowset">
 	  <KnownColumns>
 		  <Column name="group_id" type="RowsetImportEngine.IntColumn" />
-		  <Column name="request_max_memory_grant_percent" type="RowsetImportEngine.IntColumn" />
+      <Column name="name" type="RowsetImportEngine.NVarCharColumn" />
+      <Column name="importance" type="RowsetImportEngine.NVarCharColumn" />
+      <Column name="request_max_memory_grant_percent" type="RowsetImportEngine.IntColumn" />
 		  <Column name="request_max_cpu_time_sec" type="RowsetImportEngine.IntColumn" />
 		  <Column name="request_memory_grant_timeout_sec" type="RowsetImportEngine.IntColumn" />
 		  <Column name="max_dop" type="RowsetImportEngine.IntColumn" />
 		  <Column name="group_max_requests" type="RowsetImportEngine.IntColumn" />
 		  <Column name="pool_id" type="RowsetImportEngine.IntColumn" />
+      <Column name="external_pool_id" type="RowsetImportEngine.IntColumn" />
+      <Column name="request_max_memory_grant_percent_numeric" type="RowsetImportEngine.FloatColumn" />
 		  <Column name="statistics_start_time" type="RowsetImportEngine.DateTimeColumn" />
 		  <Column name="total_request_count" type="RowsetImportEngine.BigIntColumn" />
 		  <Column name="total_queued_request_count" type="RowsetImportEngine.BigIntColumn" />
