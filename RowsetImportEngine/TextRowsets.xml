@@ -1780,6 +1780,7 @@
       <Column name="steps" type="RowsetImportEngine.IntColumn" />
       <Column name="unfiltered_rows" type="RowsetImportEngine.IntColumn" />
       <Column name="modification_counter" type="RowsetImportEngine.IntColumn" />
+      <Column name="persisted_sample_percent" type="RowsetImportEngine.FloatColumn" />
     </Rowset>
     
     
@@ -2187,8 +2188,12 @@
         <Column name="key_algorithm" type="RowsetImportEngine.NVarCharColumn"/>
         <Column name="key_length" type="RowsetImportEngine.IntColumn"/>
         <Column name="encryptor_thumbprint" type="RowsetImportEngine.VarBinaryColumn"/>
-        <Column name="encryptor_type" type="RowsetImportEngine.NVarCharColumn"/>
         <Column name="percent_complete" type="RowsetImportEngine.IntColumn"/>
+        <Column name="encryptor_type" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="encryption_state_desc" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="encryption_scan_state" type="RowsetImportEngine.IntColumn"/>
+        <Column name="encryption_scan_state_desc" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="encryption_scan_modify_date" type="RowsetImportEngine.DateTimeColumn"/>        
       </KnownColumns>
     </Rowset>
 
