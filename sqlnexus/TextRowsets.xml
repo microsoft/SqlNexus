@@ -2436,6 +2436,12 @@
       </KnownColumns>
     </Rowset>   
     
+   <Rowset name="tbl_MSInfo32" enabled="true" identifier="-- system_info --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="Property" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="Value" type="RowsetImportEngine.NVarCharColumn"/>
+      </KnownColumns>
+    </Rowset>
   </KnownRowsets>
 </TextImport>
 
