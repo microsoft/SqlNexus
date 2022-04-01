@@ -2438,6 +2438,7 @@
 
     <Rowset name="tbl_database_scoped_configurations" enabled="true" identifier="-- sys.database_scoped_configurations --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
+        <Column name="input_file_name" type="RowsetImportEngine.VarCharColumn" length="512" valuetoken="INPUTFILENAME" />
         <Column name="database_id" type="RowsetImportEngine.IntColumn" />
         <Column name="dbname" type="RowsetImportEngine.NVarCharColumn" />
         <Column name="configuration_id" type="RowsetImportEngine.IntColumn" />
