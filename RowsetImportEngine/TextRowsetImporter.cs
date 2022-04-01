@@ -613,7 +613,7 @@ namespace RowsetImportEngine
 											switch (c.ValueToken)
 											{
 												case "INPUTFILENAME":
-													c.Data = this.filename;
+													c.Data = Path.GetFileName(this.filename);
 													break;
 												case "USERNAME":
 													c.Data = Environment.UserDomainName + @"\" + Environment.UserName;

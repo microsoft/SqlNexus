@@ -2435,6 +2435,19 @@
         <Column name="seeding_mode_desc" type="RowsetImportEngine.NVarCharColumn"/> 
       </KnownColumns>
     </Rowset>   
+
+    <Rowset name="tbl_database_scoped_configurations" enabled="true" identifier="-- sys.database_scoped_configurations --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="input_file_name" type="RowsetImportEngine.VarCharColumn" length="512" valuetoken="INPUTFILENAME" />
+        <Column name="database_id" type="RowsetImportEngine.IntColumn" />
+        <Column name="dbname" type="RowsetImportEngine.NVarCharColumn" />
+        <Column name="configuration_id" type="RowsetImportEngine.IntColumn" />
+        <Column name="name" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="value" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="value_for_secondary" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="is_value_default" type="RowsetImportEngine.IntColumn"/>
+      </KnownColumns>
+    </Rowset>
     
    <Rowset name="tbl_SystemInformation" enabled="true" identifier="-- system_info --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
