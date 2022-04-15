@@ -2449,12 +2449,45 @@
       </KnownColumns>
     </Rowset>
     
-   <Rowset name="tbl_MSInfo32" enabled="true" identifier="-- system_info --" type="RowsetImportEngine.TextRowset">
+   <Rowset name="tbl_SystemInformation" enabled="true" identifier="-- system_info --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
         <Column name="Property" type="RowsetImportEngine.NVarCharColumn"/>
         <Column name="Value" type="RowsetImportEngine.NVarCharColumn"/>
       </KnownColumns>
     </Rowset>
+
+   <Rowset name="tbl_ActiveProcesses_OS" enabled="true" identifier="-- task_list --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="Image Name" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="PID" type="RowsetImportEngine.IntColumn" />
+        <Column name="Session Name" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="Session#" type="RowsetImportEngine.IntColumn" />
+        <Column name="Mem Usage" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="Status" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="User Name" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="CPU Time" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="Window Title" type="RowsetImportEngine.NVarCharColumn"/>      
+      </KnownColumns>
+    </Rowset>
+
+    <Rowset name="tbl_ActiveServices_OS" enabled="true" identifier="-- service_list --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="Image Name" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="PID" type="RowsetImportEngine.IntColumn" />
+        <Column name="Services" type="RowsetImportEngine.NVarCharColumn"/>
+      </KnownColumns>
+    </Rowset>
+
+    <Rowset name="tbl_ActiveProcesses_with_ModulesLoaded" enabled="true" identifier="-- module_list --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="Image Name" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="PID" type="RowsetImportEngine.IntColumn" />
+        <Column name="Modules" type="RowsetImportEngine.NVarCharColumn"/>
+      </KnownColumns>
+    </Rowset>
+
+  
+  
   </KnownRowsets>
 </TextImport>
 
