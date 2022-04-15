@@ -87,6 +87,7 @@ IF (OBJECT_ID('tbl_ActiveProcesses_OS') IS NOT NULL)
 BEGIN
   ALTER TABLE tbl_ActiveProcesses_OS ADD MemUsage_MB DECIMAL (10,3)
 END
+GO
 
 IF (OBJECT_ID('tbl_ActiveProcesses_OS') IS NOT NULL)
 BEGIN
@@ -103,7 +104,7 @@ BEGIN
   END CATCH
 END
 
-
+GO
 --clean up the Systeminfo table after import
 IF ( (OBJECT_ID('tbl_SystemInformation') is not null) )
 BEGIN
