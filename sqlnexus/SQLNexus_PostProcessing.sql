@@ -79,3 +79,43 @@ begin
 	end
 
 end
+go
+
+--format the tasklist imported table
+
+IF (OBJECT_ID('tbl_ActiveProcesses_OS') IS NOT NULL)
+BEGIN
+  ALTER TABLE tbl_ActiveProcesses_OS ADD MemUsage_MB DECIMAL (10,3)
+END
+
+IF (OBJECT_ID('tbl_ActiveProcesses_OS') IS NOT NULL)
+BEGIN
+  BEGIN TRY
+    UPDATE tbl_ActiveProcesses_OS SET MemUsage_MB = CONVERT(DECIMAL(10,3), CONVERT (decimal(10,3), REPLACE(REPLACE ([Mem Usage], ' K', ''), ',', '' )) / 1024)  
+  END TRY
+
+  BEGIN CATCH
+   SELECT  ERROR_NUMBER() AS ErrorNumber  
+    ,ERROR_SEVERITY() AS ErrorSeverity  
+    ,ERROR_STATE() AS ErrorState  
+    ,ERROR_LINE() AS ErrorLine  
+    ,ERROR_MESSAGE() AS ErrorMessage
+  END CATCH
+END
+
+
+--clean up the Systeminfo table after import
+IF ( (OBJECT_ID('tbl_SystemInformation') is not null) )
+BEGIN
+   BEGIN TRY
+    UPDATE tbl_SystemInformation SET Property = REPLACE (Property, ':', '')
+  END TRY
+
+  BEGIN CATCH
+   SELECT  ERROR_NUMBER() AS ErrorNumber  
+    ,ERROR_SEVERITY() AS ErrorSeverity  
+    ,ERROR_STATE() AS ErrorState  
+    ,ERROR_LINE() AS ErrorLine  
+    ,ERROR_MESSAGE() AS ErrorMessage
+  END CATCH
+END
