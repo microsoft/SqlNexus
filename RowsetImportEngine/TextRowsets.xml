@@ -1313,8 +1313,64 @@
 	</KnownColumns>
 </Rowset>
 
-    
-  <Rowset name="tbl_dm_os_nodes" enabled="True" identifier="-- sys.dm_os_nodes --" type="RowsetImportEngine.TextRowset">
+
+
+    <Rowset name="tbl_dm_os_sys_info" enabled="True" identifier="--dm_os_sys_info--" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="cpu_ticks" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="ms_ticks" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="cpu_count" type="RowsetImportEngine.IntColumn" />
+        <Column name="cpu_ticks_in_ms" type="RowsetImportEngine.BigIntColumn" />
+        <!-- 2005 only-->
+        <Column name="hyperthread_ratio" type="RowsetImportEngine.IntColumn" />
+        <Column name="physical_memory_in_bytes" type="RowsetImportEngine.BigIntColumn" />
+        <!-- 2005,2008,2008R2 only-->
+        <Column name="virtual_memory_in_bytes" type="RowsetImportEngine.BigIntColumn" />
+        <!-- 2005,2008,2008R2 only-->
+        <Column name="bpool_committed" type="RowsetImportEngine.IntColumn" />
+        <!-- 2005,2008,2008R2 only-->
+        <Column name="bpool_commit_target" type="RowsetImportEngine.IntColumn" />
+        <!-- 2005,2008,2008R2 only-->
+        <Column name="bpool_visible" type="RowsetImportEngine.IntColumn" />
+        <!-- 2005,2008,2008R2 only-->
+        <Column name="physical_memory_kb" type="RowsetImportEngine.BigIntColumn" />
+        <!-- 2012+ only-->
+        <Column name="virtual_memory_kb" type="RowsetImportEngine.BigIntColumn" />
+        <!-- 2012+ only-->
+        <Column name="committed_kb" type="RowsetImportEngine.IntColumn" />
+        <!-- 2012+ only-->
+        <Column name="committed_target_kb" type="RowsetImportEngine.IntColumn" />
+        <!-- 2012+ only-->
+        <Column name="visible_target_kb" type="RowsetImportEngine.IntColumn" />
+        <!-- 2012+ only-->
+        <Column name="stack_size_in_bytes" type="RowsetImportEngine.IntColumn" />
+        <Column name="os_quantum" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="os_error_mode" type="RowsetImportEngine.IntColumn" />
+        <Column name="os_priority_class" type="RowsetImportEngine.IntColumn" />
+        <Column name="max_workers_count" type="RowsetImportEngine.IntColumn" />
+        <Column name="scheduler_count" type="RowsetImportEngine.IntColumn" />
+        <Column name="scheduler_total_count" type="RowsetImportEngine.IntColumn" />
+        <Column name="deadlock_monitor_serial_number" type="RowsetImportEngine.IntColumn" />
+        <Column name="sqlserver_start_time_ms_ticks" type="RowsetImportEngine.BigIntColumn" />
+        <!-- 2008+ only-->
+        <Column name="sqlserver_start_time" type="RowsetImportEngine.DateTimeColumn" />
+        <!-- 2008+ only-->
+        <Column name="affinity_type" type="RowsetImportEngine.IntColumn" />
+        <!-- 2008 R2+ only-->
+        <Column name="process_kernel_time_ms" type="RowsetImportEngine.BigIntColumn" />
+        <!-- 2008 R2+ only-->
+        <Column name="process_user_time_ms" type="RowsetImportEngine.BigIntColumn" />
+        <!-- 2008 R2+ only-->
+        <Column name="time_source" type="RowsetImportEngine.IntColumn" />
+        <!-- 2008 R2+ only-->
+        <Column name="virtual_machine_type" type="RowsetImportEngine.IntColumn" />
+        <!-- 2008 R2+ only-->
+      </KnownColumns>
+    </Rowset>
+
+
+    <Rowset name="tbl_dm_os_nodes" enabled="True" identifier="-- sys.dm_os_nodes --" type="RowsetImportEngine.TextRowset">
 	  <KnownColumns>
 		  <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
 		  <Column name="node_id" type="RowsetImportEngine.IntColumn" />
