@@ -190,7 +190,7 @@
     <value>1</value>
   </data>
   <metadata name="cmNav.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>261, 24</value>
+    <value>592, 0</value>
   </metadata>
   <data name="collapseAllToolStripMenuItem.ImageScaling" type="System.Windows.Forms.ToolStripItemImageScaling, System.Windows.Forms">
     <value>None</value>
@@ -240,6 +240,60 @@
   <data name="paTasks.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
+  <data name="linkLabel2.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="linkLabel2.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="linkLabel2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>32, 137</value>
+  </data>
+  <data name="linkLabel2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>124, 13</value>
+  </data>
+  <data name="linkLabel2.TabIndex" type="System.Int32, mscorlib">
+    <value>17</value>
+  </data>
+  <data name="linkLabel2.Text" xml:space="preserve">
+    <value>Launch Power BI reports</value>
+  </data>
+  <data name="&gt;&gt;linkLabel2.Name" xml:space="preserve">
+    <value>linkLabel2</value>
+  </data>
+  <data name="&gt;&gt;linkLabel2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.LinkLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;linkLabel2.Parent" xml:space="preserve">
+    <value>paTasksBody</value>
+  </data>
+  <data name="&gt;&gt;linkLabel2.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="pictureBox3.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="pictureBox3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 137</value>
+  </data>
+  <data name="pictureBox3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>16, 16</value>
+  </data>
+  <data name="pictureBox3.TabIndex" type="System.Int32, mscorlib">
+    <value>16</value>
+  </data>
+  <data name="&gt;&gt;pictureBox3.Name" xml:space="preserve">
+    <value>pictureBox3</value>
+  </data>
+  <data name="&gt;&gt;pictureBox3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;pictureBox3.Parent" xml:space="preserve">
+    <value>paTasksBody</value>
+  </data>
+  <data name="&gt;&gt;pictureBox3.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
   <data name="llOpenReadTraceLog.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -268,7 +322,7 @@
     <value>paTasksBody</value>
   </data>
   <data name="&gt;&gt;llOpenReadTraceLog.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>2</value>
   </data>
   <data name="picOpenReadTraceLog.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -292,7 +346,7 @@
     <value>paTasksBody</value>
   </data>
   <data name="&gt;&gt;picOpenReadTraceLog.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>3</value>
   </data>
   <data name="llOpenNexusLog.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -322,7 +376,7 @@
     <value>paTasksBody</value>
   </data>
   <data name="&gt;&gt;llOpenNexusLog.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>4</value>
   </data>
   <data name="picOpenNexusLog.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -346,7 +400,7 @@
     <value>paTasksBody</value>
   </data>
   <data name="&gt;&gt;picOpenNexusLog.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>5</value>
   </data>
   <data name="pbCopy.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -373,7 +427,7 @@
     <value>paTasksBody</value>
   </data>
   <data name="&gt;&gt;pbCopy.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>6</value>
   </data>
   <data name="pbExport.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -400,7 +454,7 @@
     <value>paTasksBody</value>
   </data>
   <data name="&gt;&gt;pbExport.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>7</value>
   </data>
   <data name="pbPrint.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -427,7 +481,7 @@
     <value>paTasksBody</value>
   </data>
   <data name="&gt;&gt;pbPrint.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>8</value>
   </data>
   <data name="linkLabel1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -457,7 +511,7 @@
     <value>paTasksBody</value>
   </data>
   <data name="&gt;&gt;linkLabel1.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>9</value>
   </data>
   <data name="linkLabel8.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -487,7 +541,7 @@
     <value>paTasksBody</value>
   </data>
   <data name="&gt;&gt;linkLabel8.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>10</value>
   </data>
   <data name="llPrint.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -517,7 +571,7 @@
     <value>paTasksBody</value>
   </data>
   <data name="&gt;&gt;llPrint.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>11</value>
   </data>
   <data name="paTasksBody.Location" type="System.Drawing.Point, System.Drawing">
     <value>2, 22</value>
@@ -526,7 +580,7 @@
     <value>0, 88</value>
   </data>
   <data name="paTasksBody.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 141</value>
+    <value>180, 175</value>
   </data>
   <data name="paTasksBody.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -661,7 +715,7 @@
     <value>12, 20, 3, 3</value>
   </data>
   <data name="paTasks.Size" type="System.Drawing.Size, System.Drawing">
-    <value>185, 166</value>
+    <value>185, 200</value>
   </data>
   <data name="paTasks.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -934,13 +988,13 @@
     <value>1</value>
   </data>
   <data name="paData.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 537</value>
+    <value>12, 571</value>
   </data>
   <data name="paData.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>12, 20, 3, 3</value>
   </data>
   <data name="paData.Size" type="System.Drawing.Size, System.Drawing">
-    <value>185, 115</value>
+    <value>185, 59</value>
   </data>
   <data name="paData.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -967,14 +1021,14 @@
     <value>0</value>
   </data>
   <metadata name="imGlyphs.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>346, 24</value>
+    <value>681, 0</value>
   </metadata>
   <data name="imGlyphs.ImageStream" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZTeXN0
         ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAADy
-        EQAAAk1TRnQBSQFMAgEBCwEAAdQBAAHUAQABEAEAARABAAT/AQkBAAj/AUIBTQE2AQQGAAE2AQQCAAEo
+        EQAAAk1TRnQBSQFMAgEBCwEAASQBAQEkAQEBEAEAARABAAT/AQkBAAj/AUIBTQE2AQQGAAE2AQQCAAEo
         AwABQAMAATADAAEBAQABCAYAAQwYAAGAAgABgAMAAoABAAGAAwABgAEAAYABAAKAAgADwAEAAcAB3AHA
         AQAB8AHKAaYBAAEzBQABMwEAATMBAAEzAQACMwIAAxYBAAMcAQADIgEAAykBAANVAQADTQEAA0IBAAM5
         AQABgAF8Af8BAAJQAf8BAAGTAQAB1gEAAf8B7AHMAQABxgHWAe8BAAHWAucBAAGQAakBrQIAAf8BMwMA
@@ -1246,7 +1300,7 @@
     <value>3</value>
   </data>
   <data name="tableLayoutPanel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>207, 637</value>
+    <value>207, 633</value>
   </data>
   <data name="tableLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -1264,8 +1318,11 @@
     <value>0</value>
   </data>
   <data name="tableLayoutPanel1.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="paTasks" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="paData" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="paReports" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,Absolute,20,Absolute,20" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="paTasks" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="paData" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="paReports" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,Absolute,16" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
+  <metadata name="rvTemplate.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>95, 0</value>
+  </metadata>
   <data name="rvTemplate.Location" type="System.Drawing.Point, System.Drawing">
     <value>71, 382</value>
   </data>
@@ -1282,7 +1339,7 @@
     <value>rvTemplate</value>
   </data>
   <data name="&gt;&gt;rvTemplate.Type" xml:space="preserve">
-    <value>Microsoft.Reporting.WinForms.ReportViewer, Microsoft.ReportViewer.WinForms, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91</value>
+    <value>Microsoft.Reporting.WinForms.ReportViewer, Microsoft.ReportViewer.WinForms, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91</value>
   </data>
   <data name="&gt;&gt;rvTemplate.Parent" xml:space="preserve">
     <value>splClient.Panel1</value>
@@ -1312,7 +1369,7 @@
     <value>0, 0</value>
   </data>
   <data name="tcReports.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1052, 637</value>
+    <value>1052, 633</value>
   </data>
   <data name="tcReports.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1342,7 +1399,7 @@
     <value>1</value>
   </data>
   <data name="splClient.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1265, 637</value>
+    <value>1265, 633</value>
   </data>
   <data name="splClient.SplitterDistance" type="System.Int32, mscorlib">
     <value>209</value>
@@ -1363,7 +1420,7 @@
     <value>0</value>
   </data>
   <data name="toolStripContainer1.ContentPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1265, 637</value>
+    <value>1265, 633</value>
   </data>
   <data name="&gt;&gt;toolStripContainer1.ContentPanel.Name" xml:space="preserve">
     <value>toolStripContainer1.ContentPanel</value>
@@ -1417,7 +1474,7 @@
     <value>toolStripContainer1</value>
   </data>
   <metadata name="toolbarService.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>0, 0</value>
+    <value>207, 0</value>
   </metadata>
   <data name="toolbarService.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top</value>
@@ -1432,7 +1489,7 @@
     <value>Magenta</value>
   </data>
   <data name="tsbStart.Size" type="System.Drawing.Size, System.Drawing">
-    <value>132, 22</value>
+    <value>136, 24</value>
   </data>
   <data name="tsbStart.Text" xml:space="preserve">
     <value>Start data collection</value>
@@ -1447,7 +1504,7 @@
     <value>Magenta</value>
   </data>
   <data name="tsbStop.Size" type="System.Drawing.Size, System.Drawing">
-    <value>132, 22</value>
+    <value>136, 24</value>
   </data>
   <data name="tsbStop.Text" xml:space="preserve">
     <value>Stop data collection</value>
@@ -1483,7 +1540,7 @@
     <value>30 minutes</value>
   </data>
   <data name="tscbAutoUpdate.Size" type="System.Drawing.Size, System.Drawing">
-    <value>80, 25</value>
+    <value>80, 27</value>
   </data>
   <data name="tscbAutoUpdate.Text" xml:space="preserve">
     <value>1 minute</value>
@@ -1495,7 +1552,7 @@
     <value>0, 0</value>
   </data>
   <data name="toolbarService.Size" type="System.Drawing.Size, System.Drawing">
-    <value>358, 25</value>
+    <value>366, 27</value>
   </data>
   <data name="toolbarService.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
@@ -1515,107 +1572,8 @@
   <data name="&gt;&gt;toolbarService.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <metadata name="toolbarMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>3, 49</value>
-  </metadata>
-  <data name="toolbarMain.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>None</value>
-  </data>
-  <data name="tspUnpin.ImageScaling" type="System.Windows.Forms.ToolStripItemImageScaling, System.Windows.Forms">
-    <value>None</value>
-  </data>
-  <data name="tspUnpin.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="tspUnpin.Size" type="System.Drawing.Size, System.Drawing">
-    <value>23, 22</value>
-  </data>
-  <data name="tspUnpin.Text" xml:space="preserve">
-    <value>Hide report navigator</value>
-  </data>
-  <data name="tstbConnect.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="tstbConnect.Size" type="System.Drawing.Size, System.Drawing">
-    <value>23, 22</value>
-  </data>
-  <data name="tstbConnect.Text" xml:space="preserve">
-    <value>Connect</value>
-  </data>
-  <data name="tspPin.ImageScaling" type="System.Windows.Forms.ToolStripItemImageScaling, System.Windows.Forms">
-    <value>None</value>
-  </data>
-  <data name="tspPin.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="tspPin.Size" type="System.Drawing.Size, System.Drawing">
-    <value>23, 22</value>
-  </data>
-  <data name="tspPin.Text" xml:space="preserve">
-    <value>Show report navigator</value>
-  </data>
-  <data name="tspPin.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="tstbOpen.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="tstbOpen.Size" type="System.Drawing.Size, System.Drawing">
-    <value>23, 22</value>
-  </data>
-  <data name="tstbOpen.Text" xml:space="preserve">
-    <value>&amp;Open</value>
-  </data>
-  <data name="toolStripSeparator8.Size" type="System.Drawing.Size, System.Drawing">
-    <value>6, 25</value>
-  </data>
-  <data name="tstbRunAll.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Black</value>
-  </data>
-  <data name="tstbRunAll.Size" type="System.Drawing.Size, System.Drawing">
-    <value>23, 22</value>
-  </data>
-  <data name="tstbRunAll.Text" xml:space="preserve">
-    <value>Run all reports</value>
-  </data>
-  <data name="toolStripSeparator9.Size" type="System.Drawing.Size, System.Drawing">
-    <value>6, 25</value>
-  </data>
-  <data name="tspHelp.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="tspHelp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>23, 22</value>
-  </data>
-  <data name="tspHelp.Text" xml:space="preserve">
-    <value>Help</value>
-  </data>
-  <data name="toolbarMain.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 0</value>
-  </data>
-  <data name="toolbarMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>139, 25</value>
-  </data>
-  <data name="toolbarMain.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="toolbarMain.Text" xml:space="preserve">
-    <value>toolStrip1</value>
-  </data>
-  <data name="&gt;&gt;toolbarMain.Name" xml:space="preserve">
-    <value>toolbarMain</value>
-  </data>
-  <data name="&gt;&gt;toolbarMain.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolbarMain.Parent" xml:space="preserve">
-    <value>toolStripContainer1.TopToolStripPanel</value>
-  </data>
-  <data name="&gt;&gt;toolbarMain.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <metadata name="menuBarMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>0, 25</value>
+    <value>464, 0</value>
   </metadata>
   <data name="menuBarMain.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>None</value>
@@ -1840,7 +1798,7 @@
     <value>&amp;Help</value>
   </data>
   <data name="menuBarMain.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 25</value>
+    <value>0, 0</value>
   </data>
   <data name="menuBarMain.Size" type="System.Drawing.Size, System.Drawing">
     <value>1265, 24</value>
@@ -1861,10 +1819,10 @@
     <value>toolStripContainer1.TopToolStripPanel</value>
   </data>
   <data name="&gt;&gt;menuBarMain.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>1</value>
   </data>
   <metadata name="toolbarReport.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>3, 0</value>
+    <value>336, 0</value>
   </metadata>
   <data name="toolbarReport.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>None</value>
@@ -1876,13 +1834,13 @@
     <value>Magenta</value>
   </data>
   <data name="tsbDocMap.Size" type="System.Drawing.Size, System.Drawing">
-    <value>23, 22</value>
+    <value>24, 24</value>
   </data>
   <data name="tsbDocMap.Text" xml:space="preserve">
     <value>Document map</value>
   </data>
   <data name="toolStripSeparator1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>6, 25</value>
+    <value>6, 27</value>
   </data>
   <data name="tsbFirst.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -1891,7 +1849,7 @@
     <value>Magenta</value>
   </data>
   <data name="tsbFirst.Size" type="System.Drawing.Size, System.Drawing">
-    <value>23, 22</value>
+    <value>24, 24</value>
   </data>
   <data name="tsbFirst.Text" xml:space="preserve">
     <value>First page</value>
@@ -1903,13 +1861,13 @@
     <value>Magenta</value>
   </data>
   <data name="tsbPrev.Size" type="System.Drawing.Size, System.Drawing">
-    <value>23, 22</value>
+    <value>24, 24</value>
   </data>
   <data name="tsbPrev.Text" xml:space="preserve">
     <value>Previous page</value>
   </data>
   <data name="tstbPage.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 25</value>
+    <value>40, 27</value>
   </data>
   <data name="tstbPage.Text" xml:space="preserve">
     <value>1</value>
@@ -1918,7 +1876,7 @@
     <value>Right</value>
   </data>
   <data name="tslaPages.Size" type="System.Drawing.Size, System.Drawing">
-    <value>27, 22</value>
+    <value>27, 24</value>
   </data>
   <data name="tslaPages.Text" xml:space="preserve">
     <value>of 1</value>
@@ -1927,7 +1885,7 @@
     <value>Magenta</value>
   </data>
   <data name="tsbNext.Size" type="System.Drawing.Size, System.Drawing">
-    <value>23, 22</value>
+    <value>24, 24</value>
   </data>
   <data name="tsbNext.Text" xml:space="preserve">
     <value>Next page</value>
@@ -1936,13 +1894,13 @@
     <value>Magenta</value>
   </data>
   <data name="tsbLast.Size" type="System.Drawing.Size, System.Drawing">
-    <value>23, 22</value>
+    <value>24, 24</value>
   </data>
   <data name="tsbLast.Text" xml:space="preserve">
     <value>Last page</value>
   </data>
   <data name="toolStripSeparator2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>6, 25</value>
+    <value>6, 27</value>
   </data>
   <data name="tsbBack.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -1951,7 +1909,7 @@
     <value>Magenta</value>
   </data>
   <data name="tsbBack.Size" type="System.Drawing.Size, System.Drawing">
-    <value>23, 22</value>
+    <value>24, 24</value>
   </data>
   <data name="tsbBack.Text" xml:space="preserve">
     <value>Back</value>
@@ -1963,7 +1921,7 @@
     <value>Magenta</value>
   </data>
   <data name="tsbStopAct.Size" type="System.Drawing.Size, System.Drawing">
-    <value>23, 22</value>
+    <value>24, 24</value>
   </data>
   <data name="tsbStopAct.Text" xml:space="preserve">
     <value>Stop rendering</value>
@@ -1972,19 +1930,19 @@
     <value>Magenta</value>
   </data>
   <data name="tsbRefresh.Size" type="System.Drawing.Size, System.Drawing">
-    <value>23, 22</value>
+    <value>24, 24</value>
   </data>
   <data name="tsbRefresh.Text" xml:space="preserve">
     <value>Refresh</value>
   </data>
   <data name="toolStripSeparator3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>6, 25</value>
+    <value>6, 27</value>
   </data>
   <data name="tstbParams.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
   <data name="tstbParams.Size" type="System.Drawing.Size, System.Drawing">
-    <value>86, 22</value>
+    <value>90, 24</value>
   </data>
   <data name="tstbParams.Text" xml:space="preserve">
     <value>Parameters</value>
@@ -1993,13 +1951,13 @@
     <value>Report parameters</value>
   </data>
   <data name="toolStripSeparator7.Size" type="System.Drawing.Size, System.Drawing">
-    <value>6, 25</value>
+    <value>6, 27</value>
   </data>
   <data name="tsbPrint.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
   <data name="tsbPrint.Size" type="System.Drawing.Size, System.Drawing">
-    <value>23, 22</value>
+    <value>24, 24</value>
   </data>
   <data name="tsbPrint.Text" xml:space="preserve">
     <value>Print</value>
@@ -2008,7 +1966,7 @@
     <value>Magenta</value>
   </data>
   <data name="tsbLayout.Size" type="System.Drawing.Size, System.Drawing">
-    <value>23, 22</value>
+    <value>24, 24</value>
   </data>
   <data name="tsbLayout.Text" xml:space="preserve">
     <value>Print layout</value>
@@ -2017,19 +1975,19 @@
     <value>Black</value>
   </data>
   <data name="tsbPageSetup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>23, 22</value>
+    <value>24, 24</value>
   </data>
   <data name="tsbPageSetup.Text" xml:space="preserve">
     <value>Page setup</value>
   </data>
   <data name="toolStripSeparator6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>6, 25</value>
+    <value>6, 27</value>
   </data>
   <data name="tstbCopy.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
   <data name="tstbCopy.Size" type="System.Drawing.Size, System.Drawing">
-    <value>23, 22</value>
+    <value>24, 24</value>
   </data>
   <data name="tstbCopy.Text" xml:space="preserve">
     <value>Copy to clipboard</value>
@@ -2086,7 +2044,7 @@
     <value>Black</value>
   </data>
   <data name="tsbExport.Size" type="System.Drawing.Size, System.Drawing">
-    <value>29, 22</value>
+    <value>33, 24</value>
   </data>
   <data name="tsbExport.Text" xml:space="preserve">
     <value>Export</value>
@@ -2107,13 +2065,13 @@
     <value>Black</value>
   </data>
   <data name="tstbEmail.Size" type="System.Drawing.Size, System.Drawing">
-    <value>29, 22</value>
+    <value>33, 24</value>
   </data>
   <data name="tstbEmail.Text" xml:space="preserve">
     <value>Email reports</value>
   </data>
   <data name="toolStripSeparator4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>6, 25</value>
+    <value>6, 27</value>
   </data>
   <data name="tscZoom.Items" xml:space="preserve">
     <value>Page Width</value>
@@ -2143,13 +2101,13 @@
     <value>25%</value>
   </data>
   <data name="tscZoom.Size" type="System.Drawing.Size, System.Drawing">
-    <value>80, 25</value>
+    <value>80, 27</value>
   </data>
   <data name="tscZoom.ToolTipText" xml:space="preserve">
     <value>Zoom</value>
   </data>
   <data name="tstbFind.Size" type="System.Drawing.Size, System.Drawing">
-    <value>80, 25</value>
+    <value>80, 27</value>
   </data>
   <data name="tsbFind.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -2173,13 +2131,13 @@
     <value>Magenta</value>
   </data>
   <data name="tsbFind.Size" type="System.Drawing.Size, System.Drawing">
-    <value>34, 22</value>
+    <value>34, 24</value>
   </data>
   <data name="tsbFind.Text" xml:space="preserve">
     <value>Find</value>
   </data>
   <data name="toolStripSeparator5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>6, 25</value>
+    <value>6, 27</value>
   </data>
   <data name="tsbFindNext.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -2203,7 +2161,7 @@
     <value>Magenta</value>
   </data>
   <data name="tsbFindNext.Size" type="System.Drawing.Size, System.Drawing">
-    <value>35, 22</value>
+    <value>36, 24</value>
   </data>
   <data name="tsbFindNext.Text" xml:space="preserve">
     <value>Next</value>
@@ -2212,19 +2170,19 @@
     <value>Find next</value>
   </data>
   <data name="tsLabelCurDB.Size" type="System.Drawing.Size, System.Drawing">
-    <value>65, 22</value>
+    <value>65, 24</value>
   </data>
   <data name="tsLabelCurDB.Text" xml:space="preserve">
     <value>Current DB</value>
   </data>
   <data name="tscCurrentDatabase.Size" type="System.Drawing.Size, System.Drawing">
-    <value>240, 25</value>
+    <value>240, 27</value>
   </data>
   <data name="toolbarReport.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 49</value>
+    <value>3, 24</value>
   </data>
   <data name="toolbarReport.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1092, 25</value>
+    <value>1117, 27</value>
   </data>
   <data name="toolbarReport.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -2239,6 +2197,105 @@
     <value>toolStripContainer1.TopToolStripPanel</value>
   </data>
   <data name="&gt;&gt;toolbarReport.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <metadata name="toolbarMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>1111, 0</value>
+  </metadata>
+  <data name="toolbarMain.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>None</value>
+  </data>
+  <data name="tspUnpin.ImageScaling" type="System.Windows.Forms.ToolStripItemImageScaling, System.Windows.Forms">
+    <value>None</value>
+  </data>
+  <data name="tspUnpin.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="tspUnpin.Size" type="System.Drawing.Size, System.Drawing">
+    <value>23, 24</value>
+  </data>
+  <data name="tspUnpin.Text" xml:space="preserve">
+    <value>Hide report navigator</value>
+  </data>
+  <data name="tstbConnect.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="tstbConnect.Size" type="System.Drawing.Size, System.Drawing">
+    <value>24, 24</value>
+  </data>
+  <data name="tstbConnect.Text" xml:space="preserve">
+    <value>Connect</value>
+  </data>
+  <data name="tspPin.ImageScaling" type="System.Windows.Forms.ToolStripItemImageScaling, System.Windows.Forms">
+    <value>None</value>
+  </data>
+  <data name="tspPin.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="tspPin.Size" type="System.Drawing.Size, System.Drawing">
+    <value>23, 24</value>
+  </data>
+  <data name="tspPin.Text" xml:space="preserve">
+    <value>Show report navigator</value>
+  </data>
+  <data name="tspPin.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="tstbOpen.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="tstbOpen.Size" type="System.Drawing.Size, System.Drawing">
+    <value>24, 24</value>
+  </data>
+  <data name="tstbOpen.Text" xml:space="preserve">
+    <value>&amp;Open</value>
+  </data>
+  <data name="toolStripSeparator8.Size" type="System.Drawing.Size, System.Drawing">
+    <value>6, 27</value>
+  </data>
+  <data name="tstbRunAll.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Black</value>
+  </data>
+  <data name="tstbRunAll.Size" type="System.Drawing.Size, System.Drawing">
+    <value>24, 24</value>
+  </data>
+  <data name="tstbRunAll.Text" xml:space="preserve">
+    <value>Run all reports</value>
+  </data>
+  <data name="toolStripSeparator9.Size" type="System.Drawing.Size, System.Drawing">
+    <value>6, 27</value>
+  </data>
+  <data name="tspHelp.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="tspHelp.Size" type="System.Drawing.Size, System.Drawing">
+    <value>24, 24</value>
+  </data>
+  <data name="tspHelp.Text" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="toolbarMain.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 51</value>
+  </data>
+  <data name="toolbarMain.Size" type="System.Drawing.Size, System.Drawing">
+    <value>143, 27</value>
+  </data>
+  <data name="toolbarMain.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="toolbarMain.Text" xml:space="preserve">
+    <value>toolStrip1</value>
+  </data>
+  <data name="&gt;&gt;toolbarMain.Name" xml:space="preserve">
+    <value>toolbarMain</value>
+  </data>
+  <data name="&gt;&gt;toolbarMain.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolbarMain.Parent" xml:space="preserve">
+    <value>toolStripContainer1.TopToolStripPanel</value>
+  </data>
+  <data name="&gt;&gt;toolbarMain.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
   <data name="&gt;&gt;toolStripContainer1.TopToolStripPanel.Name" xml:space="preserve">
@@ -2266,37 +2323,37 @@
     <value>2</value>
   </data>
   <metadata name="cmReport.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>554, 24</value>
+    <value>900, 0</value>
   </metadata>
   <data name="reportParametersToolStripMenuItem.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
   <data name="reportParametersToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>187, 22</value>
+    <value>191, 26</value>
   </data>
   <data name="reportParametersToolStripMenuItem.Text" xml:space="preserve">
     <value>Set report parameters</value>
   </data>
   <data name="closeToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>187, 22</value>
+    <value>191, 26</value>
   </data>
   <data name="closeToolStripMenuItem.Text" xml:space="preserve">
     <value>Close</value>
   </data>
   <data name="closeAllButThisToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>187, 22</value>
+    <value>191, 26</value>
   </data>
   <data name="closeAllButThisToolStripMenuItem.Text" xml:space="preserve">
     <value>Close All But This</value>
   </data>
   <data name="saveToClipboardToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>187, 22</value>
+    <value>191, 26</value>
   </data>
   <data name="saveToClipboardToolStripMenuItem.Text" xml:space="preserve">
     <value>Save to Clipboard</value>
   </data>
   <data name="cmReport.Size" type="System.Drawing.Size, System.Drawing">
-    <value>188, 92</value>
+    <value>192, 108</value>
   </data>
   <data name="&gt;&gt;cmReport.Name" xml:space="preserve">
     <value>cmReport</value>
@@ -2305,28 +2362,28 @@
     <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <metadata name="ps_Report.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>653, 24</value>
+    <value>1005, 0</value>
   </metadata>
   <metadata name="sd_Report.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 61</value>
+    <value>1229, 0</value>
   </metadata>
   <data name="sd_Report.Filter" xml:space="preserve">
     <value>Excel files|*.XLS|PDF files|*.PDF|JPEG files|*.JPG|Bitmap files|*.BMP|EMF files|*.EMF|GIF files|*.GIF|PNG files|*.PNG|TIFF files|*.TIF|All files|*.*</value>
   </data>
   <metadata name="scSQLDiag.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>119, 61</value>
+    <value>1335, 0</value>
   </metadata>
   <metadata name="tiServicePoll.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>443, 24</value>
+    <value>783, 0</value>
   </metadata>
   <metadata name="od_Report.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>223, 61</value>
+    <value>17, 39</value>
   </metadata>
   <data name="od_Report.Filter" xml:space="preserve">
     <value>Report files|*.RDL*|All files|*.*</value>
   </data>
   <metadata name="tiReportAutoUpdate.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>326, 61</value>
+    <value>125, 39</value>
   </metadata>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -2549,54 +2606,6 @@
   </data>
   <data name="&gt;&gt;tscbAutoUpdate.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tspUnpin.Name" xml:space="preserve">
-    <value>tspUnpin</value>
-  </data>
-  <data name="&gt;&gt;tspUnpin.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tstbConnect.Name" xml:space="preserve">
-    <value>tstbConnect</value>
-  </data>
-  <data name="&gt;&gt;tstbConnect.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tspPin.Name" xml:space="preserve">
-    <value>tspPin</value>
-  </data>
-  <data name="&gt;&gt;tspPin.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tstbOpen.Name" xml:space="preserve">
-    <value>tstbOpen</value>
-  </data>
-  <data name="&gt;&gt;tstbOpen.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolStripSeparator8.Name" xml:space="preserve">
-    <value>toolStripSeparator8</value>
-  </data>
-  <data name="&gt;&gt;toolStripSeparator8.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tstbRunAll.Name" xml:space="preserve">
-    <value>tstbRunAll</value>
-  </data>
-  <data name="&gt;&gt;tstbRunAll.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolStripSeparator9.Name" xml:space="preserve">
-    <value>toolStripSeparator9</value>
-  </data>
-  <data name="&gt;&gt;toolStripSeparator9.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tspHelp.Name" xml:space="preserve">
-    <value>tspHelp</value>
-  </data>
-  <data name="&gt;&gt;tspHelp.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;fileToolStripMenuItem.Name" xml:space="preserve">
     <value>fileToolStripMenuItem</value>
@@ -3029,6 +3038,54 @@
   </data>
   <data name="&gt;&gt;tscCurrentDatabase.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tspUnpin.Name" xml:space="preserve">
+    <value>tspUnpin</value>
+  </data>
+  <data name="&gt;&gt;tspUnpin.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tstbConnect.Name" xml:space="preserve">
+    <value>tstbConnect</value>
+  </data>
+  <data name="&gt;&gt;tstbConnect.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tspPin.Name" xml:space="preserve">
+    <value>tspPin</value>
+  </data>
+  <data name="&gt;&gt;tspPin.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tstbOpen.Name" xml:space="preserve">
+    <value>tstbOpen</value>
+  </data>
+  <data name="&gt;&gt;tstbOpen.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator8.Name" xml:space="preserve">
+    <value>toolStripSeparator8</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator8.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tstbRunAll.Name" xml:space="preserve">
+    <value>tstbRunAll</value>
+  </data>
+  <data name="&gt;&gt;tstbRunAll.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator9.Name" xml:space="preserve">
+    <value>toolStripSeparator9</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparator9.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tspHelp.Name" xml:space="preserve">
+    <value>tspHelp</value>
+  </data>
+  <data name="&gt;&gt;tspHelp.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;reportParametersToolStripMenuItem.Name" xml:space="preserve">
     <value>reportParametersToolStripMenuItem</value>

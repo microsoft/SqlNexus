@@ -11,9 +11,9 @@ namespace BulkLoadEx
     public class BulkLoadRowset
     {
         // Number of rows in each client-side cache of rows (per rowset)
-        private const int DEFAULT_MAX_CLIENT_BUF_SIZE = 2000;
+        private const int DEFAULT_MAX_CLIENT_BUF_SIZE = 50000;
         // Used for SqlBulkCopy.BatchSize
-        private const int BULK_COPY_BATCH_SIZE = 4000;
+        private const int BULK_COPY_BATCH_SIZE = 50000;
 
         private SqlConnection cn;
         private SqlBulkCopy bulkCopy;

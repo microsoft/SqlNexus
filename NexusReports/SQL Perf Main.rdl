@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:cl="http://schemas.microsoft.com/sqlserver/reporting/2010/01/componentdefinition" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2010/01/reportdefinition">
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
     <DataSource Name="DataSource_Private">
@@ -126,8 +126,6 @@ values ('Active Traces and XEvents_C', 'Active Trace and XEvent Report', 'Active
 
 
 
-
-
 --Azure
 insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection, Manditory,CategorySeq) 
 values ('WASD_Connection_Stats_C', 'Connection Stats', 'Historical summary of connection statistics to the server',  1|2|4|8, 'Azure', 'dbo.tbl_DB_CONN_STATS', 100, 'Azure Perf Stats Collector', 1, 1000)
@@ -140,10 +138,6 @@ values ('WASD_ResourceStats_C', 'sys.resource_stats', 'Snapshot from sys.resourc
 
 insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection, Manditory,CategorySeq) 
 values ('WASD_SloStats_C', 'SLO change history', 'Shows the changes in service level objective for databases',  1|2|4|8, 'Azure', 'dbo.tbl_SLO_HISTORY', 400, 'Azure Perf Stats Collector', 1,1000)
-
-
-
-
 
 select
 CategorySeq, Category, ReportName, ReportDisplayName, ReportDescription, DataCollection, SeqNo, MAX(ReportAvailable) ReportAvailable
@@ -1009,6 +1003,44 @@ end</CommandText>
       <Prompt>Show all reports even data is not available</Prompt>
     </ReportParameter>
   </ReportParameters>
+  <ReportParametersLayout>
+    <GridLayoutDefinition>
+      <NumberOfColumns>3</NumberOfColumns>
+      <NumberOfRows>3</NumberOfRows>
+      <CellDefinitions>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>0</RowIndex>
+          <ParameterName>dsServerName</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>1</ColumnIndex>
+          <RowIndex>0</RowIndex>
+          <ParameterName>dsDatabaseName</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>1</RowIndex>
+          <ParameterName>FmtHyperLinkTextColor</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>1</ColumnIndex>
+          <RowIndex>1</RowIndex>
+          <ParameterName>FmtAmbientBackground</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>2</ColumnIndex>
+          <RowIndex>1</RowIndex>
+          <ParameterName>FmtWarningBackground</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>2</RowIndex>
+          <ParameterName>ShowAllReports</ParameterName>
+        </CellDefinition>
+      </CellDefinitions>
+    </GridLayoutDefinition>
+  </ReportParametersLayout>
   <Language>en-US</Language>
   <Variables>
     <Variable Name="IsLocalReport">

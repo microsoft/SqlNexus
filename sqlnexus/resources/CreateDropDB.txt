@@ -5,6 +5,5 @@ begin
 	drop database [{0}];
 end
 create database [{0}];
---alter database [{0}] modify file (name='{0}', size=50MB)
---alter database [{0}] set recovery simple
+alter database [{0}] set recovery simple
 

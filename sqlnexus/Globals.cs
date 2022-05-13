@@ -8,7 +8,7 @@ using System.Globalization;
 using System.Data;
 using System.Data.SqlClient;
 using Microsoft.Reporting.WinForms;
-
+using Microsoft.Win32;
 namespace sqlnexus
 {
 
@@ -24,10 +24,11 @@ namespace sqlnexus
         public static Boolean ConsoleMode = false;
         private  static string m_connectionString;
         public static CredentialManager credentialMgr = new CredentialManager();
-        public static bool QuietMode = false;
+        public static bool QuietNonInteractiveMode = false;
         public static bool ExceptionEncountered = false;
         public static bool IsNexusCoreImporterSuccessful = true;
-        
+        public static bool NoWindow = false;
+        public static bool DropExistingDb = false;
 
         private static readonly string m_StartupPath = Application.StartupPath;
         private static readonly string m_AppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\sqlnexus";
@@ -66,5 +67,85 @@ namespace sqlnexus
                 return DialogResult.Cancel;
             }
         }
+
+        public static bool IsPowerBiDeskTopInstalled()
+        {
+            string RegNameValue = "DisplayName";
+            string AppDisplayName = "Microsoft Power BI Desktop (x64)";
+            RegistryKey MainKey = Registry.LocalMachine;
+            MainKey = MainKey.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall");
+
+            foreach (string SubKey in MainKey.GetSubKeyNames())
+            {
+                RegistryKey ChildKeys = MainKey.OpenSubKey(SubKey);
+                string[] ValueNames = ChildKeys.GetValueNames();
+                foreach (var ValueName in ValueNames)
+                {
+                    if(ValueName == RegNameValue)
+                    {
+                       string value= ChildKeys.GetValue(RegNameValue).ToString();
+                        if (value == AppDisplayName)
+                            return true;
+                    }
+
+                }
+                
+            }
+            return false;
+
+
+        }
+
+        public static void LuanchPowerBI()
+        {
+            if (!IsPowerBiDeskTopInstalled())
+            {
+                MessageBox.Show("PowerBI Desktop is not installed.Please download and install PowerBI Desktop before using this feature!. https://www.microsoft.com/en-us/download/details.aspx?id=58494");
+                                    
+            }
+            else
+            {
+                for (int index = Application.OpenForms.Count - 1; index >= 0; index--)
+                {
+                    if (Application.OpenForms[index].Name == "fmPBReports")
+                    {
+                        
+                        Application.OpenForms[index].Focus();
+
+                    }
+                    else {
+                        fmPBReports pbReports = new fmPBReports();
+                        pbReports.Show();
+                    }
+                    
+                }
+
+          
+
+            }
+
+        }
+        public static bool IsProgramInstalled (string ProgramDisplayName) // This method fails if we dont have a "DisplayName" RegSubkey in the Main Key
+        {
+            
+            
+            foreach (var item in Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall").GetSubKeyNames())
+            {
+
+                object programName = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\" + item).GetValue("DisplayName");
+
+                Console.WriteLine(programName);
+
+                if (string.Equals(programName, ProgramDisplayName))
+                {
+            
+                    return true;
+                }
+            }
+            
+            return false;
+
+        }
+       
     }
 }

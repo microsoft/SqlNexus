@@ -28,6 +28,8 @@ FOR /F "tokens=*" %%I IN ('dir /b "%ProjDir%Reports\Lineage.rdl" ^| findstr -V -
 ECHO xcopy /Y "%ProjDir%..\NexusReports\*.xml" "%ProjDir%Reports"
 xcopy /Y "%ProjDir%..\NexusReports\*.xml" "%ProjDir%Reports"
 
+xcopy /Y "%ProjDir%..\NexusReports\*.pbit" "%ProjDir%Reports"
+
 ECHO xcopy /Y "%ProjDir%..\NexusReports\*.sql" "%ProjDir%Reports"
 xcopy /Y "%ProjDir%..\NexusReports\*.sql" "%ProjDir%Reports"
 

@@ -81,8 +81,9 @@ namespace sqlnexus
         public static void ShowUsage()
         {
             // logger isn't hooked up to log file at this point and we're definitely running from the command line...
-            Console.WriteLine(Util.ExpandEscapeStrings(sqlnexus.Properties.Resources.Msg_Nexus));
+            //Console.WriteLine(Util.ExpandEscapeStrings(sqlnexus.Properties.Resources.Msg_Nexus));
             Console.WriteLine(Util.ExpandEscapeStrings(sqlnexus.Properties.Resources.Usage_Summary));
+            Console.WriteLine("");
             Console.WriteLine(Util.ExpandEscapeStrings(sqlnexus.Properties.Resources.Usage_Server));
             Console.WriteLine(Util.ExpandEscapeStrings(sqlnexus.Properties.Resources.Usage_Database));
             Console.WriteLine(Util.ExpandEscapeStrings(sqlnexus.Properties.Resources.Usage_WindowsAuth));
@@ -94,6 +95,8 @@ namespace sqlnexus
             Console.WriteLine(Util.ExpandEscapeStrings(sqlnexus.Properties.Resources.Usage_OutputPath));
             Console.WriteLine(Util.ExpandEscapeStrings(sqlnexus.Properties.Resources.Usage_ExitAfterProcessing));
             Console.WriteLine(Util.ExpandEscapeStrings(sqlnexus.Properties.Resources.Usage_Parameter));
+            Console.WriteLine(Util.ExpandEscapeStrings(sqlnexus.Properties.Resources.Usage_Quiet));
+            Console.WriteLine(Util.ExpandEscapeStrings(sqlnexus.Properties.Resources.Drop_Existing_Database));
         }
 
         /// <summary>
@@ -107,7 +110,7 @@ namespace sqlnexus
             // TODO: print out command line params as they are processed
             // TODO: exit if -? passed
             //Special case usage info
-            if ((1 == args.Length) && (("/?" == args[0]) || ("-?" == args[0])))
+            if ((1 == args.Length) && (("/?" == args[0]) || ("-?" == args[0]) || ("--help" == args[0]) ))
             {
                 ShowUsage();
                 return false;
@@ -141,6 +144,15 @@ namespace sqlnexus
                     }
                 }
 
+                string arg_slash_validation = arg.Replace("/","");
+
+                if (arg.Length - arg_slash_validation.Length > 1)
+                {
+                    Console.WriteLine(sqlnexus.Properties.Resources.Msg_InvalidSwitch + arg.Substring(0,2));
+                    Console.WriteLine("Possible reason: An extra backslash exists at the end of " + arg.Substring(0, 2) + " parameter in your command");
+                    return false;
+                }
+
                 switch (switchChar)
                 {
                     case 'C':
@@ -165,6 +177,12 @@ namespace sqlnexus
                         {
                             Console.WriteLine(@"Command Line Arg (/E): UseWindowsAuth");
                             Globals.credentialMgr.WindowsAuth = true;
+                            break;
+                        }
+                    case 'Q':
+                        {
+                            Console.WriteLine(@"Command Line Arg (/Q): Minimize windows in console mode");
+                            Globals.NoWindow = true;
                             break;
                         }
                     case 'U':
@@ -204,10 +222,13 @@ namespace sqlnexus
                     case 'I':
                         {
                             Console.WriteLine(@"Command Line Arg (/I): InputPath=" + arg.Substring(2));
-                            //fixing 2256
-                            String ipath = arg.Substring(2).Replace("\"", "");
+                            
+                            String ipath = arg.Substring(2).Replace("\"", "").Trim();
+                            if (ipath.EndsWith(@"\"))
+                                ipath =  ipath.Substring(0, ipath.Length-1);
+
                             Globals.PathsToImport.Enqueue(ipath);
-                            Globals.QuietMode = true;
+                            Globals.QuietNonInteractiveMode = true; 
                             break;
                         }
                     case 'V':
@@ -217,6 +238,12 @@ namespace sqlnexus
                             string param = tmpStr.Substring(0, tmpStr.IndexOf('='));
                             string val = tmpStr.Substring(tmpStr.IndexOf('=')+1);
                             Globals.UserSuppliedReportParameters.Add(param, val);
+                            break;
+                        }
+                    case 'N':
+                        {
+                            Console.WriteLine(@"Command Line Arg (/N)" + arg.Substring(2));
+                            Globals.DropExistingDb = true;
                             break;
                         }
                     default:
@@ -232,17 +259,23 @@ namespace sqlnexus
 
             if (!string.IsNullOrEmpty(Globals.credentialMgr.Database))
             {
+                String currentDb = Globals.credentialMgr.Database;
                 String CreateDB = string.Format(SQLScripts.CreateDB, Globals.credentialMgr.Database);
                 Console.WriteLine("Creating Database" + CreateDB);
-                String connstring = string.Format("Data Source={0};Initial Catalog=master;Integrated Security=SSPI", Globals.credentialMgr.Server);
-                SqlConnection conn = new SqlConnection(connstring);
+                //String connstring = string.Format("Data Source={0};Initial Catalog=master;Integrated Security=SSPI", Globals.credentialMgr.Server);
+                //SqlConnection conn = new SqlConnection(connstring);
+
+                //set the db to 'master' to be able to create a new Nexus db
+                Globals.credentialMgr.Database = "master";
+                SqlConnection conn = new SqlConnection(Globals.credentialMgr.ConnectionString);
                 conn.Open();
                 SqlCommand cmd = conn.CreateCommand();
                 cmd.CommandText = CreateDB;
 
                 cmd.ExecuteNonQuery();
 
-                
+                //reset the Nexus db name that the user selected
+                Globals.credentialMgr.Database = currentDb;
             }
 
             return true;
@@ -254,30 +287,44 @@ namespace sqlnexus
         [STAThread]
         static int Main(string[] args)
         {
-            //UnhandledExceptionHandler eh = new UnhandledExceptionHandler();
+           
+            try
+            {   
+
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+                DependencyManager.CheckReportViewer();
+
+                //initialize the main form
+                fmNexus fmN = new fmNexus();
             
-            //Application.ThreadException += new ThreadExceptionEventHandler(eh.OnThreadException);
+                
 
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            DependencyManager.CheckReportViewer();
-            fmNexus fmN = new fmNexus();
-
-            if (0 != args.Length)
-            {
-                Globals.ConsoleMode = true;
-                if (!ProcessCmdLine(args, fmN))
+                if (0 != args.Length)
                 {
-                    return (int)ProgramExitCodes.UserCancel;
+                    Globals.ConsoleMode = true;
+                    if (!ProcessCmdLine(args, fmN))
+                    {
+                        return (int)ProgramExitCodes.UserCancel;
+                    }
                 }
+                else
+                {
+                    FreeConsole();
+                }
+                Application.Run(fmN);
             }
-            else
+            
+            catch (Exception ex)
             {
-                FreeConsole();
+                Console.WriteLine(string.Format("Exception encountered in Main(): [{0}]", ex.Message));
+                Console.WriteLine(string.Format("{0}", ex.StackTrace));
             }
-            Application.Run(fmN);
-            //return (int)(Globals.ExceptionEncountered ? ProgramExitCodes.Exception : ProgramExitCodes.Normal);
+
             return (int)(Globals.IsNexusCoreImporterSuccessful ? ProgramExitCodes.Normal : ProgramExitCodes.Exception);
         }
     }
 }
+
+
+//JOTODO: Once import is complete and person closes Import screen, switch to PerfMain RDL automatically

@@ -63,26 +63,26 @@ namespace sqlnexus
 		{
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmImportSummary));
             this.listImportSummary = new System.Windows.Forms.ListView();
-            this.columnHeaderRowset = new System.Windows.Forms.ColumnHeader();
-            this.columnHeaderRowcount = new System.Windows.Forms.ColumnHeader();
+            this.columnHeaderRowset = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeaderRowcount = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.cmdOK = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // listImportSummary
             // 
             this.listImportSummary.AllowColumnReorder = true;
-            this.listImportSummary.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.listImportSummary.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.listImportSummary.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeaderRowset,
             this.columnHeaderRowcount});
             this.listImportSummary.FullRowSelect = true;
             this.listImportSummary.GridLines = true;
             this.listImportSummary.LabelWrap = false;
-            this.listImportSummary.Location = new System.Drawing.Point(8, 8);
+            this.listImportSummary.Location = new System.Drawing.Point(10, 9);
             this.listImportSummary.Name = "listImportSummary";
-            this.listImportSummary.Size = new System.Drawing.Size(400, 216);
+            this.listImportSummary.Size = new System.Drawing.Size(397, 208);
             this.listImportSummary.Sorting = System.Windows.Forms.SortOrder.Descending;
             this.listImportSummary.TabIndex = 1;
             this.listImportSummary.UseCompatibleStateImageBehavior = false;
@@ -102,9 +102,9 @@ namespace sqlnexus
             // 
             this.cmdOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.cmdOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.cmdOK.Location = new System.Drawing.Point(341, 231);
+            this.cmdOK.Location = new System.Drawing.Point(326, 226);
             this.cmdOK.Name = "cmdOK";
-            this.cmdOK.Size = new System.Drawing.Size(67, 23);
+            this.cmdOK.Size = new System.Drawing.Size(81, 26);
             this.cmdOK.TabIndex = 0;
             this.cmdOK.Text = "&OK";
             this.cmdOK.Click += new System.EventHandler(this.cmdOK_Click);
@@ -112,7 +112,7 @@ namespace sqlnexus
             // frmImportSummary
             // 
             this.AcceptButton = this.cmdOK;
-            this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
+            this.AutoScaleBaseSize = new System.Drawing.Size(6, 15);
             this.CancelButton = this.cmdOK;
             this.ClientSize = new System.Drawing.Size(416, 266);
             this.Controls.Add(this.cmdOK);

@@ -41,16 +41,14 @@ namespace NexusInterfaces
         }
         public void  ExecuteSqlScript(String script)
         {
+            string dlgTitle = "SQL Script Execution Failure";
             ExecuteBatches(ParseBatches(script));
 
-            Util.Logger.LogMessage (m_ErrorMessages.ToString(), MessageOptions.Silent, ( (m_Success == true ) ? TraceEventType.Information: TraceEventType.Error));
+            Util.Logger.LogMessage (m_ErrorMessages.ToString(), MessageOptions.Silent, ( (m_Success == true ) ? TraceEventType.Information: TraceEventType.Error), dlgTitle);
         }
         private String[] ParseBatches(string scriptText)
         {
-            Regex blank = new Regex("\r\n\\s+\rn");
-            scriptText = blank.Replace(scriptText, "");
             Regex reg1 = new Regex("\r\n\\s*go\\s*\r\n*", RegexOptions.IgnoreCase);
-
             return reg1.Split(scriptText);
 
         }
@@ -70,24 +68,27 @@ namespace NexusInterfaces
             }
             catch (Exception ex)
             {
+                string dlgTitle = "Failed to Get DataTable";
                 m_Success = false;
                 m_ErrorMessages.AppendFormat("{0} \r\n", ex.ToString());
-                Util.Logger.LogMessage (m_ErrorMessages.ToString(), MessageOptions.Silent, (m_Success == true? TraceEventType.Information: TraceEventType.Error));
+                Util.Logger.LogMessage (m_ErrorMessages.ToString(), MessageOptions.Silent, (m_Success == true? TraceEventType.Information: TraceEventType.Error), dlgTitle);
                 throw ex;
             }
             
             return dt;
 
         }
-        private  void ExecuteBatches(string[] batches)
+        private void ExecuteBatches(string[] batches)
         {
-
-            SqlConnection conn = new SqlConnection(m_ConnStringBuilder.ConnectionString);
-            conn.InfoMessage += new SqlInfoMessageEventHandler(OnInfoMessage);
-            conn.Open();  //we want this exception to pop up when we can't make a connection
+            string batchText;
+            string upperBatchText;
             Int32 BatchesExecuted = 0;
-            try
+
+            using (SqlConnection conn = new SqlConnection(m_ConnStringBuilder.ConnectionString))
             {
+                conn.InfoMessage += new SqlInfoMessageEventHandler(OnInfoMessage);
+                conn.Open();  //we want this exception to pop up when we can't make a connection
+
 
                 foreach (String bat in batches)
                 {
@@ -96,45 +97,71 @@ namespace NexusInterfaces
                     try
                     {
                         BatchesExecuted++;
-                        SqlCommand cmd = new SqlCommand();
-                        cmd.CommandText = bat;
-                        cmd.Connection = conn;
-                        cmd.CommandTimeout = 0;
-                        cmd.ExecuteNonQuery();
-                        SqlDataReader dr = cmd.ExecuteReader();
-                        while (dr.NextResult())
+
+                        using (SqlCommand cmd = new SqlCommand())
                         {
-                        m_ErrorMessages.AppendFormat("{0} \r\n", GetStringFromReader(dr));
-                        }
-                        
-                        
-                        if (!dr.IsClosed)
-                            dr.Close();
-                        //m_Success=true;
+                            cmd.CommandText = bat;
+                            cmd.Connection = conn;
+                            cmd.CommandTimeout = 0;
+
+                            //printing the fact that batch is being executed
+                            if (String.IsNullOrEmpty(bat))
+                                batchText = "Empty Batch";
+                            else if (bat.Length <= 100)
+                                batchText = bat;
+                            else
+                                batchText = bat.Substring(0, 100);
+
+                            batchText = batchText.Replace("\r\n", " ");
+                            batchText = batchText.Replace("*****", "*");
+                            batchText = batchText.Replace("  ", " ");
+
+                            upperBatchText = batchText.ToUpper();
+
+                            int position = upperBatchText.IndexOf("OWNER:");
+                            if (position > -1)
+                            {
+                                batchText = "'Script owner found in a comment here'";
+                            }
+
+                            m_ErrorMessages.AppendFormat("Starting execution of {0} \r\n", batchText);
+
+
+
+                            using (SqlDataReader dataReader = cmd.ExecuteReader())
+                            {
+                                while (dataReader.NextResult())
+                                {
+                                    m_ErrorMessages.AppendFormat("{0} \r\n", GetStringFromReader(dataReader));
+                                }
+                            }//automatically calls Dispose method SqlDataReader
+
+                        }//automatically calls Dispose method on SqlCommand
                     }
+                    //m_Success=true;
+
                     catch (SqlException sqlex)
                     {
                         m_Success = false;
                         m_ErrorMessages.AppendFormat("{0} \r\n", sqlex.ToString());
                     }
-                    catch  (Exception ex)
+                    catch (Exception ex)
                     {
                         m_Success = false;
                         m_ErrorMessages.AppendFormat("{0} \r\n", ex.ToString());
                         throw ex;
                     }
-                }
-
-            }
-            finally
-            {
-                conn.Close();
-                m_ErrorMessages.AppendLine("Batches Executed " + BatchesExecuted);
-            }
 
 
+                }//foreach loop
 
+            }//automatically calls Dispose method on SqlConnection
+
+            m_ErrorMessages.AppendLine("Batches Executed " + BatchesExecuted);
         }
+
+            
+        
 
         void OnInfoMessage(object sender, SqlInfoMessageEventArgs args)
         {

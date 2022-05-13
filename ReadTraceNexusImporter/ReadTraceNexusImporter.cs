@@ -89,39 +89,53 @@ namespace ReadTrace
         /// <returns></returns>
         private bool FindReadTraceExe()
         {
-            readTracePath = Util.GetReadTraceExe();
-
-            Util.Logger.LogMessage(String.Format(@"ReadTraceNexusImporter: Discovered readtrace at {0} ", readTracePath));
-            
-            
- 
             bool extractedOK = true;
-            if (readTracePath != null)
+
+            try
             {
-                //Util.Logger.LogMessage("readtrace path " + FileVersionInfo.GetVersionInfo(readTracePath).ToString(), MessageOptions.Dialog);
-                FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(readTracePath);
+                readTracePath = Util.GetReadTraceExe();
 
-                int MajorFactor = 1000000;
-                int MinorFactor = 1000;
-                int BuildFactor = 10;
-                int RequiredVersion = 9 * MajorFactor + 3 * MinorFactor + 78 * BuildFactor;
-                int CurrentVersion = fvi.FileMajorPart * MajorFactor + fvi.FileMinorPart * MinorFactor + fvi.FileBuildPart * BuildFactor;
+                Util.Logger.LogMessage(String.Format(@"ReadTraceNexusImporter: Discovered readtrace at {0} ", readTracePath));
 
 
-                //if (!(fvi.FileMajorPart >= 9 && fvi.FileMinorPart >= 3 && fvi.FileBuildPart >= 78))
-                if (CurrentVersion < RequiredVersion) 
+
+               
+                if (readTracePath != null)
                 {
-                    Util.Logger.LogMessage("ReadTrace needs to be at least 9.3.78.  Readtrace reports may fail.  Please install latest RML utilities", MessageOptions.All);
-                    Util.Logger.LogMessage("Readtrace is has a display issue, skipping extracting");
-                    
+                    //Util.Logger.LogMessage("readtrace path " + FileVersionInfo.GetVersionInfo(readTracePath).ToString(), MessageOptions.Dialog);
+                    FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(readTracePath);
 
+                    int MajorFactor = 1000000;
+                    int MinorFactor = 1000;
+                    int BuildFactor = 10;
+                    int RequiredVersion = 9 * MajorFactor + 3 * MinorFactor + 78 * BuildFactor;
+                    int CurrentVersion = fvi.FileMajorPart * MajorFactor + fvi.FileMinorPart * MinorFactor + fvi.FileBuildPart * BuildFactor;
+
+
+                    //if (!(fvi.FileMajorPart >= 9 && fvi.FileMinorPart >= 3 && fvi.FileBuildPart >= 78))
+                    if (CurrentVersion < RequiredVersion)
+                    {
+                        Util.Logger.LogMessage("ReadTrace needs to be at least 9.3.78.  Readtrace reports may fail.  Please install latest RML utilities", MessageOptions.All);
+                        Util.Logger.LogMessage("Readtrace is has a display issue, skipping extracting");
+
+
+                    }
+
+
+                    extractedOK = ExtractReadTraceReports();
                 }
 
-
-                extractedOK = ExtractReadTraceReports();
+                
             }
-            return (readTracePath != null) && extractedOK == true; ;
-   
+
+            catch (Exception e)
+            {
+                //string exception_message = e.Message;
+                //MessageBox.Show("There was a problem", "Title: Missing ReadTrace", MessageBoxButtons.OK,MessageBoxIcon.Exclamation);
+            }
+
+            return (readTracePath != null) && extractedOK == true;
+
         }
 
         /// <summary>
@@ -354,7 +368,7 @@ namespace ReadTrace
         /// the host will wait until <c>DoImport()</c> returns.</remarks>
         public void Cancel()
         {
-            Canceled = true;
+            Cancelled = true;
             State = ImportState.Canceling;
             Util.Logger.LogMessage("ReadTraceNexusImporter - Received cancel request");
             try
@@ -372,7 +386,7 @@ namespace ReadTrace
         }
 
         /// <summary>True if the import has been asked to cancel an in-progress load. Set by the <c>Cancel</c> method.</summary>
-        public bool Canceled
+        public bool Cancelled
         {
             get { return canceled; }
             set { canceled = value; }
@@ -406,7 +420,7 @@ namespace ReadTrace
             string args = String.Format("-S\"{0}\" \"-d{1}\" {2} -T18 -T28 -T29 \"-I{3}\" {4} {5} {6} \"-o{7}\" {8} {9} {10}",
                 this.sqlServer,                                                 // -S{0}                            SQL Server name 
                 this.database,                                                  // -d{1}                            Database name
-                (this.useWindowsAuth ? "-E" : String.Format("-U\"%s\" -P\"%s\"", this.sqlLogin, this.sqlPassword)), // {2} = -E (or) -Uuser -PPassword  Credentials
+                (this.useWindowsAuth ? "-E" : String.Format("-U\"{0}\" -P\"{1}\"", this.sqlLogin, this.sqlPassword)), // {2} = -E (or) -Uuser -PPassword  Credentials
                 firstTrcFile,                                                   // -I{3}                            Profiler trace file
                 ((bool)this.options[OPTION_OUTPUT_RML] ? "" : "-f"),            // {4} = -f                         Optional: enable RML file generation
                 ((bool)this.options[OPTION_OUTPUT_SPID_TRC] ? "-M" : ""),       // {5} = -M                         Optional: output spid-specific .trc files
@@ -528,7 +542,7 @@ namespace ReadTrace
 
         public string Name
         {
-            get { return "ReadTrace (SQL Profiler TRC Files)"; }
+            get { return "ReadTrace (SQL XEL/TRC Files)"; }
         }
 
         /// <summary>Set of true/false importer options (initialized in ctor)</summary>
@@ -585,7 +599,7 @@ namespace ReadTrace
         /// <summary>Filemask (e.g. "*.trc") used to advertise the set of files that a given importer knows how to process</summary>
         public string[] SupportedMasks
         {
-            get { return new string[] { "*.TRC", "*pssdiag*.xel" }; }
+            get { return new string[] { "*.TRC", "*pssdiag*.xel", "*LogScout*.xel" }; }
         }
 
         /// <summary>Number of rows/lines/events processed from source file.  Used to communicate progress back to host.</summary>

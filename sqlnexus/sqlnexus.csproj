@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -25,26 +25,26 @@
     <OldToolsVersion>4.0</OldToolsVersion>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <TargetFrameworkProfile />
-    <PublishUrl>\\dsdb\products\sqlnexus\released\4.0\</PublishUrl>
+    <PublishUrl>c:\sqlnexustest\</PublishUrl>
     <Install>true</Install>
-    <InstallFrom>Unc</InstallFrom>
+    <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
-    <UpdateMode>Background</UpdateMode>
+    <UpdateMode>Foreground</UpdateMode>
     <UpdateInterval>7</UpdateInterval>
     <UpdateIntervalUnits>Days</UpdateIntervalUnits>
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <SupportUrl>http://www.codeplex.com/sqlnexus</SupportUrl>
+    <SupportUrl>https://github.com/microsoft/SqlNexus</SupportUrl>
     <ProductName>SQL Nexus</ProductName>
     <PublisherName>SQL Nexus</PublisherName>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>8</ApplicationRevision>
-    <ApplicationVersion>5.5.0.8</ApplicationVersion>
+    <ApplicationRevision>23</ApplicationRevision>
+    <ApplicationVersion>7.22.03.23</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -59,6 +59,7 @@
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -69,6 +70,7 @@
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup />
   <PropertyGroup>
@@ -80,7 +82,7 @@
   <ItemGroup>
     <Reference Include="Microsoft.ReportViewer.WinForms, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Windows\assembly\GAC_MSIL\Microsoft.ReportViewer.WinForms\11.0.0.0__89845dcd8080cc91\Microsoft.ReportViewer.WinForms.DLL</HintPath>
+      <HintPath>..\..\..\..\..\..\Windows\assembly\GAC_MSIL\Microsoft.ReportViewer.WinForms\13.0.0.0__89845dcd8080cc91\Microsoft.ReportViewer.WinForms.DLL</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
@@ -101,6 +103,7 @@
   <ItemGroup>
     <Compile Include="ClickOnce\ClickOnce.cs" />
     <Compile Include="CredentialManager.cs" />
+    <Compile Include="CustomXELImporter.cs" />
     <Compile Include="DependencyManager.cs" />
     <Compile Include="DiagConfig.cs" />
     <Compile Include="FileImporter.cs" />
@@ -140,6 +143,12 @@
     </Compile>
     <Compile Include="fmNexus.Designer.cs">
       <DependentUpon>fmNexus.cs</DependentUpon>
+    </Compile>
+    <Compile Include="fmPBReports.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fmPBReports.Designer.cs">
+      <DependentUpon>fmPBReports.cs</DependentUpon>
     </Compile>
     <Compile Include="fmReportParameters.cs">
       <SubType>Form</SubType>
@@ -183,6 +192,9 @@
     <EmbeddedResource Include="fmNexus.resx">
       <SubType>Designer</SubType>
       <DependentUpon>fmNexus.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="fmPBReports.resx">
+      <DependentUpon>fmPBReports.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="fmReportParameters.resx">
       <SubType>Designer</SubType>
@@ -342,7 +354,7 @@
     <Content Include="PostProcess.cmd">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Fakes Include="Fakes\Microsoft.ReportViewer.WinForms.fakes" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -378,6 +390,24 @@
       <DependentUpon>UserInstruction.cs</DependentUpon>
     </Compile>
     <Compile Include="Utilities.cs" />
+    <Content Include="Reports\PAL_C.rdlC">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\PAL_sub_C.rdlC">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\PowerBIReports\Performance Reports.pbit">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\PowerBIReports\ReadTrace Reports.pbit">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\PowerBIReports\SQL Perfmon Viewer.pbit">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\PowerBIReports\System Health Session.pbit">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="SqlNexus.snk" />
   </ItemGroup>
   <ItemGroup>
@@ -412,9 +442,15 @@
     <None Include="Resources\CreateDropDB.txt" />
     <None Include="Resources\TextFile1.txt" />
     <None Include="Resources\InitDB.txt" />
+    <None Include="Resources\powerbi.png" />
+    <None Include="Resources\powerbi - Copy.png" />
+    <Content Include="SQLNexus_PostProcessing.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="SQLNexus_PreProcessing.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Tests\Post-Import-Test.sql" />
     <Content Include="TextRowsets.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
@@ -666,6 +702,16 @@
       <IncludeHash>True</IncludeHash>
       <FileType>File</FileType>
     </PublishFile>
+    <PublishFile Include="Microsoft.SqlServer.Types">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>Assembly</FileType>
+    </PublishFile>
     <PublishFile Include="Microsoft.Vbe.Interop">
       <Visible>False</Visible>
       <Group>
@@ -777,6 +823,46 @@
       <FileType>File</FileType>
     </PublishFile>
     <PublishFile Include="Reports\LockSummary_C.rdlC">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>File</FileType>
+    </PublishFile>
+    <PublishFile Include="Reports\PowerBIReports\Performance Reports.pbit">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>File</FileType>
+    </PublishFile>
+    <PublishFile Include="Reports\PowerBIReports\ReadTrace Reports.pbit">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>File</FileType>
+    </PublishFile>
+    <PublishFile Include="Reports\PowerBIReports\SQL Perfmon Viewer.pbit">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>File</FileType>
+    </PublishFile>
+    <PublishFile Include="Reports\PowerBIReports\System Health Session.pbit">
       <Visible>False</Visible>
       <Group>
       </Group>
