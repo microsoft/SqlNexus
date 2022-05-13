@@ -277,25 +277,25 @@ namespace sqlnexus
                     msg = "Opening database connection...";
                     break;
                 case ImportState.ImportingIoStat:
-                    msg = "Importing IO Stats...";
+                    msg = "Importing Linux IO Stats...";
                     break;
                 case ImportState.ImportingMemFree:
-                    msg = "Importing Memory Free...";
+                    msg = "Importing Linux Memory Free...";
                     break;
                 case ImportState.ImportingMemSwap:
-                    msg = "Importing Memory Swap";
+                    msg = "Importing Linux Memory Swap";
                     break;
                 case ImportState.ImportingMpStatCpu:
-                    msg = "Importing MP Stats CPU";
+                    msg = "Importing Linux MP Stats CPU";
                     break;
                 case ImportState.ImportingNetowrking:
-                    msg = "Importing Networking...";
+                    msg = "Importing Linux Networking...";
                     break;
                 case ImportState.ImportingPidStat:
-                    msg = "Importing Process PID Stat...";
+                    msg = "Importing Linux Process PID Stat...";
                     break;
                 case ImportState.CreatingBlg:
-                    msg = "Converting TSV to BLG...";
+                    msg = "Converting Linux TSV to BLG...";
                     break;
             }
             currLabel.Text = "(" + ri.Name + ")" + msg;
