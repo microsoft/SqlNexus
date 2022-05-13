@@ -49,7 +49,7 @@ namespace LinuxPerfImporter
         private Process linuxPerfImporter;
         private long totalLinesProcessed = 0;
         private long totalRowsInserted = 0;
-        private bool canceled = false; // Will be set to true if the current import has been canceled
+        private bool is_cancelled = false; // Will be set to true if the current import has been canceled
 
         /// <summary>Default ctor</summary>
         /// <remarks>Define the options that we expose to host framework, and try to find ReadTrace.exe.</remarks>
@@ -78,7 +78,7 @@ namespace LinuxPerfImporter
         /// the host will wait until <c>DoImport()</c> returns.</remarks>
         public void Cancel()
         {
-            Canceled = true;
+            Cancelled = true;
             State = ImportState.Canceling;
             Util.Logger.LogMessage("LinuxPerfImporter - Received cancel request");
             try
@@ -96,10 +96,10 @@ namespace LinuxPerfImporter
         }
 
         /// <summary>True if the import has been asked to cancel an in-progress load. Set by the <c>Cancel</c> method.</summary>
-        public bool Canceled
+        public bool Cancelled
         {
-            get { return canceled; }
-            set { canceled = value; }
+            get { return is_cancelled; }
+            set { is_cancelled = value; }
         }
 
         /// <summary>Start import</summary>
@@ -343,7 +343,7 @@ namespace LinuxPerfImporter
             this.logger = Logger;
             // Init status members
             state = ImportState.Idle;
-            canceled = false;
+            is_cancelled = false;
             knownRowsets = new ArrayList();
             this.totalLinesProcessed = 0;
             this.totalRowsInserted = 0;
