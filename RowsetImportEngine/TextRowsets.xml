@@ -2542,8 +2542,27 @@
       </KnownColumns>
     </Rowset>
 
-  
-  
+    <Rowset name="tbl_index_resumable_operations" enabled="true" identifier="-- sys.index_resumable_operations --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="object_id" type="RowsetImportEngine.IntColumn" />
+        <Column name="object_name" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="index_id" type="RowsetImportEngine.IntColumn" />
+        <Column name="index_name" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="sql_text" type="RowsetImportEngine.NVarCharColumn" length="1024"/>
+        <Column name="last_max_dop_used" type="RowsetImportEngine.IntColumn" />
+        <Column name="partition_number" type="RowsetImportEngine.IntColumn" />
+        <Column name="state" type="RowsetImportEngine.IntColumn" />
+        <Column name="state_desc" type="RowsetImportEngine.NVarCharColumn" length="60"/>
+        <Column name="start_time" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="last_pause_time" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="total_execution_time" type="RowsetImportEngine.IntColumn" />
+        <Column name="percent_complete" type="RowsetImportEngine.FloatColumn" />
+        <Column name="page_count" type="RowsetImportEngine.BigIntColumn" />        
+      </KnownColumns>
+    </Rowset>
+
+
+
   </KnownRowsets>
 </TextImport>
 
