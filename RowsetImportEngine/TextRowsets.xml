@@ -2544,6 +2544,7 @@
 
     <Rowset name="tbl_index_resumable_operations" enabled="true" identifier="-- sys.index_resumable_operations --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
+        <Column name="input_file_name" type="RowsetImportEngine.VarCharColumn" length="512" valuetoken="INPUTFILENAME" />
         <Column name="object_id" type="RowsetImportEngine.IntColumn" />
         <Column name="object_name" type="RowsetImportEngine.NVarCharColumn"/>
         <Column name="index_id" type="RowsetImportEngine.IntColumn" />
