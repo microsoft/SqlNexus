@@ -1259,7 +1259,7 @@
     </Rowset>
     
 
-   <Rowset name="tbl_dm_os_sys_info" enabled="True" identifier="-- sys.dm_os_sys_info" type="RowsetImportEngine.TextRowset">
+   <Rowset name="tbl_dm_os_sys_info" enabled="True" identifier="-- sys.dm_os_sys_info --" type="RowsetImportEngine.TextRowset">
 	<KnownColumns>
 		<Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
 		<Column name="cpu_ticks" type="RowsetImportEngine.BigIntColumn" />
