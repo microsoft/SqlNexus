@@ -50,6 +50,8 @@ namespace LinuxPerfImporter.Model
 
             Regex rgxEmptyLine = new Regex(emptyLinePattern);
             Regex rgxSplitLine = new Regex(splitPattern);
+            var rgxTime = new Regex("^ *([0-2][0-9]:[0-2][0-9]:[0-2][0-9] ?[AaPp]?[Mm]?|[0-9]+)");
+
 
             // starting at the first line where # appears
             for (int i = 2; i <= FileContents.Count - 1;)
@@ -68,11 +70,15 @@ namespace LinuxPerfImporter.Model
                         blockIsFirst = false;
                     }
 
-                    // takes the value of the current line and splits on whitespace
-                    string[] thisProcessLine = rgxSplitLine.Split(FileContents[i + 1]);
+                  
+                    var thisProcessLine = FileContents[i+1];
 
+                    var match = rgxTime.Match(thisProcessLine);
+
+                    if (!match.Success) throw new ApplicationException("Invalid pidstat.perf format");
+                                       
                     // reads the line timestamp, converts it from ephoc/unix time
-                    string thisTimeStamp = utility.FromUnixTime(Convert.ToInt32(thisProcessLine[1]), TimeZone);
+                    string thisTimeStamp = utility.GetTimeStamp(match.Value);
 
                     // add the current line position to the block count array. We will use this to spin off multiple threads for processing the pid stat file
                     BlockCount.Add(i + 1);
@@ -91,19 +97,27 @@ namespace LinuxPerfImporter.Model
                 }
                 else
                 {
+
+                    var line = FileContents[i];
+
+                    var match = rgxTime.Match(line);
+
+                    if (!match.Success) throw new ApplicationException("Invalid pidstat.perf format");
+
+                    var subline = line.Substring(match.Length);
                     // takes the value of the current line and splits on whitespace
-                    string[] thisProcessLine = rgxSplitLine.Split(FileContents[i]);
+                    string[] thisProcessLine = rgxSplitLine.Split(subline);
                     // reads the line timestamp, converts it from ephoc/unix time
-                    string thisTimeStamp = utility.FromUnixTime(Convert.ToInt32(thisProcessLine[1]), TimeZone);
+                    string thisTimeStamp = utility.GetTimeStamp(match.Value);
                     // reads this line's pid
-                    int thisPid = Convert.ToInt32(thisProcessLine[3]);
+                    int thisPid = Convert.ToInt32(thisProcessLine[2]);
                     // reads this lines process name
                     string thisProcessName = thisProcessLine[thisProcessLine.Length - 1];
                     // declares a new array so that we can populate this array with metrics with array.copy
                     string[] theseMetrics = new string[MetricCount];
 
                     // copies the metrics from the current line to theseMetrics array. We need to do this since we split the line to get other metrics.
-                    Array.Copy(thisProcessLine, 4, theseMetrics, 0, MetricCount);
+                    Array.Copy(thisProcessLine, 3, theseMetrics, 0, MetricCount);
 
                     // create a new process object and set its properties from the vairables we declared above
                     PidProcess process = new PidProcess()
