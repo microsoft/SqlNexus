@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 using LinuxPerfImporter.Utility;
+using System.Linq;
 
 namespace LinuxPerfImporter.Model
 {
@@ -17,6 +18,8 @@ namespace LinuxPerfImporter.Model
         public LinuxOutFileIoStat(string ioStatFileName) :
             base(ioStatFileName)
         {
+            
+
             Devices = GetIoStatDevices();
             Header = GetIoStatHeader();
             Metrics = GetIoStatMetrics();
@@ -28,7 +31,7 @@ namespace LinuxPerfImporter.Model
         // since the devices are listed within the block, we need to get a list of the for generating the header
         private List<string> GetIoStatDevices()
         {
-            int startingLine = 4;
+            int startingLine = FileContents.FindIndex(l => l.StartsWith("Device")) +1;
             int deviceColumnNumber = 0;
 
             return new LinuxOutFileHelper().GetDevices(startingLine, FileContents, deviceColumnNumber);
@@ -41,7 +44,7 @@ namespace LinuxPerfImporter.Model
             OutHeader outHeader = new OutHeader()
             {
                 StartingColumn = 1,
-                StartingRow = 3,
+                StartingRow = FileContents.FindIndex(l=> l.StartsWith("Device")), //3
                 FileContents = FileContents,
                 Devices = Devices,
                 ObjectName = "Logicaldisk"
@@ -78,6 +81,9 @@ namespace LinuxPerfImporter.Model
                 // this file is in a block format and we use empty lines to determin when to start parsing the next metric
                 if (rgxEmptyLine.IsMatch(FileContents[i]) && i < FileContents.Count - 1)
                 {
+
+                    if (rgxEmptyLine.IsMatch(FileContents[i + 1])) continue;
+
                     // we don't need to increment day since iostat increments automatically.
                     string timeStampFormatted;
                     timeStamp = DateTime.Parse(FileContents[(i + 1)]);
@@ -85,7 +91,7 @@ namespace LinuxPerfImporter.Model
                     thisMetricSample.Append('"' + timeStampFormatted + '"' + "\t");
 
                     // looping through the logical disk devices 
-                    for (int x = (i + 3); x < i + deviceCount; x++)
+                    for (int x = (i + 3); x < i + deviceCount+3; x++)
                     {
                         // splitting the contents of the current line to grab the metrics
                         string[] thisLineContents = rgxSplitLine.Split(FileContents[x]);

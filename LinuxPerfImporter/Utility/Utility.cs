@@ -9,6 +9,8 @@ using System.Diagnostics;
 using System.IO;
 using LinuxPerfImporter.Model;
 
+using System.Text.RegularExpressions;
+
 namespace LinuxPerfImporter.Utility
 {
     // utility class that contains common methods used by multiple classes and/or methods
@@ -27,6 +29,17 @@ namespace LinuxPerfImporter.Utility
         public string DateTime24HourFormat(DateTime dateToFormat)
         {
             return dateToFormat.ToString("MM/dd/yyyy HH:mm:ss");
+        }
+
+        public string GetTimeStamp(string dateToFormat, int timeZone=0) {
+
+            if (new Regex(@"^ *[0-9]+ *$").IsMatch(dateToFormat))
+                return FromUnixTime(Convert.ToInt32(dateToFormat), timeZone);
+
+            return dateToFormat;
+
+
+
         }
 
         // converts the time to 24 hours and since some of the out files do not increment 
