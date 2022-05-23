@@ -1248,14 +1248,57 @@
       <Column name="expensive_event" type="RowsetImportEngine.IntColumn" />
     </Rowset>
 
-
-    <Rowset name="tbl_availability_groups" enabled="true" identifier="--sys.availability_groups--" type="RowsetImportEngine.TextRowset">
+    <Rowset name="tbl_availability_groups_miscpssdiaginfo" enabled="true" identifier="--sys.availability_groups--" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="group_id" type="RowsetImportEngine.VarBinaryColumn"/>
+        <Column name="name" type="RowsetImportEngine.VarCharColumn" length="256" />
+        <Column name="resource_id" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="resource_group_id" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="failure_condition_level" type="RowsetImportEngine.IntColumn"/>
+        <Column name="health_check_timeout" type="RowsetImportEngine.IntColumn"/>
+        <Column name="automated_backup_preference" type="RowsetImportEngine.IntColumn"/>
+        <Column name="automated_backup_preference_desc" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="version" type="RowsetImportEngine.IntColumn"/>
+        <Column name="basic_features" type="RowsetImportEngine.IntColumn"/>
+        <Column name="dtc_support" type="RowsetImportEngine.IntColumn"/>
+        <Column name="db_failover" type="RowsetImportEngine.IntColumn"/>
+        <Column name="is_distributed" type="RowsetImportEngine.IntColumn"/>
+        <Column name="cluster_type" type="RowsetImportEngine.IntColumn"/>
+        <Column name="cluster_type_desc" type="RowsetImportEngine.NVarCharColumn" length="60"/>
+        <Column name="required_synchronized_secondaries_to_commit" type="RowsetImportEngine.IntColumn"/>
+        <Column name="sequence_number" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="is_contained"    type="RowsetImportEngine.IntColumn" />
+      </KnownColumns>
     </Rowset>
 
     <Rowset name="tbl_dm_hadr_availability_replica_states" enabled="true" identifier="--sys.dm_hadr_availability_replica_states--" type="RowsetImportEngine.TextRowset">
     </Rowset>
     
-    <Rowset name="tbl_availability_replicas" enabled="true" identifier="--sys.availability_replicas--" type="RowsetImportEngine.TextRowset">
+    <Rowset name="tbl_availability_replicas_miscpssdiaginfo" enabled="true" identifier="--sys.availability_replicas--" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="replica_id" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="group_id" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="replica_metadata_id" type="RowsetImportEngine.IntColumn"/>
+        <Column name="replica_server_name" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="owner_sid" type="RowsetImportEngine.VarBinaryColumn"/>
+        <Column name="endpoint_url" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="availability_mode" type="RowsetImportEngine.IntColumn"/>
+        <Column name="availability_mode_desc" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="failover_mode" type="RowsetImportEngine.IntColumn"/>
+        <Column name="failover_mode_desc" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="session_timeout" type="RowsetImportEngine.IntColumn"/>
+        <Column name="primary_role_allow_connections" type="RowsetImportEngine.IntColumn"/>
+        <Column name="primary_role_allow_connections_desc" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="secondary_role_allow_connections" type="RowsetImportEngine.IntColumn"/>
+        <Column name="secondary_role_allow_connections_desc" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="create_date" type="RowsetImportEngine.DateTimeColumn"/>
+        <Column name="modify_date" type="RowsetImportEngine.DateTimeColumn"/>
+        <Column name="backup_priority" type="RowsetImportEngine.IntColumn"/>
+        <Column name="read_only_routing_url" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="seeding_mode" type="RowsetImportEngine.IntColumn"/>
+        <Column name="seeding_mode_desc" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="read_write_routing_url" type="RowsetImportEngine.NVarCharColumn"/>
+      </KnownColumns>
     </Rowset>
     
 
@@ -2465,12 +2508,14 @@
         <Column name="is_ipv4" type="RowsetImportEngine.IntColumn"/>
       </KnownColumns>
     </Rowset>
+    
     <!--Not importing , no result set -->
     <Rowset name="tbl_availability_replicas" enabled="true" identifier="-- sys.availability_replicas --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
+        <Column name="input_file_name" type="RowsetImportEngine.VarCharColumn" length="512" valuetoken="INPUTFILENAME" />
         <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
-        <Column name="replica_id" type="RowsetImportEngine.VarBinaryColumn"/>
-        <Column name="group_id" type="RowsetImportEngine.VarBinaryColumn"/>
+        <Column name="replica_id" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="group_id" type="RowsetImportEngine.NVarCharColumn"/>
         <Column name="replica_metadata_id" type="RowsetImportEngine.IntColumn"/>
         <Column name="replica_server_name" type="RowsetImportEngine.NVarCharColumn"/>
         <Column name="owner_sid" type="RowsetImportEngine.VarBinaryColumn"/>
