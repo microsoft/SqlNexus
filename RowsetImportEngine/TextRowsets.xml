@@ -2608,6 +2608,27 @@
       </KnownColumns>
     </Rowset>
 
+  
+     <Rowset name="tbl_fltmc_filters" enabled="true" identifier="-- fltmc_filters --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="Filter Name" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="Num Instances" type="RowsetImportEngine.IntColumn" />
+        <Column name="Altitude" type="RowsetImportEngine.IntColumn" />
+        <Column name="Frame" type="RowsetImportEngine.IntColumn" />
+      </KnownColumns>
+    </Rowset>  
+    
+   <Rowset name="tbl_fltmc_instances" enabled="true" identifier="-- fltmc_instances --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="Filter" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="Volume Name" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="Altitude" type="RowsetImportEngine.IntColumn" />
+        <Column name="Instance Name" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="Frame" type="RowsetImportEngine.IntColumn" />
+        <Column name="SprtFtrs" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="VlStatus" type="RowsetImportEngine.NVarCharColumn"/>
+      </KnownColumns>
+    </Rowset> 
 
 
   </KnownRowsets>
