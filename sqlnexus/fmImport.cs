@@ -276,6 +276,27 @@ namespace sqlnexus
                 case ImportState.OpeningDatabaseConnection:
                     msg = "Opening database connection...";
                     break;
+                case ImportState.ImportingIoStat:
+                    msg = "Importing Linux IO Stats...";
+                    break;
+                case ImportState.ImportingMemFree:
+                    msg = "Importing Linux Memory Free...";
+                    break;
+                case ImportState.ImportingMemSwap:
+                    msg = "Importing Linux Memory Swap";
+                    break;
+                case ImportState.ImportingMpStatCpu:
+                    msg = "Importing Linux MP Stats CPU";
+                    break;
+                case ImportState.ImportingNetowrking:
+                    msg = "Importing Linux Networking...";
+                    break;
+                case ImportState.ImportingPidStat:
+                    msg = "Importing Linux Process PID Stat...";
+                    break;
+                case ImportState.CreatingBlg:
+                    msg = "Converting Linux TSV to BLG...";
+                    break;
             }
             currLabel.Text = "(" + ri.Name + ")" + msg;
             Application.DoEvents();
@@ -725,6 +746,21 @@ namespace sqlnexus
             sqlnexus.Properties.Settings.Default.ImportPath = srcPath;
             if (srcPath[srcPath.Length - 1] != '\\')
                 srcPath += '\\';
+
+            try
+            {
+                if (-1 == cbPath.Items.IndexOf(srcPath))
+                {
+                    cbPath.Items.Add(srcPath);
+                }
+            }
+            catch
+            {
+                
+            }
+
+            // Setting working directory for linux perf importer
+            LinuxPerfImporter.Model.ConfigValues.WorkingDirectory = srcPath;
 
             //find the instance name by locating it inside ##SQLDIAG.LOG
             instances = new SqlInstances(srcPath);
