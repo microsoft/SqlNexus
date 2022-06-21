@@ -2542,6 +2542,34 @@
       </KnownColumns>
     </Rowset>
 
+	<!--identifiers starting with AG_ are in the AlwaysOnDiagScript.sql -->
+
+	  <Rowset name="tbl_hadr_endpoints_principals" enabled="true" identifier="--AG_hadr_endpoints_principals--" type="RowsetImportEngine.TextRowset">
+	 </Rowset>  
+	  <Rowset name="tbl_hadr_mirroring_endpoints_permissions" enabled="true" identifier="--AG_mirroring_endpoints_permissions--" type="RowsetImportEngine.TextRowset">
+	 </Rowset>  
+	  <Rowset name="tbl_hadr_mirroring_states" enabled="true" identifier="--AG_mirroring_states--" type="RowsetImportEngine.TextRowset">
+	 </Rowset>  
+	  <Rowset name="tbl_hadr_ag_listeners" enabled="true" identifier="--AG_hadr_ag_listeners--" type="RowsetImportEngine.TextRowset">
+	 </Rowset>  
+	  <Rowset name="tbl_hadr_ag_ip_information" enabled="true" identifier="--AG_hadr_ag_ip_information--" type="RowsetImportEngine.TextRowset">
+	 </Rowset>  
+	  <Rowset name="tbl_hadr_readonly_routing" enabled="true" identifier="--AG_hadr_readonly_routing--" type="RowsetImportEngine.TextRowset">
+	 </Rowset>  
+	  <Rowset name="tbl_hadr_cluster" enabled="true" identifier="--AG_hadr_cluster--" type="RowsetImportEngine.TextRowset">
+	 </Rowset>  
+	  <Rowset name="tbl_hadr_cluster_members" enabled="true" identifier="--AG_hadr_cluster_members--" type="RowsetImportEngine.TextRowset">
+	 </Rowset>  
+	  <Rowset name="tbl_hadr_ag_states" enabled="true" identifier="--AG_hadr_ag_states--" type="RowsetImportEngine.TextRowset">
+	 </Rowset>  
+	  <Rowset name="tbl_hadr_ag_replica_states" enabled="true" identifier="--AG_hadr_ag_replica_states--" type="RowsetImportEngine.TextRowset">
+	 </Rowset>  
+	  <Rowset name="tbl_hadr_ag_database_replica_states" enabled="true" identifier="--AG_hadr_ag_database_replica_states--" type="RowsetImportEngine.TextRowset">
+	 </Rowset>  
+	  <Rowset name="tbl_hadr_endpoints_principals" enabled="true" identifier="--AG_hadr_endpoints_principals--" type="RowsetImportEngine.TextRowset">
+	 </Rowset>  
+	  <Rowset name="tbl_dm_os_server_diagnostics_log_configurations" enabled="true" identifier="--AG_dm_os_server_diagnostics_log_configurations--" type="RowsetImportEngine.TextRowset">
+	 </Rowset>  
   
   
   </KnownRowsets>
