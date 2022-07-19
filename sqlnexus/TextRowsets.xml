@@ -2505,14 +2505,14 @@
       </KnownColumns>
     </Rowset>
     
-   <Rowset name="tbl_SystemInformation" enabled="true" identifier="-- system_info --" type="RowsetImportEngine.TextRowset">
+    <Rowset name="tbl_SystemInformation" enabled="true" identifier="-- system_info --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
         <Column name="Property" type="RowsetImportEngine.NVarCharColumn"/>
         <Column name="Value" type="RowsetImportEngine.NVarCharColumn"/>
       </KnownColumns>
     </Rowset>
-
-   <Rowset name="tbl_ActiveProcesses_OS" enabled="true" identifier="-- task_list --" type="RowsetImportEngine.TextRowset">
+    
+    <Rowset name="tbl_ActiveProcesses_OS" enabled="true" identifier="-- task_list --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
         <Column name="Image Name" type="RowsetImportEngine.NVarCharColumn"/>
         <Column name="PID" type="RowsetImportEngine.IntColumn" />
@@ -2533,7 +2533,7 @@
         <Column name="Services" type="RowsetImportEngine.NVarCharColumn"/>
       </KnownColumns>
     </Rowset>
-
+    
     <Rowset name="tbl_ActiveProcesses_with_ModulesLoaded" enabled="true" identifier="-- module_list --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
         <Column name="Image Name" type="RowsetImportEngine.NVarCharColumn"/>
@@ -2544,8 +2544,8 @@
 
 	<!--identifiers starting with AG_ are in the AlwaysOnDiagScript.sql -->
 
-	  <Rowset name="tbl_hadr_endpoints_principals" enabled="true" identifier="-- AG_hadr_endpoints_principals --" type="RowsetImportEngine.TextRowset">
-	   <KnownColumns>
+    <Rowset name="tbl_hadr_endpoints_principals" enabled="true" identifier="-- AG_hadr_endpoints_principals --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
         <Column name="name" type="RowsetImportEngine.NVarCharColumn"/>
         <Column name="endpoint_id" type="RowsetImportEngine.IntColumn" />
         <Column name="principal_id" type="RowsetImportEngine.IntColumn"/>
@@ -2555,34 +2555,35 @@
         <Column name="type_desc" type="RowsetImportEngine.NVarCharColumn"/>
         <Column name="state" type="RowsetImportEngine.IntColumn"/>
         <Column name="state_desc" type="RowsetImportEngine.NVarCharColumn"/>      
-		<Column name="is_admin_endpoint" type="RowsetImportEngine.IntColumn"/>      
-		<Column name="port" type="RowsetImportEngine.IntColumn"/>      
-		<Column name="is_dynamic_port" type="RowsetImportEngine.IntColumn"/>      
-		<Column name="ip_address" type="RowsetImportEngine.NVarCharColumn"/>      
-		<Column name="role" type="RowsetImportEngine.IntColumn"/>      
-		<Column name="role_desc" type="RowsetImportEngine.NVarCharColumn"/>      
-		<Column name="is_encryption_enabled" type="RowsetImportEngine.IntColumn"/>      
-		<Column name="connection_auth" type="RowsetImportEngine.IntColumn"/>      
-		<Column name="connection_auth_desc" type="RowsetImportEngine.NVarCharColumn"/>      
-		<Column name="certificate_id" type="RowsetImportEngine.IntColumn"/>      
-		<Column name="encryption_algorithm" type="RowsetImportEngine.IntColumn"/>      
-		<Column name="encryption_algorithm_desc" type="RowsetImportEngine.NVarCharColumn"/>      
-		<Column name="principal_Name" type="RowsetImportEngine.NVarCharColumn"/>      
-		<Column name="sid" type="RowsetImportEngine.VarBinaryColumn"/>  
-		<Column name="principal_type" type="RowsetImportEngine.VarCharColumn"/>  
-		<Column name="principal_type_desc" type="RowsetImportEngine.NVarCharColumn"/>  
-		<Column name="is_disabled" type="RowsetImportEngine.IntColumn"/>  
-		<Column name="create_date" type="RowsetImportEngine.DateTimeColumn"/>  
-		<Column name="modify_date" type="RowsetImportEngine.DateTimeColumn"/>  
-		<Column name="default_database_name" type="RowsetImportEngine.NVarCharColumn"/>  
-		<Column name="default_language_name" type="RowsetImportEngine.NVarCharColumn"/>  
-		<Column name="credential_id" type="RowsetImportEngine.IntColumn"/>  
-		<Column name="owning_principal_id" type="RowsetImportEngine.IntColumn"/>  
-		<Column name="is_fixed_role" type="RowsetImportEngine.IntColumn"/>  
+        <Column name="is_admin_endpoint" type="RowsetImportEngine.IntColumn"/>      
+        <Column name="port" type="RowsetImportEngine.IntColumn"/>      
+        <Column name="is_dynamic_port" type="RowsetImportEngine.IntColumn"/>      
+        <Column name="ip_address" type="RowsetImportEngine.NVarCharColumn"/>      
+        <Column name="role" type="RowsetImportEngine.IntColumn"/>      
+        <Column name="role_desc" type="RowsetImportEngine.NVarCharColumn"/>      
+        <Column name="is_encryption_enabled" type="RowsetImportEngine.IntColumn"/>      
+        <Column name="connection_auth" type="RowsetImportEngine.IntColumn"/>      
+        <Column name="connection_auth_desc" type="RowsetImportEngine.NVarCharColumn"/>      
+        <Column name="certificate_id" type="RowsetImportEngine.IntColumn"/>      
+        <Column name="encryption_algorithm" type="RowsetImportEngine.IntColumn"/>      
+        <Column name="encryption_algorithm_desc" type="RowsetImportEngine.NVarCharColumn"/>      
+        <Column name="principal_Name" type="RowsetImportEngine.NVarCharColumn"/>      
+        <Column name="sid" type="RowsetImportEngine.VarBinaryColumn"/>  
+        <Column name="principal_type" type="RowsetImportEngine.VarCharColumn"/>  
+        <Column name="principal_type_desc" type="RowsetImportEngine.NVarCharColumn"/>  
+        <Column name="is_disabled" type="RowsetImportEngine.IntColumn"/>  
+        <Column name="create_date" type="RowsetImportEngine.DateTimeColumn"/>  
+        <Column name="modify_date" type="RowsetImportEngine.DateTimeColumn"/>  
+        <Column name="default_database_name" type="RowsetImportEngine.NVarCharColumn"/>  
+        <Column name="default_language_name" type="RowsetImportEngine.NVarCharColumn"/>  
+        <Column name="credential_id" type="RowsetImportEngine.IntColumn"/>  
+        <Column name="owning_principal_id" type="RowsetImportEngine.IntColumn"/>  
+        <Column name="is_fixed_role" type="RowsetImportEngine.IntColumn"/>  
       </KnownColumns>
-	 </Rowset>  
-	  <Rowset name="tbl_hadr_mirroring_endpoints_permissions" enabled="true" identifier="-- AG_mirroring_endpoints_permissions --" type="RowsetImportEngine.TextRowset">
-	   <KnownColumns>
+    </Rowset>
+    
+    <Rowset name="tbl_hadr_mirroring_endpoints_permissions" enabled="true" identifier="-- AG_mirroring_endpoints_permissions --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
         <Column name="ClassDesc" type="RowsetImportEngine.VarCharColumn"/>
         <Column name="Principal" type="RowsetImportEngine.VarCharColumn" />
         <Column name="Permission" type="RowsetImportEngine.VarCharColumn"/>
@@ -2590,9 +2591,10 @@
         <Column name="PrincipalType" type="RowsetImportEngine.VarCharColumn"/>
         <Column name="is_disabled" type="RowsetImportEngine.IntColumn"/>
       </KnownColumns>
-	 </Rowset>  
-	  <Rowset name="tbl_hadr_mirroring_states" enabled="true" identifier="-- AG_mirroring_states --" type="RowsetImportEngine.TextRowset">
-	   <KnownColumns>
+    </Rowset>
+    
+    <Rowset name="tbl_hadr_mirroring_states" enabled="true" identifier="-- AG_mirroring_states --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
         <Column name="database_id" type="RowsetImportEngine.IntColumn"/>
         <Column name="mirroring_guid" type="RowsetImportEngine.NVarCharColumn" />
         <Column name="mirroring_state" type="RowsetImportEngine.IntColumn"/>
@@ -2602,17 +2604,18 @@
         <Column name="mirroring_safety_sequence" type="RowsetImportEngine.IntColumn"/>
         <Column name="mirroring_failover_lsn" type="RowsetImportEngine.NVarCharColumn"/>
         <Column name="mirroring_end_of_log_lsn" type="RowsetImportEngine.NVarCharColumn"/>      
-		<Column name="mirroring_replication_lsn" type="RowsetImportEngine.NVarCharColumn"/>      
-		<Column name="mirroring_connection_timeout" type="RowsetImportEngine.IntColumn"/>      
-		<Column name="mirroring_redo_queue" type="RowsetImportEngine.IntColumn"/>      
-		<Column name="database_name" type="RowsetImportEngine.NVarCharColumn"/>      
-		<Column name="mirroring_partner_name" type="RowsetImportEngine.NVarCharColumn"/>      
-		<Column name="mirroring_partner_instance" type="RowsetImportEngine.NVarCharColumn"/>      
-		<Column name="mirroring_witness_name" type="RowsetImportEngine.NVarCharColumn"/>      		    		
+        <Column name="mirroring_replication_lsn" type="RowsetImportEngine.NVarCharColumn"/>      
+        <Column name="mirroring_connection_timeout" type="RowsetImportEngine.IntColumn"/>      
+        <Column name="mirroring_redo_queue" type="RowsetImportEngine.IntColumn"/>      
+        <Column name="database_name" type="RowsetImportEngine.NVarCharColumn"/>      
+        <Column name="mirroring_partner_name" type="RowsetImportEngine.NVarCharColumn"/>      
+        <Column name="mirroring_partner_instance" type="RowsetImportEngine.NVarCharColumn"/>      
+        <Column name="mirroring_witness_name" type="RowsetImportEngine.NVarCharColumn"/>      		    		
       </KnownColumns>
-	 </Rowset>  
-	  <Rowset name="tbl_hadr_ag_listeners" enabled="true" identifier="-- AG_hadr_ag_listeners --" type="RowsetImportEngine.TextRowset">
-	   <KnownColumns>
+    </Rowset>
+	  
+    <Rowset name="tbl_hadr_ag_listeners" enabled="true" identifier="-- AG_hadr_ag_listeners --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
         <Column name="Listener_Name" type="RowsetImportEngine.NVarCharColumn"/>
         <Column name="AG_Name" type="RowsetImportEngine.NVarCharColumn" />
         <Column name="group_id" type="RowsetImportEngine.NVarCharColumn"/>
@@ -2623,9 +2626,10 @@
         <Column name="ip_configuration_string_from_cluster" type="RowsetImportEngine.NVarCharColumn"/>
         <Column name="is_distributed_network_name" type="RowsetImportEngine.IntColumn"/>      	   		    		
       </KnownColumns>
-	 </Rowset>  
-	  <Rowset name="tbl_hadr_ag_ip_information" enabled="true" identifier="-- AG_hadr_ag_ip_information --" type="RowsetImportEngine.TextRowset">
-	   <KnownColumns>
+    </Rowset>
+	  
+    <Rowset name="tbl_hadr_ag_ip_information" enabled="true" identifier="-- AG_hadr_ag_ip_information --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
         <Column name="Listener_Name" type="RowsetImportEngine.NVarCharColumn"/>        
         <Column name="listener_id" type="RowsetImportEngine.NVarCharColumn" />
         <Column name="ip_address" type="RowsetImportEngine.NVarCharColumn"/>
@@ -2633,31 +2637,34 @@
         <Column name="is_dhcp" type="RowsetImportEngine.IntColumn"/>
         <Column name="network_subnet_ip" type="RowsetImportEngine.NVarCharColumn"/>
         <Column name="network_subnet_prefix_length" type="RowsetImportEngine.IntColumn"/>     
-		<Column name="network_subnet_ipv4_mask" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="network_subnet_ipv4_mask" type="RowsetImportEngine.NVarCharColumn"/>
         <Column name="state" type="RowsetImportEngine.IntColumn"/>
         <Column name="state_desc" type="RowsetImportEngine.NVarCharColumn"/>  		
       </KnownColumns>
-	 </Rowset>  
-	  <Rowset name="tbl_hadr_readonly_routing" enabled="true" identifier="-- AG_hadr_readonly_routing --" type="RowsetImportEngine.TextRowset">
-	  <KnownColumns>
+    </Rowset>
+	  
+    <Rowset name="tbl_hadr_readonly_routing" enabled="true" identifier="-- AG_hadr_readonly_routing --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
         <Column name="WhenThisServerIsPrimary" type="RowsetImportEngine.VarCharColumn"/>        
         <Column name="Priority" type="RowsetImportEngine.IntColumn" />
         <Column name="RouteToThisServer" type="RowsetImportEngine.VarCharColumn"/>
         <Column name="ConnectionsAllowed" type="RowsetImportEngine.NVarCharColumn"/>
         <Column name="RoutingURL" type="RowsetImportEngine.VarCharColumn"/>         		
       </KnownColumns>
-	 </Rowset>  
-	  <Rowset name="tbl_hadr_cluster" enabled="true" identifier="-- AG_hadr_cluster --" type="RowsetImportEngine.TextRowset">
-	  <KnownColumns>
+    </Rowset>
+	  
+    <Rowset name="tbl_hadr_cluster" enabled="true" identifier="-- AG_hadr_cluster --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
         <Column name="cluster_name" type="RowsetImportEngine.NVarCharColumn"/>        
         <Column name="quorum_type" type="RowsetImportEngine.IntColumn" />
         <Column name="quorum_type_desc" type="RowsetImportEngine.NVarCharColumn"/>
         <Column name="quorum_state" type="RowsetImportEngine.IntColumn"/>
         <Column name="quorum_state_desc" type="RowsetImportEngine.NVarCharColumn"/>         		
       </KnownColumns>
-	 </Rowset>  
-	  <Rowset name="tbl_hadr_cluster_members" enabled="true" identifier="-- AG_hadr_cluster_members --" type="RowsetImportEngine.TextRowset">
-	  <KnownColumns>
+    </Rowset>
+    
+    <Rowset name="tbl_hadr_cluster_members" enabled="true" identifier="-- AG_hadr_cluster_members --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
         <Column name="member_name" type="RowsetImportEngine.NVarCharColumn"/>        
         <Column name="member_type" type="RowsetImportEngine.IntColumn" />
         <Column name="member_type_desc" type="RowsetImportEngine.NVarCharColumn"/>
@@ -2665,14 +2672,15 @@
         <Column name="member_state_desc" type="RowsetImportEngine.NVarCharColumn"/>
         <Column name="number_of_quorum_votes" type="RowsetImportEngine.IntColumn"/>
         <Column name="network_subnet_ip" type="RowsetImportEngine.NVarCharColumn"/>     
-		<Column name="network_subnet_ipv4_mask" type="RowsetImportEngine.NVarCharColumn"/>
+        <Column name="network_subnet_ipv4_mask" type="RowsetImportEngine.NVarCharColumn"/>
         <Column name="network_subnet_prefix_length" type="RowsetImportEngine.IntColumn"/>
         <Column name="is_public" type="RowsetImportEngine.IntColumn"/>  		
-		<Column name="is_ipv4" type="RowsetImportEngine.IntColumn"/>  		
+		    <Column name="is_ipv4" type="RowsetImportEngine.IntColumn"/>  		
       </KnownColumns>
-	 </Rowset>  
-	  <Rowset name="tbl_hadr_ag_states" enabled="true" identifier="-- AG_hadr_ag_states --" type="RowsetImportEngine.TextRowset">
-	 <KnownColumns>
+    </Rowset>
+    
+    <Rowset name="tbl_hadr_ag_states" enabled="true" identifier="-- AG_hadr_ag_states --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
         <Column name="group_id" type="RowsetImportEngine.NVarCharColumn"/>
         <Column name="name" type="RowsetImportEngine.NVarCharColumn" />
         <Column name="resource_id" type="RowsetImportEngine.NVarCharColumn"/>
@@ -2682,26 +2690,27 @@
         <Column name="automated_backup_preference" type="RowsetImportEngine.IntColumn"/>
         <Column name="automated_backup_preference_desc" type="RowsetImportEngine.NVarCharColumn"/>
         <Column name="version" type="RowsetImportEngine.IntColumn"/>      
-		<Column name="basic_features" type="RowsetImportEngine.IntColumn"/>      
-		<Column name="dtc_support" type="RowsetImportEngine.IntColumn"/>      
-		<Column name="db_failover" type="RowsetImportEngine.IntColumn"/>      
-		<Column name="is_distributed" type="RowsetImportEngine.IntColumn"/>      
-		<Column name="cluster_type" type="RowsetImportEngine.IntColumn"/>      
-		<Column name="cluster_type_desc" type="RowsetImportEngine.NVarCharColumn"/>      
-		<Column name="required_synchronized_secondaries_to_commit" type="RowsetImportEngine.IntColumn"/>      
-		<Column name="sequence_number" type="RowsetImportEngine.BigIntColumn"/>      
-		<Column name="is_contained" type="RowsetImportEngine.IntColumn"/>      
-		<Column name="primary_replica" type="RowsetImportEngine.NVarCharColumn"/>      
-		<Column name="primary_recovery_health" type="RowsetImportEngine.IntColumn"/>      
-		<Column name="primary_recovery_health_desc" type="RowsetImportEngine.NVarCharColumn"/>      
-		<Column name="secondary_recovery_health" type="RowsetImportEngine.IntColumn"/>      
-		<Column name="secondary_recovery_health_desc" type="RowsetImportEngine.NVarCharColumn"/>  
-		<Column name="synchronization_health" type="RowsetImportEngine.IntColumn"/>  
-		<Column name="synchronization_health_desc" type="RowsetImportEngine.NVarCharColumn"/> 
+        <Column name="basic_features" type="RowsetImportEngine.IntColumn"/>      
+        <Column name="dtc_support" type="RowsetImportEngine.IntColumn"/>      
+        <Column name="db_failover" type="RowsetImportEngine.IntColumn"/>      
+        <Column name="is_distributed" type="RowsetImportEngine.IntColumn"/>      
+        <Column name="cluster_type" type="RowsetImportEngine.IntColumn"/>      
+        <Column name="cluster_type_desc" type="RowsetImportEngine.NVarCharColumn"/>      
+        <Column name="required_synchronized_secondaries_to_commit" type="RowsetImportEngine.IntColumn"/>      
+        <Column name="sequence_number" type="RowsetImportEngine.BigIntColumn"/>      
+        <Column name="is_contained" type="RowsetImportEngine.IntColumn"/>      
+        <Column name="primary_replica" type="RowsetImportEngine.NVarCharColumn"/>      
+        <Column name="primary_recovery_health" type="RowsetImportEngine.IntColumn"/>      
+        <Column name="primary_recovery_health_desc" type="RowsetImportEngine.NVarCharColumn"/>      
+        <Column name="secondary_recovery_health" type="RowsetImportEngine.IntColumn"/>      
+        <Column name="secondary_recovery_health_desc" type="RowsetImportEngine.NVarCharColumn"/>  
+        <Column name="synchronization_health" type="RowsetImportEngine.IntColumn"/>  
+        <Column name="synchronization_health_desc" type="RowsetImportEngine.NVarCharColumn"/> 
       </KnownColumns>
-	 </Rowset>  
-	  <Rowset name="tbl_hadr_ag_replica_states" enabled="true" identifier="-- AG_hadr_ag_replica_states --" type="RowsetImportEngine.TextRowset">
-	  <KnownColumns>
+    </Rowset>
+    
+    <Rowset name="tbl_hadr_ag_replica_states" enabled="true" identifier="-- AG_hadr_ag_replica_states --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
         <Column name="group_name" type="RowsetImportEngine.NVarCharColumn"/>
         <Column name="replica_server_name" type="RowsetImportEngine.NVarCharColumn" />
         <Column name="node_name" type="RowsetImportEngine.NVarCharColumn"/>
@@ -2711,42 +2720,43 @@
         <Column name="owner_sid" type="RowsetImportEngine.VarBinaryColumn"/>
         <Column name="endpoint_url" type="RowsetImportEngine.NVarCharColumn"/>
         <Column name="availability_mode" type="RowsetImportEngine.IntColumn"/>      
-		<Column name="availability_mode_desc" type="RowsetImportEngine.NVarCharColumn"/>      
-		<Column name="failover_mode" type="RowsetImportEngine.IntColumn"/>      
-		<Column name="failover_mode_desc" type="RowsetImportEngine.NVarCharColumn"/>      
-		<Column name="is_distributed" type="RowsetImportEngine.IntColumn"/>      
-		<Column name="session_timeout" type="RowsetImportEngine.IntColumn"/>      
-		<Column name="primary_role_allow_connections" type="RowsetImportEngine.IntColumn"/>      
-		<Column name="primary_role_allow_connections_desc" type="RowsetImportEngine.NVarCharColumn"/>      
-		<Column name="secondary_role_allow_connections" type="RowsetImportEngine.IntColumn"/>      
-		<Column name="secondary_role_allow_connections_desc" type="RowsetImportEngine.NVarCharColumn"/>      
-		<Column name="create_date" type="RowsetImportEngine.DateTimeColumn"/>      
-		<Column name="modify_date" type="RowsetImportEngine.DateTimeColumn"/>      
-		<Column name="backup_priority" type="RowsetImportEngine.IntColumn"/>      
-		<Column name="read_only_routing_url" type="RowsetImportEngine.NVarCharColumn"/>      
-		<Column name="seeding_mode" type="RowsetImportEngine.IntColumn"/>  
-		<Column name="seeding_mode_desc" type="RowsetImportEngine.NVarCharColumn"/>  
-		<Column name="read_write_routing_url" type="RowsetImportEngine.NVarCharColumn"/> 
-		<Column name="is_local" type="RowsetImportEngine.IntColumn"/> 
-		<Column name="role" type="RowsetImportEngine.IntColumn"/> 
-		<Column name="role_desc" type="RowsetImportEngine.NVarCharColumn"/> 
-		<Column name="operational_state" type="RowsetImportEngine.IntColumn"/> 
-		<Column name="operational_state_desc" type="RowsetImportEngine.NVarCharColumn"/> 
-		<Column name="connected_state" type="RowsetImportEngine.IntColumn"/> 
-		<Column name="connected_state_desc" type="RowsetImportEngine.NVarCharColumn"/> 
-		<Column name="recovery_health" type="RowsetImportEngine.IntColumn"/> 
-		<Column name="recovery_health_desc" type="RowsetImportEngine.NVarCharColumn"/> 
-		<Column name="synchronization_health" type="RowsetImportEngine.IntColumn"/> 
-		<Column name="synchronization_health_desc" type="RowsetImportEngine.NVarCharColumn"/> 
-		<Column name="last_connect_error_number" type="RowsetImportEngine.IntColumn"/> 
-		<Column name="last_connect_error_description" type="RowsetImportEngine.NVarCharColumn"/> 
-		<Column name="last_connect_error_timestamp" type="RowsetImportEngine.DateTimeColumn"/> 
-		<Column name="write_lease_remaining_ticks" type="RowsetImportEngine.BigIntColumn"/> 
-		<Column name="current_configuration_commit_start_time_utc" type="RowsetImportEngine.DateTimeColumn"/> 		
+        <Column name="availability_mode_desc" type="RowsetImportEngine.NVarCharColumn"/>      
+        <Column name="failover_mode" type="RowsetImportEngine.IntColumn"/>      
+        <Column name="failover_mode_desc" type="RowsetImportEngine.NVarCharColumn"/>      
+        <Column name="is_distributed" type="RowsetImportEngine.IntColumn"/>      
+        <Column name="session_timeout" type="RowsetImportEngine.IntColumn"/>      
+        <Column name="primary_role_allow_connections" type="RowsetImportEngine.IntColumn"/>      
+        <Column name="primary_role_allow_connections_desc" type="RowsetImportEngine.NVarCharColumn"/>      
+        <Column name="secondary_role_allow_connections" type="RowsetImportEngine.IntColumn"/>      
+        <Column name="secondary_role_allow_connections_desc" type="RowsetImportEngine.NVarCharColumn"/>      
+        <Column name="create_date" type="RowsetImportEngine.DateTimeColumn"/>      
+        <Column name="modify_date" type="RowsetImportEngine.DateTimeColumn"/>      
+        <Column name="backup_priority" type="RowsetImportEngine.IntColumn"/>      
+        <Column name="read_only_routing_url" type="RowsetImportEngine.NVarCharColumn"/>      
+        <Column name="seeding_mode" type="RowsetImportEngine.IntColumn"/>  
+        <Column name="seeding_mode_desc" type="RowsetImportEngine.NVarCharColumn"/>  
+        <Column name="read_write_routing_url" type="RowsetImportEngine.NVarCharColumn"/> 
+        <Column name="is_local" type="RowsetImportEngine.IntColumn"/> 
+        <Column name="role" type="RowsetImportEngine.IntColumn"/> 
+        <Column name="role_desc" type="RowsetImportEngine.NVarCharColumn"/> 
+        <Column name="operational_state" type="RowsetImportEngine.IntColumn"/> 
+        <Column name="operational_state_desc" type="RowsetImportEngine.NVarCharColumn"/> 
+        <Column name="connected_state" type="RowsetImportEngine.IntColumn"/> 
+        <Column name="connected_state_desc" type="RowsetImportEngine.NVarCharColumn"/> 
+        <Column name="recovery_health" type="RowsetImportEngine.IntColumn"/> 
+        <Column name="recovery_health_desc" type="RowsetImportEngine.NVarCharColumn"/> 
+        <Column name="synchronization_health" type="RowsetImportEngine.IntColumn"/> 
+        <Column name="synchronization_health_desc" type="RowsetImportEngine.NVarCharColumn"/> 
+        <Column name="last_connect_error_number" type="RowsetImportEngine.IntColumn"/> 
+        <Column name="last_connect_error_description" type="RowsetImportEngine.NVarCharColumn"/> 
+        <Column name="last_connect_error_timestamp" type="RowsetImportEngine.DateTimeColumn"/> 
+        <Column name="write_lease_remaining_ticks" type="RowsetImportEngine.BigIntColumn"/> 
+        <Column name="current_configuration_commit_start_time_utc" type="RowsetImportEngine.DateTimeColumn"/> 		
       </KnownColumns>
-	 </Rowset>  
-	 <Rowset name="tbl_hadr_ag_database_replica_states" enabled="true" identifier="-- AG_hadr_ag_database_replica_states --" type="RowsetImportEngine.TextRowset">
-	  <KnownColumns>
+    </Rowset>
+    
+    <Rowset name="tbl_hadr_ag_database_replica_states" enabled="true" identifier="-- AG_hadr_ag_database_replica_states --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
         <Column name="Availability_Group" type="RowsetImportEngine.NVarCharColumn"/>
         <Column name="replica_id" type="RowsetImportEngine.NVarCharColumn" />
         <Column name="group_database_id" type="RowsetImportEngine.NVarCharColumn"/>
@@ -2756,120 +2766,127 @@
         <Column name="is_database_joined" type="RowsetImportEngine.IntColumn"/>
         <Column name="recovery_lsn" type="RowsetImportEngine.NVarCharColumn"/>
         <Column name="truncation_lsn" type="RowsetImportEngine.NVarCharColumn"/>      
-		<Column name="database_id" type="RowsetImportEngine.IntColumn"/>      
-		<Column name="group_id" type="RowsetImportEngine.NVarCharColumn"/>      
-		<Column name="is_local" type="RowsetImportEngine.IntColumn"/>      
-		<Column name="is_primary_replica" type="RowsetImportEngine.IntColumn"/>      
-		<Column name="synchronization_state" type="RowsetImportEngine.IntColumn"/>      
-		<Column name="synchronization_state_desc" type="RowsetImportEngine.NVarCharColumn"/>      
-		<Column name="is_commit_participant" type="RowsetImportEngine.IntColumn"/>      
-		<Column name="synchronization_health" type="RowsetImportEngine.IntColumn"/>      
-		<Column name="synchronization_health_desc" type="RowsetImportEngine.NVarCharColumn"/>      
-		<Column name="database_state" type="RowsetImportEngine.IntColumn"/>      
-		<Column name="database_state_desc" type="RowsetImportEngine.NVarCharColumn"/>      
-		<Column name="is_suspended" type="RowsetImportEngine.IntColumn"/>      
-		<Column name="suspend_reason" type="RowsetImportEngine.IntColumn"/>      
-		<Column name="suspend_reason_desc" type="RowsetImportEngine.NVarCharColumn"/>  
-		<Column name="last_sent_lsn" type="RowsetImportEngine.NVarCharColumn"/>  
-		<Column name="last_sent_time" type="RowsetImportEngine.DateTimeColumn"/> 
-		<Column name="last_received_lsn" type="RowsetImportEngine.NVarCharColumn"/> 
-		<Column name="last_received_time" type="RowsetImportEngine.DateTimeColumn"/> 
-		<Column name="last_hardened_lsn" type="RowsetImportEngine.NVarCharColumn"/> 
-		<Column name="last_hardened_time" type="RowsetImportEngine.DateTimeColumn"/> 
-		<Column name="last_redone_lsn" type="RowsetImportEngine.NVarCharColumn"/> 
-		<Column name="last_redone_time" type="RowsetImportEngine.DateTimeColumn"/> 
-		<Column name="log_send_queue_size" type="RowsetImportEngine.BigIntColumn"/> 
-		<Column name="log_send_rate" type="RowsetImportEngine.BigIntColumn"/> 
-		<Column name="redo_queue_size" type="RowsetImportEngine.BigIntColumn"/> 
-		<Column name="redo_rate" type="RowsetImportEngine.BigIntColumn"/> 
-		<Column name="filestream_send_rate" type="RowsetImportEngine.BigIntColumn"/> 
-		<Column name="end_of_log_lsn" type="RowsetImportEngine.NVarCharColumn"/> 
-		<Column name="last_commit_lsn" type="RowsetImportEngine.NVarCharColumn"/> 
-		<Column name="last_commit_time" type="RowsetImportEngine.DateTimeColumn"/> 
-		<Column name="low_water_mark_for_ghosts" type="RowsetImportEngine.BigIntColumn"/> 
-		<Column name="secondary_lag_seconds" type="RowsetImportEngine.BigIntColumn"/> 
-		<Column name="quorum_commit_lsn" type="RowsetImportEngine.NVarCharColumn"/> 
-		<Column name="quorum_commit_time" type="RowsetImportEngine.DateTimeColumn"/> 
-		<Column name="file_id" type="RowsetImportEngine.IntColumn"/> 
-		<Column name="page_id" type="RowsetImportEngine.BigIntColumn"/> 
-		<Column name="error_type" type="RowsetImportEngine.IntColumn"/> 
-		<Column name="page_status" type="RowsetImportEngine.IntColumn"/> 
-		<Column name="modification_time" type="RowsetImportEngine.DateTimeColumn"/> 
-		<Column name="name" type="RowsetImportEngine.NVarCharColumn"/> 
-		<Column name="resource_id" type="RowsetImportEngine.NVarCharColumn"/> 
-		<Column name="resource_group_id" type="RowsetImportEngine.NVarCharColumn"/> 
-		<Column name="failure_condition_level" type="RowsetImportEngine.IntColumn"/> 
-		<Column name="health_check_timeout" type="RowsetImportEngine.IntColumn"/> 
-		<Column name="automated_backup_preference" type="RowsetImportEngine.IntColumn"/> 
-		<Column name="automated_backup_preference_desc" type="RowsetImportEngine.NVarCharColumn"/> 
-		<Column name="version" type="RowsetImportEngine.IntColumn"/> 
-		<Column name="basic_features" type="RowsetImportEngine.IntColumn"/> 
-		<Column name="dtc_support" type="RowsetImportEngine.IntColumn"/> 
-		<Column name="db_failover" type="RowsetImportEngine.IntColumn"/> 
-		<Column name="is_distributed" type="RowsetImportEngine.IntColumn"/> 
-		<Column name="cluster_type" type="RowsetImportEngine.IntColumn"/> 
-		<Column name="cluster_type_desc" type="RowsetImportEngine.NVarCharColumn"/> 
-		<Column name="required_synchronized_secondaries_to_commit" type="RowsetImportEngine.IntColumn"/> 
-		<Column name="sequence_number" type="RowsetImportEngine.BigIntColumn"/> 
-		<Column name="is_contained" type="RowsetImportEngine.IntColumn"/> 
-		</KnownColumns>
-	 </Rowset>  
-	  <Rowset name="tbl_hadr_dm_os_server_diagnostics_log_configurations" enabled="true" identifier="-- AG_dm_os_server_diagnostics_log_configurations --" type="RowsetImportEngine.TextRowset">
-	    <KnownColumns>
-        <Column name="is_enabled" type="RowsetImportEngine.IntColumn"/>        
+        <Column name="database_id" type="RowsetImportEngine.IntColumn"/>      
+        <Column name="group_id" type="RowsetImportEngine.NVarCharColumn"/>      
+        <Column name="is_local" type="RowsetImportEngine.IntColumn"/>      
+        <Column name="is_primary_replica" type="RowsetImportEngine.IntColumn"/>      
+        <Column name="synchronization_state" type="RowsetImportEngine.IntColumn"/>      
+        <Column name="synchronization_state_desc" type="RowsetImportEngine.NVarCharColumn"/>      
+        <Column name="is_commit_participant" type="RowsetImportEngine.IntColumn"/>      
+        <Column name="synchronization_health" type="RowsetImportEngine.IntColumn"/>      
+        <Column name="synchronization_health_desc" type="RowsetImportEngine.NVarCharColumn"/>      
+        <Column name="database_state" type="RowsetImportEngine.IntColumn"/>      
+        <Column name="database_state_desc" type="RowsetImportEngine.NVarCharColumn"/>      
+        <Column name="is_suspended" type="RowsetImportEngine.IntColumn"/>      
+        <Column name="suspend_reason" type="RowsetImportEngine.IntColumn"/>      
+        <Column name="suspend_reason_desc" type="RowsetImportEngine.NVarCharColumn"/>  
+        <Column name="last_sent_lsn" type="RowsetImportEngine.NVarCharColumn"/>  
+        <Column name="last_sent_time" type="RowsetImportEngine.DateTimeColumn"/> 
+        <Column name="last_received_lsn" type="RowsetImportEngine.NVarCharColumn"/> 
+        <Column name="last_received_time" type="RowsetImportEngine.DateTimeColumn"/> 
+        <Column name="last_hardened_lsn" type="RowsetImportEngine.NVarCharColumn"/> 
+        <Column name="last_hardened_time" type="RowsetImportEngine.DateTimeColumn"/> 
+        <Column name="last_redone_lsn" type="RowsetImportEngine.NVarCharColumn"/> 
+        <Column name="last_redone_time" type="RowsetImportEngine.DateTimeColumn"/> 
+        <Column name="log_send_queue_size" type="RowsetImportEngine.BigIntColumn"/> 
+        <Column name="log_send_rate" type="RowsetImportEngine.BigIntColumn"/> 
+        <Column name="redo_queue_size" type="RowsetImportEngine.BigIntColumn"/> 
+        <Column name="redo_rate" type="RowsetImportEngine.BigIntColumn"/> 
+        <Column name="filestream_send_rate" type="RowsetImportEngine.BigIntColumn"/> 
+        <Column name="end_of_log_lsn" type="RowsetImportEngine.NVarCharColumn"/> 
+        <Column name="last_commit_lsn" type="RowsetImportEngine.NVarCharColumn"/> 
+        <Column name="last_commit_time" type="RowsetImportEngine.DateTimeColumn"/> 
+        <Column name="low_water_mark_for_ghosts" type="RowsetImportEngine.BigIntColumn"/> 
+        <Column name="secondary_lag_seconds" type="RowsetImportEngine.BigIntColumn"/> 
+        <Column name="quorum_commit_lsn" type="RowsetImportEngine.NVarCharColumn"/> 
+        <Column name="quorum_commit_time" type="RowsetImportEngine.DateTimeColumn"/> 
+        <Column name="file_id" type="RowsetImportEngine.IntColumn"/> 
+        <Column name="page_id" type="RowsetImportEngine.BigIntColumn"/> 
+        <Column name="error_type" type="RowsetImportEngine.IntColumn"/> 
+        <Column name="page_status" type="RowsetImportEngine.IntColumn"/> 
+        <Column name="modification_time" type="RowsetImportEngine.DateTimeColumn"/> 
+        <Column name="name" type="RowsetImportEngine.NVarCharColumn"/> 
+        <Column name="resource_id" type="RowsetImportEngine.NVarCharColumn"/> 
+        <Column name="resource_group_id" type="RowsetImportEngine.NVarCharColumn"/> 
+        <Column name="failure_condition_level" type="RowsetImportEngine.IntColumn"/> 
+        <Column name="health_check_timeout" type="RowsetImportEngine.IntColumn"/> 
+        <Column name="automated_backup_preference" type="RowsetImportEngine.IntColumn"/> 
+        <Column name="automated_backup_preference_desc" type="RowsetImportEngine.NVarCharColumn"/> 
+        <Column name="version" type="RowsetImportEngine.IntColumn"/> 
+        <Column name="basic_features" type="RowsetImportEngine.IntColumn"/> 
+        <Column name="dtc_support" type="RowsetImportEngine.IntColumn"/> 
+        <Column name="db_failover" type="RowsetImportEngine.IntColumn"/> 
+        <Column name="is_distributed" type="RowsetImportEngine.IntColumn"/> 
+        <Column name="cluster_type" type="RowsetImportEngine.IntColumn"/> 
+        <Column name="cluster_type_desc" type="RowsetImportEngine.NVarCharColumn"/> 
+        <Column name="required_synchronized_secondaries_to_commit" type="RowsetImportEngine.IntColumn"/> 
+        <Column name="sequence_number" type="RowsetImportEngine.BigIntColumn"/> 
+        <Column name="is_contained" type="RowsetImportEngine.IntColumn"/> 
+      </KnownColumns>
+    </Rowset>
+    
+    <Rowset name="tbl_hadr_dm_os_server_diagnostics_log_configurations" enabled="true" identifier="-- AG_dm_os_server_diagnostics_log_configurations --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="is_enabled" type="RowsetImportEngine.IntColumn"/>
         <Column name="path" type="RowsetImportEngine.NVarCharColumn" />
         <Column name="max_size" type="RowsetImportEngine.IntColumn"/>
-        <Column name="max_files" type="RowsetImportEngine.IntColumn"/>             		
+        <Column name="max_files" type="RowsetImportEngine.IntColumn"/> 
       </KnownColumns>
-	 </Rowset>  
-      <Rowset name="tbl_hadr_alwayson_health_alwayson_ddl_executed" enabled="true" identifier="-- AG_AlwaysOn_health_alwayson_ddl_executed --" type="RowsetImportEngine.TextRowset">
-	   <KnownColumns>
+    </Rowset>
+    
+    <Rowset name="tbl_hadr_alwayson_health_alwayson_ddl_executed" enabled="true" identifier="-- AG_AlwaysOn_health_alwayson_ddl_executed --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="TimeStampUTC" type="RowsetImportEngine.DateTimeColumn"/> 
+        <Column name="DDLAction" type="RowsetImportEngine.VarCharColumn" />
+        <Column name="DDLPhase" type="RowsetImportEngine.VarCharColumn"/>
+        <Column name="AGName" type="RowsetImportEngine.NVarCharColumn"/>       
+        <Column name="DDLStatement" type="RowsetImportEngine.VarCharColumn"/>
+      </KnownColumns>
+    </Rowset>
+    
+    <Rowset name="tbl_hadr_alwayson_health_failovers" enabled="true" identifier="-- AG_AlwaysOn_health_failovers --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
         <Column name="TimeStampUTC" type="RowsetImportEngine.DateTimeColumn"/>        
         <Column name="DDLAction" type="RowsetImportEngine.VarCharColumn" />
         <Column name="DDLPhase" type="RowsetImportEngine.VarCharColumn"/>
         <Column name="AGName" type="RowsetImportEngine.NVarCharColumn"/>             		
-		<Column name="DDLStatement" type="RowsetImportEngine.VarCharColumn"/>             		
+        <Column name="DDLStatement" type="RowsetImportEngine.VarCharColumn"/>             		
       </KnownColumns>
-	 </Rowset>  
-  	  <Rowset name="tbl_hadr_alwayson_health_failovers" enabled="true" identifier="-- AG_AlwaysOn_health_failovers --" type="RowsetImportEngine.TextRowset">
-	  <KnownColumns>
-        <Column name="TimeStampUTC" type="RowsetImportEngine.DateTimeColumn"/>        
-        <Column name="DDLAction" type="RowsetImportEngine.VarCharColumn" />
-        <Column name="DDLPhase" type="RowsetImportEngine.VarCharColumn"/>
-        <Column name="AGName" type="RowsetImportEngine.NVarCharColumn"/>             		
-		<Column name="DDLStatement" type="RowsetImportEngine.VarCharColumn"/>             		
-      </KnownColumns>
-	 </Rowset>  
-	  <Rowset name="tbl_hadr_alwayson_health_availability_replica_manager_state_change" enabled="true" identifier="-- AG_AlwaysOn_health_availability_replica_manager_state_change --" type="RowsetImportEngine.TextRowset">
-  	  <KnownColumns>
+    </Rowset>
+    
+    <Rowset name="tbl_hadr_alwayson_health_availability_replica_manager_state_change" enabled="true" identifier="-- AG_AlwaysOn_health_availability_replica_manager_state_change --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
         <Column name="TimeStampUTC" type="RowsetImportEngine.DateTimeColumn"/>        
         <Column name="CurrentStateDesc" type="RowsetImportEngine.VarCharColumn" />          		
       </KnownColumns>
-	 </Rowset>  
-	  <Rowset name="tbl_hadr_alwayson_health_availability_replica_state_change" enabled="true" identifier="-- AG_AlwaysOn_health_availability_replica_state_change --" type="RowsetImportEngine.TextRowset">
-	  <KnownColumns>
+    </Rowset>
+	  
+    <Rowset name="tbl_hadr_alwayson_health_availability_replica_state_change" enabled="true" identifier="-- AG_AlwaysOn_health_availability_replica_state_change --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
         <Column name="TimeStampUTC" type="RowsetImportEngine.DateTimeColumn"/>        
         <Column name="AGName" type="RowsetImportEngine.NVarCharColumn"/>             		
-		<Column name="PrevStateDesc" type="RowsetImportEngine.VarCharColumn"/>             		
-		<Column name="CurrentStateDesc" type="RowsetImportEngine.VarCharColumn"/>             		
+        <Column name="PrevStateDesc" type="RowsetImportEngine.VarCharColumn"/>             		
+        <Column name="CurrentStateDesc" type="RowsetImportEngine.VarCharColumn"/>             		
       </KnownColumns>
-	 </Rowset>  
-	  <Rowset name="tbl_hadr_alwayson_health_availability_group_lease_expired" enabled="true" identifier="-- AG_AlwaysOn_health_availability_group_lease_expired --" type="RowsetImportEngine.TextRowset">
-	   <KnownColumns>
+    </Rowset>
+    
+    <Rowset name="tbl_hadr_alwayson_health_availability_group_lease_expired" enabled="true" identifier="-- AG_AlwaysOn_health_availability_group_lease_expired --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
         <Column name="TimeStampUTC" type="RowsetImportEngine.DateTimeColumn"/>        
         <Column name="AGName" type="RowsetImportEngine.NVarCharColumn"/>             		
-		<Column name="AG_ID" type="RowsetImportEngine.VarCharColumn"/>                		
+        <Column name="AG_ID" type="RowsetImportEngine.VarCharColumn"/>                		
       </KnownColumns>
-	 </Rowset>  
+    </Rowset>
+    
     <Rowset name="tbl_hadr_alwayson_health_error_reported" enabled="true" identifier="-- AG_AlwaysOn_health_error_reported ---" type="RowsetImportEngine.TextRowset">
-	   <KnownColumns>
+      <KnownColumns>
         <Column name="ErrorNum" type="RowsetImportEngine.IntColumn"/>        
         <Column name="ErrorCount" type="RowsetImportEngine.IntColumn"/>             		
-		<Column name="FirstDate" type="RowsetImportEngine.DateTimeColumn"/>   
-		<Column name="LastDate" type="RowsetImportEngine.DateTimeColumn"/>        
+        <Column name="FirstDate" type="RowsetImportEngine.DateTimeColumn"/>   
+        <Column name="LastDate" type="RowsetImportEngine.DateTimeColumn"/>        
         <Column name="Abbreviated Message" type="RowsetImportEngine.VarCharColumn"/>             						
       </KnownColumns>
-	  </Rowset>    
+    </Rowset>
   
   </KnownRowsets>
 </TextImport>
