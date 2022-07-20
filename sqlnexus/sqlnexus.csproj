@@ -408,6 +408,12 @@
     <Content Include="Reports\PowerBIReports\System Health Session.pbit">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Reports\AlwaysOn_AGBasics_C.rdlC">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\AlwaysOn_AGDetails_C.rdlC">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="SqlNexus.snk" />
   </ItemGroup>
   <ItemGroup>
