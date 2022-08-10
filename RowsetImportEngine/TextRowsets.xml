@@ -1585,7 +1585,183 @@
 	  </KnownColumns>
   </Rowset>
 
-  <Rowset name="tbl_dm_exec_cursors" enabled="True" identifier="-- dm_exec_cursors(0) --" type="RowsetImportEngine.TextRowset">
+    <Rowset name="tbl_dm_db_file_space_usage_summary" enabled="True" identifier="-- sys.dm_db_file_space_usage --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="dbname" type="RowsetImportEngine.VarCharColumn" length="256" />
+        <Column name="usr_obj_kb" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="internal_obj_kb" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="version_store_kb" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="freespace_kb" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="mixedextent_kb" type="RowsetImportEngine.BigIntColumn" />
+      </KnownColumns>
+    </Rowset>
+
+    <Rowset name="tbl_tempdb_space_usage_by_file" enabled="True" identifier="-- tempdb_space_usage_by_file --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="filename" type="RowsetImportEngine.VarCharColumn" length="32" />
+        <Column name="physical_name" type="RowsetImportEngine.VarCharColumn" length="520" />
+        <Column name="currentsize_mb" type="RowsetImportEngine.DecimalColumn" />
+        <Column name="freespace_mb" type="RowsetImportEngine.DecimalColumn" />
+      </KnownColumns>
+    </Rowset>
+
+    <Rowset name="tbl_transaction_perfmon_counters" enabled="True" identifier="-- transaction_perfmon_counters --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="dbname" type="RowsetImportEngine.VarCharColumn" length="256" />
+        <Column name="object_name" type="RowsetImportEngine.VarCharColumn" length="28" />
+        <Column name="counter_name" type="RowsetImportEngine.VarCharColumn" length="42" />
+        <Column name="counter_value" type="RowsetImportEngine.BigIntColumn" />
+      </KnownColumns>
+    </Rowset>
+
+    <Rowset name="tbl_dm_db_session_space_usage" enabled="True" identifier="-- sys.dm_db_session_space_usage --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="session_id" type="RowsetImportEngine.IntColumn" />
+        <Column name="database_id" type="RowsetImportEngine.IntColumn" />
+        <Column name="internal_objects_alloc_page_count" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="internal_objects_dealloc_page_count" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="user_objects_alloc_page_count" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="user_objects_dealloc_page_count" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="user_objects_deferred_dealloc_page_count" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="open_transaction_count" type="RowsetImportEngine.IntColumn" />
+        <Column name="last_request_end_time" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="host_name" type="RowsetImportEngine.VarCharColumn" length="48" />
+        <Column name="program_name" type="RowsetImportEngine.VarCharColumn" length="48" />
+        <Column name="most_recent_query" type="RowsetImportEngine.VarCharColumn" length="256" />
+      </KnownColumns>
+    </Rowset>
+
+    <Rowset name="tbl_dm_db_task_space_usage" enabled="True" identifier="-- sys.dm_db_task_space_usage --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="session_id" type="RowsetImportEngine.IntColumn" />
+        <Column name="database_id" type="RowsetImportEngine.IntColumn" />
+        <Column name="internal_objects_alloc_page_count" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="internal_objects_dealloc_page_count" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="user_objects_alloc_page_count" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="user_objects_dealloc_page_count" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="exec_context_id" type="RowsetImportEngine.IntColumn" />
+        <Column name="status" type="RowsetImportEngine.VarCharColumn" length="30"  />
+        <Column name="wait_type" type="RowsetImportEngine.VarCharColumn" length="60" />
+        <Column name="wait_time" type="RowsetImportEngine.IntColumn" />
+        <Column name="cpu_time" type="RowsetImportEngine.IntColumn" />
+        <Column name="statement_text" type="RowsetImportEngine.VarCharColumn" length="512" />
+        <Column name="batch_text" type="RowsetImportEngine.VarCharColumn" length="256" />
+      </KnownColumns>
+    </Rowset>
+
+    <Rowset name="tbl_dm_db_task_space_usage" enabled="True" identifier="-- version store transactions --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="transaction_id" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="transaction_sequence_num" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="commit_sequence_num" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="elapsed_time_seconds" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="average_version_chain_traversed" type="RowsetImportEngine.FloatColumn" />
+        <Column name="max_version_chain_traversed" type="RowsetImportEngine.IntColumn" />
+        <Column name="first_snapshot_sequence_num" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="is_snapshot" type="RowsetImportEngine.IntColumn" />
+        <Column name="session_id" type="RowsetImportEngine.IntColumn" />
+        <Column name="blocking_session_id" type="RowsetImportEngine.IntColumn" />
+        <Column name="status" type="RowsetImportEngine.VarCharColumn" length="30"  />
+        <Column name="wait_type" type="RowsetImportEngine.VarCharColumn" length="60" />
+        <Column name="wait_time" type="RowsetImportEngine.IntColumn" />
+        <Column name="cpu_time" type="RowsetImportEngine.IntColumn" />
+        <Column name="total_elapsed_time" type="RowsetImportEngine.IntColumn" />
+        <Column name="granted_query_memory" type="RowsetImportEngine.IntColumn" />
+        <Column name="open_transaction_count" type="RowsetImportEngine.IntColumn" />
+        <Column name="transaction_isolation_level" type="RowsetImportEngine.IntColumn" />
+        <Column name="statement_text" type="RowsetImportEngine.VarCharColumn" length="512" />
+      </KnownColumns>
+    </Rowset>
+
+    <Rowset name="tbl_open_transactions" enabled="True" identifier="-- open transactions --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="transaction_id" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="database_transaction_state" type="RowsetImportEngine.IntColumn" />
+        <Column name="database_transaction_type" type="RowsetImportEngine.IntColumn" />
+        <Column name="database_transaction_log_record_count" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="database_transaction_begin_lsn" type="RowsetImportEngine.DecimalColumn" />
+        <Column name="database_transaction_last_lsn" type="RowsetImportEngine.DecimalColumn" />
+        <Column name="database_transaction_begin_time" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="database_transaction_log_bytes_used" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="database_transaction_log_bytes_reserved" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="database_transaction_log_bytes_reserved_system" type="RowsetImportEngine.IntColumn" />
+        <Column name="database_transaction_log_bytes_used_system" type="RowsetImportEngine.IntColumn" />
+        <Column name="session_id" type="RowsetImportEngine.IntColumn" />
+        <Column name="is_local" type="RowsetImportEngine.IntColumn" />
+        <Column name="login_time" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="last_request_end_time" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="dbname" type="RowsetImportEngine.VarCharColumn" length="36" />
+        <Column name="most_recent_session_id" type="RowsetImportEngine.IntColumn" />
+        <Column name="open_transaction_count" type="RowsetImportEngine.IntColumn" />
+        <Column name="status" type="RowsetImportEngine.VarCharColumn" length="30"  />
+        <Column name="host_name" type="RowsetImportEngine.VarCharColumn" length="48" />
+        <Column name="program_name" type="RowsetImportEngine.VarCharColumn" length="48" />
+        <Column name="is_user_process" type="RowsetImportEngine.IntColumn" />
+        <Column name="host_process_id" type="RowsetImportEngine.IntColumn" />
+        <Column name="login_name" type="RowsetImportEngine.VarCharColumn" length="48" />
+        <Column name="client_net_address" type="RowsetImportEngine.VarCharColumn" length="48" />
+        <Column name="net_transport" type="RowsetImportEngine.VarCharColumn" length="40" />
+      </KnownColumns>
+    </Rowset>
+
+
+    <Rowset name="tbl_tempdb_usage_by_object" enabled="True" identifier="-- tempdb usage by objects --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="dbname" type="RowsetImportEngine.VarCharColumn" length="256" />
+        <Column name="database_id" type="RowsetImportEngine.IntColumn" />
+        <Column name="schema_id" type="RowsetImportEngine.IntColumn" />
+        <Column name="schema_name" type="RowsetImportEngine.VarCharColumn" length="48" />
+        <Column name="object_id" type="RowsetImportEngine.IntColumn" />
+        <Column name="table_name" type="RowsetImportEngine.VarCharColumn" length="48" />
+        <Column name="is_heap" type="RowsetImportEngine.IntColumn" />
+        <Column name="used_pages_kb" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="reserved_pages_kb" type="RowsetImportEngine.BigIntColumn" />
+      </KnownColumns>
+    </Rowset>
+
+
+    <Rowset name="tbl_tempdb_waits" enabled="True" identifier="-- waits-in-tempdb --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="session_id" type="RowsetImportEngine.IntColumn" />
+        <Column name="start_time" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="status" type="RowsetImportEngine.VarCharColumn" length="30"  />
+        <Column name="command" type="RowsetImportEngine.VarCharColumn" length="30"  />
+        <Column name="dbname" type="RowsetImportEngine.VarCharColumn" length="256" />
+        <Column name="blocking_session_id" type="RowsetImportEngine.IntColumn" />
+        <Column name="wait_type" type="RowsetImportEngine.VarCharColumn" length="60" />
+        <Column name="wait_time" type="RowsetImportEngine.IntColumn" />
+        <Column name="wait_resource" type="RowsetImportEngine.VarCharColumn" length="256" />
+        <Column name="open_transaction_count" type="RowsetImportEngine.IntColumn" />
+        <Column name="cpu_time" type="RowsetImportEngine.IntColumn" />
+        <Column name="total_elapsed_time" type="RowsetImportEngine.IntColumn" />
+        <Column name="logical_reads" type="RowsetImportEngine.BigIntColumn" />
+      </KnownColumns>
+    </Rowset>
+
+
+    <Rowset name="tbl_dm_tran_aborted_transactions" enabled="True" identifier="-- dm_tran_aborted_transactions --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="transaction_id" type="RowsetImportEngine.IntColumn" />
+        <Column name="database_id" type="RowsetImportEngine.IntColumn" />
+        <Column name="begin_xact_lsn" type="RowsetImportEngine.DecimalColumn" />
+        <Column name="end_xact_lsn" type="RowsetImportEngine.DecimalColumn" />
+        <Column name="begin_time" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="nest_aborted" type="RowsetImportEngine.IntColumn" />
+      </KnownColumns>
+    </Rowset>
+    
+    
+    <Rowset name="tbl_dm_exec_cursors" enabled="True" identifier="-- dm_exec_cursors(0) --" type="RowsetImportEngine.TextRowset">
 	  <KnownColumns>
 		  <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
 		  <Column name="count" type="RowsetImportEngine.IntColumn" />

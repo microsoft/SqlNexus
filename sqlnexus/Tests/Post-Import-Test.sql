@@ -282,3 +282,21 @@ go
 select top 5 * from tbl_SystemInformation
 go
 select top 5 * from tbl_ActiveProcesses_with_ModulesLoaded
+go
+select top 5 * from tbl_transaction_perfmon_counters
+go
+select top 5 * from tbl_tempdb_space_usage_by_file
+go
+select top 5 * from tbl_dm_db_file_space_usage_summary
+go
+select top 5 * from tbl_dm_db_session_space_usage
+go
+select top 5 * from tbl_dm_db_task_space_usage
+go
+select top 5 * from tbl_open_transactions
+go
+select top 5 * from tbl_tempdb_usage_by_object
+go
+select top 5 * from tbl_tempdb_waits
+go
+select top 5 * from tbl_dm_tran_aborted_transactions
