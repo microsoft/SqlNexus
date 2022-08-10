@@ -1654,7 +1654,7 @@
       </KnownColumns>
     </Rowset>
 
-    <Rowset name="tbl_dm_db_task_space_usage" enabled="True" identifier="-- version store transactions --" type="RowsetImportEngine.TextRowset">
+    <Rowset name="tbl_version_store_transactions" enabled="True" identifier="-- version store transactions --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
         <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
         <Column name="transaction_id" type="RowsetImportEngine.BigIntColumn" />
