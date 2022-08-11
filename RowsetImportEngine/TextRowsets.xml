@@ -1739,6 +1739,7 @@
         <Column name="blocking_session_id" type="RowsetImportEngine.IntColumn" />
         <Column name="wait_type" type="RowsetImportEngine.VarCharColumn" length="60" />
         <Column name="wait_time" type="RowsetImportEngine.IntColumn" />
+        <Column name="last_wait_type" type="RowsetImportEngine.VarCharColumn" length="60" />
         <Column name="wait_resource" type="RowsetImportEngine.VarCharColumn" length="256" />
         <Column name="open_transaction_count" type="RowsetImportEngine.IntColumn" />
         <Column name="cpu_time" type="RowsetImportEngine.IntColumn" />
