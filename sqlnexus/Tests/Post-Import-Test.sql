@@ -1,8 +1,6 @@
 ﻿--This script can be used to validate that tables exist 
 --Not all tables will exist in every import because they depend on what data was collected by tools like PSSDIAG or SQLLogScout
 --But this is a base to start with 
-DECLARE @sql_major_version INT
-SELECT @sql_major_version = (CAST(PARSENAME(CAST(SERVERPROPERTY('ProductVersion') AS varchar(20)), 4) AS INT))
 
 
 
@@ -302,5 +300,7 @@ select top 5 * from tbl_tempdb_usage_by_object
 go
 select top 5 * from tbl_tempdb_waits
 go
-IF @sql_major_version >= 15
 select top 5 * from tbl_dm_tran_aborted_transactions
+go
+select top 5 * from tbl_dm_tran_persistent_version_store_stats
+go

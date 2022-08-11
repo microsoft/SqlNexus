@@ -3151,9 +3151,34 @@
         <Column name="SprtFtrs" type="RowsetImportEngine.NVarCharColumn"/>
         <Column name="VlStatus" type="RowsetImportEngine.NVarCharColumn"/>
       </KnownColumns>
-    </Rowset> 
+    </Rowset>
 
 
+    <Rowset name="tbl_dm_tran_persistent_version_store_stats" enabled="true" identifier="-- sys.dm_tran_persistent_version_store_stats --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="database_id" type="RowsetImportEngine.IntColumn"/>
+        <Column name="pvs_filegroup_id" type="RowsetImportEngine.IntColumn"/>
+        <Column name="persistent_version_store_size_kb" type="RowsetImportEngine.BigIntColumn"/>
+        <Column name="online_index_version_store_size_kb" type="RowsetImportEngine.BigIntColumn"/>
+        <Column name="current_aborted_transaction_count" type="RowsetImportEngine.BigIntColumn"/>
+        <Column name="oldest_active_transaction_id" type="RowsetImportEngine.BigIntColumn"/>
+        <Column name="oldest_aborted_transaction_id" type="RowsetImportEngine.BigIntColumn"/>
+        <Column name="min_transaction_timestamp" type="RowsetImportEngine.BigIntColumn"/>
+        <Column name="online_index_min_transaction_timestamp" type="RowsetImportEngine.BigIntColumn"/>
+        <Column name="secondary_low_water_mark" type="RowsetImportEngine.BigIntColumn"/>
+        <Column name="offrow_version_cleaner_start_time" type="RowsetImportEngine.DateTimeColumn"/>
+        <Column name="offrow_version_cleaner_end_time" type="RowsetImportEngine.DateTimeColumn"/>
+        <Column name="aborted_version_cleaner_start_time" type="RowsetImportEngine.DateTimeColumn"/>
+        <Column name="aborted_version_cleaner_end_time" type="RowsetImportEngine.DateTimeColumn"/>
+        <Column name="pvs_off_row_page_skipped_low_water_mark" type="RowsetImportEngine.BigIntColumn"/>
+        <Column name="pvs_off_row_page_skipped_transaction_not_cleaned" type="RowsetImportEngine.BigIntColumn"/>
+        <Column name="pvs_off_row_page_skipped_oldest_active_xdesid" type="RowsetImportEngine.BigIntColumn"/>
+        <Column name="pvs_off_row_page_skipped_min_useful_xts" type="RowsetImportEngine.BigIntColumn"/>
+        <Column name="pvs_off_row_page_skipped_oldest_snapshot" type="RowsetImportEngine.BigIntColumn"/>
+        <Column name="pvs_off_row_page_skipped_oldest_aborted_xdesid" type="RowsetImportEngine.BigIntColumn"/>
+      </KnownColumns>
+    </Rowset>
+    
   </KnownRowsets>
 </TextImport>
 
