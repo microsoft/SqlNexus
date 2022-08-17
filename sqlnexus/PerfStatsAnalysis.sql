@@ -355,11 +355,17 @@ GO
 CREATE UNIQUE CLUSTERED INDEX cidx ON vw_HEAD_BLOCKER_SUMMARY (runtime, head_blocker_session_id, blocking_wait_type, rownum)
 GO
 
-IF OBJECT_ID ('tbl_PERF_STATS_SCRIPT_RUNTIMES') IS NOT NULL DROP TABLE tbl_PERF_STATS_SCRIPT_RUNTIMES
+
+IF OBJECT_ID ('tbl_PERF_STATS_SCRIPT_RUNTIMES') IS NOT NULL 
+	DROP TABLE tbl_PERF_STATS_SCRIPT_RUNTIMES
 GO
---it used to use tbl_requests. but that table wont' get much data if server is idel. wait stats is gauranteed to generate
-SELECT DISTINCT runtime INTO tbl_PERF_STATS_SCRIPT_RUNTIMES FROM tbl_OS_WAIT_STATS ORDER BY runtime
+--it used to use tbl_requests. but that table wont' get much data if server is idle. wait stats is likely to be generated
+CREATE TABLE tbl_PERF_STATS_SCRIPT_RUNTIMES (runtime DATETIME)
 GO
+IF OBJECT_ID ('tbl_OS_WAIT_STATS') IS NOT NULL 
+	INSERT INTO tbl_PERF_STATS_SCRIPT_RUNTIMES SELECT DISTINCT runtime FROM tbl_OS_WAIT_STATS ORDER BY runtime
+
+
 
 IF OBJECT_ID ('vw_PERF_STATS_SCRIPT_RUNTIMES') IS NOT NULL DROP VIEW vw_PERF_STATS_SCRIPT_RUNTIMES
 GO 
