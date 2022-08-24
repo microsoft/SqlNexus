@@ -2165,6 +2165,13 @@ insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name,
 values ('6D4B332C-67A0-428D-A08C-A48A5327DE60','Query Performance', 'W','Warning', 'usp_oldce', 'Customer using oldCE for database', 'Customer not taking advantage of newCE', '','https://cloudblogs.microsoft.com/sqlserver/2014/03/17/the-new-and-improved-cardinality-estimator-in-sql-server-2014/', '  virana', 1, 100, 0)
 
 
+/**************************************************************************************************
+owner:  JAMGRIF
+
+***************************************************************************************************/
+
+insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
+values ('91B2AA56-9CA2-4BDB-8D21-76A5CFF4D74A','Server Performance', 'W','Warning', 'usp_CalvsCore', 'CAL license possibly limiting CPU', 'Customer is using CAL license and CPUs are greater than schedulers online, check errorlog', '','https://docs.microsoft.com/en-us/sql/database-engine/install-windows/upgrade-to-a-different-edition-of-sql-server-setup?view=sql-server-ver16', '  jamgrif', 1, 100, 0)
 
 
 /*************************************************************************************************
@@ -3478,6 +3485,46 @@ END
 GO
 
 
+
+/**************************************************************************************************
+owner:  JAMGRIF
+date: 8/23/22
+description: Adds check and warning if CAL license is in use and schedulers are less than CPUs 
+
+***************************************************************************************************/
+
+create procedure usp_CalvsCore
+AS
+IF ((OBJECT_ID ('tbl_ServerProperties') IS NOT NULL) and (OBJECT_ID ('tbl_AnalysisSummary') IS NOT NULL))
+BEGIN
+	DECLARE @schedCount int = 0
+	DECLARE @cpuCount int = 0
+	--make sure there is only 1 distinct row (this process might get more than 1 server...probably FCI situtation when it does)
+	DECLARE @cpuRows int = 0;
+	--unless there is more than 1 row
+	SELECT DISTINCT @cpuRows = COUNT(PropertyValue)
+	FROM [tbl_ServerProperties] WHERE PropertyName in ('cpu_count')
+	IF (@cpuRows = 1) --then we are OK to use the number
+	BEGIN
+		SELECT DISTINCT @cpuCount = PropertyValue
+		FROM [tbl_ServerProperties] WHERE PropertyName in ('cpu_count')
+		SELECT DISTINCT @schedCount = PropertyValue
+		FROM [tbl_ServerProperties] WHERE PropertyName in ('number of visible schedulers')
+	END
+
+	IF @cpuCount <> 0 OR @cpuCount is not null
+	BEGIN
+		IF EXISTS (SELECT 1 FROM [dbo].[tbl_ServerProperties] where PropertyName = 'Edition' AND PropertyValue NOT LIKE '%Core-based%') AND @cpuCount > @schedCount 
+			BEGIN
+				UPDATE [dbo].[tbl_AnalysisSummary]
+				SET [Status] = 1,
+				[Description] = 'Customer is using CAL license and CPUs (' + CONVERT(VARCHAR, @cpuCount) + ') are greater than schedulers (' + CONVERT(VARCHAR, @schedCount) + ') online, check errorlog '
+				WHERE [Name] = 'usp_CalvsCore'
+			END
+	END
+END
+
+
 /********************************************************
 Owner: Louis Li
 ********************************************************/
@@ -3608,5 +3655,12 @@ go
 exec usp_oldce
 go
 
+/**************************************************************************************************
+owner:  JAMGRIF
+
+***************************************************************************************************/
+go
+exec usp_CalvsCore
+go
 
 /******END of script***/
