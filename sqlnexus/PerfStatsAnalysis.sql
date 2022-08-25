@@ -2495,21 +2495,21 @@ end
 end
 go
 
-create procedure proc_ExcessiveXevents
-as
-IF ((OBJECT_ID ('tbl_XEvents') IS NOT NULL) and (OBJECT_ID ('tbl_AnalysisSummary') IS NOT NULL))
-begin
-	if exists (
-		select event_name from tbl_XEvents
-		where  event_name in
-		('query_pre_execution_showplan', 'query_post_execution_showplan','query_post_compilation_showplan','lock_acquired','sql_statement_starting','sql_statement_completed','sp_statement_starting','sp_statement_completed')
-	)
-	begin
-		update tbl_analysissummary
-		set [status]=1
-		where name ='Detailed XEvent Tracing'
-	end
-end
+-- create procedure proc_ExcessiveXevents
+-- as
+-- IF ((OBJECT_ID ('tbl_XEvents') IS NOT NULL) and (OBJECT_ID ('tbl_AnalysisSummary') IS NOT NULL))
+-- begin
+-- 	if exists (
+-- 		select event_name from tbl_XEvents
+-- 		where  event_name in
+-- 		('query_pre_execution_showplan', 'query_post_execution_showplan','query_post_compilation_showplan','lock_acquired','sql_statement_starting','sql_statement_completed','sp_statement_starting','sp_statement_completed')
+-- 	)
+-- 	begin
+-- 		update tbl_analysissummary
+-- 		set [status]=1
+-- 		where name ='Detailed XEvent Tracing'
+-- 	end
+-- end
 
 go
 
@@ -3377,8 +3377,10 @@ create procedure  [usp_Expensive_TraceEvts_Used]
 as
 BEGIN
 
-	
-	DECLARE @traceevent varchar (256), @events_string varchar(max) = '', @cntr int = 0
+ IF (OBJECT_ID ('tbl_profiler_trace_event_details') IS NOT NULL) 
+ BEGIN
+
+ 	DECLARE @traceevent varchar (256), @events_string varchar(max) = '', @cntr int = 0
 
 	DECLARE expensive_traceevents CURSOR FOR 
 		SELECT DISTINCT TOP 5 trace_event_name 
@@ -3411,6 +3413,8 @@ BEGIN
 		WHERE Name = 'usp_Expensive_TraceEvts_Used' 
 					
 	END 
+
+ END
 END
 go
 
@@ -3418,6 +3422,8 @@ CREATE PROCEDURE  [usp_Expensive_XEvts_Used]
 as
 BEGIN
 
+IF (OBJECT_ID ('tbl_XEvents') IS NOT NULL) 
+ BEGIN
 
 	DECLARE @session_event varchar (256), @events_string varchar(max) = '', @cntr int = 0
 
@@ -3452,6 +3458,7 @@ BEGIN
 		WHERE Name = 'usp_Expensive_XEvts_Used'
 					
 	END 
+  END
 
 END
 go
@@ -3582,7 +3589,7 @@ exec proc_PowerPlan
 go
 exec proc_CheckTraceFlags
 go
-exec proc_ExcessiveXevents
+--exec proc_ExcessiveXevents
 go
 exec proc_AutoStats
 go
