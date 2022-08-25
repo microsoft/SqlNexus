@@ -2128,7 +2128,7 @@ insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name,
 values ('FDBF24A1-3EBE-49F1-A02B-FD5686ACDAE9','Server Performance', 'W','Warning', 'Optimizer_Memory_Leak', 'Optimizer Memory Leak', 'MEMORYCLERK_SQLOPTIMIZER memory may be high.  This could be a leak issue which is fixed in SQL 2012 Sp1 CU3', 'http://support.microsoft.com/kb/2803065','http://support.microsoft.com/kb/2803065', '  jaynar', 1, 100, 0)
 
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('5E630273-C14F-4DCE-BDA0-24A1FD8E25CA','Server Performance', 'W','Warning', 'usp_IOAnalysis', 'Disk IO Analysis', 'The disk sec/transfer in following drives exceeded 20 ms, check the perfmon for complete analysis', '','https://docs.microsoft.com/en-us/troubleshoot/sql/performance/troubleshoot-sql-io-performance', '  jaynar', 1, 100, 0)
+values ('5E630273-C14F-4DCE-BDA0-24A1FD8E25CA','Server Performance', 'W','Warning', 'usp_IOAnalysis', 'Disk IO Analysis', 'The disk sec/transfer in following drives exceeded 20 ms, check the perfmon for complete analysis', '','https://docs.microsoft.com/en-us/troubleshoot/sql/performance/troubleshoot-sql-io-performance', '  pijocoder', 1, 100, 0)
 
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
 values ('5AE45557-E463-48D6-B135-11AADCB8642F','Server Performance', 'I','Info', 'usp_WarnmissingIndex', 'Missing Index detected', 'There are missing indexes detected.  Please review SQL Nexus report and make recommendations to your customer.', '','', '  jaynar', 1, 100, 0)
@@ -2137,13 +2137,13 @@ insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name,
 values ('0C73F3D4-6CCC-4FC9-AE37-58110F9C15DB','Server Performance', 'I','Info', 'StaleStatswarning2008', 'Stale Stats warning 2008', 'Statistics of some tables has not been updated for over 7 days', '','https://docs.microsoft.com/sql/relational-databases/statistics/statistics#UpdateStatistics', 'jaynar', 1, 100, 0)
 
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('010B3DBA-76CC-46C0-AC1B-3CAD09F95891','Server Performance', 'W','Warning', 'usp_SQLHighCPUconsumption', 'SQL High CPU consumption', 'CPU consumption from SQL Server was excessive (>80%) for an extended period of time', '','https://docs.microsoft.com/en-us/troubleshoot/sql/performance/troubleshoot-high-cpu-usage-issues', '  jaynar', 1, 100, 0)
+values ('010B3DBA-76CC-46C0-AC1B-3CAD09F95891','Server Performance', 'W','Warning', 'usp_SQLHighCPUconsumption', 'SQL High CPU consumption', 'CPU consumption from SQL Server was excessive (>80%) for an extended period of time', '','https://docs.microsoft.com/en-us/troubleshoot/sql/performance/troubleshoot-high-cpu-usage-issues', '  pijocoder', 1, 100, 0)
 
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('6C82DA17-D04C-4155-8702-19A9A1363A64','Server Performance', 'W','Warning', 'usp_KernelHighCPUconsumption', 'Kernel High CPU consumption', 'Kernel CPU consumption for SQL Server exceeded for an extended period of time.', '','', '  jaynar', 1, 100, 0)
+values ('6C82DA17-D04C-4155-8702-19A9A1363A64','Server Performance', 'W','Warning', 'usp_KernelHighCPUconsumption', 'Kernel High CPU consumption', 'Kernel CPU consumption for SQL Server exceeded for an extended period of time.', '','', '  pijocoder', 1, 100, 0)
 
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('6E19B301-E83B-4E5F-AF4E-A8DD2251C1B6','Server Performance', 'W','Warning', 'usp_Non_SQL_CPU_consumption', 'High non-SQL CPU consumption detected', 'Much of the CPU utilization came from non-SQL Server process(es). Review the perfmon data to identify which processes caused this (Process object)', '','', '  jaynar', 1, 100, 0)
+values ('6E19B301-E83B-4E5F-AF4E-A8DD2251C1B6','Server Performance', 'W','Warning', 'usp_Non_SQL_CPU_consumption', 'High non-SQL CPU consumption detected', 'Much of the CPU utilization came from non-SQL Server process(es). Review the perfmon data to identify which processes caused this (Process object)', '','', '  pijocoder', 1, 100, 0)
 
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
 values ('57CAA4BB-C7BD-4F96-8040-3224008A3F39','Server Performance', 'I','Info', 'XEventcrash', 'XEvent may cause SQL Server crash', 'XEvent session retrieving the Query Hash can result in SQL Server shutdown', '','http://support.microsoft.com/kb/3004355', '  jaynar', 1, 100, 0)
@@ -2155,7 +2155,10 @@ insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name,
 values ('BBECDF81-DCCE-4E41-93C9-7EB9E11F53BD','Server Performance', 'W','Warning', 'usp_ExcessiveTrace_Warning', 'Excessive Trace Warning', 'Multiple traces were detected running on the server.  This can negatively impact server performance', '','', '  jaynar', 1, 100, 0)
 
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('948756B6-A67F-4CB1-86F9-1B22C26F0B9C','Server Performance', 'W','Warning', 'usp_Many_Traces_Used', 'Excessive Trace events collected', 'Multiple non default trace events  were detected running on the server.  This can negatively impact server performance', '','', '  jaynar', 1, 100, 0)
+values ('948756B6-A67F-4CB1-86F9-1B22C26F0B9C','Server Performance', 'W','Warning', 'usp_Expensive_TraceEvts_Used', 'Expensive, performance-impacting Trace events were identfied', 'Multiple non default trace events  were detected running on the server.  This can negatively impact server performance', '','', '  pijocoder', 1, 100, 0)
+
+insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
+values ('4415F4B3-603F-4F41-978E-9EE32BF2B2E9','Server Performance', 'W','Warning', 'usp_Expensive_XEvts_Used', 'Expensive, performance-impacting Extended events were identfied', 'Multiple non default trace events  were detected running on the server.  This can negatively impact server performance', '','', '  pijocoder', 1, 100, 0)
 
 
 
@@ -3370,43 +3373,90 @@ begin
 end
 go
 
-create procedure  [usp_Many_Traces_Used]
+create procedure  [usp_Expensive_TraceEvts_Used]
 as
-begin
-		declare @RuleInstanceID uniqueidentifier
-		set @RuleInstanceID = newid()	
-		declare @t_DisplayMessage nvarchar(1256)
-		declare @t_traceid varchar(100)
-		declare @t_value  varchar(100)
-		declare @is_Rulehit int
-			set @is_Rulehit = 0
-			set @t_DisplayMessage = ''
-		Create table #tmp (traceid varchar(100),value  varchar(100))
-		declare @i  int
-             set @i = 0
-             select @i= Count(*)  from sys.objects where name =  'tbl_profiler_trace_summary' 
- 
-             if @i > 0     
-			 begin
-				 
-				insert into #tmp (traceid,value ) select top 1 traceid,value From   [dbo].[tbl_profiler_trace_summary] inner join  dbo.tbl_trace_event_details 
-				on [tbl_profiler_trace_summary].traceid = dbo.tbl_trace_event_details.trace_id
-				where value not like '%SQLDiag%'
-				and trace_event_id in(23,24,44)
-				and property =2
-			 End
+BEGIN
 
-		select  @is_Rulehit = COUNT(*) from #tmp
-		if ( @is_Rulehit > 0)
-			 begin
-						update tbl_AnalysisSummary
-						set [Status] = 1
-						where Name = 'usp_Many_Traces_Used'
-				end 
-		drop table #tmp
-	 
-end
+	
+	DECLARE @traceevent varchar (256), @events_string varchar(max) = '', @cntr int = 0
+
+	DECLARE expensive_traceevents CURSOR FOR 
+		SELECT DISTINCT TOP 5 trace_event_name 
+		FROM tbl_profiler_trace_event_details
+		WHERE expensive_event = 1
+
+
+	OPEN expensive_traceevents
+	FETCH NEXT FROM expensive_traceevents INTO @traceevent
+
+	WHILE (@@fetch_status = 0)
+	BEGIN
+                                                            
+		SELECT @events_string = @events_string + @traceevent + ', '
+		SET @cntr =  @cntr + 1
+				                                    
+		FETCH NEXT FROM expensive_traceevents into @traceevent
+	END
+        
+	CLOSE expensive_traceevents
+	DEALLOCATE expensive_traceevents
+
+	SELECT @events_string = @events_string + '...'
+
+	IF (@cntr > 0 AND @events_string != '')
+	BEGIN 
+		UPDATE tbl_AnalysisSummary
+		SET [Status] = 1,
+			Description = 'Expensive Trace events are active on the system. These can negatively impact performance. Examples include: '+ @events_string  + '. Consider disabling these and review feasibility of using long term. See *_MiscPssdiagInfo_Startup.OUT for details.'
+		WHERE Name = 'usp_Expensive_TraceEvts_Used' 
+					
+	END 
+END
 go
+
+CREATE PROCEDURE  [usp_Expensive_XEvts_Used]
+as
+BEGIN
+
+
+	DECLARE @session_event varchar (256), @events_string varchar(max) = '', @cntr int = 0
+
+	DECLARE expensive_xevents CURSOR FOR 
+		SELECT DISTINCT TOP 5 session_name + '::' + event_name
+		FROM tbl_XEvents
+		WHERE expensive_event = 1
+
+
+	OPEN expensive_xevents
+	FETCH NEXT FROM expensive_xevents INTO @session_event
+
+	WHILE (@@fetch_status = 0)
+	BEGIN
+                                                            
+		SELECT @events_string = @events_string + @session_event + ', '
+		SET @cntr =  @cntr + 1
+				                                    
+		FETCH NEXT FROM expensive_xevents into @session_event
+	END
+        
+	CLOSE expensive_xevents
+	DEALLOCATE expensive_xevents
+
+	SELECT @events_string = @events_string + '...'
+
+	IF (@cntr > 0 AND @events_string != '')
+	BEGIN 
+		UPDATE tbl_AnalysisSummary
+		SET [Status] = 1,
+			Description = 'Expensive Xevents are active on the system. These can negatively impact performance. Examples include: '+ @events_string  + '. Consider disabling these and review feasibility of using long term. See *_MiscPssdiagInfo_Startup.OUT for details.'
+		WHERE Name = 'usp_Expensive_XEvts_Used'
+					
+	END 
+
+END
+go
+
+
 
 /***************************************************************************************************
 
@@ -3562,7 +3612,9 @@ go
 /************************************************************
 owner: jaynar
 ***********************************************************/
-exec usp_Many_Traces_Used
+exec usp_Expensive_TraceEvts_Used
+go
+exec usp_Expensive_XEvts_Used
 go
 exec usp_ExcessiveTrace_Warning
 go
