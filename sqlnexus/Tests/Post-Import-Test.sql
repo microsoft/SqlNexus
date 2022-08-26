@@ -3,6 +3,7 @@
 --But this is a base to start with 
 
 
+
 select top 5 * from tbl_IMPORTEDFILES
 go
 select top 5 * from tbl_SCRIPT_ENVIRONMENT_DETAILS
@@ -71,27 +72,15 @@ select top 5 * from tbl_SYSOBJECTS
 go
 select top 5 * from tbl_DM_OS_MEMORY_CLERKS
 go
-select top 5 * from tbl_DM_OS_MEMORY_CLERKS
-go
-select top 5 * from tbl_DM_OS_MEMORY_CACHE_COUNTERS
-go
 select top 5 * from tbl_DM_OS_MEMORY_CACHE_COUNTERS
 go
 select top 5 * from tbl_DM_OS_MEMORY_CACHE_CLOCK_HANDS
-go
-select top 5 * from tbl_DM_OS_MEMORY_CACHE_CLOCK_HANDS
-go
-select top 5 * from tbl_DM_OS_MEMORY_CACHE_CLOCK_HANDS
-go
-select top 5 * from tbl_DM_OS_MEMORY_CACHE_HASH_TABLES
 go
 select top 5 * from tbl_DM_OS_MEMORY_CACHE_HASH_TABLES
 go
 select top 5 * from tblErrorlog
 go
 select top 5 * from tbl_FileStats
-go
-select top 5 * from tbl_DM_OS_MEMORY_CACHE_ENTRIES
 go
 select top 5 * from tbl_DM_OS_MEMORY_CACHE_ENTRIES
 go
@@ -282,3 +271,24 @@ go
 select top 5 * from tbl_SystemInformation
 go
 select top 5 * from tbl_ActiveProcesses_with_ModulesLoaded
+go
+select top 5 * from tbl_transaction_perfmon_counters
+go
+select top 5 * from tbl_tempdb_space_usage_by_file
+go
+select top 5 * from tbl_dm_db_file_space_usage_summary
+go
+select top 5 * from tbl_dm_db_session_space_usage
+go
+select top 5 * from tbl_dm_db_task_space_usage
+go
+select top 5 * from tbl_open_transactions
+go
+select top 5 * from tbl_tempdb_usage_by_object
+go
+select top 5 * from tbl_tempdb_waits
+go
+select top 5 * from tbl_dm_tran_aborted_transactions
+go
+select top 5 * from tbl_dm_tran_persistent_version_store_stats
+go

@@ -1157,28 +1157,42 @@ namespace sqlnexus
             string retString = "";
             string lessThanFive = "The data was captured for a very short period of time.  Some reports may fail";
 
-            MainForm.LogMessage(String.Format("Import complete. Total import time: {0} seconds", (Environment.TickCount - initialTicks) / 1000));
-
-            SqlConnection conn = new SqlConnection(Globals.credentialMgr.ConnectionString);
-            SqlCommand cmd = conn.CreateCommand();
-            cmd.CommandText = "select count (distinct runtime) 'NumberOfRuntimes' from tbl_PERF_STATS_SCRIPT_RUNTIMES";
-            conn.Open();
-            Int32 NumberOfRuntimes = (Int32)cmd.ExecuteScalar();
-
-            conn.Close();
-
-            if (NumberOfRuntimes < 5)
+            try
             {
-                MainForm.LogMessage(lessThanFive, MessageOptions.Both);
-                retString = lessThanFive;
+                MainForm.LogMessage(String.Format("Import complete. Total import time: {0} seconds", (Environment.TickCount - initialTicks) / 1000));
+
+                SqlConnection conn = new SqlConnection(Globals.credentialMgr.ConnectionString);
+                SqlCommand cmd = conn.CreateCommand();
+                cmd.CommandText = @"
+                if (OBJECT_ID ('tbl_PERF_STATS_SCRIPT_RUNTIMES') IS NOT NULL)
+	                select count (distinct runtime) 'NumberOfRuntimes' from tbl_PERF_STATS_SCRIPT_RUNTIMES
+                else 
+	                select 0";
+                conn.Open();
+                Int32 NumberOfRuntimes = (Int32)cmd.ExecuteScalar();
+
+                conn.Close();
+
+                if (NumberOfRuntimes < 5)
+                {
+                    MainForm.LogMessage(lessThanFive, MessageOptions.Both);
+                    retString = lessThanFive;
+                }
+                else
+                {
+                    retString = NumberOfRuntimes.ToString() + " runtimes found.";
+                }
+
+               
             }
-            else
+
+            catch (Exception ex)
             {
-                retString = NumberOfRuntimes.ToString() + " runtimes found.";
+
+                MainForm.LogMessage(ex.Message, MessageOptions.Both);
             }
 
             return retString;
-
         }
 
         private void RunPostScripts()
