@@ -2171,7 +2171,7 @@ owner:  JAMGRIF
 ***************************************************************************************************/
 
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('91B2AA56-9CA2-4BDB-8D21-76A5CFF4D74A','Server Performance', 'W','Warning', 'usp_CalvsCore', 'CAL license possibly limiting CPU', 'Customer is using CAL license and CPUs are greater than schedulers online, check errorlog', '','https://docs.microsoft.com/en-us/sql/database-engine/install-windows/upgrade-to-a-different-edition-of-sql-server-setup?view=sql-server-ver16', '  jamgrif', 1, 100, 0)
+values ('91B2AA56-9CA2-4BDB-8D21-76A5CFF4D74A','Server Performance', 'W','Warning', 'usp_CalvsCore', 'CAL license possibly limiting CPU', 'Customer is using CAL license and CPUs are greater than schedulers online, check the errorlog to confirm. Customer could benefit by upgrading to CORE license.', '','https://docs.microsoft.com/en-us/sql/database-engine/install-windows/upgrade-to-a-different-edition-of-sql-server-setup?view=sql-server-ver16', '  jamgrif', 1, 100, 0)
 
 
 /*************************************************************************************************
@@ -3518,7 +3518,7 @@ BEGIN
 			BEGIN
 				UPDATE [dbo].[tbl_AnalysisSummary]
 				SET [Status] = 1,
-				[Description] = 'Customer is using CAL license and CPUs (' + CONVERT(VARCHAR, @cpuCount) + ') are greater than schedulers (' + CONVERT(VARCHAR, @schedCount) + ') online, check errorlog '
+				[Description] = 'Customer is using CAL license and CPUs (' + CONVERT(VARCHAR, @cpuCount) + ') are greater than schedulers (' + CONVERT(VARCHAR, @schedCount) + ') online, check the errorlog to confirm. Customer could benefit by upgrading to CORE license.'
 				WHERE [Name] = 'usp_CalvsCore'
 			END
 	END
