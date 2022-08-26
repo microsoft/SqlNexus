@@ -72,27 +72,15 @@ select top 5 * from tbl_SYSOBJECTS
 go
 select top 5 * from tbl_DM_OS_MEMORY_CLERKS
 go
-select top 5 * from tbl_DM_OS_MEMORY_CLERKS
-go
-select top 5 * from tbl_DM_OS_MEMORY_CACHE_COUNTERS
-go
 select top 5 * from tbl_DM_OS_MEMORY_CACHE_COUNTERS
 go
 select top 5 * from tbl_DM_OS_MEMORY_CACHE_CLOCK_HANDS
-go
-select top 5 * from tbl_DM_OS_MEMORY_CACHE_CLOCK_HANDS
-go
-select top 5 * from tbl_DM_OS_MEMORY_CACHE_CLOCK_HANDS
-go
-select top 5 * from tbl_DM_OS_MEMORY_CACHE_HASH_TABLES
 go
 select top 5 * from tbl_DM_OS_MEMORY_CACHE_HASH_TABLES
 go
 select top 5 * from tblErrorlog
 go
 select top 5 * from tbl_FileStats
-go
-select top 5 * from tbl_DM_OS_MEMORY_CACHE_ENTRIES
 go
 select top 5 * from tbl_DM_OS_MEMORY_CACHE_ENTRIES
 go

@@ -32,17 +32,6 @@
       </KnownColumns>
     </Rowset>
 
-    <Rowset name="tbl_SYSPERFINFO" enabled="true" identifier="-- sysperfinfo" type="RowsetImportEngine.TextRowset">
-      <KnownColumns>
-        <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
-        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
-        <Column name="object_name" type="RowsetImportEngine.VarCharColumn" />
-        <Column name="counter_name" type="RowsetImportEngine.VarCharColumn" />
-        <Column name="instance_name" type="RowsetImportEngine.VarCharColumn" />
-        <Column name="cntr_value" type="RowsetImportEngine.BigIntColumn" />
-      </KnownColumns>
-    </Rowset>
-
     <Rowset name="tbl_SQL_CPU_HEALTH" enabled="true" identifier="-- Recent SQL Processor Utilization (Health Records) --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
         <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
@@ -1527,7 +1516,7 @@
     
     
 
-     <Rowset name="tbl_sysperfinfo" enabled="true" identifier="-- sysperfinfo_raw (general perf subset) --" type="RowsetImportEngine.TextRowset">
+     <Rowset name="tbl_sysperfinfo_raw" enabled="true" identifier="-- sysperfinfo_raw (general perf subset) --" type="RowsetImportEngine.TextRowset">
       <Column name="runtime" type="RowsetImportEngine.DateTimeColumn"/>
        <Column name="object_name" type="RowsetImportEngine.NVarCharColumn" length="200"  />
        <Column name="counter_name" type="RowsetImportEngine.NVarCharColumn" length="200"  />
