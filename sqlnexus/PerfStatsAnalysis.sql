@@ -2152,7 +2152,7 @@ insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name,
 values ('607B17FD-98F1-498E-9B93-F16E5A155730','Server Performance', 'W','Warning', 'OracleLinkedServerIssue', 'Oracle Driver SQL Server crash', 'Oracle driver loaded in SQL Server memory space may cause SQL Server to crash, refer the KB for solution', '','https://docs.microsoft.com/en-US/troubleshoot/sql/admin/crashes-run-oracle-linked-server-query', '  jaynar', 1, 100, 0)
 
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('BBECDF81-DCCE-4E41-93C9-7EB9E11F53BD','Server Performance', 'W','Warning', 'usp_ExcessiveTrace_Warning', 'Excessive Trace Warning', 'Multiple traces were detected running on the server.  This can negatively impact server performance', '','', '  jaynar', 1, 100, 0)
+values ('BBECDF81-DCCE-4E41-93C9-7EB9E11F53BD','Server Performance', 'W','Warning', 'usp_ExcessiveTrace_Warning', 'Many Active Traces Warning', 'Multiple active traces (> 4) were detected on the server.  This can negatively impact server performance', '','', '  jaynar', 1, 100, 0)
 
 insert into tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
 values ('948756B6-A67F-4CB1-86F9-1B22C26F0B9C','Server Performance', 'W','Warning', 'usp_Expensive_TraceEvts_Used', 'Expensive, performance-impacting Trace events were identfied', 'Multiple non default trace events  were detected running on the server.  This can negatively impact server performance', '','', '  pijocoder', 1, 100, 0)
@@ -3337,39 +3337,26 @@ end
 
 go
 
-create procedure  [usp_ExcessiveTrace_Warning]
+CREATE PROCEDURE  [usp_ExcessiveTrace_Warning]
 as
 begin
-             declare @RuleInstanceID uniqueidentifier
-             set @RuleInstanceID = newid()    
-             declare @t_DisplayMessage nvarchar(1256)
-             declare @t_traceid varchar(100)
-             declare @t_value  varchar(100)
-             declare @is_Rulehit int
-                    set @is_Rulehit = 0
-                    set @t_DisplayMessage = ''
-             Create table #tmp (traceid varchar(100),value  varchar(100))
-             declare @i  int
-             set @i = 0
-             select @i= Count(*)  from sys.objects where name =  'tbl_profiler_trace_summary' 
- 
-             if @i > 0 
-                    begin
-                           
-                           insert into #tmp (traceid,value ) select traceid,value From   [dbo].[tbl_profiler_trace_summary]
-                           where value not like '%SQLDiag%'
-                           and property =2
-                    End
+	DECLARE @active_trace_count  int
+	SET @active_trace_count = 0
+             
+	IF OBJECT_ID ('tbl_profiler_trace_summary') IS NOT NULL
+	BEGIN
+             
+	  SELECT @active_trace_count = COUNT(DISTINCT traceid )
+	  FROM   [dbo].[tbl_profiler_trace_summary]
+	  WHERE property = 5 AND value = 1  --active traces
 
-             select  @is_Rulehit = COUNT(*) from #tmp
-             if ( @is_Rulehit > 0)
-              begin
-						update tbl_AnalysisSummary
-						set [Status] = 1
-						where Name = 'usp_ExcessiveTrace_Warning'
-					end     
-             drop table #tmp
-       
+	  IF ( @active_trace_count > 4)
+	  begin
+			update tbl_AnalysisSummary
+			set [Status] = 1
+			where Name = 'usp_ExcessiveTrace_Warning'
+	  end     
+	END 
 end
 go
 
