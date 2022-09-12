@@ -3568,7 +3568,7 @@ BEGIN
 			BEGIN
 				UPDATE [dbo].[tbl_AnalysisSummary]
 				SET [Status] = 1,
-				[Description] = 'Using CAL license and CPUs (' + CONVERT(VARCHAR, @cpuCount) + ') are greater than schedulers (' + CONVERT(VARCHAR, @schedCount) + ') online, check the errorlog to confirm. The user is not taking full advantage of available hardware and can benefit from upgrading to CORE license.'
+				[Description] = 'Using CAL license. Also the CPU count (' + CONVERT(VARCHAR, @cpuCount) + ') is greater than online Scheduler count (' + CONVERT(VARCHAR, @schedCount) + '). Check the Errorlog to confirm. The user is not taking full advantage of available hardware and can benefit from upgrading to CORE licensing.'
 				WHERE [Name] = 'usp_CalvsCore'
 			END
 	END
