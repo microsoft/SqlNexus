@@ -1148,7 +1148,7 @@ namespace sqlnexus.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to http://.
+        ///   Looks up a localized string similar to https://github.com/microsoft/SqlNexus/wiki.
         /// </summary>
         internal static string Msg_Nexus_SupportUrl {
             get {
