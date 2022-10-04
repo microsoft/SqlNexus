@@ -3106,6 +3106,20 @@
       </KnownColumns>
     </Rowset>
 
+    <Rowset name="tbl_repl_msarticles" enabled="true" identifier="-- repl_msarticles --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="publisher_id" type="RowsetImportEngine.IntColumn"/>
+        <Column name="publisher_db" type="RowsetImportEngine.NVarCharColumn" length="128"/>
+        <Column name="publication_id" type="RowsetImportEngine.IntColumn"/>
+        <Column name="article" type="RowsetImportEngine.NVarCharColumn" length="256"/>
+        <Column name="article_id" type="RowsetImportEngine.IntColumn"/>
+        <Column name="destination_object" type="RowsetImportEngine.NVarCharColumn" length="128"/>
+        <Column name="source_owner" type="RowsetImportEngine.NVarCharColumn" length="128"/>
+        <Column name="source_object" type="RowsetImportEngine.NVarCharColumn" length="128"/>
+      </KnownColumns>
+    </Rowset>
+
+
   </KnownRowsets>
 </TextImport>
 
