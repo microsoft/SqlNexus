@@ -122,7 +122,7 @@ BEGIN
 END
 
 --create a filter drivers table
-if OBJECT_ID ('filter_driver_altitudes') IS NOT NULL
+IF OBJECT_ID ('filter_driver_altitudes') IS NOT NULL
   DROP TABLE filter_driver_altitudes 
 GO
 CREATE TABLE filter_driver_altitudes (FilterType NVARCHAR(48), Minifilter NVARCHAR (64), Altitude bigint, Company NVARCHAR(128))
@@ -2085,3 +2085,6 @@ INSERT INTO filter_driver_altitudes VALUES (	'Bottom'	,	'wof.sys'	,	40700	,	'Mic
 INSERT INTO filter_driver_altitudes VALUES (	'Bottom'	,	'fileinfo'	,	40500	,	'Microsoft'	)
 INSERT INTO filter_driver_altitudes VALUES (	'Bottom'	,	'WinSetupBoot.sys'	,	40400	,	'Microsoft'	)
 INSERT INTO filter_driver_altitudes VALUES (	'Bottom'	,	'WinSetupMon.sys'	,	40300	,	'Microsoft'	)
+
+
+--Update the tbl_fltmc_filters and tbl_fltmc_instances with addition info from lookup table above
