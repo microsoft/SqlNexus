@@ -127,6 +127,8 @@ IF OBJECT_ID ('filter_driver_altitudes') IS NOT NULL
 GO
 CREATE TABLE filter_driver_altitudes (FilterType NVARCHAR(48), Minifilter NVARCHAR (64), Altitude bigint, Company NVARCHAR(128))
 GO
+GO
+BEGIN TRAN
 INSERT INTO filter_driver_altitudes VALUES (	'Kernel'	,	'ntoskrnl.exe'	,	425500	,	'Microsoft'	)
 INSERT INTO filter_driver_altitudes VALUES (	'Kernel'	,	'ntoskrnl.exe'	,	425000	,	'Microsoft'	)
 INSERT INTO filter_driver_altitudes VALUES (	'Top'	,	'wcnfs.sys'	,	409900	,	'Microsoft'	)
@@ -234,6 +236,9 @@ INSERT INTO filter_driver_altitudes VALUES (	'Activity Monitor'	,	'cmflt.sys'	,	
 INSERT INTO filter_driver_altitudes VALUES (	'Activity Monitor'	,	'SaMFlt.sys'	,	389120.00	,	'DreamCrafts'	)
 INSERT INTO filter_driver_altitudes VALUES (	'Activity Monitor'	,	'RuiMinispy.sys'	,	389117.00	,	'RuiGuard Ltd'	)
 INSERT INTO filter_driver_altitudes VALUES (	'Activity Monitor'	,	'RuiFileAccess.sys'	,	389115.00	,	'RuiGuard Ltd'	)
+COMMIT TRAN
+GO
+BEGIN TRAN
 INSERT INTO filter_driver_altitudes VALUES (	'Activity Monitor'	,	'RuiEye.sys'	,	389113.00	,	'RuiGuard Ltd'	)
 INSERT INTO filter_driver_altitudes VALUES (	'Activity Monitor'	,	'RuiMachine.sys'	,	389111.00	,	'RuiGuard Ltd'	)
 INSERT INTO filter_driver_altitudes VALUES (	'Activity Monitor'	,	'windd.sys'	,	389110.00	,	'Comae Tech'	)
@@ -352,6 +357,9 @@ INSERT INTO filter_driver_altitudes VALUES (	'Activity Monitor'	,	'heimdall.sys'
 INSERT INTO filter_driver_altitudes VALUES (	'Activity Monitor'	,	'thetta.sys'	,	388532.00	,	'Syncopate'	)
 INSERT INTO filter_driver_altitudes VALUES (	'Activity Monitor'	,	'thetta.sys'	,	388531.00	,	'Syncopate'	)
 INSERT INTO filter_driver_altitudes VALUES (	'Activity Monitor'	,	'thetta.sys'	,	388530.00	,	'Syncopate'	)
+COMMIT TRAN
+GO
+BEGIN TRAN
 INSERT INTO filter_driver_altitudes VALUES (	'Activity Monitor'	,	'DTPL.sys'	,	388520.00	,	'CONNECT SHIFT LTD'	)
 INSERT INTO filter_driver_altitudes VALUES (	'Activity Monitor'	,	'CyOptics.sys'	,	388514.00	,	'Cylance Inc.'	)
 INSERT INTO filter_driver_altitudes VALUES (	'Activity Monitor'	,	'CyProtectDrv32.sys'	,	388510.00	,	'Cylance Inc.'	)
@@ -469,6 +477,9 @@ INSERT INTO filter_driver_altitudes VALUES (	'Activity Monitor'	,	'WinFLAdrv.sys
 INSERT INTO filter_driver_altitudes VALUES (	'Activity Monitor'	,	'WinDBdrv.sys'	,	386520.00	,	'NewSoftwares.net,Inc.'	)
 INSERT INTO filter_driver_altitudes VALUES (	'Activity Monitor'	,	'WinFLdrv.sys'	,	386510.00	,	'NewSoftwares.net,Inc.'	)
 INSERT INTO filter_driver_altitudes VALUES (	'Activity Monitor'	,	'WinFPdrv.sys'	,	386500.00	,	'NewSoftwares.net,Inc.'	)
+COMMIT TRAN
+GO
+BEGIN TRAN
 INSERT INTO filter_driver_altitudes VALUES (	'Activity Monitor'	,	'varpffmon.sys'	,	386486.00	,	'Varlook Ltd.'	)
 INSERT INTO filter_driver_altitudes VALUES (	'Activity Monitor'	,	'SkyWPDrv.sys'	,	386435.00	,	'Sky Co.,Ltd.'	)
 INSERT INTO filter_driver_altitudes VALUES (	'Activity Monitor'	,	'SkyRGDrv.sys'	,	386431.00	,	'Sky Co., LTD.'	)
@@ -589,6 +600,9 @@ INSERT INTO filter_driver_altitudes VALUES (	'Activity Monitor'	,	'MCFileMon32.s
 INSERT INTO filter_driver_altitudes VALUES (	'Activity Monitor'	,	'RyGuard.sys'	,	382050.00	,	'SHENZHEN UNNOO Information Techco., Ltd'	)
 INSERT INTO filter_driver_altitudes VALUES (	'Activity Monitor'	,	'FileShareMon.sys'	,	382040.00	,	'SHENZHEN UNNOO Information Techco., Ltd'	)
 INSERT INTO filter_driver_altitudes VALUES (	'Activity Monitor'	,	'ryfilter.sys'	,	382030.00	,	'SHENZHEN UNNOO Information Techco., Ltd'	)
+COMMIT TRAN
+GO
+BEGIN TRAN
 INSERT INTO filter_driver_altitudes VALUES (	'Activity Monitor'	,	'secufile.sys'	,	382020.00	,	'Shenzhen Unnoo LTD'	)
 INSERT INTO filter_driver_altitudes VALUES (	'Activity Monitor'	,	'XiaobaiFs.sys'	,	382010.00	,	'Shenzhen Unnoo LTD'	)
 INSERT INTO filter_driver_altitudes VALUES (	'Activity Monitor'	,	'XiaobaiFsR.sys'	,	382000.00	,	'Shenzhen Unnoo LTD'	)
@@ -726,6 +740,9 @@ INSERT INTO filter_driver_altitudes VALUES (	'Activity Monitor'	,	'wbfilter.sys'
 INSERT INTO filter_driver_altitudes VALUES (	'Activity Monitor'	,	'LRAgentMF.sys'	,	367900.00	,	'LogRhythm Inc.'	)
 INSERT INTO filter_driver_altitudes VALUES (	'Activity Monitor'	,	'Drwebfwflt.sys'	,	367810.00	,	'Doctor Web'	)
 INSERT INTO filter_driver_altitudes VALUES (	'Activity Monitor'	,	'EventMon.sys'	,	367800.00	,	'Doctor Web'	)
+COMMIT TRAN
+GO
+BEGIN TRAN
 INSERT INTO filter_driver_altitudes VALUES (	'Activity Monitor'	,	'dsfltfs.sys'	,	367760.00	,	'Digitalsense Co'	)
 INSERT INTO filter_driver_altitudes VALUES (	'Activity Monitor'	,	'soidriver.sys'	,	367750.00	,	'Sophos Plc'	)
 INSERT INTO filter_driver_altitudes VALUES (	'Activity Monitor'	,	'drvhookcsmf.sys'	,	367700.00	,	'GrammaTech, Inc.'	)
@@ -832,6 +849,9 @@ INSERT INTO filter_driver_altitudes VALUES (	'Activity Monitor'	,	'fmkkc.sys'	,	
 INSERT INTO filter_driver_altitudes VALUES (	'Activity Monitor'	,	'nmlhssrv01.sys'	,	363710	,	'Douzone Bizon Co'	)
 INSERT INTO filter_driver_altitudes VALUES (	'Activity Monitor'	,	'equ8_helper.sys'	,	363705	,	'Int3 Software AB'	)
 INSERT INTO filter_driver_altitudes VALUES (	'Activity Monitor'	,	'strapvista.sys (retired)'	,	363700	,	'AvSoft Technologies'	)
+COMMIT TRAN
+GO
+BEGIN TRAN
 INSERT INTO filter_driver_altitudes VALUES (	'Activity Monitor'	,	'SAFE-Agent.sys'	,	363636	,	'SAFE-Cyberdefense'	)
 INSERT INTO filter_driver_altitudes VALUES (	'Activity Monitor'	,	'EstPrmon.sys'	,	363610	,	'ESTsoft corp.'	)
 INSERT INTO filter_driver_altitudes VALUES (	'Activity Monitor'	,	'Estprp.sys - 64bit'	,	363610	,	'ESTsoft corp.'	)
@@ -973,6 +993,9 @@ INSERT INTO filter_driver_altitudes VALUES (	'Anti-Virus'	,	'si32_file.sys'	,	32
 INSERT INTO filter_driver_altitudes VALUES (	'Anti-Virus'	,	'si64_file.sys'	,	328810	,	'Scargo Inc'	)
 INSERT INTO filter_driver_altitudes VALUES (	'Anti-Virus'	,	'mbam.sys'	,	328800	,	'Malwarebytes Corp.'	)
 INSERT INTO filter_driver_altitudes VALUES (	'Anti-Virus'	,	'lnvscenter.sys'	,	328780	,	'Lenovo'	)
+COMMIT TRAN
+GO
+BEGIN TRAN
 INSERT INTO filter_driver_altitudes VALUES (	'Anti-Virus'	,	'EnigmaFileMonDriver.sys'	,	328770	,	'EnigmaSoft'	)
 INSERT INTO filter_driver_altitudes VALUES (	'Anti-Virus'	,	'KUBWKSP.sys'	,	328750	,	'Netlor SAS'	)
 INSERT INTO filter_driver_altitudes VALUES (	'Anti-Virus'	,	'hcp_kernel_acq.sys'	,	328740	,	'refractionPOINT'	)
@@ -1113,6 +1136,9 @@ INSERT INTO filter_driver_altitudes VALUES (	'Anti-Virus'	,	'NanoAVMF.sys'	,	325
 INSERT INTO filter_driver_altitudes VALUES (	'Anti-Virus'	,	'shldflt.sys'	,	325500	,	'Panda Software'	)
 INSERT INTO filter_driver_altitudes VALUES (	'Anti-Virus'	,	'nprosec.sys'	,	325410	,	'Norman ASA'	)
 INSERT INTO filter_driver_altitudes VALUES (	'Anti-Virus'	,	'nregsec.sys'	,	325400	,	'Norman ASA'	)
+COMMIT TRAN
+GO
+BEGIN TRAN
 INSERT INTO filter_driver_altitudes VALUES (	'Anti-Virus'	,	'issregistry.sys'	,	325300	,	'IBM'	)
 INSERT INTO filter_driver_altitudes VALUES (	'Anti-Virus'	,	'THFilter.sys'	,	325200	,	'Sybonic Systems Inc'	)
 INSERT INTO filter_driver_altitudes VALUES (	'Anti-Virus'	,	'pervac.sys'	,	325100	,	'PerSystems SA'	)
@@ -1243,6 +1269,9 @@ INSERT INTO filter_driver_altitudes VALUES (	'Anti-Virus'	,	'aswmonflt.sys'	,	32
 INSERT INTO filter_driver_altitudes VALUES (	'Anti-Virus'	,	'kavnsi.sys'	,	320650	,	'AVNOS'	)
 INSERT INTO filter_driver_altitudes VALUES (	'Anti-Virus'	,	'TaegisKM.x64.sys'	,	320640.5	,	'Secureworks Inc.'	)
 INSERT INTO filter_driver_altitudes VALUES (	'Anti-Virus'	,	'TaegisKM.x86.sys'	,	320640.5	,	'Secureworks Inc.'	)
+COMMIT TRAN
+GO
+BEGIN TRAN
 INSERT INTO filter_driver_altitudes VALUES (	'Anti-Virus'	,	'CiscoSAM.sys'	,	320618	,	'Cisco Systems'	)
 INSERT INTO filter_driver_altitudes VALUES (	'Anti-Virus'	,	'immunetselfprotect.sys'	,	320616	,	'Cisco Systems'	)
 INSERT INTO filter_driver_altitudes VALUES (	'Anti-Virus'	,	'immunetprotect.sys'	,	320614	,	'Cisco Systems'	)
@@ -1397,6 +1426,9 @@ INSERT INTO filter_driver_altitudes VALUES (	'Content Screener'	,	'Safe.sys'	,	2
 INSERT INTO filter_driver_altitudes VALUES (	'Content Screener'	,	'mydlpdelete-scanner.sys'	,	268110	,	'Medra Teknoloji'	)
 INSERT INTO filter_driver_altitudes VALUES (	'Content Screener'	,	'mydlpscanner.sys'	,	268100	,	'Medra Teknoloji'	)
 INSERT INTO filter_driver_altitudes VALUES (	'Content Screener'	,	'VrMacFlt.sys'	,	268080	,	'Hauri Inc'	)
+COMMIT TRAN
+GO
+BEGIN TRAN
 INSERT INTO filter_driver_altitudes VALUES (	'Content Screener'	,	'hnpro.sys'	,	268040	,	'Solupia'	)
 INSERT INTO filter_driver_altitudes VALUES (	'Content Screener'	,	'DLDriverNetMini.sys'	,	268030	,	'DeviceLock Inc'	)
 INSERT INTO filter_driver_altitudes VALUES (	'Content Screener'	,	'ENFFLTDRV.sys'	,	268020	,	'Enforcive Systems'	)
@@ -1504,6 +1536,9 @@ INSERT INTO filter_driver_altitudes VALUES (	'Content Screener'	,	'DWFIxxxx.sys'
 INSERT INTO filter_driver_altitudes VALUES (	'Content Screener'	,	'DWFIxxxx.sys'	,	260400	,	'SciencePark Corporation'	)
 INSERT INTO filter_driver_altitudes VALUES (	'Content Screener'	,	'ElasticEndpoint.sys'	,	260350.5	,	'Elastic'	)
 INSERT INTO filter_driver_altitudes VALUES (	'Content Screener'	,	'dlpflt.sys'	,	260340	,	'Digital Endpoint'	)
+COMMIT TRAN
+GO
+BEGIN TRAN
 INSERT INTO filter_driver_altitudes VALUES (	'Content Screener'	,	'DSDriver.sys'	,	260330	,	'ManageEngine Zoho Corp'	)
 INSERT INTO filter_driver_altitudes VALUES (	'Content Screener'	,	'mcfltlab.sys'	,	260320	,	'Beijing MicroColor'	)
 INSERT INTO filter_driver_altitudes VALUES (	'Content Screener'	,	'FDriver.sys'	,	260310	,	'Fox-IT'	)
@@ -1612,6 +1647,9 @@ INSERT INTO filter_driver_altitudes VALUES (	'HSM'	,	'mwilsflt.sys'	,	181010	,	'
 INSERT INTO filter_driver_altitudes VALUES (	'HSM'	,	'mwidmflt.sys'	,	181000	,	'Moonwalk Universal P/L'	)
 INSERT INTO filter_driver_altitudes VALUES (	'HSM'	,	'HcpAwfs.sys'	,	181960	,	'Hitachi Data Systems'	)
 INSERT INTO filter_driver_altitudes VALUES (	'HSM'	,	'sdrefltr.sys'	,	180950	,	'Hitachi Data Systems'	)
+COMMIT TRAN
+GO
+BEGIN TRAN
 INSERT INTO filter_driver_altitudes VALUES (	'HSM'	,	'fltasm.sys'	,	180900	,	'Global 360'	)
 INSERT INTO filter_driver_altitudes VALUES (	'HSM'	,	'cnet_hsm.sys'	,	180850	,	'Carroll-Net Inc.'	)
 INSERT INTO filter_driver_altitudes VALUES (	'HSM'	,	'pntvolflt.sys'	,	180800	,	'PoINT Software&Systems'	)
@@ -1726,6 +1764,9 @@ INSERT INTO filter_driver_altitudes VALUES (	'Encryption'	,	'KCDriver.sys'	,	145
 INSERT INTO filter_driver_altitudes VALUES (	'Encryption'	,	'CmgFFE.sys'	,	145120	,	'Credant Technologies'	)
 INSERT INTO filter_driver_altitudes VALUES (	'Encryption'	,	'fgcenc.sys'	,	145110	,	'Fortres Grand Corp.'	)
 INSERT INTO filter_driver_altitudes VALUES (	'Encryption'	,	'sview.sys'	,	145100	,	'Cinea'	)
+COMMIT TRAN
+GO
+BEGIN TRAN
 INSERT INTO filter_driver_altitudes VALUES (	'Encryption'	,	'TalkeyFilterDriver.sys'	,	145040	,	'myTALKEY s.r.o.'	)
 INSERT INTO filter_driver_altitudes VALUES (	'Encryption'	,	'MtUsbFlt19.sys'	,	145020.5	,	'Matisoft Cyber Security'	)
 INSERT INTO filter_driver_altitudes VALUES (	'Encryption'	,	'FedsFilterDriver.sys'	,	145010	,	'Physical Optics Corp'	)
@@ -1810,6 +1851,9 @@ INSERT INTO filter_driver_altitudes VALUES (	'Virtualization'	,	'Klvirt.sys'	,	1
 INSERT INTO filter_driver_altitudes VALUES (	'Virtualization'	,	'eseadriver3z.sys'	,	138080	,	'ESEA'	)
 INSERT INTO filter_driver_altitudes VALUES (	'Virtualization'	,	'thsmmf.sys'	,	138060	,	'Talon Storage Solutions'	)
 INSERT INTO filter_driver_altitudes VALUES (	'Virtualization'	,	'VMagic.sys'	,	138050	,	'AI Consulting'	)
+COMMIT TRAN
+GO
+BEGIN TRAN
 INSERT INTO filter_driver_altitudes VALUES (	'Virtualization'	,	'GetSAS.sys'	,	138040	,	'SAS Institute Inc'	)
 INSERT INTO filter_driver_altitudes VALUES (	'Virtualization'	,	'rqtNos.sys'	,	138030	,	'ReaQta Ltd.'	)
 INSERT INTO filter_driver_altitudes VALUES (	'Virtualization'	,	'HIPS64.sys'	,	138020	,	'Recrypt LLC'	)
@@ -2085,6 +2129,7 @@ INSERT INTO filter_driver_altitudes VALUES (	'Bottom'	,	'wof.sys'	,	40700	,	'Mic
 INSERT INTO filter_driver_altitudes VALUES (	'Bottom'	,	'fileinfo'	,	40500	,	'Microsoft'	)
 INSERT INTO filter_driver_altitudes VALUES (	'Bottom'	,	'WinSetupBoot.sys'	,	40400	,	'Microsoft'	)
 INSERT INTO filter_driver_altitudes VALUES (	'Bottom'	,	'WinSetupMon.sys'	,	40300	,	'Microsoft'	)
+COMMIT TRAN
 
 
 --Update the tbl_fltmc_filters and tbl_fltmc_instances with addition info from lookup table above
