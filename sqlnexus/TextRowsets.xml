@@ -3106,8 +3106,32 @@
       </KnownColumns>
     </Rowset>
 
+    <Rowset name="tbl_repl_sourceserver" enabled="true" identifier="-- repl_sourceserver --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="SourceServer" type="RowsetImportEngine.NVarCharColumn" length="128"/>
+        <Column name="SourceSQLVersion" type="RowsetImportEngine.NVarCharColumn" length="128"/>
+      </KnownColumns>
+    </Rowset>
+
+    <Rowset name="tbl_repl_msdb_jobs" enabled="true" identifier="-- repl_msdb_jobs --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="job_id" type="RowsetImportEngine.NVarCharColumn" length="256"/>
+        <Column name="originating_server_id" type="RowsetImportEngine.IntColumn"/>
+        <Column name="name" type="RowsetImportEngine.NVarCharColumn" length="128"/>
+        <Column name="enabled" type="RowsetImportEngine.IntColumn"/>
+        <Column name="description" type="RowsetImportEngine.NVarCharColumn" length="256"/>
+        <Column name="start_step_id" type="RowsetImportEngine.IntColumn"/>
+        <Column name="category_id" type="RowsetImportEngine.IntColumn"/>
+        <Column name="owner_sid" type="RowsetImportEngine.VarBinaryColumn"/>
+        <Column name="delete_level" type="RowsetImportEngine.IntColumn"/>
+        <Column name="date_created" type="RowsetImportEngine.DateTimeColumn"/>
+        <Column name="date_modified" type="RowsetImportEngine.DateTimeColumn"/>
+      </KnownColumns>
+    </Rowset>
+
     <Rowset name="tbl_repl_msarticles" enabled="true" identifier="-- repl_msarticles --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
+        <Column name="distribution_dbname" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="publisher_id" type="RowsetImportEngine.IntColumn"/>
         <Column name="publisher_db" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="publication_id" type="RowsetImportEngine.IntColumn"/>
@@ -3121,6 +3145,7 @@
 
     <Rowset name="tbl_repl_mscached_peer_lsns" enabled="true" identifier="-- repl_mscached_peer_lsns --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
+        <Column name="distribution_dbname" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="agent_id" type="RowsetImportEngine.IntColumn"/>
         <Column name="originator" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="originator_db" type="RowsetImportEngine.NVarCharColumn" length="128"/>
@@ -3132,6 +3157,7 @@
 
     <Rowset name="tbl_repl_msdistribution_agents" enabled="true" identifier="-- repl_msdistribution_agents --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
+        <Column name="distribution_dbname" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="id" type="RowsetImportEngine.IntColumn"/>
         <Column name="name" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="publisher_database_id" type="RowsetImportEngine.IntColumn"/>
@@ -3155,12 +3181,13 @@
 
     <Rowset name="tbl_repl_msdistribution_history" enabled="true" identifier="-- repl_msdistribution_history --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
+        <Column name="distribution_dbname" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="agent_id" type="RowsetImportEngine.IntColumn"/>
         <Column name="runstatus" type="RowsetImportEngine.IntColumn"/>
         <Column name="start_time" type="RowsetImportEngine.DateTimeColumn"/>
         <Column name="time" type="RowsetImportEngine.DateTimeColumn"/>
         <Column name="duration" type="RowsetImportEngine.IntColumn" length="128"/>
-        <Column name="comments" type="RowsetImportEngine.NVarCharColumn" length="512"/>
+        <Column name="comments" type="RowsetImportEngine.NVarCharColumn" length="4096"/>
         <Column name="xact_seqno" type="RowsetImportEngine.VarBinaryColumn"/>
         <Column name="current_delivery_rate" type="RowsetImportEngine.FloatColumn" length="128"/>
         <Column name="current_delivery_latency" type="RowsetImportEngine.IntColumn"/>
@@ -3178,6 +3205,7 @@
 
     <Rowset name="tbl_repl_mslogreader_agents" enabled="true" identifier="-- repl_mslogreader_agents --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
+        <Column name="distribution_dbname" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="id" type="RowsetImportEngine.IntColumn"/>
         <Column name="name" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="publisher_id" type="RowsetImportEngine.IntColumn"/>
@@ -3194,12 +3222,13 @@
 
     <Rowset name="tbl_repl_mslogreader_history" enabled="true" identifier="-- repl_mslogreader_history --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
+        <Column name="distribution_dbname" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="agent_id" type="RowsetImportEngine.IntColumn"/>
         <Column name="runstatus" type="RowsetImportEngine.IntColumn"/>
         <Column name="start_time" type="RowsetImportEngine.DateTimeColumn"/>
         <Column name="time" type="RowsetImportEngine.DateTimeColumn"/>
         <Column name="duration" type="RowsetImportEngine.IntColumn"/>
-        <Column name="comments" type="RowsetImportEngine.NVarCharColumn" length="256"/>
+        <Column name="comments" type="RowsetImportEngine.NVarCharColumn" length="4096"/>
         <Column name="xact_seqno" type="RowsetImportEngine.VarBinaryColumn"/>
         <Column name="delivery_time" type="RowsetImportEngine.IntColumn"/>
         <Column name="delivered_transactions" type="RowsetImportEngine.IntColumn"/>
@@ -3215,6 +3244,7 @@
 
     <Rowset name="tbl_repl_msmerge_agents" enabled="true" identifier="-- repl_msmerge_agents --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
+        <Column name="distribution_dbname" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="id" type="RowsetImportEngine.IntColumn"/>
         <Column name="name" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="publisher_id" type="RowsetImportEngine.IntColumn"/>
@@ -3241,9 +3271,10 @@
 
     <Rowset name="tbl_repl_msmerge_history" enabled="true" identifier="-- repl_msmerge_history --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
+        <Column name="distribution_dbname" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="session_id" type="RowsetImportEngine.IntColumn"/>
         <Column name="agent_id" type="RowsetImportEngine.IntColumn"/>
-        <Column name="comments" type="RowsetImportEngine.NVarCharColumn" length="256"/>
+        <Column name="comments" type="RowsetImportEngine.NVarCharColumn" length="4096"/>
         <Column name="error_id" type="RowsetImportEngine.IntColumn"/>
         <Column name="timestamp" type="RowsetImportEngine.VarBinaryColumn"/>
         <Column name="updateable_row" type="RowsetImportEngine.IntColumn"/>
@@ -3253,6 +3284,7 @@
 
     <Rowset name="tbl_repl_msmerge_identity_range_allocations" enabled="true" identifier="-- repl_msmerge_identity_range_allocations --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
+        <Column name="distribution_dbname" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="publisher_id" type="RowsetImportEngine.IntColumn"/>
         <Column name="publisher_db" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="publication" type="RowsetImportEngine.NVarCharColumn" length="128"/>
@@ -3272,6 +3304,7 @@
 
     <Rowset name="tbl_repl_msmerge_sessions" enabled="true" identifier="-- repl_msmerge_sessions --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
+        <Column name="distribution_dbname" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="session_id" type="RowsetImportEngine.IntColumn"/>
         <Column name="agent_id" type="RowsetImportEngine.IntColumn"/>
         <Column name="start_time" type="RowsetImportEngine.DateTimeColumn"/>
@@ -3311,6 +3344,7 @@
 
     <Rowset name="tbl_repl_msmerge_subscriptions" enabled="true" identifier="-- repl_msmerge_subscriptions --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
+        <Column name="distribution_dbname" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="publisher_id" type="RowsetImportEngine.IntColumn"/>
         <Column name="publisher_db" type="RowsetImportEngine.NVarCharColumn"  length="256"/>
         <Column name="publication_id" type="RowsetImportEngine.IntColumn"/>
@@ -3323,7 +3357,7 @@
         <Column name="description" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="publisher" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="subscriber" type="RowsetImportEngine.NVarCharColumn" length="128"/>
-        <Column name="subid" type="RowsetImportEngine.VarBinaryColumn"/>
+        <Column name="subid" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="subscriber_version" type="RowsetImportEngine.IntColumn"/>
       </KnownColumns>
     </Rowset>
@@ -3331,6 +3365,7 @@
 
     <Rowset name="tbl_repl_mspublication_access" enabled="true" identifier="-- repl_mspublication_access --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
+        <Column name="distribution_dbname" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="publication_id" type="RowsetImportEngine.IntColumn"/>
         <Column name="login" type="RowsetImportEngine.NVarCharColumn"  length="128"/>
         <Column name="sid" type="RowsetImportEngine.VarBinaryColumn"/>
@@ -3340,6 +3375,7 @@
 
     <Rowset name="tbl_repl_mspublications" enabled="true" identifier="-- repl_mspublications --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
+        <Column name="distribution_dbname" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="publisher_id" type="RowsetImportEngine.IntColumn"/>
         <Column name="publisher_db" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="publication" type="RowsetImportEngine.NVarCharColumn" length="128"/>
@@ -3365,9 +3401,9 @@
       </KnownColumns>
     </Rowset>
 
-
     <Rowset name="tbl_repl_mspublicationthresholds" enabled="true" identifier="-- repl_mspublicationthresholds --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
+        <Column name="distribution_dbname" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="publication_id" type="RowsetImportEngine.IntColumn"/>
         <Column name="metric_id" type="RowsetImportEngine.IntColumn"/>
         <Column name="value" type="RowsetImportEngine.NVarCharColumn" length="128"/>
@@ -3378,6 +3414,7 @@
 
     <Rowset name="tbl_repl_mspublisher_databases" enabled="true" identifier="-- repl_mspublisher_databases --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
+        <Column name="distribution_dbname" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="publisher_id" type="RowsetImportEngine.IntColumn"/>
         <Column name="publisher_db" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="id" type="RowsetImportEngine.IntColumn"/>
@@ -3387,6 +3424,7 @@
 
     <Rowset name="tbl_repl_msqreader_agents" enabled="true" identifier="-- repl_msqreader_agents --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
+        <Column name="distribution_dbname" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="id" type="RowsetImportEngine.IntColumn"/>
         <Column name="name" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="job_id" type="RowsetImportEngine.IntColumn"/>
@@ -3397,6 +3435,7 @@
     
     <Rowset name="tbl_repl_msrepl_backup_lsns" enabled="true" identifier="-- repl_msrepl_backup_lsns --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
+        <Column name="distribution_dbname" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="publisher_database_id" type="RowsetImportEngine.IntColumn"/>
         <Column name="valid_xact_id" type="RowsetImportEngine.VarBinaryColumn"/>
         <Column name="valid_xact_seqno" type="RowsetImportEngine.VarBinaryColumn"/>
@@ -3405,9 +3444,9 @@
       </KnownColumns>
     </Rowset>
 
-
     <Rowset name="tbl_repl_msrepl_commands_oldest" enabled="true" identifier="-- repl_msrepl_commands_oldest --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
+        <Column name="distribution_dbname" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="publisher_database_id" type="RowsetImportEngine.IntColumn"/>
         <Column name="xact_seqno" type="RowsetImportEngine.VarBinaryColumn"/>
         <Column name="type" type="RowsetImportEngine.IntColumn"/>
@@ -3423,6 +3462,7 @@
 
     <Rowset name="tbl_repl_msrepl_commands_newest" enabled="true" identifier="-- repl_msrepl_commands_newest --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
+        <Column name="distribution_dbname" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="publisher_database_id" type="RowsetImportEngine.IntColumn"/>
         <Column name="xact_seqno" type="RowsetImportEngine.VarBinaryColumn"/>
         <Column name="type" type="RowsetImportEngine.IntColumn"/>
@@ -3438,13 +3478,14 @@
 
     <Rowset name="tbl_repl_msrepl_errors" enabled="true" identifier="-- repl_msrepl_errors --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
+        <Column name="distribution_dbname" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="id" type="RowsetImportEngine.IntColumn"/>
         <Column name="time" type="RowsetImportEngine.DateTimeColumn"/>
         <Column name="error_type_id" type="RowsetImportEngine.IntColumn"/>
         <Column name="source_type_id" type="RowsetImportEngine.IntColumn"/>
         <Column name="source_name" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="error_code" type="RowsetImportEngine.NVarCharColumn" length="128"/>
-        <Column name="error_text" type="RowsetImportEngine.NVarCharColumn" length="128"/>
+        <Column name="error_text" type="RowsetImportEngine.NVarCharColumn" length="512"/>
         <Column name="xact_seqno" type="RowsetImportEngine.VarBinaryColumn"/>
         <Column name="command_id" type="RowsetImportEngine.IntColumn"/>
         <Column name="session_id" type="RowsetImportEngine.IntColumn"/>
@@ -3453,6 +3494,7 @@
 
     <Rowset name="tbl_repl_msrepl_identity_range" enabled="true" identifier="-- repl_msrepl_identity_range --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
+        <Column name="distribution_dbname" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="publisher" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="publisher_db" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="tablename" type="RowsetImportEngine.NVarCharColumn" length="128"/>
@@ -3468,6 +3510,7 @@
     
     <Rowset name="tbl_repl_msrepl_originators" enabled="true" identifier="-- repl_msrepl_originators --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
+        <Column name="distribution_dbname" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="id" type="RowsetImportEngine.IntColumn"/>
         <Column name="publisher_database_id" type="RowsetImportEngine.IntColumn"/>
         <Column name="srvname" type="RowsetImportEngine.NVarCharColumn" length="128"/>
@@ -3479,6 +3522,7 @@
 
     <Rowset name="tbl_repl_msrepl_transactions_oldest" enabled="true" identifier="-- repl_msrepl_transactions_oldest --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
+        <Column name="distribution_dbname" type="RowsetImportEngine.NVarCharColumn" length="128"/>      
         <Column name="publisher_database_id" type="RowsetImportEngine.IntColumn"/>
         <Column name="xact_id" type="RowsetImportEngine.VarBinaryColumn"/>
         <Column name="xact_seqno" type="RowsetImportEngine.VarBinaryColumn"/>
@@ -3488,6 +3532,7 @@
 
     <Rowset name="tbl_repl_msrepl_transactions_newest" enabled="true" identifier="-- repl_msrepl_transactions_newest --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
+        <Column name="distribution_dbname" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="publisher_database_id" type="RowsetImportEngine.IntColumn"/>
         <Column name="xact_id" type="RowsetImportEngine.VarBinaryColumn"/>
         <Column name="xact_seqno" type="RowsetImportEngine.VarBinaryColumn"/>
@@ -3497,6 +3542,7 @@
 
     <Rowset name="tbl_repl_msrepl_version" enabled="true" identifier="-- repl_msrepl_version --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
+        <Column name="distribution_dbname" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="major_version" type="RowsetImportEngine.IntColumn"/>
         <Column name="minor_version" type="RowsetImportEngine.IntColumn"/>
         <Column name="revision" type="RowsetImportEngine.IntColumn"/>
@@ -3506,6 +3552,7 @@
 
     <Rowset name="tbl_repl_msreplication_monitordata" enabled="true" identifier="-- repl_msreplication_monitordata --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
+        <Column name="distribution_dbname" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="lastrefresh" type="RowsetImportEngine.DateTimeColumn"/>
         <Column name="computetime" type="RowsetImportEngine.IntColumn"/>
         <Column name="publication_id" type="RowsetImportEngine.IntColumn"/>
@@ -3517,7 +3564,7 @@
         <Column name="agent_type" type="RowsetImportEngine.IntColumn"/>
         <Column name="agent_id" type="RowsetImportEngine.IntColumn"/>
         <Column name="agent_name" type="RowsetImportEngine.NVarCharColumn" length="128"/>
-        <Column name="job_id" type="RowsetImportEngine.VarBinaryColumn"/>
+        <Column name="job_id" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="status" type="RowsetImportEngine.IntColumn"/>
         <Column name="isagentrunningnow" type="RowsetImportEngine.IntColumn"/>
         <Column name="warning" type="RowsetImportEngine.IntColumn"/>
@@ -3543,6 +3590,7 @@
 
     <Rowset name="tbl_repl_mssnapshot_agents" enabled="true" identifier="-- repl_mssnapshot_agents --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
+        <Column name="distribution_dbname" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="id" type="RowsetImportEngine.IntColumn"/>
         <Column name="name" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="publisher_id" type="RowsetImportEngine.NVarCharColumn" length="128"/>
@@ -3552,47 +3600,46 @@
         <Column name="local_job" type="RowsetImportEngine.IntColumn"/>
         <Column name="job_id" type="RowsetImportEngine.VarBinaryColumn"/>
         <Column name="profile_id" type="RowsetImportEngine.IntColumn"/>
-        <Column name="dynamic_filter_login" type="RowsetImportEngine.NVarCharColumn" length="128"/>
-        <Column name="dynamic_filter_hostname" type="RowsetImportEngine.NVarCharColumn" length="128"/>
+        <Column name="dynamic_filter_login" type="RowsetImportEngine.NVarCharColumn" length="512"/>
+        <Column name="dynamic_filter_hostname" type="RowsetImportEngine.NVarCharColumn" length="512"/>
         <Column name="publisher_security_mode" type="RowsetImportEngine.IntColumn"/>
         <Column name="publisher_login" type="RowsetImportEngine.NVarCharColumn" length="128"/>
-        <Column name="publisher_password" type="RowsetImportEngine.NVarCharColumn" length="128"/>
-        <Column name="job_step_uid" type="RowsetImportEngine.VarBinaryColumn"/>
+        <Column name="job_step_uid" type="RowsetImportEngine.NVarCharColumn" length="128"/>
       </KnownColumns>
     </Rowset>
 
     <Rowset name="tbl_repl_mssnapshot_history" enabled="true" identifier="-- repl_mssnapshot_history --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
+        <Column name="distribution_dbname" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="agent_id" type="RowsetImportEngine.IntColumn"/>
         <Column name="runstatus" type="RowsetImportEngine.IntColumn"/>
         <Column name="start_time" type="RowsetImportEngine.DateTimeColumn"/>
         <Column name="time" type="RowsetImportEngine.DateTimeColumn"/>
         <Column name="duration" type="RowsetImportEngine.IntColumn"/>
-        <Column name="comments" type="RowsetImportEngine.NVarCharColumn" length="128"/>
+        <Column name="comments" type="RowsetImportEngine.NVarCharColumn" length="4096"/>
         <Column name="delivered_transactions" type="RowsetImportEngine.IntColumn"/>
         <Column name="delivered_commands" type="RowsetImportEngine.IntColumn"/>
         <Column name="delivery_rate" type="RowsetImportEngine.FloatColumn"/>
         <Column name="error_id" type="RowsetImportEngine.IntColumn"/>
-        <Column name="timestamp" type="RowsetImportEngine.DateTimeColumn"/>
+        <Column name="timestamp" type="RowsetImportEngine.BigIntColumn"/>
       </KnownColumns>
     </Rowset>
 
-
     <Rowset name="tbl_repl_mssubscriber_info" enabled="true" identifier="-- repl_mssubscriber_info --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
+        <Column name="distribution_dbname" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="publisher" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="subscriber" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="type" type="RowsetImportEngine.IntColumn"/>
         <Column name="login" type="RowsetImportEngine.NVarCharColumn" length="128"/>
-        <Column name="password" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="description" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="security_mode" type="RowsetImportEngine.IntColumn"/>
       </KnownColumns>
     </Rowset>
 
-
     <Rowset name="tbl_repl_mssubscriber_schedule" enabled="true" identifier="-- repl_mssubscriber_schedule --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
+        <Column name="distribution_dbname" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="publisher" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="subscriber" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="agent_type" type="RowsetImportEngine.IntColumn"/>
@@ -3611,13 +3658,14 @@
 
     <Rowset name="tbl_repl_mssubscriptions" enabled="true" identifier="-- repl_mssubscriptions --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
+        <Column name="distribution_dbname" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="publisher_database_id" type="RowsetImportEngine.IntColumn"/>
         <Column name="publisher_id" type="RowsetImportEngine.IntColumn"/>
         <Column name="publisher_db" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="publication_id" type="RowsetImportEngine.IntColumn"/>
         <Column name="article_id" type="RowsetImportEngine.IntColumn"/>
         <Column name="subscriber_id" type="RowsetImportEngine.NVarCharColumn" length="128"/>
-        <Column name="subscriber_db" type="RowsetImportEngine.IntColumn"/>
+        <Column name="subscriber_db" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="subscription_type" type="RowsetImportEngine.IntColumn"/>
         <Column name="sync_type" type="RowsetImportEngine.IntColumn"/>
         <Column name="status" type="RowsetImportEngine.IntColumn"/>
@@ -3636,6 +3684,7 @@
 
     <Rowset name="tbl_repl_mssync_states" enabled="true" identifier="-- repl_mssync_states --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
+        <Column name="distribution_dbname" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="publisher_id" type="RowsetImportEngine.IntColumn"/>
         <Column name="publisher_db" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="publication_id" type="RowsetImportEngine.IntColumn"/>
@@ -3644,6 +3693,7 @@
 
     <Rowset name="tbl_repl_mstracer_history" enabled="true" identifier="-- repl_mstracer_history --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
+        <Column name="distribution_dbname" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="parent_tracer_id" type="RowsetImportEngine.IntColumn"/>
         <Column name="agent_id" type="RowsetImportEngine.IntColumn"/>
         <Column name="subscriber_commit" type="RowsetImportEngine.DateTimeColumn"/>
@@ -3652,6 +3702,7 @@
 
     <Rowset name="tbl_repl_mstracer_tokens" enabled="true" identifier="-- repl_mstracer_tokens --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
+        <Column name="distribution_dbname" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="tracer_id" type="RowsetImportEngine.IntColumn"/>
         <Column name="publication_id" type="RowsetImportEngine.IntColumn"/>
         <Column name="publisher_commit" type="RowsetImportEngine.DateTimeColumn"/>
@@ -3661,6 +3712,7 @@
 
     <Rowset name="tbl_repl_msRedirected_Publishers" enabled="true" identifier="-- repl_msRedirected_Publishers --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
+        <Column name="distribution_dbname" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="original_publisher" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="publisher_db" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="redirected_publisher" type="RowsetImportEngine.NVarCharColumn" length="128"/>
@@ -3669,6 +3721,7 @@
 
     <Rowset name="tbl_repl_msreplservers" enabled="true" identifier="-- repl_msreplservers --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
+        <Column name="distribution_dbname" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="srvid" type="RowsetImportEngine.IntColumn"/>
         <Column name="srvname" type="RowsetImportEngine.NVarCharColumn" length="128"/>
       </KnownColumns>
@@ -3678,6 +3731,7 @@
 
     <Rowset name="tbl_repl_sysservers" enabled="true" identifier="-- repl_sysservers --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
+        <Column name="distribution_dbname" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="server_id" type="RowsetImportEngine.IntColumn"/>
         <Column name="name" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="product" type="RowsetImportEngine.NVarCharColumn" length="128"/>
@@ -3702,6 +3756,7 @@
 
     <Rowset name="tbl_repl_msrepl_agent_jobs" enabled="true" identifier="-- repl_msrepl_agent_jobs --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
+        <Column name="distribution_dbname" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="job_id" type="RowsetImportEngine.VarBinaryColumn"/>
         <Column name="name" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="enabled" type="RowsetImportEngine.IntColumn"/>
