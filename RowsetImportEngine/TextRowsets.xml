@@ -3771,6 +3771,17 @@
         <Column name="freq_interval" type="RowsetImportEngine.IntColumn"/>
       </KnownColumns>
     </Rowset>
+
+    <Rowset name="tbl_windows_hotfixes_installed" enabled="true" identifier="-- Windows Hotfix List --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="HotfixID" type="RowsetImportEngine.NVarCharColumn" length="32"/>
+        <Column name="InstalledOn" type="RowsetImportEngine.DateTimeColumn"/>
+        <Column name="Description" type="RowsetImportEngine.NVarCharColumn" length="128"/>
+        <Column name="InstalledBy" type="RowsetImportEngine.NVarCharColumn" length="64"/>
+      </KnownColumns>
+    </Rowset>
+
+
   </KnownRowsets>
 </TextImport>
 
