@@ -37,7 +37,7 @@ rem sqlcmd.exe -S%SQLServer% -E -otoptables.out -Q"set QUOTED_IDENTIFIER on; WIT
 goto end
 
 :usage
-@echo Incorrect syntaxt. Proper usage:  %~n0 servername filepath +++
+@echo Incorrect syntaxt. Proper usage:  %~n0 ServerName DatabaseName Filepath +++
 
 
 :end
