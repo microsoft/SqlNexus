@@ -15,7 +15,6 @@
       <ConnectionProperties>
         <DataProvider>SQL</DataProvider>
         <ConnectString>Data Source=.;Initial Catalog=z2019</ConnectString>
-        <Prompt>Specify a user name and password for data source Dev:</Prompt>
       </ConnectionProperties>
       <rd:SecurityType>DataBase</rd:SecurityType>
       <rd:DataSourceID>6bb00233-ad10-4c32-8584-dad4e7fd95c3</rd:DataSourceID>
@@ -1442,7 +1441,7 @@ FROM [dbo].[tbl_hadr_alwayson_health_alwayson_ddl_executed]</CommandText>
                 <Top>0.41667in</Top>
                 <Left>0.00003cm</Left>
                 <Height>0.53125in</Height>
-                <Width>22.40226in</Width>
+                <Width>22.40225in</Width>
                 <Style>
                   <Border>
                     <Style>None</Style>
@@ -2267,16 +2266,16 @@ FROM [dbo].[tbl_hadr_alwayson_health_alwayson_ddl_executed]</CommandText>
                 <TablixBody>
                   <TablixColumns>
                     <TablixColumn>
-                      <Width>1.66614in</Width>
+                      <Width>1.41615in</Width>
                     </TablixColumn>
                     <TablixColumn>
-                      <Width>1.85185in</Width>
+                      <Width>2in</Width>
                     </TablixColumn>
                     <TablixColumn>
                       <Width>1.50926in</Width>
                     </TablixColumn>
                     <TablixColumn>
-                      <Width>11.93982in</Width>
+                      <Width>8.74537in</Width>
                     </TablixColumn>
                   </TablixColumns>
                   <TablixRows>
@@ -2594,7 +2593,7 @@ FROM [dbo].[tbl_hadr_alwayson_health_alwayson_ddl_executed]</CommandText>
                 <Top>2.46594in</Top>
                 <Left>0.00003cm</Left>
                 <Height>0.53125in</Height>
-                <Width>16.96707in</Width>
+                <Width>13.67078in</Width>
                 <ZIndex>5</ZIndex>
                 <Style>
                   <Border>
