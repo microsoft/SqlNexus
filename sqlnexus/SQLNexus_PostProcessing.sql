@@ -2129,6 +2129,7 @@ INSERT INTO filter_driver_altitudes VALUES (	'Bottom'	,	'wof.sys'	,	40700	,	'Mic
 INSERT INTO filter_driver_altitudes VALUES (	'Bottom'	,	'fileinfo'	,	40500	,	'Microsoft'	)
 INSERT INTO filter_driver_altitudes VALUES (	'Bottom'	,	'WinSetupBoot.sys'	,	40400	,	'Microsoft'	)
 INSERT INTO filter_driver_altitudes VALUES (	'Bottom'	,	'WinSetupMon.sys'	,	40300	,	'Microsoft'	)
+INSERT INTO filter_driver_altitudes VALUES (	'brokering FS'	,	'bfs.sys'	,	150000	,	'Microsoft'	)
 COMMIT TRAN
 
 
