@@ -14,7 +14,7 @@
     <DataSource Name="DataSource_test">
       <ConnectionProperties>
         <DataProvider>SQL</DataProvider>
-        <ConnectString>Data Source=jackli2015\sql14b;Initial Catalog=Brad1104Before</ConnectString>
+        <ConnectString>Data Source=sqlserver1\inst1;Initial Catalog=Brad1104Before</ConnectString>
         <IntegratedSecurity>true</IntegratedSecurity>
       </ConnectionProperties>
       <rd:SecurityType>Integrated</rd:SecurityType>
@@ -597,7 +597,7 @@ order by req.request_cpu_time desc</CommandText>
       <DataType>String</DataType>
       <DefaultValue>
         <Values>
-          <Value>jackli2008\katmai64bit</Value>
+          <Value>sqlserver1\inst1</Value>
         </Values>
       </DefaultValue>
       <AllowBlank>true</AllowBlank>

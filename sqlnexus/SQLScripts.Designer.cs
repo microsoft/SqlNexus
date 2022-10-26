@@ -19,7 +19,7 @@ namespace sqlnexus {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class SQLScripts {
@@ -64,12 +64,18 @@ namespace sqlnexus {
         ///   Looks up a localized string similar to use master
         ///if db_id (&apos;{0}&apos;) is null
         ///begin
-        ///	create database [{0}];
-        ///	alter database [{0}] modify file (name=&apos;{0}&apos;, size=50MB)
-        ///	alter database [{0}] set recovery simple
+        ///	CREATE DATABASE [{0}];
+        ///	ALTER DATABASE [{0}] SET RECOVERY SIMPLE
+        ///
+        ///	BEGIN TRY
+        ///	  ALTER DATABASE [{0}] MODIFY FILE (name=&apos;{0}&apos;, size=50MB)
+        ///	END TRY
+        ///
+        ///	BEGIN CATCH  
+        ///		--print no error - very rarely would MODIFY FILE fail 
+        ///	END CATCH  
         ///end
-        ///--else  
-        ///	-- alter database [{0}] set recovery simple
+        ///
         ///.
         /// </summary>
         internal static string CreateDB {
