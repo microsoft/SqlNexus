@@ -2144,9 +2144,9 @@ DECLARE @query2 NVARCHAR(MAX)
 IF (OBJECT_ID('tbl_fltmc_filters') IS NOT NULL)
 BEGIN
 
-  ALTER TABLE tbl_fltmc_filters ADD FilterType nvarchar(96) null;
-  ALTER TABLE tbl_fltmc_filters ADD Minifilter nvarchar(128) null;
-  ALTER TABLE tbl_fltmc_filters ADD Company nvarchar(256) null;
+  ALTER TABLE tbl_fltmc_filters ADD FilterType NVARCHAR(96) NULL;
+  ALTER TABLE tbl_fltmc_filters ADD Minifilter NVARCHAR(128) NULL;
+  ALTER TABLE tbl_fltmc_filters ADD Company NVARCHAR(256) NULL;
 
   SET @query = N'UPDATE tbl_fltmc_filters
                  SET FilterType = f2.FilterType,
@@ -2164,9 +2164,9 @@ END
 IF (OBJECT_ID('tbl_fltmc_instances') IS NOT NULL)
 BEGIN
 
-  ALTER TABLE tbl_fltmc_instances ADD FilterType nvarchar(96) null;
-  ALTER TABLE tbl_fltmc_instances ADD Minifilter nvarchar(128) null;
-  ALTER TABLE tbl_fltmc_instances ADD Company nvarchar(256) null;
+  ALTER TABLE tbl_fltmc_instances ADD FilterType NVARCHAR(96) NULL;
+  ALTER TABLE tbl_fltmc_instances ADD Minifilter NVARCHAR(128) NULL;
+  ALTER TABLE tbl_fltmc_instances ADD Company NVARCHAR(256) NULL;
 
   SET @query2 = N'UPDATE tbl_fltmc_instances
                   SET FilterType = f2.FilterType,
