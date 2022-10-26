@@ -2133,3 +2133,47 @@ COMMIT TRAN
 
 
 --Update the tbl_fltmc_filters and tbl_fltmc_instances with addition info from lookup table above
+
+--tbl_fltmc_filters
+
+
+DECLARE @query NVARCHAR(MAX)
+DECLARE @query2 NVARCHAR(MAX)
+
+IF (OBJECT_ID('tbl_fltmc_filters') IS NOT NULL)
+BEGIN
+
+  ALTER TABLE tbl_fltmc_filters ADD FilterType nvarchar(96) null;
+  ALTER TABLE tbl_fltmc_filters ADD Minifilter nvarchar(128) null;
+  ALTER TABLE tbl_fltmc_filters ADD Company nvarchar(256) null;
+
+  SET @query = N'UPDATE tbl_fltmc_filters
+                 SET FilterType = f2.FilterType,
+                     Minifilter = f2.Minifilter,
+                     Company = f2.Company
+                 FROM tbl_fltmc_filters f1
+                     INNER JOIN filter_driver_altitudes f2
+                       ON (f1.Altitude = f2.Altitude);'
+  EXEC SP_EXECUTESQL @query
+END
+
+
+--tbl_fltmc_instances
+
+IF (OBJECT_ID('tbl_fltmc_instances') IS NOT NULL)
+BEGIN
+
+  ALTER TABLE tbl_fltmc_instances ADD FilterType nvarchar(96) null;
+  ALTER TABLE tbl_fltmc_instances ADD Minifilter nvarchar(128) null;
+  ALTER TABLE tbl_fltmc_instances ADD Company nvarchar(256) null;
+
+  SET @query2 = N'UPDATE tbl_fltmc_instances
+                  SET FilterType = f2.FilterType,
+                      Minifilter = f2.Minifilter,
+                      Company = f2.Company
+                  FROM tbl_fltmc_instances f1
+                      INNER JOIN filter_driver_altitudes f2
+                        ON (f1.Altitude = f2.Altitude);'
+  EXEC SP_EXECUTESQL @query2;
+END 
+
