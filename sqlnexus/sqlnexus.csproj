@@ -408,6 +408,7 @@
     <Content Include="Reports\PowerBIReports\System Health Session.pbit">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Reports\Replication_Topology_C.rdlC" />
     <None Include="SqlNexus.snk" />
   </ItemGroup>
   <ItemGroup>
