@@ -125,7 +125,7 @@ values ('Active Traces and XEvents_C', 'Active Trace and XEvent Report', 'Active
 
 --Replication
 insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
-values ('Replication_Topology_C', 'Replication Topology', 'Replication Topology in hierarchycal order',  1|2|4|8, 'Replication', 'dbo.tbl_repl_sysservers', 200, 'SQL Base Collector', 1,2000)
+values ('Replication_Topology_C', 'Replication Topology', 'Replication Topology in hierarchycal order',  1|2|4|8, 'Replication', 'dbo.tbl_repl_sysservers', 200, 'Replication', 1,2000)
 
 
 
