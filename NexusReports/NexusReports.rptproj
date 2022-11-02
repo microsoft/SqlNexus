@@ -51,6 +51,8 @@
   <ItemGroup>
     <Report Include="Active Queries_C.rdl" />
     <Report Include="Active Traces and XEvents_C.rdl" />
+    <Report Include="AlwaysOn_AGBasics_C.rdl" />
+    <Report Include="AlwaysOn_AGDetails_C.rdl" />
     <Report Include="AnalysisSummary_C.rdl" />
     <Report Include="Blocking and Wait Statistics_C.rdl" />
     <Report Include="Blocking Chain Detail_C.rdl" />

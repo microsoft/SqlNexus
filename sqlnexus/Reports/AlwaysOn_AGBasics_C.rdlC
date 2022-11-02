@@ -11,14 +11,25 @@
       <rd:SecurityType>Integrated</rd:SecurityType>
       <rd:DataSourceID>af2b7bc2-6e25-4254-9bc8-158577b66b97</rd:DataSourceID>
     </DataSource>
+    <DataSource Name="Dev">
+      <ConnectionProperties>
+        <DataProvider>SQL</DataProvider>
+        <ConnectString>Data Source=.;Initial Catalog=test</ConnectString>
+        <IntegratedSecurity>true</IntegratedSecurity>
+      </ConnectionProperties>
+      <rd:SecurityType>Integrated</rd:SecurityType>
+      <rd:DataSourceID>5dd1913e-ec11-42e9-a586-72641de98586</rd:DataSourceID>
+    </DataSource>
   </DataSources>
   <DataSets>
     <DataSet Name="DataSet_AG_States">
       <Query>
         <DataSourceName>DataSource_SqlNexus_Private</DataSourceName>
         <CommandText>SELECT 
-*
-FROM   tbl_hadr_ag_states</CommandText>
+ags.* ,agl.Listener_Name,aglip.ip_address,agl.port
+FROM   dbo.tbl_hadr_ag_states ags
+LEFT JOIN dbo.tbl_hadr_ag_listeners agl ON ags.group_id = agl.group_id
+LEFT JOIN dbo.tbl_hadr_ag_ip_information aglip ON agl.listener_id = aglip.listener_id</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -122,6 +133,18 @@ FROM   tbl_hadr_ag_states</CommandText>
           <DataField>synchronization_health_desc</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+        <Field Name="Listener_Name">
+          <DataField>Listener_Name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ip_address">
+          <DataField>ip_address</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="port">
+          <DataField>port</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
       </Fields>
     </DataSet>
   </DataSets>
@@ -170,19 +193,19 @@ FROM   tbl_hadr_ag_states</CommandText>
                       <Width>1.90688in</Width>
                     </TablixColumn>
                     <TablixColumn>
-                      <Width>4.01452in</Width>
-                    </TablixColumn>
-                    <TablixColumn>
-                      <Width>1.33021in</Width>
+                      <Width>1.14965in</Width>
                     </TablixColumn>
                     <TablixColumn>
                       <Width>1.51251in</Width>
                     </TablixColumn>
                     <TablixColumn>
-                      <Width>1.69989in</Width>
+                      <Width>1.25092in</Width>
                     </TablixColumn>
                     <TablixColumn>
-                      <Width>1in</Width>
+                      <Width>1.22685in</Width>
+                    </TablixColumn>
+                    <TablixColumn>
+                      <Width>1.47222in</Width>
                     </TablixColumn>
                     <TablixColumn>
                       <Width>1in</Width>
@@ -206,6 +229,7 @@ FROM   tbl_hadr_ag_states</CommandText>
                                     <TextRun>
                                       <Value>AG Name</Value>
                                       <Style>
+                                        <FontStyle>Italic</FontStyle>
                                         <FontWeight>Bold</FontWeight>
                                       </Style>
                                     </TextRun>
@@ -232,52 +256,6 @@ FROM   tbl_hadr_ag_states</CommandText>
                         </TablixCell>
                         <TablixCell>
                           <CellContents>
-                            <Textbox Name="Textbox42">
-                              <CanGrow>true</CanGrow>
-                              <KeepTogether>true</KeepTogether>
-                              <Paragraphs>
-                                <Paragraph>
-                                  <TextRuns>
-                                    <TextRun>
-                                      <Value>AG Id</Value>
-                                      <Style>
-                                        <FontWeight>Bold</FontWeight>
-                                      </Style>
-                                    </TextRun>
-                                  </TextRuns>
-                                  <Style>
-                                    <TextAlign>Center</TextAlign>
-                                  </Style>
-                                </Paragraph>
-                                <Paragraph>
-                                  <TextRuns>
-                                    <TextRun>
-                                      <Value />
-                                      <Style />
-                                    </TextRun>
-                                  </TextRuns>
-                                  <Style>
-                                    <TextAlign>Center</TextAlign>
-                                  </Style>
-                                </Paragraph>
-                              </Paragraphs>
-                              <rd:DefaultName>Textbox42</rd:DefaultName>
-                              <Style>
-                                <Border>
-                                  <Color>LightGrey</Color>
-                                  <Style>Solid</Style>
-                                </Border>
-                                <VerticalAlign>Top</VerticalAlign>
-                                <PaddingLeft>2pt</PaddingLeft>
-                                <PaddingRight>2pt</PaddingRight>
-                                <PaddingTop>2pt</PaddingTop>
-                                <PaddingBottom>2pt</PaddingBottom>
-                              </Style>
-                            </Textbox>
-                          </CellContents>
-                        </TablixCell>
-                        <TablixCell>
-                          <CellContents>
                             <Textbox Name="Textbox46">
                               <CanGrow>true</CanGrow>
                               <KeepTogether>true</KeepTogether>
@@ -287,6 +265,7 @@ FROM   tbl_hadr_ag_states</CommandText>
                                     <TextRun>
                                       <Value>ClusterType</Value>
                                       <Style>
+                                        <FontStyle>Italic</FontStyle>
                                         <FontWeight>Bold</FontWeight>
                                       </Style>
                                     </TextRun>
@@ -300,6 +279,7 @@ FROM   tbl_hadr_ag_states</CommandText>
                                     <TextRun>
                                       <Value />
                                       <Style>
+                                        <FontStyle>Italic</FontStyle>
                                         <FontWeight>Bold</FontWeight>
                                       </Style>
                                     </TextRun>
@@ -333,6 +313,7 @@ FROM   tbl_hadr_ag_states</CommandText>
                                     <TextRun>
                                       <Value>Primary Replica</Value>
                                       <Style>
+                                        <FontStyle>Italic</FontStyle>
                                         <FontWeight>Bold</FontWeight>
                                       </Style>
                                     </TextRun>
@@ -346,6 +327,7 @@ FROM   tbl_hadr_ag_states</CommandText>
                                     <TextRun>
                                       <Value />
                                       <Style>
+                                        <FontStyle>Italic</FontStyle>
                                         <FontWeight>Bold</FontWeight>
                                       </Style>
                                     </TextRun>
@@ -379,6 +361,7 @@ FROM   tbl_hadr_ag_states</CommandText>
                                     <TextRun>
                                       <Value>Failure Condition Level</Value>
                                       <Style>
+                                        <FontStyle>Italic</FontStyle>
                                         <FontWeight>Bold</FontWeight>
                                       </Style>
                                     </TextRun>
@@ -414,6 +397,7 @@ FROM   tbl_hadr_ag_states</CommandText>
                                     <TextRun>
                                       <Value>Healthcheck Timeout</Value>
                                       <Style>
+                                        <FontStyle>Italic</FontStyle>
                                         <FontWeight>Bold</FontWeight>
                                       </Style>
                                     </TextRun>
@@ -447,8 +431,9 @@ FROM   tbl_hadr_ag_states</CommandText>
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>Automated Backup Preference </Value>
+                                      <Value>Backup Preference </Value>
                                       <Style>
+                                        <FontStyle>Italic</FontStyle>
                                         <FontWeight>Bold</FontWeight>
                                       </Style>
                                     </TextRun>
@@ -484,6 +469,7 @@ FROM   tbl_hadr_ag_states</CommandText>
                                     <TextRun>
                                       <Value>DTC Support</Value>
                                       <Style>
+                                        <FontStyle>Italic</FontStyle>
                                         <FontWeight>Bold</FontWeight>
                                       </Style>
                                     </TextRun>
@@ -494,6 +480,42 @@ FROM   tbl_hadr_ag_states</CommandText>
                                 </Paragraph>
                               </Paragraphs>
                               <rd:DefaultName>Textbox5</rd:DefaultName>
+                              <Style>
+                                <Border>
+                                  <Color>LightGrey</Color>
+                                  <Style>Solid</Style>
+                                </Border>
+                                <VerticalAlign>Top</VerticalAlign>
+                                <PaddingLeft>2pt</PaddingLeft>
+                                <PaddingRight>2pt</PaddingRight>
+                                <PaddingTop>2pt</PaddingTop>
+                                <PaddingBottom>2pt</PaddingBottom>
+                              </Style>
+                            </Textbox>
+                          </CellContents>
+                        </TablixCell>
+                        <TablixCell>
+                          <CellContents>
+                            <Textbox Name="Textbox2">
+                              <CanGrow>true</CanGrow>
+                              <KeepTogether>true</KeepTogether>
+                              <Paragraphs>
+                                <Paragraph>
+                                  <TextRuns>
+                                    <TextRun>
+                                      <Value>Listener Name</Value>
+                                      <Style>
+                                        <FontStyle>Italic</FontStyle>
+                                        <FontWeight>Bold</FontWeight>
+                                      </Style>
+                                    </TextRun>
+                                  </TextRuns>
+                                  <Style>
+                                    <TextAlign>Center</TextAlign>
+                                  </Style>
+                                </Paragraph>
+                              </Paragraphs>
+                              <rd:DefaultName>Textbox2</rd:DefaultName>
                               <Style>
                                 <Border>
                                   <Color>LightGrey</Color>
@@ -526,11 +548,13 @@ FROM   tbl_hadr_ag_states</CommandText>
                                       <MarkupType>HTML</MarkupType>
                                       <Style>
                                         <FontWeight>Bold</FontWeight>
+                                        <TextDecoration>Underline</TextDecoration>
+                                        <Color>Blue</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
-                                    <TextAlign>Center</TextAlign>
+                                    <TextAlign>Left</TextAlign>
                                   </Style>
                                 </Paragraph>
                               </Paragraphs>
@@ -555,39 +579,7 @@ FROM   tbl_hadr_ag_states</CommandText>
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <VerticalAlign>Middle</VerticalAlign>
-                                <PaddingLeft>2pt</PaddingLeft>
-                                <PaddingRight>2pt</PaddingRight>
-                                <PaddingTop>2pt</PaddingTop>
-                                <PaddingBottom>2pt</PaddingBottom>
-                              </Style>
-                            </Textbox>
-                          </CellContents>
-                        </TablixCell>
-                        <TablixCell>
-                          <CellContents>
-                            <Textbox Name="group_id">
-                              <CanGrow>true</CanGrow>
-                              <KeepTogether>true</KeepTogether>
-                              <Paragraphs>
-                                <Paragraph>
-                                  <TextRuns>
-                                    <TextRun>
-                                      <Value>=Fields!group_id.Value</Value>
-                                      <Style />
-                                    </TextRun>
-                                  </TextRuns>
-                                  <Style>
-                                    <TextAlign>Center</TextAlign>
-                                  </Style>
-                                </Paragraph>
-                              </Paragraphs>
-                              <rd:DefaultName>group_id</rd:DefaultName>
-                              <Style>
-                                <Border>
-                                  <Color>LightGrey</Color>
-                                  <Style>Solid</Style>
-                                </Border>
+                                <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 , "#c7d7ff","Transparent")</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -611,7 +603,7 @@ FROM   tbl_hadr_ag_states</CommandText>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
-                                    <TextAlign>Center</TextAlign>
+                                    <TextAlign>Left</TextAlign>
                                   </Style>
                                 </Paragraph>
                               </Paragraphs>
@@ -621,6 +613,7 @@ FROM   tbl_hadr_ag_states</CommandText>
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 , "#c7d7ff","Transparent")</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -644,7 +637,7 @@ FROM   tbl_hadr_ag_states</CommandText>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
-                                    <TextAlign>Center</TextAlign>
+                                    <TextAlign>Left</TextAlign>
                                   </Style>
                                 </Paragraph>
                               </Paragraphs>
@@ -654,6 +647,7 @@ FROM   tbl_hadr_ag_states</CommandText>
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 , "#c7d7ff","Transparent")</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -677,7 +671,7 @@ FROM   tbl_hadr_ag_states</CommandText>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
-                                    <TextAlign>Center</TextAlign>
+                                    <TextAlign>Left</TextAlign>
                                   </Style>
                                 </Paragraph>
                               </Paragraphs>
@@ -687,6 +681,7 @@ FROM   tbl_hadr_ag_states</CommandText>
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 , "#c7d7ff","Transparent")</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -710,7 +705,7 @@ FROM   tbl_hadr_ag_states</CommandText>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
-                                    <TextAlign>Center</TextAlign>
+                                    <TextAlign>Left</TextAlign>
                                   </Style>
                                 </Paragraph>
                               </Paragraphs>
@@ -720,6 +715,7 @@ FROM   tbl_hadr_ag_states</CommandText>
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 , "#c7d7ff","Transparent")</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -743,7 +739,7 @@ FROM   tbl_hadr_ag_states</CommandText>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
-                                    <TextAlign>Center</TextAlign>
+                                    <TextAlign>Left</TextAlign>
                                   </Style>
                                 </Paragraph>
                               </Paragraphs>
@@ -753,6 +749,7 @@ FROM   tbl_hadr_ag_states</CommandText>
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 , "#c7d7ff","Transparent")</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -776,7 +773,7 @@ FROM   tbl_hadr_ag_states</CommandText>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
-                                    <TextAlign>Center</TextAlign>
+                                    <TextAlign>Left</TextAlign>
                                   </Style>
                                 </Paragraph>
                               </Paragraphs>
@@ -786,6 +783,41 @@ FROM   tbl_hadr_ag_states</CommandText>
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 , "#c7d7ff","Transparent")</BackgroundColor>
+                                <VerticalAlign>Middle</VerticalAlign>
+                                <PaddingLeft>2pt</PaddingLeft>
+                                <PaddingRight>2pt</PaddingRight>
+                                <PaddingTop>2pt</PaddingTop>
+                                <PaddingBottom>2pt</PaddingBottom>
+                              </Style>
+                            </Textbox>
+                          </CellContents>
+                        </TablixCell>
+                        <TablixCell>
+                          <CellContents>
+                            <Textbox Name="Listener_Name">
+                              <CanGrow>true</CanGrow>
+                              <KeepTogether>true</KeepTogether>
+                              <Paragraphs>
+                                <Paragraph>
+                                  <TextRuns>
+                                    <TextRun>
+                                      <Value>=Fields!Listener_Name.Value</Value>
+                                      <Style />
+                                    </TextRun>
+                                  </TextRuns>
+                                  <Style>
+                                    <TextAlign>Left</TextAlign>
+                                  </Style>
+                                </Paragraph>
+                              </Paragraphs>
+                              <rd:DefaultName>Listener_Name</rd:DefaultName>
+                              <Style>
+                                <Border>
+                                  <Color>LightGrey</Color>
+                                  <Style>Solid</Style>
+                                </Border>
+                                <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 , "#c7d7ff","Transparent")</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -824,7 +856,7 @@ FROM   tbl_hadr_ag_states</CommandText>
                 <DataSetName>DataSet_AG_States</DataSetName>
                 <Top>0.41667in</Top>
                 <Height>0.53125in</Height>
-                <Width>13.46401in</Width>
+                <Width>10.51903in</Width>
                 <Style>
                   <Border>
                     <Style>None</Style>
@@ -838,10 +870,27 @@ FROM   tbl_hadr_ag_states</CommandText>
                   <Paragraph>
                     <TextRuns>
                       <TextRun>
-                        <Value>Availability Groups Basic Info (Click AG Name for Details)</Value>
+                        <Value>Availability Groups Info (</Value>
                         <Style>
                           <FontSize>12pt</FontSize>
                           <FontWeight>Bold</FontWeight>
+                          <Color>Blue</Color>
+                        </Style>
+                      </TextRun>
+                      <TextRun>
+                        <Value>Click AG Name for AG  Details Report</Value>
+                        <Style>
+                          <FontSize>12pt</FontSize>
+                          <FontWeight>Bold</FontWeight>
+                          <Color>Red</Color>
+                        </Style>
+                      </TextRun>
+                      <TextRun>
+                        <Value>)</Value>
+                        <Style>
+                          <FontSize>12pt</FontSize>
+                          <FontWeight>Bold</FontWeight>
+                          <Color>Blue</Color>
                         </Style>
                       </TextRun>
                     </TextRuns>
