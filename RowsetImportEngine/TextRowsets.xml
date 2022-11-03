@@ -2906,7 +2906,7 @@
       </KnownColumns>
     </Rowset>
     
-    <Rowset name="tbl_hadr_ag_database_replica_states" enabled="true" identifier="-- AG_hadr_ag_database_replica_states --" type="RowsetImportEngine.TextRowset">
+    <Rowset name="tbl_hadr_ag_database_replica_states" enabled="true" identifier="--AG_hadr_ag_database_replica_states--" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
         <Column name="Availability_Group" type="RowsetImportEngine.NVarCharColumn"/>
         <Column name="replica_id" type="RowsetImportEngine.NVarCharColumn" />
