@@ -252,7 +252,6 @@ ON publicationinfo.publisher_id = subscriptioninfo.publisher_id
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
-                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                     <TablixCell>
@@ -385,8 +384,7 @@ ON publicationinfo.publisher_id = subscriptioninfo.publisher_id
                                 <TextRun>
                                   <Value>=Fields!Distributor_Name.Value</Value>
                                   <Style>
-                                    <FontFamily />
-                                    <Color>#333333</Color>
+                                    <FontFamily>Arial</FontFamily>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -581,8 +579,7 @@ ON publicationinfo.publisher_id = subscriptioninfo.publisher_id
                                 <TextRun>
                                   <Value>=Fields!Publisher_Name.Value</Value>
                                   <Style>
-                                    <FontFamily />
-                                    <Color>#333333</Color>
+                                    <FontFamily>Arial</FontFamily>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -773,8 +770,7 @@ ON publicationinfo.publisher_id = subscriptioninfo.publisher_id
                                 <TextRun>
                                   <Value>=Fields!Publication_Details.Value</Value>
                                   <Style>
-                                    <FontFamily />
-                                    <Color>#333333</Color>
+                                    <FontFamily>Arial</FontFamily>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -955,8 +951,7 @@ ON publicationinfo.publisher_id = subscriptioninfo.publisher_id
                                 <TextRun>
                                   <Value>=Fields!Subscriber_Details.Value</Value>
                                   <Style>
-                                    <FontFamily />
-                                    <Color>#333333</Color>
+                                    <FontFamily>Arial</FontFamily>
                                   </Style>
                                 </TextRun>
                               </TextRuns>

@@ -20,8 +20,8 @@
         <CommandText>DECLARE @DistributionSQLVersion nvarchar(71)
 SET @DistributionSQLVersion = (SELECT SourceSQLVersion FROM tbl_repl_sourceserver)
 
-SELECT	distributorinfo.[Distributor_Name], publicationinfo.Publisher AS Publisher_Name, publicationinfo.publisher_id as Publisher_ID, publicationinfo.publisher_db AS Publisher_DB, publicationinfo.publication_id as Publication_ID,
-		publicationinfo.[Publication_Information] + '  | Article Count:' + (CASE WHEN articleinfo.[Number of Articles] IS NULL THEN  'Not Found/Merge' ELSE articleinfo.[Number of Articles] END)    AS Publication_Details,   
+SELECT	distributorinfo.[Distributor_Name], publicationinfo.Publisher_Name , publicationinfo.publisher_id as Publisher_ID, publicationinfo.publisher_db AS Publisher_DB, publicationinfo.publication_id as Publication_ID,
+		publicationinfo.[Publication_Information] + '  • Article Count:' + (CASE WHEN articleinfo.[Number of Articles] IS NULL THEN  'Not Found/Merge' ELSE articleinfo.[Number of Articles] END)    AS Publication_Details,   
 		CAST((CASE WHEN subscriptioninfo.subscriber_id IS NULL THEN 'NO ID' ELSE CAST(subscriptioninfo.subscriber_id as NVARCHAR(10)) END) as NVARCHAR(100))  AS Subscriber_ID,
 		(CASE WHEN subscriptioninfo.[SubscriberInfo] IS NULL THEN 'No Subscriptions Exist!' ELSE subscriptioninfo.[SubscriberInfo] END) AS Subscriber_Details
 FROM  
@@ -45,19 +45,19 @@ INNER JOIN
 	(SELECT 
 			p.publisher_id,p.publisher_db,p.publication_id,p.distribution_dbname,
 			--Publisher header
-			CAST (s.[data_source] + ' (Publisher ID '+CAST(p.[publisher_id] as varchar(10)) + ')' AS VARCHAR(48)) AS [Publisher],
+			CAST (s.[data_source] + ' (Publisher ID '+CAST(p.[publisher_id] as varchar(10)) + ')' AS VARCHAR(48)) + ' • Distribution Db: ' + p.distribution_dbname AS Publisher_Name,
 				--Publications per Publisher
-				'Publication Name: '+ p.publication + ' (Publication ID: '+ CAST(p.publication_id as VARCHAR(10))+')' +
+				'Publication Name: '+ p.publication + ' (Publication ID: '+ CAST(p.publication_id as VARCHAR(10))+')' + ' •' +
 				' Publication Type: ' +
 					--Logic to determine type of replication
 					(
-					CASE WHEN p.publication_type = 0 and p.options &amp; 0x1 = 1 THEN 'Peer to Peer ;'
-					WHEN p.publication_type = 0 and p.allow_queued_tran = 1 THEN 'Transactional (2-Way) ;'
-					WHEN p.publication_type = 0 and p.allow_queued_tran = 0 THEN 'Transactional (1-Way) ;'
-					WHEN p.publication_type = 1 THEN 'Snapshot ;'
-					WHEN p.publication_type = 2 THEN 'Merge ;'
+					CASE WHEN p.publication_type = 0 and p.options &amp; 0x1 = 1 THEN 'Peer to Peer'
+					WHEN p.publication_type = 0 and p.allow_queued_tran = 1 THEN 'Transactional (2-Way)'
+					WHEN p.publication_type = 0 and p.allow_queued_tran = 0 THEN 'Transactional (1-Way)'
+					WHEN p.publication_type = 1 THEN 'Snapshot'
+					WHEN p.publication_type = 2 THEN 'Merge'
 					END
-					)  +
+					)  + ' •'+ 
 				' Publication Database: ' + p.publisher_db AS [Publication_Information]
 		FROM [dbo].[tbl_repl_mspublications] p
 		INNER JOIN [dbo].[tbl_repl_msreplservers] replservers 
@@ -86,12 +86,13 @@ FULL JOIN
 	(
 	/* Subscription Query */
 	SELECT subs.distribution_dbname, pubs.publisher_db, pubs.publication_id, pubs.publisher_id,subscriber_id,
-	'Subscriber Server: '+ replsrv.srvname + ' (Subscriber ID: ' + CAST((CASE WHEN subscriber_id IS NULL THEN 'NO ID' ELSE CAST(subscriber_id as NVARCHAR(10)) END) as NVARCHAR(100)) + ')' +
-	+ ' Subscription Database: ' + subscriber_db + ';' +
-	' Subscription Type: ' + 	
+		'Subscriber Server: '+ replsrv.srvname + 
+		' (Subscriber ID: ' + CAST((CASE WHEN subscriber_id IS NULL THEN 'NO ID' ELSE CAST(subscriber_id as NVARCHAR(10)) END) as NVARCHAR(100)) + ')' + ' •' +
+		+ ' Subscription Database: ' + subscriber_db + ' •' +
+		' Subscription Type: ' + 	
 			CASE WHEN subscription_type = 0 THEN 'Push' 
 			WHEN subscription_type = 1 THEN 'Pull' 
-			ELSE 'No Subscriptions Exist' END [SubscriberInfo]
+			ELSE 'No Subscriptions Exist' END AS [SubscriberInfo]
 	FROM tbl_repl_mssubscriptions subs
 	INNER JOIN [dbo].[tbl_repl_mspublications] pubs 
 	  ON subs.publisher_id = pubs.publisher_id 
@@ -103,12 +104,12 @@ FULL JOIN
 	UNION 
 	
 	SELECT mergesubs.distribution_dbname, publ.publisher_db, publ.publication_id, publ.publisher_id, subscriber_id,
-	'Subscriber Server: '+ replsrv2.srvname + ' (Subscriber ID: ' + (CASE WHEN subscriber_id IS NULL THEN 'NO ID' ELSE CAST(subscriber_id as nvarchar(100)) END) + ')' +
-	' Subscription Database: ' + subscriber_db + ';' + 
-	' Subscription Type: ' + 	
+		'Subscriber Server: '+ replsrv2.srvname + ' (Subscriber ID: ' + (CASE WHEN subscriber_id IS NULL THEN 'NO ID' ELSE CAST(subscriber_id as nvarchar(100)) END) + ')' + ' •' +
+		' Subscription Database: ' + subscriber_db + ' •' + 
+		' Subscription Type: ' + 	
 			CASE WHEN subscription_type = 0 THEN 'Push' 
 			WHEN subscription_type = 1 THEN 'Pull' 
-			ELSE 'No Subscriptions Exist' END [SubscriberInfo]
+			ELSE 'No Subscriptions Exist' END AS [SubscriberInfo]
 	FROM tbl_repl_msmerge_subscriptions mergesubs
 	INNER JOIN [dbo].[tbl_repl_mspublications] publ
 	  ON mergesubs.publisher_id = publ.publisher_id
@@ -262,7 +263,7 @@ ON publicationinfo.publisher_id = subscriptioninfo.publisher_id
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Publisher Name</Value>
+                                  <Value>Publisher Name &amp; Distribution Db</Value>
                                   <Style>
                                     <FontFamily />
                                     <FontSize>11pt</FontSize>
@@ -365,7 +366,6 @@ ON publicationinfo.publisher_id = subscriptioninfo.publisher_id
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
-                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                   </TablixCells>
@@ -384,8 +384,7 @@ ON publicationinfo.publisher_id = subscriptioninfo.publisher_id
                                 <TextRun>
                                   <Value>=Fields!Distributor_Name.Value</Value>
                                   <Style>
-                                    <FontFamily />
-                                    <Color>#333333</Color>
+                                    <FontFamily>Arial</FontFamily>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -527,7 +526,6 @@ ON publicationinfo.publisher_id = subscriptioninfo.publisher_id
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
-                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                   </TablixCells>
@@ -581,8 +579,7 @@ ON publicationinfo.publisher_id = subscriptioninfo.publisher_id
                                 <TextRun>
                                   <Value>=Fields!Publisher_Name.Value</Value>
                                   <Style>
-                                    <FontFamily />
-                                    <Color>#333333</Color>
+                                    <FontFamily>Arial</FontFamily>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -685,7 +682,6 @@ ON publicationinfo.publisher_id = subscriptioninfo.publisher_id
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
-                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                   </TablixCells>
@@ -774,8 +770,7 @@ ON publicationinfo.publisher_id = subscriptioninfo.publisher_id
                                 <TextRun>
                                   <Value>=Fields!Publication_Details.Value</Value>
                                   <Style>
-                                    <FontFamily />
-                                    <Color>#333333</Color>
+                                    <FontFamily>Arial</FontFamily>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -839,7 +834,6 @@ ON publicationinfo.publisher_id = subscriptioninfo.publisher_id
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
-                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                   </TablixCells>
@@ -957,8 +951,7 @@ ON publicationinfo.publisher_id = subscriptioninfo.publisher_id
                                 <TextRun>
                                   <Value>=Fields!Subscriber_Details.Value</Value>
                                   <Style>
-                                    <FontFamily />
-                                    <Color>#333333</Color>
+                                    <FontFamily>Arial</FontFamily>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -982,7 +975,6 @@ ON publicationinfo.publisher_id = subscriptioninfo.publisher_id
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
-                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                   </TablixCells>
