@@ -60,8 +60,12 @@ INNER JOIN
 					)  +
 				' Publication Database: ' + p.publisher_db AS [Publication_Information]
 		FROM [dbo].[tbl_repl_mspublications] p
-		INNER JOIN [dbo].[tbl_repl_sysservers] s ON p.publisher_id = s.server_id 
-		AND p.distribution_dbname = s.distribution_dbname
+		INNER JOIN [dbo].[tbl_repl_msreplservers] replservers 
+			ON p.distribution_dbname = replservers.distribution_dbname and p.publisher_id = replservers.srvid
+		INNER JOIN [dbo].[tbl_repl_sysservers] s 
+			ON p.distribution_dbname = s.distribution_dbname and replservers.srvname = s.name 
+
+
 	) AS publicationinfo
 
 ON distributorinfo.Distribution_DB = publicationinfo.distribution_dbname
@@ -118,7 +122,8 @@ FULL JOIN
 ON publicationinfo.publisher_id = subscriptioninfo.publisher_id 
  AND publicationinfo.publisher_db = subscriptioninfo.publisher_db 
  AND publicationinfo.publication_id = subscriptioninfo.publication_id 
- AND publicationinfo.distribution_dbname = subscriptioninfo.distribution_dbname</CommandText>
+ AND publicationinfo.distribution_dbname = subscriptioninfo.distribution_dbname
+</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -168,7 +173,7 @@ ON publicationinfo.publisher_id = subscriptioninfo.publisher_id
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>Replication_Topology</Value>
+                    <Value>Replication Topology</Value>
                     <Style>
                       <FontFamily>Segoe UI Light</FontFamily>
                       <FontSize>24pt</FontSize>
@@ -180,6 +185,7 @@ ON publicationinfo.publisher_id = subscriptioninfo.publisher_id
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>textbox1</rd:DefaultName>
+            <Left>4.91667in</Left>
             <Height>0.43in</Height>
             <Width>5in</Width>
             <Style>
@@ -193,16 +199,16 @@ ON publicationinfo.publisher_id = subscriptioninfo.publisher_id
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>4.02865in</Width>
+                  <Width>1.94532in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>4.02865in</Width>
+                  <Width>2.41407in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>4.02865in</Width>
+                  <Width>5.0052in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>4.02865in</Width>
+                  <Width>4.92448in</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -223,7 +229,6 @@ ON publicationinfo.publisher_id = subscriptioninfo.publisher_id
                                     <FontFamily />
                                     <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>#666666</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -238,6 +243,7 @@ ON publicationinfo.publisher_id = subscriptioninfo.publisher_id
                             <BottomBorder>
                               <Style>Solid</Style>
                             </BottomBorder>
+                            <BackgroundColor>CornflowerBlue</BackgroundColor>
                             <FontFamily />
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
@@ -261,7 +267,6 @@ ON publicationinfo.publisher_id = subscriptioninfo.publisher_id
                                     <FontFamily />
                                     <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>#666666</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -276,6 +281,7 @@ ON publicationinfo.publisher_id = subscriptioninfo.publisher_id
                             <BottomBorder>
                               <Style>Solid</Style>
                             </BottomBorder>
+                            <BackgroundColor>CornflowerBlue</BackgroundColor>
                             <FontFamily />
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
@@ -299,7 +305,6 @@ ON publicationinfo.publisher_id = subscriptioninfo.publisher_id
                                     <FontFamily />
                                     <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>#666666</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -314,6 +319,7 @@ ON publicationinfo.publisher_id = subscriptioninfo.publisher_id
                             <BottomBorder>
                               <Style>Solid</Style>
                             </BottomBorder>
+                            <BackgroundColor>CornflowerBlue</BackgroundColor>
                             <FontFamily />
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
@@ -337,7 +343,6 @@ ON publicationinfo.publisher_id = subscriptioninfo.publisher_id
                                     <FontFamily />
                                     <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>#666666</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -352,6 +357,7 @@ ON publicationinfo.publisher_id = subscriptioninfo.publisher_id
                             <BottomBorder>
                               <Style>Solid</Style>
                             </BottomBorder>
+                            <BackgroundColor>CornflowerBlue</BackgroundColor>
                             <FontFamily />
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
@@ -359,6 +365,7 @@ ON publicationinfo.publisher_id = subscriptioninfo.publisher_id
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
+                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                   </TablixCells>
@@ -384,7 +391,7 @@ ON publicationinfo.publisher_id = subscriptioninfo.publisher_id
                               </TextRuns>
                               <Style>
                                 <FontFamily />
-                                <TextAlign>Right</TextAlign>
+                                <TextAlign>Left</TextAlign>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
@@ -520,6 +527,7 @@ ON publicationinfo.publisher_id = subscriptioninfo.publisher_id
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
+                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                   </TablixCells>
@@ -580,7 +588,7 @@ ON publicationinfo.publisher_id = subscriptioninfo.publisher_id
                               </TextRuns>
                               <Style>
                                 <FontFamily />
-                                <TextAlign>Right</TextAlign>
+                                <TextAlign>Left</TextAlign>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
@@ -677,6 +685,7 @@ ON publicationinfo.publisher_id = subscriptioninfo.publisher_id
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
+                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                   </TablixCells>
@@ -772,7 +781,7 @@ ON publicationinfo.publisher_id = subscriptioninfo.publisher_id
                               </TextRuns>
                               <Style>
                                 <FontFamily />
-                                <TextAlign>Right</TextAlign>
+                                <TextAlign>Left</TextAlign>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
@@ -830,6 +839,7 @@ ON publicationinfo.publisher_id = subscriptioninfo.publisher_id
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
+                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                   </TablixCells>
@@ -952,7 +962,9 @@ ON publicationinfo.publisher_id = subscriptioninfo.publisher_id
                                   </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Subscriber_Details</rd:DefaultName>
@@ -970,6 +982,7 @@ ON publicationinfo.publisher_id = subscriptioninfo.publisher_id
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
+                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                   </TablixCells>
@@ -1071,17 +1084,22 @@ ON publicationinfo.publisher_id = subscriptioninfo.publisher_id
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>DataSet1</DataSetName>
-            <Top>0.43in</Top>
+            <Top>0.87792in</Top>
             <Height>2.9975in</Height>
-            <Width>16.1146in</Width>
+            <Width>14.28907in</Width>
             <ZIndex>1</ZIndex>
             <Style />
           </Tablix>
         </ReportItems>
-        <Height>3.59417in</Height>
-        <Style />
+        <Height>4.40667in</Height>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <BackgroundColor>Azure</BackgroundColor>
+        </Style>
       </Body>
-      <Width>16.41667in</Width>
+      <Width>16.78127in</Width>
       <Page>
         <LeftMargin>1in</LeftMargin>
         <RightMargin>1in</RightMargin>
