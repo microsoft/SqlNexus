@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:cl="http://schemas.microsoft.com/sqlserver/reporting/2010/01/componentdefinition" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2010/01/reportdefinition">
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
     <DataSource Name="DataSource_Private">
       <ConnectionProperties>
         <DataProvider>SQL</DataProvider>
-        <ConnectString>="data source=" &amp; Parameters!dsServerName.Value &amp; ";initial catalog="&amp;Parameters!dsDatabaseName.Value</ConnectString>
+        <ConnectString>Data Source=.;Initial Catalog=sqlnexus</ConnectString>
         <IntegratedSecurity>true</IntegratedSecurity>
       </ConnectionProperties>
       <rd:SecurityType>Integrated</rd:SecurityType>
@@ -66,16 +66,69 @@ ELSE
             <Value>=Parameters!EndTime.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>IF OBJECT_ID ('tbl_SQL_CPU_HEALTH') IS NOT NULL 
-  SELECT DISTINCT (SELECT TOP 1 EventTime FROM  tbl_SQL_CPU_HEALTH cpu2 WHERE cpu1.record_id = cpu2.record_id) AS EventTime, 
-    record_id, system_idle_cpu, sql_cpu_utilization, 100 - sql_cpu_utilization - system_idle_cpu AS nonsql_cpu_utilization 
-  FROM tbl_SQL_CPU_HEALTH cpu1
-  WHERE 
-    (EventTime &gt;= @StartTime OR @StartTime IS NULL)
-    AND (EventTime &lt;= @EndTime OR @EndTime IS NULL)
-  ORDER BY EventTime
-ELSE
-  SELECT GETDATE() AS EventTime, 0 AS record_id, 0 AS system_idle_cpu, 0 AS sql_cpu_utilization, 0 AS nonsql_cpu_utilization</CommandText>
+        <CommandText>-- this ANSI setting is to allow WHERE value = NULL type of syntax in case @inst_index is NULL
+SET ANSI_NULLS OFF 
+
+IF ((OBJECT_ID ('dbo.tbl_ServerProperties') IS NOT NULL) AND (OBJECT_ID ('dbo.CounterData') IS NOT NULL) )
+BEGIN
+	DECLARE @process_id INT = 0, @cpu_count int, @inst_name VARCHAR (64), @inst_index INT
+
+	SELECT @process_id = PropertyValue 
+	FROM tbl_ServerProperties sp
+	WHERE sp.PropertyName = 'ProcessID'
+
+
+	SELECT @cpu_count = CASE WHEN PropertyValue = 0 THEN 1 ELSE PropertyValue END
+	FROM tbl_ServerProperties sp
+	WHERE sp.PropertyName = 'cpu_count'
+   
+   
+   
+   --get processID of SQL assumes that the instance was not restarted during data collection and preserved its PID
+	
+	SELECT TOP 1 @inst_name = InstanceName, @inst_index = InstanceIndex
+	FROM CounterData ctr JOIN CounterDetails cdet
+	  ON ctr.CounterID = cdet.CounterID
+	WHERE cdet.ObjectName = 'Process' 
+	 AND cdet.CounterName LIKE 'ID Process'
+	 AND cdet.InstanceName  like 'sqlservr%'
+	 AND ctr.CounterValue = @process_id 
+
+	--combine SQL and OS counter data into a data set by using a join 
+
+	SELECT sql_cpu.CounterDateTime AS EventTime, 
+	sql_cpu.RecordIndex AS record_id,
+	os_cpu.system_idle_cpu, 
+	CASE WHEN sql_cpu.sql_cpu_utilization &gt; os_cpu.total_cpu_utilization THEN os_cpu.total_cpu_utilization 
+		ELSE sql_cpu.sql_cpu_utilization END AS sql_cpu_utilization, 
+	total_cpu_utilization - (CASE WHEN sql_cpu.sql_cpu_utilization &gt; os_cpu.total_cpu_utilization THEN os_cpu.total_cpu_utilization 
+		ELSE sql_cpu.sql_cpu_utilization END ) AS nonsql_cpu_utilization 
+	FROM
+	  (
+	  -- get SQL CPU for the imported instance
+	  SELECT ctr.CounterDateTime, ctr.RecordIndex, CONVERT(INT, (floor(ctr.CounterValue )/ (100 * @cpu_count)) * 100) as sql_cpu_utilization, InstanceName, InstanceIndex
+	  FROM CounterData ctr JOIN 
+	  	CounterDetails det
+	  ON ctr.CounterID = det.CounterID
+	  WHERE det.ObjectName = 'Process' 
+	  	AND det.CounterName LIKE '[%] Processor Time'
+	  	AND det.InstanceName = @inst_name
+	  	AND det.InstanceIndex  = @inst_index ) as sql_cpu
+
+	INNER JOIN 
+
+	  (SELECT ctr.CounterDateTime, ctr.RecordIndex, floor(ctr.CounterValue) as total_cpu_utilization, 100 - floor(ctr.CounterValue) as system_idle_cpu  
+	  FROM CounterData ctr JOIN 
+	    CounterDetails det
+	  ON ctr.CounterID = det.CounterID
+	  WHERE det.ObjectName = 'Processor Information' 
+	    AND det.CounterName LIKE '[%] Processor Time'
+		AND InstanceName = '_Total') as os_cpu
+
+	  ON 
+	  sql_cpu.RecordIndex = os_cpu.RecordIndex
+
+END</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -2218,6 +2271,49 @@ ELSE
       <Prompt>Include Ignorable Wait Types</Prompt>
     </ReportParameter>
   </ReportParameters>
+  <ReportParametersLayout>
+    <GridLayoutDefinition>
+      <NumberOfColumns>2</NumberOfColumns>
+      <NumberOfRows>4</NumberOfRows>
+      <CellDefinitions>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>0</RowIndex>
+          <ParameterName>dsServerName</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>1</ColumnIndex>
+          <RowIndex>0</RowIndex>
+          <ParameterName>dsDatabaseName</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>1</RowIndex>
+          <ParameterName>StartTime</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>1</ColumnIndex>
+          <RowIndex>1</RowIndex>
+          <ParameterName>EndTime</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>2</RowIndex>
+          <ParameterName>FmtChartBackground</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>1</ColumnIndex>
+          <RowIndex>2</RowIndex>
+          <ParameterName>FmtAmbientBackground</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>3</RowIndex>
+          <ParameterName>IncludeIgnorable</ParameterName>
+        </CellDefinition>
+      </CellDefinitions>
+    </GridLayoutDefinition>
+  </ReportParametersLayout>
   <Language>en-US</Language>
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
   <rd:ReportUnitType>Inch</rd:ReportUnitType>

@@ -127,7 +127,10 @@ values ('Active Traces and XEvents_C', 'Active Trace and XEvent Report', 'Active
 insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
 values ('Replication_Topology_C', 'Replication Topology', 'Replication Topology in hierarchycal order',  1|2|4|8, 'Replication', 'dbo.tbl_repl_sysservers', 200, 'Replication', 1,2000)
 
+--AG
 
+insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
+values ('AlwaysOn_AGBasics_C', 'Always On Configuration Report', 'Always On Configuration Report',  1|2|4|8, 'Always On', 'dbo.tbl_hadr_ag_states', 3000, 'AG Diag Collector', 1,3000)
 
 
 --Azure
