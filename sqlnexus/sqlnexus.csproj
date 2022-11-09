@@ -417,6 +417,9 @@
     <Content Include="Reports\AlwaysOn_AGDetails_C.rdlC">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Reports\Filter_Drivers_C.rdlC">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="SqlNexus.snk" />
   </ItemGroup>
   <ItemGroup>
