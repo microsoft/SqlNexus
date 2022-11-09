@@ -5,7 +5,7 @@
     <DataSource Name="DataSource_Private">
       <ConnectionProperties>
         <DataProvider>SQL</DataProvider>
-        <ConnectString>="data source=" &amp; Parameters!dsServerName.Value &amp; ";Connect Timeout=60;initial catalog="&amp;Parameters!dsDatabaseName.Value</ConnectString>
+        <ConnectString>Data Source=.;Initial Catalog=sqlnexus</ConnectString>
         <IntegratedSecurity>true</IntegratedSecurity>
       </ConnectionProperties>
       <rd:SecurityType>Integrated</rd:SecurityType>
@@ -131,6 +131,10 @@ values ('Replication_Topology_C', 'Replication Topology', 'Replication Topology 
 
 insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
 values ('AlwaysOn_AGBasics_C', 'Always On Configuration Report', 'Always On Configuration Report',  1|2|4|8, 'Always On', 'dbo.tbl_hadr_ag_states', 3000, 'AG Diag Collector', 1,3000)
+
+-- Filter drivers
+insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
+values ('Filter_Drivers_C', 'Filter Drviers Report', 'Filter Drivers Report',  1|2|4|8, 'Common', 'dbo.tbl_fltmc_filters', 2000, 'SQL Base Collector', 1,2000)
 
 
 --Azure
