@@ -642,6 +642,11 @@ END</CommandText>
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>DataSet1</DataSetName>
+            <SortExpressions>
+              <SortExpression>
+                <Value>=Fields!Company.Value</Value>
+              </SortExpression>
+            </SortExpressions>
             <Top>0.64875in</Top>
             <Height>0.43in</Height>
             <Width>6in</Width>
