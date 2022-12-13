@@ -690,7 +690,7 @@ end</CommandText>
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>="SQL Server " &amp; First(Fields!SQLVersion.Value, "DataSet_SQLVersion") &amp; " Nexus &amp; ReadTrace  Reports"</Value>
+                    <Value>="SQL Server " &amp; First(Fields!SQLVersion.Value, "DataSet_SQLVersion") &amp; " Nexus &amp; ReadTrace Reports"</Value>
                     <Style>
                       <FontFamily>Tahoma</FontFamily>
                       <FontSize>18pt</FontSize>
@@ -704,7 +704,7 @@ end</CommandText>
             </Paragraphs>
             <rd:DefaultName>SQLVersion</rd:DefaultName>
             <Height>0.33in</Height>
-            <Width>9.25in</Width>
+            <Width>11.15001in</Width>
             <ZIndex>1</ZIndex>
             <Style>
               <PaddingLeft>2pt</PaddingLeft>
