@@ -587,7 +587,7 @@ END</CommandText>
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>The information presented here comes from missing indexes DMV's.    They are ranked based on improvement measures which is calculated based on seeks and scans on the indexes plus cost reduction improvement if they were available.   The top rows mean they are more impactful. </Value>
+                    <Value>The information presented here comes from missing indexes DMV's.    They are ranked based on improvement measures which is calculated based on avg_total_user_cost, avg_user_impact, user_seeks, and user_scans columns in sys.dm_db_missing_index_group_stats. The top rows in the reports mean they provide the highest positive performance impactful.</Value>
                     <Style />
                   </TextRun>
                 </TextRuns>
@@ -667,7 +667,7 @@ END</CommandText>
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>The second report shows missing indexes affected during log collection of SQL LogScout or PSSDIAG/SQLDIAG. The delta columns are computed between the values shutdown and start of the log collection. </Value>
+                    <Value>The second report shows missing indexes affected during log collection of SQL LogScout or PSSDIAG/SQLDIAG. The delta columns are computed between values from shutdown and startup log captures. </Value>
                     <Style />
                   </TextRun>
                 </TextRuns>
@@ -677,6 +677,96 @@ END</CommandText>
                 <TextRuns>
                   <TextRun>
                     <Value>If you see any entries here, especially ones with high improvement values, start by creating those indexes first.</Value>
+                    <Style>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style />
+              </Paragraph>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value />
+                    <Style>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style />
+              </Paragraph>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>Decision methodology:</Value>
+                    <Style>
+                      <FontWeight>Bold</FontWeight>
+                      <TextDecoration>Underline</TextDecoration>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style />
+              </Paragraph>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value />
+                    <Style>
+                      <FontWeight>Bold</FontWeight>
+                      <TextDecoration>Underline</TextDecoration>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style />
+              </Paragraph>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>1. Look at top entries in the report as those are the indexes with largest potential for positive performance impact </Value>
+                    <Style>
+                      <FontWeight>Normal</FontWeight>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style />
+              </Paragraph>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>2. Use values over 100,000 in the second report first (from log collection) and create those indexes</Value>
+                    <Style>
+                      <FontWeight>Normal</FontWeight>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style />
+              </Paragraph>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>3. Then look at high values over 100,000 in the first report and create those</Value>
+                    <Style>
+                      <FontWeight>Normal</FontWeight>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style />
+              </Paragraph>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>4. Create indexes that are related to queries which run slowly in your application</Value>
+                    <Style>
+                      <FontWeight>Normal</FontWeight>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style />
+              </Paragraph>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value />
                     <Style>
                       <FontWeight>Bold</FontWeight>
                     </Style>
@@ -704,9 +794,10 @@ END</CommandText>
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>Missing Indexes since SQL Server start</Value>
+                    <Value>Missing Index Recommendations since Restart</Value>
                     <Style>
                       <FontSize>14pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
                       <Color>Indigo</Color>
                     </Style>
                   </TextRun>
@@ -739,9 +830,25 @@ END</CommandText>
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>Missing Indexes affected during log-collection period (between shutdown and startup)</Value>
+                    <Value>Missing Index Recommendations Identified during Log-collection Period </Value>
                     <Style>
                       <FontSize>14pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                      <Color>SlateBlue</Color>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style>
+                  <TextAlign>Center</TextAlign>
+                </Style>
+              </Paragraph>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value />
+                    <Style>
+                      <FontSize>14pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
                       <Color>SlateBlue</Color>
                     </Style>
                   </TextRun>
@@ -752,7 +859,7 @@ END</CommandText>
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox9</rd:DefaultName>
-            <Top>2.66319in</Top>
+            <Top>2.82639in</Top>
             <Height>0.35889in</Height>
             <Width>13.01042in</Width>
             <ZIndex>4</ZIndex>
@@ -1221,7 +1328,8 @@ END</CommandText>
             </TablixRowHierarchy>
             <KeepTogether>true</KeepTogether>
             <DataSetName>DataSet_MissingIndexesDelta_DuringLogCollection</DataSetName>
-            <Top>3.09153in</Top>
+            <Top>3.22695in</Top>
+            <Left>0.00002in</Left>
             <Height>0.88542in</Height>
             <Width>13.01042in</Width>
             <ZIndex>5</ZIndex>
@@ -1232,8 +1340,21 @@ END</CommandText>
               </Border>
             </Style>
           </Tablix>
+          <Line Name="Line2">
+            <Top>2.62375in</Top>
+            <Height>0in</Height>
+            <Width>13.01042in</Width>
+            <ZIndex>6</ZIndex>
+            <Style>
+              <Border>
+                <Color>DarkViolet</Color>
+                <Style>Solid</Style>
+                <Width>2pt</Width>
+              </Border>
+            </Style>
+          </Line>
         </ReportItems>
-        <Height>4.08333in</Height>
+        <Height>5.03125in</Height>
         <Style>
           <Border />
           <BackgroundColor>White</BackgroundColor>
