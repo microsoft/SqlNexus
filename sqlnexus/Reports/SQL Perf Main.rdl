@@ -690,7 +690,7 @@ end</CommandText>
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>="SQL Server " &amp; First(Fields!SQLVersion.Value, "DataSet_SQLVersion") &amp; " Nexus &amp; ReadTrace  Reports"</Value>
+                    <Value>="SQL Server " &amp; First(Fields!SQLVersion.Value, "DataSet_SQLVersion") &amp; " Nexus &amp; ReadTrace Reports"</Value>
                     <Style>
                       <FontFamily>Tahoma</FontFamily>
                       <FontSize>18pt</FontSize>
@@ -704,7 +704,7 @@ end</CommandText>
             </Paragraphs>
             <rd:DefaultName>SQLVersion</rd:DefaultName>
             <Height>0.33in</Height>
-            <Width>9.25in</Width>
+            <Width>11.15001in</Width>
             <ZIndex>1</ZIndex>
             <Style>
               <PaddingLeft>2pt</PaddingLeft>
@@ -826,12 +826,58 @@ end</CommandText>
                 <ListLevel>1</ListLevel>
                 <Style />
               </Paragraph>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value />
+                    <Style />
+                  </TextRun>
+                </TextRuns>
+                <ListLevel>1</ListLevel>
+                <Style />
+              </Paragraph>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value />
+                    <Style>
+                      <FontWeight>Bold</FontWeight>
+                      <TextDecoration>Underline</TextDecoration>
+                      <Color>Blue</Color>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style />
+              </Paragraph>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>For more detaild instructions visit the </Value>
+                    <Style />
+                  </TextRun>
+                  <TextRun>
+                    <Value>Wiki web page</Value>
+                    <ActionInfo>
+                      <Actions>
+                        <Action>
+                          <Hyperlink>https://github.com/microsoft/SqlNexus/wiki</Hyperlink>
+                        </Action>
+                      </Actions>
+                    </ActionInfo>
+                    <Style>
+                      <FontWeight>Bold</FontWeight>
+                      <TextDecoration>Underline</TextDecoration>
+                      <Color>Blue</Color>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style />
+              </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox6</rd:DefaultName>
             <Top>2.06264in</Top>
-            <Left>1in</Left>
-            <Height>1.05208in</Height>
-            <Width>8.09708in</Width>
+            <Height>1.02083in</Height>
+            <Width>11.15001in</Width>
             <ZIndex>3</ZIndex>
             <Style>
               <Border>

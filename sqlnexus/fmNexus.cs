@@ -544,7 +544,7 @@ namespace sqlnexus
 
             //Load special instructions report first
             LogMessage("sqlnexus.exe report directory: " + Application.StartupPath + @"\Reports");
-            string instrep = Application.StartupPath + @"\Reports\Instructions" + RDL_EXT;
+            string instrep = Application.StartupPath + @"\Reports\SQL Perf Main" + RDL_EXT;
             if (File.Exists(instrep))
             {
                 LogMessage("Instructions report found: " + instrep);
