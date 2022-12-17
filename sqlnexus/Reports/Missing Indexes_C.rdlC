@@ -722,7 +722,7 @@ END</CommandText>
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>1. Look at top entries in the report as those are the indexes with largest potential for positive performance impact </Value>
+                    <Value>1. Create indexes that are related to slow-running queries. Combine this criterion with the points below</Value>
                     <Style>
                       <FontWeight>Normal</FontWeight>
                     </Style>
@@ -733,7 +733,7 @@ END</CommandText>
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>2. Use values over 100,000 in the second report first (from log collection) and create those indexes</Value>
+                    <Value>2. Start with the top entries in the reports as those are the indexes with largest potential for positive performance impact. </Value>
                     <Style>
                       <FontWeight>Normal</FontWeight>
                     </Style>
@@ -744,7 +744,7 @@ END</CommandText>
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>3. Then look at high values over 100,000 in the first report and create those</Value>
+                    <Value>3. If you are not sure where to start, look at improvement measure over 100,000 in the second report first (from log collection) and create those indexes. If none with such high values, still start at the top of the list</Value>
                     <Style>
                       <FontWeight>Normal</FontWeight>
                     </Style>
@@ -755,7 +755,18 @@ END</CommandText>
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>4. Create indexes that are related to queries which run slowly in your application</Value>
+                    <Value>4. Then look at high values over 100,000 in the first report (since SQL Server restart) and create those indexes</Value>
+                    <Style>
+                      <FontWeight>Normal</FontWeight>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style />
+              </Paragraph>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value />
                     <Style>
                       <FontWeight>Normal</FontWeight>
                     </Style>

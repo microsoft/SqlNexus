@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:cl="http://schemas.microsoft.com/sqlserver/reporting/2010/01/componentdefinition" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2010/01/reportdefinition">
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
     <DataSource Name="DataSource_SqlNexus_Private">
@@ -91,8 +91,16 @@
             <Value>=Parameters!EndTime.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>select con.*, case when cast(value_in_use as int) = DefaultOption  or DefaultOption is null  then 0 else 1 end 'NonDefault', def.DefaultOption  from tbl_Sys_Configurations con left join tblDefaultConfigures def on con.name = def.[Configuration Option]
-order by con.name</CommandText>
+        <CommandText>SELECT conf.*,
+       CASE
+           WHEN cast(value_in_use AS int) = DefaultOption
+                OR DefaultOption IS NULL THEN 0
+           ELSE 1
+       END AS 'NonDefault',
+           def.DefaultOption
+FROM tbl_Sys_Configurations conf
+LEFT JOIN tblDefaultConfigures def ON conf.name = def.[Configuration Option]
+ORDER BY conf.name</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -114,6 +122,10 @@ order by con.name</CommandText>
         </Field>
         <Field Name="DefaultOption">
           <DataField>DefaultOption</DataField>
+          <rd:UserDefined>true</rd:UserDefined>
+        </Field>
+        <Field Name="Alert">
+          <DataField>Alert</DataField>
           <rd:UserDefined>true</rd:UserDefined>
         </Field>
       </Fields>
@@ -193,13 +205,13 @@ order by con.name</CommandText>
             </Paragraphs>
             <rd:WatermarkTextbox>Title</rd:WatermarkTextbox>
             <rd:DefaultName>ReportTitle</rd:DefaultName>
-            <Top>0.10708in</Top>
             <Left>0.94458in</Left>
             <Height>0.275in</Height>
             <Width>9.79166in</Width>
             <Style>
               <Border>
-                <Style>None</Style>
+                <Style>Solid</Style>
+                <Width>1.5pt</Width>
               </Border>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -378,7 +390,7 @@ order by con.name</CommandText>
             <ZIndex>1</ZIndex>
             <Style>
               <Border>
-                <Style>None</Style>
+                <Style>Solid</Style>
               </Border>
             </Style>
           </Tablix>
@@ -406,7 +418,7 @@ order by con.name</CommandText>
             <ZIndex>2</ZIndex>
             <Style>
               <Border>
-                <Style>None</Style>
+                <Style>Solid</Style>
               </Border>
               <BackgroundColor>=Parameters!FmtHeader1Fill.Value</BackgroundColor>
               <PaddingLeft>2pt</PaddingLeft>
@@ -439,7 +451,7 @@ order by con.name</CommandText>
             <ZIndex>3</ZIndex>
             <Style>
               <Border>
-                <Style>None</Style>
+                <Style>Solid</Style>
               </Border>
               <BackgroundColor>=Parameters!FmtHeader1Fill.Value</BackgroundColor>
               <PaddingLeft>2pt</PaddingLeft>
@@ -751,7 +763,7 @@ order by con.name</CommandText>
             <ZIndex>4</ZIndex>
             <Style>
               <Border>
-                <Style>None</Style>
+                <Style>Solid</Style>
               </Border>
             </Style>
           </Tablix>
@@ -779,7 +791,7 @@ order by con.name</CommandText>
             <ZIndex>5</ZIndex>
             <Style>
               <Border>
-                <Style>None</Style>
+                <Style>Solid</Style>
               </Border>
               <BackgroundColor>=Parameters!FmtHeader1Fill.Value</BackgroundColor>
               <PaddingLeft>2pt</PaddingLeft>
@@ -959,7 +971,7 @@ order by con.name</CommandText>
             <ZIndex>6</ZIndex>
             <Style>
               <Border>
-                <Style>None</Style>
+                <Style>Solid</Style>
               </Border>
             </Style>
           </Tablix>
@@ -987,7 +999,7 @@ order by con.name</CommandText>
             <ZIndex>7</ZIndex>
             <Style>
               <Border>
-                <Style>None</Style>
+                <Style>Solid</Style>
               </Border>
               <BackgroundColor>=Parameters!FmtHeader1Fill.Value</BackgroundColor>
               <PaddingLeft>2pt</PaddingLeft>
@@ -1003,13 +1015,13 @@ order by con.name</CommandText>
                   <Width>3.65625in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>2.21354in</Width>
+                  <Width>2.15364in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.42708in</Width>
+                  <Width>2.3125in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>2.51562in</Width>
+                  <Width>1.70052in</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -1057,7 +1069,8 @@ order by con.name</CommandText>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Run Value</Value>
+                                  <Value>Run Value 
+(non-default highligted)</Value>
                                   <Style>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -1309,7 +1322,7 @@ order by con.name</CommandText>
             <Top>4.15292in</Top>
             <Left>0.92375in</Left>
             <Height>0.5in</Height>
-            <Width>9.81249in</Width>
+            <Width>9.82291in</Width>
             <ZIndex>8</ZIndex>
             <Visibility>
               <Hidden>true</Hidden>
@@ -1317,7 +1330,7 @@ order by con.name</CommandText>
             </Visibility>
             <Style>
               <Border>
-                <Style>None</Style>
+                <Style>Solid</Style>
               </Border>
             </Style>
           </Tablix>
@@ -1330,7 +1343,7 @@ order by con.name</CommandText>
           <BackgroundColor>=Parameters!FmtAmbientBackground.Value</BackgroundColor>
         </Style>
       </Body>
-      <Width>11.14249in</Width>
+      <Width>11.73624in</Width>
       <Page>
         <PageHeader>
           <Height>0.48958in</Height>
@@ -1407,7 +1420,7 @@ order by con.name</CommandText>
       <DataType>String</DataType>
       <DefaultValue>
         <Values>
-          <Value>sqlserver1\inst1</Value>
+          <Value>.</Value>
         </Values>
       </DefaultValue>
       <AllowBlank>true</AllowBlank>
@@ -1514,6 +1527,59 @@ order by con.name</CommandText>
       <Hidden>true</Hidden>
     </ReportParameter>
   </ReportParameters>
+  <ReportParametersLayout>
+    <GridLayoutDefinition>
+      <NumberOfColumns>4</NumberOfColumns>
+      <NumberOfRows>3</NumberOfRows>
+      <CellDefinitions>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>0</RowIndex>
+          <ParameterName>dsServerName</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>1</ColumnIndex>
+          <RowIndex>0</RowIndex>
+          <ParameterName>dsDatabaseName</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>2</ColumnIndex>
+          <RowIndex>0</RowIndex>
+          <ParameterName>FmtAmbientBackground</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>3</ColumnIndex>
+          <RowIndex>0</RowIndex>
+          <ParameterName>FmtChartBackground</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>1</RowIndex>
+          <ParameterName>StartTime</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>1</ColumnIndex>
+          <RowIndex>1</RowIndex>
+          <ParameterName>EndTime</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>2</RowIndex>
+          <ParameterName>FmtHeader1Fill</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>1</ColumnIndex>
+          <RowIndex>2</RowIndex>
+          <ParameterName>FmtHeader1Size</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>2</ColumnIndex>
+          <RowIndex>2</RowIndex>
+          <ParameterName>FmtHyperLink</ParameterName>
+        </CellDefinition>
+      </CellDefinitions>
+    </GridLayoutDefinition>
+  </ReportParametersLayout>
   <Variables>
     <Variable Name="IsLocalReport">
       <Value>= (Globals!ReportServerUrl="")</Value>
