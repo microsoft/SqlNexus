@@ -2566,7 +2566,7 @@ BEGIN
 
 				IF (@config_name = 'max server memory (MB)' and @value_in_use = 2147483647)
 				BEGIN
-					SELECT @descr_str = 'Consider changing the default ''max server memory'' of ''' + @value_in_use+ ''' to a set value and provide sufficient memory for the OS and other processes (e.g. 75% of RAM)'
+					SELECT @descr_str = 'Consider changing the default ''max server memory'' value of ''' + @value_in_use+ ''' to a set value and provide sufficient memory for the OS and other processes (e.g. 75% of RAM). See article for more information'
 					SELECT @external_url='https://learn.microsoft.com/sql/database-engine/configure-windows/server-memory-server-configuration-options#recommendations'
 
 					UPDATE tbl_AnalysisSummary
@@ -2576,7 +2576,7 @@ BEGIN
 
 				IF (@config_name = 'max degree of parallelism' AND @value_in_use = 0)
 				BEGIN
-					SELECT @descr_str = 'Consider changing the default ''max degree of parallelism'' of ''' + @value_in_use+ ''' to a value between 2 and 8 to avoid impacting performance. See MAX DOP article for more information'
+					SELECT @descr_str = 'Consider changing the default ''max degree of parallelism'' value of ''' + @value_in_use+ ''' to a value between 2 and 8 to avoid impacting performance of other tasks. See MAX DOP article for more information'
 					SELECT @external_url = 'https://learn.microsoft.com/sql/database-engine/configure-windows/configure-the-max-degree-of-parallelism-server-configuration-option'
 
 					UPDATE tbl_AnalysisSummary
@@ -2586,7 +2586,7 @@ BEGIN
 
 				IF (@config_name = 'max degree of parallelism' AND @value_in_use = 1)
 				BEGIN
-					SELECT @descr_str = 'Consider changing the ''max degree of parallelism'' of ''' + @value_in_use+ ''' to a value between 2 and 8 to allow the use of parallel processing. See MAX DOP article for more information'
+					SELECT @descr_str = 'Consider changing the the current ''max degree of parallelism'' value of ''' + @value_in_use+ ''' to a value between 2 and 8 to allow the use of parallel processing. See MAX DOP article for more information'
 					SELECT @external_url = 'https://learn.microsoft.com/sql/database-engine/configure-windows/configure-the-max-degree-of-parallelism-server-configuration-option'
 
 					UPDATE tbl_AnalysisSummary
@@ -2605,7 +2605,7 @@ BEGIN
 				END
 				IF (@config_name = 'affinity I/O mask' AND @value_in_use <> 0)
 				BEGIN
-					SELECT @descr_str = 'Change the ''affinity I/O mask'' of ''' + @value_in_use+ ''' back to the default value of 0 to prevent potential I/O or CPU scheduling performance issues. See article for more information'
+					SELECT @descr_str = 'Consider changing the current ''affinity I/O mask'' value of ''' + @value_in_use+ ''' back to the default value of 0 to prevent potential I/O or CPU scheduling performance issues. See article for more information'
 					SELECT @external_url = 'https://learn.microsoft.com/en-us/sql/database-engine/configure-windows/affinity-input-output-mask-server-configuration-option'
 
 					UPDATE tbl_AnalysisSummary
@@ -2614,7 +2614,7 @@ BEGIN
 				END
 				IF (@config_name = 'affinity64 I/O mask' AND @value_in_use <> 0)
 				BEGIN
-					SELECT @descr_str = 'Change the ''affinity64 I/O mask'' of ''' + @value_in_use+ ''' back to the default value of 0 to prevent potential I/O or CPU scheduling performance issues. See article for more information'
+					SELECT @descr_str = 'Consider changing the current ''affinity64 I/O mask'' value of ''' + @value_in_use+ ''' back to the default value of 0 to prevent potential I/O or CPU scheduling performance issues. See article for more information'
 					SELECT @external_url = 'https://learn.microsoft.com/en-us/sql/database-engine/configure-windows/affinity-input-output-mask-server-configuration-option'
 
 					UPDATE tbl_AnalysisSummary
@@ -2623,7 +2623,7 @@ BEGIN
 				END
 				IF (@config_name = 'affinity mask' AND @value_in_use <> 0)
 				BEGIN
-					SELECT @descr_str = 'Change the ''affinity mask'' of ''' + @value_in_use+ ''' back to the default value of 0 to prevent potential CPU scheduling performance issues. See article for more information'
+					SELECT @descr_str = 'Consider changing the current ''affinity mask'' value of ''' + @value_in_use+ ''' back to the default value of 0 to prevent potential CPU scheduling performance issues. See article for more information'
 					SELECT @external_url = 'https://learn.microsoft.com/sql/database-engine/configure-windows/affinity-mask-server-configuration-option'
 
 					UPDATE tbl_AnalysisSummary
@@ -2632,7 +2632,7 @@ BEGIN
 				END
 				IF (@config_name = 'affinity64 mask' AND @value_in_use <> 0)
 				BEGIN
-					SELECT @descr_str = 'Change the ''affinity64 mask'' of ''' + @value_in_use+ ''' back to the default value of 0 to prevent potential CPU scheduling performance issues. See article for more information'
+					SELECT @descr_str = 'Consider changing the current ''affinity64 mask'' value of ''' + @value_in_use+ ''' back to the default value of 0 to prevent potential CPU scheduling performance issues. See article for more information'
 					SELECT @external_url = 'https://learn.microsoft.com/sql/database-engine/configure-windows/affinity-mask-server-configuration-option'
 
 					UPDATE tbl_AnalysisSummary
@@ -2641,7 +2641,7 @@ BEGIN
 				END
 				IF (@config_name = 'lightweight pooling' AND @value_in_use = 1)
 				BEGIN
-					SELECT @descr_str = 'Change the ''lightweight pooling'' of ''' + @value_in_use + ''' back to the default value of 0 to prevent potential CPU scheduling performance issues. See article for more information'
+					SELECT @descr_str = 'Change the current ''lightweight pooling'' value of ''' + @value_in_use + ''' back to the default value of 0 to prevent potential CPU scheduling performance issues. See article for more information'
 					SELECT @external_url = 'https://learn.microsoft.com/sql/database-engine/configure-windows/lightweight-pooling-server-configuration-option'
 
 					UPDATE tbl_AnalysisSummary
@@ -2650,7 +2650,7 @@ BEGIN
 				END
 				IF (@config_name = 'max worker threads' AND @value_in_use <> 0)
 				BEGIN
-					SELECT @descr_str = 'Consider changing the ''max worker threads'' value of ''' + @value_in_use + ''' to allow SQL Server to manage the worker thread count and the memory they use. See article for more information'
+					SELECT @descr_str = 'Consider changing the current ''max worker threads'' value of ''' + @value_in_use + ''' to allow SQL Server to manage the worker thread count and the memory they use. See article for more information'
 					SELECT @external_url= 'https://learn.microsoft.com/sql/database-engine/configure-windows/configure-the-max-worker-threads-server-configuration-option'
 
 					UPDATE tbl_AnalysisSummary
