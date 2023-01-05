@@ -1507,59 +1507,59 @@ SeqNo int,
 
 )
 go
-create unique index IX_tbl_Reports_ReportName on tbl_Reports (ReportName)
+CREATE UNIQUE INDEX IX_tbl_Reports_ReportName ON tbl_Reports (ReportName)
 
 go
 -- 1 =2000, 2=2005, 4=2008, 8=2008R2
-insert into tbl_Reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationFunction, SeqNo) 
-values ('Blocking and Wait Statistics_C', 'Blocking and Wait Statistics', 'Blocking and wait statistics',  2 | 4, 'Performance', 'dbo.fn_Validate_NexusCore', 100)
+INSERT INTO tbl_Reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationFunction, SeqNo) 
+VALUES ('Blocking and Wait Statistics_C', 'Blocking and Wait Statistics', 'Blocking and wait statistics',  2 | 4, 'Performance', 'dbo.fn_Validate_NexusCore', 100)
 
-insert into tbl_Reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied,  Category, ValidationFunction, SeqNo) 
-values ('Bottleneck Analysis_C', 'Bottleneck Analysis', 'Bottleneck Analysis',2 | 4,'Performance', 'dbo.fn_Validate_NexusCore', 200)
+INSERT INTO tbl_Reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied,  Category, ValidationFunction, SeqNo) 
+VALUES ('Bottleneck Analysis_C', 'Bottleneck Analysis', 'Bottleneck Analysis',2 | 4,'Performance', 'dbo.fn_Validate_NexusCore', 200)
 
-insert into tbl_Reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied,  Category, ValidationFunction, SeqNo) 
-values ('Spinlock Stats_C', 'Spin Lock Stats', 'Spin Lock Stats',  2 | 4,'Performance', 'dbo.fn_Validate_NexusCore',900)
+INSERT INTO tbl_Reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied,  Category, ValidationFunction, SeqNo) 
+VALUES ('Spinlock Stats_C', 'Spin Lock Stats', 'Spin Lock Stats',  2 | 4,'Performance', 'dbo.fn_Validate_NexusCore',900)
 
-insert into tbl_Reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied,  Category, ValidationFunction, SeqNo) 
-values ('Query Hash_C', 'Query Hash', 'This report is for Query hash.  It is only available in 2008',  4, 'Performance', 'dbo.fn_Validate_NexusCore', 400)
+INSERT INTO tbl_Reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied,  Category, ValidationFunction, SeqNo) 
+VALUES ('Query Hash_C', 'Query Hash', 'This report is for Query hash.  It is only available in 2008',  4, 'Performance', 'dbo.fn_Validate_NexusCore', 400)
 
-insert into tbl_Reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied,  Category, ValidationFunction, SeqNo) 
-values ('Missing Indexes_C', 'Missing Indexes', 'Missing Indexes for SQL Server 2005/2008/2008R2',  2|4|8,'Performance', 'dbo.fn_Validate_NexusCore', 410)
+INSERT INTO tbl_Reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied,  Category, ValidationFunction, SeqNo) 
+VALUES ('Missing Indexes_C', 'Missing Indexes', 'Missing Indexes for SQL Server 2005/2008/2008R2',  2|4|8,'Performance', 'dbo.fn_Validate_NexusCore', 410)
 
 
-insert into tbl_Reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationFunction, SeqNo) 
-values ('SQL 2000 Blocking_C', 'SQL Server 2000 blocking', 'SQL Server 2000 blocking',  1, 'Performance', 'dbo.fn_Validate_NexusCore2000', 1000)
+INSERT INTO tbl_Reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationFunction, SeqNo) 
+VALUES ('SQL 2000 Blocking_C', 'SQL Server 2000 blocking', 'SQL Server 2000 blocking',  1, 'Performance', 'dbo.fn_Validate_NexusCore2000', 1000)
 	
-insert into tbl_Reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied,  Category, ValidationFunction, SeqNo) 
-values ('ReadTrace_Main', 'ReadTrace Reports', 'ReadTrace reports for Profiler traces (2000,2005,2008)', 1|2|4|8,'Performance', 'readtrace.fn_ShowReports',  50)
+INSERT INTO tbl_Reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied,  Category, ValidationFunction, SeqNo) 
+VALUES ('ReadTrace_Main', 'ReadTrace Reports', 'ReadTrace reports for Profiler traces (2000,2005,2008)', 1|2|4|8,'Performance', 'readtrace.fn_ShowReports',  50)
 
-insert into tbl_Reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationFunction, SeqNo) 
-values ('Perfmon_C', 'Perfmon Summary', 'Summary of most commonly looked at counters',  1|2|4|8, 'Performance', 'dbo.fn_Validate_NexusCore', 500)
+INSERT INTO tbl_Reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationFunction, SeqNo) 
+VALUES ('Perfmon_C', 'Perfmon Summary', 'Summary of most commonly looked at counters',  1|2|4|8, 'Performance', 'dbo.fn_Validate_NexusCore', 500)
 
-insert into tbl_Reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationFunction, SeqNo) 
-values ('Virtual File Stats_C', 'Virtual File Stats', 'Display Virtual File Stats related to IO performance',  1|2|4|8, 'Performance', 'dbo.fn_Validate_NexusCore', 500)
-
-
-insert into tbl_Reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationFunction, SeqNo) 
-values ('Memory Brokers_C', 'Memory Brokers', 'Display memory brokers',  1|2|4|8, 'Performance', 'dbo.fn_Validate_NexusCore', 600)
-
-insert into tbl_Reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationFunction, SeqNo) 
-values ('SysIndexes_C', 'Indexes and Stats', 'Display Stats info on indexes and stats',  1|2|4|8, 'Performance', 'dbo.fn_Validate_NexusCore', 700)
+INSERT INTO tbl_Reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationFunction, SeqNo) 
+VALUES ('Virtual File Stats_C', 'Virtual File Stats', 'Display Virtual File Stats related to IO performance',  1|2|4|8, 'Performance', 'dbo.fn_Validate_NexusCore', 500)
 
 
+INSERT INTO tbl_Reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationFunction, SeqNo) 
+VALUES ('Memory Brokers_C', 'Memory Brokers', 'Display memory brokers',  1|2|4|8, 'Performance', 'dbo.fn_Validate_NexusCore', 600)
 
-insert into tbl_Reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationFunction, SeqNo) 
-values ('Query Execution Memory_C', 'Query Execution Memory', 'Displays Query Execution Memory',  1|2|4|8, 'Performance', 'dbo.fn_Validate_NexusCore', 600)
+INSERT INTO tbl_Reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationFunction, SeqNo) 
+VALUES ('SysIndexes_C', 'Indexes and Stats', 'Display Stats info on indexes and stats',  1|2|4|8, 'Performance', 'dbo.fn_Validate_NexusCore', 700)
 
 
-insert into tbl_Reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationFunction, SeqNo) 
-values ('Configuration_C', 'Environment(diagscan)', 'Server configuration values',  1|2|4|8, 'Common', 'dbo.fn_Validate_DiagScan', 500)
 
-insert into tbl_Reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationFunction, SeqNo) 
-values ('Errors and Warnings_C', 'Errors from errorlog(diagscan)', 'Error statistics from errorlog',  1|2|4|8, 'Common', 'dbo.fn_Validate_DiagScan', 510)
+INSERT INTO tbl_Reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationFunction, SeqNo) 
+VALUES ('Query Execution Memory_C', 'Query Execution Memory', 'Displays Query Execution Memory',  1|2|4|8, 'Performance', 'dbo.fn_Validate_NexusCore', 600)
+
+
+INSERT INTO tbl_Reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationFunction, SeqNo) 
+VALUES ('Configuration_C', 'Environment(diagscan)', 'Server configuration values',  1|2|4|8, 'Common', 'dbo.fn_Validate_DiagScan', 500)
+
+INSERT INTO tbl_Reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationFunction, SeqNo) 
+VALUES ('Errors and Warnings_C', 'Errors from errorlog(diagscan)', 'Error statistics from errorlog',  1|2|4|8, 'Common', 'dbo.fn_Validate_DiagScan', 510)
 	
-insert into tbl_Reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationFunction, SeqNo) 
-values ('Loaded Modules_C', 'Loaded Modules', 'Modules loaded in SQL Server address space',  1|2|4|8, 'Common', 'dbo.fn_Validate_NexusCore', 100)
+INSERT INTO tbl_Reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationFunction, SeqNo) 
+VALUES ('Loaded Modules_C', 'Loaded Modules', 'Modules loaded in SQL Server address space',  1|2|4|8, 'Common', 'dbo.fn_Validate_NexusCore', 100)
 
 
 
@@ -2005,160 +2005,111 @@ go
 
 --select newid()
 
-
-INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type,typedesc, Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-VALUES ('1BDE61F7-CE1D-4C99-ABFB-31344A3E317D', 'Server Performance', 'W','Warning', 'AutoCreateStats','Auto Create Statistics is disabled', 'Some databases have auto create statistics disabled. This can negative impact performance.  See Database Configuration report for details', '', 'https://docs.microsoft.com/sql/relational-databases/statistics/statistics#auto_create_statistics_async', '  ', 1, 99, 0)
-INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type,typedesc, Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-VALUES ('E5335E8F-91F8-4B7D-842C-8C004159C749', 'Server Performance', 'W','Warning', 'AutoUpdateStats','Auto Update Statistics is disabled', 'Some databases have auto create statistics disabled. This can negative impact performance.  See Database Configuration report for details', '', 'https://docs.microsoft.com/sql/relational-databases/statistics/statistics#auto_update_statistics_async', '  ', 1, 99, 0)
-INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type,typedesc, Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-VALUES ('9E5F54A8-9B8B-46A5-B372-238E873F6277', 'Server Performance', 'W','Warning', 'PowerPlan','Power Plan not properly set', 'Power Plan is not set to High Performance which can impact overall server performance.', '', 'https://docs.microsoft.com/troubleshoot/windows-server/performance/slow-performance-when-using-power-plan', '  ', 1, 100, 0)
-INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type,typedesc, Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-VALUES ('CCCDE188-8E68-4B87-9649-761AF3F48FC8','Server Performance', 'W','Warning', 'Trace Flag 4199', 'Trace flag 4199 not enabled', 'This trace flag is required to activiate all query optimizer fixes. Without this trace flag, none of the query optimizer fixes will be activated even you are on the latest hotfix or cumulative update. ', '', 'https://docs.microsoft.com/sql/t-sql/database-console-commands/dbcc-traceon-trace-flags-transact-sql#tf4199', '  ', 1, 100, 0)
-INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-VALUES ('D89F7B5E-25BA-460E-9628-F7B0F5E31FFE','Server Performance', 'W','Warning', 'Detailed XEvent Tracing','Some intensive XEvent tracing captured', 'Some high-impact Extended Events (XEvents) are active on the server.  For high volume systems, this can have negative performance impact. Turn off query_pre_execution_showplan, query_post_execution_showplan,query_post_compilation_showplan,lock_acquired,sql_statement_starting,sql_statement_completed,sp_statement_starting, and sp_statement_completed to reduce impact. See pssdiag file *Profiler Traces_Startup.OUT for details', '', '', '  ', 1, 200, 0)
-INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type,typedesc, Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-VALUES ('3EAE7B17-7BE4-486D-98AC-309E74CE6771','Server Performance', 'W','Warning', 'Trace Flag 1118', 'Trace Flag 1118 not enabled', 'This trace flag help reduce tempdb contention. ', '', 'https://docs.microsoft.com/sql/t-sql/database-console-commands/dbcc-traceon-trace-flags-transact-sql#tf1118', '  ', 1, 100, 0)
-INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-VALUES ('17C9E271-756E-46E8-A3D3-B9B15E5FA305','Server Performance', 'W', 'Warning', 'Trace Flag 8048', 'Trace flag 8048 not enabled', 'This trace flag partitions certain memory allocators by CPU and can improve performance for hihgly active servers.', '', 'https://docs.microsoft.com/sql/t-sql/database-console-commands/dbcc-traceon-trace-flags-transact-sql#tf8048', '  ', 1, 100, 0)
-INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-VALUES ('AC4F983A-B8F9-4542-8971-B6052175F2B3','Server Performance', 'W','Warning', 'Trace Flag 9024', 'Trace flag 9024 not enabled', 'This trace flag can help reduce recovery time and log writes.', '', 'https://docs.microsoft.com/sql/t-sql/database-console-commands/dbcc-traceon-trace-flags-transact-sql#tf9024', '  ', 1, 100, 0)
-INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-VALUES ('76F946D8-7AAD-400E-9CEF-1F071AA68868','Server Performance', 'W','Warning', 'Trace Flag 1236', 'Trace flag 1236 not enabled (sql 2014 SP1 and above, TF is not required)', 'This trace flag can help reduce contention on database lock for highly active servers.', '', 'https://docs.microsoft.com/sql/t-sql/database-console-commands/dbcc-traceon-trace-flags-transact-sql#tf1236', '  ', 1, 100, 0)
-INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-VALUES ('59B1DB60-ABC2-4981-A9EC-DF901C3A89B4','Server Performance', 'W','Warning', 'usp_RG_Idle', 'high RESOURCE_GOVERNOR_IDLE detected', 'High waits on RESOURCE_GOVERNOR_IDLE were deteted.  This is means CPU cap was configured for Resource Goverrnor and could force query to slowdown.  Make sure CPU cap for Resource Governor is properly configured. ', '','', '  ', 1, 100, 0)
-INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-VALUES ('773805A8-5DB4-4132-8488-E8FBDE57C67A','Server Performance', 'W','Warning', 'usp_HighCompile', 'Potential high compiles detected', 'Potential high compilation was detected. Please verify with Perfmon counters data.  This can cause high CPU issues', '','', '  ', 1, 100, 0)
-INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-VALUES ('F9BBF034-ACFE-4C98-AD32-6010573AFD3D','Server Performance', 'W','Warning', 'usp_HighCacheCount', 'High Cache Entries detected.', 'High number of SQL Server cache entries (Cache Object Counts) were detected.  This can cause high CPU and spinlock issue.', '','https://support.microsoft.com/en-us/topic/kb3026083-fix-sos-cachestore-spinlock-contention-on-ad-hoc-sql-server-plan-cache-causes-high-cpu-usage-in-sql-server-798ca4a5-3813-a3d2-f9c4-89eb1128fe68', '  ', 1, 100, 0)
-INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-VALUES ('64EEE25A-4B20-4C24-8F27-1E967011D69E','Server Performance', 'W','Warning', 'usp_HighStmtCount', 'Some queries had high statement execution count', 'Some queries had high number statement executions.  This makes it challenging to tune the queries. ', '','', '  ', 1, 100, 0)
-INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-VALUES ('12145143-A34C-4393-BC77-74E3F3A74D5D','Server Performance', 'W','Warning', 'usp_ExcessiveLockXevent', 'lock_acquired or lock_released xevent was detected. ',  'These events can cause high cpu or other performance issues. Turn lock_acquired or lock_released xevent off if not needed or use for very brief periods', '','', '  ', 1, 100, 0)
-INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-VALUES ('F9EF91B9-529B-4F72-8545-59689D43D37E','Server Performance', 'W','Warning', 'usp_McAFee_Intrusion', 'McAFee Host Intrusion Prevenstion loaded in SQL Process',  'Loading McAfee Host Intrusion Prevention into SQL can lead to performance and stability issues ', '','https://docs.microsoft.com/troubleshoot/sql/performance/performance-consistency-issues-filter-drivers-modules', '  ', 1, 100, 0)
-INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-VALUES ('F332275E-9CF4-4CFA-935D-AE248B74ADE4','Query Performance', 'W','Warning', 'usp_BatchSort', 'Batch sort is detected in query plan(s)',  'Batch sort can cause high CPU or memory grant issues due to cardinality over-estimation ', '','https://docs.microsoft.com/troubleshoot/sql/performance/decreased-perf-high-cpu-optimized-nested-loop', '  ', 1, 100, 0)
-INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-VALUES ('B21D0648-90FD-463B-B32B-C9E710D62B63','Query Performance', 'W','Warning', 'usp_SmallSampledStats', 'Some statistics have sample size less than 5%',  'Default sample size is sufficient for most normal workloads. But unevenly distributed data may require larger sample size or Full Scan sampling.', '','', '  ', 1, 100, 0)
-INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-VALUES ('E3CECDDA-EBEB-4E69-940C-660813ED5D93','Query Performance', 'W','Warning', 'usp_DisabledIndex', 'Some indexes are disabled',  'Disabling indexes may cause poor query performance. Check tbl_DisabledIndexes for details ', '','http://aka.ms/nexus/disabledindex', '  ', 1, 100, 0)
-INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-VALUES ('63C1DA9B-CAA5-4C9D-9CA0-3916ED6D5F98','Server Performance', 'W','Warning', 'usp_LongAutoUpdateStats', 'Long Auto update stats',  'Some auto statistics update took longer than 60 seconds.  Consider asynchronous stats update ', '','https://docs.microsoft.com/sql/relational-databases/statistics/statistics#auto_update_statistics_async', '  ', 1, 100, 0)
-INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-VALUES ('6A67B697-F1AF-46D2-99D1-E7B6086B4D5D','Server Performance', 'W','Warning', 'usp_AccessCheck', 'Access Check Configuration',  'access check cache bucket count and access check cache quota are not configured per best practice ', '','https://docs.microsoft.com/en-us/troubleshoot/sql/performance/recommended-updates-configuration-options', '  ', 1, 100, 0)
-INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-VALUES ('D3E36E57-4DDE-44D3-939F-13D2A2608F02','Server Performance', 'W','Warning', 'usp_RedoThreadBlocked', 'Redo Thread wait ',  'Redo Thread may have waited excessively.  Check tbl_requests for command with DB STARTUP ', '','', '  ', 1, 100, 0)
-INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-VALUES ('4FE75D34-9AAE-440E-9758-1ABE2AA7B54D','Server Performance', 'W','Warning', 'usp_VirtualBytesLeak', 'Virtual bytes leak',  'Virtual bytes for SQL process were over 7TB.  This may indicate of virtual bytes leak. Please check perfmon counter.', '','https://support.microsoft.com/kb/3074434', '  ', 1, 100, 0)
-INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-VALUES ('952A2770-4031-4B4F-B56E-6A3A0970FA26','Server Performance', 'W','Warning', 'usp_DeadlockTraceFlag', 'Trace flag 1222',  'Trace flag 1222 is meant for deadlock troubleshooting only. do NOT leave it on permanently ', 'https://blogs.msdn.microsoft.com/bobsql/2017/05/23/how-it-works-sql-server-deadlock-trace-flag-1222-output/','https://blogs.msdn.microsoft.com/bobsql/2017/05/23/how-it-works-sql-server-deadlock-trace-flag-1222-output/', '  ', 1, 100, 0)
-INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-VALUES ('0F58D750-92B4-43A9-BED1-95450EB63175','Server Performance', 'W','Warning', 'usp_PerfScriptsRunningLong', 'Perf scripts running long',  'run time gaps between DMV queries were exceptionally large.  Some of them took more than 120 seconds between runs. check tbl_requests.runtime for details. this can be system issue', '','', '  ', 1, 100, 0)
-INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-VALUES ('062A4FCD-C2D9-4A08-B3B0-C57251223450','Server Performance', 'W','Warning', 'usp_AttendtionCausedBlocking', 'Attention causing blocking',  'Some timeouts/attentions could have caused blocking.  see readtrace.tblInterestingEvents and vw_HEAD_BLOCKER_SUMMARY', '','', '  ', 1, 100, 0)
-INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-VALUES ('047C814A-5D3D-4652-A2CF-A975399D11BF','Server Performance', 'W','Warning', 'sp_configure_max_memory', 'Max server memory (MB) is set to default', 'Consider changing the default ''max server memory'' to 75% of RAM', '', 'https://learn.microsoft.com/sql/database-engine/configure-windows/server-memory-server-configuration-options#recommendations', '  ', 1, 100, 0)
-INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-VALUES ('C05E3B48-3F52-4509-AE30-7B21C303A92D','Server Performance', 'W','Warning', 'sp_configure_max_dop_zero', 'Max degree of parallelism is set to 0', 'Consider changing MAXDOP to a value between 2 and 8', '', 'https://learn.microsoft.com/sql/database-engine/configure-windows/configure-the-max-degree-of-parallelism-server-configuration-option', '  ', 1, 100, 0)
-INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-VALUES ('AA024F38-AA89-4D91-BBEF-DCA763E1600F','Server Performance', 'W','Warning', 'sp_configure_max_dop_one', 'Max degree of parallelism is set to 1', 'Consider changing MAXDOP to a value between 2 and 8', '', 'https://learn.microsoft.com/sql/database-engine/configure-windows/configure-the-max-degree-of-parallelism-server-configuration-option', '  ', 1, 100, 0)
-INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-VALUES ('2168C7D4-F540-4D8D-A56B-6C09640919CE','Server Performance', 'W','Warning', 'sp_configure_priority_boost', 'Priority boost is set to 1', 'Change the priority boost value back to default of 0 ', '', 'https://learn.microsoft.com/sql/database-engine/configure-windows/configure-the-priority-boost-server-configuration-option', '  ', 1, 100, 0)
-INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-VALUES ('E8059DEF-A830-417D-8BFA-254509E394E5','Server Performance', 'W','Warning', 'sp_configure_affinity_IO', 'Affinity I/O is set to non-default values', 'Change the affinity I/O value back to default of 0. The option will be deprecated.', '', 'https://learn.microsoft.com/en-us/sql/database-engine/configure-windows/affinity-input-output-mask-server-configuration-option', '  ', 1, 100, 0)
-INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-VALUES ('1227291E-6F11-4BE7-9ED3-6A4AFBABD62D','Server Performance', 'W','Warning', 'sp_configure_affinity64_IO', 'Affinity64 I/O is set to non-default values', 'Change the affinity64 I/O value back to default of 0. The option will be deprecated.', '', 'https://learn.microsoft.com/en-us/sql/database-engine/configure-windows/affinity-input-output-mask-server-configuration-option', '  ', 1, 100, 0)
-INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-VALUES ('64398060-8090-4BF0-BAD7-E88E3B276D40','Server Performance', 'W','Warning', 'sp_configure_affinity_cpu', 'Affinity mask is set to non-default values', 'Change the affinity mask value back to default of 0. The option will be deprecated.', '', 'https://learn.microsoft.com/sql/database-engine/configure-windows/affinity-mask-server-configuration-option', '  ', 1, 100, 0)
-INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-VALUES ('630F3C37-9FE5-4EA7-AF9A-CEEE154B9A94','Server Performance', 'W','Warning', 'sp_configure_affinity64_cpu', 'Affinity64 mask is set to non-default values', 'Change the affinity64 mask value back to default of 0. The option will be deprecated.', '', 'https://learn.microsoft.com/sql/database-engine/configure-windows/affinity-mask-server-configuration-option', '  ', 1, 100, 0)
-INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-VALUES ('B6871A6D-01EC-4247-BBF4-EC04244D6400','Server Performance', 'W','Warning', 'sp_configure_lightweight_pooling', 'Lightweight Pooling is set to non-default values', 'Change the Lightweight Pooling value back to default of 0. The option will be deprecated.', '', 'https://learn.microsoft.com/sql/database-engine/configure-windows/lightweight-pooling-server-configuration-option', '  ', 1, 100, 0)
-INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-VALUES ('322DC73D-E4B8-450A-94B7-484DF292AA01','Server Performance', 'W','Warning', 'sp_configure_max_woker_threads', 'Max Worker Thread is set to non-default values', 'Consider changing the ''max worker threads'' value of back to default of 0 to allow SQL Server to manage the worker thread count and the memory they use.', '', 'https://learn.microsoft.com/sql/database-engine/configure-windows/configure-the-max-worker-threads-server-configuration-option', '  ', 1, 100, 0)
-
-
-GO
+INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type,typedesc, Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
+VALUES ('1BDE61F7-CE1D-4C99-ABFB-31344A3E317D', 'Server Performance', 'W','Warning', 'AutoCreateStats','Auto Create Statistics is disabled', 'Some databases have auto create statistics disabled. This can negative impact performance.  See Database Configuration report for details', '', 'https://docs.microsoft.com/sql/relational-databases/statistics/statistics#auto_create_statistics_async', '  ', 1, 99, 0, ' ')
+INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type,typedesc, Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
+VALUES ('E5335E8F-91F8-4B7D-842C-8C004159C749', 'Server Performance', 'W','Warning', 'AutoUpdateStats','Auto Update Statistics is disabled', 'Some databases have auto create statistics disabled. This can negative impact performance.  See Database Configuration report for details', '', 'https://docs.microsoft.com/sql/relational-databases/statistics/statistics#auto_update_statistics_async', '  ', 1, 99, 0, ' ')
+INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type,typedesc, Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
+VALUES ('9E5F54A8-9B8B-46A5-B372-238E873F6277', 'Server Performance', 'W','Warning', 'PowerPlan','Power Plan not properly set', 'Power Plan is not set to High Performance which can impact overall server performance.', '', 'https://docs.microsoft.com/troubleshoot/windows-server/performance/slow-performance-when-using-power-plan', '  ', 1, 100, 0, ' ')
+INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type,typedesc, Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
+VALUES ('CCCDE188-8E68-4B87-9649-761AF3F48FC8','Server Performance', 'W','Warning', 'Trace Flag 4199', 'Trace flag 4199 not enabled', 'This trace flag is required to activiate all query optimizer fixes. Without this trace flag, none of the query optimizer fixes will be activated even you are on the latest hotfix or cumulative update. ', '', 'https://docs.microsoft.com/sql/t-sql/database-console-commands/dbcc-traceon-trace-flags-transact-sql#tf4199', '  ', 1, 100, 0, ' ')
+INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
+VALUES ('D89F7B5E-25BA-460E-9628-F7B0F5E31FFE','Server Performance', 'W','Warning', 'Detailed XEvent Tracing','Some intensive XEvent tracing captured', 'Some high-impact Extended Events (XEvents) are active on the server.  For high volume systems, this can have negative performance impact. Turn off query_pre_execution_showplan, query_post_execution_showplan,query_post_compilation_showplan,lock_acquired,sql_statement_starting,sql_statement_completed,sp_statement_starting, and sp_statement_completed to reduce impact. See pssdiag file *Profiler Traces_Startup.OUT for details', '', '', '  ', 1, 200, 0, ' ')
+INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type,typedesc, Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
+VALUES ('3EAE7B17-7BE4-486D-98AC-309E74CE6771','Server Performance', 'W','Warning', 'Trace Flag 1118', 'Trace Flag 1118 not enabled', 'This trace flag help reduce tempdb contention. ', '', 'https://docs.microsoft.com/sql/t-sql/database-console-commands/dbcc-traceon-trace-flags-transact-sql#tf1118', '  ', 1, 100, 0, ' ')
+INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
+VALUES ('17C9E271-756E-46E8-A3D3-B9B15E5FA305','Server Performance', 'W', 'Warning', 'Trace Flag 8048', 'Trace flag 8048 not enabled', 'This trace flag partitions certain memory allocators by CPU and can improve performance for hihgly active servers.', '', 'https://docs.microsoft.com/sql/t-sql/database-console-commands/dbcc-traceon-trace-flags-transact-sql#tf8048', '  ', 1, 100, 0, ' ')
+INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
+VALUES ('AC4F983A-B8F9-4542-8971-B6052175F2B3','Server Performance', 'W','Warning', 'Trace Flag 9024', 'Trace flag 9024 not enabled', 'This trace flag can help reduce recovery time and log writes.', '', 'https://docs.microsoft.com/sql/t-sql/database-console-commands/dbcc-traceon-trace-flags-transact-sql#tf9024', '  ', 1, 100, 0, ' ')
+INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
+VALUES ('76F946D8-7AAD-400E-9CEF-1F071AA68868','Server Performance', 'W','Warning', 'Trace Flag 1236', 'Trace flag 1236 not enabled (sql 2014 SP1 and above, TF is not required)', 'This trace flag can help reduce contention on database lock for highly active servers.', '', 'https://docs.microsoft.com/sql/t-sql/database-console-commands/dbcc-traceon-trace-flags-transact-sql#tf1236', '  ', 1, 100, 0, ' ')
+INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
+VALUES ('59B1DB60-ABC2-4981-A9EC-DF901C3A89B4','Server Performance', 'W','Warning', 'usp_RG_Idle', 'high RESOURCE_GOVERNOR_IDLE detected', 'High waits on RESOURCE_GOVERNOR_IDLE were deteted.  This is means CPU cap was configured for Resource Goverrnor and could force query to slowdown.  Make sure CPU cap for Resource Governor is properly configured. ', '','', '  ', 1, 100, 0, ' ')
+INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
+VALUES ('773805A8-5DB4-4132-8488-E8FBDE57C67A','Server Performance', 'W','Warning', 'usp_HighCompile', 'Potential high compiles detected', 'Potential high compilation was detected. Please verify with Perfmon counters data.  This can cause high CPU issues', '','', '  ', 1, 100, 0, ' ')
+INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
+VALUES ('F9BBF034-ACFE-4C98-AD32-6010573AFD3D','Server Performance', 'W','Warning', 'usp_HighCacheCount', 'High Cache Entries detected.', 'High number of SQL Server cache entries (Cache Object Counts) were detected.  This can cause high CPU and spinlock issue.', '','https://support.microsoft.com/en-us/topic/kb3026083-fix-sos-cachestore-spinlock-contention-on-ad-hoc-sql-server-plan-cache-causes-high-cpu-usage-in-sql-server-798ca4a5-3813-a3d2-f9c4-89eb1128fe68', '  ', 1, 100, 0, ' ')
+INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
+VALUES ('64EEE25A-4B20-4C24-8F27-1E967011D69E','Server Performance', 'W','Warning', 'usp_HighStmtCount', 'Some queries had high statement execution count', 'Some queries had high number statement executions.  This makes it challenging to tune the queries. ', '','', '  ', 1, 100, 0, ' ')
+INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
+VALUES ('12145143-A34C-4393-BC77-74E3F3A74D5D','Server Performance', 'W','Warning', 'usp_ExcessiveLockXevent', 'lock_acquired or lock_released xevent was detected. ',  'These events can cause high cpu or other performance issues. Turn lock_acquired or lock_released xevent off if not needed or use for very brief periods', '','', '  ', 1, 100, 0, ' ')
+INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
+VALUES ('F9EF91B9-529B-4F72-8545-59689D43D37E','Server Performance', 'W','Warning', 'usp_McAFee_Intrusion', 'McAFee Host Intrusion Prevenstion loaded in SQL Process',  'Loading McAfee Host Intrusion Prevention into SQL can lead to performance and stability issues ', '','https://docs.microsoft.com/troubleshoot/sql/performance/performance-consistency-issues-filter-drivers-modules', '  ', 1, 100, 0, ' ')
+INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
+VALUES ('F332275E-9CF4-4CFA-935D-AE248B74ADE4','Query Performance', 'W','Warning', 'usp_BatchSort', 'Batch sort is detected in query plan(s)',  'Batch sort can cause high CPU or memory grant issues due to cardinality over-estimation ', '','https://docs.microsoft.com/troubleshoot/sql/performance/decreased-perf-high-cpu-optimized-nested-loop', '  ', 1, 100, 0, ' ')
+INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
+VALUES ('B21D0648-90FD-463B-B32B-C9E710D62B63','Query Performance', 'W','Warning', 'usp_SmallSampledStats', 'Some statistics have sample size less than 5%',  'Default sample size is sufficient for most normal workloads. But unevenly distributed data may require larger sample size or Full Scan sampling.', '','', '  ', 1, 100, 0, ' ')
+INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
+VALUES ('E3CECDDA-EBEB-4E69-940C-660813ED5D93','Query Performance', 'W','Warning', 'usp_DisabledIndex', 'Some indexes are disabled',  'Disabling indexes may cause poor query performance. Check tbl_DisabledIndexes for details ', '','http://aka.ms/nexus/disabledindex', '  ', 1, 100, 0, ' ')
+INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
+VALUES ('63C1DA9B-CAA5-4C9D-9CA0-3916ED6D5F98','Server Performance', 'W','Warning', 'usp_LongAutoUpdateStats', 'Long Auto update stats',  'Some auto statistics update took longer than 60 seconds.  Consider asynchronous stats update ', '','https://docs.microsoft.com/sql/relational-databases/statistics/statistics#auto_update_statistics_async', '  ', 1, 100, 0, ' ')
+INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
+VALUES ('6A67B697-F1AF-46D2-99D1-E7B6086B4D5D','Server Performance', 'W','Warning', 'usp_AccessCheck', 'Access Check Configuration',  'access check cache bucket count and access check cache quota are not configured per best practice ', '','https://docs.microsoft.com/en-us/troubleshoot/sql/performance/recommended-updates-configuration-options', '  ', 1, 100, 0, ' ')
+INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
+VALUES ('D3E36E57-4DDE-44D3-939F-13D2A2608F02','Server Performance', 'W','Warning', 'usp_RedoThreadBlocked', 'Redo Thread wait ',  'Redo Thread may have waited excessively.  Check tbl_requests for command with DB STARTUP ', '','', '  ', 1, 100, 0, ' ')
+INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
+VALUES ('4FE75D34-9AAE-440E-9758-1ABE2AA7B54D','Server Performance', 'W','Warning', 'usp_VirtualBytesLeak', 'Virtual bytes leak',  'Virtual bytes for SQL process were over 7TB.  This may indicate of virtual bytes leak. Please check perfmon counter.', '','https://support.microsoft.com/kb/3074434', '  ', 1, 100, 0, ' ')
+INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
+VALUES ('952A2770-4031-4B4F-B56E-6A3A0970FA26','Server Performance', 'W','Warning', 'usp_DeadlockTraceFlag', 'Trace flag 1222',  'Trace flag 1222 is meant for deadlock troubleshooting only. Do NOT leave it on permanently ', 'https://blogs.msdn.microsoft.com/bobsql/2017/05/23/how-it-works-sql-server-deadlock-trace-flag-1222-output/','https://blogs.msdn.microsoft.com/bobsql/2017/05/23/how-it-works-sql-server-deadlock-trace-flag-1222-output/', '  ', 1, 100, 0, ' ')
+INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
+VALUES ('0F58D750-92B4-43A9-BED1-95450EB63175','Server Performance', 'W','Warning', 'usp_PerfScriptsRunningLong', 'Perf scripts running long',  'run time gaps between DMV queries were exceptionally large.  Some of them took more than 120 seconds between runs. check tbl_requests.runtime for details. this can be system issue', '','', '  ', 1, 100, 0, ' ')
+INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
+VALUES ('062A4FCD-C2D9-4A08-B3B0-C57251223450','Server Performance', 'W','Warning', 'usp_AttendtionCausedBlocking', 'Attention causing blocking',  'Some timeouts/attentions could have caused blocking.  see readtrace.tblInterestingEvents and vw_HEAD_BLOCKER_SUMMARY', '','', '  ', 1, 100, 0, ' ')
+INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
+VALUES ('047C814A-5D3D-4652-A2CF-A975399D11BF','Server Performance', 'W','Warning', 'sp_configure_max_memory', 'Max server memory (MB) is set to default', 'Consider changing the default ''max server memory'' to 75% of RAM', '', 'https://learn.microsoft.com/sql/database-engine/configure-windows/server-memory-server-configuration-options#recommendations', '  ', 1, 100, 0, 'Server_Configuration')
+INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
+VALUES ('C05E3B48-3F52-4509-AE30-7B21C303A92D','Server Performance', 'W','Warning', 'sp_configure_max_dop_zero', 'Max degree of parallelism is set to 0', 'Consider changing MAXDOP to a value between 2 and 8', '', 'https://learn.microsoft.com/sql/database-engine/configure-windows/configure-the-max-degree-of-parallelism-server-configuration-option', '  ', 1, 100, 0, 'Server_Configuration')
+INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
+VALUES ('AA024F38-AA89-4D91-BBEF-DCA763E1600F','Server Performance', 'W','Warning', 'sp_configure_max_dop_one', 'Max degree of parallelism is set to 1', 'Consider changing MAXDOP to a value between 2 and 8', '', 'https://learn.microsoft.com/sql/database-engine/configure-windows/configure-the-max-degree-of-parallelism-server-configuration-option', '  ', 1, 100, 0, 'Server_Configuration')
+INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
+VALUES ('2168C7D4-F540-4D8D-A56B-6C09640919CE','Server Performance', 'W','Warning', 'sp_configure_priority_boost', 'Priority boost is set to 1', 'Change the priority boost value back to default of 0 ', '', 'https://learn.microsoft.com/sql/database-engine/configure-windows/configure-the-priority-boost-server-configuration-option', '  ', 1, 100, 0, 'Server_Configuration')
+INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
+VALUES ('E8059DEF-A830-417D-8BFA-254509E394E5','Server Performance', 'W','Warning', 'sp_configure_affinity_IO', 'Affinity I/O is set to non-default values', 'Change the affinity I/O value back to default of 0. The option may be deprecated.', '', 'https://learn.microsoft.com/en-us/sql/database-engine/configure-windows/affinity-input-output-mask-server-configuration-option', '  ', 1, 100, 0, 'Server_Configuration')
+INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
+VALUES ('1227291E-6F11-4BE7-9ED3-6A4AFBABD62D','Server Performance', 'W','Warning', 'sp_configure_affinity64_IO', 'Affinity64 I/O is set to non-default values', 'Change the affinity64 I/O value back to default of 0. The option may be deprecated.', '', 'https://learn.microsoft.com/en-us/sql/database-engine/configure-windows/affinity-input-output-mask-server-configuration-option', '  ', 1, 100, 0, 'Server_Configuration')
+INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
+VALUES ('64398060-8090-4BF0-BAD7-E88E3B276D40','Server Performance', 'W','Warning', 'sp_configure_affinity_cpu', 'Affinity mask is set to non-default values', 'Change the affinity mask value back to default of 0. The option will be deprecated.', '', 'https://learn.microsoft.com/sql/database-engine/configure-windows/affinity-mask-server-configuration-option', '  ', 1, 100, 0, 'Server_Configuration')
+INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
+VALUES ('630F3C37-9FE5-4EA7-AF9A-CEEE154B9A94','Server Performance', 'W','Warning', 'sp_configure_affinity64_cpu', 'Affinity64 mask is set to non-default values', 'Change the affinity64 mask value back to default of 0. The option will be deprecated.', '', 'https://learn.microsoft.com/sql/database-engine/configure-windows/affinity-mask-server-configuration-option', '  ', 1, 100, 0, 'Server_Configuration')
+INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
+VALUES ('B6871A6D-01EC-4247-BBF4-EC04244D6400','Server Performance', 'W','Warning', 'sp_configure_lightweight_pooling', 'Lightweight Pooling is set to non-default values', 'Change the Lightweight Pooling value back to default of 0. The option will be deprecated.', '', 'https://learn.microsoft.com/sql/database-engine/configure-windows/lightweight-pooling-server-configuration-option', '  ', 1, 100, 0, 'Server_Configuration')
+INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
+VALUES ('322DC73D-E4B8-450A-94B7-484DF292AA01','Server Performance', 'W','Warning', 'sp_configure_max_woker_threads', 'Max Worker Thread is set to non-default values', 'Consider changing the ''max worker threads'' value of back to default of 0 to allow SQL Server to manage the worker thread count and the memory they use.', '', 'https://learn.microsoft.com/sql/database-engine/configure-windows/configure-the-max-worker-threads-server-configuration-option', '  ', 1, 100, 0, 'Server_Configuration')
 		
-
-/********************************************************
-owner:   ericbu
-*********************************************************/
-
--- Added 5/27/2015
-INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('25678531-4722-48C4-94B0-026C2ED1021F','Server Performance', 'W','Warning', 'usp_HighRecompiles', 'Potential high Recompiles detected, 50+ per second', 'Potential high recompilations were detected. Please verify with perfmon data.  This can cause high CPU issues.', '','', '  ericbu', 1, 100, 0)
-
--- TBD Service Broker
-	
-
-
-go
-
-/**************************************************************************************************
-owner:  jaynar
-***************************************************************************************************/
-
-INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('47377EC8-BE56-4C92-B0F3-85FC0485D83B','Server Performance', 'W','Warning', 'HugeGrant', 'Huge Memory Grant found', 'Queries with big memory grant found check the detail report', '/Pages1/Memory%20Grants.aspx','', ' ', 1, 100, 0)
-
-INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('FDBF24A1-3EBE-49F1-A02B-FD5686ACDAE9','Server Performance', 'W','Warning', 'Optimizer_Memory_Leak', 'Optimizer Memory Leak', 'MEMORYCLERK_SQLOPTIMIZER memory may be high.  This could be a leak issue which is fixed in SQL 2012 Sp1 CU3', 'http://support.microsoft.com/kb/2803065','http://support.microsoft.com/kb/2803065', ' ', 1, 100, 0)
-
-INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('5E630273-C14F-4DCE-BDA0-24A1FD8E25CA','Server Performance', 'W','Warning', 'usp_IOAnalysis', 'Disk IO Analysis', 'The disk sec/transfer in following drives exceeded 20 ms, check the perfmon for complete analysis', '','https://docs.microsoft.com/en-us/troubleshoot/sql/performance/troubleshoot-sql-io-performance', '  ', 1, 100, 0)
-
-INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('5AE45557-E463-48D6-B135-11AADCB8642F','Server Performance', 'I','Info', 'usp_WarnmissingIndex', 'Missing Index detected', 'There are missing indexes detected.  Please review SQL Nexus report and make recommendations to your customer.', '','', ' ', 1, 100, 0)
-
-INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('0C73F3D4-6CCC-4FC9-AE37-58110F9C15DB','Server Performance', 'I','Info', 'StaleStatswarning2008', 'Stale Stats warning 2008', 'Statistics of some tables has not been updated for over 7 days', '','https://docs.microsoft.com/sql/relational-databases/statistics/statistics#UpdateStatistics', ' ', 1, 100, 0)
-
-INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('010B3DBA-76CC-46C0-AC1B-3CAD09F95891','Server Performance', 'W','Warning', 'usp_SQLHighCPUconsumption', 'SQL High CPU consumption', 'CPU consumption from SQL Server was excessive (>80%) for an extended period of time', '','https://docs.microsoft.com/en-us/troubleshoot/sql/performance/troubleshoot-high-cpu-usage-issues', '  ', 1, 100, 0)
-
-INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('6C82DA17-D04C-4155-8702-19A9A1363A64','Server Performance', 'W','Warning', 'usp_KernelHighCPUconsumption', 'Kernel High CPU consumption', 'Kernel CPU consumption for SQL Server exceeded for an extended period of time.', '','', '  ', 1, 100, 0)
-
-INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('6E19B301-E83B-4E5F-AF4E-A8DD2251C1B6','Server Performance', 'W','Warning', 'usp_Non_SQL_CPU_consumption', 'High non-SQL CPU consumption detected', 'Much of the CPU utilization came from non-SQL Server process(es). Review the perfmon data to identify which processes caused this (Process object)', '','', '  ', 1, 100, 0)
-
-INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('57CAA4BB-C7BD-4F96-8040-3224008A3F39','Server Performance', 'I','Info', 'XEventcrash', 'XEvent may cause SQL Server crash', 'XEvent session retrieving the Query Hash can result in SQL Server shutdown', '','http://support.microsoft.com/kb/3004355', ' ', 1, 100, 0)
-
-INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('607B17FD-98F1-498E-9B93-F16E5A155730','Server Performance', 'W','Warning', 'OracleLinkedServerIssue', 'Oracle Driver SQL Server crash', 'Oracle driver loaded in SQL Server memory space may cause SQL Server to crash, refer the KB for solution', '','https://docs.microsoft.com/en-US/troubleshoot/sql/admin/crashes-run-oracle-linked-server-query', ' ', 1, 100, 0)
-
-INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('BBECDF81-DCCE-4E41-93C9-7EB9E11F53BD','Server Performance', 'W','Warning', 'usp_ExcessiveTrace_Warning', 'Many Active Traces Warning', 'Multiple active traces (> 4) were detected on the server.  This can negatively impact server performance', '','', ' ', 1, 100, 0)
-
-INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('948756B6-A67F-4CB1-86F9-1B22C26F0B9C','Server Performance', 'W','Warning', 'usp_Expensive_TraceEvts_Used', 'Expensive, performance-impacting Trace events were identfied', 'Multiple non default trace events  were detected running on the server.  This can negatively impact server performance', '','', '  ', 1, 100, 0)
-
-INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('4415F4B3-603F-4F41-978E-9EE32BF2B2E9','Server Performance', 'W','Warning', 'usp_Expensive_XEvts_Used', 'Expensive, performance-impacting Extended events were identfied', 'Multiple non default trace events  were detected running on the server.  This can negatively impact server performance', '','', '  ', 1, 100, 0)
+INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
+VALUES ('25678531-4722-48C4-94B0-026C2ED1021F','Server Performance', 'W','Warning', 'usp_HighRecompiles', 'Potential high Recompiles detected, 50+ per second', 'Potential high recompilations were detected. Please verify with perfmon data.  This can cause high CPU issues.', '','', '  ericbu', 1, 100, 0, ' ')
+INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
+VALUES ('47377EC8-BE56-4C92-B0F3-85FC0485D83B','Server Performance', 'W','Warning', 'HugeGrant', 'Huge Memory Grant found', 'Queries with big memory grant found check the detail report', '/Pages1/Memory%20Grants.aspx','', ' ', 1, 100, 0, ' ')
+INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
+VALUES ('FDBF24A1-3EBE-49F1-A02B-FD5686ACDAE9','Server Performance', 'W','Warning', 'Optimizer_Memory_Leak', 'Optimizer Memory Leak', 'MEMORYCLERK_SQLOPTIMIZER memory may be high.  This could be a leak issue which is fixed in SQL 2012 Sp1 CU3', 'http://support.microsoft.com/kb/2803065','http://support.microsoft.com/kb/2803065', ' ', 1, 100, 0, ' ')
+INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
+VALUES ('5E630273-C14F-4DCE-BDA0-24A1FD8E25CA','Server Performance', 'W','Warning', 'usp_IOAnalysis', 'Disk IO Analysis', 'The disk sec/transfer in following drives exceeded 20 ms, check the perfmon for complete analysis', '','https://docs.microsoft.com/en-us/troubleshoot/sql/performance/troubleshoot-sql-io-performance', '  ', 1, 100, 0, ' ')
+INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
+VALUES ('5AE45557-E463-48D6-B135-11AADCB8642F','Server Performance', 'I','Info', 'usp_WarnmissingIndex', 'Missing Index detected', 'There are missing indexes detected.  Please review SQL Nexus report and make recommendations to your customer.', '','', ' ', 1, 100, 0, 'Missing_Indexes')
+INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
+VALUES ('0C73F3D4-6CCC-4FC9-AE37-58110F9C15DB','Server Performance', 'I','Info', 'StaleStatswarning2008', 'Stale Stats warning 2008', 'Statistics of some tables has not been updated for over 7 days', '','https://docs.microsoft.com/sql/relational-databases/statistics/statistics#UpdateStatistics', ' ', 1, 100, 0, ' ')
+INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
+VALUES ('010B3DBA-76CC-46C0-AC1B-3CAD09F95891','Server Performance', 'W','Warning', 'usp_SQLHighCPUconsumption', 'SQL High CPU consumption', 'CPU consumption from SQL Server was excessive (>80%) for an extended period of time', '','https://docs.microsoft.com/en-us/troubleshoot/sql/performance/troubleshoot-high-cpu-usage-issues', '  ', 1, 100, 0, ' ')
+INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
+VALUES ('6C82DA17-D04C-4155-8702-19A9A1363A64','Server Performance', 'W','Warning', 'usp_KernelHighCPUconsumption', 'Kernel High CPU consumption', 'Kernel CPU consumption for SQL Server exceeded for an extended period of time.', '','', '  ', 1, 100, 0, ' ')
+INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
+VALUES ('6E19B301-E83B-4E5F-AF4E-A8DD2251C1B6','Server Performance', 'W','Warning', 'usp_Non_SQL_CPU_consumption', 'High non-SQL CPU consumption detected', 'Much of the CPU utilization came from non-SQL Server process(es). Review the perfmon data to identify which processes caused this (Process object)', '','', '  ', 1, 100, 0, ' ')
+INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
+VALUES ('57CAA4BB-C7BD-4F96-8040-3224008A3F39','Server Performance', 'I','Info', 'XEventcrash', 'XEvent may cause SQL Server crash', 'XEvent session retrieving the Query Hash can result in SQL Server shutdown', '','http://support.microsoft.com/kb/3004355', ' ', 1, 100, 0, ' ')
+INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
+VALUES ('607B17FD-98F1-498E-9B93-F16E5A155730','Server Performance', 'W','Warning', 'OracleLinkedServerIssue', 'Oracle Driver SQL Server crash', 'Oracle driver loaded in SQL Server memory space may cause SQL Server to crash, refer the KB for solution', '','https://docs.microsoft.com/en-US/troubleshoot/sql/admin/crashes-run-oracle-linked-server-query', ' ', 1, 100, 0, ' ')
+INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
+VALUES ('BBECDF81-DCCE-4E41-93C9-7EB9E11F53BD','Server Performance', 'W','Warning', 'usp_ExcessiveTrace_Warning', 'Many Active Traces Warning', 'Multiple active traces (> 4) were detected on the server.  This can negatively impact server performance', '','', ' ', 1, 100, 0, ' ')
+INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
+VALUES ('948756B6-A67F-4CB1-86F9-1B22C26F0B9C','Server Performance', 'W','Warning', 'usp_Expensive_TraceEvts_Used', 'Expensive, performance-impacting Trace events were identfied', 'Multiple non default trace events  were detected running on the server.  This can negatively impact server performance', '','', '  ', 1, 100, 0, ' ')
+INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
+VALUES ('4415F4B3-603F-4F41-978E-9EE32BF2B2E9','Server Performance', 'W','Warning', 'usp_Expensive_XEvts_Used', 'Expensive, performance-impacting Extended events were identfied', 'Multiple non default trace events  were detected running on the server.  This can negatively impact server performance', '','', '  ', 1, 100, 0, ' ')
+INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
+VALUES ('6D4B332C-67A0-428D-A08C-A48A5327DE60','Query Performance', 'W','Warning', 'usp_oldce', 'Customer using oldCE for database', 'Customer not taking advantage of newCE', '','https://cloudblogs.microsoft.com/sqlserver/2014/03/17/the-new-and-improved-cardinality-estimator-in-sql-server-2014/', '  virana', 1, 100, 0, ' ')
+INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
+VALUES ('91B2AA56-9CA2-4BDB-8D21-76A5CFF4D74A','Server Performance', 'W','Warning', 'usp_CalvsCore', 'CAL license possibly limiting CPU', 'Customer is using CAL license and CPUs are greater than schedulers online, check the errorlog to confirm. Customer could benefit by upgrading to CORE license.', '','https://docs.microsoft.com/en-us/sql/database-engine/install-windows/upgrade-to-a-different-edition-of-sql-server-setup?view=sql-server-ver16', '  jamgrif', 1, 100, 0, 'Server_Configuration')
 
 
-
-go
-
-/**************************************************************************************************
-owner:  VIRANA
-
-***************************************************************************************************/
-
-
-INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('6D4B332C-67A0-428D-A08C-A48A5327DE60','Query Performance', 'W','Warning', 'usp_oldce', 'Customer using oldCE for database', 'Customer not taking advantage of newCE', '','https://cloudblogs.microsoft.com/sqlserver/2014/03/17/the-new-and-improved-cardinality-estimator-in-sql-server-2014/', '  virana', 1, 100, 0)
-
-
-/**************************************************************************************************
-owner:  JAMGRIF
-
-***************************************************************************************************/
-
-INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status)
-values ('91B2AA56-9CA2-4BDB-8D21-76A5CFF4D74A','Server Performance', 'W','Warning', 'usp_CalvsCore', 'CAL license possibly limiting CPU', 'Customer is using CAL license and CPUs are greater than schedulers online, check the errorlog to confirm. Customer could benefit by upgrading to CORE license.', '','https://docs.microsoft.com/en-us/sql/database-engine/install-windows/upgrade-to-a-different-edition-of-sql-server-setup?view=sql-server-ver16', '  jamgrif', 1, 100, 0)
 
 
 /*************************************************************************************************
@@ -2166,7 +2117,7 @@ values ('91B2AA56-9CA2-4BDB-8D21-76A5CFF4D74A','Server Performance', 'W','Warnin
 creating rules
 **********************************************************************************************/
 
-go
+GO
 
 
 
@@ -2570,7 +2521,7 @@ BEGIN
 					SELECT @external_url='https://learn.microsoft.com/sql/database-engine/configure-windows/server-memory-server-configuration-options#recommendations'
 
 					UPDATE tbl_AnalysisSummary
-					SET [Status] = 1, Description = @descr_str, ExternalUrl = @external_url
+					SET [Status] = 1, Description = @descr_str, ExternalUrl = @external_url, Report = 'Server Configuration'
 					WHERE Name = 'sp_configure_max_memory'
 				END
 
@@ -2590,7 +2541,7 @@ BEGIN
 					SELECT @external_url = 'https://learn.microsoft.com/sql/database-engine/configure-windows/configure-the-max-degree-of-parallelism-server-configuration-option'
 
 					UPDATE tbl_AnalysisSummary
-					SET [Status] = 1, Description = @descr_str, ExternalUrl = @external_url
+					SET [Status] = 1, Description = @descr_str, ExternalUrl = @external_url, Report = 'Server Configuration'
 					WHERE Name = 'sp_configure_max_dop_one'
 				END
 
@@ -2600,7 +2551,7 @@ BEGIN
 					SELECT @external_url = 'https://learn.microsoft.com/sql/database-engine/configure-windows/configure-the-priority-boost-server-configuration-option'
 
 					UPDATE tbl_AnalysisSummary
-					SET [Status] = 1, Description = @descr_str, ExternalUrl = @external_url
+					SET [Status] = 1, Description = @descr_str, ExternalUrl = @external_url, Report = 'Server Configuration'
 					WHERE Name = 'sp_configure_priority_boost'
 				END
 				IF (@config_name = 'affinity I/O mask' AND @value_in_use <> 0)
@@ -2609,7 +2560,7 @@ BEGIN
 					SELECT @external_url = 'https://learn.microsoft.com/en-us/sql/database-engine/configure-windows/affinity-input-output-mask-server-configuration-option'
 
 					UPDATE tbl_AnalysisSummary
-					SET [Status] = 1, Description = @descr_str, ExternalUrl = @external_url
+					SET [Status] = 1, Description = @descr_str, ExternalUrl = @external_url, Report = 'Server Configuration'
 					WHERE Name = 'sp_configure_affinity_IO'
 				END
 				IF (@config_name = 'affinity64 I/O mask' AND @value_in_use <> 0)
@@ -2618,7 +2569,7 @@ BEGIN
 					SELECT @external_url = 'https://learn.microsoft.com/en-us/sql/database-engine/configure-windows/affinity-input-output-mask-server-configuration-option'
 
 					UPDATE tbl_AnalysisSummary
-					SET [Status] = 1, Description = @descr_str, ExternalUrl = @external_url
+					SET [Status] = 1, Description = @descr_str, ExternalUrl = @external_url, Report = 'Server Configuration'
 					WHERE Name = 'sp_configure_affinity64_IO'
 				END
 				IF (@config_name = 'affinity mask' AND @value_in_use <> 0)
@@ -2627,7 +2578,7 @@ BEGIN
 					SELECT @external_url = 'https://learn.microsoft.com/sql/database-engine/configure-windows/affinity-mask-server-configuration-option'
 
 					UPDATE tbl_AnalysisSummary
-					SET [Status] = 1, Description = @descr_str, ExternalUrl = @external_url
+					SET [Status] = 1, Description = @descr_str, ExternalUrl = @external_url, Report = 'Server Configuration'
 					WHERE Name = 'sp_configure_affinity_cpu'
 				END
 				IF (@config_name = 'affinity64 mask' AND @value_in_use <> 0)
@@ -2636,7 +2587,7 @@ BEGIN
 					SELECT @external_url = 'https://learn.microsoft.com/sql/database-engine/configure-windows/affinity-mask-server-configuration-option'
 
 					UPDATE tbl_AnalysisSummary
-					SET [Status] = 1, Description = @descr_str, ExternalUrl = @external_url
+					SET [Status] = 1, Description = @descr_str, ExternalUrl = @external_url, Report = 'Server Configuration'
 					WHERE Name = 'sp_configure_affinity64_cpu'
 				END
 				IF (@config_name = 'lightweight pooling' AND @value_in_use = 1)
@@ -2645,7 +2596,7 @@ BEGIN
 					SELECT @external_url = 'https://learn.microsoft.com/sql/database-engine/configure-windows/lightweight-pooling-server-configuration-option'
 
 					UPDATE tbl_AnalysisSummary
-					SET [Status] = 1, Description = @descr_str, ExternalUrl = @external_url
+					SET [Status] = 1, Description = @descr_str, ExternalUrl = @external_url, Report = 'Server Configuration'
 					WHERE Name = 'sp_configure_lightweight_pooling'
 				END
 				IF (@config_name = 'max worker threads' AND @value_in_use <> 0)
@@ -2654,7 +2605,7 @@ BEGIN
 					SELECT @external_url= 'https://learn.microsoft.com/sql/database-engine/configure-windows/configure-the-max-worker-threads-server-configuration-option'
 
 					UPDATE tbl_AnalysisSummary
-					SET [Status] = 1, Description = @descr_str, ExternalUrl = @external_url
+					SET [Status] = 1, Description = @descr_str, ExternalUrl = @external_url, Report = 'Server Configuration'
 					WHERE Name = 'sp_configure_max_woker_threads'
 				END
 
@@ -2817,7 +2768,8 @@ begin
 
 					UPDATE tbl_AnalysisSummary
 					SET [Status] = 1,
-					  Description = 'The "Avg. Disk sec/transfer" on some drives exceeded 20 ms, with max value found = '+ convert (varchar, @max_sec_transfer) + ' sec/transfer. Check the Perfmon for complete analysis'
+					Description = 'The "Avg. Disk sec/transfer" on some drives exceeded 20 ms, with max value found = '+ convert (varchar, @max_sec_transfer) + ' sec/transfer. Check the Perfmon for complete analysis',
+					Report = 'Perfmon IO'
 					WHERE Name = 'usp_IOAnalysis'
 					
 					BREAK -- we found one value, so we can quit the loop
@@ -3047,7 +2999,8 @@ begin
 
 					update tbl_AnalysisSummary
 					set [Status] = 1, 
-					Description =  'CPU utilization from one or more SQL Server(s) was at least ' + convert(varchar, ROUND(@t_AvgValue/@cpuCount,0)) + '% of overall capacity for an extended period of time (3 min)'
+					Description =  'CPU utilization from one or more SQL Server(s) was at least ' + convert(varchar, ROUND(@t_AvgValue/@cpuCount,0)) + '% of overall capacity for an extended period of time (3 min)' ,
+					Report = 'Perfmon CPU'
 					where Name = 'usp_SQLHighCPUconsumption'
 					
 					--if we found one event of extended CPU utilization, break
@@ -3193,7 +3146,8 @@ begin
 					BEGIN
 						update tbl_AnalysisSummary
 						set [Status] = 1,
-						Description =  'Kernel CPU utilization from SQL Server was at least ' + convert(varchar, ROUND(@t_AvgValue/@cpuCount,0)) + '% of overall capacity for an extended period of time (3 min.)'
+						Description =  'Kernel CPU utilization from SQL Server was at least ' + convert(varchar, ROUND(@t_AvgValue/@cpuCount,0)) + '% of overall capacity for an extended period of time (3 min.)',
+						Report = 'Perfmon CPU'
 						where Name = 'usp_KernelHighCPUconsumption'
 
 						--if we found one event of extended CPU utilization, break
@@ -3334,7 +3288,8 @@ begin
 				begin 
 					update tbl_AnalysisSummary
 					set [Status] = 1, 
-					Description =  'Non-SQL CPU utilization on the system was at least ' + convert(varchar, ROUND(@t_AvgValue/@cpuCount,0)) + '% of overall CPU capacity for an extended period of time (3 min.)'
+					Description =  'Non-SQL CPU utilization on the system was at least ' + convert(varchar, ROUND(@t_AvgValue/@cpuCount,0)) + '% of overall CPU capacity for an extended period of time (3 min.)',
+					Report = 'Perfmon CPU'
 					where Name = 'usp_Non_SQL_CPU_consumption'
 					
 					--if we found one event of extended CPU utilization, break
@@ -3464,7 +3419,7 @@ begin
 end
 go
 
-create procedure  [usp_Expensive_TraceEvts_Used]
+CREATE PROCEDURE  [usp_Expensive_TraceEvts_Used]
 as
 BEGIN
 
@@ -3500,7 +3455,8 @@ BEGIN
 	BEGIN 
 		UPDATE tbl_AnalysisSummary
 		SET [Status] = 1,
-			Description = 'Expensive Trace events are active on the system. These can negatively impact performance. Examples include: '+ @events_string  + '. Consider disabling these and review feasibility of using long term. See *_MiscPssdiagInfo_Startup.OUT for details.'
+			Description = 'Expensive Trace events are active on the system. These can negatively impact performance. Examples include: '+ @events_string  + '. Consider disabling these and review feasibility of using long term. See *_MiscPssdiagInfo_Startup.OUT for details.',
+			Report = 'Active Traces'
 		WHERE Name = 'usp_Expensive_TraceEvts_Used' 
 					
 	END 
@@ -3545,7 +3501,8 @@ IF (OBJECT_ID ('tbl_XEvents') IS NOT NULL)
 	BEGIN 
 		UPDATE tbl_AnalysisSummary
 		SET [Status] = 1,
-			Description = 'Expensive Xevents are active on the system. These can negatively impact performance. Examples include: '+ @events_string  + '. Consider disabling these and review feasibility of using long term. See *_MiscPssdiagInfo_Startup.OUT for details.'
+			Description = 'Expensive Xevents are active on the system. These can negatively impact performance. Examples include: '+ @events_string  + '. Consider disabling these and review feasibility of using long term. See *_MiscPssdiagInfo_Startup.OUT for details.',
+			Report = 'Active Traces'
 		WHERE Name = 'usp_Expensive_XEvts_Used'
 					
 	END 
