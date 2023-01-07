@@ -2056,25 +2056,25 @@ VALUES ('0F58D750-92B4-43A9-BED1-95450EB63175','Server Performance', 'W','Warnin
 INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
 VALUES ('062A4FCD-C2D9-4A08-B3B0-C57251223450','Server Performance', 'W','Warning', 'usp_AttendtionCausedBlocking', 'Attention causing blocking',  'Some timeouts/attentions could have caused blocking.  see readtrace.tblInterestingEvents and vw_HEAD_BLOCKER_SUMMARY', '','', '  ', 1, 100, 0, ' ')
 INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
-VALUES ('047C814A-5D3D-4652-A2CF-A975399D11BF','Server Performance', 'W','Warning', 'sp_configure_max_memory', 'Max server memory (MB) is set to default', 'Consider changing the default ''max server memory'' to 75% of RAM', '', 'https://learn.microsoft.com/sql/database-engine/configure-windows/server-memory-server-configuration-options#recommendations', '  ', 1, 100, 0, 'Server_Configuration')
+VALUES ('047C814A-5D3D-4652-A2CF-A975399D11BF','Server Performance', 'W','Warning', 'sp_configure_max_memory', 'Max server memory (MB) is set to default', 'Consider changing the default ''max server memory'' to 75% of RAM', '', 'https://learn.microsoft.com/sql/database-engine/configure-windows/server-memory-server-configuration-options#recommendations', '  ', 1, 100, 0, ' ')
 INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
-VALUES ('C05E3B48-3F52-4509-AE30-7B21C303A92D','Server Performance', 'W','Warning', 'sp_configure_max_dop_zero', 'Max degree of parallelism is set to 0', 'Consider changing MAXDOP to a value between 2 and 8', '', 'https://learn.microsoft.com/sql/database-engine/configure-windows/configure-the-max-degree-of-parallelism-server-configuration-option', '  ', 1, 100, 0, 'Server_Configuration')
+VALUES ('C05E3B48-3F52-4509-AE30-7B21C303A92D','Server Performance', 'W','Warning', 'sp_configure_max_dop_zero', 'Max degree of parallelism is set to 0', 'Consider changing MAXDOP to a value between 2 and 8', '', 'https://learn.microsoft.com/sql/database-engine/configure-windows/configure-the-max-degree-of-parallelism-server-configuration-option', '  ', 1, 100, 0, ' ')
 INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
-VALUES ('AA024F38-AA89-4D91-BBEF-DCA763E1600F','Server Performance', 'W','Warning', 'sp_configure_max_dop_one', 'Max degree of parallelism is set to 1', 'Consider changing MAXDOP to a value between 2 and 8', '', 'https://learn.microsoft.com/sql/database-engine/configure-windows/configure-the-max-degree-of-parallelism-server-configuration-option', '  ', 1, 100, 0, 'Server_Configuration')
+VALUES ('AA024F38-AA89-4D91-BBEF-DCA763E1600F','Server Performance', 'W','Warning', 'sp_configure_max_dop_one', 'Max degree of parallelism is set to 1', 'Consider changing MAXDOP to a value between 2 and 8', '', 'https://learn.microsoft.com/sql/database-engine/configure-windows/configure-the-max-degree-of-parallelism-server-configuration-option', '  ', 1, 100, 0, ' ')
 INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
-VALUES ('2168C7D4-F540-4D8D-A56B-6C09640919CE','Server Performance', 'W','Warning', 'sp_configure_priority_boost', 'Priority boost is set to 1', 'Change the priority boost value back to default of 0 ', '', 'https://learn.microsoft.com/sql/database-engine/configure-windows/configure-the-priority-boost-server-configuration-option', '  ', 1, 100, 0, 'Server_Configuration')
+VALUES ('2168C7D4-F540-4D8D-A56B-6C09640919CE','Server Performance', 'W','Warning', 'sp_configure_priority_boost', 'Priority boost is set to 1', 'Change the priority boost value back to default of 0 ', '', 'https://learn.microsoft.com/sql/database-engine/configure-windows/configure-the-priority-boost-server-configuration-option', '  ', 1, 100, 0, ' ')
 INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
-VALUES ('E8059DEF-A830-417D-8BFA-254509E394E5','Server Performance', 'W','Warning', 'sp_configure_affinity_IO', 'Affinity I/O is set to non-default values', 'Change the affinity I/O value back to default of 0. The option may be deprecated.', '', 'https://learn.microsoft.com/en-us/sql/database-engine/configure-windows/affinity-input-output-mask-server-configuration-option', '  ', 1, 100, 0, 'Server_Configuration')
+VALUES ('E8059DEF-A830-417D-8BFA-254509E394E5','Server Performance', 'W','Warning', 'sp_configure_affinity_IO', 'Affinity I/O is set to non-default values', 'Change the affinity I/O value back to default of 0. The option may be deprecated.', '', 'https://learn.microsoft.com/en-us/sql/database-engine/configure-windows/affinity-input-output-mask-server-configuration-option', '  ', 1, 100, 0, ' ')
 INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
-VALUES ('1227291E-6F11-4BE7-9ED3-6A4AFBABD62D','Server Performance', 'W','Warning', 'sp_configure_affinity64_IO', 'Affinity64 I/O is set to non-default values', 'Change the affinity64 I/O value back to default of 0. The option may be deprecated.', '', 'https://learn.microsoft.com/en-us/sql/database-engine/configure-windows/affinity-input-output-mask-server-configuration-option', '  ', 1, 100, 0, 'Server_Configuration')
+VALUES ('1227291E-6F11-4BE7-9ED3-6A4AFBABD62D','Server Performance', 'W','Warning', 'sp_configure_affinity64_IO', 'Affinity64 I/O is set to non-default values', 'Change the affinity64 I/O value back to default of 0. The option may be deprecated.', '', 'https://learn.microsoft.com/en-us/sql/database-engine/configure-windows/affinity-input-output-mask-server-configuration-option', '  ', 1, 100, 0, ' ')
 INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
-VALUES ('64398060-8090-4BF0-BAD7-E88E3B276D40','Server Performance', 'W','Warning', 'sp_configure_affinity_cpu', 'Affinity mask is set to non-default values', 'Change the affinity mask value back to default of 0. The option will be deprecated.', '', 'https://learn.microsoft.com/sql/database-engine/configure-windows/affinity-mask-server-configuration-option', '  ', 1, 100, 0, 'Server_Configuration')
+VALUES ('64398060-8090-4BF0-BAD7-E88E3B276D40','Server Performance', 'W','Warning', 'sp_configure_affinity_cpu', 'Affinity mask is set to non-default values', 'Change the affinity mask value back to default of 0. The option will be deprecated.', '', 'https://learn.microsoft.com/sql/database-engine/configure-windows/affinity-mask-server-configuration-option', '  ', 1, 100, 0, ' ')
 INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
-VALUES ('630F3C37-9FE5-4EA7-AF9A-CEEE154B9A94','Server Performance', 'W','Warning', 'sp_configure_affinity64_cpu', 'Affinity64 mask is set to non-default values', 'Change the affinity64 mask value back to default of 0. The option will be deprecated.', '', 'https://learn.microsoft.com/sql/database-engine/configure-windows/affinity-mask-server-configuration-option', '  ', 1, 100, 0, 'Server_Configuration')
+VALUES ('630F3C37-9FE5-4EA7-AF9A-CEEE154B9A94','Server Performance', 'W','Warning', 'sp_configure_affinity64_cpu', 'Affinity64 mask is set to non-default values', 'Change the affinity64 mask value back to default of 0. The option will be deprecated.', '', 'https://learn.microsoft.com/sql/database-engine/configure-windows/affinity-mask-server-configuration-option', '  ', 1, 100, 0, ' ')
 INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
-VALUES ('B6871A6D-01EC-4247-BBF4-EC04244D6400','Server Performance', 'W','Warning', 'sp_configure_lightweight_pooling', 'Lightweight Pooling is set to non-default values', 'Change the Lightweight Pooling value back to default of 0. The option will be deprecated.', '', 'https://learn.microsoft.com/sql/database-engine/configure-windows/lightweight-pooling-server-configuration-option', '  ', 1, 100, 0, 'Server_Configuration')
+VALUES ('B6871A6D-01EC-4247-BBF4-EC04244D6400','Server Performance', 'W','Warning', 'sp_configure_lightweight_pooling', 'Lightweight Pooling is set to non-default values', 'Change the Lightweight Pooling value back to default of 0. The option will be deprecated.', '', 'https://learn.microsoft.com/sql/database-engine/configure-windows/lightweight-pooling-server-configuration-option', '  ', 1, 100, 0, ' ')
 INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
-VALUES ('322DC73D-E4B8-450A-94B7-484DF292AA01','Server Performance', 'W','Warning', 'sp_configure_max_woker_threads', 'Max Worker Thread is set to non-default values', 'Consider changing the ''max worker threads'' value of back to default of 0 to allow SQL Server to manage the worker thread count and the memory they use.', '', 'https://learn.microsoft.com/sql/database-engine/configure-windows/configure-the-max-worker-threads-server-configuration-option', '  ', 1, 100, 0, 'Server_Configuration')
+VALUES ('322DC73D-E4B8-450A-94B7-484DF292AA01','Server Performance', 'W','Warning', 'sp_configure_max_woker_threads', 'Max Worker Thread is set to non-default values', 'Consider changing the ''max worker threads'' value of back to default of 0 to allow SQL Server to manage the worker thread count and the memory they use.', '', 'https://learn.microsoft.com/sql/database-engine/configure-windows/configure-the-max-worker-threads-server-configuration-option', '  ', 1, 100, 0, ' ')
 		
 INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
 VALUES ('25678531-4722-48C4-94B0-026C2ED1021F','Server Performance', 'W','Warning', 'usp_HighRecompiles', 'Potential high Recompiles detected, 50+ per second', 'Potential high recompilations were detected. Please verify with perfmon data.  This can cause high CPU issues.', '','', '  ericbu', 1, 100, 0, ' ')
@@ -2085,7 +2085,7 @@ VALUES ('FDBF24A1-3EBE-49F1-A02B-FD5686ACDAE9','Server Performance', 'W','Warnin
 INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
 VALUES ('5E630273-C14F-4DCE-BDA0-24A1FD8E25CA','Server Performance', 'W','Warning', 'usp_IOAnalysis', 'Disk IO Analysis', 'The disk sec/transfer in following drives exceeded 20 ms, check the perfmon for complete analysis', '','https://docs.microsoft.com/en-us/troubleshoot/sql/performance/troubleshoot-sql-io-performance', '  ', 1, 100, 0, ' ')
 INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
-VALUES ('5AE45557-E463-48D6-B135-11AADCB8642F','Server Performance', 'I','Info', 'usp_WarnmissingIndex', 'Missing Index detected', 'There are missing indexes detected.  Please review SQL Nexus report and make recommendations to your customer.', '','', ' ', 1, 100, 0, 'Missing_Indexes')
+VALUES ('5AE45557-E463-48D6-B135-11AADCB8642F','Server Performance', 'I','Info', 'usp_WarnmissingIndex', 'Missing Index detected', 'There are missing indexes detected.  Please review SQL Nexus report and make recommendations to your customer.', '','', ' ', 1, 100, 0, ' ')
 INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
 VALUES ('0C73F3D4-6CCC-4FC9-AE37-58110F9C15DB','Server Performance', 'I','Info', 'StaleStatswarning2008', 'Stale Stats warning 2008', 'Statistics of some tables has not been updated for over 7 days', '','https://docs.microsoft.com/sql/relational-databases/statistics/statistics#UpdateStatistics', ' ', 1, 100, 0, ' ')
 INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
@@ -2105,9 +2105,9 @@ VALUES ('948756B6-A67F-4CB1-86F9-1B22C26F0B9C','Server Performance', 'W','Warnin
 INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
 VALUES ('4415F4B3-603F-4F41-978E-9EE32BF2B2E9','Server Performance', 'W','Warning', 'usp_Expensive_XEvts_Used', 'Expensive, performance-impacting Extended events were identfied', 'Multiple non default trace events  were detected running on the server.  This can negatively impact server performance', '','', '  ', 1, 100, 0, ' ')
 INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
-VALUES ('6D4B332C-67A0-428D-A08C-A48A5327DE60','Query Performance', 'W','Warning', 'usp_oldce', 'Customer using oldCE for database', 'Customer not taking advantage of newCE', '','https://cloudblogs.microsoft.com/sqlserver/2014/03/17/the-new-and-improved-cardinality-estimator-in-sql-server-2014/', '  virana', 1, 100, 0, ' ')
+VALUES ('6D4B332C-67A0-428D-A08C-A48A5327DE60','Query Performance', 'W','Warning', 'usp_oldce', 'Using Legacy CE for database', 'Consider changing compatibility level to take advantage of Optimizer New CE', '','https://learn.microsoft.com/sql/relational-databases/performance/cardinality-estimation-sql-server', '  virana', 1, 100, 0, ' ')
 INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
-VALUES ('91B2AA56-9CA2-4BDB-8D21-76A5CFF4D74A','Server Performance', 'W','Warning', 'usp_CalvsCore', 'CAL license possibly limiting CPU', 'Customer is using CAL license and CPUs are greater than schedulers online, check the errorlog to confirm. Customer could benefit by upgrading to CORE license.', '','https://docs.microsoft.com/en-us/sql/database-engine/install-windows/upgrade-to-a-different-edition-of-sql-server-setup?view=sql-server-ver16', '  jamgrif', 1, 100, 0, 'Server_Configuration')
+VALUES ('91B2AA56-9CA2-4BDB-8D21-76A5CFF4D74A','Server Performance', 'W','Warning', 'usp_CalvsCore', 'CAL license possibly limiting CPU', 'Customer is using CAL license and CPUs are greater than schedulers online, check the errorlog to confirm. Customer could benefit by upgrading to CORE license.', '','https://docs.microsoft.com/en-us/sql/database-engine/install-windows/upgrade-to-a-different-edition-of-sql-server-setup?view=sql-server-ver16', '  jamgrif', 1, 100, 0, ' ')
 
 
 
@@ -2531,7 +2531,7 @@ BEGIN
 					SELECT @external_url = 'https://learn.microsoft.com/sql/database-engine/configure-windows/configure-the-max-degree-of-parallelism-server-configuration-option'
 
 					UPDATE tbl_AnalysisSummary
-					SET [Status] = 1, Description = @descr_str, ExternalUrl = @external_url
+					SET [Status] = 1, Description = @descr_str, ExternalUrl = @external_url, Report = 'Server Configuration'
 					WHERE Name = 'sp_configure_max_dop_zero'
 				END
 
@@ -2813,7 +2813,8 @@ begin
 		if ( @is_Rulehit > 0) 
 			begin 
 				update tbl_AnalysisSummary
-				set [Status] = 1
+				set [Status] = 1,
+				Report = 'Missing Indexes'
 				where Name = 'usp_WarnmissingIndex'
 			
 			end 
@@ -3580,7 +3581,7 @@ BEGIN
 			)
 	BEGIN
 		UPDATE tbl_AnalysisSummary
-		SET [Status] = 1
+		SET [Status] = 1, [Description]='Consider raising compatibility level to take advantage of Optimizer New CE features'
 		WHERE NAME = 'usp_oldce'
 	END
 END
@@ -3622,7 +3623,8 @@ BEGIN
 			BEGIN
 				UPDATE [dbo].[tbl_AnalysisSummary]
 				SET [Status] = 1,
-				[Description] = 'Using CAL license. Also the CPU count (' + CONVERT(VARCHAR, @cpuCount) + ') is greater than online Scheduler count (' + CONVERT(VARCHAR, @schedCount) + '). Check the Errorlog to confirm. The user is not taking full advantage of available hardware and can benefit from upgrading to CORE licensing.'
+				[Description] = 'Using CAL license. Also the CPU count (' + CONVERT(VARCHAR, @cpuCount) + ') is greater than online Scheduler count (' + CONVERT(VARCHAR, @schedCount) + '). Check the Errorlog to confirm. The user is not taking full advantage of available hardware and can benefit from upgrading to CORE licensing.',
+				Report = 'Server Configuration'
 				WHERE [Name] = 'usp_CalvsCore'
 			END
 	END

@@ -16,27 +16,54 @@
     <DataSet Name="DataSet_StartTime">
       <Query>
         <DataSourceName>DataSource_SqlNexus_Private</DataSourceName>
-        <CommandText>select cast ('2000/1/1' as datetime) as StartTime
-	</CommandText>
+        <CommandText>DECLARE @sql VARCHAR(MAX) 
+IF OBJECT_ID ('tbl_RUNTIMES') IS NOT NULL
+BEGIN
+	SET @sql = 'SELECT (runtime) AS StartTime FROM tbl_RUNTIMES'
+	EXEC (@sql)
+END
+ELSE IF OBJECT_ID ('tbl_REQUESTS') IS NOT NULL
+BEGIN
+	SET @sql = 'SELECT (runtime) AS StartTime  FROM tbl_REQUESTS'
+	EXEC (@sql)
+END
+ELSE
+BEGIN
+	SELECT CAST ('2000/1/1' AS DATETIME) AS StartTime
+END</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
         <Field Name="StartTime">
           <DataField>StartTime</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:TypeName>System.DateTime</rd:TypeName>
         </Field>
       </Fields>
     </DataSet>
     <DataSet Name="DataSet_EndTime">
       <Query>
         <DataSourceName>DataSource_SqlNexus_Private</DataSourceName>
-        <CommandText>select cast ('2099/1/1' as datetime) as EndTime</CommandText>
+        <CommandText>DECLARE @sql VARCHAR(MAX) 
+IF OBJECT_ID ('tbl_RUNTIMES') IS NOT NULL
+BEGIN
+	SET @sql = 'SELECT (runtime) AS EndTime FROM tbl_RUNTIMES'
+	EXEC (@sql)
+END
+ELSE IF OBJECT_ID ('tbl_REQUESTS') IS NOT NULL
+BEGIN
+	SET @sql = 'SELECT (runtime) AS EndTime  FROM tbl_REQUESTS'
+	EXEC (@sql)
+END
+ELSE
+BEGIN
+	SELECT CAST ('2099/1/1' AS DATETIME) AS EndTime
+END</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
         <Field Name="EndTime">
           <DataField>EndTime</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:TypeName>System.DateTime</rd:TypeName>
         </Field>
       </Fields>
     </DataSet>
@@ -46,14 +73,13 @@
         <CommandText>	select cast ('2000/1/1' as datetime) as AvailableTime
 	union
 	select cast ('2099/1/1' as datetime) as AvailableTime
-	
 	</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
         <Field Name="AvailableTime">
           <DataField>AvailableTime</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:TypeName>System.DateTime</rd:TypeName>
         </Field>
       </Fields>
     </DataSet>
@@ -67,7 +93,7 @@ IF OBJECT_ID ('tbl_AnalysisSummary') IS NOT NULL
 BEGIN
    IF (COL_LENGTH('dbo.tbl_AnalysisSummary', 'Report') IS NULL)
    BEGIN
-      SELECT [FriendlyName], [Description], [ExternalUrl], [Type], [TypeDesc], [Status], 'data imported with older SQLNexus version' AS [Report]
+      SELECT [FriendlyName], [Description], [ExternalUrl], [Type], [TypeDesc], [Status], 'Not available due to import from an older SQLNexus version' AS [Report]
       FROM tbl_AnalysisSummary 
       ORDER BY SeqNum		
    END
@@ -116,6 +142,20 @@ END</CommandText>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>
+      <Filters>
+        <Filter>
+          <FilterExpression>=Fields!Status.Value</FilterExpression>
+          <Operator>GreaterThanOrEqual</Operator>
+          <FilterValues>
+            <FilterValue DataType="Integer">=IIF(Parameters!ShowAllRules.Value="true", 0 , 1)
+
+' The underlying Status column uses 1 for rules where an issue was found 
+' and 0 for ruless that passed. Therefore in this parameter if we ask to show all
+' we set Status &gt;=0 (that's 0 and 1) and if want just the warnings, 
+' then Status &gt;= 1 (that's just 1)</FilterValue>
+          </FilterValues>
+        </Filter>
+      </Filters>
     </DataSet>
   </DataSets>
   <ReportSections>
@@ -132,6 +172,7 @@ END</CommandText>
                     <Value>Best Practices &amp; Analysis Summary</Value>
                     <Style>
                       <FontSize>16pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -145,7 +186,7 @@ END</CommandText>
             <Top>0.00694in</Top>
             <Left>0.95084in</Left>
             <Height>0.275in</Height>
-            <Width>12.14584in</Width>
+            <Width>14.24791in</Width>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -163,7 +204,34 @@ END</CommandText>
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>Rules below are commonly observed issues that can cause performance problems on your system.  If you want to see all rules even this data capture didn't hit, chanage the report parameter.</Value>
+                    <Value>Rules below are commonly observed issues that can cause performance problems on your system.  If you want to see all results, including ones for which no issues are found, click the </Value>
+                    <Style>
+                      <FontSize>12pt</FontSize>
+                    </Style>
+                  </TextRun>
+                  <TextRun>
+                    <Value>Parameters</Value>
+                    <Style>
+                      <FontSize>12pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                  <TextRun>
+                    <Value> button above and change 'Show all rule results (both Success and Warning)' to </Value>
+                    <Style>
+                      <FontSize>12pt</FontSize>
+                    </Style>
+                  </TextRun>
+                  <TextRun>
+                    <Value>True</Value>
+                    <Style>
+                      <FontStyle>Italic</FontStyle>
+                      <FontSize>12pt</FontSize>
+                      <FontWeight>Normal</FontWeight>
+                    </Style>
+                  </TextRun>
+                  <TextRun>
+                    <Value>.</Value>
                     <Style>
                       <FontSize>12pt</FontSize>
                     </Style>
@@ -176,7 +244,7 @@ END</CommandText>
             <Top>1.38902in</Top>
             <Left>0.955in</Left>
             <Height>0.5382in</Height>
-            <Width>12.14168in</Width>
+            <Width>14.24375in</Width>
             <ZIndex>1</ZIndex>
             <Style>
               <Border>
@@ -192,19 +260,19 @@ END</CommandText>
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>1.79167in</Width>
+                  <Width>2.67708in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>4.1875in</Width>
+                  <Width>5.68541in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>3.37084in</Width>
+                  <Width>0.61458in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.79167in</Width>
+                  <Width>3.88126in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1in</Width>
+                  <Width>1.38542in</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -220,11 +288,10 @@ END</CommandText>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Name</Value>
+                                  <Value>Rule name</Value>
                                   <Style>
                                     <FontSize>12pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -240,7 +307,7 @@ END</CommandText>
                             <BottomBorder>
                               <Color>Black</Color>
                             </BottomBorder>
-                            <BackgroundColor>RoyalBlue</BackgroundColor>
+                            <BackgroundColor>YellowGreen</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -258,11 +325,10 @@ END</CommandText>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Description</Value>
+                                  <Value>Recommendation</Value>
                                   <Style>
                                     <FontSize>12pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -278,83 +344,7 @@ END</CommandText>
                             <BottomBorder>
                               <Color>Black</Color>
                             </BottomBorder>
-                            <BackgroundColor>RoyalBlue</BackgroundColor>
-                            <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
-                            <PaddingTop>2pt</PaddingTop>
-                            <PaddingBottom>2pt</PaddingBottom>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="Textbox7">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=IIF(Parameters!ShowInternalUrlColumn.Value="ShowInternalUrl99999", "External Url", "Url")</Value>
-                                  <Style>
-                                    <FontSize>12pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style />
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>Textbox7</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                            </Border>
-                            <BottomBorder>
-                              <Color>Black</Color>
-                            </BottomBorder>
-                            <BackgroundColor>RoyalBlue</BackgroundColor>
-                            <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
-                            <PaddingTop>2pt</PaddingTop>
-                            <PaddingBottom>2pt</PaddingBottom>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="Textbox12">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>Report</Value>
-                                  <Style>
-                                    <FontSize>12pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style />
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>Textbox12</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                            </Border>
-                            <BottomBorder>
-                              <Color>Black</Color>
-                            </BottomBorder>
-                            <BackgroundColor>RoyalBlue</BackgroundColor>
+                            <BackgroundColor>YellowGreen</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -372,11 +362,10 @@ END</CommandText>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Status</Value>
+                                  <Value>Result</Value>
                                   <Style>
                                     <FontSize>12pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -392,7 +381,81 @@ END</CommandText>
                             <BottomBorder>
                               <Color>Black</Color>
                             </BottomBorder>
-                            <BackgroundColor>RoyalBlue</BackgroundColor>
+                            <BackgroundColor>YellowGreen</BackgroundColor>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox13">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Reference</Value>
+                                  <Style>
+                                    <FontSize>12pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox13</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <BottomBorder>
+                              <Color>Black</Color>
+                            </BottomBorder>
+                            <BackgroundColor>YellowGreen</BackgroundColor>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox15">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Detailed Report</Value>
+                                  <Style>
+                                    <FontSize>12pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox12</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <BottomBorder>
+                              <Color>Black</Color>
+                            </BottomBorder>
+                            <BackgroundColor>YellowGreen</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -428,6 +491,12 @@ END</CommandText>
                               <Color>LightGrey</Color>
                               <Style>None</Style>
                             </Border>
+                            <BottomBorder>
+                              <Style>Solid</Style>
+                            </BottomBorder>
+                            <RightBorder>
+                              <Style>Solid</Style>
+                            </RightBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -458,6 +527,12 @@ END</CommandText>
                               <Color>LightGrey</Color>
                               <Style>None</Style>
                             </Border>
+                            <BottomBorder>
+                              <Style>Solid</Style>
+                            </BottomBorder>
+                            <RightBorder>
+                              <Style>Solid</Style>
+                            </RightBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -468,7 +543,29 @@ END</CommandText>
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="ExternalUrl">
+                        <Image Name="StatusImage">
+                          <Source>Embedded</Source>
+                          <Value>=IIF(Fields!Status.Value=0, "ProgressSuccess", "ProgressWarn")</Value>
+                          <Style>
+                            <Border>
+                              <Style>None</Style>
+                            </Border>
+                            <BottomBorder>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </BottomBorder>
+                            <RightBorder>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </RightBorder>
+                            <PaddingLeft>15pt</PaddingLeft>
+                          </Style>
+                        </Image>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="ExternalUrl1">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -477,14 +574,14 @@ END</CommandText>
                                 <TextRun>
                                   <Value>=Fields!ExternalUrl.Value</Value>
                                   <Style>
-                                    <Color>=Parameters!FmtHyperlink.Value</Color>
+                                    <Color>RoyalBlue</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>ExternalUrl</rd:DefaultName>
+                          <rd:DefaultName>ExternalUrl1</rd:DefaultName>
                           <ActionInfo>
                             <Actions>
                               <Action>
@@ -494,9 +591,16 @@ END</CommandText>
                           </ActionInfo>
                           <Style>
                             <Border>
-                              <Color>LightGrey</Color>
                               <Style>None</Style>
                             </Border>
+                            <BottomBorder>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </BottomBorder>
+                            <RightBorder>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </RightBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -507,7 +611,7 @@ END</CommandText>
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Report">
+                        <Textbox Name="Report3">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -528,15 +632,7 @@ END</CommandText>
                             <Actions>
                               <Action>
                                 <Drillthrough>
-                                  <ReportName>=SWITCH
-(
-Fields!Report.Value = "Active Traces", "Active Traces and XEvents_C", 
-Fields!Report.Value = "Perfmon CPU", "Perfmon_CPU_C", 
-Fields!Report.Value = "Perfmon IO", "Perfmon_IO_C", 
-Fields!Report.Value = "Server Configuration", "ServerConfiguration_C", 
-Fields!Report.Value = "data imported with older SQLNexus version", Nothing, 
-Fields!Report.Value = "", Nothing
-)</ReportName>
+                                  <ReportName>=SWITCH(Fields!Report.Value = "Active Traces", "Active Traces and XEvents_C", Fields!Report.Value = "Perfmon CPU", "Perfmon_CPU_C", Fields!Report.Value = "Perfmon IO", "Perfmon_IO_C", Fields!Report.Value = "Server Configuration", "ServerConfiguration_C", Fields!Report.Value = "Missing Indexes", "Missing Indexes_C", Fields!Report.Value = "data imported with older SQLNexus version", Nothing, Fields!Report.Value = "", Nothing)</ReportName>
                                 </Drillthrough>
                               </Action>
                             </Actions>
@@ -545,27 +641,20 @@ Fields!Report.Value = "", Nothing
                             <Border>
                               <Style>None</Style>
                             </Border>
+                            <BottomBorder>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </BottomBorder>
+                            <RightBorder>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </RightBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
-                        <rd:Selected>true</rd:Selected>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Image Name="StatusImage">
-                          <Source>Embedded</Source>
-                          <Value>=IIF(Fields!Status.Value=0, "ProgressSuccess", "ProgressWarn")</Value>
-                          <Style>
-                            <Border>
-                              <Style>None</Style>
-                            </Border>
-                            <PaddingLeft>20pt</PaddingLeft>
-                          </Style>
-                        </Image>
                       </CellContents>
                     </TablixCell>
                   </TablixCells>
@@ -583,9 +672,7 @@ Fields!Report.Value = "", Nothing
             </TablixColumnHierarchy>
             <TablixRowHierarchy>
               <TablixMembers>
-                <TablixMember>
-                  <KeepWithGroup>After</KeepWithGroup>
-                </TablixMember>
+                <TablixMember />
                 <TablixMember>
                   <Group Name="Details" />
                 </TablixMember>
@@ -595,7 +682,7 @@ Fields!Report.Value = "", Nothing
             <Top>2.11819in</Top>
             <Left>0.955in</Left>
             <Height>0.61458in</Height>
-            <Width>12.14168in</Width>
+            <Width>14.24375in</Width>
             <ZIndex>2</ZIndex>
             <Style>
               <Border>
@@ -617,7 +704,7 @@ Fields!Report.Value = "", Nothing
                   </TextRun>
                 </TextRuns>
                 <Style>
-                  <TextAlign>Center</TextAlign>
+                  <TextAlign>Left</TextAlign>
                 </Style>
               </Paragraph>
             </Paragraphs>
@@ -673,7 +760,7 @@ Fields!Report.Value = "", Nothing
               </Actions>
             </ActionInfo>
             <Top>0.58334in</Top>
-            <Left>6.10083in</Left>
+            <Left>6.68416in</Left>
             <Height>0.25in</Height>
             <Width>2.63333in</Width>
             <ZIndex>4</ZIndex>
@@ -701,7 +788,7 @@ Fields!Report.Value = "", Nothing
                   </TextRun>
                 </TextRuns>
                 <Style>
-                  <TextAlign>Center</TextAlign>
+                  <TextAlign>Right</TextAlign>
                 </Style>
               </Paragraph>
             </Paragraphs>
@@ -715,7 +802,7 @@ Fields!Report.Value = "", Nothing
               </Actions>
             </ActionInfo>
             <Top>0.58334in</Top>
-            <Left>10.48626in</Left>
+            <Left>12.58833in</Left>
             <Height>0.25in</Height>
             <Width>2.61042in</Width>
             <ZIndex>5</ZIndex>
@@ -738,7 +825,7 @@ Fields!Report.Value = "", Nothing
           <BackgroundColor>White</BackgroundColor>
         </Style>
       </Body>
-      <Width>13.30501in</Width>
+      <Width>16.42792in</Width>
       <Page>
         <PageHeader>
           <Height>0.45708in</Height>
@@ -771,7 +858,7 @@ Fields!Report.Value = "", Nothing
                   </Action>
                 </Actions>
               </ActionInfo>
-              <Left>11.30501in</Left>
+              <Left>13.05292in</Left>
               <Height>0.25in</Height>
               <Width>1in</Width>
               <Style>
@@ -864,11 +951,12 @@ Fields!Report.Value = "", Nothing
         </DataSetReference>
       </DefaultValue>
       <Prompt>Start Time</Prompt>
+      <Hidden>true</Hidden>
       <ValidValues>
         <DataSetReference>
-          <DataSetName>DataSet_AvailableTime</DataSetName>
-          <ValueField>AvailableTime</ValueField>
-          <LabelField>AvailableTime</LabelField>
+          <DataSetName>DataSet_StartTime</DataSetName>
+          <ValueField>StartTime</ValueField>
+          <LabelField>StartTime</LabelField>
         </DataSetReference>
       </ValidValues>
     </ReportParameter>
@@ -882,11 +970,12 @@ Fields!Report.Value = "", Nothing
         </DataSetReference>
       </DefaultValue>
       <Prompt>End Time</Prompt>
+      <Hidden>true</Hidden>
       <ValidValues>
         <DataSetReference>
-          <DataSetName>DataSet_AvailableTime</DataSetName>
-          <ValueField>AvailableTime</ValueField>
-          <LabelField>AvailableTime</LabelField>
+          <DataSetName>DataSet_EndTime</DataSetName>
+          <ValueField>EndTime</ValueField>
+          <LabelField>EndTime</LabelField>
         </DataSetReference>
       </ValidValues>
     </ReportParameter>
@@ -917,7 +1006,7 @@ Fields!Report.Value = "", Nothing
           <Value>false</Value>
         </Values>
       </DefaultValue>
-      <Prompt>Show all rules even not hit by this data capture</Prompt>
+      <Prompt>Show all rule results (Success and Warning)</Prompt>
     </ReportParameter>
     <ReportParameter Name="FmtHyperlink">
       <DataType>String</DataType>
