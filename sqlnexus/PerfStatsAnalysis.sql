@@ -1753,27 +1753,29 @@ BEGIN
 END
 go
 
+--ensuring CounterDateTime columns can be used in queries
+IF OBJECT_ID ('CounterData') IS NOT NULL 
+BEGIN
 
-if OBJECT_ID ('CounterData') is not null 
-begin
-	alter table CounterData
-		alter column CounterDateTime varchar(24);
+	--this deals with an Relog.exe issue that caused data was not being returned by queries on CounterDateTime, see #150
 
-	update CounterData
-	set CounterDateTime = REPLACE(CounterDateTime, char(0), '')
+	UPDATE CounterData SET CounterDateTime = 
+	SUBSTRING(CounterDateTime, 1,23) + CHAR(32) 
+	FROM dbo.CounterData
 
-	create index [INDX_CounterDateTime]
-	on [dbo].[CounterData]
+	CREATE INDEX [INDX_CounterDateTime]
+	ON [dbo].[CounterData]
 	(
 		[CounterDateTime]
 	)
 
-	print 'Added index to Table - dbo.CounterData || Column CounterDateTime'
-end
-go
+	PRINT 'Added index to Table - dbo.CounterData || Column CounterDateTime'
+END
+GO
+
 --clean up spinlock
 if OBJECT_ID ('tbl_SPINLOCKSTATS') is not null 
-	delete tbl_SPINLOCKSTATS where [name] like '%dbcc%'
+	DELETE tbl_SPINLOCKSTATS WHERE [name] LIKE '%dbcc%'
 go
 
  
@@ -1930,16 +1932,36 @@ GO
 /***********************************************************
  Top query plan analysis
  *************************************************************/
+--Add an XML column and an index to allow for subsequent query to run super fast
+--the XML native column improves performance manyfold
 
-set QUOTED_IDENTIFIER on; 
-WITH XMLNAMESPACES ('http://schemas.microsoft.com/sqlserver/2004/07/showplan' AS sp)  
-select distinct  stmt.stmt_details.value ('@Database', 'varchar(max)') 'Database' ,  stmt.stmt_details.value ('@Schema', 'varchar(max)') 'Schema' ,  
- stmt.stmt_details.value ('@Table', 'varchar(max)') 'table'   into tblObjectsUsedByTopPlans
+IF OBJECT_ID ('tblTopSqlPlan') IS NOT NULL
+BEGIN 
+ALTER TABLE tblTopSqlPlan ADD xml_plan XML
+END
+GO
+IF OBJECT_ID ('tblTopSqlPlan') IS NOT NULL
+BEGIN
+UPDATE tblTopSqlPlan set xml_plan = FileContent
+CREATE PRIMARY XML INDEX PXML_tblTopSqlPlan
+    ON tblTopSqlPlan (xml_plan)
+END
 
- from 
- (  select cast(FileContent as xml) sqlplan from tblTopSqlPlan) as p       cross apply sqlplan.nodes('//sp:Object') as stmt (stmt_details) 
 
-go
+IF OBJECT_ID ('tblTopSqlPlan') IS NOT NULL
+BEGIN
+	SET QUOTED_IDENTIFIER ON; 
+	WITH XMLNAMESPACES ('http://schemas.microsoft.com/sqlserver/2004/07/showplan' AS sp)  
+	SELECT DISTINCT  stmt.stmt_details.value ('@Database', 'varchar(max)') 'Database' ,
+		stmt.stmt_details.value ('@Schema', 'varchar(max)') 'Schema' ,  
+		stmt.stmt_details.value ('@Table', 'varchar(max)') 'table'   
+	INTO tblObjectsUsedByTopPlans
+	FROM 
+	 (  SELECT xml_plan AS sqlplan 
+		FROM tblTopSqlPlan) AS p       
+		CROSS APPLY sqlplan.nodes('//sp:Object') AS stmt (stmt_details) 
+END
+GO
 
 --QDS
 if object_id ('tbl_QDS_Query_Stats') is not null
@@ -2718,7 +2740,7 @@ SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE  procedure  [dbo].[usp_IOAnalysis] 
+CREATE  PROCEDURE  [dbo].[usp_IOAnalysis] 
 as
 begin
     IF ((OBJECT_ID ('counterdata') IS NOT NULL) and (OBJECT_ID ('counterdetails') IS NOT NULL) and (OBJECT_ID ('tbl_AnalysisSummary') IS NOT NULL))
@@ -2726,18 +2748,22 @@ begin
 
 		declare @max_sec_transfer decimal (12,3)	
 		
-		declare @IO_threshold decimal (12,3)
-		declare @T_CounterDateTime datetime
-		set @IO_threshold = 0.020
+		DECLARE @IO_threshold decimal (12,3)
+		DECLARE @T_CounterDateTime datetime
+		DECLARE @prolonged_avg_sec_transfer decimal (12,3), @drive VARCHAR(128)
+		SET @IO_threshold = 0.020
 
-		Create table #tmp (CounterDateTime datetime, CounterValue decimal (12,3))
+		CREATE TABLE #tmp (CounterDateTime DATETIME, CounterValue DECIMAL (12,3), ObjectName VARCHAR(1024), CounterName VARCHAR(1024), InstanceName VARCHAR(1024))
+		CREATE INDEX Idx_Dt ON #tmp (CounterDateTime) INCLUDE (CounterValue, ObjectName, CounterName, InstanceName)
 
-		insert into #tmp (CounterDateTime, CounterValue) 
-		SELECT convert(datetime, CounterDateTime), CounterValue
-		FROM counterdata dat INNER JOIN counterdetails dl ON dat.counterid = dl.counterid  
-		WHERE dl.objectname in ('logicaldisk') 
-				AND dl.countername in ('Avg. Disk sec/Transfer')
-				AND counterValue >= @IO_threshold
+		INSERT INTO #tmp (CounterDateTime, CounterValue, ObjectName, CounterName, InstanceName) 
+		SELECT CONVERT(DATETIME, CounterDateTime), CounterValue, ObjectName, CounterName, InstanceName
+		FROM CounterData dat INNER JOIN CounterDetails dl 
+			ON dat.CounterID = dl.CounterID  
+		WHERE dl.ObjectName IN ('logicaldisk') 
+				AND dl.CounterName in ('Avg. Disk sec/Transfer')
+				AND InstanceName <> '_Total'
+				AND CounterValue >= @IO_threshold
 
 		IF (@@ROWCOUNT > 0 )
 		begin
@@ -2749,26 +2775,22 @@ begin
 
 			WHILE (@@fetch_status = 0)
 			BEGIN
-                                                            
-				--insert into #tmpDisplayRecords (ObjectName,CounterName,InstanceName,avg)
-				IF EXISTS 
-				(SELECT 1
-					FROM counterdata dat INNER JOIN counterdetails dli 
-						ON dat.counterid = dli.counterid  
-					WHERE dli.objectname in ('logicaldisk') 
-						and  dli.countername in ('Avg. Disk sec/Transfer')  
-					and ltrim(rtrim(SUBSTRING(COALESCE (InstanceName, ''), 1,10))) <> '_Total'
-					and CounterDateTime between (@T_CounterDateTime - '00:00:30')  and (@T_CounterDateTime  + '00:00:30') 
-					GROUP BY ObjectName, CounterName, InstanceName                      
-					HAVING    cast (avg(counterValue)  as decimal (12,3))  >= @IO_threshold
-                )
-				BEGIN 
-					SELECT @max_sec_transfer = countervalue
-					FROM #tmp
+                
+				--find the avg value within a 1 min range. If that is high, we really have an I/O issue
+				SELECT @prolonged_avg_sec_transfer = AVG(counterValue), @drive = InstanceName  
+				FROM #tmp
+				WHERE CounterDateTime BETWEEN (@T_CounterDateTime - '00:00:30') AND (@T_CounterDateTime  + '00:00:30') 
+				GROUP BY ObjectName, CounterName, InstanceName                      
+				HAVING  AVG(counterValue)  >= @IO_threshold
+
+				
+				IF (@@ROWCOUNT > 0)
+				BEGIN
+					SELECT @prolonged_avg_sec_transfer, @drive 
 
 					UPDATE tbl_AnalysisSummary
 					SET [Status] = 1,
-					Description = 'The "Avg. Disk sec/transfer" on some drives exceeded 20 ms, with max value found = '+ convert (varchar, @max_sec_transfer) + ' sec/transfer. Check the Perfmon for complete analysis',
+					Description = 'The "Avg. Disk sec/transfer" on some drives exceeded 20 ms for 1 min or more (not just a spike). Example: Drive '''+ @drive + ''', ' + convert (varchar(32), @prolonged_avg_sec_transfer) + ' sec/transfer. Check the Perfmon for complete analysis',
 					Report = 'Perfmon IO'
 					WHERE Name = 'usp_IOAnalysis'
 					
@@ -2785,7 +2807,8 @@ begin
 		END
 	END
 END
-go
+
+GO
 
 Create procedure [usp_WarnmissingIndex]  
 as 
