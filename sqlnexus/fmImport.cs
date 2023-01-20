@@ -970,6 +970,8 @@ namespace sqlnexus
 
                     else if (tlpFiles.Controls[i].Name == postProcessStr)
                     {
+                        int postProcessStartTicks = Environment.TickCount;
+
                         Application.DoEvents();
                         //run Perfstats Analysis script just once
                         currBar = (ProgressBar)tlpFiles.Controls[i + 1];
@@ -985,7 +987,7 @@ namespace sqlnexus
                         RunPostProcessing(srcPath);
 
                         currBar.Value = 100;
-                        currLabel.Text = "(Post-import Processing) Done.";
+                        currLabel.Text = "(Post-import Processing) Done. ("  + (Environment.TickCount - postProcessStartTicks) / 1000 + " sec) " ;
                         MainForm.LogMessage("End of Post-Import processing");
 
                         Application.DoEvents();
@@ -993,6 +995,8 @@ namespace sqlnexus
 
                     else if (tlpFiles.Controls[i].Name == perfStatsAnalysisStr)
                     {
+                        int perfAnalysisStartTicks = Environment.TickCount;
+
                         Application.DoEvents();
                         //run Perfstats Analysis script just once
                         currBar = (ProgressBar)tlpFiles.Controls[i + 1];
@@ -1008,7 +1012,7 @@ namespace sqlnexus
                         RunScript("PerfStatsAnalysis.sql");
 
                         currBar.Value = 100;
-                        currLabel.Text = "(PerfStatsAnalysis) Done.";
+                        currLabel.Text = "(PerfStatsAnalysis) Done. (" + (Environment.TickCount - perfAnalysisStartTicks) / 1000 + " sec) ";
                         MainForm.LogMessage("End of Perfstats Analysis");
 
                         Application.DoEvents();
@@ -1017,7 +1021,9 @@ namespace sqlnexus
                     else if (tlpFiles.Controls[i].Name == runtimeCountStr)
                     {
                         Application.DoEvents();
+
                         int runtimeStartTicks = Environment.TickCount;
+                        
                         //run Perfstats Analysis script just once
                         currBar = (ProgressBar)tlpFiles.Controls[i + 1];
                         currBar.Value = 20;
