@@ -2300,19 +2300,27 @@ end
 go
 create procedure usp_BatchSort
  as
-  declare @filename nvarchar(max), @Optimized int
- select  top 1 @filename = [FileName],  @Optimized= c.value('@Optimized[1]', 'int')  from   (select FileName, cast(FileContent as xml) QueryPlan  from tblTopSqlPlan)  a cross apply a.QueryPlan.nodes('declare namespace SP="http://schemas.microsoft.com/sqlserver/2004/07/showplan";//SP:NestedLoops') as t(c)
- where c.value('@Optimized[1]', 'int') = 1
- if ( @fileName is not null)
- begin
-	update tbl_AnalysisSummary
-	set
-	status = 1, 
-	description =  @filename + ' is an example query plan'
-	where name = 'usp_BatchSort'
- end
 
-go
+DECLARE @FileName NVARCHAR(MAX), @Optimized INT, @SqlStmt VARCHAR(MAX)
+
+--if xml_plan column is in the table, the the file name (only) of the file that contains the query plan with optimized batch sort
+ IF (COL_LENGTH('dbo.tblTopSqlPlan', 'xml_plan') IS NULL )
+ BEGIN
+	 SELECT TOP 1 @filename = RIGHT([FileName], CHARINDEX('\', REVERSE([FileName])) -1) ,  @Optimized= c.value('@Optimized[1]', 'int')  
+	 FROM   (SELECT FileName, xml_plan AS QueryPlan  FROM tblTopSqlPlan)  a 
+		CROSS APPLY a.QueryPlan.nodes('declare namespace SP="http://schemas.microsoft.com/sqlserver/2004/07/showplan";//SP:NestedLoops') AS t(c)
+	 WHERE c.value('@Optimized[1]', 'int') = 1
+ END
+
+ IF ( @FileName IS NOT NULL)
+ BEGIN
+	UPDATE tbl_AnalysisSummary
+	SET [Status] = 1, 
+	[Description] =  'Found a query plan with a batch sort. ''' + @FileName + ''' is an example query plan. Batch sort can cause high CPU or memory grant issues due to cardinality over-estimation. Examine plan and query duration. '
+	WHERE [Name] = 'usp_BatchSort'
+ END
+
+GO
 
 create procedure usp_McAFee_Intrusion
 as
