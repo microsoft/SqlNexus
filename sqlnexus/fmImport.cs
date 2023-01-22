@@ -611,7 +611,7 @@ namespace sqlnexus
             {
                 if (nInfo.HasNexusInfo() && !Globals.DropExistingDb)
                 {
-                    MainForm.LogMessage(String.Format("Database '{0}' already contains Nexus data. Please choose or create a different database for a fresh data load", (Globals.credentialMgr.Database != null) ? Globals.credentialMgr.Database : " "), MessageOptions.All);
+                    MainForm.LogMessage(String.Format("Database '{0}' already contains Nexus data. \r\nEither choose 'drop current db' or create a new database for a fresh import", (Globals.credentialMgr.Database != null) ? Globals.credentialMgr.Database : " "), MessageOptions.All);
                     return true;
                 }
                 else
@@ -624,7 +624,7 @@ namespace sqlnexus
                 //db has been imported into before and user did not request a drop db
                 if (nInfo.HasNexusInfo() && (!tsiDropDBBeforeImporting.Checked && !ImportOptions.IsEnabled("DropDbBeforeImporting")))
                 {
-                    MainForm.LogMessage(String.Format("Database '{0}' already contains Nexus data. Please choose or create a different database for a fresh data load", (Globals.credentialMgr.Database != null) ? Globals.credentialMgr.Database : " "), MessageOptions.All);
+                    MainForm.LogMessage(String.Format("Database '{0}' already contains Nexus data. \r\nEither choose 'drop current db' or create a new database for a fresh import", (Globals.credentialMgr.Database != null) ? Globals.credentialMgr.Database : " "), MessageOptions.All);
                     return true;
                 }
                 else
@@ -640,9 +640,16 @@ namespace sqlnexus
 
             if (true == KeepPriorNonEmptyDb())
             {
-                this.Visible = false;
-                this.Dispose();
-                MainForm.BringToFront();
+                //this used to close the import form and go back to main form, but changing behavior to stay on same form
+                //the reason is that most frequently the user wants to drop the existing db as a choice and does not need to open the import form again
+                //keeping original code for future consideration
+
+                //this.Visible = false;
+                //this.Dispose();
+                //MainForm.BringToFront();
+
+                //make the Close button visible instead
+                this.btnClose.Visible = true;                
                 return;
             }
 
