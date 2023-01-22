@@ -2329,9 +2329,13 @@ END
 GO
 CREATE PROCEDURE usp_OptimizerTimeout
 AS
+
+--create a report on tbl_OptimizerTimeout_Statements
+
+IF (OBJECT_ID ('tbl_OptimizerTimeout_Statements') IS NULL)
 BEGIN
---build a cursor loop to get all files that contain opt timeout
---create a report
+
+	DECLARE @FileName varchar (128) = '', @StmtId INT, @StmtTxt VARCHAR(256)
 
 	SET QUOTED_IDENTIFIER ON; 
 
@@ -2351,8 +2355,24 @@ BEGIN
 		CROSS APPLY sqlplan.nodes('//sp:StmtSimple') AS stmt (stmt_details) 
 	WHERE stmt.stmt_details.value('@StatementOptmEarlyAbortReason', 'varchar(max)') = 'Timeout'
 
-	--cursor here
+
+	IF (@@ROWCOUNT > 0)
+	BEGIN
+			SELECT TOP 1 @FileName = FileName, @StmtId = StatementId, @StmtTxt = SUBSTRING (StatementText,0,256)
+			FROM tbl_OptimizerTimeout_Statements
+			ORDER BY StatementSubtreeCost DESC
+
+
+		IF ( @FileName IS NOT NULL)
+		BEGIN
+			UPDATE tbl_AnalysisSummary
+			SET [Status] = 1, 
+			[Description] =  'Found a query plan with a optimizer timeout. File ''' + @FileName + ''' contains an example query plan, with Statement text starting like this:''' + CHAR(13) + CHAR(10) +  @StmtTxt + '''. ' + CHAR(13) + CHAR(10) +  'An optimizer timeout can cause a choice of query that runs longer than expected and consume more resources. Examine queries for potential optimization '
+			WHERE [Name] = OBJECT_NAME(@@PROCID)
+		END
+	END
 END
+
 GO
 
 
@@ -3526,7 +3546,7 @@ BEGIN
 	BEGIN 
 		UPDATE tbl_AnalysisSummary
 		SET [Status] = 1,
-			Description = 'Expensive Trace events are active on the system. These can negatively impact performance. Examples include: '+ @events_string  + '. Consider disabling these and review feasibility of using long term. See *_MiscPssdiagInfo_Startup.OUT for details.',
+			Description = 'Expensive Trace events are active on the system. These can negatively impact performance. Examples include: '+ @events_string + '' + CHAR(13) + CHAR(10) + ' Consider disabling these and review the feasibility of using long term. See *_MiscPssdiagInfo_Startup.OUT for details.',
 			Report = 'Active Traces'
 		WHERE Name = 'usp_Expensive_TraceEvts_Used' 
 					
@@ -3572,7 +3592,7 @@ IF (OBJECT_ID ('tbl_XEvents') IS NOT NULL)
 	BEGIN 
 		UPDATE tbl_AnalysisSummary
 		SET [Status] = 1,
-			Description = 'Expensive Xevents are active on the system. These can negatively impact performance. Examples include: '+ @events_string  + '. Consider disabling these and review feasibility of using long term. See *_MiscPssdiagInfo_Startup.OUT for details.',
+			Description = 'Expensive Xevents are active on the system. These can negatively impact performance. Examples include: '+ @events_string  + CHAR(13) + CHAR(10) + ' Consider disabling these and review the feasibility of using them long term. See *_MiscPssdiagInfo_Startup.OUT for details.',
 			Report = 'Active Traces'
 		WHERE Name = 'usp_Expensive_XEvts_Used'
 					
