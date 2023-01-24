@@ -305,6 +305,16 @@ namespace sqlnexus.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap CriticalErrorImport {
+            get {
+                object obj = ResourceManager.GetObject("CriticalErrorImport", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap DataContainer_MoveFirsHS {
             get {
                 object obj = ResourceManager.GetObject("DataContainer_MoveFirsHS", resourceCulture);
@@ -437,6 +447,16 @@ namespace sqlnexus.Properties {
         internal static System.Drawing.Bitmap earth {
             get {
                 object obj = ResourceManager.GetObject("earth", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap EditIcon_20x20 {
+            get {
+                object obj = ResourceManager.GetObject("EditIcon_20x20", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

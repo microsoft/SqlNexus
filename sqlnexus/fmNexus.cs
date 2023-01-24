@@ -717,7 +717,7 @@ namespace sqlnexus
             this.spnImporter.RotationSpeed = 80;
             this.spnImporter.Size = new System.Drawing.Size(20, 20);
             this.spnImporter.SpokeThickness = 4;
-            this.paDataBody.Controls.Add(spnImporter);
+            this.paTasksBody.Controls.Add(spnImporter);
 
             this.spnRealtime.Active = false;
             this.spnRealtime.Color = System.Drawing.Color.CornflowerBlue;
@@ -912,8 +912,14 @@ namespace sqlnexus
         {
             TreeNode node;
             string nodename = "tvn_" + reportname;
+            
+            //create a a tree node collection
             TreeNodeCollection pnodes = (null == parentnodes ? tvReports.Nodes : parentnodes);
+
+            //create a tree node
             TreeNode[] nodes = pnodes.Find(nodename, true);
+
+
             if (-1==nodes.GetUpperBound(0))
             {
                 node = new TreeNode(reportname);
@@ -2529,7 +2535,7 @@ namespace sqlnexus
 
         private void pbExpandData_Click(object sender, EventArgs e)
         {
-            CollapseExpandPanel(paDataBody, pbCollapseData, pbExpandData);
+            CollapseExpandPanel(paLogBody, pbCollapseData, pbExpandData);
         }
 
         private void llReports_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -2539,7 +2545,7 @@ namespace sqlnexus
 
         private void llData_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            CollapseExpandPanel(paDataBody, pbCollapseData, pbExpandData);
+            CollapseExpandPanel(paLogBody, pbCollapseData, pbExpandData);
         }
 
         private void pbCollapseTasks_Click(object sender, EventArgs e)
@@ -2583,8 +2589,8 @@ namespace sqlnexus
                 CollapseExpandPanel(paReportsBody, pbCollapseReports, pbExpandReports);
             if (paTasksBody.Visible == collapse)
                 CollapseExpandPanel(paTasksBody, pbCollapseTasks, pbExpandTasks);
-            if (paDataBody.Visible == collapse)
-                CollapseExpandPanel(paDataBody, pbCollapseData, pbExpandData);
+            if (paLogBody.Visible == collapse)
+                CollapseExpandPanel(paLogBody, pbCollapseData, pbExpandData);
         }
 
         private void expandAllToolStripMenuItem_Click(object sender, EventArgs e)
@@ -3248,7 +3254,7 @@ namespace sqlnexus
 
         }
 
-        private void linkLabel6_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void linkLabelImport_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             if (Globals.credentialMgr.Database.ToUpper() == "TEMPDB")
             {
@@ -3463,7 +3469,7 @@ namespace sqlnexus
 
         }
 
-        private void linkLabel6_LocationChanged(object sender, EventArgs e)
+        private void linkLabelImport_LocationChanged(object sender, EventArgs e)
         {
 
         }
@@ -3478,6 +3484,20 @@ namespace sqlnexus
             Globals.LuanchPowerBI();
         }
 
+        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void toolbarMain_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
+        }
+
+        private void llData_LinkClicked_1(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+
+        }
     }
 
     /// <summary>
