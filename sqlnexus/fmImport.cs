@@ -723,7 +723,8 @@ namespace sqlnexus
             }
 
             RunScript("SqlNexus_PreProcessing.sql");
-            MainForm.LogMessage("Adding Nexus Importer Version" + Globals.credentialMgr.ConnectionString);
+            MainForm.LogMessage("SQL Nexus importer version " + Application.ProductVersion.ToString());
+            MainForm.LogMessage("SQL Nexus connection to server: '" + Globals.credentialMgr.Server + "', database: '"+ Globals.credentialMgr.Database + "'");
             NexusInfo nInfo = new NexusInfo(Globals.credentialMgr.ConnectionString, this.MainForm);
             nInfo.SetAttribute("Nexus Importer Version", Application.ProductVersion);
 
