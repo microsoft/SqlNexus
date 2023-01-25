@@ -3782,6 +3782,18 @@
     </Rowset>
 
 
+    <Rowset name="tbl_hadr_ag_automatic_seeding" enabled="true" identifier="-- AG_hadr_automatic_seeding --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="ag_name" type="RowsetImportEngine.NVarCharColumn" length="256"/>
+        <Column name="database_name" type="RowsetImportEngine.NVarCharColumn" length="256"/>
+        <Column name="start_time" type="RowsetImportEngine.DateTimeColumn"/>
+        <Column name="completion_time" type="RowsetImportEngine.DateTimeColumn"/>
+        <Column name="MORE_COLUMNS_HERE" type="RowsetImportEngine.DateTimeColumn"/>
+      </KnownColumns>
+    </Rowset>
+
+
+
   </KnownRowsets>
 </TextImport>
 
