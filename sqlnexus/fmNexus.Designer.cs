@@ -278,7 +278,7 @@ namespace sqlnexus
             // 
             // tableLayoutPanel1
             // 
-            this.tableLayoutPanel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(226)))), ((int)(((byte)(250)))));
+            this.tableLayoutPanel1.BackColor = System.Drawing.Color.LightSkyBlue;
             resources.ApplyResources(this.tableLayoutPanel1, "tableLayoutPanel1");
             this.tableLayoutPanel1.ContextMenuStrip = this.cmNav;
             this.tableLayoutPanel1.Controls.Add(this.paTasks, 0, 2);

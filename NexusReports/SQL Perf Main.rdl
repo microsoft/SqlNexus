@@ -193,13 +193,28 @@ select  CategorySeq,Category, ReportName, ReportDisplayName, ReportDescription, 
     <DataSet Name="DataSet_SQLVersion">
       <Query>
         <DataSourceName>DataSource_Private</DataSourceName>
-        <CommandText>if object_id ('dbo.tbl_ServerProperties') is not null
-begin
-	select case [PropertyValue] when '9' then '2005' when '8' then '' when '10' then '2008' when '10.50' then '2008 R2' when '11' then '2012'  when '12' then '2014' when '13' then '2016' when '14' then 'vNext' else null end as 'SQLVersion' from tbl_ServerProperties  where PropertyName='MajorVersion'
-end
-else
-	select '' as 'SQLVersion'
-</CommandText>
+        <CommandText>IF OBJECT_ID ('dbo.tbl_ServerProperties') IS NOT NULL 
+BEGIN 
+	SELECT 
+	  CASE [PropertyValue] WHEN '9' THEN '2005' 
+			WHEN '8' THEN '' 
+			WHEN '10' THEN '2008' 
+			WHEN '10.50' THEN '2008 R2' 
+			WHEN '11' THEN '2012' 
+			WHEN '12' THEN '2014' 
+			WHEN '13' THEN '2016' 
+			WHEN '14' THEN '2017' 
+			WHEN '15' THEN '2019' 
+			WHEN '16' THEN '2022' 
+			else null 
+	  END AS 'SQLVersion' 
+	FROM 
+	  tbl_ServerProperties 
+	WHERE 
+	  PropertyName = 'MajorVersion' 
+END 
+ELSE
+	SELECT 'unknown' AS 'SQLVersion'</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -690,7 +705,7 @@ end</CommandText>
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>="SQL Server " &amp; First(Fields!SQLVersion.Value, "DataSet_SQLVersion") &amp; " Nexus &amp; ReadTrace Reports"</Value>
+                    <Value>="SQL Nexus &amp; ReadTrace Reports (SQL Server version: " &amp; First(Fields!SQLVersion.Value, "DataSet_SQLVersion") &amp; ")"</Value>
                     <Style>
                       <FontFamily>Tahoma</FontFamily>
                       <FontSize>18pt</FontSize>
@@ -707,6 +722,10 @@ end</CommandText>
             <Width>11.15001in</Width>
             <ZIndex>1</ZIndex>
             <Style>
+              <Border>
+                <Color>DimGray</Color>
+                <Style>Solid</Style>
+              </Border>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
               <PaddingTop>2pt</PaddingTop>
