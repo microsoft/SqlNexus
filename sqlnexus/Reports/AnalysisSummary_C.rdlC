@@ -292,6 +292,7 @@ END</CommandText>
                                   <Style>
                                     <FontSize>12pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Color>FloralWhite</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -307,7 +308,7 @@ END</CommandText>
                             <BottomBorder>
                               <Color>Black</Color>
                             </BottomBorder>
-                            <BackgroundColor>YellowGreen</BackgroundColor>
+                            <BackgroundColor>OliveDrab</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -329,6 +330,7 @@ END</CommandText>
                                   <Style>
                                     <FontSize>12pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Color>FloralWhite</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -344,7 +346,7 @@ END</CommandText>
                             <BottomBorder>
                               <Color>Black</Color>
                             </BottomBorder>
-                            <BackgroundColor>YellowGreen</BackgroundColor>
+                            <BackgroundColor>OliveDrab</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -366,6 +368,7 @@ END</CommandText>
                                   <Style>
                                     <FontSize>12pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Color>FloralWhite</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -381,7 +384,7 @@ END</CommandText>
                             <BottomBorder>
                               <Color>Black</Color>
                             </BottomBorder>
-                            <BackgroundColor>YellowGreen</BackgroundColor>
+                            <BackgroundColor>OliveDrab</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -403,6 +406,7 @@ END</CommandText>
                                   <Style>
                                     <FontSize>12pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Color>FloralWhite</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -418,7 +422,7 @@ END</CommandText>
                             <BottomBorder>
                               <Color>Black</Color>
                             </BottomBorder>
-                            <BackgroundColor>YellowGreen</BackgroundColor>
+                            <BackgroundColor>OliveDrab</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -440,6 +444,7 @@ END</CommandText>
                                   <Style>
                                     <FontSize>12pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Color>FloralWhite</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -455,7 +460,7 @@ END</CommandText>
                             <BottomBorder>
                               <Color>Black</Color>
                             </BottomBorder>
-                            <BackgroundColor>YellowGreen</BackgroundColor>
+                            <BackgroundColor>OliveDrab</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -559,8 +564,10 @@ END</CommandText>
                               <Style>Solid</Style>
                             </RightBorder>
                             <PaddingLeft>15pt</PaddingLeft>
+                            <PaddingTop>10pt</PaddingTop>
                           </Style>
                         </Image>
+                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                     <TablixCell>
@@ -822,7 +829,6 @@ END</CommandText>
           <Border>
             <Style>None</Style>
           </Border>
-          <BackgroundColor>WhiteSmoke</BackgroundColor>
         </Style>
       </Body>
       <Width>16.42792in</Width>
@@ -876,7 +882,6 @@ END</CommandText>
             <Border>
               <Style>None</Style>
             </Border>
-            <BackgroundColor>WhiteSmoke</BackgroundColor>
           </Style>
         </PageHeader>
         <PageFooter>
@@ -887,7 +892,6 @@ END</CommandText>
             <Border>
               <Style>None</Style>
             </Border>
-            <BackgroundColor>WhiteSmoke</BackgroundColor>
           </Style>
         </PageFooter>
         <LeftMargin>1in</LeftMargin>
