@@ -3782,6 +3782,81 @@
     </Rowset>
 
 
+    <Rowset name="tbl_hadr_ag_automatic_seeding" enabled="true" identifier="-- AG_hadr_automatic_seeding --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="ag_name" type="RowsetImportEngine.NVarCharColumn" length="64"/>
+        <Column name="database_name" type="RowsetImportEngine.NVarCharColumn" length="64"/>
+        <Column name="start_time" type="RowsetImportEngine.DateTimeColumn"/>
+        <Column name="completion_time" type="RowsetImportEngine.DateTimeColumn"/>
+        <Column name="operation_id" type="RowsetImportEngine.NVarCharColumn" length="128"/>
+        <Column name="is_source" type="RowsetImportEngine.IntColumn"/>
+        <Column name="current_state" type="RowsetImportEngine.NVarCharColumn" length="128"/>
+        <Column name="performed_seeding" type="RowsetImportEngine.IntColumn"/>
+        <Column name="failure_state_desc" type="RowsetImportEngine.NVarCharColumn" length="128"/>
+        <Column name="error_code" type="RowsetImportEngine.IntColumn"/>
+      </KnownColumns>
+    </Rowset>
+
+    <Rowset name="tbl_hadr_ag_physical_seeding_stats" enabled="true" identifier="-- AG_hadr_physical_seeding_stats --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="local_physical_seeding_id" type="RowsetImportEngine.NVarCharColumn" length="48"/>
+        <Column name="remote_physical_seeding_id" type="RowsetImportEngine.NVarCharColumn" length="48"/>
+        <Column name="local_database_id" type="RowsetImportEngine.IntColumn"/>
+        <Column name="local_database_name" type="RowsetImportEngine.NVarCharColumn" length="256"/>
+        <Column name="remote_machine_name" type="RowsetImportEngine.NVarCharColumn" length="256"/>
+        <Column name="role_desc" type="RowsetImportEngine.NVarCharColumn" length="256"/>
+        <Column name="internal_state_desc" type="RowsetImportEngine.NVarCharColumn" length="256"/>
+        <Column name="transfer_rate_bytes_per_second" type="RowsetImportEngine.BigIntColumn"/>
+        <Column name="transferred_size_bytes" type="RowsetImportEngine.BigIntColumn"/>
+        <Column name="database_size_bytes" type="RowsetImportEngine.BigIntColumn"/>
+        <Column name="start_time_utc" type="RowsetImportEngine.DateTimeColumn"/>
+        <Column name="end_time_utc" type="RowsetImportEngine.DateTimeColumn"/>
+        <Column name="estimate_time_complete_utc" type="RowsetImportEngine.DateTimeColumn"/>
+        <Column name="total_disk_io_wait_time_ms" type="RowsetImportEngine.BigIntColumn"/>
+        <Column name="total_network_wait_time_ms" type="RowsetImportEngine.BigIntColumn"/>
+        <Column name="failure_code" type="RowsetImportEngine.IntColumn"/>
+        <Column name="failure_message" type="RowsetImportEngine.NVarCharColumn" length="256"/>
+        <Column name="failure_time_utc" type="RowsetImportEngine.DateTimeColumn"/>
+        <Column name="is_compression_enabled" type="RowsetImportEngine.IntColumn"/>
+      </KnownColumns>
+    </Rowset>
+
+
+
+    <Rowset name="tbl_sp_certificate_issuers" enabled="true" identifier="-- sys_sp_certificate_issuers --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="certificateid" type="RowsetImportEngine.IntColumn"/>
+        <Column name="dnsname" type="RowsetImportEngine.NVarCharColumn" length="128"/>
+      </KnownColumns>
+    </Rowset>
+
+
+    <Rowset name="tbl_certificates" enabled="true" identifier="-- sys.certificates --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="database_name" type="RowsetImportEngine.NVarCharColumn" length="256"/>
+        <Column name="name" type="RowsetImportEngine.NVarCharColumn" length="256"/>
+        <Column name="certificate_id" type="RowsetImportEngine.IntColumn"/>
+        <Column name="principal_id" type="RowsetImportEngine.IntColumn"/>
+        <Column name="pvt_key_encryption_type" type="RowsetImportEngine.NVarCharColumn" length="3"/>
+        <Column name="pvt_key_encryption_type_desc" type="RowsetImportEngine.NVarCharColumn" length="120"/>
+        <Column name="is_active_for_begin_dialog" type="RowsetImportEngine.IntColumn"/>
+        <Column name="issuer_name" type="RowsetImportEngine.NVarCharColumn" length="900"/>
+        <Column name="cert_serial_number" type="RowsetImportEngine.NVarCharColumn" length="128"/>
+        <Column name="sid" type="RowsetImportEngine.VarBinaryColumn" length="90"/>
+        <Column name="string_sid" type="RowsetImportEngine.NVarCharColumn" length="256"/>
+        <Column name="subject" type="RowsetImportEngine.NVarCharColumn" length="8000"/>
+        <Column name="expiry_date" type="RowsetImportEngine.DateTimeColumn"/>
+        <Column name="start_date" type="RowsetImportEngine.DateTimeColumn"/>
+        <Column name="thumbprint" type="RowsetImportEngine.VarBinaryColumn" length="64"/>
+        <Column name="attested_by" type="RowsetImportEngine.NVarCharColumn" length="520"/>
+        <Column name="pvt_key_last_backup_date" type="RowsetImportEngine.DateTimeColumn"/>
+        <Column name="key_length" type="RowsetImportEngine.IntColumn"/>
+      </KnownColumns>
+    </Rowset>
+
+
+
+
   </KnownRowsets>
 </TextImport>
 
