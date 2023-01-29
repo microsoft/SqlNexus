@@ -567,7 +567,6 @@ END</CommandText>
                             <PaddingTop>10pt</PaddingTop>
                           </Style>
                         </Image>
-                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                     <TablixCell>
@@ -639,7 +638,15 @@ END</CommandText>
                             <Actions>
                               <Action>
                                 <Drillthrough>
-                                  <ReportName>=SWITCH(Fields!Report.Value = "Active Traces", "Active Traces and XEvents_C", Fields!Report.Value = "Perfmon CPU", "Perfmon_CPU_C", Fields!Report.Value = "Perfmon IO", "Perfmon_IO_C", Fields!Report.Value = "Server Configuration", "ServerConfiguration_C", Fields!Report.Value = "Missing Indexes", "Missing Indexes_C", Fields!Report.Value = "data imported with older SQLNexus version", Nothing, Fields!Report.Value = "", Nothing)</ReportName>
+                                  <ReportName>=SWITCH(
+Fields!Report.Value = "Active Traces", "Active Traces and XEvents_C", 
+Fields!Report.Value = "Perfmon CPU", "Perfmon_CPU_C", 
+Fields!Report.Value = "Perfmon IO", "Perfmon_IO_C", 
+Fields!Report.Value = "Server Configuration", "ServerConfiguration_C", 
+Fields!Report.Value = "Missing Indexes", "Missing Indexes_C", 
+Fields!Report.Value = "Spinlock Stats", "Spinlock Stats_C",
+Fields!Report.Value = "data imported with older SQLNexus version", Nothing, 
+Fields!Report.Value = "", Nothing)</ReportName>
                                 </Drillthrough>
                               </Action>
                             </Actions>
@@ -662,6 +669,7 @@ END</CommandText>
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
+                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                   </TablixCells>

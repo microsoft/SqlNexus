@@ -67,7 +67,7 @@ values ('LockSummary_C', 'Lock Count Summary', 'Lock count graphed by resources'
 
 
 insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied,  Category, ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
-values ('Spinlock Stats_C', 'Spin Lock Stats', 'Spin Lock Stats',  2 | 4,'Performance', 'dbo.tbl_REQUESTS',4000, 'Perf Stats Collector', 1,3000)
+values ('Spinlock Stats_C', 'Spin Lock Stats', 'Spin Lock Stats',  2 | 4,'Performance', 'dbo.tbl_SPINLOCKSTATS',4000, 'Perf Stats Collector', 1,3000)
 
 insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied,  Category, ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
 values ('Query Hash_C', 'Query Hash', 'Top 10 queries from query hash that consume most CPU, IO or logical reads',  4, 'Performance', 'dbo.tbl_TopNLogicalReadsByQueryHash', 4000, 'Perf Stats Collector', 1,3000)
@@ -175,6 +175,7 @@ select  CategorySeq,Category, ReportName, ReportDisplayName, ReportDescription, 
         </Field>
         <Field Name="ReportAvailable">
           <DataField>ReportAvailable</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
         <Field Name="Category">
           <DataField>Category</DataField>
@@ -187,6 +188,10 @@ select  CategorySeq,Category, ReportName, ReportDisplayName, ReportDescription, 
         <Field Name="CategorySeq">
           <DataField>CategorySeq</DataField>
           <rd:UserDefined>true</rd:UserDefined>
+        </Field>
+        <Field Name="SeqNo">
+          <DataField>SeqNo</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
       </Fields>
     </DataSet>

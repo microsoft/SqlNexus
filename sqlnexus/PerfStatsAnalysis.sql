@@ -2134,7 +2134,9 @@ VALUES ('4415F4B3-603F-4F41-978E-9EE32BF2B2E9','Server Performance', 'W','Warnin
 INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
 VALUES ('6D4B332C-67A0-428D-A08C-A48A5327DE60','Query Performance', 'W','Warning', 'usp_oldce', 'Using Legacy CE for database', 'Consider changing compatibility level to take advantage of Optimizer New CE', '','https://learn.microsoft.com/sql/relational-databases/performance/cardinality-estimation-sql-server', '  ', 1, 100, 0, ' ')
 INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
-VALUES ('91B2AA56-9CA2-4BDB-8D21-76A5CFF4D74A','Server Performance', 'W','Warning', 'usp_CalvsCore', 'CAL license possibly limiting CPU', 'Customer is using CAL license and CPUs are greater than schedulers online, check the errorlog to confirm. Customer could benefit by upgrading to CORE license.', '','https://docs.microsoft.com/en-us/sql/database-engine/install-windows/upgrade-to-a-different-edition-of-sql-server-setup?view=sql-server-ver16', '  jamgrif', 1, 100, 0, ' ')
+VALUES ('91B2AA56-9CA2-4BDB-8D21-76A5CFF4D74A','Server Performance', 'W','Warning', 'usp_CalvsCore', 'CAL license possibly limiting CPU', 'SQL Server is using CAL license and CPUs are greater than schedulers online, check the errorlog to confirm. You could benefit by upgrading to CORE license.', '','https://docs.microsoft.com/en-us/sql/database-engine/install-windows/upgrade-to-a-different-edition-of-sql-server-setup?view=sql-server-ver16', '  jamgrif', 1, 100, 0, ' ')
+INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
+VALUES ('4F942C36-D84D-4E34-A696-08C30CDCE3B9','Server Performance', 'W','Warning', 'usp_Spinlock_HighCPU', 'High Spinlock rates, likey causing high CPU', 'Excessive spins have been detected from a spinlock likely driving CPU(s) to high utilization', '','https://learn.microsoft.com/en-us/sql/relational-databases/diagnose-resolve-spinlock-contention?view=sql-server-ver16', '  ', 1, 100, 0, ' ')
 
 
 
@@ -2150,7 +2152,7 @@ GO
 
 /***************************************************************************************************
 
-owner:jackli
+owner:
 
 ****************************************************************************************************/
 go
@@ -3606,7 +3608,7 @@ go
 
 /***************************************************************************************************
 
-owner: EricBu
+owner: 
 
 ****************************************************************************************************/
 go
@@ -3631,7 +3633,7 @@ end
 GO
 
 /**************************************************************************************************
-owner:  VIRANA
+owner:  
 
 ***************************************************************************************************/
 
@@ -3741,15 +3743,81 @@ begin
 end
 GO
 
+
+CREATE PROCEDURE usp_Spinlock_HighCPU
+AS
+IF ((OBJECT_ID ('tbl_SPINLOCKSTATS') IS NOT NULL) AND ( OBJECT_ID('tbl_ServerProperties') IS NOT NULL ) )
+BEGIN
+
+	DECLARE @cpu_count int
+	SELECT @cpu_count =PropertyValue 
+	FROM tbl_ServerProperties 
+	WHERE PropertyName = 'cpu_count';
+
+	WITH spinlocks AS (SELECT first.[name] AS spinlock_name, 
+	(cast(last.[spins] AS float) - cast(first.[spins] AS float)) /  
+	(CASE WHEN datediff (ms, first.runtime, last.runtime) = 0 
+	 THEN null ELSE datediff (ms, first.runtime, last.runtime)  END ) /@cpu_count  AS  spin_diff_per_ms_per_cpu
+	FROM [tbl_SPINLOCKSTATS] AS first 
+		join [tbl_SPINLOCKSTATS] AS last
+			on first.[name] = last.[name]
+			AND first.runtime = (SELECT min(runtime) FROM tbl_spinlockstats )
+			AND last.runtime =  (SELECT max(runtime) FROM tbl_spinlockstats )
+	WHERE first.[name] NOT LIKE '%dbcc execution%' AND  last.[name] not like '%dbcc execution%') 
+	SELECT TOP 10 spinlock_name, CAST(spin_diff_per_ms_per_cpu AS decimal(22,3)) AS spin_diff_per_ms_per_cpu 
+	INTO #massive_spinlock
+	FROM spinlocks
+	WHERE spin_diff_per_ms_per_cpu > 10000
+	ORDER BY spin_diff_per_ms_per_cpu DESC
+
+	SELECT * FROM #massive_spinlock
+
+	
+
+	IF (@@ROWCOUNT > 0)
+	BEGIN
+		DECLARE @spinlock_name VARCHAR(64), @max_spin_diff_per_ms_per_cpu decimal(22,2), @all_spinlock_names VARCHAR(4000) = ''
+
+		--select the highest spins per ms/cpu
+		SELECT @max_spin_diff_per_ms_per_cpu = MAX(spin_diff_per_ms_per_cpu) FROM #massive_spinlock
+
+		--use a cursor to get the name of all the high-CPU driving spinlocks
+		DECLARE high_spinlock CURSOR
+		FOR SELECT spinlock_name FROM #massive_spinlock
+
+		OPEN high_spinlock
+
+		FETCH NEXT FROM high_spinlock INTO @spinlock_name
+		WHILE (@@fetch_status = 0 )
+		BEGIN
+			SELECT @all_spinlock_names = @all_spinlock_names + CHAR(13) + CHAR(10) +  @spinlock_name
+
+			FETCH NEXT FROM high_spinlock INTO @spinlock_name
+		END
+
+
+		CLOSE high_spinlock
+		DEALLOCATE high_spinlock
+
+		--update the best practices table 
+		UPDATE tbl_AnalysisSummary
+		SET [Status] = 1, 
+		[Description] =  'Found spinlocks that perform massive number of spins during the data collection period, likely causing high CPU. Spinlocks found are: ' 
+					+ @all_spinlock_names  + CHAR(13) + CHAR(10) +  'Maximum "spins per ms per CPU" value was ' + CONVERT(VARCHAR(32), @max_spin_diff_per_ms_per_cpu) 
+					+ '. Research these spinlock names to look for ways to reduce contention and spins and the resulting high CPU utilization',
+		Report = 'Spinlock Stats'
+		WHERE [Name] = OBJECT_NAME(@@PROCID)
+
+	END
+END
+GO
+
+
+
 /********************************************************
 firing rules
 ********************************************************/
 
-
-/*********************************************************
-
-owner:jackli
-**********************************************************/
 
 exec usp_AttendtionCausedBlocking
 go
@@ -3798,9 +3866,6 @@ exec usp_ChangeTableCauseHighCPU
 go
 exec dbo.usp_DeadlockTraceFlag
 go
-/************************************************************
-owner: jaynar
-***********************************************************/
 exec usp_Expensive_TraceEvts_Used
 go
 exec usp_Expensive_XEvts_Used
@@ -3836,31 +3901,17 @@ go
 exec Optimizer_Memory_Leak
 go
 exec dbo.usp_HugeGrant
-go
-
-
-/*********************************************************
-
-owner: EricBu
-**********************************************************/
-go
+GO
 exec usp_HighRecompiles
 go
 
-/**************************************************************************************************
-owner:  VIRANA
-
-***************************************************************************************************/
 go
 exec usp_oldce
 go
 
-/**************************************************************************************************
-owner:  JAMGRIF
-
-***************************************************************************************************/
 go
 exec usp_CalvsCore
 go
+exec usp_Spinlock_HighCPU
 
 /******END of script***/
