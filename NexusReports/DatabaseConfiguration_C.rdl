@@ -448,24 +448,23 @@
     <DataSet Name="DataSet_DatabaseScopedConfiguration">
       <Query>
         <DataSourceName>DataSource_SqlNexus_Private</DataSourceName>
-        <CommandText>IF OBJECT_ID('tbl_database_scoped_configurations') IS NOT NULL
-BEGIN
-  DECLARE @sql VARCHAR (MAX)
-
+        <CommandText>IF OBJECT_ID('tbl_database_scoped_configurations') IS NOT NULL 
+BEGIN 
+  DECLARE @sql VARCHAR(MAX) 
   IF COL_LENGTH('tbl_database_scoped_configurations', 'is_value_default') IS NULL 
+  BEGIN
+    SET                @sql = 'SELECT database_id, dbname, configuration_id, name, value, value_for_secondary, NULL AS is_value_default
+                          FROM tbl_database_scoped_configurations
+                         WHERE input_file_name like ''%Shutdown.out''' 
+  END 
+  ELSE 
     BEGIN
-      SET @sql = 'SELECT database_id, dbname, configuration_id, name, value, value_for_secondary, NULL AS is_value_default
-					FROM tbl_database_scoped_configurations'
-    END
-    ELSE
-    BEGIN
-      SET @sql = 'SELECT database_id, dbname, configuration_id, name, value, value_for_secondary, is_value_default
-					FROM tbl_database_scoped_configurations'
-    END
-
-    EXEC(@sql)
-END
-</CommandText>
+      SET                @sql = 'SELECT database_id, dbname, configuration_id, name, value, value_for_secondary, is_value_default
+                           FROM tbl_database_scoped_configurations
+                          WHERE input_file_name like ''%Shutdown.out''' 
+    END 
+  EXEC (@sql) 
+END</CommandText>
       </Query>
       <Fields>
         <Field Name="database_id">
@@ -1490,7 +1489,7 @@ END
             <Top>0.79875in</Top>
             <Left>0.68209in</Left>
             <Height>0.5in</Height>
-            <Width>15.99999in</Width>
+            <Width>15.99998in</Width>
             <ZIndex>3</ZIndex>
             <Visibility>
               <Hidden>true</Hidden>
@@ -1763,7 +1762,7 @@ END
             <Top>2.79875in</Top>
             <Left>0.68209in</Left>
             <Height>0.5in</Height>
-            <Width>15.99999in</Width>
+            <Width>16in</Width>
             <ZIndex>4</ZIndex>
             <Visibility>
               <Hidden>true</Hidden>
@@ -1867,6 +1866,7 @@ END
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
+                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                     <TablixCell>
