@@ -3833,22 +3833,22 @@
 
     <Rowset name="tbl_certificates" enabled="true" identifier="-- sys.certificates --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
-        <Column name="database_name" type="RowsetImportEngine.NVarCharColumn" length="256"/>
-        <Column name="name" type="RowsetImportEngine.NVarCharColumn" length="256"/>
+        <Column name="database_name" type="RowsetImportEngine.VarCharColumn" />
+        <Column name="name" type="RowsetImportEngine.VarCharColumn" length="256"/>
         <Column name="certificate_id" type="RowsetImportEngine.IntColumn"/>
         <Column name="principal_id" type="RowsetImportEngine.IntColumn"/>
         <Column name="pvt_key_encryption_type" type="RowsetImportEngine.NVarCharColumn" length="3"/>
-        <Column name="pvt_key_encryption_type_desc" type="RowsetImportEngine.NVarCharColumn" length="120"/>
+        <Column name="pvt_key_encryption_type_desc" type="RowsetImportEngine.NVarCharColumn" length="32"/>
         <Column name="is_active_for_begin_dialog" type="RowsetImportEngine.IntColumn"/>
-        <Column name="issuer_name" type="RowsetImportEngine.NVarCharColumn" length="900"/>
+        <Column name="issuer_name" type="RowsetImportEngine.VarCharColumn" length="512"/>
         <Column name="cert_serial_number" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="sid" type="RowsetImportEngine.VarBinaryColumn" length="90"/>
         <Column name="string_sid" type="RowsetImportEngine.NVarCharColumn" length="256"/>
-        <Column name="subject" type="RowsetImportEngine.NVarCharColumn" length="8000"/>
+        <Column name="subject" type="RowsetImportEngine.NVarCharColumn" length="512"/>
         <Column name="expiry_date" type="RowsetImportEngine.DateTimeColumn"/>
         <Column name="start_date" type="RowsetImportEngine.DateTimeColumn"/>
         <Column name="thumbprint" type="RowsetImportEngine.VarBinaryColumn" length="64"/>
-        <Column name="attested_by" type="RowsetImportEngine.NVarCharColumn" length="520"/>
+        <Column name="attested_by" type="RowsetImportEngine.NVarCharColumn" length="256"/>
         <Column name="pvt_key_last_backup_date" type="RowsetImportEngine.DateTimeColumn"/>
         <Column name="key_length" type="RowsetImportEngine.IntColumn"/>
       </KnownColumns>
