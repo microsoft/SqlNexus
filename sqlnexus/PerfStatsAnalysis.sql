@@ -3489,18 +3489,17 @@ begin
 		end 
 	end  
 end
-
-go
+GO
 
 CREATE PROCEDURE  [usp_ExcessiveTrace_Warning]
-as
-begin
+AS
+BEGIN
 	DECLARE @active_trace_count  int
 	SET @active_trace_count = 0
              
 	IF OBJECT_ID ('tbl_profiler_trace_summary') IS NOT NULL
 	BEGIN
-             
+
 	  SELECT @active_trace_count = COUNT(DISTINCT traceid )
 	  FROM   [dbo].[tbl_profiler_trace_summary]
 	  WHERE property = 5 AND value = 1  --active traces
@@ -3513,8 +3512,8 @@ begin
 			WHERE Name = 'usp_ExcessiveTrace_Warning'
 	  END     
 	END 
-end
-go
+END
+GO
 
 CREATE PROCEDURE  [usp_Expensive_TraceEvts_Used]
 as
@@ -3606,16 +3605,8 @@ IF (OBJECT_ID ('tbl_XEvents') IS NOT NULL)
   END
 
 END
-go
+GO
 
-
-
-/***************************************************************************************************
-
-owner: 
-
-****************************************************************************************************/
-go
 CREATE PROCEDURE usp_HighRecompiles 
 as
 begin
@@ -3635,12 +3626,6 @@ begin
 	end
 end
 GO
-
-/**************************************************************************************************
-owner:  
-
-***************************************************************************************************/
-
 
 CREATE PROCEDURE usp_oldce
 AS
@@ -3681,19 +3666,7 @@ BEGIN
 		WHERE NAME = 'usp_oldce'
 	END
 END
-
-
 GO
-
-
-
-/**************************************************************************************************
-owner:  JAMGRIF
-date: 8/23/22
-description: Adds check and warning if CAL license is in use and schedulers are less than CPUs 
-
-***************************************************************************************************/
-
 create procedure usp_CalvsCore
 AS
 IF ((OBJECT_ID ('tbl_ServerProperties') IS NOT NULL) and (OBJECT_ID ('tbl_AnalysisSummary') IS NOT NULL))
@@ -3725,7 +3698,6 @@ BEGIN
 			END
 	END
 END
-
 
 /********************************************************
 Owner: Louis Li
@@ -3896,7 +3868,6 @@ GO
 firing rules
 ********************************************************/
 
-
 exec usp_AttendtionCausedBlocking
 go
 exec usp_PerfScriptsRunningLong
@@ -3915,8 +3886,6 @@ exec proc_PowerPlan
 go
 exec proc_CheckTraceFlags
 go
---exec proc_ExcessiveXevents
-go
 exec proc_AutoStats
 go
 exec proc_ConfigAlert
@@ -3931,7 +3900,6 @@ exec dbo.usp_OptimizerTimeout
 go
 exec usp_SmallSampledStats
 go
-
 exec usp_DisabledIndex
 go
 exec usp_AccessCheck
@@ -3952,28 +3920,18 @@ exec usp_ExcessiveTrace_Warning
 go
 exec OracleLinkedServerIssue
 go
-
 exec XEventcrash
 go
-
 exec usp_Non_SQL_CPU_consumption 
 go 
-
-
-exec [usp_KernelHighCPUconsumption] 
+exec usp_KernelHighCPUconsumption
 go 
-
-
-
-exec [usp_SQLHighCPUconsumption]
-go
-
+exec usp_SQLHighCPUconsumption
+GO
 exec StaleStatswarning2008
-go
-
+GO
 exec dbo.usp_IOAnalysis
 go
-
 EXEC usp_WarnmissingIndex
 go
 EXEC Optimizer_Memory_Leak
@@ -3981,17 +3939,13 @@ go
 EXEC dbo.usp_HugeGrant
 GO
 EXEC usp_HighRecompiles
-go
-
-go
+GO
 EXEC usp_oldce
-go
-
-go
+GO
 EXEC usp_CalvsCore
 go
 EXEC usp_Spinlock_HighCPU
 GO
 EXEC usp_NonMS_LoadedModules
-
+GO
 /******END of script***/
