@@ -41,7 +41,7 @@ values ('AnalysisSummary_C', 'Best Practice &amp;  Analysis Summary', 'Most comm
 
 
 insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
-values ('Loaded Modules_C', 'Loaded Modules', 'Modules loaded in SQL Server address space',  1|2|4|8, 'Common', 'dbo.tbl_loaded_modules', 500, 'Perf Stats Collector', 1,2000)
+values ('Loaded Modules_C', 'Loaded Modules', 'Modules loaded in SQL Server address space',  1|2|4|8, 'Common', 'dbo.tbl_dm_os_loaded_modules', 500, 'Perf Stats Collector', 1,2000)
 insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
 values ('ServerConfiguration_C', 'Server Configuration', 'Common properties such as RAM, CPU, sp_configure, trace flags and startup prameters',  1|2|4|8, 'Common', 'dbo.tbl_ServerProperties', 200, 'SQL Base Collector', 1,2000)
 insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 

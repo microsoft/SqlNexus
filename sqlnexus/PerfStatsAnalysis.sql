@@ -2134,9 +2134,13 @@ VALUES ('4415F4B3-603F-4F41-978E-9EE32BF2B2E9','Server Performance', 'W','Warnin
 INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
 VALUES ('6D4B332C-67A0-428D-A08C-A48A5327DE60','Query Performance', 'W','Warning', 'usp_oldce', 'Using Legacy CE for database', 'Consider changing compatibility level to take advantage of Optimizer New CE', '','https://learn.microsoft.com/sql/relational-databases/performance/cardinality-estimation-sql-server', '  ', 1, 100, 0, ' ')
 INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
-VALUES ('91B2AA56-9CA2-4BDB-8D21-76A5CFF4D74A','Server Performance', 'W','Warning', 'usp_CalvsCore', 'CAL license possibly limiting CPU', 'SQL Server is using CAL license and CPUs are greater than schedulers online, check the errorlog to confirm. You could benefit by upgrading to CORE license.', '','https://docs.microsoft.com/en-us/sql/database-engine/install-windows/upgrade-to-a-different-edition-of-sql-server-setup?view=sql-server-ver16', '  jamgrif', 1, 100, 0, ' ')
+VALUES ('91B2AA56-9CA2-4BDB-8D21-76A5CFF4D74A','Server Performance', 'W','Warning', 'usp_CalvsCore', 'CAL license possibly limiting CPU', 'SQL Server is using CAL license and CPUs are greater than schedulers online, check the errorlog to confirm. You could benefit by upgrading to CORE license.', '','https://docs.microsoft.com/sql/database-engine/install-windows/upgrade-to-a-different-edition-of-sql-server-setup', '  jamgrif', 1, 100, 0, ' ')
 INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
-VALUES ('4F942C36-D84D-4E34-A696-08C30CDCE3B9','Server Performance', 'W','Warning', 'usp_Spinlock_HighCPU', 'High Spinlock rates, likey causing high CPU', 'Excessive spins have been detected from a spinlock likely driving CPU(s) to high utilization', '','https://learn.microsoft.com/en-us/sql/relational-databases/diagnose-resolve-spinlock-contention?view=sql-server-ver16', '  ', 1, 100, 0, ' ')
+VALUES ('4F942C36-D84D-4E34-A696-08C30CDCE3B9','Server Performance', 'W','Warning', 'usp_Spinlock_HighCPU', 'High Spinlock rates, likey causing high CPU', 'Excessive spins have been detected from a spinlock likely driving CPU(s) to high utilization', '','https://learn.microsoft.com/sql/relational-databases/diagnose-resolve-spinlock-contention', '  ', 1, 100, 0, ' ')
+INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
+VALUES ('5945C9B1-ED31-4D20-9093-613C9167BF36','Server Performance', 'W','Warning', 'usp_NonMS_LoadedModules', 'Non-MS modules loaded, check if those may impact performance', 'Non-MS modules loaded in SQL Server memory. If the issue you are t-shooting is unexplained performance or instability, see if disabling some of these modules will alleviate the issue.', '','https://learn.microsoft.com/troubleshoot/sql/database-engine/performance/performance-consistency-issues-filter-drivers-modules', '  ', 1, 100, 0, ' ')
+
+
 
 
 
@@ -3813,6 +3817,80 @@ END
 GO
 
 
+CREATE PROCEDURE usp_NonMS_LoadedModules
+AS
+IF ((OBJECT_ID ('tbl_dm_os_loaded_modules') IS NOT NULL) and (OBJECT_ID ('tbl_AnalysisSummary') IS NOT NULL))
+BEGIN
+
+	DECLARE @sql_major_version INT, @sql_major_build INT, @sql NVARCHAR(max)
+	SELECT @sql_major_version = (CAST(PARSENAME(CAST(SERVERPROPERTY('ProductVersion') AS varchar(20)), 4) AS INT)),
+		   @sql_major_build = (CAST(PARSENAME(CAST(SERVERPROPERTY('ProductVersion') AS varchar(20)), 2) AS INT)) 
+
+	DECLARE @nonMs_module_list VARCHAR (MAX)
+
+	--if SQL 2017+, use the STRING_AGG function
+	IF (@sql_major_version >= 14)
+	BEGIN
+		--filter out known MS modules with no company name; also only get the data from shutdown snapshot
+		SELECT @nonMs_module_list = STRING_AGG (CONVERT(NVARCHAR(max),name), (CHAR(13)+ CHAR(10))) 
+		FROM tbl_dm_os_loaded_modules
+		WHERE Company != 'Microsoft Corporation' 
+			AND NAME != 'C:\WINDOWS\SYSTEM32\ODBC32.dll'
+			AND NAME != 'C:\WINDOWS\system32\MsdaDiag.DLL'
+			AND NAME != 'C:\WINDOWS\SYSTEM32\XmlLite.dll'
+			AND NAME != 'C:\WINDOWS\System32\msxml3.dll'
+			AND NAME != 'C:\Program Files\Common Files\System\Ole DB\oledb32.dll'
+			AND NAME != 'C:\WINDOWS\SYSTEM32\MSDART.DLL'
+			AND NAME != 'C:\Program Files\Common Files\System\msadc\msadce.dll'
+			AND NAME != 'C:\WINDOWS\SYSTEM32\ODBC32.dll'
+			AND NAME != 'C:\WINDOWS\system32\MsdaDiag.DLL'
+			AND NAME != 'C:\WINDOWS\SYSTEM32\XmlLite.dll'
+			AND NAME != 'C:\WINDOWS\System32\msxml3.dll'
+			AND NAME != 'C:\Program Files\Common Files\System\Ole DB\oledb32.dll'
+			AND NAME != 'C:\WINDOWS\SYSTEM32\MSDART.DLL'
+			AND NAME != 'C:\Program Files\Common Files\System\msadc\msadce.dll'
+			AND NAME NOT LIKE '%sqlevn70.rll'
+			AND input_file_name like '%Shutdown.out'
+	END
+	ELSE
+	BEGIN
+		--filter out known MS modules with no company name; also only get the data from shutdown snapshot
+		SELECT @nonMs_module_list = COALESCE (@nonMs_module_list + (CHAR(13)+ CHAR(10)) + name,name) 
+		FROM tbl_dm_os_loaded_modules
+		WHERE Company != 'Microsoft Corporation' 
+			AND NAME != 'C:\WINDOWS\SYSTEM32\ODBC32.dll'
+			AND NAME != 'C:\WINDOWS\system32\MsdaDiag.DLL'
+			AND NAME != 'C:\WINDOWS\SYSTEM32\XmlLite.dll'
+			AND NAME != 'C:\WINDOWS\System32\msxml3.dll'
+			AND NAME != 'C:\Program Files\Common Files\System\Ole DB\oledb32.dll'
+			AND NAME != 'C:\WINDOWS\SYSTEM32\MSDART.DLL'
+			AND NAME != 'C:\Program Files\Common Files\System\msadc\msadce.dll'
+			AND NAME != 'C:\WINDOWS\SYSTEM32\ODBC32.dll'
+			AND NAME != 'C:\WINDOWS\system32\MsdaDiag.DLL'
+			AND NAME != 'C:\WINDOWS\SYSTEM32\XmlLite.dll'
+			AND NAME != 'C:\WINDOWS\System32\msxml3.dll'
+			AND NAME != 'C:\Program Files\Common Files\System\Ole DB\oledb32.dll'
+			AND NAME != 'C:\WINDOWS\SYSTEM32\MSDART.DLL'
+			AND NAME != 'C:\Program Files\Common Files\System\msadc\msadce.dll'
+			AND NAME NOT LIKE '%sqlevn70.rll'
+			AND input_file_name like '%Shutdown.out'
+
+	END
+
+	IF ((@nonMs_module_list IS NOT NULL) AND (@nonMs_module_list !=''))
+
+	BEGIN
+		UPDATE tbl_AnalysisSummary 		
+		SET [Status]=1,
+		[Description] = 'These Non-MS modules are loaded in SQL Server memory:' + CHAR(13) + CHAR(10) + @nonMs_module_list + + CHAR(13) + CHAR(10) + 'If the issue you are t-shooting is unexplained performance or instability, see if disabling some of these modules will alleviate the issue.',
+		[Report] = 'Loaded Modules'
+		WHERE [Name] = OBJECT_NAME(@@PROCID)
+	END
+END
+GO
+
+
+
 
 /********************************************************
 firing rules
@@ -3896,22 +3974,24 @@ go
 exec dbo.usp_IOAnalysis
 go
 
-exec usp_WarnmissingIndex
+EXEC usp_WarnmissingIndex
 go
-exec Optimizer_Memory_Leak
+EXEC Optimizer_Memory_Leak
 go
-exec dbo.usp_HugeGrant
+EXEC dbo.usp_HugeGrant
 GO
-exec usp_HighRecompiles
+EXEC usp_HighRecompiles
 go
 
 go
-exec usp_oldce
+EXEC usp_oldce
 go
 
 go
-exec usp_CalvsCore
+EXEC usp_CalvsCore
 go
-exec usp_Spinlock_HighCPU
+EXEC usp_Spinlock_HighCPU
+GO
+EXEC usp_NonMS_LoadedModules
 
 /******END of script***/
