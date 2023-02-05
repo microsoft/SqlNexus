@@ -3822,13 +3822,14 @@
     </Rowset>
 
 
-
-    <Rowset name="tbl_sp_certificate_issuers" enabled="true" identifier="-- sys_sp_certificate_issuers --" type="RowsetImportEngine.TextRowset">
+    <!--commenting this rowset out for now as the output of sys_sp_certificate_issuers is not reliable - it comes from an XProc and does not always show schema-->
+    <!--this leads to an exception during import and terminates importing of any more rowsets form specific script-->
+    <!--<Rowset name="tbl_sp_certificate_issuers" enabled="true" identifier=" sys_sp_certificate_issuers " type="RowsetImportEngine.TextRowset">
       <KnownColumns>
         <Column name="certificateid" type="RowsetImportEngine.IntColumn"/>
         <Column name="dnsname" type="RowsetImportEngine.NVarCharColumn" length="128"/>
       </KnownColumns>
-    </Rowset>
+    </Rowset>-->
 
 
     <Rowset name="tbl_certificates" enabled="true" identifier="-- sys.certificates --" type="RowsetImportEngine.TextRowset">
@@ -3854,7 +3855,18 @@
       </KnownColumns>
     </Rowset>
 
-
+    <Rowset name="tbl_dm_db_log_info" enabled="true" identifier="-- sys_dm_db_log_info --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="database_id" type="RowsetImportEngine.IntColumn"/>
+        <Column name="database_name" type="RowsetImportEngine.VarCharColumn" length="64"/>
+        <Column name="vlf_count" type="RowsetImportEngine.IntColumn"/>
+        <Column name="vlf_avg_size_mb" type="RowsetImportEngine.DecimalColumn" />
+        <Column name="vlf_min_size_mb" type="RowsetImportEngine.DecimalColumn" />
+        <Column name="vlf_max_size_mb" type="RowsetImportEngine.DecimalColumn" />
+        <Column name="vlf_status" type="RowsetImportEngine.IntColumn"/>
+        <Column name="vlf_active " type="RowsetImportEngine.IntColumn"/>
+      </KnownColumns>
+    </Rowset>
 
 
   </KnownRowsets>
