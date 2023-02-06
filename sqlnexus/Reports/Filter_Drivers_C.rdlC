@@ -21,12 +21,12 @@
 BEGIN
 	IF (COL_LENGTH('dbo.tbl_fltmc_filters', 'FilterType') IS NULL AND COL_LENGTH('dbo.tbl_fltmc_filters', 'Minifilter') IS NULL )
 	BEGIN
-		SELECT f.[Filter Name], f.[Num Instances], f.Altitude, 
-		'not available' AS FilterType,
-		'not available' AS MiniFilter,
-		'not available' AS Company
-		FROM tbl_fltmc_filters f
-		WHERE Company != 'Microsoft'
+		SELECT 'cannot determine' as [Filter Name], 
+		'cannot determine' AS [Num Instances], 
+		'cannot determine' AS Altitude, 
+		'cannot determine' AS FilterType,
+		'cannot determine' AS MiniFilter,
+		'cannot determine' AS Company
 	END
 	
 	ELSE
@@ -50,11 +50,11 @@ END</CommandText>
         </Field>
         <Field Name="Num_Instances">
           <DataField>Num Instances</DataField>
-          <rd:TypeName>System.Int32</rd:TypeName>
+          <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="Altitude">
           <DataField>Altitude</DataField>
-          <rd:TypeName>System.Int32</rd:TypeName>
+          <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="FilterType">
           <DataField>FilterType</DataField>
@@ -73,23 +73,24 @@ END</CommandText>
     <DataSet Name="FilterDriverDetails">
       <Query>
         <DataSourceName>DataSource1</DataSourceName>
-        <CommandText>IF OBJECT_ID ('tbl_fltmc_instances') IS NOT NULL
-BEGIN
-	IF (COL_LENGTH('dbo.tbl_fltmc_instances', 'FilterType') IS NULL AND COL_LENGTH('dbo.tbl_fltmc_filters', 'Company') IS NULL )
-	BEGIN
-		SELECT fi.Filter, 
+        <CommandText>IF OBJECT_ID('tbl_fltmc_instances') IS NOT NULL 
+BEGIN 
+  DECLARE @sql VARCHAR(MAX) 
+
+  IF (COL_LENGTH('dbo.tbl_fltmc_instances', 'FilterType') IS NULL AND COL_LENGTH('dbo.tbl_fltmc_filters', 'Company') IS NULL) 
+  BEGIN
+    SET                @sql = 'SELECT fi.Filter, 
 				fi.[Volume Name], 
 				fi.Altitude, 
 				fi.[Instance Name], 
-				'not available' AS FilterType, 
-				'not available' Minifilter, 
-				'not available' Company 
-		FROM tbl_fltmc_instances fi
-		ORDER BY fi.Company
-	END
-	ELSE
-	BEGIN
-		SELECT fi.Filter, 
+				''not available'' AS FilterType, 
+				''not available'' AS Minifilter, 
+				''not available'' AS Company 
+		FROM tbl_fltmc_instances fi' 
+  END 
+  ELSE 
+  BEGIN
+    SET                @sql = 'SELECT fi.Filter, 
 				fi.[Volume Name], 
 				fi.Altitude, 
 				fi.[Instance Name], 
@@ -97,8 +98,9 @@ BEGIN
 				fi.Minifilter, 
 				fi.Company 
 		FROM tbl_fltmc_instances fi
-		ORDER BY fi.Company
-	END
+		ORDER BY fi.Company' 
+  END 
+  EXEC (@sql) 
 END</CommandText>
       </Query>
       <Fields>
@@ -713,7 +715,7 @@ END</CommandText>
             </SortExpressions>
             <Top>1.22167in</Top>
             <Height>0.52375in</Height>
-            <Width>11.01167in</Width>
+            <Width>11.01168in</Width>
             <ZIndex>1</ZIndex>
             <Style>
               <Border>
@@ -1370,8 +1372,8 @@ END</CommandText>
             </TablixRowHierarchy>
             <DataSetName>FilterDriverDetails</DataSetName>
             <Top>2.68625in</Top>
-            <Height>0.64583in</Height>
-            <Width>11.01167in</Width>
+            <Height>0.64584in</Height>
+            <Width>11.01166in</Width>
             <ZIndex>2</ZIndex>
             <Style>
               <Border>

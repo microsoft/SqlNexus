@@ -450,20 +450,25 @@
         <DataSourceName>DataSource_SqlNexus_Private</DataSourceName>
         <CommandText>IF OBJECT_ID('tbl_database_scoped_configurations') IS NOT NULL 
 BEGIN 
+
   DECLARE @sql VARCHAR(MAX) 
+
   IF COL_LENGTH('tbl_database_scoped_configurations', 'is_value_default') IS NULL 
   BEGIN
     SET                @sql = 'SELECT database_id, dbname, configuration_id, name, value, value_for_secondary, NULL AS is_value_default
                           FROM tbl_database_scoped_configurations
-                         WHERE input_file_name like ''%Shutdown.out''' 
-  END 
+                         WHERE input_file_name like ''%Shutdown.out''
+                         ORDER BY dbname, configuration_id'
+  END
   ELSE 
-    BEGIN
-      SET                @sql = 'SELECT database_id, dbname, configuration_id, name, value, value_for_secondary, is_value_default
+  BEGIN
+    SET                @sql = 'SELECT database_id, dbname, configuration_id, name, value, value_for_secondary, is_value_default
                            FROM tbl_database_scoped_configurations
-                          WHERE input_file_name like ''%Shutdown.out''' 
-    END 
-  EXEC (@sql) 
+                          WHERE input_file_name like ''%Shutdown.out''
+                         ORDER BY dbname, configuration_id'
+  END 
+
+EXEC (@sql) 
 END</CommandText>
       </Query>
       <Fields>
@@ -1860,7 +1865,7 @@ END</CommandText>
               <PaddingBottom>2pt</PaddingBottom>
             </Style>
           </Textbox>
-          <Tablix Name="Tablix3">
+          <Tablix Name="DbScopedConfig_Tablix3">
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
@@ -3094,7 +3099,7 @@ END</CommandText>
             <Top>3.80292in</Top>
             <Left>0.68209in</Left>
             <Height>0.75in</Height>
-            <Width>16.02085in</Width>
+            <Width>16.02087in</Width>
             <ZIndex>8</ZIndex>
             <Visibility>
               <Hidden>true</Hidden>
