@@ -3822,14 +3822,12 @@
     </Rowset>
 
 
-    <!--commenting this rowset out for now as the output of sys_sp_certificate_issuers is not reliable - it comes from an XProc and does not always show schema-->
-    <!--this leads to an exception during import and terminates importing of any more rowsets form specific script-->
-    <!--<Rowset name="tbl_sp_certificate_issuers" enabled="true" identifier=" sys_sp_certificate_issuers " type="RowsetImportEngine.TextRowset">
+    <Rowset name="tbl_sp_certificate_issuers" enabled="true" identifier="-- sys_sp_certificate_issuers --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
         <Column name="certificateid" type="RowsetImportEngine.IntColumn"/>
         <Column name="dnsname" type="RowsetImportEngine.NVarCharColumn" length="128"/>
       </KnownColumns>
-    </Rowset>-->
+    </Rowset>
 
 
     <Rowset name="tbl_certificates" enabled="true" identifier="-- sys.certificates --" type="RowsetImportEngine.TextRowset">
