@@ -292,6 +292,7 @@ END</CommandText>
                                   <Style>
                                     <FontSize>12pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Color>FloralWhite</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -307,7 +308,7 @@ END</CommandText>
                             <BottomBorder>
                               <Color>Black</Color>
                             </BottomBorder>
-                            <BackgroundColor>YellowGreen</BackgroundColor>
+                            <BackgroundColor>OliveDrab</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -329,6 +330,7 @@ END</CommandText>
                                   <Style>
                                     <FontSize>12pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Color>FloralWhite</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -344,7 +346,7 @@ END</CommandText>
                             <BottomBorder>
                               <Color>Black</Color>
                             </BottomBorder>
-                            <BackgroundColor>YellowGreen</BackgroundColor>
+                            <BackgroundColor>OliveDrab</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -366,6 +368,7 @@ END</CommandText>
                                   <Style>
                                     <FontSize>12pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Color>FloralWhite</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -381,7 +384,7 @@ END</CommandText>
                             <BottomBorder>
                               <Color>Black</Color>
                             </BottomBorder>
-                            <BackgroundColor>YellowGreen</BackgroundColor>
+                            <BackgroundColor>OliveDrab</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -403,6 +406,7 @@ END</CommandText>
                                   <Style>
                                     <FontSize>12pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Color>FloralWhite</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -418,7 +422,7 @@ END</CommandText>
                             <BottomBorder>
                               <Color>Black</Color>
                             </BottomBorder>
-                            <BackgroundColor>YellowGreen</BackgroundColor>
+                            <BackgroundColor>OliveDrab</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -440,6 +444,7 @@ END</CommandText>
                                   <Style>
                                     <FontSize>12pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Color>FloralWhite</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -455,7 +460,7 @@ END</CommandText>
                             <BottomBorder>
                               <Color>Black</Color>
                             </BottomBorder>
-                            <BackgroundColor>YellowGreen</BackgroundColor>
+                            <BackgroundColor>OliveDrab</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -559,6 +564,7 @@ END</CommandText>
                               <Style>Solid</Style>
                             </RightBorder>
                             <PaddingLeft>15pt</PaddingLeft>
+                            <PaddingTop>10pt</PaddingTop>
                           </Style>
                         </Image>
                       </CellContents>
@@ -632,7 +638,16 @@ END</CommandText>
                             <Actions>
                               <Action>
                                 <Drillthrough>
-                                  <ReportName>=SWITCH(Fields!Report.Value = "Active Traces", "Active Traces and XEvents_C", Fields!Report.Value = "Perfmon CPU", "Perfmon_CPU_C", Fields!Report.Value = "Perfmon IO", "Perfmon_IO_C", Fields!Report.Value = "Server Configuration", "ServerConfiguration_C", Fields!Report.Value = "Missing Indexes", "Missing Indexes_C", Fields!Report.Value = "data imported with older SQLNexus version", Nothing, Fields!Report.Value = "", Nothing)</ReportName>
+                                  <ReportName>=SWITCH(
+Fields!Report.Value = "Active Traces", "Active Traces and XEvents_C", 
+Fields!Report.Value = "Perfmon CPU", "Perfmon_CPU_C", 
+Fields!Report.Value = "Perfmon IO", "Perfmon_IO_C", 
+Fields!Report.Value = "Server Configuration", "ServerConfiguration_C", 
+Fields!Report.Value = "Missing Indexes", "Missing Indexes_C", 
+Fields!Report.Value = "Spinlock Stats", "Spinlock Stats_C",
+Fields!Report.Value = "Loaded Modules", "Loaded Modules_C",
+Fields!Report.Value = "data imported with older SQLNexus version", Nothing, 
+Fields!Report.Value = "", Nothing)</ReportName>
                                 </Drillthrough>
                               </Action>
                             </Actions>
@@ -655,6 +670,7 @@ END</CommandText>
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
+                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                   </TablixCells>
@@ -822,7 +838,6 @@ END</CommandText>
           <Border>
             <Style>None</Style>
           </Border>
-          <BackgroundColor>WhiteSmoke</BackgroundColor>
         </Style>
       </Body>
       <Width>16.42792in</Width>

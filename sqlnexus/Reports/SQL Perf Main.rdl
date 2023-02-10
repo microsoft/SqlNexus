@@ -41,7 +41,7 @@ values ('AnalysisSummary_C', 'Best Practice &amp;  Analysis Summary', 'Most comm
 
 
 insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
-values ('Loaded Modules_C', 'Loaded Modules', 'Modules loaded in SQL Server address space',  1|2|4|8, 'Common', 'dbo.tbl_loaded_modules', 500, 'Perf Stats Collector', 1,2000)
+values ('Loaded Modules_C', 'Loaded Modules', 'Modules loaded in SQL Server address space',  1|2|4|8, 'Common', 'dbo.tbl_dm_os_loaded_modules', 500, 'Perf Stats Collector', 1,2000)
 insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
 values ('ServerConfiguration_C', 'Server Configuration', 'Common properties such as RAM, CPU, sp_configure, trace flags and startup prameters',  1|2|4|8, 'Common', 'dbo.tbl_ServerProperties', 200, 'SQL Base Collector', 1,2000)
 insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
@@ -67,7 +67,7 @@ values ('LockSummary_C', 'Lock Count Summary', 'Lock count graphed by resources'
 
 
 insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied,  Category, ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
-values ('Spinlock Stats_C', 'Spin Lock Stats', 'Spin Lock Stats',  2 | 4,'Performance', 'dbo.tbl_REQUESTS',4000, 'Perf Stats Collector', 1,3000)
+values ('Spinlock Stats_C', 'Spin Lock Stats', 'Spin Lock Stats',  2 | 4,'Performance', 'dbo.tbl_SPINLOCKSTATS',4000, 'Perf Stats Collector', 1,3000)
 
 insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied,  Category, ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
 values ('Query Hash_C', 'Query Hash', 'Top 10 queries from query hash that consume most CPU, IO or logical reads',  4, 'Performance', 'dbo.tbl_TopNLogicalReadsByQueryHash', 4000, 'Perf Stats Collector', 1,3000)
@@ -134,7 +134,7 @@ values ('AlwaysOn_AGBasics_C', 'Always On Configuration Report', 'Always On Conf
 
 -- Filter drivers
 insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
-values ('Filter_Drivers_C', 'Filter Drviers Report', 'Filter Drivers Report',  1|2|4|8, 'Common', 'dbo.tbl_fltmc_filters', 2000, 'SQL Base Collector', 1,2000)
+values ('Filter_Drivers_C', 'Filter Drivers Report', 'Filter Drivers Report',  1|2|4|8, 'Common', 'dbo.tbl_fltmc_filters', 2000, 'SQL Base Collector', 1,2000)
 
 
 --Azure
@@ -175,6 +175,7 @@ select  CategorySeq,Category, ReportName, ReportDisplayName, ReportDescription, 
         </Field>
         <Field Name="ReportAvailable">
           <DataField>ReportAvailable</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
         <Field Name="Category">
           <DataField>Category</DataField>
@@ -188,18 +189,37 @@ select  CategorySeq,Category, ReportName, ReportDisplayName, ReportDescription, 
           <DataField>CategorySeq</DataField>
           <rd:UserDefined>true</rd:UserDefined>
         </Field>
+        <Field Name="SeqNo">
+          <DataField>SeqNo</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
       </Fields>
     </DataSet>
     <DataSet Name="DataSet_SQLVersion">
       <Query>
         <DataSourceName>DataSource_Private</DataSourceName>
-        <CommandText>if object_id ('dbo.tbl_ServerProperties') is not null
-begin
-	select case [PropertyValue] when '9' then '2005' when '8' then '' when '10' then '2008' when '10.50' then '2008 R2' when '11' then '2012'  when '12' then '2014' when '13' then '2016' when '14' then 'vNext' else null end as 'SQLVersion' from tbl_ServerProperties  where PropertyName='MajorVersion'
-end
-else
-	select '' as 'SQLVersion'
-</CommandText>
+        <CommandText>IF OBJECT_ID ('dbo.tbl_ServerProperties') IS NOT NULL 
+BEGIN 
+	SELECT 
+	  CASE [PropertyValue] WHEN '9' THEN '2005' 
+			WHEN '8' THEN '' 
+			WHEN '10' THEN '2008' 
+			WHEN '10.50' THEN '2008 R2' 
+			WHEN '11' THEN '2012' 
+			WHEN '12' THEN '2014' 
+			WHEN '13' THEN '2016' 
+			WHEN '14' THEN '2017' 
+			WHEN '15' THEN '2019' 
+			WHEN '16' THEN '2022' 
+			else null 
+	  END AS 'SQLVersion' 
+	FROM 
+	  tbl_ServerProperties 
+	WHERE 
+	  PropertyName = 'MajorVersion' 
+END 
+ELSE
+	SELECT 'unknown' AS 'SQLVersion'</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -690,7 +710,7 @@ end</CommandText>
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>="SQL Server " &amp; First(Fields!SQLVersion.Value, "DataSet_SQLVersion") &amp; " Nexus &amp; ReadTrace Reports"</Value>
+                    <Value>="SQL Nexus &amp; ReadTrace Reports (SQL Server version: " &amp; First(Fields!SQLVersion.Value, "DataSet_SQLVersion") &amp; ")"</Value>
                     <Style>
                       <FontFamily>Tahoma</FontFamily>
                       <FontSize>18pt</FontSize>
@@ -707,6 +727,10 @@ end</CommandText>
             <Width>11.15001in</Width>
             <ZIndex>1</ZIndex>
             <Style>
+              <Border>
+                <Color>DimGray</Color>
+                <Style>Solid</Style>
+              </Border>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
               <PaddingTop>2pt</PaddingTop>

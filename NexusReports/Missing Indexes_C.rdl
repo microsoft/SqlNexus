@@ -119,19 +119,19 @@ END</CommandText>
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>8.875in</Width>
+                  <Width>8.9in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.15625in</Width>
+                  <Width>1.18125in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1in</Width>
+                  <Width>1.025in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1in</Width>
+                  <Width>1.025in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.97917in</Width>
+                  <Width>1.00417in</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -539,9 +539,9 @@ END</CommandText>
             <KeepTogether>true</KeepTogether>
             <DataSetName>DataSet_MissingIndexes</DataSetName>
             <Top>1.63542in</Top>
-            <Left>0.00002in</Left>
+            <Left>0.375in</Left>
             <Height>0.75in</Height>
-            <Width>13.01042in</Width>
+            <Width>13.13542in</Width>
             <Style>
               <Border>
                 <Color>Indigo</Color>
@@ -570,8 +570,9 @@ END</CommandText>
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>textbox1</rd:DefaultName>
+            <Left>0.375in</Left>
             <Height>0.43056in</Height>
-            <Width>13.01042in</Width>
+            <Width>13.13542in</Width>
             <ZIndex>1</ZIndex>
             <Style>
               <PaddingLeft>2pt</PaddingLeft>
@@ -788,8 +789,9 @@ END</CommandText>
             </Paragraphs>
             <rd:DefaultName>textbox6</rd:DefaultName>
             <Top>0.48612in</Top>
+            <Left>0.375in</Left>
             <Height>0.45833in</Height>
-            <Width>13.01042in</Width>
+            <Width>13.13542in</Width>
             <ZIndex>2</ZIndex>
             <Style>
               <PaddingLeft>2pt</PaddingLeft>
@@ -820,9 +822,9 @@ END</CommandText>
             </Paragraphs>
             <rd:DefaultName>Textbox9</rd:DefaultName>
             <Top>1.20708in</Top>
-            <Left>0.00002in</Left>
+            <Left>0.375in</Left>
             <Height>0.35889in</Height>
-            <Width>13.01042in</Width>
+            <Width>13.13542in</Width>
             <ZIndex>3</ZIndex>
             <Style>
               <Border>
@@ -871,8 +873,9 @@ END</CommandText>
             </Paragraphs>
             <rd:DefaultName>Textbox9</rd:DefaultName>
             <Top>2.82639in</Top>
+            <Left>0.375in</Left>
             <Height>0.35889in</Height>
-            <Width>13.01042in</Width>
+            <Width>13.13542in</Width>
             <ZIndex>4</ZIndex>
             <Style>
               <Border>
@@ -888,19 +891,19 @@ END</CommandText>
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>8.875in</Width>
+                  <Width>8.9in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.15625in</Width>
+                  <Width>1.18125in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1in</Width>
+                  <Width>1.025in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1in</Width>
+                  <Width>1.025in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.97917in</Width>
+                  <Width>1.00417in</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -1340,9 +1343,9 @@ END</CommandText>
             <KeepTogether>true</KeepTogether>
             <DataSetName>DataSet_MissingIndexesDelta_DuringLogCollection</DataSetName>
             <Top>3.22695in</Top>
-            <Left>0.00002in</Left>
+            <Left>0.375in</Left>
             <Height>0.88542in</Height>
-            <Width>13.01042in</Width>
+            <Width>13.13542in</Width>
             <ZIndex>5</ZIndex>
             <Style>
               <Border>
@@ -1353,12 +1356,12 @@ END</CommandText>
           </Tablix>
           <Line Name="Line2">
             <Top>2.62375in</Top>
+            <Left>0.375in</Left>
             <Height>0in</Height>
-            <Width>13.01042in</Width>
+            <Width>13.13542in</Width>
             <ZIndex>6</ZIndex>
             <Style>
               <Border>
-                <Color>DarkViolet</Color>
                 <Style>Solid</Style>
                 <Width>2pt</Width>
               </Border>
@@ -1371,7 +1374,7 @@ END</CommandText>
           <BackgroundColor>White</BackgroundColor>
         </Style>
       </Body>
-      <Width>13.41667in</Width>
+      <Width>13.76042in</Width>
       <Page>
         <LeftMargin>1in</LeftMargin>
         <RightMargin>1in</RightMargin>

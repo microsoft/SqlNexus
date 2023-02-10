@@ -172,8 +172,8 @@
   <data name="openHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\openHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Msg_RVSyncToggle" xml:space="preserve">
-    <value>RV toggle sync event</value>
+  <data name="Warning_ToDropDB" xml:space="preserve">
+    <value>Because you have enabled drop database before importing, SQL Nexus is about to drop your current database "{0}".   This operation can't be undone.  Are you sure you want to do this?</value>
   </data>
   <data name="servicerunning" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\servicerunning.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -190,8 +190,8 @@
   <data name="GoLtrHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\GoLtrHS.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="GoToNextRecord" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\GoToNextRecord.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="powerbi - Copy" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\powerbi - Copy.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="PieChart" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\PieChart.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -229,14 +229,17 @@
   <data name="PlayHS1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\PlayHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Usage_Quiet" xml:space="preserve">
+    <value>/Q\t\tQuiet Mode - minimize windows in console mode</value>
+  </data>
   <data name="Msg_Loaded" xml:space="preserve">
     <value>Report loaded.</value>
   </data>
   <data name="LegendHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\LegendHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Critical" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Critical.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="graphhs" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\graphhs.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="CopyHS1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\CopyHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -252,6 +255,9 @@
   </data>
   <data name="Error" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Error.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="error1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\error.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Msg_ConnString" xml:space="preserve">
     <value>Connection string: </value>
@@ -307,9 +313,6 @@
   <data name="Msg_RefreshingReport" xml:space="preserve">
     <value>Refreshing report: </value>
   </data>
-  <data name="Msg_NativeImage" xml:space="preserve">
-    <value>Assembly {0} is a native image. Ignoring to load</value>
-  </data>
   <data name="Msg_LoadingReport" xml:space="preserve">
     <value>Loading report: </value>
   </data>
@@ -321,6 +324,9 @@
   </data>
   <data name="Control_Form" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Control_Form.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Drop_Existing_Database" xml:space="preserve">
+    <value>/N\t\tCreate a new SQLNexus database before importing (drop existing).</value>
   </data>
   <data name="StopHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\StopHS.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -351,6 +357,9 @@
   </data>
   <data name="saveHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\saveHS.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CriticalErrorImport" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CriticalErrorImport.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Msg_ProcessParams" xml:space="preserve">
     <value>Processing command-line parameters.</value>
@@ -385,8 +394,8 @@
   <data name="delete" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\delete.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="none" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\none.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="GoToNextRecord" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\GoToNextRecord.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="genericInternet" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\genericInternet.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -399,9 +408,6 @@
   </data>
   <data name="Error_InvalidLogger" xml:space="preserve">
     <value>Logger passed in is invalid</value>
-  </data>
-  <data name="graphhs" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\graphhs.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ShowGridlinesHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ShowGridlinesHS.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -433,9 +439,6 @@
   <data name="Msg_Drillthrough" xml:space="preserve">
     <value>Drilling through report: </value>
   </data>
-  <data name="Warning_ToDropDB" xml:space="preserve">
-    <value>Because you have enabled drop database before importing, SQL Nexus is about to drop your current database "{0}".   This operation can't be undone.  Are you sure you want to do this?</value>
-  </data>
   <data name="GoToPreviousRecord" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\GoToPreviousRecord.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -448,8 +451,8 @@
   <data name="RolledBack" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\RolledBack.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Msg_NotFound" xml:space="preserve">
-    <value>No results were found that match your search criteria.</value>
+  <data name="eventlogError" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\eventlogError.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="PauseRecorderHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\PauseRecorderHS.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -457,17 +460,17 @@
   <data name="Error_InvalidURL" xml:space="preserve">
     <value>Invalid custom URL.  There must be at least three parts in a custom URL.</value>
   </data>
-  <data name="RefreshDocView" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\RefreshDocView.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="DataContainer_MoveNext" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\DataContainer_MoveNext.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Collapsed" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Collapsed.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Msg_NativeImage" xml:space="preserve">
+    <value>Assembly {0} is a native image. Ignoring to load</value>
   </data>
   <data name="RightArrowHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\RightArrowHS.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Collapsed" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Collapsed.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="DataContainer_MoveLast" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\DataContainer_MoveLast.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -511,11 +514,8 @@
   <data name="Error_YukonRequired" xml:space="preserve">
     <value>SQL Nexus requires SQL Server 2005.</value>
   </data>
-  <data name="eventlogError" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\eventlogError.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Msg_NoMoreFound" xml:space="preserve">
-    <value>No more matches found.</value>
+  <data name="RefreshDocView" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\RefreshDocView.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="GRAPH07" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\GRAPH07.ICO;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -559,6 +559,9 @@
   <data name="Msg_ServiceStarted" xml:space="preserve">
     <value>SQLDiag diagnostic data collection service started.</value>
   </data>
+  <data name="Msg_NotFound" xml:space="preserve">
+    <value>No results were found that match your search criteria.</value>
+  </data>
   <data name="Msg_StoppingService" xml:space="preserve">
     <value>Stoppping the SQLDiag diagnostic data collection service...</value>
   </data>
@@ -579,6 +582,9 @@
   </data>
   <data name="CreateDropDB" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\CreateDropDB.txt;System.String, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="Msg_NoMoreFound" xml:space="preserve">
+    <value>No more matches found.</value>
   </data>
   <data name="PauseHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\PauseHS.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -612,6 +618,9 @@
   </data>
   <data name="DataContainer_MoveLastHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\DataContainer_MoveLastHS.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Msg_RVSyncToggle" xml:space="preserve">
+    <value>RV toggle sync event</value>
   </data>
   <data name="Warning_ToEnableDropDB" xml:space="preserve">
     <value>You are about to enable drop database before importing. This option is dangerous and will delete your current database everytime import runs and the operation can not be recovered. are you sure you want to do this?</value>
@@ -742,8 +751,8 @@
   <data name="Msg_Refreshing" xml:space="preserve">
     <value>Refreshing report...</value>
   </data>
-  <data name="error1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\error.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Critical" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Critical.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="warning1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\warning.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -796,6 +805,9 @@
   <data name="performance" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\performance.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="none" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\none.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="FillLeftHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\FillLeftHS.BMP;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -811,13 +823,7 @@
   <data name="Webcontrol_Webpartmgr" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Webcontrol_Webpartmgr.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="powerbi - Copy" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\powerbi - Copy.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Usage_Quiet" xml:space="preserve">
-    <value>/Q\t\tQuiet Mode - minimize windows in console mode</value>
-  </data>
-  <data name="Drop_Existing_Database" xml:space="preserve">
-    <value>/N\t\tCreate a new SQLNexus database before importing (drop existing).</value>
+  <data name="EditIcon_20x20" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\EditIcon_20x20.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

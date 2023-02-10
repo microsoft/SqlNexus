@@ -1963,6 +1963,9 @@ BEGIN
 END
 GO
 
+
+
+
 --QDS
 if object_id ('tbl_QDS_Query_Stats') is not null
 begin
@@ -2060,6 +2063,8 @@ VALUES ('F9EF91B9-529B-4F72-8545-59689D43D37E','Server Performance', 'W','Warnin
 INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
 VALUES ('F332275E-9CF4-4CFA-935D-AE248B74ADE4','Query Performance', 'W','Warning', 'usp_BatchSort', 'Batch sort is detected in query plan(s)',  'Batch sort can cause high CPU or memory grant issues due to cardinality over-estimation ', '','https://docs.microsoft.com/troubleshoot/sql/performance/decreased-perf-high-cpu-optimized-nested-loop', '  ', 1, 100, 0, ' ')
 INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
+VALUES ('B216976B-7540-4903-B3AD-1895A40B0D4B','Query Performance', 'W','Warning', 'usp_OptimizerTimeout', 'Optimizer timeout is detected in query plan(s)',  'Optimizer timeout can cause a choice of query that run longer than expected and consume more resources. Examine queries for potential optimization', '','https://learn.microsoft.com/en-us/troubleshoot/sql/database-engine/performance/troubleshoot-optimizer-timeout-performance', '  ', 1, 100, 0, ' ')
+INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
 VALUES ('B21D0648-90FD-463B-B32B-C9E710D62B63','Query Performance', 'W','Warning', 'usp_SmallSampledStats', 'Some statistics have sample size less than 5%',  'Default sample size is sufficient for most normal workloads. But unevenly distributed data may require larger sample size or Full Scan sampling.', '','', '  ', 1, 100, 0, ' ')
 INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
 VALUES ('E3CECDDA-EBEB-4E69-940C-660813ED5D93','Query Performance', 'W','Warning', 'usp_DisabledIndex', 'Some indexes are disabled',  'Disabling indexes may cause poor query performance. Check tbl_DisabledIndexes for details ', '','http://aka.ms/nexus/disabledindex', '  ', 1, 100, 0, ' ')
@@ -2072,7 +2077,7 @@ VALUES ('D3E36E57-4DDE-44D3-939F-13D2A2608F02','Server Performance', 'W','Warnin
 INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
 VALUES ('4FE75D34-9AAE-440E-9758-1ABE2AA7B54D','Server Performance', 'W','Warning', 'usp_VirtualBytesLeak', 'Virtual bytes leak',  'Virtual bytes for SQL process were over 7TB.  This may indicate of virtual bytes leak. Please check perfmon counter.', '','https://support.microsoft.com/kb/3074434', '  ', 1, 100, 0, ' ')
 INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
-VALUES ('952A2770-4031-4B4F-B56E-6A3A0970FA26','Server Performance', 'W','Warning', 'usp_DeadlockTraceFlag', 'Trace flag 1222',  'Trace flag 1222 is meant for deadlock troubleshooting only. Do NOT leave it on permanently ', 'https://blogs.msdn.microsoft.com/bobsql/2017/05/23/how-it-works-sql-server-deadlock-trace-flag-1222-output/','https://blogs.msdn.microsoft.com/bobsql/2017/05/23/how-it-works-sql-server-deadlock-trace-flag-1222-output/', '  ', 1, 100, 0, ' ')
+VALUES ('952A2770-4031-4B4F-B56E-6A3A0970FA26','Server Performance', 'W','Warning', 'usp_DeadlockTraceFlag', 'Trace flag 1222 or 1204',  'Trace flag 1222 and 1204 are meant for deadlock troubleshooting only. Do not leave it on permanently.', 'https://blogs.msdn.microsoft.com/bobsql/2017/05/23/how-it-works-sql-server-deadlock-trace-flag-1222-output/','https://blogs.msdn.microsoft.com/bobsql/2017/05/23/how-it-works-sql-server-deadlock-trace-flag-1222-output/', '  ', 1, 100, 0, ' ')
 INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
 VALUES ('0F58D750-92B4-43A9-BED1-95450EB63175','Server Performance', 'W','Warning', 'usp_PerfScriptsRunningLong', 'Perf scripts running long',  'run time gaps between DMV queries were exceptionally large.  Some of them took more than 120 seconds between runs. check tbl_requests.runtime for details. this can be system issue', '','', '  ', 1, 100, 0, ' ')
 INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
@@ -2099,15 +2104,15 @@ INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name,
 VALUES ('322DC73D-E4B8-450A-94B7-484DF292AA01','Server Performance', 'W','Warning', 'sp_configure_max_woker_threads', 'Max Worker Thread is set to non-default values', 'Consider changing the ''max worker threads'' value of back to default of 0 to allow SQL Server to manage the worker thread count and the memory they use.', '', 'https://learn.microsoft.com/sql/database-engine/configure-windows/configure-the-max-worker-threads-server-configuration-option', '  ', 1, 100, 0, ' ')
 		
 INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
-VALUES ('25678531-4722-48C4-94B0-026C2ED1021F','Server Performance', 'W','Warning', 'usp_HighRecompiles', 'Potential high Recompiles detected, 50+ per second', 'Potential high recompilations were detected. Please verify with perfmon data.  This can cause high CPU issues.', '','', '  ericbu', 1, 100, 0, ' ')
+VALUES ('25678531-4722-48C4-94B0-026C2ED1021F','Server Performance', 'W','Warning', 'usp_HighRecompiles', 'Potential high Recompiles detected, 50+ per second', 'Potential high recompilations were detected. Please verify with perfmon data.  This can cause high CPU issues.', '','', '  ', 1, 100, 0, ' ')
 INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
-VALUES ('47377EC8-BE56-4C92-B0F3-85FC0485D83B','Server Performance', 'W','Warning', 'HugeGrant', 'Huge Memory Grant found', 'Queries with big memory grant found check the detail report', '/Pages1/Memory%20Grants.aspx','', ' ', 1, 100, 0, ' ')
+VALUES ('47377EC8-BE56-4C92-B0F3-85FC0485D83B','Server Performance', 'W','Warning', 'usp_HugeGrant', 'Huge Memory Grant found', 'Queries with big memory grant found check the detail report', '/Pages1/Memory%20Grants.aspx','https://techcommunity.microsoft.com/t5/sql-server-support-blog/memory-grants-the-mysterious-sql-server-memory-consumer-with/ba-p/333994', ' ', 1, 100, 0, ' ')
 INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
 VALUES ('FDBF24A1-3EBE-49F1-A02B-FD5686ACDAE9','Server Performance', 'W','Warning', 'Optimizer_Memory_Leak', 'Optimizer Memory Leak', 'MEMORYCLERK_SQLOPTIMIZER memory may be high.  This could be a leak issue which is fixed in SQL 2012 Sp1 CU3', 'http://support.microsoft.com/kb/2803065','http://support.microsoft.com/kb/2803065', ' ', 1, 100, 0, ' ')
 INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
 VALUES ('5E630273-C14F-4DCE-BDA0-24A1FD8E25CA','Server Performance', 'W','Warning', 'usp_IOAnalysis', 'Disk IO Analysis', 'The disk sec/transfer in following drives exceeded 20 ms, check the perfmon for complete analysis', '','https://docs.microsoft.com/en-us/troubleshoot/sql/performance/troubleshoot-sql-io-performance', '  ', 1, 100, 0, ' ')
 INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
-VALUES ('5AE45557-E463-48D6-B135-11AADCB8642F','Server Performance', 'I','Info', 'usp_WarnmissingIndex', 'Missing Index detected', 'There are missing indexes detected.  Please review SQL Nexus report and make recommendations to your customer.', '','', ' ', 1, 100, 0, ' ')
+VALUES ('5AE45557-E463-48D6-B135-11AADCB8642F','Server Performance', 'I','Info', 'usp_WarnmissingIndex', 'Missing Index detected', 'There are missing indexes detected.  Review the SQL Nexus report and apply some of the recommendations.', '','https://learn.microsoft.com/sql/relational-databases/indexes/tune-nonclustered-missing-index-suggestions', ' ', 1, 100, 0, ' ')
 INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
 VALUES ('0C73F3D4-6CCC-4FC9-AE37-58110F9C15DB','Server Performance', 'I','Info', 'StaleStatswarning2008', 'Stale Stats warning 2008', 'Statistics of some tables has not been updated for over 7 days', '','https://docs.microsoft.com/sql/relational-databases/statistics/statistics#UpdateStatistics', ' ', 1, 100, 0, ' ')
 INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
@@ -2121,15 +2126,21 @@ VALUES ('57CAA4BB-C7BD-4F96-8040-3224008A3F39','Server Performance', 'I','Info',
 INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
 VALUES ('607B17FD-98F1-498E-9B93-F16E5A155730','Server Performance', 'W','Warning', 'OracleLinkedServerIssue', 'Oracle Driver SQL Server crash', 'Oracle driver loaded in SQL Server memory space may cause SQL Server to crash, refer the KB for solution', '','https://docs.microsoft.com/en-US/troubleshoot/sql/admin/crashes-run-oracle-linked-server-query', ' ', 1, 100, 0, ' ')
 INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
-VALUES ('BBECDF81-DCCE-4E41-93C9-7EB9E11F53BD','Server Performance', 'W','Warning', 'usp_ExcessiveTrace_Warning', 'Many Active Traces Warning', 'Multiple active traces (> 4) were detected on the server.  This can negatively impact server performance', '','', ' ', 1, 100, 0, ' ')
+VALUES ('BBECDF81-DCCE-4E41-93C9-7EB9E11F53BD','Server Performance', 'W','Warning', 'usp_ExcessiveTrace_Warning', 'Many Active Traces Warning', 'Multiple active SQL traces (> 4) were detected on the server.  This can negatively impact server performance. Review and see if you need all of them to be active', '','https://learn.microsoft.com/sql/relational-databases/sql-trace/optimize-sql-trace', ' ', 1, 100, 0, ' ')
 INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
 VALUES ('948756B6-A67F-4CB1-86F9-1B22C26F0B9C','Server Performance', 'W','Warning', 'usp_Expensive_TraceEvts_Used', 'Expensive, performance-impacting Trace events were identfied', 'Multiple non default trace events  were detected running on the server.  This can negatively impact server performance', '','', '  ', 1, 100, 0, ' ')
 INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
 VALUES ('4415F4B3-603F-4F41-978E-9EE32BF2B2E9','Server Performance', 'W','Warning', 'usp_Expensive_XEvts_Used', 'Expensive, performance-impacting Extended events were identfied', 'Multiple non default trace events  were detected running on the server.  This can negatively impact server performance', '','', '  ', 1, 100, 0, ' ')
 INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
-VALUES ('6D4B332C-67A0-428D-A08C-A48A5327DE60','Query Performance', 'W','Warning', 'usp_oldce', 'Using Legacy CE for database', 'Consider changing compatibility level to take advantage of Optimizer New CE', '','https://learn.microsoft.com/sql/relational-databases/performance/cardinality-estimation-sql-server', '  virana', 1, 100, 0, ' ')
+VALUES ('6D4B332C-67A0-428D-A08C-A48A5327DE60','Query Performance', 'W','Warning', 'usp_oldce', 'Using Legacy CE for database', 'Consider changing compatibility level to take advantage of Optimizer New CE', '','https://learn.microsoft.com/sql/relational-databases/performance/cardinality-estimation-sql-server', '  ', 1, 100, 0, ' ')
 INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
-VALUES ('91B2AA56-9CA2-4BDB-8D21-76A5CFF4D74A','Server Performance', 'W','Warning', 'usp_CalvsCore', 'CAL license possibly limiting CPU', 'Customer is using CAL license and CPUs are greater than schedulers online, check the errorlog to confirm. Customer could benefit by upgrading to CORE license.', '','https://docs.microsoft.com/en-us/sql/database-engine/install-windows/upgrade-to-a-different-edition-of-sql-server-setup?view=sql-server-ver16', '  jamgrif', 1, 100, 0, ' ')
+VALUES ('91B2AA56-9CA2-4BDB-8D21-76A5CFF4D74A','Server Performance', 'W','Warning', 'usp_CalvsCore', 'CAL license possibly limiting CPU', 'SQL Server is using CAL license and CPUs are greater than schedulers online, check the errorlog to confirm. You could benefit by upgrading to CORE license.', '','https://docs.microsoft.com/sql/database-engine/install-windows/upgrade-to-a-different-edition-of-sql-server-setup', '  jamgrif', 1, 100, 0, ' ')
+INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
+VALUES ('4F942C36-D84D-4E34-A696-08C30CDCE3B9','Server Performance', 'W','Warning', 'usp_Spinlock_HighCPU', 'High Spinlock rates, likey causing high CPU', 'Excessive spins have been detected from a spinlock likely driving CPU(s) to high utilization', '','https://learn.microsoft.com/sql/relational-databases/diagnose-resolve-spinlock-contention', '  ', 1, 100, 0, ' ')
+INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
+VALUES ('5945C9B1-ED31-4D20-9093-613C9167BF36','Server Performance', 'W','Warning', 'usp_NonMS_LoadedModules', 'Non-MS modules loaded, check if those may impact performance', 'Non-MS modules loaded in SQL Server memory. If the issue you are t-shooting is unexplained performance or instability, see if disabling some of these modules will alleviate the issue.', '','https://learn.microsoft.com/troubleshoot/sql/database-engine/performance/performance-consistency-issues-filter-drivers-modules', '  ', 1, 100, 0, ' ')
+
+
 
 
 
@@ -2145,7 +2156,7 @@ GO
 
 /***************************************************************************************************
 
-owner:jackli
+owner:
 
 ****************************************************************************************************/
 go
@@ -2180,18 +2191,20 @@ begin
 end
 go
 
-create procedure usp_DeadlockTraceFlag
-as
+CREATE PROCEDURE usp_DeadlockTraceFlag
+AS
 IF ((OBJECT_ID ('tbl_TraceFlags') IS NOT NULL) and (OBJECT_ID ('tbl_AnalysisSummary') IS NOT NULL))
-begin
-	if exists (select * from tbl_TraceFlags where TraceFlag in (1204, 1222))
-	begin
-		update tbl_AnalysisSummary
-		set Status = 1
-		where  Name =  OBJECT_NAME(@@PROCID)
-	end
-end
-go
+BEGIN
+	IF EXISTS (SELECT * FROM tbl_TraceFlags WHERE TraceFlag IN (1204, 1222))
+	BEGIN
+		UPDATE tbl_AnalysisSummary
+		SET Status = 1,
+		[Report] = 'Server Configuration',
+		[Description] = 'Trace flag 1222 and 1204 are meant for deadlock troubleshooting only. Do not leave these trace flags on permanently.'
+		WHERE  Name =  OBJECT_NAME(@@PROCID)
+	END
+END
+GO
 
 
 create procedure usp_ChangeTableCauseHighCPU
@@ -2298,21 +2311,76 @@ begin
 end
 
 go
-create procedure usp_BatchSort
- as
-  declare @filename nvarchar(max), @Optimized int
- select  top 1 @filename = [FileName],  @Optimized= c.value('@Optimized[1]', 'int')  from   (select FileName, cast(FileContent as xml) QueryPlan  from tblTopSqlPlan)  a cross apply a.QueryPlan.nodes('declare namespace SP="http://schemas.microsoft.com/sqlserver/2004/07/showplan";//SP:NestedLoops') as t(c)
- where c.value('@Optimized[1]', 'int') = 1
- if ( @fileName is not null)
- begin
-	update tbl_AnalysisSummary
-	set
-	status = 1, 
-	description =  @filename + ' is an example query plan'
-	where name = 'usp_BatchSort'
- end
+CREATE PROCEDURE usp_BatchSort
+AS
+DECLARE @FileName NVARCHAR(MAX), @Optimized INT, @SqlStmt VARCHAR(MAX)
 
-go
+--if xml_plan column is in the table, the the file name (only) of the file that contains the query plan with optimized batch sort
+IF (COL_LENGTH('dbo.tblTopSqlPlan', 'xml_plan') IS NULL )
+BEGIN
+	 SELECT TOP 1 @filename = RIGHT([FileName], CHARINDEX('\', REVERSE([FileName])) -1) ,  @Optimized= c.value('@Optimized[1]', 'int')  
+	 FROM   (SELECT FileName, xml_plan AS QueryPlan  FROM tblTopSqlPlan)  a 
+		CROSS APPLY a.QueryPlan.nodes('declare namespace SP="http://schemas.microsoft.com/sqlserver/2004/07/showplan";//SP:NestedLoops') AS t(c)
+	 WHERE c.value('@Optimized[1]', 'int') = 1
+END
+
+IF ( @FileName IS NOT NULL)
+BEGIN
+	UPDATE tbl_AnalysisSummary
+	SET [Status] = 1, 
+	[Description] =  'Found a query plan with a batch sort. ''' + @FileName + ''' contains an example query plan. Batch sort can cause high CPU or memory grant issues due to cardinality over-estimation. Examine plan and query duration. '
+	WHERE [Name] = 'usp_BatchSort'
+END
+
+GO
+CREATE PROCEDURE usp_OptimizerTimeout
+AS
+
+--create a report on tbl_OptimizerTimeout_Statements
+
+IF (OBJECT_ID ('tbl_OptimizerTimeout_Statements') IS NULL)
+BEGIN
+
+	DECLARE @FileName varchar (128) = '', @StmtId INT, @StmtTxt VARCHAR(256)
+
+	SET QUOTED_IDENTIFIER ON; 
+
+	WITH XMLNAMESPACES ('http://schemas.microsoft.com/sqlserver/2004/07/showplan' AS sp)  
+	SELECT DISTINCT RIGHT([FileName], CHARINDEX('\', REVERSE([FileName])) -1) AS FileName,
+		stmt.stmt_details.value('@StatementId', 'int') AS StatementId,
+		stmt.stmt_details.value('@StatementOptmLevel', 'varchar(64)') AS StatementOptmLevel,
+		stmt.stmt_details.value('@StatementOptmEarlyAbortReason', 'varchar(64)') AS StatementOptmEarlyAbortReason, 
+		stmt.stmt_details.value('@CardinalityEstimationModelVersion', 'int') As CE_Model,
+		stmt.stmt_details.value ('@StatementSubTreeCost', 'decimal(10,6)') AS StatementSubTreeCost,
+		stmt.stmt_details.value ('@StatementText', 'varchar(max)') AS StatementText,
+		stmt.stmt_details.value ('@QueryHash', 'varchar(128)') AS QueryHash,
+		stmt.stmt_details.value ('@QueryPlanHash', 'varchar(128)') AS QueryPlanHash,
+		stmt.stmt_details.value ('@RetrievedFromCache', 'varchar(16)') AS RetrievedFromCache
+	INTO tbl_OptimizerTimeout_Statements
+	FROM (SELECT FileName, xml_plan AS sqlplan	FROM tblTopSqlPlan) AS p       
+		CROSS APPLY sqlplan.nodes('//sp:StmtSimple') AS stmt (stmt_details) 
+	WHERE stmt.stmt_details.value('@StatementOptmEarlyAbortReason', 'varchar(max)') = 'Timeout'
+
+
+	IF (@@ROWCOUNT > 0)
+	BEGIN
+			SELECT TOP 1 @FileName = FileName, @StmtId = StatementId, @StmtTxt = SUBSTRING (StatementText,0,256)
+			FROM tbl_OptimizerTimeout_Statements
+			ORDER BY StatementSubtreeCost DESC
+
+
+		IF ( @FileName IS NOT NULL)
+		BEGIN
+			UPDATE tbl_AnalysisSummary
+			SET [Status] = 1, 
+			[Description] =  'Found a query plan with a optimizer timeout. File ''' + @FileName + ''' contains an example query plan, with Statement text starting like this:''' + CHAR(13) + CHAR(10) + CHAR(13) + CHAR(10) +  @StmtTxt + '''. ' + CHAR(13) + CHAR(10) +  CHAR(13) + CHAR(10) +'An optimizer timeout can cause a choice of query that runs longer than expected and consume more resources. Examine queries for potential optimization '
+			WHERE [Name] = OBJECT_NAME(@@PROCID)
+		END
+	END
+END
+
+GO
+
 
 create procedure usp_McAFee_Intrusion
 as
@@ -2649,26 +2717,30 @@ GO
 
 
 
-CREATE PROCEDURE HugeGrant 
+CREATE PROCEDURE usp_HugeGrant 
 as 
 BEGIN
-	DECLARE @I  INT
-	SET @i = 0
+	DECLARE @cnt  INT, @max_grant_size DECIMAL(7,2), @avg_grant_size DECIMAL(7,2)
+	SET @cnt = 0
+	SET @avg_grant_size =0
+	SET @max_grant_size = 0
 
 	IF ((OBJECT_ID ('tbl_dm_exec_query_memory_grants') IS NOT NULL) and (OBJECT_ID ('tbl_AnalysisSummary') IS NOT NULL))
 	BEGIN
-		SELECT @i= COUNT(*) FROM dbo.tbl_dm_exec_query_memory_grants
+		SELECT @cnt= COUNT(*) , @avg_grant_size = AVG(granted_memory_kb)/1024/1024.0, @max_grant_size = MAX(granted_memory_kb)/1024/1024.0
+		FROM dbo.tbl_dm_exec_query_memory_grants
 		WHERE  granted_memory_kb/1024 > 1024
 
-		IF @i > 0 
+		IF @cnt > 0 
 		BEGIN
 			UPDATE tbl_AnalysisSummary
-			SET [Status] = 1
-			WHERE Name = 'HugeGrant'
+			SET [Status] = 1,
+			[Description] = 'There are ' + CONVERT(VARCHAR, @cnt) + ' queries with memory grants using > 1 GB of memory. Average grant size = ' 
+								+ CONVERT(VARCHAR, @avg_grant_size) + ' GB. The largest grant size found = ' + CONVERT(VARCHAR, @max_grant_size) + ' GB. Consider tuning queries to reduce memory usage.'
+			WHERE Name = 'usp_HugeGrant'
 		END
 	END
-
-End 
+END 
 
 go
 
@@ -3417,31 +3489,31 @@ begin
 		end 
 	end  
 end
-
-go
+GO
 
 CREATE PROCEDURE  [usp_ExcessiveTrace_Warning]
-as
-begin
+AS
+BEGIN
 	DECLARE @active_trace_count  int
 	SET @active_trace_count = 0
              
 	IF OBJECT_ID ('tbl_profiler_trace_summary') IS NOT NULL
 	BEGIN
-             
+
 	  SELECT @active_trace_count = COUNT(DISTINCT traceid )
 	  FROM   [dbo].[tbl_profiler_trace_summary]
 	  WHERE property = 5 AND value = 1  --active traces
 
 	  IF ( @active_trace_count > 4)
-	  begin
-			update tbl_AnalysisSummary
-			set [Status] = 1
-			where Name = 'usp_ExcessiveTrace_Warning'
-	  end     
+	  BEGIN
+			UPDATE tbl_AnalysisSummary
+			SET [Status] = 1,
+			[Report] = 'Active Traces'
+			WHERE Name = 'usp_ExcessiveTrace_Warning'
+	  END     
 	END 
-end
-go
+END
+GO
 
 CREATE PROCEDURE  [usp_Expensive_TraceEvts_Used]
 as
@@ -3479,7 +3551,7 @@ BEGIN
 	BEGIN 
 		UPDATE tbl_AnalysisSummary
 		SET [Status] = 1,
-			Description = 'Expensive Trace events are active on the system. These can negatively impact performance. Examples include: '+ @events_string  + '. Consider disabling these and review feasibility of using long term. See *_MiscPssdiagInfo_Startup.OUT for details.',
+			Description = 'Expensive Trace events are active on the system. These can negatively impact performance. Examples include: '+ @events_string + '' + CHAR(13) + CHAR(10) + ' Consider disabling these and review the feasibility of using long term. See *_MiscPssdiagInfo_Startup.OUT for details.',
 			Report = 'Active Traces'
 		WHERE Name = 'usp_Expensive_TraceEvts_Used' 
 					
@@ -3525,7 +3597,7 @@ IF (OBJECT_ID ('tbl_XEvents') IS NOT NULL)
 	BEGIN 
 		UPDATE tbl_AnalysisSummary
 		SET [Status] = 1,
-			Description = 'Expensive Xevents are active on the system. These can negatively impact performance. Examples include: '+ @events_string  + '. Consider disabling these and review feasibility of using long term. See *_MiscPssdiagInfo_Startup.OUT for details.',
+			Description = 'Expensive Xevents are active on the system. These can negatively impact performance. Examples include: '+ @events_string  + CHAR(13) + CHAR(10) + ' Consider disabling these and review the feasibility of using them long term. See *_MiscPssdiagInfo_Startup.OUT for details.',
 			Report = 'Active Traces'
 		WHERE Name = 'usp_Expensive_XEvts_Used'
 					
@@ -3533,16 +3605,8 @@ IF (OBJECT_ID ('tbl_XEvents') IS NOT NULL)
   END
 
 END
-go
+GO
 
-
-
-/***************************************************************************************************
-
-owner: EricBu
-
-****************************************************************************************************/
-go
 CREATE PROCEDURE usp_HighRecompiles 
 as
 begin
@@ -3562,12 +3626,6 @@ begin
 	end
 end
 GO
-
-/**************************************************************************************************
-owner:  VIRANA
-
-***************************************************************************************************/
-
 
 CREATE PROCEDURE usp_oldce
 AS
@@ -3608,19 +3666,7 @@ BEGIN
 		WHERE NAME = 'usp_oldce'
 	END
 END
-
-
 GO
-
-
-
-/**************************************************************************************************
-owner:  JAMGRIF
-date: 8/23/22
-description: Adds check and warning if CAL license is in use and schedulers are less than CPUs 
-
-***************************************************************************************************/
-
 create procedure usp_CalvsCore
 AS
 IF ((OBJECT_ID ('tbl_ServerProperties') IS NOT NULL) and (OBJECT_ID ('tbl_AnalysisSummary') IS NOT NULL))
@@ -3653,7 +3699,6 @@ BEGIN
 	END
 END
 
-
 /********************************************************
 Owner: Louis Li
 ********************************************************/
@@ -3674,15 +3719,154 @@ begin
 end
 GO
 
+
+CREATE PROCEDURE usp_Spinlock_HighCPU
+AS
+IF ((OBJECT_ID ('tbl_SPINLOCKSTATS') IS NOT NULL) AND ( OBJECT_ID('tbl_ServerProperties') IS NOT NULL ) )
+BEGIN
+
+	DECLARE @cpu_count int
+	SELECT @cpu_count =PropertyValue 
+	FROM tbl_ServerProperties 
+	WHERE PropertyName = 'cpu_count';
+
+	WITH spinlocks AS (SELECT first.[name] AS spinlock_name, 
+	(cast(last.[spins] AS float) - cast(first.[spins] AS float)) /  
+	(CASE WHEN datediff (ms, first.runtime, last.runtime) = 0 
+	 THEN null ELSE datediff (ms, first.runtime, last.runtime)  END ) /@cpu_count  AS  spin_diff_per_ms_per_cpu
+	FROM [tbl_SPINLOCKSTATS] AS first 
+		join [tbl_SPINLOCKSTATS] AS last
+			on first.[name] = last.[name]
+			AND first.runtime = (SELECT min(runtime) FROM tbl_spinlockstats )
+			AND last.runtime =  (SELECT max(runtime) FROM tbl_spinlockstats )
+	WHERE first.[name] NOT LIKE '%dbcc execution%' AND  last.[name] not like '%dbcc execution%') 
+	SELECT TOP 10 spinlock_name, CAST(spin_diff_per_ms_per_cpu AS decimal(22,3)) AS spin_diff_per_ms_per_cpu 
+	INTO #massive_spinlock
+	FROM spinlocks
+	WHERE spin_diff_per_ms_per_cpu > 10000
+	ORDER BY spin_diff_per_ms_per_cpu DESC
+
+	SELECT * FROM #massive_spinlock
+
+	
+
+	IF (@@ROWCOUNT > 0)
+	BEGIN
+		DECLARE @spinlock_name VARCHAR(64), @max_spin_diff_per_ms_per_cpu decimal(22,2), @all_spinlock_names VARCHAR(4000) = ''
+
+		--select the highest spins per ms/cpu
+		SELECT @max_spin_diff_per_ms_per_cpu = MAX(spin_diff_per_ms_per_cpu) FROM #massive_spinlock
+
+		--use a cursor to get the name of all the high-CPU driving spinlocks
+		DECLARE high_spinlock CURSOR
+		FOR SELECT spinlock_name FROM #massive_spinlock
+
+		OPEN high_spinlock
+
+		FETCH NEXT FROM high_spinlock INTO @spinlock_name
+		WHILE (@@fetch_status = 0 )
+		BEGIN
+			SELECT @all_spinlock_names = @all_spinlock_names + CHAR(13) + CHAR(10) +  @spinlock_name
+
+			FETCH NEXT FROM high_spinlock INTO @spinlock_name
+		END
+
+
+		CLOSE high_spinlock
+		DEALLOCATE high_spinlock
+
+		--update the best practices table 
+		UPDATE tbl_AnalysisSummary
+		SET [Status] = 1, 
+		[Description] =  'Found spinlocks that perform massive number of spins during the data collection period, likely causing high CPU. Spinlocks found are: ' 
+					+ @all_spinlock_names  + CHAR(13) + CHAR(10) +  'Maximum "spins per ms per CPU" value was ' + CONVERT(VARCHAR(32), @max_spin_diff_per_ms_per_cpu) 
+					+ '. Research these spinlock names to look for ways to reduce contention and spins and the resulting high CPU utilization',
+		Report = 'Spinlock Stats'
+		WHERE [Name] = OBJECT_NAME(@@PROCID)
+
+	END
+END
+GO
+
+
+CREATE PROCEDURE usp_NonMS_LoadedModules
+AS
+IF ((OBJECT_ID ('tbl_dm_os_loaded_modules') IS NOT NULL) and (OBJECT_ID ('tbl_AnalysisSummary') IS NOT NULL))
+BEGIN
+
+	DECLARE @sql_major_version INT, @sql_major_build INT, @sql NVARCHAR(max)
+	SELECT @sql_major_version = (CAST(PARSENAME(CAST(SERVERPROPERTY('ProductVersion') AS varchar(20)), 4) AS INT)),
+		   @sql_major_build = (CAST(PARSENAME(CAST(SERVERPROPERTY('ProductVersion') AS varchar(20)), 2) AS INT)) 
+
+	DECLARE @nonMs_module_list VARCHAR (MAX)
+
+	--if SQL 2017+, use the STRING_AGG function
+	IF (@sql_major_version >= 14)
+	BEGIN
+		--filter out known MS modules with no company name; also only get the data from shutdown snapshot
+		SELECT @nonMs_module_list = STRING_AGG (CONVERT(NVARCHAR(max),name), (CHAR(13)+ CHAR(10))) 
+		FROM tbl_dm_os_loaded_modules
+		WHERE Company != 'Microsoft Corporation' 
+			AND NAME != 'C:\WINDOWS\SYSTEM32\ODBC32.dll'
+			AND NAME != 'C:\WINDOWS\system32\MsdaDiag.DLL'
+			AND NAME != 'C:\WINDOWS\SYSTEM32\XmlLite.dll'
+			AND NAME != 'C:\WINDOWS\System32\msxml3.dll'
+			AND NAME != 'C:\Program Files\Common Files\System\Ole DB\oledb32.dll'
+			AND NAME != 'C:\WINDOWS\SYSTEM32\MSDART.DLL'
+			AND NAME != 'C:\Program Files\Common Files\System\msadc\msadce.dll'
+			AND NAME != 'C:\WINDOWS\SYSTEM32\ODBC32.dll'
+			AND NAME != 'C:\WINDOWS\system32\MsdaDiag.DLL'
+			AND NAME != 'C:\WINDOWS\SYSTEM32\XmlLite.dll'
+			AND NAME != 'C:\WINDOWS\System32\msxml3.dll'
+			AND NAME != 'C:\Program Files\Common Files\System\Ole DB\oledb32.dll'
+			AND NAME != 'C:\WINDOWS\SYSTEM32\MSDART.DLL'
+			AND NAME != 'C:\Program Files\Common Files\System\msadc\msadce.dll'
+			AND NAME NOT LIKE '%sqlevn70.rll'
+			AND input_file_name like '%Shutdown.out'
+	END
+	ELSE
+	BEGIN
+		--filter out known MS modules with no company name; also only get the data from shutdown snapshot
+		SELECT @nonMs_module_list = COALESCE (@nonMs_module_list + (CHAR(13)+ CHAR(10)) + name,name) 
+		FROM tbl_dm_os_loaded_modules
+		WHERE Company != 'Microsoft Corporation' 
+			AND NAME != 'C:\WINDOWS\SYSTEM32\ODBC32.dll'
+			AND NAME != 'C:\WINDOWS\system32\MsdaDiag.DLL'
+			AND NAME != 'C:\WINDOWS\SYSTEM32\XmlLite.dll'
+			AND NAME != 'C:\WINDOWS\System32\msxml3.dll'
+			AND NAME != 'C:\Program Files\Common Files\System\Ole DB\oledb32.dll'
+			AND NAME != 'C:\WINDOWS\SYSTEM32\MSDART.DLL'
+			AND NAME != 'C:\Program Files\Common Files\System\msadc\msadce.dll'
+			AND NAME != 'C:\WINDOWS\SYSTEM32\ODBC32.dll'
+			AND NAME != 'C:\WINDOWS\system32\MsdaDiag.DLL'
+			AND NAME != 'C:\WINDOWS\SYSTEM32\XmlLite.dll'
+			AND NAME != 'C:\WINDOWS\System32\msxml3.dll'
+			AND NAME != 'C:\Program Files\Common Files\System\Ole DB\oledb32.dll'
+			AND NAME != 'C:\WINDOWS\SYSTEM32\MSDART.DLL'
+			AND NAME != 'C:\Program Files\Common Files\System\msadc\msadce.dll'
+			AND NAME NOT LIKE '%sqlevn70.rll'
+			AND input_file_name like '%Shutdown.out'
+
+	END
+
+	IF ((@nonMs_module_list IS NOT NULL) AND (@nonMs_module_list !=''))
+
+	BEGIN
+		UPDATE tbl_AnalysisSummary 		
+		SET [Status]=1,
+		[Description] = 'These Non-MS modules are loaded in SQL Server memory:' + CHAR(13) + CHAR(10) + @nonMs_module_list + + CHAR(13) + CHAR(10) + 'If the issue you are t-shooting is unexplained performance or instability, see if disabling some of these modules will alleviate the issue.',
+		[Report] = 'Loaded Modules'
+		WHERE [Name] = OBJECT_NAME(@@PROCID)
+	END
+END
+GO
+
+
+
+
 /********************************************************
 firing rules
 ********************************************************/
-
-
-/*********************************************************
-
-owner:jackli
-**********************************************************/
 
 exec usp_AttendtionCausedBlocking
 go
@@ -3702,8 +3886,6 @@ exec proc_PowerPlan
 go
 exec proc_CheckTraceFlags
 go
---exec proc_ExcessiveXevents
-go
 exec proc_AutoStats
 go
 exec proc_ConfigAlert
@@ -3714,9 +3896,10 @@ exec usp_McAFee_Intrusion
 go
 exec usp_BatchSort
 go
+exec dbo.usp_OptimizerTimeout
+go
 exec usp_SmallSampledStats
 go
-
 exec usp_DisabledIndex
 go
 exec usp_AccessCheck
@@ -3727,11 +3910,8 @@ exec usp_VirtualBytesLeak
 go
 exec usp_ChangeTableCauseHighCPU
 go
-exec usp_DeadlockTraceFlag
+exec dbo.usp_DeadlockTraceFlag
 go
-/************************************************************
-owner: jaynar
-***********************************************************/
 exec usp_Expensive_TraceEvts_Used
 go
 exec usp_Expensive_XEvts_Used
@@ -3740,58 +3920,32 @@ exec usp_ExcessiveTrace_Warning
 go
 exec OracleLinkedServerIssue
 go
-
 exec XEventcrash
 go
-
 exec usp_Non_SQL_CPU_consumption 
 go 
-
-
-exec [usp_KernelHighCPUconsumption] 
+exec usp_KernelHighCPUconsumption
 go 
-
-
-
-exec [usp_SQLHighCPUconsumption]
-go
-
+exec usp_SQLHighCPUconsumption
+GO
 exec StaleStatswarning2008
-go
-
+GO
 exec dbo.usp_IOAnalysis
 go
-
-exec usp_WarnmissingIndex
+EXEC usp_WarnmissingIndex
 go
-exec Optimizer_Memory_Leak
+EXEC Optimizer_Memory_Leak
 go
-exec HugeGrant
+EXEC dbo.usp_HugeGrant
+GO
+EXEC usp_HighRecompiles
+GO
+EXEC usp_oldce
+GO
+EXEC usp_CalvsCore
 go
-
-
-/*********************************************************
-
-owner: EricBu
-**********************************************************/
-go
-exec usp_HighRecompiles
-go
-
-/**************************************************************************************************
-owner:  VIRANA
-
-***************************************************************************************************/
-go
-exec usp_oldce
-go
-
-/**************************************************************************************************
-owner:  JAMGRIF
-
-***************************************************************************************************/
-go
-exec usp_CalvsCore
-go
-
+EXEC usp_Spinlock_HighCPU
+GO
+EXEC usp_NonMS_LoadedModules
+GO
 /******END of script***/

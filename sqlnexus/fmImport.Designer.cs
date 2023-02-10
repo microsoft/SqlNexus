@@ -118,7 +118,7 @@ namespace sqlnexus
             this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnClose.BackColor = System.Drawing.SystemColors.Control;
             this.btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnClose.Image = global::sqlnexus.Properties.Resources.CriticalError;
+            this.btnClose.Image = global::sqlnexus.Properties.Resources.CriticalErrorImport;
             this.btnClose.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnClose.Location = new System.Drawing.Point(376, 56);
             this.btnClose.Name = "btnClose";
