@@ -2079,7 +2079,7 @@ VALUES ('4FE75D34-9AAE-440E-9758-1ABE2AA7B54D','Server Performance', 'W','Warnin
 INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
 VALUES ('952A2770-4031-4B4F-B56E-6A3A0970FA26','Server Performance', 'W','Warning', 'usp_DeadlockTraceFlag', 'Trace flag 1222 or 1204',  'Trace flag 1222 and 1204 are meant for deadlock troubleshooting only. Do not leave it on permanently.', 'https://blogs.msdn.microsoft.com/bobsql/2017/05/23/how-it-works-sql-server-deadlock-trace-flag-1222-output/','https://blogs.msdn.microsoft.com/bobsql/2017/05/23/how-it-works-sql-server-deadlock-trace-flag-1222-output/', '  ', 1, 100, 0, ' ')
 INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
-VALUES ('0F58D750-92B4-43A9-BED1-95450EB63175','Server Performance', 'W','Warning', 'usp_PerfScriptsRunningLong', 'Perf scripts running long',  'run time gaps between DMV queries were exceptionally large.  Some of them took more than 120 seconds between runs. check tbl_requests.runtime for details. this can be system issue', '','', '  ', 1, 100, 0, ' ')
+VALUES ('0F58D750-92B4-43A9-BED1-95450EB63175','Server Performance', 'W','Warning', 'usp_PerfScriptsRunningLong', 'Perf scripts running long',  'run time gaps between DMV queries were exceptionally large.  Some of them took more than 60 seconds between runs. check tbl_requests.runtime for details. this can be system issue', '','', '  ', 1, 100, 0, ' ')
 INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
 VALUES ('062A4FCD-C2D9-4A08-B3B0-C57251223450','Server Performance', 'W','Warning', 'usp_AttendtionCausedBlocking', 'Attention causing blocking',  'Some timeouts/attentions could have caused blocking.  see readtrace.tblInterestingEvents and vw_HEAD_BLOCKER_SUMMARY', '','', '  ', 1, 100, 0, ' ')
 INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
@@ -2176,20 +2176,24 @@ begin
 end
 GO
 
-create procedure usp_PerfScriptsRunningLong
-as
-if exists (select * from 
-(select runtime, lag(runtime, 1, runtime) over (order by runtime) as prev_runtime,
-datediff (s, lag(runtime, 1, runtime) over (order by runtime), runtime) gap
-from  (select distinct runtime from tbl_REQUESTS ) t ) t2  where gap > 120
-)
-begin
-	update tbl_AnalysisSummary
-	set Status = 1
-	where  Name =  OBJECT_NAME(@@PROCID)
+CREATE PROCEDURE usp_PerfScriptsRunningLong
+AS
+DECLARE @PerfStatsGap INT = 60, @PerfStatsDefaultInterval INT = 10
 
-end
-go
+IF EXISTS (
+ SELECT * FROM 
+  (	SELECT runtime, LAG(runtime, 1, runtime) OVER (ORDER BY runtime) AS prev_runtime,
+	DATEDIFF (s, LAG(runtime, 1, runtime) OVER (ORDER BY runtime), runtime) gap
+ FROM  (SELECT DISTINCT runtime FROM tbl_REQUESTS ) t ) t2  
+ WHERE gap > @PerfStatsGap
+)
+BEGIN
+	UPDATE tbl_AnalysisSummary
+	SET Status = 1,
+	[Description] = 'Run time gaps in perfstats queries were exceptionally large.  Some of them took more than ' + CONVERT(VARCHAR(8), @PerfStatsGap) + ' seconds between runs (default interval is ' + CONVERT(VARCHAR(8), @PerfStatsDefaultInterval) + '). Check tbl_requests.runtime for details. This can be SQL scheduler or OS system issue.'
+	WHERE  Name =  OBJECT_NAME(@@PROCID)
+END
+GO
 
 CREATE PROCEDURE usp_DeadlockTraceFlag
 AS
