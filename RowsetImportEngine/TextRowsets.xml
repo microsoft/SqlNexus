@@ -3866,7 +3866,21 @@
       </KnownColumns>
     </Rowset>
 
+    <Rowset name="tbl_dm_io_virtual_file_stats" enabled="true" identifier="-- file_io_stats --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn"/>
+        <Column name="runtime_utc" type="RowsetImportEngine.DateTimeColumn"/>
+        <Column name="database_name" type="RowsetImportEngine.VarCharColumn" length="40"/>
+        <Column name="Physical_Name" type="RowsetImportEngine.VarCharColumn" length="256"/>
+        <Column name="File_Size_MB" type="RowsetImportEngine.DecimalColumn" />
+        <Column name="Average_Read_Latency" type="RowsetImportEngine.DecimalColumn" />
+        <Column name="Average_Write_Latency" type="RowsetImportEngine.DecimalColumn"/>
+        <Column name="Average_Bytes_Read " type="RowsetImportEngine.BigIntColumn"/>
+        <Column name="Average_Bytes_Write " type="RowsetImportEngine.BigIntColumn"/>
+      </KnownColumns>
+    </Rowset>
 
+    
   </KnownRowsets>
 </TextImport>
 
