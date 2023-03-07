@@ -2139,6 +2139,10 @@ INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name,
 VALUES ('4F942C36-D84D-4E34-A696-08C30CDCE3B9','Server Performance', 'W','Warning', 'usp_Spinlock_HighCPU', 'High Spinlock rates, likey causing high CPU', 'Excessive spins have been detected from a spinlock likely driving CPU(s) to high utilization', '','https://learn.microsoft.com/sql/relational-databases/diagnose-resolve-spinlock-contention', '  ', 1, 100, 0, ' ')
 INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
 VALUES ('5945C9B1-ED31-4D20-9093-613C9167BF36','Server Performance', 'W','Warning', 'usp_NonMS_LoadedModules', 'Non-MS modules loaded, check if those may impact performance', 'Non-MS modules loaded in SQL Server memory. If the issue you are t-shooting is unexplained performance or instability, see if disabling some of these modules will alleviate the issue.', '','https://learn.microsoft.com/troubleshoot/sql/database-engine/performance/performance-consistency-issues-filter-drivers-modules', '  ', 1, 100, 0, ' ')
+INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
+VALUES ('31E879BE-97A4-413F-880F-29BFC57C099F','AlwaysOn State', 'W','Warning', 'usp_AGHealthState', 'AlwaysOn replica states', 'AG replica(s) is unhealthy or not online', '','', '  ', 1, 100, 0, ' ')
+INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
+VALUES ('476E8B9B-81F7-494C-9039-71CD73EAD719','AlwaysOn State', 'W','Warning', 'usp_DBMEndPointState', 'AlwaysOn endpoint state', 'AG DBM endpoint is not online.', '','https://learn.microsoft.com/sql/database-engine/availability-groups/windows/troubleshoot-always-on-availability-groups-configuration-sql-server#Endpoints', '  ', 1, 100, 0, ' ')
 
 
 
@@ -2720,6 +2724,67 @@ END
 GO
 
 
+CREATE PROCEDURE usp_AGHealthState
+as 
+BEGIN
+	DECLARE @avail_group_name VARCHAR(128), @op_state VARCHAR(64), @con_state VARCHAR(64), @sync_health_state VARCHAR(64)
+	DECLARE @msg_string VARCHAR(MAX)
+
+	IF (OBJECT_ID ('tbl_hadr_ag_replica_states') IS NOT NULL)
+	BEGIN
+		SELECT	TOP 1 
+				@avail_group_name = group_name, 
+				@op_state = operational_state_desc, 
+				@con_state = connected_state_desc, 
+				@sync_health_state = synchronization_health_desc
+		FROM tbl_hadr_ag_replica_states
+		WHERE operational_state_desc <> 'ONLINE' 
+				OR synchronization_health_desc  <> 'HEALTHY'
+
+		IF (@@ROWCOUNT > 0 and @avail_group_name IS NOT NULL)
+		BEGIN
+			SET @msg_string = 'At least one AG replica is unhealthy or not online. For example, AG = ''' + @avail_group_name + ''' has operational state = ''' + 
+					@op_state + ''' connection state = ''' + @con_state + ''' and sync_health_state  = ''' + @sync_health_state + '''. Check AG report for details.'
+
+			UPDATE tbl_AnalysisSummary
+			SET [Status] = 1,
+			[Description] = @msg_string,
+			[Report] = 'AlwaysOn Report'
+			WHERE Name = OBJECT_NAME(@@PROCID)
+		END
+	END
+
+END
+GO
+
+CREATE PROCEDURE usp_DBMEndPointState
+as 
+BEGIN
+	DECLARE @hadr_endpoint VARCHAR(128), @endpoint_type VARCHAR(64), @endpoint_state VARCHAR(64)
+	DECLARE @msg_string VARCHAR(MAX)
+
+	IF (OBJECT_ID ('tbl_hadr_endpoints_principals') IS NOT NULL)
+	BEGIN
+		SELECT	@hadr_endpoint = name , 
+				@endpoint_type = type_desc, 
+				@endpoint_state = state_desc 
+		FROM tbl_hadr_endpoints_principals
+		WHERE state_desc <> 'STARTED'
+
+		IF (@@ROWCOUNT > 0 and @hadr_endpoint IS NOT NULL)
+		BEGIN
+			SET @msg_string = 'The AG endpoint is not online. Endpoint name ''' + @hadr_endpoint + ''', endpoint type = ''' + 
+					@endpoint_type + ''', endpoint state = ''' + @endpoint_state + ''
+
+			UPDATE tbl_AnalysisSummary
+			SET [Status] = 1,
+			[Description] = @msg_string,
+			[Report] = 'AlwaysOn Report'
+			WHERE Name = OBJECT_NAME(@@PROCID)
+		END
+	END
+END
+GO
 
 CREATE PROCEDURE usp_HugeGrant 
 as 
@@ -3952,4 +4017,7 @@ EXEC usp_Spinlock_HighCPU
 GO
 EXEC usp_NonMS_LoadedModules
 GO
+EXEC usp_DBMEndPointState
+GO
+EXEC usp_AGHealthState
 /******END of script***/
