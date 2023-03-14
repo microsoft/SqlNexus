@@ -17,19 +17,32 @@
       <Query>
         <DataSourceName>DataSource_SqlNexus_Private</DataSourceName>
         <CommandText>DECLARE @sql VARCHAR(MAX) 
-IF OBJECT_ID ('tbl_RUNTIMES') IS NOT NULL
+
+IF (OBJECT_ID ('tbl_RUNTIMES') IS NOT NULL)
 BEGIN
-	SET @sql = 'SELECT (runtime) AS StartTime FROM tbl_RUNTIMES'
-	EXEC (@sql)
+	IF EXISTS(SELECT TOP 1 (runtime) AS StartTime FROM tbl_RUNTIMES)
+	BEGIN
+		SET @sql = 'SELECT MIN(runtime) AS StartTime FROM tbl_RUNTIMES'
+		EXEC (@sql)
+	END
+	ELSE
+		SELECT CAST ('2000/1/1 00:00:01' AS DATETIME) AS StartTime
+
 END
 ELSE IF OBJECT_ID ('tbl_REQUESTS') IS NOT NULL
 BEGIN
-	SET @sql = 'SELECT (runtime) AS StartTime  FROM tbl_REQUESTS'
-	EXEC (@sql)
+
+	IF EXISTS(SELECT TOP 1 (runtime) AS StartTime FROM tbl_REQUESTS)
+	BEGIN
+		SET @sql = 'SELECT MIN(runtime) AS StartTime  FROM tbl_REQUESTS'
+		EXEC (@sql)
+	END
+	ELSE
+		SELECT CAST ('2000/1/1 00:00:02' AS DATETIME) AS StartTime
 END
 ELSE
 BEGIN
-	SELECT CAST ('2000/1/1' AS DATETIME) AS StartTime
+	SELECT CAST ('2000/1/1 00:00:03' AS DATETIME) AS StartTime
 END</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
@@ -46,17 +59,27 @@ END</CommandText>
         <CommandText>DECLARE @sql VARCHAR(MAX) 
 IF OBJECT_ID ('tbl_RUNTIMES') IS NOT NULL
 BEGIN
-	SET @sql = 'SELECT (runtime) AS EndTime FROM tbl_RUNTIMES'
-	EXEC (@sql)
+	IF EXISTS(SELECT TOP 1 (runtime) AS StartTime FROM tbl_RUNTIMES)
+	BEGIN
+		SET @sql = 'SELECT MAX(runtime) AS EndTime FROM tbl_RUNTIMES'
+		EXEC (@sql)
+	END
+	ELSE
+		SELECT CAST ('2099/1/1 00:00:01' AS DATETIME) AS EndTime
 END
 ELSE IF OBJECT_ID ('tbl_REQUESTS') IS NOT NULL
 BEGIN
-	SET @sql = 'SELECT (runtime) AS EndTime  FROM tbl_REQUESTS'
-	EXEC (@sql)
+	IF EXISTS(SELECT TOP 1 (runtime) AS StartTime FROM tbl_REQUESTS)
+	BEGIN
+		SET @sql = 'SELECT MAX(runtime) AS EndTime  FROM tbl_REQUESTS'
+		EXEC (@sql)
+	END
+	ELSE
+		SELECT CAST ('2000/1/1 00:00:02' AS DATETIME) AS EndTime
 END
 ELSE
 BEGIN
-	SELECT CAST ('2099/1/1' AS DATETIME) AS EndTime
+	SELECT CAST ('2099/1/1 00:00:03' AS DATETIME) AS EndTime
 END</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
@@ -671,7 +694,6 @@ Fields!Report.Value = "", Nothing)</ReportName>
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
-                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                   </TablixCells>

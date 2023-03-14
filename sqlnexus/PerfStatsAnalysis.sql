@@ -2381,7 +2381,7 @@ BEGIN
 		BEGIN
 			UPDATE tbl_AnalysisSummary
 			SET [Status] = 1, 
-			[Description] =  'Found a query plan with a optimizer timeout. File ''' + @FileName + ''' contains an example query plan, with Statement text starting like this:''' + CHAR(13) + CHAR(10) + CHAR(13) + CHAR(10) +  @StmtTxt + '''. ' + CHAR(13) + CHAR(10) +  CHAR(13) + CHAR(10) +'An optimizer timeout can cause a choice of query that runs longer than expected and consume more resources. Examine queries for potential optimization '
+			[Description] =  'Found a query plan with an optimizer timeout. File ''' + @FileName + ''' contains an example query plan, with Statement text starting like this:''' + CHAR(13) + CHAR(10) + CHAR(13) + CHAR(10) +  @StmtTxt + '''. ' + CHAR(13) + CHAR(10) +  CHAR(13) + CHAR(10) +'An optimizer timeout can cause a choice of query that runs longer than expected and consume more resources. Examine queries for potential optimization '
 			WHERE [Name] = OBJECT_NAME(@@PROCID)
 		END
 	END
