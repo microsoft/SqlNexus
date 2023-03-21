@@ -2738,7 +2738,7 @@ BEGIN
 				@con_state = connected_state_desc, 
 				@sync_health_state = synchronization_health_desc
 		FROM tbl_hadr_ag_replica_states
-		WHERE operational_state_desc <> 'ONLINE' 
+		WHERE operational_state_desc IN ('OFFLINE', 'FAILED', 'FAILED_NO_QUORUM')
 				OR synchronization_health_desc  <> 'HEALTHY'
 
 		IF (@@ROWCOUNT > 0 and @avail_group_name IS NOT NULL)
