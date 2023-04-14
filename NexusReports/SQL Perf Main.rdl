@@ -123,6 +123,10 @@ values ('System_Requests_C', 'System Thread CPU Consumption', 'System Thread CPU
 insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
 values ('Active Traces and XEvents_C', 'Active Trace and XEvent Report', 'Active Trace and XEvent report',  1|2|4|8, 'Performance', 'dbo.tbl_profiler_trace_summary', 3000, 'Perf Stats Collector', 1,3000)
 
+insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
+values ('Tempdb_Space_Use_C', 'Tempdb Space Usage', 'Breakdown of space usage in tempdb',  1|2|4|8, 'Performance', 'dbo.tbl_dm_db_file_space_usage', 4000, 'Tempdb and Trans Collector', 1,3000)
+
+
 --Replication
 insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
 values ('Replication_Topology_C', 'Replication Topology', 'Replication Topology in hierarchycal order',  1|2|4|8, 'Replication', 'dbo.tbl_repl_sysservers', 200, 'Replication', 1,2000)
