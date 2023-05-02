@@ -14,7 +14,7 @@
     <DataSource Name="DataSource_test">
       <ConnectionProperties>
         <DataProvider>SQL</DataProvider>
-        <ConnectString>Data Source=.\sql14a;Initial Catalog=ActiveTraces</ConnectString>
+        <ConnectString>Data Source=.;Initial Catalog=sqlnexus</ConnectString>
         <IntegratedSecurity>true</IntegratedSecurity>
       </ConnectionProperties>
       <rd:SecurityType>Integrated</rd:SecurityType>
@@ -94,24 +94,12 @@ where sm.property=2</CommandText>
     <DataSet Name="DataSet_ActiveXEvents">
       <Query>
         <DataSourceName>DataSource_test</DataSourceName>
-        <CommandText>select session_name, event_name , 
-case when session_name in ('sp_server_diagnostics session', 'hkenginexesession', 'system_health') then 1 else 0 end 'Is_Microsoft_Session' 
-from tbl_XEvents</CommandText>
+        <CommandText>SELECT session_name, event_name , 
+ CASE WHEN session_name in ('sp_server_diagnostics session', 'hkenginexesession', 'system_health', 'alwayson_health') 
+      THEN 1 ELSE 0 
+ END AS 'Is_Microsoft_Session' 
+FROM tbl_XEvents</CommandText>
       </Query>
-      <Fields>
-        <Field Name="session_name">
-          <DataField>session_name</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="event_name">
-          <DataField>event_name</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="Is_Microsoft_Session">
-          <DataField>Is_Microsoft_Session</DataField>
-          <rd:TypeName>System.Int32</rd:TypeName>
-        </Field>
-      </Fields>
     </DataSet>
   </DataSets>
   <ReportSections>
