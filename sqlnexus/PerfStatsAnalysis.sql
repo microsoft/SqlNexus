@@ -3620,7 +3620,7 @@ BEGIN
 	BEGIN 
 		UPDATE tbl_AnalysisSummary
 		SET [Status] = 1,
-			Description = 'Expensive Trace events are active on the system. These can negatively impact performance. Examples include: '+ @events_string + '' + CHAR(13) + CHAR(10) + ' Consider disabling these and review the feasibility of using long term. See *_MiscPssdiagInfo_Startup.OUT for details.',
+			Description = 'Expensive Trace events are active on the system. These can negatively impact performance. Examples include: '+ @events_string + '' + CHAR(13) + CHAR(10) + ' Consider disabling these and review the feasibility of using long term. See *_ExistingProfilerXeventTraces.out for details.',
 			Report = 'Active Traces'
 		WHERE Name = 'usp_Expensive_TraceEvts_Used' 
 					
