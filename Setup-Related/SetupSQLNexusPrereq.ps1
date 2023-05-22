@@ -100,7 +100,7 @@ if ($RMLsw_found64bit -eq $null) #if not there, install it
 {
 	$rml_utils_installation_file = "$env:temp\RMLSetup_AMD64.msi"
 	Write-Host "  Downloading RML Utilities from the Web..." -BackgroundColor DarkYellow
-	DownloadNexusPrereqFile -url "http://download.microsoft.com/download/a/a/d/aad67239-30df-403b-a7f1-976a4ac46403/RMLSetup.msi" -destination_file $rml_utils_installation_file
+	DownloadNexusPrereqFile -url "https://download.microsoft.com/download/a/a/d/aad67239-30df-403b-a7f1-976a4ac46403/RMLSetup.msi" -destination_file $rml_utils_installation_file
 	Start-Sleep -Seconds 1
 	Write-Host "  Launching RML Utilities installation" -BackgroundColor DarkYellow
 	Start-Process -FilePath "msiexec" -ArgumentList "/i $rml_utils_installation_file /lv $env:temp\RMLSetup_AMD64_Install.log" -Wait
@@ -167,7 +167,7 @@ elseif
             #now install RML Utils
 		$rml_utils_installation_file = "$env:temp\RMLSetup_AMD64.msi"
 		Write-Host "  Downloading RML Utilities from the Web..." -BackgroundColor DarkYellow
-		DownloadNexusPrereqFile -url "http://download.microsoft.com/download/a/a/d/aad67239-30df-403b-a7f1-976a4ac46403/RMLSetup.msi" -destination_file $rml_utils_installation_file
+		DownloadNexusPrereqFile -url "https://download.microsoft.com/download/a/a/d/aad67239-30df-403b-a7f1-976a4ac46403/RMLSetup.msi" -destination_file $rml_utils_installation_file
 		Start-Sleep -Seconds 1
 		Write-Host "  Launching RML Utilities installation" -BackgroundColor DarkYellow
 		Start-Process -FilePath "msiexec" -ArgumentList "/i $rml_utils_installation_file /lv $env:temp\RMLSetup_AMD64_Install.log" -Wait
