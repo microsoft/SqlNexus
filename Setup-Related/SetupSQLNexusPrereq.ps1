@@ -1,6 +1,6 @@
 ﻿# 04/2017 Joseph.Pilov  - Initial build
 # 02/2021 Joseph.Pilov  - Update with PowerBI installation and web downloads
-
+# 05/2023 Joseph.Pilov -  Update with .NET Framework 4.8 installation and change RML download URL
 
 
 
@@ -9,7 +9,6 @@ function DownloadNexusPrereqFile ([string] $url, [string] $destination_file)
     #start the download - asynchronously
     $client = new-object System.Net.WebClient
     $client.DownloadFile($url,$destination_file)
-
 }
 
 
@@ -110,7 +109,8 @@ if ($RMLsw_found64bit -eq $null) #if not there, install it
 
 #major version is older than 9.00.00
 elseif 
-( ($RMLsw_found64bit.DisplayVersion.Substring(1,1) -as [int]) -lt 9     #directly check second digit for major version 09.0... - for future use
+( 
+    ($RMLsw_found64bit.DisplayVersion.Substring(1,1) -as [int]) -lt 9     #directly check second digit for major version 09.0... - for future use
 )
 {
     Write-Host "  You have a very old version of 'RML Utilities' installed. Version found: " , $RMLsw_found64bit.DisplayVersion ". You must uninstall it before you can install the latest version " -BackGroundColor Red
@@ -186,9 +186,84 @@ else
  {
     Write-Host "  The minimum required version of 'RML Utilities' is already installed. Version (s) found: " , $RMLsw_found64bit.DisplayVersion -BackgroundColor DarkGreen
  }
+
+#*********************************************************************************************************************
+#Install .NET Framework 4.8
+
+#check for presence of .NET 4.8 and if not there install it
+
+$DotNet48IsInstalled = $false
+
+$dotNetVersion = Get-ChildItem "HKLM:\SOFTWARE\Microsoft\NET Framework Setup\NDP" -Recurse |
+    Get-ItemProperty -name Version -ErrorAction "SilentlyContinue" |
+    Where-Object { $_.PSChildName -notmatch '^S'} |  # used to filter out .NET Framework versions that have names starting with 'S' (e.g., 'Servicing' versions), as they are not actual installed versions of .NET Framework.
+    Sort-Object -Property Version |
+    Select-Object -ExpandProperty Version 
+
+#check for a version that contains 4.8 string, e.g. '4.8.09032'
+
+$DotNet48IsInstalled = foreach ($dotnetver in $dotNetVersion)
+{
+    if ($dotnetver -match "4.8")
+    {
+        $true
+        break
+    }
+}
+
+
+if (-not $DotNet48IsInstalled) 
+{
+    Write-Host ".NET Framework 4.8 is not installed."
+
+    [string] $confirm = $null
+    $DotNet48_installation_file = "$env:temp\ndp48-web.exe"
+    $dotNetInstallerUrl = "https://go.microsoft.com/fwlink/?LinkId=2085155"
+
+    Write-Host "Would you like to download and install .Net Framework 4.8?"
+
+	while (-not(($confirm -eq "Y") -or ($confirm -eq "N") -or ($null -eq $confirm)))
+	{
+			
+		$confirm = Read-Host "Install .NET Framework 4.8 (Y/N)>" 
+
+		$confirm = $confirm.ToString().ToUpper()
+		if (-not(($confirm -eq "Y") -or ($confirm -eq "N") -or ($null -eq $confirm)))
+		{
+			Write-Host ""
+			Write-Host "Please chose [Y] to download and install .NET Framework 4.8."
+			Write-Host "Please chose [N] to continue without installing .NET Framework 4.8."
+			Write-Host ""
+		}
+	}
+
+	if ($confirm -eq "Y")
+	{ 
+        Write-Host "  Downloading .NET Framework 4.8 from the Web to $DotNet48_installation_file....." -BackgroundColor DarkYellow
+        DownloadNexusPrereqFile -url $dotNetInstallerUrl -destination_file $DotNet48_installation_file
+        Start-Sleep -Seconds 1
+
+        Write-Host "  Launching .NET Fraemwork 4.8 installation" -BackgroundColor DarkYellow
+        # Install .NET Framework 4.8
+        Start-Process -FilePath $DotNet48_installation_file -ArgumentList "/norestart" -Wait
+    
+        Write-Host "  Removing the downloaded .NET Framework 4.8 installation file $DotNet48_installation_file" -BackgroundColor DarkYellow
+        Remove-Item -Path $DotNet48_installation_file
+    }
+    elseif ($confirm -eq "N")
+    {
+        Write-Host "Skipping .NET Framework 4.8 installation."
+    }
+} 
+else 
+{
+    Write-Host ".NET Framework 4.8 is already installed."
+}
+
+
  
- #*********************************************************************************************************************
- 
+#*********************************************************************************************************************
+#Install PowerBI Desktop - optional
  
 Write-Host "Checking for 'PowerBI Desktop' installation"
 
