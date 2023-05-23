@@ -95,6 +95,12 @@ $RMLsw_found64bit = Get-ItemProperty HKLM:\Software\Microsoft\Windows\CurrentVer
                      Select-Object DisplayVersion , DisplayName | 
                      Where {$_.DisplayName -Match 'rml utilities for SQL'}
 
+# take the version which is in this format 09.04.0102 and split it into an array where element 0 would be 09, element 1 woudl be 04, etc.
+if ($RMLsw_found64bit)
+{
+    $ver_array = $RMLsw_found64bit.DisplayVersion.Split(".")
+}
+
 if ($RMLsw_found64bit -eq $null) #if not there, install it
 {
 	$rml_utils_installation_file = "$env:temp\RMLSetup_AMD64.msi"
@@ -108,10 +114,8 @@ if ($RMLsw_found64bit -eq $null) #if not there, install it
 }
 
 #major version is older than 9.00.00
-elseif 
-( 
-    ($RMLsw_found64bit.DisplayVersion.Substring(1,1) -as [int]) -lt 9     #directly check second digit for major version 09.0... - for future use
-)
+
+elseif( ($ver_array[0] -as [int]) -lt 9) #directly check first array member for major version 09.0... 
 {
     Write-Host "  You have a very old version of 'RML Utilities' installed. Version found: " , $RMLsw_found64bit.DisplayVersion ". You must uninstall it before you can install the latest version " -BackGroundColor Red
     
@@ -142,44 +146,73 @@ elseif
     }
 }
 
-#minor version is older than 9.00.97
+#minor version is older than 9.00.102
 elseif 
-( ($RMLsw_found64bit.DisplayVersion.Substring(8,2) -as [int]) -lt 97 -and    #just directly check last 2 digits for minor version 09.04.0094
-  ($RMLsw_found64bit.DisplayVersion.Substring(1,1) -as [int]) -ge 9
+( ($ver_array[2] -as [int]) -lt 102 -and    #just directly check last 2 digits for minor version 09.04.00102
+  ($ver_array[0] -as [int]) -ge 9
 )
 {
+    [string]$confirm = $null
+
     Write-Host "  You don't have that latest version of 'RML Utilities' installed. Version found: " , $RMLsw_found64bit.DisplayVersion ". You must uninstall it before you can install the latest version " -BackGroundColor Red
     
-    #pop a dialog to ask them to continue or not
-    Add-Type -AssemblyName System.Windows.Forms
-    $result = [System.Windows.Forms.MessageBox]::Show("Continue with uninstallation of RML Utils version: " + $RMLsw_found64bit.DisplayVersion + "?","Uninstall", "YesNo" , "Information" , "Button1")
+    Write-Host "  Would you like to uninstall the current, download and install the latest version of 'RML Utilities' 9.00.102?" -BackgroundColor DarkYellow
 
-    if($result -ne $null)
-    {
-        if ($result.ToString() -eq 'Yes')
+	while (-not(($confirm -eq "Y") -or ($confirm -eq "N") -or ($null -eq $confirm)))
+	{
+			
+		$confirm = Read-Host "Download and install latest RML Utilities (Y/N)>" 
+
+		$confirm = $confirm.ToString().ToUpper()
+		if (-not(($confirm -eq "Y") -or ($confirm -eq "N") -or ($null -eq $confirm)))
+		{
+			Write-Host ""
+			Write-Host "Please chose [Y] to download and install RML Utilities 9.00.102 ."
+			Write-Host "Please chose [N] to continue without installing RML Utilities."
+			Write-Host ""
+		}
+	}
+
+	if ($confirm -eq "Y")
+	{ 
+         #pop a dialog to ask them to continue or not
+        Add-Type -AssemblyName System.Windows.Forms
+        $result = [System.Windows.Forms.MessageBox]::Show("Continue with uninstallation of RML Utils version: " + $RMLsw_found64bit.DisplayVersion + "?","Uninstall", "YesNo" , "Information" , "Button1")
+
+        if($result -ne $null)
         {
-            $uninstallObj = Get-ItemProperty HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\* |
-                             Where {$_.DisplayName -Match 'rml utilities for SQL'}
-            $tmpUninstStr = $uninstallObj.UninstallString  -Replace "msiexec.exe","" -Replace "/I","" -Replace "/X",""
-            $tmpUninstStr = $tmpUninstStr.Trim()
-            start-process "msiexec.exe" -arg "/X $tmpUninstStr" -Wait
+            if ($result.ToString() -eq 'Yes')
+            {
+                $uninstallObj = Get-ItemProperty HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\* |
+                                 Where {$_.DisplayName -Match 'rml utilities for SQL'}
+                $tmpUninstStr = $uninstallObj.UninstallString  -Replace "msiexec.exe","" -Replace "/I","" -Replace "/X",""
+                $tmpUninstStr = $tmpUninstStr.Trim()
+                start-process "msiexec.exe" -arg "/X $tmpUninstStr" -Wait
 
-            #now install RML Utils
-		$rml_utils_installation_file = "$env:temp\RMLSetup_AMD64.msi"
-		Write-Host "  Downloading RML Utilities from the Web..." -BackgroundColor DarkYellow
-		DownloadNexusPrereqFile -url "https://download.microsoft.com/download/a/a/d/aad67239-30df-403b-a7f1-976a4ac46403/RMLSetup.msi" -destination_file $rml_utils_installation_file
-		Start-Sleep -Seconds 1
-		Write-Host "  Launching RML Utilities installation" -BackgroundColor DarkYellow
-		Start-Process -FilePath "msiexec" -ArgumentList "/i $rml_utils_installation_file /lv $env:temp\RMLSetup_AMD64_Install.log" -Wait
-		Write-Host "  Removing the downloaded RML Utilities installation file..." -BackgroundColor DarkYellow
-		Remove-Item -Path $rml_utils_installation_file
+                #now install RML Utils
+		        $rml_utils_installation_file = "$env:temp\RMLSetup_AMD64.msi"
+		        Write-Host "  Downloading RML Utilities from the Web..." -BackgroundColor DarkYellow
+		        DownloadNexusPrereqFile -url "https://download.microsoft.com/download/a/a/d/aad67239-30df-403b-a7f1-976a4ac46403/RMLSetup.msi" -destination_file $rml_utils_installation_file
+		        Start-Sleep -Seconds 1
+		        Write-Host "  Launching RML Utilities installation" -BackgroundColor DarkYellow
+		        Start-Process -FilePath "msiexec" -ArgumentList "/i $rml_utils_installation_file /lv $env:temp\RMLSetup_AMD64_Install.log" -Wait
+		        Write-Host "  Removing the downloaded RML Utilities installation file..." -BackgroundColor DarkYellow
+		        Remove-Item -Path $rml_utils_installation_file
 
+            }
+            else #result is 'No'
+            {
+                Write-Host "You must uninstall current version of RML Utils manually before you can install the latest version!" -BackgroundColor DarkYellow
+            }
         }
-        else #result is 'No'
-        {
-            Write-Host "You must uninstall current version of RML Utils manually before you can install the latest version!" -BackgroundColor DarkYellow
-        }
+
     }
+    elseif ($confirm -eq "N")
+    {
+        Write-Host "Skipping RML Utilities installation."
+    }
+
+  
     
 }
 else
