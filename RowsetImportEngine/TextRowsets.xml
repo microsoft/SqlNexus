@@ -3880,8 +3880,100 @@
       </KnownColumns>
     </Rowset>
 
-    
+    <Rowset name="tbl_query_store_wait_stats" enabled="true" identifier="--sys.query_store_wait_stats--" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="dbid" type="RowsetImportEngine.IntColumn" />
+        <Column name="dbname" type="RowsetImportEngine.VarCharColumn" length="128" />
+        <Column name="wait_stats_id" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="plan_id" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="runtime_stats_interval_id" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="wait_category" type="RowsetImportEngine.IntColumn" />
+        <Column name="wait_category_desc" type="RowsetImportEngine.VarCharColumn" length="60" />
+        <Column name="execution_type" type="RowsetImportEngine.IntColumn" />
+        <Column name="execution_type_desc" type="RowsetImportEngine.VarCharColumn" length="60" />
+        <Column name="total_query_wait_time_ms" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="avg_query_wait_time_ms" type="RowsetImportEngine.FloatColumn" />
+        <Column name="last_query_wait_time_ms" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="min_query_wait_time_ms" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="max_query_wait_time_ms" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="stdev_query_wait_time_ms" type="RowsetImportEngine.FloatColumn" />
+        <Column name="replica_group_id" type="RowsetImportEngine.BigIntColumn" />
+      </KnownColumns>
+    </Rowset>
+
+
+    <Rowset name="tbl_database_query_store_options" enabled="true" identifier="--sys.database_query_store_options--" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="dbid" type="RowsetImportEngine.IntColumn" />
+        <Column name="dbname" type="RowsetImportEngine.VarCharColumn" length="128" />
+        <Column name="desired_state" type="RowsetImportEngine.IntColumn" />
+        <Column name="desired_state_desc" type="RowsetImportEngine.VarCharColumn" length="60" />
+        <Column name="actual_state" type="RowsetImportEngine.IntColumn" />
+        <Column name="actual_state_desc" type="RowsetImportEngine.VarCharColumn" length="60" />
+        <Column name="readonly_reason" type="RowsetImportEngine.IntColumn" />
+        <Column name="current_storage_size_mb" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="flush_interval_seconds" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="interval_length_minutes" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="max_storage_size_mb" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="stale_query_threshold_days" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="max_plans_per_query" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="query_capture_mode" type="RowsetImportEngine.IntColumn" />
+        <Column name="query_capture_mode_desc" type="RowsetImportEngine.VarCharColumn" length="60" />
+        <Column name="capture_policy_execution_count" type="RowsetImportEngine.IntColumn" />
+        <Column name="capture_policy_total_compile_cpu_time_ms" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="capture_policy_total_execution_cpu_time_ms" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="capture_policy_stale_threshold_hours" type="RowsetImportEngine.IntColumn" />
+        <Column name="size_based_cleanup_mode" type="RowsetImportEngine.IntColumn" />
+        <Column name="size_based_cleanup_mode_desc" type="RowsetImportEngine.VarCharColumn" length="60" />
+        <Column name="wait_stats_capture_mode" type="RowsetImportEngine.IntColumn" />
+        <Column name="wait_stats_capture_mode_desc" type="RowsetImportEngine.VarCharColumn" length="60" />
+        <Column name="actual_state_additional_info" type="RowsetImportEngine.VarCharColumn" length="256" />
+      </KnownColumns>
+    </Rowset>
+
+    <Rowset name="tbl_query_store_query_hints" enabled="true" identifier="--sys.query_store_query_hints--" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="dbid" type="RowsetImportEngine.IntColumn" />
+        <Column name="dbname" type="RowsetImportEngine.VarCharColumn" length="128" />
+        <Column name="query_hint_id" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="query_id" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="replica_group_id" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="query_hint_text" type="RowsetImportEngine.VarCharColumn" length="-1" />
+        <Column name="last_query_hint_failure_reason" type="RowsetImportEngine.IntColumn" />
+        <Column name="last_query_hint_failure_reason_desc" type="RowsetImportEngine.VarCharColumn" length="128" />
+        <Column name="query_hint_failure_count" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="source" type="RowsetImportEngine.IntColumn" />
+        <Column name="source_desc" type="RowsetImportEngine.VarCharColumn" length="128" />
+        <Column name="comment" type="RowsetImportEngine.VarCharColumn" length="-1" />
+      </KnownColumns>
+    </Rowset>
+
+    <Rowset name="tbl_query_store_plan_feedback" enabled="true" identifier="--sys.query_store_plan_feedback--" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="dbid" type="RowsetImportEngine.IntColumn" />
+        <Column name="dbname" type="RowsetImportEngine.VarCharColumn" length="128" />
+        <Column name="plan_feedback_id" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="plan_id" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="feature_id" type="RowsetImportEngine.IntColumn" />
+        <Column name="feature_desc" type="RowsetImportEngine.VarCharColumn" length="60" />
+        <Column name="feedback_data" type="RowsetImportEngine.VarCharColumn" length="-1" />
+        <Column name="state" type="RowsetImportEngine.IntColumn" />
+        <Column name="state_desc" type="RowsetImportEngine.VarCharColumn" length="60" />
+        <Column name="create_time" type="RowsetImportEngine.DateTimeOffsetColumn" />
+        <Column name="last_updated_time" type="RowsetImportEngine.DateTimeOffsetColumn" />
+      </KnownColumns>
+    </Rowset>
+
+
+    <Rowset name="tbl_query_store_query_variant" enabled="true" identifier="--sys.query_store_query_variant--" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="dbid" type="RowsetImportEngine.IntColumn" />
+        <Column name="dbname" type="RowsetImportEngine.VarCharColumn" length="128" />
+        <Column name="query_variant_query_id" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="parent_query_id" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="dispatcher_plan_id" type="RowsetImportEngine.BigIntColumn" />
+      </KnownColumns>
+    </Rowset>
+
   </KnownRowsets>
 </TextImport>
-
-

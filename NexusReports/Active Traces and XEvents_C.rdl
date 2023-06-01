@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:cl="http://schemas.microsoft.com/sqlserver/reporting/2010/01/componentdefinition" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2010/01/reportdefinition">
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
     <DataSource Name="DataSource_SqlNexus_Private">
@@ -14,7 +14,7 @@
     <DataSource Name="DataSource_test">
       <ConnectionProperties>
         <DataProvider>SQL</DataProvider>
-        <ConnectString>Data Source=.\sql14a;Initial Catalog=ActiveTraces</ConnectString>
+        <ConnectString>Data Source=.;Initial Catalog=sqlnexus</ConnectString>
         <IntegratedSecurity>true</IntegratedSecurity>
       </ConnectionProperties>
       <rd:SecurityType>Integrated</rd:SecurityType>
@@ -67,15 +67,17 @@
     <DataSet Name="DataSet_ActiveTraces">
       <Query>
         <DataSourceName>DataSource_test</DataSourceName>
-        <CommandText>select distinct trace_id, [Value] trace_file_path,  trace_event_name,
-case when [Value] like '%\log\log%' or [value] like '%sp_trace%' then 1 else 0 end 'Is_Microsoft_Trace'
-from tbl_trace_event_details det right outer join tbl_profiler_trace_summary  sm on det.trace_id=sm.traceid
-where sm.property=2</CommandText>
+        <CommandText>SELECT DISTINCT det.trace_id, sm.value AS trace_file_path, det.trace_event_name, CASE WHEN [Value] LIKE '%\log\log%' OR
+                         [value] LIKE '%sp_trace%' THEN 1 ELSE 0 END AS 'Is_Microsoft_Trace', CASE WHEN det.expensive_event = 0 THEN '' ELSE 'Yes' END AS expensive_event
+FROM            tbl_profiler_trace_event_details AS det INNER JOIN
+                             (SELECT        traceid, value, property
+                               FROM            tbl_profiler_trace_summary
+                               WHERE        (property = 2)) AS sm ON det.trace_id = sm.traceid</CommandText>
       </Query>
       <Fields>
         <Field Name="trace_id">
           <DataField>trace_id</DataField>
-          <rd:TypeName>System.Int64</rd:TypeName>
+          <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
         <Field Name="trace_file_path">
           <DataField>trace_file_path</DataField>
@@ -89,14 +91,18 @@ where sm.property=2</CommandText>
           <DataField>Is_Microsoft_Trace</DataField>
           <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
+        <Field Name="expensive_event">
+          <DataField>expensive_event</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
       </Fields>
     </DataSet>
     <DataSet Name="DataSet_ActiveXEvents">
       <Query>
         <DataSourceName>DataSource_test</DataSourceName>
-        <CommandText>select session_name, event_name , 
-case when session_name in ('sp_server_diagnostics session', 'hkenginexesession', 'system_health') then 1 else 0 end 'Is_Microsoft_Session' 
-from tbl_XEvents</CommandText>
+        <CommandText>SELECT        session_name, event_name, CASE WHEN expensive_event = 0 THEN '' ELSE 'Yes' END AS Expensive_event, CASE WHEN session_name IN ('sp_server_diagnostics session', 'hkenginexesession', 'system_health', 
+                         'alwayson_health') THEN 1 ELSE 0 END AS 'Is_Microsoft_Session'
+FROM            tbl_XEvents</CommandText>
       </Query>
       <Fields>
         <Field Name="session_name">
@@ -105,6 +111,10 @@ from tbl_XEvents</CommandText>
         </Field>
         <Field Name="event_name">
           <DataField>event_name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="expensive_event">
+          <DataField>Expensive_event</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="Is_Microsoft_Session">
@@ -181,7 +191,7 @@ from tbl_XEvents</CommandText>
               <PaddingBottom>2pt</PaddingBottom>
             </Style>
           </Textbox>
-          <Tablix Name="Tablix4">
+          <Tablix Name="Tablix_NonMS_traces">
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
@@ -418,11 +428,14 @@ from tbl_XEvents</CommandText>
               <PaddingBottom>2pt</PaddingBottom>
             </Style>
           </Textbox>
-          <Tablix Name="Tablix8">
+          <Tablix Name="Tablix_nonMS_Xevents">
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
                   <Width>3.95415in</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>1.21875in</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -446,6 +459,36 @@ from tbl_XEvents</CommandText>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox80</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox1">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>expensive event</Value>
+                                  <Style />
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox1</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -494,12 +537,43 @@ from tbl_XEvents</CommandText>
                         </Textbox>
                       </CellContents>
                     </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="expensive_event">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!expensive_event.Value</Value>
+                                  <Style />
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>expensive_event</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
                   </TablixCells>
                 </TablixRow>
               </TablixRows>
             </TablixBody>
             <TablixColumnHierarchy>
               <TablixMembers>
+                <TablixMember />
                 <TablixMember />
               </TablixMembers>
             </TablixColumnHierarchy>
@@ -612,7 +686,7 @@ from tbl_XEvents</CommandText>
             <Top>2.13417in</Top>
             <Left>0.99875in</Left>
             <Height>0.5in</Height>
-            <Width>9.70415in</Width>
+            <Width>10.9229in</Width>
             <ZIndex>4</ZIndex>
             <Visibility>
               <Hidden>true</Hidden>
@@ -659,6 +733,9 @@ from tbl_XEvents</CommandText>
                 <TablixColumn>
                   <Width>3.95415in</Width>
                 </TablixColumn>
+                <TablixColumn>
+                  <Width>1.21875in</Width>
+                </TablixColumn>
               </TablixColumns>
               <TablixRows>
                 <TablixRow>
@@ -681,6 +758,36 @@ from tbl_XEvents</CommandText>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox98</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox5">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>expensive event</Value>
+                                  <Style />
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox5</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -729,12 +836,43 @@ from tbl_XEvents</CommandText>
                         </Textbox>
                       </CellContents>
                     </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="expensive_event1">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!expensive_event.Value</Value>
+                                  <Style />
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>expensive_event1</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
                   </TablixCells>
                 </TablixRow>
               </TablixRows>
             </TablixBody>
             <TablixColumnHierarchy>
               <TablixMembers>
+                <TablixMember />
                 <TablixMember />
               </TablixMembers>
             </TablixColumnHierarchy>
@@ -848,7 +986,7 @@ from tbl_XEvents</CommandText>
             <Top>3.32167in</Top>
             <Left>0.97792in</Left>
             <Height>0.5in</Height>
-            <Width>9.72498in</Width>
+            <Width>10.94373in</Width>
             <ZIndex>6</ZIndex>
             <Visibility>
               <Hidden>true</Hidden>
@@ -1064,6 +1202,15 @@ from tbl_XEvents</CommandText>
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>DataSet_ActiveXEvents</DataSetName>
+            <Filters>
+              <Filter>
+                <FilterExpression>=Fields!Is_Microsoft_Session.Value</FilterExpression>
+                <Operator>Equal</Operator>
+                <FilterValues>
+                  <FilterValue DataType="Integer">1</FilterValue>
+                </FilterValues>
+              </Filter>
+            </Filters>
             <SortExpressions>
               <SortExpression>
                 <Value>=Fields!session_name.Value</Value>
@@ -1096,7 +1243,7 @@ from tbl_XEvents</CommandText>
           <BackgroundColor>=Parameters!FmtAmbientBackground.Value</BackgroundColor>
         </Style>
       </Body>
-      <Width>11.73624in</Width>
+      <Width>12.14249in</Width>
       <Page>
         <PageHeader>
           <Height>0.48958in</Height>
@@ -1240,6 +1387,59 @@ from tbl_XEvents</CommandText>
       <Hidden>true</Hidden>
     </ReportParameter>
   </ReportParameters>
+  <ReportParametersLayout>
+    <GridLayoutDefinition>
+      <NumberOfColumns>4</NumberOfColumns>
+      <NumberOfRows>3</NumberOfRows>
+      <CellDefinitions>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>0</RowIndex>
+          <ParameterName>dsServerName</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>1</ColumnIndex>
+          <RowIndex>0</RowIndex>
+          <ParameterName>dsDatabaseName</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>2</ColumnIndex>
+          <RowIndex>0</RowIndex>
+          <ParameterName>FmtAmbientBackground</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>3</ColumnIndex>
+          <RowIndex>0</RowIndex>
+          <ParameterName>FmtChartBackground</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>1</RowIndex>
+          <ParameterName>StartTime</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>1</ColumnIndex>
+          <RowIndex>1</RowIndex>
+          <ParameterName>EndTime</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>2</RowIndex>
+          <ParameterName>FmtHeader1Fill</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>1</ColumnIndex>
+          <RowIndex>2</RowIndex>
+          <ParameterName>FmtHeader1Size</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>2</ColumnIndex>
+          <RowIndex>2</RowIndex>
+          <ParameterName>FmtHyperLink</ParameterName>
+        </CellDefinition>
+      </CellDefinitions>
+    </GridLayoutDefinition>
+  </ReportParametersLayout>
   <Variables>
     <Variable Name="IsLocalReport">
       <Value>= (Globals!ReportServerUrl="")</Value>

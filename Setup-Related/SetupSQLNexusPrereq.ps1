@@ -1,6 +1,6 @@
 ﻿# 04/2017 Joseph.Pilov  - Initial build
 # 02/2021 Joseph.Pilov  - Update with PowerBI installation and web downloads
-
+# 05/2023 Joseph.Pilov -  Update with .NET Framework 4.8 installation and change RML download URL
 
 
 
@@ -9,7 +9,6 @@ function DownloadNexusPrereqFile ([string] $url, [string] $destination_file)
     #start the download - asynchronously
     $client = new-object System.Net.WebClient
     $client.DownloadFile($url,$destination_file)
-
 }
 
 
@@ -96,6 +95,12 @@ $RMLsw_found64bit = Get-ItemProperty HKLM:\Software\Microsoft\Windows\CurrentVer
                      Select-Object DisplayVersion , DisplayName | 
                      Where {$_.DisplayName -Match 'rml utilities for SQL'}
 
+# take the version which is in this format 09.04.0102 and split it into an array where element 0 would be 09, element 1 woudl be 04, etc.
+if ($RMLsw_found64bit)
+{
+    $ver_array = $RMLsw_found64bit.DisplayVersion.Split(".")
+}
+
 if ($RMLsw_found64bit -eq $null) #if not there, install it
 {
 	$rml_utils_installation_file = "$env:temp\RMLSetup_AMD64.msi"
@@ -109,9 +114,8 @@ if ($RMLsw_found64bit -eq $null) #if not there, install it
 }
 
 #major version is older than 9.00.00
-elseif 
-( ($RMLsw_found64bit.DisplayVersion.Substring(1,1) -as [int]) -lt 9     #directly check second digit for major version 09.0... - for future use
-)
+
+elseif( ($ver_array[0] -as [int]) -lt 9) #directly check first array member for major version 09.0... 
 {
     Write-Host "  You have a very old version of 'RML Utilities' installed. Version found: " , $RMLsw_found64bit.DisplayVersion ". You must uninstall it before you can install the latest version " -BackGroundColor Red
     
@@ -142,53 +146,157 @@ elseif
     }
 }
 
-#minor version is older than 9.00.97
+#minor version is older than 9.00.102
 elseif 
-( ($RMLsw_found64bit.DisplayVersion.Substring(8,2) -as [int]) -lt 97 -and    #just directly check last 2 digits for minor version 09.04.0094
-  ($RMLsw_found64bit.DisplayVersion.Substring(1,1) -as [int]) -ge 9
+( ($ver_array[2] -as [int]) -lt 102 -and    #just directly check last 2 digits for minor version 09.04.00102
+  ($ver_array[0] -as [int]) -ge 9
 )
 {
+    [string]$confirm = $null
+
     Write-Host "  You don't have that latest version of 'RML Utilities' installed. Version found: " , $RMLsw_found64bit.DisplayVersion ". You must uninstall it before you can install the latest version " -BackGroundColor Red
     
-    #pop a dialog to ask them to continue or not
-    Add-Type -AssemblyName System.Windows.Forms
-    $result = [System.Windows.Forms.MessageBox]::Show("Continue with uninstallation of RML Utils version: " + $RMLsw_found64bit.DisplayVersion + "?","Uninstall", "YesNo" , "Information" , "Button1")
+    Write-Host "  Would you like to uninstall the current, download and install the latest version of 'RML Utilities' 9.00.102?" -BackgroundColor DarkYellow
 
-    if($result -ne $null)
-    {
-        if ($result.ToString() -eq 'Yes')
+	while (-not(($confirm -eq "Y") -or ($confirm -eq "N") -or ($null -eq $confirm)))
+	{
+			
+		$confirm = Read-Host "Download and install latest RML Utilities (Y/N)>" 
+
+		$confirm = $confirm.ToString().ToUpper()
+		if (-not(($confirm -eq "Y") -or ($confirm -eq "N") -or ($null -eq $confirm)))
+		{
+			Write-Host ""
+			Write-Host "Please chose [Y] to download and install RML Utilities 9.00.102 ."
+			Write-Host "Please chose [N] to continue without installing RML Utilities."
+			Write-Host ""
+		}
+	}
+
+	if ($confirm -eq "Y")
+	{ 
+         #pop a dialog to ask them to continue or not
+        Add-Type -AssemblyName System.Windows.Forms
+        $result = [System.Windows.Forms.MessageBox]::Show("Continue with uninstallation of RML Utils version: " + $RMLsw_found64bit.DisplayVersion + "?","Uninstall", "YesNo" , "Information" , "Button1")
+
+        if($result -ne $null)
         {
-            $uninstallObj = Get-ItemProperty HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\* |
-                             Where {$_.DisplayName -Match 'rml utilities for SQL'}
-            $tmpUninstStr = $uninstallObj.UninstallString  -Replace "msiexec.exe","" -Replace "/I","" -Replace "/X",""
-            $tmpUninstStr = $tmpUninstStr.Trim()
-            start-process "msiexec.exe" -arg "/X $tmpUninstStr" -Wait
+            if ($result.ToString() -eq 'Yes')
+            {
+                $uninstallObj = Get-ItemProperty HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\* |
+                                 Where {$_.DisplayName -Match 'rml utilities for SQL'}
+                $tmpUninstStr = $uninstallObj.UninstallString  -Replace "msiexec.exe","" -Replace "/I","" -Replace "/X",""
+                $tmpUninstStr = $tmpUninstStr.Trim()
+                start-process "msiexec.exe" -arg "/X $tmpUninstStr" -Wait
 
-            #now install RML Utils
-		$rml_utils_installation_file = "$env:temp\RMLSetup_AMD64.msi"
-		Write-Host "  Downloading RML Utilities from the Web..." -BackgroundColor DarkYellow
-		DownloadNexusPrereqFile -url "https://download.microsoft.com/download/a/a/d/aad67239-30df-403b-a7f1-976a4ac46403/RMLSetup.msi" -destination_file $rml_utils_installation_file
-		Start-Sleep -Seconds 1
-		Write-Host "  Launching RML Utilities installation" -BackgroundColor DarkYellow
-		Start-Process -FilePath "msiexec" -ArgumentList "/i $rml_utils_installation_file /lv $env:temp\RMLSetup_AMD64_Install.log" -Wait
-		Write-Host "  Removing the downloaded RML Utilities installation file..." -BackgroundColor DarkYellow
-		Remove-Item -Path $rml_utils_installation_file
+                #now install RML Utils
+		        $rml_utils_installation_file = "$env:temp\RMLSetup_AMD64.msi"
+		        Write-Host "  Downloading RML Utilities from the Web..." -BackgroundColor DarkYellow
+		        DownloadNexusPrereqFile -url "https://download.microsoft.com/download/a/a/d/aad67239-30df-403b-a7f1-976a4ac46403/RMLSetup.msi" -destination_file $rml_utils_installation_file
+		        Start-Sleep -Seconds 1
+		        Write-Host "  Launching RML Utilities installation" -BackgroundColor DarkYellow
+		        Start-Process -FilePath "msiexec" -ArgumentList "/i $rml_utils_installation_file /lv $env:temp\RMLSetup_AMD64_Install.log" -Wait
+		        Write-Host "  Removing the downloaded RML Utilities installation file..." -BackgroundColor DarkYellow
+		        Remove-Item -Path $rml_utils_installation_file
 
+            }
+            else #result is 'No'
+            {
+                Write-Host "You must uninstall current version of RML Utils manually before you can install the latest version!" -BackgroundColor DarkYellow
+            }
         }
-        else #result is 'No'
-        {
-            Write-Host "You must uninstall current version of RML Utils manually before you can install the latest version!" -BackgroundColor DarkYellow
-        }
+
     }
+    elseif ($confirm -eq "N")
+    {
+        Write-Host "Skipping RML Utilities installation."
+    }
+
+  
     
 }
 else
  {
     Write-Host "  The minimum required version of 'RML Utilities' is already installed. Version (s) found: " , $RMLsw_found64bit.DisplayVersion -BackgroundColor DarkGreen
  }
+
+#*********************************************************************************************************************
+#Install .NET Framework 4.8
+
+#check for presence of .NET 4.8 and if not there install it
+
+$DotNet48IsInstalled = $false
+
+$dotNetVersion = Get-ChildItem "HKLM:\SOFTWARE\Microsoft\NET Framework Setup\NDP" -Recurse |
+    Get-ItemProperty -name Version -ErrorAction "SilentlyContinue" |
+    Where-Object { $_.PSChildName -notmatch '^S'} |  # used to filter out .NET Framework versions that have names starting with 'S' (e.g., 'Servicing' versions), as they are not actual installed versions of .NET Framework.
+    Sort-Object -Property Version |
+    Select-Object -ExpandProperty Version 
+
+#check for a version that contains 4.8 string, e.g. '4.8.09032'
+
+$DotNet48IsInstalled = foreach ($dotnetver in $dotNetVersion)
+{
+    if ($dotnetver -match "4.8")
+    {
+        $true
+        break
+    }
+}
+
+
+if (-not $DotNet48IsInstalled) 
+{
+    Write-Host ".NET Framework 4.8 is not installed."
+
+    [string] $confirm = $null
+    $DotNet48_installation_file = "$env:temp\ndp48-web.exe"
+    $dotNetInstallerUrl = "https://go.microsoft.com/fwlink/?LinkId=2085155"
+
+    Write-Host "Would you like to download and install .Net Framework 4.8?"
+
+	while (-not(($confirm -eq "Y") -or ($confirm -eq "N") -or ($null -eq $confirm)))
+	{
+			
+		$confirm = Read-Host "Install .NET Framework 4.8 (Y/N)>" 
+
+		$confirm = $confirm.ToString().ToUpper()
+		if (-not(($confirm -eq "Y") -or ($confirm -eq "N") -or ($null -eq $confirm)))
+		{
+			Write-Host ""
+			Write-Host "Please chose [Y] to download and install .NET Framework 4.8."
+			Write-Host "Please chose [N] to continue without installing .NET Framework 4.8."
+			Write-Host ""
+		}
+	}
+
+	if ($confirm -eq "Y")
+	{ 
+        Write-Host "  Downloading .NET Framework 4.8 from the Web to $DotNet48_installation_file....." -BackgroundColor DarkYellow
+        DownloadNexusPrereqFile -url $dotNetInstallerUrl -destination_file $DotNet48_installation_file
+        Start-Sleep -Seconds 1
+
+        Write-Host "  Launching .NET Fraemwork 4.8 installation" -BackgroundColor DarkYellow
+        # Install .NET Framework 4.8
+        Start-Process -FilePath $DotNet48_installation_file -ArgumentList "/norestart" -Wait
+    
+        Write-Host "  Removing the downloaded .NET Framework 4.8 installation file $DotNet48_installation_file" -BackgroundColor DarkYellow
+        Remove-Item -Path $DotNet48_installation_file
+    }
+    elseif ($confirm -eq "N")
+    {
+        Write-Host "Skipping .NET Framework 4.8 installation."
+    }
+} 
+else 
+{
+    Write-Host ".NET Framework 4.8 is already installed."
+}
+
+
  
- #*********************************************************************************************************************
- 
+#*********************************************************************************************************************
+#Install PowerBI Desktop - optional
  
 Write-Host "Checking for 'PowerBI Desktop' installation"
 
