@@ -1517,6 +1517,9 @@ WHERE        (ssu.internal_objects_alloc_page_count &gt;= 1280) OR
             <Height>0.5in</Height>
             <Width>12.54292in</Width>
             <ZIndex>1</ZIndex>
+            <Visibility>
+              <Hidden>=IIf(CountRows("session_task_space_usage") &gt; 0, False, True)</Hidden>
+            </Visibility>
             <Style>
               <Border>
                 <Style>None</Style>
