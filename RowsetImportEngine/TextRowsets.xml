@@ -3975,5 +3975,32 @@
       </KnownColumns>
     </Rowset>
 
+    <Rowset name="tbl_proccache_summary" enabled="true" identifier="-- proccache_summary" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn"/>
+        <Column name="avg_usecounts" type=type="RowsetImportEngine.BigIntColumn" />
+      </KnownColumns>
+    </Rowset>
+
+    <Rowset name="tbl_proccache_pollution" enabled="true" identifier="-- proccache_pollution" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn"/>
+        <Column name="plan_count" type=type="RowsetImportEngine.BigIntColumn" />
+        <Column name="total_size_in_bytes" type=type="RowsetImportEngine.BigIntColumn" />
+        <Column name="cacheobjtype" type="RowsetImportEngine.NVarCharColumn" length="100" />
+        <Column name="objtype" type="RowsetImportEngine.NVarCharColumn" length="40" />
+        <Column name="usecounts" type="RowsetImportEngine.IntColumn" />
+        <Column name="dbid" type="RowsetImportEngine.IntColumn" />
+        <Column name="objectid" type="RowsetImportEngine.IntColumn" />
+        <Column name="short_qry_text" type="RowsetImportEngine.NVarCharColumn" length="4000" />
+      </KnownColumns>
+    </Rowset>
+
   </KnownRowsets>
 </TextImport>
+
+
+
+
+
+
