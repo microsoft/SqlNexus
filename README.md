@@ -1,6 +1,6 @@
 # What is SQL Nexus?
 
-SQL Nexus is a tool that helps you identify the root cause of SQL Server performance issues. It loads and analyzes performance data collected by  [Pssdiag](https://github.com/Microsoft/diagmanager). It can dramatically reduce the amount of time you spend manually analyzing data. Visit  [Getting Started](https://github.com/Microsoft/SqlNexus/wiki/Getting-Started) page.
+SQL Nexus is a tool that helps you identify the root cause of SQL Server performance issues. It loads and analyzes performance data collected by [SQL LogScout]([url](https://github.com/Microsoft/sql_logscout) or [PSSDIAG](https://github.com/Microsoft/diagmanager). It can dramatically reduce the amount of time you spend manually analyzing data. Visit  [Getting Started](https://github.com/Microsoft/SqlNexus/wiki/Getting-Started) page.
 
 # Latest release
 Current release is 7.21.03.26. Please go to [latest release](https://github.com/microsoft/SqlNexus/releases/tag/7.21.03.26) to download latest build of SQL Nexus.
