@@ -48,12 +48,15 @@ namespace PerfmonImporter
     {
         const string OPTION_DROP_EXISTING = "Drop existing tables";
         const string OPTION_ENABLED = "Enabled";
+        const string OPTION_MINIMIZE_RELOG_CMD = "Minimize Cmd window during import";
+
         private const string POST_LOAD_SQL_SCRIPT = null; //"PerfStatsAnalysis_doNOTRun.sql";
 
         public BLGImporter()
         {
             options.Add(OPTION_DROP_EXISTING, true);
             options.Add(OPTION_ENABLED, true);
+            options.Add(OPTION_MINIMIZE_RELOG_CMD, false);
         }
 
         #region INexusImporter Members
@@ -232,39 +235,6 @@ namespace PerfmonImporter
                 filenum++;
                 logger.LogMessage("Loading " + Path.GetFileName(f));
 
-               // string _Output;
-                /*
-                 * Commented this block out now that PSSDIAG no longer collects all Thread 
-                 * counters by default. 
-                 * 
-                //TODO: Expose the ability in the UI to select which ctr objects get loaded (to speed up the load). Could use a technique similar to the one below. 
-
-                // Export counter list from the BLG to a temp file
-                //		relog.exe "C:\DATA\PSSDIAG.BLG" -q > "%TEMP%\counterlist_full.txt"
-                args = "\"" + f + "\" -q > \"" + TempDir + "\"\\counterlist_full.txt\"";
-                m_Output.Add ("relog.exe " + args);
-                Shell.ShellExecute("relog.exe", args, out _Output);
-                m_Output.Add ("Output: " + _Output);
-
-                // Save off the sqlservr Process counters
-                //		findstr -C:"Process(sqlservr" -C:"Pages Input/sec" "%TEMP%\counterlist_full.txt" > "%TEMP%\counterlist_SQL.txt"
-                args = "-C:\"Process(sqlservr\" -C:\"Pages Input/sec\" \"" + TempDir + "\\counterlist_full.txt\" > \"" + TempDir + "\\counterlist_SQL.txt\"";
-                m_Output.Add ("findstr " + args);
-                Shell.ShellExecute("findstr", args, out _Output);
-                m_Output.Add ("Output: " + _Output);
-                // Get rid of all Process and Thread counters (and the extra crap that relog puts in the file)
-                //		findstr -V -C:"File(s):" -C:"--------------" -C:"C:\DATA\PSSDIAG.BLG" -C:Input -C:"Begin:  " -C:"End:   " -C:"Samples: " -C:"The command completed" -C:"Process(" -C:"Thread(" "%TEMP%\counterlist_full.txt" > "%TEMP%\counterlist_small.txt"
-                args = "-V -C:\"File(s):\" -C:\"--------------\" -C:\"" + f + "\" -C:Input -C:\"Begin:  \" -C:\"End:   \" -C:\"Samples: \" -C:\"The command completed\" -C:\"Process(\" -C:\"Thread(\" \"" + TempDir + "\\counterlist_full.txt\" > \"" + TempDir + "\\counterlist_small.txt\"";
-                m_Output.Add ("findstr " + args);
-                Shell.ShellExecute("findstr", args, out _Output);
-                m_Output.Add ("Output: " + _Output);
-                // Add the sqlservr process counters back in
-                //		cmd.exe /C type "%TEMP%\counterlist_SQL.txt" >> "%TEMP%\counterlist_small.txt"
-                args = "/C type \"" + TempDir + "\\counterlist_SQL.txt\" >> \"" + TempDir + "\\counterlist_small.txt\"";
-                m_Output.Add ("cmd.exe " + args);
-                Shell.ShellExecute("cmd.exe", args, out _Output);
-                m_Output.Add ("Output: " + _Output);
-                */
 
                 // Create a system DSN pointing at the SQL Server. (Relog.exe requires a DSN.)
                 bool DSNCreate = DSNCreator.CreateDSN("Nexus", server, databasename, usewindowsauth, sqllogin, sqlpassword);
@@ -279,13 +249,15 @@ namespace PerfmonImporter
                 // this will load a data point for every 10 second interval. The load will 
                 // usually finish in about 1.5 minutes per 256MB .BLG (~200K rows loaded). 
 
-                //if (File.Exists(TempDir + "\\counterlist_small.txt"))
-                //{
                 args = "\"" + f + "\" -o SQL:Nexus!" + databasename + " -f SQL -t 2 "; // + " -cf \"" + TempDir + "\\counterlist_small.txt\"";
 
                 ProcessStartInfo pi = new ProcessStartInfo("relog.exe", args);
-//                pi.CreateNoWindow = true;
-//                pi.WindowStyle = ProcessWindowStyle.Hidden;
+
+                if ((bool)Options[OPTION_MINIMIZE_RELOG_CMD])
+                {
+                    pi.WindowStyle = ProcessWindowStyle.Minimized;
+                }
+                    
                 Util.Logger.LogMessage("relog.exe args " + args);
                 Process p = Process.Start(pi);
                 p.WaitForExit();
@@ -300,6 +272,7 @@ namespace PerfmonImporter
                 //{
                 //	throw new Exception ("Failed to generate reduced counter list.");
                 //}
+
                 if (cancelled)
                 {
                     break;
