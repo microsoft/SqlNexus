@@ -3985,8 +3985,8 @@
     <Rowset name="tbl_proccache_pollution" enabled="true" identifier="-- proccache_pollution" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
         <Column name="runtime" type="RowsetImportEngine.DateTimeColumn"/>
-        <Column name="plan_count" type=type="RowsetImportEngine.BigIntColumn" />
-        <Column name="total_size_in_bytes" type=type="RowsetImportEngine.BigIntColumn" />
+        <Column name="plan_count" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="total_size_in_bytes" type="RowsetImportEngine.BigIntColumn" />
         <Column name="cacheobjtype" type="RowsetImportEngine.NVarCharColumn" length="100" />
         <Column name="objtype" type="RowsetImportEngine.NVarCharColumn" length="40" />
         <Column name="usecounts" type="RowsetImportEngine.IntColumn" />
