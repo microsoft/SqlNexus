@@ -3978,7 +3978,7 @@
     <Rowset name="tbl_proccache_summary" enabled="true" identifier="-- proccache_summary" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
         <Column name="runtime" type="RowsetImportEngine.DateTimeColumn"/>
-        <Column name="avg_usecounts" type=type="RowsetImportEngine.BigIntColumn" />
+        <Column name="avg_usecounts" type="RowsetImportEngine.BigIntColumn" />
       </KnownColumns>
     </Rowset>
 
