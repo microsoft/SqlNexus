@@ -3996,6 +3996,29 @@
       </KnownColumns>
     </Rowset>
 
+    <Rowset name="tbl_dm_db_xtp_index_stats" enabled="true" identifier="-- sys.dm_db_xtp_index_stats --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn"/>
+        <Column name="dbname" type="RowsetImportEngine.NVarCharColumn" length="128" />
+        <Column name="object_id" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="xtp_object_id" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="index_name" type="RowsetImportEngine.NVarCharColumn" length="128" />
+        <Column name="scans_started" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="scans_retries" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="rows_returned" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="rows_touched" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="rows_expiring" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="rows_expired" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="rows_expired_removed" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="phantom_scans_started" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="phantom_scans_retries" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="phantom_rows_touched" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="phantom_expiring_rows_encountered" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="phantom_expired_removed_rows_encountered" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="phantom_expired_rows_removed" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="object_address" type="RowsetImportEngine.VarBinaryColumn" length="8"/>        
+      </KnownColumns>
+    </Rowset>
   </KnownRowsets>
 </TextImport>
 
