@@ -4113,7 +4113,7 @@
       </KnownColumns>
     </Rowset>
 
-    <Rowset name="tbl_dm_sys.dm_xtp_gc_stats" enabled="true" identifier="-- sys.dm_xtp_gc_stats --" type="RowsetImportEngine.TextRowset">
+    <Rowset name="tbl_dm_xtp_gc_stats" enabled="true" identifier="-- sys.dm_xtp_gc_stats --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
         <Column name="runtime" type="RowsetImportEngine.DateTimeColumn"/>
         <Column name="rows_examined" type="RowsetImportEngine.BigIntColumn" />
