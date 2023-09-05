@@ -4189,6 +4189,43 @@
         <Column name="dependent_8_address" type="RowsetImportEngine.VarBinaryColumn" length="8"/>    
       </KnownColumns>
     </Rowset>
+
+    <Rowset name="tbl_dm_xtp_transaction_stats" enabled="true" identifier="-- sys.dm_xtp_transaction_stats --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn"/>
+        <Column name="read_only_count" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="total_aborts" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="system_aborts" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="validation_failures" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="dependencies_taken" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="dependencies_failed" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="savepoint_create" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="savepoint_rollbacks" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="savepoint_refreshes" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="log_bytes_written" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="log_IO_count" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="phantom_scans_started" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="phantom_scans_retries" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="phantom_rows_touched" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="phantom_rows_expiring" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="phantom_rows_expired" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="phantom_rows_expired_removed" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="scans_started" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="scans_retried" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="rows_returned" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="rows_touched" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="rows_expiring" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="rows_expired" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="rows_expired_removed" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="row_insert_attempts" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="row_update_attempts" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="row_delete_attempts" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="write_conflicts" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="unique_constraint_violations" type="RowsetImportEngine.BigIntColumn" />        
+        <Column name="drop_table_memory_attempts" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="drop_table_memory_failures" type="RowsetImportEngine.BigIntColumn" />
+      </KnownColumns>
+    </Rowset>                       
   </KnownRowsets>
 </TextImport>
 
