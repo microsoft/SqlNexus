@@ -4036,4 +4036,6 @@ GO
 EXEC usp_DBMEndPointState
 GO
 EXEC usp_AGHealthState
+GO
+EXEC usp_CCC_Enabled
 /******END of script***/
