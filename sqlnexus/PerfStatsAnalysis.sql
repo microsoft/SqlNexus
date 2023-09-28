@@ -2143,6 +2143,8 @@ INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name,
 VALUES ('31E879BE-97A4-413F-880F-29BFC57C099F','AlwaysOn State', 'W','Warning', 'usp_AGHealthState', 'AlwaysOn replica states', 'AG replica(s) is unhealthy or not online', '','', '  ', 1, 100, 0, ' ')
 INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
 VALUES ('476E8B9B-81F7-494C-9039-71CD73EAD719','AlwaysOn State', 'W','Warning', 'usp_DBMEndPointState', 'AlwaysOn endpoint state', 'AG DBM endpoint is not online.', '','https://learn.microsoft.com/sql/database-engine/availability-groups/windows/troubleshoot-always-on-availability-groups-configuration-sql-server#Endpoints', '  ', 1, 100, 0, ' ')
+INSERT INTO tbl_Analysissummary (SolutionSourceId,Category, type, typedesc,Name, FriendlyName, Description, InternalUrl, ExternalUrl, Author, Priority, SeqNum, Status, Report)
+VALUES ('EC9C67D8-E91A-452E-856C-4B2E5985716A','Server Performance', 'W','Warning', 'usp_CCC_Enabled', 'Common Criteria Compliance Enabled', 'Enabling this can cause performance issues', '','https://learn.microsoft.com/en-us/sql/database-engine/configure-windows/common-criteria-compliance-enabled-server-configuration-option?view=sql-server-ver16', '  ', 1, 100, 0, 'Server Configuration')
 
 
 
@@ -3930,6 +3932,20 @@ BEGIN
 END
 GO
 
+CREATE PROCEDURE [dbo].[usp_CCC_Enabled]   
+AS
+BEGIN
+	IF (OBJECT_ID ('tbl_Sys_Configurations') is not null and (OBJECT_ID ('tbl_AnalysisSummary') IS NOT NULL)) 
+	BEGIN
+		IF ((SELECT [value_in_use] FROM [dbo].[tbl_Sys_Configurations] WHERE name = 'common criteria compliance enabled')>0 )
+		BEGIN
+			UPDATE tbl_analysissummary
+			SET [status]=1
+			WHERE name ='usp_CCC_Enabled'
+		END 
+	END
+END
+GO
 
 
 
@@ -4020,4 +4036,6 @@ GO
 EXEC usp_DBMEndPointState
 GO
 EXEC usp_AGHealthState
+GO
+EXEC usp_CCC_Enabled
 /******END of script***/

@@ -34,30 +34,35 @@ CategorySeq int
 
 
 --common
-
 insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
-values ('AnalysisSummary_C', 'Best Practice &amp;  Analysis Summary', 'Most common things observed from analyzing the data',  1|2|4|8, 'Analysis Results', 'dbo.tbl_AnalysisSummary', 500, 'Perf Stats Collector', 1,500)
-
-
+values ('AnalysisSummary_C', 'Best Practice &amp; Analysis Summary', 'Most common things observed from analyzing the data',  1|2|4|8, 'Analysis Results', 'dbo.tbl_AnalysisSummary', 500, 'Perf Stats Collector', 1,500)
 
 insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
 values ('Loaded Modules_C', 'Loaded Modules', 'Modules loaded in SQL Server address space',  1|2|4|8, 'Common', 'dbo.tbl_dm_os_loaded_modules', 500, 'Perf Stats Collector', 1,2000)
+
 insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
 values ('ServerConfiguration_C', 'Server Configuration', 'Common properties such as RAM, CPU, sp_configure, trace flags and startup prameters',  1|2|4|8, 'Common', 'dbo.tbl_ServerProperties', 200, 'SQL Base Collector', 1,2000)
+
 insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
 values ('DatabaseConfiguration_C', 'Database Configuration', 'Common properties such as files, auto update stats etc',  1|2|4|8, 'Common', 'dbo.tbl_SysDatabases', 200, 'SQL Base Collector', 1,2000)
 
-
 --RML
 insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
-values ('AnalysisSummary_C', 'Best Practice &amp;  Analysis Summary', 'Most common things observed from analyzing the data',  1|2|4|8, 'Performance', 'dbo.tbl_AnalysisSummary', 110, 'Perf Stats Collector', 1,3000)
+values ('AnalysisSummary_C', 'Best Practice &amp; Analysis Summary', 'Most common things observed from analyzing the data',  1|2|4|8, 'Performance', 'dbo.tbl_AnalysisSummary', 110, 'Perf Stats Collector', 1,3000)
 
 insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied,  Category, ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
 values ('ReadTrace_Main', 'ReadTrace Reports', 'ReadTrace reports for Profiler traces or Extended Events/XEvents', 1|2|4|8,'Performance', 'readtrace.tblBatches',  100, 'Profiler Trace', 1,3000)
 
 insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied,  Category, ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq ) 
 values ('Bottleneck Analysis_C', 'Bottleneck Analysis', 'Bottleneck Analysis',2 | 4,'Performance', 'dbo.tbl_REQUESTS', 200, 'Perf Stats Collector', 1,3000)
-
+insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied,  Category, ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq ) 
+values ('Bottleneck Analysis_C', 'Bottleneck Analysis', 'Bottleneck Analysis',2 | 4,'Performance', 'dbo.tbl_SCRIPT_ENVIRONMENT_DETAILS', 200, 'Perf Stats Collector', 1,3000)
+insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied,  Category, ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq ) 
+values ('Bottleneck Analysis_C', 'Bottleneck Analysis', 'Bottleneck Analysis',2 | 4,'Performance', 'dbo.tbl_ServerProperties', 200, 'Perf Stats Collector', 1,3000)
+insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied,  Category, ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq ) 
+values ('Bottleneck Analysis_C', 'Bottleneck Analysis', 'Bottleneck Analysis',2 | 4,'Performance', 'dbo.CounterData', 200, 'Perf Stats Collector', 1,3000)
+insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied,  Category, ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq ) 
+values ('Bottleneck Analysis_C', 'Bottleneck Analysis', 'Bottleneck Analysis',2 | 4,'Performance', 'dbo.CounterDetails', 200, 'Perf Stats Collector', 1,3000)
 
 insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq ) 
 values ('Blocking and Wait Statistics_C', 'Blocking and Wait Statistics', 'Blocking and wait statistics',  2 | 4, 'Performance', 'dbo.tbl_REQUESTS', 300, 'Perf Stats Collector', 1, 3000)
@@ -65,35 +70,37 @@ values ('Blocking and Wait Statistics_C', 'Blocking and Wait Statistics', 'Block
 insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq ) 
 values ('LockSummary_C', 'Lock Count Summary', 'Lock count graphed by resources',  2 | 4, 'Performance', 'dbo.tbl_locksummary', 4000, 'Perf Stats Collector', 1, 3000)
 
-
 insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied,  Category, ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
 values ('Spinlock Stats_C', 'Spin Lock Stats', 'Spin Lock Stats',  2 | 4,'Performance', 'dbo.tbl_SPINLOCKSTATS',4000, 'Perf Stats Collector', 1,3000)
 
 insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied,  Category, ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
 values ('Query Hash_C', 'Query Hash', 'Top 10 queries from query hash that consume most CPU, IO or logical reads',  4, 'Performance', 'dbo.tbl_TopNLogicalReadsByQueryHash', 4000, 'Perf Stats Collector', 1,3000)
+insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied,  Category, ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
+values ('Query Hash_C', 'Query Hash', 'Top 10 queries from query hash that consume most CPU, IO or logical reads',  4, 'Performance', 'dbo.tbl_TopNDurationByQueryHash', 4000, 'Perf Stats Collector', 1,3000)
+insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied,  Category, ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
+values ('Query Hash_C', 'Query Hash', 'Top 10 queries from query hash that consume most CPU, IO or logical reads',  4, 'Performance', 'dbo.tbl_TopNCPUByQueryHash', 4000, 'Perf Stats Collector', 1,3000)
 
 insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied,  Category, ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
 values ('Missing Indexes_C', 'Missing Indexes', 'Missing Indexes captured by SQL Server DMVs',  2|4|8,'Performance', 'dbo.tbl_missingindexes', 4000, 'Perf Stats Collector', 1,3000)
 
-
 insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
 values ('SQL 2000 Blocking_C', 'SQL Server 2000 blocking', 'SQL Server 2000 blocking',  1, 'Performance', 'dbo.tbl_sysprocesses', 4000, 'SQL 2000 blocking collector', 1,3000)
-	
 
 insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
 values ('Perfmon_C', 'Perfmon Summary', 'Summary of most commonly looked at counters',  1|2|4|8, 'Performance', 'dbo.counterdata', 4000, 'Perfmon', 1,3000)
+insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
+values ('Perfmon_C', 'Perfmon Summary', 'Summary of most commonly looked at counters',  1|2|4|8, 'Performance', 'dbo.counterdetails', 4000, 'Perfmon', 1,3000)
 
 insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
 values ('Virtual File Stats_C', 'Virtual File Stats', 'Display Virtual File Stats related to IO performance',  1|2|4|8, 'Performance', 'dbo.tbl_FileStats', 4000, 'Perf Stats Collector', 1,3000)
 
-
 insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
 values ('Memory Brokers_C', 'Memory Brokers', 'Display memory brokers',  1|2|4|8, 'Performance', 'dbo.tbl_dm_os_memory_brokers', 4000, 'Perf Stats Collector', 1,3000)
+insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
+values ('Memory Brokers_C', 'Memory Brokers', 'Display memory brokers',  1|2|4|8, 'Performance', 'dbo.tbl_dm_os_memory_clerks', 4000, 'Perf Stats Collector', 1,3000)
 
 insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
 values ('SysIndexes_C', 'Indexes and Stats', 'Display Stats info on indexes and stats',  1|2|4|8, 'Performance', 'dbo.tbl_SysIndexes', 4000, 'Perf Stats Collector', 1,3000)
-
-
 
 insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
 values ('Query Execution Memory_C', 'Query Execution Memory (Memory Grants)', 'Displays Query Execution Memory',  1|2|4|8, 'Performance', 'dbo.tbl_Query_Execution_Memory', 4000, 'SQL Memory Error Collector', 1,3000)
@@ -101,40 +108,68 @@ values ('Query Execution Memory_C', 'Query Execution Memory (Memory Grants)', 'D
 insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
 values ('Memory Clerks_C', 'Memory Clerks', 'Displays sys.dm_Os_memory_clerks',  1|2|4|8, 'Performance', 'dbo.tbl_DM_OS_MEMORY_CLERKS', 4000, 'SQL Memory Error Collector', 1,3000)
 
-
 insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
 values ('Working Set Trim_C', 'Workingset Triming', 'Displays Workignset trimming info',  1|2|4|8, 'Performance', 'dbo.tbl_workingset_trimming', 4000, 'SQL Memory Error Colelctor', 1,3000)
 
-
 insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
 values ('TopPlanAnalysis_C', 'Tables used by top queries', 'Tables used by top CPU consuming queries',  1|2|4|8, 'Performance', 'dbo.tblObjectsUsedByTopPlans', 4000, 'Perf Stats Collector', 1,3000)
-
+insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
+values ('TopPlanAnalysis_C', 'Tables used by top queries', 'Tables used by top CPU consuming queries',  1|2|4|8, 'Performance', 'dbo.tbl_Sys_Configurations', 4000, 'Perf Stats Collector', 1,3000)
 
 insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
 values ('Query_Store_C', 'Query Store Query Analysis', 'Query Store Queries Aggregated at Server level',  1|2|4|8, 'Performance', 'dbo.tbl_query_store_runtime_stats_interval', 4000, 'Query Store Collector', 1,3000)
-
+insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
+values ('Query_Store_C', 'Query Store Query Analysis', 'Query Store Queries Aggregated at Server level',  1|2|4|8, 'Performance', 'dbo.tbl_query_store_runtime_stats', 4000, 'Query Store Collector', 1,3000)
+insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
+values ('Query_Store_C', 'Query Store Query Analysis', 'Query Store Queries Aggregated at Server level',  1|2|4|8, 'Performance', 'dbo.tbl_query_store_plan', 4000, 'Query Store Collector', 1,3000)
+insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
+values ('Query_Store_C', 'Query Store Query Analysis', 'Query Store Queries Aggregated at Server level',  1|2|4|8, 'Performance', 'dbo.tbl_query_store_query', 4000, 'Query Store Collector', 1,3000)
+insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
+values ('Query_Store_C', 'Query Store Query Analysis', 'Query Store Queries Aggregated at Server level',  1|2|4|8, 'Performance', 'dbo.tbl_query_store_query_text', 4000, 'Query Store Collector', 1,3000)
 
 insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
 values ('Active Queries_C', 'Active CPU Consuming Queries', 'Active CPU Consuming Queries',  1|2|4|8, 'Performance', 'dbo.tbl_Requests', 4000, 'Perf Stats Collector', 1,3000)
+insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
+values ('Active Queries_C', 'Active CPU Consuming Queries', 'Active CPU Consuming Queries',  1|2|4|8, 'Performance', 'dbo.tbl_NOTABLEACTIVEQUERIES', 4000, 'Perf Stats Collector', 1,3000)
 
 insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
 values ('System_Requests_C', 'System Thread CPU Consumption', 'System Thread CPU Consumption',  1|2|4|8, 'Performance', 'dbo.tbl_System_Requests', 4000, 'Perf Stats Collector', 1,3000)
 
 insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
 values ('Active Traces and XEvents_C', 'Active Trace and XEvent Report', 'Active Trace and XEvent report',  1|2|4|8, 'Performance', 'dbo.tbl_profiler_trace_summary', 3000, 'Perf Stats Collector', 1,3000)
+insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
+values ('Active Traces and XEvents_C', 'Active Trace and XEvent Report', 'Active Trace and XEvent report',  1|2|4|8, 'Performance', 'dbo.tbl_profiler_trace_event_details', 3000, 'Perf Stats Collector', 1,3000)
+insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
+values ('Active Traces and XEvents_C', 'Active Trace and XEvent Report', 'Active Trace and XEvent report',  1|2|4|8, 'Performance', 'dbo.tbl_XEvents', 3000, 'Perf Stats Collector', 1,3000)
 
 insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
 values ('Tempdb_Space_Use_C', 'Tempdb Space Usage', 'Breakdown of space usage in tempdb',  1|2|4|8, 'Performance', 'dbo.tbl_dm_db_file_space_usage', 4000, 'Tempdb and Trans Collector', 1,3000)
-
+insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
+values ('Tempdb_Space_Use_C', 'Tempdb Space Usage', 'Breakdown of space usage in tempdb',  1|2|4|8, 'Performance', 'dbo.tbl_dm_db_session_space_usage', 4000, 'Tempdb and Trans Collector', 1,3000)
+insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
+values ('Tempdb_Space_Use_C', 'Tempdb Space Usage', 'Breakdown of space usage in tempdb',  1|2|4|8, 'Performance', 'dbo.tbl_dm_db_task_space_usage', 4000, 'Tempdb and Trans Collector', 1,3000)
 
 --Replication
 insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
 values ('Replication_Topology_C', 'Replication Topology', 'Replication Topology in hierarchycal order',  1|2|4|8, 'Replication', 'dbo.tbl_repl_sysservers', 200, 'Replication', 1,2000)
+insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
+values ('Replication_Topology_C', 'Replication Topology', 'Replication Topology in hierarchycal order',  1|2|4|8, 'Replication', 'dbo.tbl_repl_mspublications', 200, 'Replication', 1,2000)
+insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
+values ('Replication_Topology_C', 'Replication Topology', 'Replication Topology in hierarchycal order',  1|2|4|8, 'Replication', 'dbo.tbl_repl_msreplservers', 200, 'Replication', 1,2000)
+insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
+values ('Replication_Topology_C', 'Replication Topology', 'Replication Topology in hierarchycal order',  1|2|4|8, 'Replication', 'dbo.tbl_repl_msarticles', 200, 'Replication', 1,2000)
+insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
+values ('Replication_Topology_C', 'Replication Topology', 'Replication Topology in hierarchycal order',  1|2|4|8, 'Replication', 'dbo.tbl_repl_mssubscriptions', 200, 'Replication', 1,2000)
+insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
+values ('Replication_Topology_C', 'Replication Topology', 'Replication Topology in hierarchycal order',  1|2|4|8, 'Replication', 'dbo.tbl_repl_msmerge_subscriptions', 200, 'Replication', 1,2000)
 
 --AG
-
 insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
 values ('AlwaysOn_AGBasics_C', 'Always On Configuration Report', 'Always On Configuration Report',  1|2|4|8, 'Always On', 'dbo.tbl_hadr_ag_states', 3000, 'AG Diag Collector', 1,3000)
+insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
+values ('AlwaysOn_AGBasics_C', 'Always On Configuration Report', 'Always On Configuration Report',  1|2|4|8, 'Always On', 'dbo.tbl_hadr_ag_listeners', 3000, 'AG Diag Collector', 1,3000)
+insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
+values ('AlwaysOn_AGBasics_C', 'Always On Configuration Report', 'Always On Configuration Report',  1|2|4|8, 'Always On', 'dbo.tbl_hadr_ag_ip_information', 3000, 'AG Diag Collector', 1,3000)
 
 -- Filter drivers
 insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection,Manditory, CategorySeq) 
@@ -154,14 +189,17 @@ values ('WASD_ResourceStats_C', 'sys.resource_stats', 'Snapshot from sys.resourc
 insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection, Manditory,CategorySeq) 
 values ('WASD_SloStats_C', 'SLO change history', 'Shows the changes in service level objective for databases',  1|2|4|8, 'Azure', 'dbo.tbl_SLO_HISTORY', 400, 'Azure Perf Stats Collector', 1,1000)
 
-select
-CategorySeq, Category, ReportName, ReportDisplayName, ReportDescription, DataCollection, SeqNo, MAX(ReportAvailable) ReportAvailable
-from 
+--final Select to calc available reports
+SELECT
+CategorySeq, Category, ReportName, ReportDisplayName, ReportDescription, DataCollection, SeqNo, CASE WHEN (SUM(ReportAvailable) - COUNT(ReportAvailable)) = 0 THEN 1 ELSE 0 END    ReportAvailable
+FROM 
 (
-select  CategorySeq,Category, ReportName, ReportDisplayName, ReportDescription, DataCollection, case when indx.rowcnt &gt;0 then 1 else 0 end  ReportAvailable, SeqNo
- from @tbl_reports  rep  left outer join sysindexes indx on ( OBJECT_ID (rep.ValidationObject) = indx.id and indx.indid in (0,1,300)) ) t
- group by CategorySeq, Category, ReportName, ReportDisplayName, ReportDescription, DataCollection, SeqNo
- order by CategorySeq, SeqNo, ReportName</CommandText>
+SELECT  CategorySeq,Category, ReportName, ReportDisplayName, ReportDescription, DataCollection, CASE WHEN indx.rowcnt &gt;0 THEN 1 ELSE 0 END  ReportAvailable, SeqNo
+FROM @tbl_reports  rep  
+LEFT OUTER JOIN sysindexes indx ON ( OBJECT_ID (rep.ValidationObject) = indx.id and indx.indid in (0,1,300)) 
+ ) t
+GROUP BY CategorySeq, Category, ReportName, ReportDisplayName, ReportDescription, DataCollection, SeqNo
+ORDER BY CategorySeq, SeqNo, ReportName</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
