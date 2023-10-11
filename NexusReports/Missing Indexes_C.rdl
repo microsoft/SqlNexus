@@ -1367,8 +1367,122 @@ END</CommandText>
               </Border>
             </Style>
           </Line>
+          <Textbox Name="tb_ReportQueryHeader">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>Show queries for this report.</Value>
+                    <Style>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style />
+              </Paragraph>
+            </Paragraphs>
+            <Top>4.29861in</Top>
+            <Left>0.375in</Left>
+            <Height>0.25in</Height>
+            <Width>3.74913in</Width>
+            <ZIndex>7</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+          <Rectangle Name="Rectangle1">
+            <ReportItems>
+              <Textbox Name="tb_ReportQueryLine1">
+                <CanGrow>true</CanGrow>
+                <KeepTogether>true</KeepTogether>
+                <Paragraphs>
+                  <Paragraph>
+                    <TextRuns>
+                      <TextRun>
+                        <Value>=DataSets!DataSet_MissingIndexes.CommandText</Value>
+                        <Style />
+                      </TextRun>
+                    </TextRuns>
+                    <Style />
+                  </Paragraph>
+                </Paragraphs>
+                <Top>0.2257in</Top>
+                <Left>0.01042in</Left>
+                <Height>0.25in</Height>
+                <Width>9.81249in</Width>
+                <Visibility>
+                  <Hidden>true</Hidden>
+                  <ToggleItem>tb_ReportQueryHeader</ToggleItem>
+                </Visibility>
+                <Style>
+                  <Border>
+                    <Style>None</Style>
+                  </Border>
+                  <PaddingLeft>2pt</PaddingLeft>
+                  <PaddingRight>2pt</PaddingRight>
+                  <PaddingTop>2pt</PaddingTop>
+                  <PaddingBottom>2pt</PaddingBottom>
+                </Style>
+              </Textbox>
+              <Textbox Name="tb_ReportQueryLine2">
+                <CanGrow>true</CanGrow>
+                <KeepTogether>true</KeepTogether>
+                <Paragraphs>
+                  <Paragraph>
+                    <TextRuns>
+                      <TextRun>
+                        <Value>=DataSets!DataSet_MissingIndexesDelta_DuringLogCollection.CommandText</Value>
+                        <Style />
+                      </TextRun>
+                    </TextRuns>
+                    <Style />
+                  </Paragraph>
+                </Paragraphs>
+                <Top>0.50348in</Top>
+                <Height>0.25in</Height>
+                <Width>9.81249in</Width>
+                <ZIndex>1</ZIndex>
+                <Visibility>
+                  <Hidden>true</Hidden>
+                  <ToggleItem>tb_ReportQueryHeader</ToggleItem>
+                </Visibility>
+                <Style>
+                  <Border>
+                    <Style>None</Style>
+                  </Border>
+                  <PaddingLeft>2pt</PaddingLeft>
+                  <PaddingRight>2pt</PaddingRight>
+                  <PaddingTop>2pt</PaddingTop>
+                  <PaddingBottom>2pt</PaddingBottom>
+                </Style>
+              </Textbox>
+            </ReportItems>
+            <KeepTogether>true</KeepTogether>
+            <Top>4.74305in</Top>
+            <Left>0.35417in</Left>
+            <Height>0.92709in</Height>
+            <Width>9.84374in</Width>
+            <ZIndex>8</ZIndex>
+            <Visibility>
+              <Hidden>true</Hidden>
+              <ToggleItem>tb_ReportQueryHeader</ToggleItem>
+            </Visibility>
+            <Style>
+              <Border>
+                <Style>Solid</Style>
+              </Border>
+            </Style>
+          </Rectangle>
         </ReportItems>
-        <Height>5.03125in</Height>
+        <Height>6.41319in</Height>
         <Style>
           <Border />
           <BackgroundColor>White</BackgroundColor>
