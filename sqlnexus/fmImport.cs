@@ -437,9 +437,21 @@ namespace sqlnexus
         {
             if (!Directory.Exists(importerDirectory))
                 return;
+            
             string[] Files = Directory.GetFiles(importerDirectory, "*.DLL");
-
             List<string> OrderedFiles = OrderedImporterFiles(Files);
+
+            const string OPT_MINIMIZE_RELOG_CMD = "Minimize Cmd Window During Import";
+            const string OPT_DROP_EXISTING = "Drop existing tables";
+            const string OPT_USE_LOCAL_SERVER_TIME = "Import events using local server time (not UTC)";
+            const string OPT_ENABLE_MARS = "Enable -T35 to support MARs";
+            const string OPT_OUTPUT_SPID_TRC = "Output trace files (.trc) by SPID to %TEMP%\\RML";
+            const string OPT_OUTPUT_RML = "Output RML files (.rml) to %TEMP%\\RML";
+            const string OPT_QUOTED_IDENTIFIERS = "Assume QUOTED_IDENTIFIER ON";
+            const string OPT_IGNORE_PSSDIAG_HOST = "Ignore events associated with PSSDIAG activity";
+            const string OPT_DISABLE_EVENT_REQUIREMENTS = "Disable event requirement checks";
+            const string OPT_IMPORT_TO_SQL_LINUX = "Import to SQL";
+            const string OPT_DROP_EXISTING_LINUX = "Drop Existing Tables";
 
             foreach (string file in OrderedFiles)
             {
@@ -503,6 +515,79 @@ namespace sqlnexus
                         {
                             prod.Options.Add("Enabled", true);
                         }
+
+                        //ensure that saved options get re-applied/re-activated based on the previously-selected checkboxes
+                        // get value of from user.config file (true or false) and restore it in the ToolStripMenuItem
+
+                        //Perfmon options
+
+                        if (prod.Options.ContainsKey(OPT_MINIMIZE_RELOG_CMD))
+                        {
+                            bool MinimizeCmdUserSaved = ImportOptions.IsEnabled(String.Format("{0}.{1}", prod.Name, OPT_MINIMIZE_RELOG_CMD));
+                            prod.Options[OPT_MINIMIZE_RELOG_CMD] = MinimizeCmdUserSaved;
+                        }
+                        
+                        if (prod.Options.ContainsKey(OPT_DROP_EXISTING))
+                        {
+                            bool DropExistingTblsUserSaved = ImportOptions.IsEnabled(String.Format("{0}.{1}", prod.Name, OPT_DROP_EXISTING));
+                            prod.Options[OPT_DROP_EXISTING] = DropExistingTblsUserSaved;
+                        }
+
+                        //RML options
+                        if (prod.Options.ContainsKey(OPT_USE_LOCAL_SERVER_TIME))
+                        {
+                            bool UseLocalTimeUserSaved = ImportOptions.IsEnabled(String.Format("{0}.{1}", prod.Name, OPT_USE_LOCAL_SERVER_TIME));
+                            prod.Options[OPT_USE_LOCAL_SERVER_TIME] = UseLocalTimeUserSaved;
+                        }
+
+                        if (prod.Options.ContainsKey(OPT_ENABLE_MARS))
+                        {
+                            bool EnableMarsUserSaved = ImportOptions.IsEnabled(String.Format("{0}.{1}", prod.Name, OPT_ENABLE_MARS));
+                            prod.Options[OPT_ENABLE_MARS] = EnableMarsUserSaved;
+                        }
+
+                        if (prod.Options.ContainsKey(OPT_OUTPUT_SPID_TRC))
+                        {
+                            bool TrcBySpidUserSaved = ImportOptions.IsEnabled(String.Format("{0}.{1}", prod.Name, OPT_OUTPUT_SPID_TRC));
+                            prod.Options[OPT_OUTPUT_SPID_TRC] = TrcBySpidUserSaved;
+                        }
+
+                        if(prod.Options.ContainsKey(OPT_OUTPUT_RML))
+                        {
+                            bool RmlFilesUserSaved = ImportOptions.IsEnabled(String.Format("{0}.{1}", prod.Name, OPT_OUTPUT_RML));
+                            prod.Options[OPT_OUTPUT_RML] = RmlFilesUserSaved;
+                        }
+
+                        if (prod.Options.ContainsKey(OPT_QUOTED_IDENTIFIERS))
+                        {
+                            bool QtdIdsUserSaved = ImportOptions.IsEnabled(String.Format("{0}.{1}", prod.Name, OPT_QUOTED_IDENTIFIERS));
+                            prod.Options[OPT_QUOTED_IDENTIFIERS] = QtdIdsUserSaved;
+                        }
+
+                        if (prod.Options.ContainsKey(OPT_IGNORE_PSSDIAG_HOST))
+                        {
+                            bool IgnorePssdiagEvtsUserSaved = ImportOptions.IsEnabled(String.Format("{0}.{1}", prod.Name, OPT_IGNORE_PSSDIAG_HOST));
+                            prod.Options[OPT_IGNORE_PSSDIAG_HOST] = IgnorePssdiagEvtsUserSaved;
+                        }
+
+                        if (prod.Options.ContainsKey(OPT_DISABLE_EVENT_REQUIREMENTS))
+                        {
+                            bool DsblEvtsReqUserSaved = ImportOptions.IsEnabled(String.Format("{0}.{1}", prod.Name, OPT_DISABLE_EVENT_REQUIREMENTS));
+                            prod.Options[OPT_DISABLE_EVENT_REQUIREMENTS] = DsblEvtsReqUserSaved;
+                        }
+
+                        if (prod.Options.ContainsKey(OPT_IMPORT_TO_SQL_LINUX))
+                        {
+                            bool ImpToSqlUserSaved = ImportOptions.IsEnabled(String.Format("{0}.{1}", prod.Name, OPT_IMPORT_TO_SQL_LINUX));
+                            prod.Options[OPT_IMPORT_TO_SQL_LINUX] = ImpToSqlUserSaved;
+                        }
+
+                        if (prod.Options.ContainsKey(OPT_DROP_EXISTING_LINUX))
+                        {
+                            bool DrpExistingTblsLnxUserSaved = ImportOptions.IsEnabled(String.Format("{0}.{1}", prod.Name, OPT_DROP_EXISTING_LINUX));
+                            prod.Options[OPT_DROP_EXISTING_LINUX] = DrpExistingTblsLnxUserSaved;
+                        }
+                        
 
                         // options
                         ToolStripMenuItem subtsi;
