@@ -46,9 +46,9 @@ namespace PerfmonImporter
     //[NexusInterfaces.OffByDefault]
     public class BLGImporter : INexusImporter
     {
-        const string OPTION_DROP_EXISTING = "Drop existing tables";
+        const string OPTION_DROP_EXISTING = "Drop existing tables (Perfmon)";
         const string OPTION_ENABLED = "Enabled";
-        const string OPTION_MINIMIZE_RELOG_CMD = "Minimize Cmd window during import";
+        const string OPTION_MINIMIZE_RELOG_CMD = "Minimize Cmd window (Relog.exe) during import";
 
         private const string POST_LOAD_SQL_SCRIPT = null; //"PerfStatsAnalysis_doNOTRun.sql";
 
