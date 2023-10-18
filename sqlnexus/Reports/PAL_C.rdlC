@@ -70,6 +70,7 @@
             </Paragraphs>
             <rd:WatermarkTextbox>Title</rd:WatermarkTextbox>
             <rd:DefaultName>ReportTitle</rd:DefaultName>
+            <Left>0.92603cm</Left>
             <Height>0.5in</Height>
             <Width>6in</Width>
             <Style>
@@ -180,6 +181,7 @@
             </TablixRowHierarchy>
             <DataSetName>dsCounters</DataSetName>
             <Top>0.83208in</Top>
+            <Left>0.10584cm</Left>
             <Height>0.36458in</Height>
             <Width>9.11458in</Width>
             <ZIndex>1</ZIndex>
@@ -189,15 +191,97 @@
               </Border>
             </Style>
           </Tablix>
+          <Textbox Name="tb_ReportQueryHeader">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>Show queries for this report.</Value>
+                    <Style>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style />
+              </Paragraph>
+            </Paragraphs>
+            <Top>1.81187in</Top>
+            <Left>0.05208in</Left>
+            <Height>0.25in</Height>
+            <Width>3.74913in</Width>
+            <ZIndex>2</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+          <Rectangle Name="Rectangle2">
+            <ReportItems>
+              <Textbox Name="tb_ReportQueryLine1">
+                <CanGrow>true</CanGrow>
+                <KeepTogether>true</KeepTogether>
+                <Paragraphs>
+                  <Paragraph>
+                    <TextRuns>
+                      <TextRun>
+                        <Value>=DataSets("dsCounters").CommandText</Value>
+                        <Style />
+                      </TextRun>
+                    </TextRuns>
+                    <Style />
+                  </Paragraph>
+                </Paragraphs>
+                <Top>0.2257in</Top>
+                <Left>0.01042in</Left>
+                <Height>0.25in</Height>
+                <Width>9.81249in</Width>
+                <Visibility>
+                  <Hidden>true</Hidden>
+                  <ToggleItem>tb_ReportQueryHeader</ToggleItem>
+                </Visibility>
+                <Style>
+                  <Border>
+                    <Style>None</Style>
+                  </Border>
+                  <PaddingLeft>2pt</PaddingLeft>
+                  <PaddingRight>2pt</PaddingRight>
+                  <PaddingTop>2pt</PaddingTop>
+                  <PaddingBottom>2pt</PaddingBottom>
+                </Style>
+              </Textbox>
+            </ReportItems>
+            <KeepTogether>true</KeepTogether>
+            <Top>2.25631in</Top>
+            <Left>0.03125in</Left>
+            <Height>0.62153in</Height>
+            <Width>9.84374in</Width>
+            <ZIndex>3</ZIndex>
+            <Visibility>
+              <Hidden>true</Hidden>
+              <ToggleItem>tb_ReportQueryHeader</ToggleItem>
+            </Visibility>
+            <Style>
+              <Border>
+                <Style>Solid</Style>
+              </Border>
+            </Style>
+          </Rectangle>
         </ReportItems>
-        <Height>1.19666in</Height>
+        <Height>3.17583in</Height>
         <Style>
           <Border>
             <Style>None</Style>
           </Border>
         </Style>
       </Body>
-      <Width>9.11458in</Width>
+      <Width>9.87499in</Width>
       <Page>
         <LeftMargin>1in</LeftMargin>
         <RightMargin>1in</RightMargin>
