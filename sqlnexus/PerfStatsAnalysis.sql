@@ -2924,7 +2924,7 @@ begin
 				FROM #tmp
 				WHERE CounterDateTime BETWEEN (@T_CounterDateTime - '00:00:30') AND (@T_CounterDateTime  + '00:00:30') 
 				GROUP BY ObjectName, CounterName, InstanceName                      
-				HAVING  AVG(counterValue)  >= @IO_threshold
+				HAVING  AVG(counterValue)  >= @IO_threshold AND COUNT(counterValue) >1
 
 				
 				IF (@@ROWCOUNT > 0)

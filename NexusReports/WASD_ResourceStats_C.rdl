@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:cl="http://schemas.microsoft.com/sqlserver/reporting/2010/01/componentdefinition" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2010/01/reportdefinition">
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2010/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
     <DataSource Name="SqlNexus_Private">
@@ -34,7 +34,27 @@
   ,tbl_RESOURCE_STATS.[Maximum # of Workers]
 FROM
   tbl_RESOURCE_STATS</CommandText>
-        <rd:DesignerState><QueryDefinition xmlns="http://schemas.microsoft.com/ReportingServices/QueryDefinition/Relational"><SelectedColumns><ColumnExpression ColumnOwner="tbl_RESOURCE_STATS" ColumnName="rownum" /><ColumnExpression ColumnOwner="tbl_RESOURCE_STATS" ColumnName="database_name" /><ColumnExpression ColumnOwner="tbl_RESOURCE_STATS" ColumnName="start_time" /><ColumnExpression ColumnOwner="tbl_RESOURCE_STATS" ColumnName="Average CPU Cores Used" /><ColumnExpression ColumnOwner="tbl_RESOURCE_STATS" ColumnName="Maximum CPU Cores Used" /><ColumnExpression ColumnOwner="tbl_RESOURCE_STATS" ColumnName="Average Read IOPS" /><ColumnExpression ColumnOwner="tbl_RESOURCE_STATS" ColumnName="Maximum Read IOPS" /><ColumnExpression ColumnOwner="tbl_RESOURCE_STATS" ColumnName="Average Write IOPS" /><ColumnExpression ColumnOwner="tbl_RESOURCE_STATS" ColumnName="Maximum Write IOPS" /><ColumnExpression ColumnOwner="tbl_RESOURCE_STATS" ColumnName="Average Memory Used in GB" /><ColumnExpression ColumnOwner="tbl_RESOURCE_STATS" ColumnName="Maximum Memory Used in GB" /><ColumnExpression ColumnOwner="tbl_RESOURCE_STATS" ColumnName="Average # of Sessions" /><ColumnExpression ColumnOwner="tbl_RESOURCE_STATS" ColumnName="Maximum # of Sessions" /><ColumnExpression ColumnOwner="tbl_RESOURCE_STATS" ColumnName="Average # of Workers" /><ColumnExpression ColumnOwner="tbl_RESOURCE_STATS" ColumnName="Maximum # of Workers" /></SelectedColumns></QueryDefinition></rd:DesignerState>
+        <rd:DesignerState>
+          <QueryDefinition xmlns="http://schemas.microsoft.com/ReportingServices/QueryDefinition/Relational">
+            <SelectedColumns>
+              <ColumnExpression ColumnOwner="tbl_RESOURCE_STATS" ColumnName="rownum" />
+              <ColumnExpression ColumnOwner="tbl_RESOURCE_STATS" ColumnName="database_name" />
+              <ColumnExpression ColumnOwner="tbl_RESOURCE_STATS" ColumnName="start_time" />
+              <ColumnExpression ColumnOwner="tbl_RESOURCE_STATS" ColumnName="Average CPU Cores Used" />
+              <ColumnExpression ColumnOwner="tbl_RESOURCE_STATS" ColumnName="Maximum CPU Cores Used" />
+              <ColumnExpression ColumnOwner="tbl_RESOURCE_STATS" ColumnName="Average Read IOPS" />
+              <ColumnExpression ColumnOwner="tbl_RESOURCE_STATS" ColumnName="Maximum Read IOPS" />
+              <ColumnExpression ColumnOwner="tbl_RESOURCE_STATS" ColumnName="Average Write IOPS" />
+              <ColumnExpression ColumnOwner="tbl_RESOURCE_STATS" ColumnName="Maximum Write IOPS" />
+              <ColumnExpression ColumnOwner="tbl_RESOURCE_STATS" ColumnName="Average Memory Used in GB" />
+              <ColumnExpression ColumnOwner="tbl_RESOURCE_STATS" ColumnName="Maximum Memory Used in GB" />
+              <ColumnExpression ColumnOwner="tbl_RESOURCE_STATS" ColumnName="Average # of Sessions" />
+              <ColumnExpression ColumnOwner="tbl_RESOURCE_STATS" ColumnName="Maximum # of Sessions" />
+              <ColumnExpression ColumnOwner="tbl_RESOURCE_STATS" ColumnName="Average # of Workers" />
+              <ColumnExpression ColumnOwner="tbl_RESOURCE_STATS" ColumnName="Maximum # of Workers" />
+            </SelectedColumns>
+          </QueryDefinition>
+        </rd:DesignerState>
       </Query>
       <Fields>
         <Field Name="rownum">
@@ -1767,8 +1787,89 @@ FROM
               <PaddingBottom>2pt</PaddingBottom>
             </Style>
           </Textbox>
+          <Textbox Name="tb_ReportQueryHeader">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>Show queries for this report.</Value>
+                    <Style>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style />
+              </Paragraph>
+            </Paragraphs>
+            <Top>1.71354in</Top>
+            <Left>0.02083in</Left>
+            <Height>0.25in</Height>
+            <Width>3.74913in</Width>
+            <ZIndex>3</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+          <Rectangle Name="Rectangle1">
+            <ReportItems>
+              <Textbox Name="tb_ReportQueryLine1">
+                <CanGrow>true</CanGrow>
+                <KeepTogether>true</KeepTogether>
+                <Paragraphs>
+                  <Paragraph>
+                    <TextRuns>
+                      <TextRun>
+                        <Value>=DataSets!DataSet1.CommandText</Value>
+                        <Style />
+                      </TextRun>
+                    </TextRuns>
+                    <Style />
+                  </Paragraph>
+                </Paragraphs>
+                <Top>0.2257in</Top>
+                <Left>0.01042in</Left>
+                <Height>0.25in</Height>
+                <Width>9.81249in</Width>
+                <Visibility>
+                  <Hidden>true</Hidden>
+                  <ToggleItem>tb_ReportQueryHeader</ToggleItem>
+                </Visibility>
+                <Style>
+                  <Border>
+                    <Style>None</Style>
+                  </Border>
+                  <PaddingLeft>2pt</PaddingLeft>
+                  <PaddingRight>2pt</PaddingRight>
+                  <PaddingTop>2pt</PaddingTop>
+                  <PaddingBottom>2pt</PaddingBottom>
+                </Style>
+              </Textbox>
+            </ReportItems>
+            <KeepTogether>true</KeepTogether>
+            <Top>2.16492in</Top>
+            <Height>0.62153in</Height>
+            <Width>9.84374in</Width>
+            <ZIndex>4</ZIndex>
+            <Visibility>
+              <Hidden>true</Hidden>
+              <ToggleItem>tb_ReportQueryHeader</ToggleItem>
+            </Visibility>
+            <Style>
+              <Border>
+                <Style>Solid</Style>
+              </Border>
+            </Style>
+          </Rectangle>
         </ReportItems>
-        <Height>2.25in</Height>
+        <Height>3.61284in</Height>
         <Style>
           <Border>
             <Style>None</Style>
@@ -1778,7 +1879,7 @@ FROM
       <Width>14.41667in</Width>
       <Page>
         <PageFooter>
-          <Height>0.45in</Height>
+          <Height>0.01042in</Height>
           <PrintOnFirstPage>true</PrintOnFirstPage>
           <PrintOnLastPage>true</PrintOnLastPage>
           <Style>
