@@ -4226,107 +4226,103 @@
         <Column name="drop_table_memory_failures" type="RowsetImportEngine.BigIntColumn" />
       </KnownColumns>
     </Rowset>
-	<Rowset name="tbl_sysmail_event_log_sysmail_faileditems" enabled="true" identifier="-- sysmail_event_log_sysmail_faileditems --" type="RowsetImportEngine.TextRowset">
+	  
+    <Rowset name="tbl_sysmail_event_log_sysmail_faileditems" enabled="true" identifier="-- sysmail_event_log_sysmail_faileditems --" type="RowsetImportEngine.TextRowset">
 	  <KnownColumns>
-		  <Column name="LogID" type="RowsetImportEngine.BigIntColumn" />
-		  <Column name="LogDate" type="RowsetImportEngine.DateTimeColumn" />
-		  <Column name="Description" type="RowsetImportEngine.NVarCharColumn" />
-		  <Column name="ProcessID" type="RowsetImportEngine.BigIntColumn" />
-		  <Column name="MailitemID" type="RowsetImportEngine.BigIntColumn" />
-		  <Column name="AccountID" type="RowsetImportEngine.BigIntColumn" />
-		  <Column name="LastModifiedDate" type="RowsetImportEngine.DateTimeColumn" />
-		  <Column name="LastModifiedUser" type="RowsetImportEngine.NVarCharColumn" />
-		  <Column name="send_request_user" type="RowsetImportEngine.NVarCharColumn" />
-		  <Column name="send_request_date" type="RowsetImportEngine.DateTimeColumn" />
-		  <Column name="recipients" type="RowsetImportEngine.NVarCharColumn" />
-		  <Column name="subject" type="RowsetImportEngine.NVarCharColumn" />
-		  <Column name="body" type="RowsetImportEngine.NVarCharColumn" />
+		<Column name="LogID" type="RowsetImportEngine.BigIntColumn" />
+		<Column name="LogDate" type="RowsetImportEngine.DateTimeColumn" />
+		<Column name="Description" type="RowsetImportEngine.NVarCharColumn" />
+		<Column name="ProcessID" type="RowsetImportEngine.BigIntColumn" />
+		<Column name="MailitemID" type="RowsetImportEngine.BigIntColumn" />
+		<Column name="AccountID" type="RowsetImportEngine.BigIntColumn" />
+		<Column name="LastModifiedDate" type="RowsetImportEngine.DateTimeColumn" />
+		<Column name="LastModifiedUser" type="RowsetImportEngine.NVarCharColumn" />
+		<Column name="send_request_user" type="RowsetImportEngine.NVarCharColumn" />
+		<Column name="send_request_date" type="RowsetImportEngine.DateTimeColumn" />
+		<Column name="recipients" type="RowsetImportEngine.NVarCharColumn" />
+		<Column name="subject" type="RowsetImportEngine.NVarCharColumn" />
+		<Column name="body" type="RowsetImportEngine.NVarCharColumn" />
 	  </KnownColumns>  
-	</Rowset>
-	<Rowset name="tbl_sysmail_items" enabled="true" identifier="-- sysmail_items --" type="RowsetImportEngine.TextRowset">
-	  <KnownColumns>
-		 <Column name="mailitem_id" type="RowsetImportEngine.BigIntColumn" />
-		 <Column name="profile_id" type="RowsetImportEngine.BigIntColumn" />
-		 <Column name="recipients" type="RowsetImportEngine.VarCharColumn" />
-		  <Column name="copy_recipients" type="RowsetImportEngine.VarCharColumn" />
-		  <Column name="blind_copy_recipients" type="RowsetImportEngine.VarCharColumn" />
-		  <Column name="subject" type="RowsetImportEngine.VarCharColumn" />
-		  <Column name="from_address" type="RowsetImportEngine.NVarCharColumn" />
-		  <Column name="body" type="RowsetImportEngine.VarCharColumn" />
-		  <Column name="body_format" type="RowsetImportEngine.VarCharColumn" />
-		  <Column name="importance" type="RowsetImportEngine.VarCharolumn" />
-		  <Column name="sensitivity" type="RowsetImportEngine.VarCharColumn" />
-		  <Column name="file_attachements" type="RowsetImportEngine.VarCharColumn" />
-		  <Column name="attachement_encoding" type="RowsetImportEngine.VarCharColumn" />
-		  <Column name="query" type="RowsetImportEngine.VarCharColumn" />
-		  <Column name="execute_query_database" type="RowsetImportEngine.VarCharColumn" />
-		  <Column name="attach_query_result_as_file" type="RowsetImportEngine.IntColumn" />
-		  
+    </Rowset>
+	  
+    <Rowset name="tbl_sysmail_mailitems" enabled="true" identifier="-- sysmail_mailitems --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="mailitem_id" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="profile_id" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="recipients" type="RowsetImportEngine.VarCharColumn" />
+        <Column name="copy_recipients" type="RowsetImportEngine.VarCharColumn" />
+        <Column name="blind_copy_recipients" type="RowsetImportEngine.VarCharColumn" />
+        <Column name="subject" type="RowsetImportEngine.VarCharColumn" />
+        <Column name="from_address" type="RowsetImportEngine.NVarCharColumn" />
+        <Column name="body" type="RowsetImportEngine.VarCharColumn" />
+        <Column name="body_format" type="RowsetImportEngine.VarCharColumn" />
+        <Column name="importance" type="RowsetImportEngine.VarCharolumn" />
+        <Column name="sensitivity" type="RowsetImportEngine.VarCharColumn" />
+        <Column name="file_attachements" type="RowsetImportEngine.VarCharColumn" />
+        <Column name="attachement_encoding" type="RowsetImportEngine.VarCharColumn" />
+        <Column name="query" type="RowsetImportEngine.VarCharColumn" />
+        <Column name="execute_query_database" type="RowsetImportEngine.VarCharColumn" />
+        <Column name="attach_query_result_as_file" type="RowsetImportEngine.IntColumn" />
 	  </KnownColumns>
 	</Rowset>
 
-	  <Rowset name="tbl_sysmail_account" enabled="true" identifier="-- sysmail_account --" type="RowsetImportEngine.TextRowset">
-		  <KnownColumns>
-			  <Column name="account_id" type="RowsetImportEngine.BigIntColumn" />
-			  <Column name="name" type="RowsetImportEngine.VarCharColumn" />
-			  <Column name="description" type="RowsetImportEngine.VarCharColumn" />
-			  <Column name="email_address" type="RowsetImportEngine.VarCharColumn" />
-			  <Column name="display_name" type="RowsetImportEngine.VarCharColumn" />
-			  <Column name="replyto_address" type="RowsetImportEngine.VarCharColumn" />
-			  <Column name="last_mod_datetime" type="RowsetImportEngine.DateTimeColumn" />
-			  <Column name="last_mod_user" type="RowsetImportEngine.VarCharColumn" />
+    <Rowset name="tbl_sysmail_account" enabled="true" identifier="-- sysmail_account --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="account_id" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="name" type="RowsetImportEngine.VarCharColumn" />
+        <Column name="description" type="RowsetImportEngine.VarCharColumn" />
+        <Column name="email_address" type="RowsetImportEngine.VarCharColumn" />
+        <Column name="display_name" type="RowsetImportEngine.VarCharColumn" />
+        <Column name="replyto_address" type="RowsetImportEngine.VarCharColumn" />
+        <Column name="last_mod_datetime" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="last_mod_user" type="RowsetImportEngine.VarCharColumn" />
 		  </KnownColumns>
-	  </Rowset>
-	  <Rowset name="tbl_sysmail_configuration" enabled="true" identifier="-- sysmail_configuration --" type="RowsetImportEngine.TextRowset">
-		  <KnownColumns>
-			  <Column name="paramename" type="RowsetImportEngine.VarCharColumn" />
-			  <Column name="paramvalue" type="RowsetImportEngine.VarCharColumn" />
-			  <Column name="description" type="RowsetImportEngine.VarCharColumn" />
-			  <Column name="last_mod_datetime" type="RowsetImportEngine.DateTimeColumn" />
-			  <Column name="last_mod_user" type="RowsetImportEngine.VarCharColumn" />
-		  </KnownColumns>
-	  </Rowset>
-	  <Rowset name="tbl_sysmail_log" enabled="true" identifier="-- sysmail_log --" type="RowsetImportEngine.TextRowset">
-		  <KnownColumns>
-			  <Column name="log_id" type="RowsetImportEngine.BigIntColumn" />
-			  <Column name="event_type" type="RowsetImportEngine.VarCharColumn" length="11" />
-			  <Column name="log_date" type="RowsetImportEngine.DateTimeColumn" />
-			  <Column name="description" type="RowsetImportEngine.NVarcharColumn" />
-			  <Column name="process_id" type="RowsetImportEngine.BigIntColumn" />
-			  <Column name="mailitem_id" type="RowsetImportEngine.BigIntColumn" />
-			  <Column name="account_id" type="RowsetImportEngine.BigIntColumn" />
-			  <Column name="last_mod_date" type="RowsetImportEngine.DateTimeColumn" />
-			  <Column name="last_mod_user" type="RowsetImportEngine.VarCharColumn" />
-		  </KnownColumns>
-	  </Rowset>
-	  <Rowset name="tbl_sysmail_profile" enabled="true" identifier="-- sysmail_profile --" type="RowsetImportEngine.TextRowset">
-		  <KnownColumns>
-			  <Column name="profile_id" type="RowsetImportEngine.BigIntColumn" />
-			  <Column name="name" type="RowsetImportEngine.VarCharColumn" />
-			  <Column name="description" type="RowsetImportEngine.VarCharColumn" />
-			  <Column name="last_mod_datetime" type="RowsetImportEngine.DateTimeColumn" />
-			  <Column name="last_mod_user" type="RowsetImportEngine.VarCharColumn" />
-		  </KnownColumns>
-	  </Rowset>
-	  <Rowset name="tbl_sysmail_profileaccount" enabled="true" identifier="-- sysmail_profileaccount --" type="RowsetImportEngine.TextRowset">
-		  <KnownColumns>
-			  <Column name="profile_id" type="RowsetImportEngine.BigIntColumn" />
-			  <Column name="account_id" type="RowsetImportEngine.BigIntColumn" />
-			  <Column name="sequence_number" type="RowsetImportEngine.BigIntColumn" />
-			  <Column name="last_mod_datetime" type="RowsetImportEngine.DateTimeColumn" />
-			  <Column name="last_mod_user" type="RowsetImportEngine.VarCharColumn" />
-		  </KnownColumns>
-	  </Rowset>
+    </Rowset>
+	  
+    <Rowset name="tbl_sysmail_configuration" enabled="true" identifier="-- sysmail_configuration --" type="RowsetImportEngine.TextRowset">
+	  <KnownColumns>
+        <Column name="paramename" type="RowsetImportEngine.VarCharColumn" />
+        <Column name="paramvalue" type="RowsetImportEngine.VarCharColumn" />
+        <Column name="description" type="RowsetImportEngine.VarCharColumn" />
+        <Column name="last_mod_datetime" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="last_mod_user" type="RowsetImportEngine.VarCharColumn" />
+      </KnownColumns>
+    </Rowset>
+	  
+    <Rowset name="tbl_sysmail_log" enabled="true" identifier="-- sysmail_log --" type="RowsetImportEngine.TextRowset">
+	  <KnownColumns>
+        <Column name="log_id" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="event_type" type="RowsetImportEngine.VarCharColumn" length="11" />
+        <Column name="log_date" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="description" type="RowsetImportEngine.NVarcharColumn" />
+        <Column name="process_id" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="mailitem_id" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="account_id" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="last_mod_date" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="last_mod_user" type="RowsetImportEngine.VarCharColumn" />
+      </KnownColumns>
+    </Rowset>
+	  
+    <Rowset name="tbl_sysmail_profile" enabled="true" identifier="-- sysmail_profile --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="profile_id" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="name" type="RowsetImportEngine.VarCharColumn" />
+        <Column name="description" type="RowsetImportEngine.VarCharColumn" />
+        <Column name="last_mod_datetime" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="last_mod_user" type="RowsetImportEngine.VarCharColumn" />
+      </KnownColumns>
+    </Rowset>
+	  
+    <Rowset name="tbl_sysmail_profileaccount" enabled="true" identifier="-- sysmail_profileaccount --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="profile_id" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="account_id" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="sequence_number" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="last_mod_datetime" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="last_mod_user" type="RowsetImportEngine.VarCharColumn" />
+      </KnownColumns>
+    </Rowset>
   </KnownRowsets>
 </TextImport>
-
-<!-- 
-
-    <Rowset name=" sysmail_account" enabled="true" identifier="..." type="RowsetImportEngine.TextRowset">
-	  <KnownColumns>
-        <Column name="" type="RowsetImportEngine.BigIntColumn" />
-	  </KnownColumns>
-	 </Rowset>
--->
 
 
