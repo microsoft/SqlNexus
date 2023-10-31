@@ -4278,6 +4278,7 @@
         <Column name="last_mod_user" type="RowsetImportEngine.VarCharColumn" />
 		  </KnownColumns>
     </Rowset>
+	  
     <Rowset name="tbl_sysmail_configuration" enabled="true" identifier="-- sysmail_configuration --" type="RowsetImportEngine.TextRowset">
 	  <KnownColumns>
         <Column name="paramename" type="RowsetImportEngine.VarCharColumn" />
@@ -4287,6 +4288,7 @@
         <Column name="last_mod_user" type="RowsetImportEngine.VarCharColumn" />
       </KnownColumns>
     </Rowset>
+	  
     <Rowset name="tbl_sysmail_log" enabled="true" identifier="-- sysmail_log --" type="RowsetImportEngine.TextRowset">
 	  <KnownColumns>
         <Column name="log_id" type="RowsetImportEngine.BigIntColumn" />
@@ -4300,6 +4302,7 @@
         <Column name="last_mod_user" type="RowsetImportEngine.VarCharColumn" />
       </KnownColumns>
     </Rowset>
+	  
     <Rowset name="tbl_sysmail_profile" enabled="true" identifier="-- sysmail_profile --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
         <Column name="profile_id" type="RowsetImportEngine.BigIntColumn" />
@@ -4309,6 +4312,7 @@
         <Column name="last_mod_user" type="RowsetImportEngine.VarCharColumn" />
       </KnownColumns>
     </Rowset>
+	  
     <Rowset name="tbl_sysmail_profileaccount" enabled="true" identifier="-- sysmail_profileaccount --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
         <Column name="profile_id" type="RowsetImportEngine.BigIntColumn" />
@@ -4318,10 +4322,6 @@
         <Column name="last_mod_user" type="RowsetImportEngine.VarCharColumn" />
       </KnownColumns>
     </Rowset>
-  
-    <Rowset name="tbl_Sys_Databases" enabled="true" identifier="-- sys.databases --" type="RowsetImportEngine.TextRowset">
-    </Rowset>
-  
   </KnownRowsets>
 </TextImport>
 

@@ -1055,8 +1055,8 @@ namespace sqlnexus
             // tstbPage
             // 
             this.tstbPage.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.tstbPage.Name = "tstbPage";
             resources.ApplyResources(this.tstbPage, "tstbPage");
+            this.tstbPage.Name = "tstbPage";
             this.tstbPage.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tstbPage_KeyPress);
             // 
             // tslaPages
@@ -1282,9 +1282,9 @@ namespace sqlnexus
             // 
             // tstbFind
             // 
+            resources.ApplyResources(this.tstbFind, "tstbFind");
             this.tstbFind.Margin = new System.Windows.Forms.Padding(10, 0, 1, 0);
             this.tstbFind.Name = "tstbFind";
-            resources.ApplyResources(this.tstbFind, "tstbFind");
             this.tstbFind.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tstbFind_KeyPress);
             this.tstbFind.TextChanged += new System.EventHandler(this.tstbFind_TextChanged);
             // 
