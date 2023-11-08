@@ -16,16 +16,16 @@
     <DataSet Name="DataSet_Shared_SQLServerName">
       <Query>
         <DataSourceName>DataSource_Private</DataSourceName>
-        <CommandText>IF OBJECT_ID ('DataSet_WaitStats_WaitStatsTop5Categories') IS NOT NULL AND OBJECT_ID ('tbl_SCRIPT_ENVIRONMENT_DETAILS') IS NOT NULL
-	begin        
-  SELECT [Value]
-  FROM tbl_SCRIPT_ENVIRONMENT_DETAILS
-  WHERE script_name like 'SQL 200% Perf Stats Script'
-    AND [Name] = 'SQL Server Name'
-    end
-	ELSE
-  SELECT '' AS [value]
-  </CommandText>
+        <CommandText>IF OBJECT_ID('DataSet_WaitStats_WaitStatsTop5Categories') IS NOT NULL
+   AND OBJECT_ID('tbl_SCRIPT_ENVIRONMENT_DETAILS') IS NOT NULL
+BEGIN
+    SELECT [Value]
+    FROM dbo.tbl_SCRIPT_ENVIRONMENT_DETAILS
+    WHERE script_name LIKE 'SQL 200% Perf Stats Script'
+          AND [Name] = 'SQL Server Name';
+END;
+ELSE
+    SELECT '' AS [value];</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -38,14 +38,14 @@
     <DataSet Name="DataSet_Shared_SQLVersion">
       <Query>
         <DataSourceName>DataSource_Private</DataSourceName>
-        <CommandText>IF OBJECT_ID ('DataSet_WaitStats_WaitStatsTop5Categories') IS NOT NULL AND OBJECT_ID ('tbl_SCRIPT_ENVIRONMENT_DETAILS') IS NOT NULL
-  SELECT [Value]
-  FROM tbl_SCRIPT_ENVIRONMENT_DETAILS
-  WHERE script_name like 'SQL 200% Perf Stats Script'
-    AND [Name] = 'SQL Version (SP)'
-ELSE 
-  SELECT '' AS [value]
-  </CommandText>
+        <CommandText>IF OBJECT_ID('DataSet_WaitStats_WaitStatsTop5Categories') IS NOT NULL
+   AND OBJECT_ID('tbl_SCRIPT_ENVIRONMENT_DETAILS') IS NOT NULL
+    SELECT [Value]
+    FROM dbo.tbl_SCRIPT_ENVIRONMENT_DETAILS
+    WHERE script_name LIKE 'SQL 200% Perf Stats Script'
+          AND [Name] = 'SQL Version (SP)';
+ELSE
+    SELECT '' AS [value];</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -58,31 +58,37 @@ ELSE
     <DataSet Name="DataSet_WaitStats_ParamStartTime">
       <Query>
         <DataSourceName>DataSource_Private</DataSourceName>
-        <CommandText>  
-  IF OBJECT_ID ('vw_PERF_STATS_SCRIPT_RUNTIMES') IS NOT NULL 
+        <CommandText>IF OBJECT_ID('vw_PERF_STATS_SCRIPT_RUNTIMES') IS NOT NULL
 BEGIN
-  DECLARE @v_StartTime datetime
-  DECLARE @v_EndTime datetime
-  SELECT @v_StartTime = MIN (runtime) FROM vw_PERF_STATS_SCRIPT_RUNTIMES
-  SELECT @v_EndTime = MAX (runtime) FROM vw_PERF_STATS_SCRIPT_RUNTIMES
-  IF @v_StartTime IS NULL SET @v_StartTime = GETDATE()
-  IF @v_EndTime IS NULL SET @v_EndTime = GETDATE()
+    DECLARE @v_StartTime DATETIME;
+    DECLARE @v_EndTime DATETIME;
+    SELECT @v_StartTime = MIN(runtime)
+    FROM dbo.vw_PERF_STATS_SCRIPT_RUNTIMES;
+    SELECT @v_EndTime = MAX(runtime)
+    FROM dbo.vw_PERF_STATS_SCRIPT_RUNTIMES;
+    IF @v_StartTime IS NULL
+        SET @v_StartTime = GETDATE();
+    IF @v_EndTime IS NULL
+        SET @v_EndTime = GETDATE();
 
-select top 1 StartTime from
-(  
-  SELECT 
-    CASE 
-      WHEN DATEDIFF (mi, @v_StartTime, @v_EndTime) &gt; 4*60 THEN DATEADD (mi, -60, @v_EndTime)
-      ELSE @v_StartTime
-    END AS StartTime
-  UNION ALL
-  SELECT @v_StartTime 
-  ) t order by StartTime asc
+    SELECT TOP 1
+           StartTime
+    FROM
+    (
+        SELECT CASE
+                   WHEN DATEDIFF(mi, @v_StartTime, @v_EndTime) &gt; 4 * 60 THEN
+                       DATEADD(mi, -60, @v_EndTime)
+                   ELSE
+                       @v_StartTime
+               END AS StartTime
+        UNION ALL
+        SELECT @v_StartTime
+    ) t
+    ORDER BY StartTime ASC;
 
-END
+END;
 ELSE
-  SELECT cast ('1990/1/1' as datetime)  AS StartTime
-  </CommandText>
+    SELECT CAST('1990/1/1' AS DATETIME) AS StartTime;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -95,21 +101,25 @@ ELSE
     <DataSet Name="DataSet_WaitStats_ParamEndTime">
       <Query>
         <DataSourceName>DataSource_Private</DataSourceName>
-        <CommandText>  IF OBJECT_ID ('vw_PERF_STATS_SCRIPT_RUNTIMES') IS NOT NULL 
+        <CommandText>IF OBJECT_ID('vw_PERF_STATS_SCRIPT_RUNTIMES') IS NOT NULL
 BEGIN
-  DECLARE @v_StartTime datetime
-  DECLARE @v_EndTime datetime
-  SELECT @v_StartTime = MIN (runtime) FROM vw_PERF_STATS_SCRIPT_RUNTIMES
-  SELECT @v_EndTime = MAX (runtime) FROM vw_PERF_STATS_SCRIPT_RUNTIMES
-  IF @v_StartTime IS NULL SET @v_StartTime = GETDATE()
-  IF @v_EndTime IS NULL SET @v_EndTime = GETDATE()
-  
-  SELECT @v_EndTime AS EndTime 
-  
-  
-END
+    DECLARE @v_StartTime DATETIME;
+    DECLARE @v_EndTime DATETIME;
+    SELECT @v_StartTime = MIN(runtime)
+    FROM dbo.vw_PERF_STATS_SCRIPT_RUNTIMES;
+    SELECT @v_EndTime = MAX(runtime)
+    FROM dbo.vw_PERF_STATS_SCRIPT_RUNTIMES;
+    IF @v_StartTime IS NULL
+        SET @v_StartTime = GETDATE();
+    IF @v_EndTime IS NULL
+        SET @v_EndTime = GETDATE();
+
+    SELECT @v_EndTime AS EndTime;
+
+
+END;
 ELSE
-  SELECT cast ('1990/1/1' as datetime)  AS EndTime</CommandText>
+    SELECT CAST('1990/1/1' AS DATETIME) AS EndTime;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -122,12 +132,13 @@ ELSE
     <DataSet Name="DataSet_Runtime">
       <Query>
         <DataSourceName>DataSource_Private</DataSourceName>
-        <CommandText>IF OBJECT_ID ('vw_PERF_STATS_SCRIPT_RUNTIMES') IS NOT NULL 
+        <CommandText>IF OBJECT_ID('vw_PERF_STATS_SCRIPT_RUNTIMES') IS NOT NULL
 BEGIN
- select Runtime from vw_PERF_STATS_SCRIPT_RUNTIMES
-END
+    SELECT runtime
+    FROM dbo.vw_PERF_STATS_SCRIPT_RUNTIMES;
+END;
 ELSE
-    SELECT cast ('1990/1/1' as datetime)  AS Runtime </CommandText>
+    SELECT CAST('1990/1/1' AS DATETIME) AS Runtime;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -139,15 +150,18 @@ ELSE
     <DataSet Name="DataSet_SnapshotTime">
       <Query>
         <DataSourceName>DataSource_Private</DataSourceName>
-        <CommandText>	
-	if OBJECT_ID ('tbl_workingset_trimming') is not null 
-begin
-	SELECT     ROW_NUMBER() OVER (ORDER BY runtime) AS 'RowNumber', runtime  from (select distinct runtime from tbl_workingset_trimming) t
-end
-else
-begin
-	select cast (1 as int)  'RowNumber', CAST ('1990-01-01' as datetime)  'runtime'
-end</CommandText>
+        <CommandText>IF OBJECT_ID('tbl_workingset_trimming') IS NOT NULL
+BEGIN
+    SELECT ROW_NUMBER() OVER (ORDER BY t.runtime) AS 'RowNumber',
+           t.runtime
+    FROM
+    (SELECT DISTINCT runtime FROM dbo.tbl_workingset_trimming) t;
+END;
+ELSE
+BEGIN
+    SELECT CAST(1 AS INT) 'RowNumber',
+           CAST('1990-01-01' AS DATETIME) 'runtime';
+END;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -164,20 +178,27 @@ end</CommandText>
     <DataSet Name="DataSet_Snapshot_Default">
       <Query>
         <DataSourceName>DataSource_Private</DataSourceName>
-        <CommandText>	
-	if OBJECT_ID ('tbl_workingset_trimming') is not null 
-begin
+        <CommandText>IF OBJECT_ID('tbl_workingset_trimming') IS NOT NULL
+BEGIN
 
-with MyRuntime
-as (
-SELECT     ROW_NUMBER() OVER (ORDER BY runtime) AS 'RowNumber', runtime  from (select distinct runtime from tbl_workingset_trimming) t)
-select RowNumber, RunTime from MyRuntime 
-where RowNumber = (select MAX(rowNumber) from MyRuntime)
-end
-else
-begin
-		select cast (1 as int)  'RowNumber', CAST ('1990-01-01' as datetime)  'runtime'
-end</CommandText>
+    WITH MyRuntime
+    AS (SELECT ROW_NUMBER() OVER (ORDER BY t.runtime) AS 'RowNumber',
+               t.runtime
+        FROM
+        (SELECT DISTINCT runtime FROM dbo.tbl_workingset_trimming) t )
+    SELECT MyRuntime.RowNumber,
+           MyRuntime.runtime
+    FROM MyRuntime
+    WHERE MyRuntime.RowNumber =
+    (
+        SELECT MAX(MyRuntime.RowNumber)FROM MyRuntime
+    );
+END;
+ELSE
+BEGIN
+    SELECT CAST(1 AS INT) 'RowNumber',
+           CAST('1990-01-01' AS DATETIME) 'runtime';
+END;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -194,12 +215,14 @@ end</CommandText>
     <DataSet Name="DataSet_Graph">
       <Query>
         <DataSourceName>DataSource_Private</DataSourceName>
-        <CommandText>if OBJECT_ID ('tbl_workingset_trimming') is not null
-begin
-select runtime,AvailablePhysicalMemory_KB/1024 as AvailableMBytes,SQL_CommittedMemory_KB/1024 as SQLCommittedMBytes
-from dbo.tbl_workingset_trimming
-order by runtime
-end</CommandText>
+        <CommandText>IF OBJECT_ID('tbl_workingset_trimming') IS NOT NULL
+BEGIN
+    SELECT runtime,
+           AvailablePhysicalMemory_KB / 1024 AS AvailableMBytes,
+           SQL_CommittedMemory_KB / 1024 AS SQLCommittedMBytes
+    FROM dbo.tbl_workingset_trimming
+    ORDER BY runtime;
+END;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -220,10 +243,10 @@ end</CommandText>
     <DataSet Name="DataSet_IsMemStatsAvailable">
       <Query>
         <DataSourceName>DataSource_Private</DataSourceName>
-        <CommandText>IF OBJECT_ID ('tbl_workingset_trimming') IS NOT NULL 
-  SELECT 1 AS IsMemStatsAvailable
-ELSE 
-  SELECT 0 AS IsMemStatsAvailable</CommandText>
+        <CommandText>IF OBJECT_ID('tbl_workingset_trimming') IS NOT NULL
+    SELECT 1 AS IsMemStatsAvailable;
+ELSE
+    SELECT 0 AS IsMemStatsAvailable;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -241,42 +264,51 @@ ELSE
             <Value>=Parameters!RowNumber.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>if OBJECT_ID ('tbl_workingset_trimming') is not null
-begin
---declare @rownumber int=7
-declare @runtime datetime
-if (@RowNumber is null)
-begin
-	select @runtime = MAX (runtime) from tbl_workingset_trimming
-end
-else
-begin
-	  select @runtime = runtime from (SELECT     ROW_NUMBER() OVER (ORDER BY runtime) AS 'RowNumber', runtime  from (select distinct runtime from tbl_workingset_trimming) t   ) MyRunTime  where RowNumber = @RowNumber
-end
+        <CommandText>IF OBJECT_ID('tbl_workingset_trimming') IS NOT NULL
+BEGIN
+    --declare @rownumber int=7
+    DECLARE @runtime DATETIME;
+    IF (@RowNumber IS NULL)
+    BEGIN
+        SELECT @runtime = MAX(runtime)
+        FROM dbo.tbl_workingset_trimming;
+    END;
+    ELSE
+    BEGIN
+        SELECT @runtime = MyRunTime.runtime
+        FROM
+        (
+            SELECT ROW_NUMBER() OVER (ORDER BY t.runtime) AS 'RowNumber',
+                   t.runtime
+            FROM
+            (SELECT DISTINCT runtime FROM dbo.tbl_workingset_trimming) t
+        ) MyRunTime
+        WHERE MyRunTime.RowNumber = @RowNumber;
+    END;
 
-select runtime,
-[Notification_time]
-      ,[Notification_type]
-      ,[MemoryUtilization %]
-      ,[TotalPhysicalMemory_KB] 
-      ,[AvailablePhysicalMemory_KB]
-      ,[TotalPageFile_KB]
-      ,[AvailablePageFile_KB]
-      ,[TotalVirtualAddressSpace_KB]
-      ,[AvailableVirtualAddressSpace_KB]
-      ,[Node Id]
-      ,[SQL_ReservedMemory_KB]
-      ,[SQL_CommittedMemory_KB]
-      ,[Record Id]
-      ,[Type]
-      ,[IndicatorsProcess]
-      ,[IndicatorsSystem]
-      ,[IndicatorsPool]
-      ,[Record Time]
-      ,[Current Time]
-from dbo.tbl_workingset_trimming
-where runtime = @runtime
-end</CommandText>
+    SELECT runtime,
+           [Notification_time],
+           [Notification_type],
+           [MemoryUtilization %],
+           [TotalPhysicalMemory_KB],
+           [AvailablePhysicalMemory_KB],
+           [TotalPageFile_KB],
+           [AvailablePageFile_KB],
+           [TotalVirtualAddressSpace_KB],
+           [AvailableVirtualAddressSpace_KB],
+           [Node Id],
+           [SQL_ReservedMemory_KB],
+           [SQL_CommittedMemory_KB],
+           [Record Id],
+           [Type],
+           [IndicatorsProcess],
+           [IndicatorsSystem],
+           [IndicatorsPool],
+           [Record Time],
+           [Current Time]
+    FROM dbo.tbl_workingset_trimming
+    WHERE runtime = @runtime;
+END;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>

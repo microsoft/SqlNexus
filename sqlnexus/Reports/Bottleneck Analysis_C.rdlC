@@ -16,16 +16,16 @@
     <DataSet Name="DataSet_Shared_SQLServerName">
       <Query>
         <DataSourceName>DataSource_Private</DataSourceName>
-        <CommandText>IF OBJECT_ID ('DataSet_WaitStats_WaitStatsTop5Categories') IS NOT NULL AND OBJECT_ID ('tbl_SCRIPT_ENVIRONMENT_DETAILS') IS NOT NULL
-	begin        
-  SELECT [Value]
-  FROM tbl_SCRIPT_ENVIRONMENT_DETAILS
-  WHERE script_name like 'SQL 200% Perf Stats Script'
-    AND [Name] = 'SQL Server Name'
-    end
-	ELSE
-  SELECT '' AS [value]
-  </CommandText>
+        <CommandText>IF OBJECT_ID('DataSet_WaitStats_WaitStatsTop5Categories') IS NOT NULL
+   AND OBJECT_ID('tbl_SCRIPT_ENVIRONMENT_DETAILS') IS NOT NULL
+BEGIN
+    SELECT [Value]
+    FROM dbo.tbl_SCRIPT_ENVIRONMENT_DETAILS
+    WHERE script_name LIKE 'SQL 200% Perf Stats Script'
+          AND [Name] = 'SQL Server Name';
+END;
+ELSE
+    SELECT '' AS [value];</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -38,14 +38,14 @@
     <DataSet Name="DataSet_Shared_SQLVersion">
       <Query>
         <DataSourceName>DataSource_Private</DataSourceName>
-        <CommandText>IF OBJECT_ID ('DataSet_WaitStats_WaitStatsTop5Categories') IS NOT NULL AND OBJECT_ID ('tbl_SCRIPT_ENVIRONMENT_DETAILS') IS NOT NULL
-  SELECT [Value]
-  FROM tbl_SCRIPT_ENVIRONMENT_DETAILS
-  WHERE script_name like 'SQL 200% Perf Stats Script'
-    AND [Name] = 'SQL Version (SP)'
-ELSE 
-  SELECT '' AS [value]
-  </CommandText>
+        <CommandText>IF OBJECT_ID('DataSet_WaitStats_WaitStatsTop5Categories') IS NOT NULL
+   AND OBJECT_ID('tbl_SCRIPT_ENVIRONMENT_DETAILS') IS NOT NULL
+    SELECT [Value]
+    FROM dbo.tbl_SCRIPT_ENVIRONMENT_DETAILS
+    WHERE script_name LIKE 'SQL 200% Perf Stats Script'
+          AND [Name] = 'SQL Version (SP)';
+ELSE
+    SELECT '' AS [value];</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -58,99 +58,120 @@ ELSE
     <DataSet Name="DataSet_SQL_CPU">
       <Query>
         <DataSourceName>DataSource_Private</DataSourceName>
-        <QueryParameters>
-          <QueryParameter Name="@StartTime">
-            <Value>=Parameters!StartTime.Value</Value>
-          </QueryParameter>
-          <QueryParameter Name="@EndTime">
-            <Value>=Parameters!EndTime.Value</Value>
-          </QueryParameter>
-        </QueryParameters>
         <CommandText>-- this ANSI setting is to allow WHERE value = NULL type of syntax in case @inst_index is NULL
-SET ANSI_NULLS OFF 
+SET ANSI_NULLS OFF;
 
-IF ((OBJECT_ID ('dbo.tbl_ServerProperties') IS NOT NULL) AND (OBJECT_ID ('dbo.CounterData') IS NOT NULL) )
+IF (
+       (OBJECT_ID('dbo.tbl_ServerProperties') IS NOT NULL)
+       AND (OBJECT_ID('dbo.CounterData') IS NOT NULL)
+   )
 BEGIN
-	DECLARE @process_id INT = 0, @cpu_count int, @inst_name VARCHAR (64), @inst_index INT
+    DECLARE @process_id INT = 0,
+            @cpu_count INT,
+            @inst_name VARCHAR(64),
+            @inst_index INT;
 
-	SELECT @process_id = PropertyValue 
-	FROM tbl_ServerProperties sp
-	WHERE sp.PropertyName = 'ProcessID'
+    SELECT @process_id = sp.PropertyValue
+    FROM dbo.tbl_ServerProperties sp
+    WHERE sp.PropertyName = 'ProcessID';
 
 
-	SELECT @cpu_count = CASE WHEN PropertyValue = 0 THEN 1 ELSE PropertyValue END
-	FROM tbl_ServerProperties sp
-	WHERE sp.PropertyName = 'cpu_count'
-   
-   
-   
-   --get processID of SQL assumes that the instance was not restarted during data collection and preserved its PID
-	
-	SELECT TOP 1 @inst_name = InstanceName, @inst_index = InstanceIndex
-	FROM CounterData ctr JOIN CounterDetails cdet
-	  ON ctr.CounterID = cdet.CounterID
-	WHERE cdet.ObjectName = 'Process' 
-	 AND cdet.CounterName LIKE 'ID Process'
-	 AND cdet.InstanceName  like 'sqlservr%'
-	 AND ctr.CounterValue = @process_id 
+    SELECT @cpu_count = CASE
+                            WHEN sp.PropertyValue = 0 THEN
+                                1
+                            ELSE
+                                sp.PropertyValue
+                        END
+    FROM dbo.tbl_ServerProperties sp
+    WHERE sp.PropertyName = 'cpu_count';
 
-	--combine SQL and OS counter data into a data set by using a join 
 
-	SELECT sql_cpu.CounterDateTime AS EventTime, 
-	sql_cpu.RecordIndex AS record_id,
-	os_cpu.system_idle_cpu, 
-	CASE WHEN sql_cpu.sql_cpu_utilization &gt; os_cpu.total_cpu_utilization THEN os_cpu.total_cpu_utilization 
-		ELSE sql_cpu.sql_cpu_utilization END AS sql_cpu_utilization, 
-	total_cpu_utilization - (CASE WHEN sql_cpu.sql_cpu_utilization &gt; os_cpu.total_cpu_utilization THEN os_cpu.total_cpu_utilization 
-		ELSE sql_cpu.sql_cpu_utilization END ) AS nonsql_cpu_utilization 
-	FROM
-	  (
-	  -- get SQL CPU for the imported instance
-	  SELECT ctr.CounterDateTime, ctr.RecordIndex, CONVERT(INT, (floor(ctr.CounterValue )/ (100 * @cpu_count)) * 100) as sql_cpu_utilization, InstanceName, InstanceIndex
-	  FROM CounterData ctr JOIN 
-	  	CounterDetails det
-	  ON ctr.CounterID = det.CounterID
-	  WHERE det.ObjectName = 'Process' 
-	  	AND det.CounterName LIKE '[%] Processor Time'
-	  	AND det.InstanceName = @inst_name
-	  	AND det.InstanceIndex  = @inst_index ) as sql_cpu
 
-	INNER JOIN 
+    --get processID of SQL assumes that the instance was not restarted during data collection and preserved its PID
 
-	  (SELECT ctr.CounterDateTime, ctr.RecordIndex, floor(ctr.CounterValue) as total_cpu_utilization, 100 - floor(ctr.CounterValue) as system_idle_cpu  
-	  FROM CounterData ctr JOIN 
-	    CounterDetails det
-	  ON ctr.CounterID = det.CounterID
-	  WHERE det.ObjectName = 'Processor Information' 
-	    AND det.CounterName LIKE '[%] Processor Time'
-		AND InstanceName = '_Total') as os_cpu
+    SELECT TOP 1
+           @inst_name = cdet.InstanceName,
+           @inst_index = cdet.InstanceIndex
+    FROM dbo.CounterData ctr
+        JOIN dbo.CounterDetails cdet
+            ON ctr.CounterID = cdet.CounterID
+    WHERE cdet.ObjectName = 'Process'
+          AND cdet.CounterName LIKE 'ID Process'
+          AND cdet.InstanceName LIKE 'sqlservr%'
+          AND ctr.CounterValue = @process_id;
 
-	  ON 
-	  sql_cpu.RecordIndex = os_cpu.RecordIndex
+    --combine SQL and OS counter data into a data set by using a join 
 
-END</CommandText>
+    SELECT sql_cpu.CounterDateTime AS EventTime,
+           sql_cpu.RecordIndex AS record_id,
+           os_cpu.system_idle_cpu,
+           CASE
+               WHEN sql_cpu.sql_cpu_utilization &gt; os_cpu.total_cpu_utilization THEN
+                   os_cpu.total_cpu_utilization
+               ELSE
+                   sql_cpu.sql_cpu_utilization
+           END AS sql_cpu_utilization,
+           os_cpu.total_cpu_utilization - (CASE
+                                        WHEN sql_cpu.sql_cpu_utilization &gt; os_cpu.total_cpu_utilization THEN
+                                            os_cpu.total_cpu_utilization
+                                        ELSE
+                                            sql_cpu.sql_cpu_utilization
+                                    END
+                                   ) AS nonsql_cpu_utilization
+    FROM
+    (
+        -- get SQL CPU for the imported instance
+        SELECT ctr.CounterDateTime,
+               ctr.RecordIndex,
+               CONVERT(INT, (FLOOR(ctr.CounterValue) / (100 * @cpu_count)) * 100) AS sql_cpu_utilization,
+               det.InstanceName,
+               det.InstanceIndex
+        FROM dbo.CounterData ctr
+            JOIN dbo.CounterDetails det
+                ON ctr.CounterID = det.CounterID
+        WHERE det.ObjectName = 'Process'
+              AND det.CounterName LIKE '[%] Processor Time'
+              AND det.InstanceName = @inst_name
+              AND det.InstanceIndex = @inst_index
+    ) AS sql_cpu
+        INNER JOIN
+        (
+            SELECT ctr.CounterDateTime,
+                   ctr.RecordIndex,
+                   FLOOR(ctr.CounterValue) AS total_cpu_utilization,
+                   100 - FLOOR(ctr.CounterValue) AS system_idle_cpu
+            FROM dbo.CounterData ctr
+                JOIN dbo.CounterDetails det
+                    ON ctr.CounterID = det.CounterID
+            WHERE det.ObjectName = 'Processor Information'
+                  AND det.CounterName LIKE '[%] Processor Time'
+                  AND det.InstanceName = '_Total'
+        ) AS os_cpu
+            ON sql_cpu.RecordIndex = os_cpu.RecordIndex;
+
+END;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
         <Field Name="EventTime">
           <DataField>EventTime</DataField>
-          <rd:TypeName>System.DateTime</rd:TypeName>
+          <rd:UserDefined>true</rd:UserDefined>
         </Field>
         <Field Name="record_id">
           <DataField>record_id</DataField>
-          <rd:TypeName>System.Int32</rd:TypeName>
+          <rd:UserDefined>true</rd:UserDefined>
         </Field>
         <Field Name="system_idle_cpu">
           <DataField>system_idle_cpu</DataField>
-          <rd:TypeName>System.Int32</rd:TypeName>
+          <rd:UserDefined>true</rd:UserDefined>
         </Field>
         <Field Name="sql_cpu_utilization">
           <DataField>sql_cpu_utilization</DataField>
-          <rd:TypeName>System.Int32</rd:TypeName>
+          <rd:UserDefined>true</rd:UserDefined>
         </Field>
         <Field Name="nonsql_cpu_utilization">
           <DataField>nonsql_cpu_utilization</DataField>
-          <rd:TypeName>System.Int32</rd:TypeName>
+          <rd:UserDefined>true</rd:UserDefined>
         </Field>
       </Fields>
     </DataSet>
@@ -200,7 +221,10 @@ ELSE
         <CommandText>IF OBJECT_ID ('DataSet_WaitStats_WaitStatsTop5Categories') IS NOT NULL AND OBJECT_ID ('tbl_OS_WAIT_STATS') IS NOT NULL 
   SELECT 1 AS IsPerfStatsAvailable
 ELSE 
-  SELECT 0 AS IsPerfStatsAvailable</CommandText>
+  SELECT 0 AS IsPerfStatsAvailable
+
+
+   </CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -213,31 +237,37 @@ ELSE
     <DataSet Name="DataSet_WaitStats_ParamStartTime">
       <Query>
         <DataSourceName>DataSource_Private</DataSourceName>
-        <CommandText>  
-  IF OBJECT_ID ('vw_PERF_STATS_SCRIPT_RUNTIMES') IS NOT NULL 
+        <CommandText>IF OBJECT_ID('vw_PERF_STATS_SCRIPT_RUNTIMES') IS NOT NULL
 BEGIN
-  DECLARE @v_StartTime datetime
-  DECLARE @v_EndTime datetime
-  SELECT @v_StartTime = MIN (runtime) FROM vw_PERF_STATS_SCRIPT_RUNTIMES
-  SELECT @v_EndTime = MAX (runtime) FROM vw_PERF_STATS_SCRIPT_RUNTIMES
-  IF @v_StartTime IS NULL SET @v_StartTime = GETDATE()
-  IF @v_EndTime IS NULL SET @v_EndTime = GETDATE()
+    DECLARE @v_StartTime DATETIME;
+    DECLARE @v_EndTime DATETIME;
+    SELECT @v_StartTime = MIN(runtime)
+    FROM dbo.vw_PERF_STATS_SCRIPT_RUNTIMES;
+    SELECT @v_EndTime = MAX(runtime)
+    FROM dbo.vw_PERF_STATS_SCRIPT_RUNTIMES;
+    IF @v_StartTime IS NULL
+        SET @v_StartTime = GETDATE();
+    IF @v_EndTime IS NULL
+        SET @v_EndTime = GETDATE();
 
-select top 1 StartTime from
-(  
-  SELECT 
-    CASE 
-      WHEN DATEDIFF (mi, @v_StartTime, @v_EndTime) &gt; 4*60 THEN DATEADD (mi, -60, @v_EndTime)
-      ELSE @v_StartTime
-    END AS StartTime
-  UNION ALL
-  SELECT @v_StartTime 
-  ) t order by StartTime asc
+    SELECT TOP 1
+           StartTime
+    FROM
+    (
+        SELECT CASE
+                   WHEN DATEDIFF(mi, @v_StartTime, @v_EndTime) &gt; 4 * 60 THEN
+                       DATEADD(mi, -60, @v_EndTime)
+                   ELSE
+                       @v_StartTime
+               END AS StartTime
+        UNION ALL
+        SELECT @v_StartTime
+    ) t
+    ORDER BY StartTime ASC;
 
-END
+END;
 ELSE
-  SELECT cast ('1990/1/1' as datetime)  AS StartTime
-  </CommandText>
+    SELECT CAST('1990/1/1' AS DATETIME) AS StartTime;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -250,21 +280,25 @@ ELSE
     <DataSet Name="DataSet_WaitStats_ParamEndTime">
       <Query>
         <DataSourceName>DataSource_Private</DataSourceName>
-        <CommandText>  IF OBJECT_ID ('vw_PERF_STATS_SCRIPT_RUNTIMES') IS NOT NULL 
+        <CommandText>IF OBJECT_ID('vw_PERF_STATS_SCRIPT_RUNTIMES') IS NOT NULL
 BEGIN
-  DECLARE @v_StartTime datetime
-  DECLARE @v_EndTime datetime
-  SELECT @v_StartTime = MIN (runtime) FROM vw_PERF_STATS_SCRIPT_RUNTIMES
-  SELECT @v_EndTime = MAX (runtime) FROM vw_PERF_STATS_SCRIPT_RUNTIMES
-  IF @v_StartTime IS NULL SET @v_StartTime = GETDATE()
-  IF @v_EndTime IS NULL SET @v_EndTime = GETDATE()
-  
-  SELECT @v_EndTime AS EndTime 
-  
-  
-END
+    DECLARE @v_StartTime DATETIME;
+    DECLARE @v_EndTime DATETIME;
+    SELECT @v_StartTime = MIN(runtime)
+    FROM dbo.vw_PERF_STATS_SCRIPT_RUNTIMES;
+    SELECT @v_EndTime = MAX(runtime)
+    FROM dbo.vw_PERF_STATS_SCRIPT_RUNTIMES;
+    IF @v_StartTime IS NULL
+        SET @v_StartTime = GETDATE();
+    IF @v_EndTime IS NULL
+        SET @v_EndTime = GETDATE();
+
+    SELECT @v_EndTime AS EndTime;
+
+
+END;
 ELSE
-  SELECT cast ('1990/1/1' as datetime)  AS EndTime</CommandText>
+    SELECT CAST('1990/1/1' AS DATETIME) AS EndTime;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -277,17 +311,19 @@ ELSE
     <DataSet Name="DataSet_Runtime">
       <Query>
         <DataSourceName>DataSource_Private</DataSourceName>
-        <CommandText>IF OBJECT_ID ('vw_PERF_STATS_SCRIPT_RUNTIMES') IS NOT NULL 
+        <CommandText>IF OBJECT_ID('vw_PERF_STATS_SCRIPT_RUNTIMES') IS NOT NULL
 BEGIN
- select Runtime from vw_PERF_STATS_SCRIPT_RUNTIMES
-END
+    SELECT runtime
+    FROM dbo.vw_PERF_STATS_SCRIPT_RUNTIMES;
+END;
 ELSE
-    SELECT cast ('1990/1/1' as datetime)  AS Runtime </CommandText>
+    SELECT CAST('1990/1/1' AS DATETIME) AS Runtime;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
         <Field Name="Runtime">
           <DataField>Runtime</DataField>
+          <rd:TypeName>System.DateTime</rd:TypeName>
         </Field>
       </Fields>
     </DataSet>

@@ -16,15 +16,20 @@
     <DataSet Name="dsCounters">
       <Query>
         <DataSourceName>dsPerfCounters</DataSourceName>
-        <CommandText>	declare @instancename varchar(128) 
-    select @instancename = REPLACE(LEFT(ObjectName,CHARINDEX(':',ObjectName) -1),'MSSQL$','')
-	   from dbo.CounterDetails
-		  Where ObjectName like 'MSSQL$%'
-	select 
-		Name,description ,enabled,
-		Case When @instancename &lt;&gt;''   THEN Replace(COUNTERLIST,'\SQLServer:','\MSSQL$'+@instancename+':')
-		else COUNTERLIST end as COUNTERLIST
-	from pal_Counters</CommandText>
+        <CommandText>DECLARE @instancename VARCHAR(128);
+SELECT @instancename = REPLACE(LEFT(ObjectName, CHARINDEX(':', ObjectName) - 1), 'MSSQL$', '')
+FROM dbo.CounterDetails
+WHERE ObjectName LIKE 'MSSQL$%';
+SELECT Name,
+       description,
+       enabled,
+       CASE
+           WHEN @instancename &lt;&gt; '' THEN
+               REPLACE(COUNTERLIST, '\SQLServer:', '\MSSQL$' + @instancename + ':')
+           ELSE
+               COUNTERLIST
+       END AS COUNTERLIST
+FROM pal_Counters;</CommandText>
       </Query>
       <Fields>
         <Field Name="NAME">

@@ -14,7 +14,7 @@
     <DataSource Name="DataSource_test">
       <ConnectionProperties>
         <DataProvider>SQL</DataProvider>
-        <ConnectString>Data Source=jackli2014\sql14a;Initial Catalog=filestats</ConnectString>
+        <ConnectString>="data source=" &amp; Parameters!dsServerName.Value &amp; ";initial catalog="&amp;Parameters!dsDatabaseName.Value</ConnectString>
         <IntegratedSecurity>true</IntegratedSecurity>
       </ConnectionProperties>
       <rd:SecurityType>Integrated</rd:SecurityType>
@@ -25,16 +25,17 @@
     <DataSet Name="DataSet_Shared_SQLServerName">
       <Query>
         <DataSourceName>DataSource_test</DataSourceName>
-        <CommandText>IF OBJECT_ID ('DataSet_WaitStats_WaitStatsTop5Categories') IS NOT NULL AND OBJECT_ID ('tbl_SCRIPT_ENVIRONMENT_DETAILS') IS NOT NULL
-	begin        
-  SELECT [Value]
-  FROM tbl_SCRIPT_ENVIRONMENT_DETAILS
-  WHERE script_name like 'SQL 200% Perf Stats Script'
-    AND [Name] = 'SQL Server Name'
-    end
-	ELSE
-  SELECT '' AS [value]
-  </CommandText>
+        <CommandText>IF OBJECT_ID('DataSet_WaitStats_WaitStatsTop5Categories') IS NOT NULL
+   AND OBJECT_ID('tbl_SCRIPT_ENVIRONMENT_DETAILS') IS NOT NULL
+BEGIN
+    SELECT [Value]
+    FROM tbl_SCRIPT_ENVIRONMENT_DETAILS
+    WHERE script_name LIKE 'SQL 200% Perf Stats Script'
+          AND [Name] = 'SQL Server Name';
+END;
+ELSE
+    SELECT '' AS [value];
+</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -47,14 +48,15 @@
     <DataSet Name="DataSet_Shared_SQLVersion">
       <Query>
         <DataSourceName>DataSource_test</DataSourceName>
-        <CommandText>IF OBJECT_ID ('DataSet_WaitStats_WaitStatsTop5Categories') IS NOT NULL AND OBJECT_ID ('tbl_SCRIPT_ENVIRONMENT_DETAILS') IS NOT NULL
-  SELECT [Value]
-  FROM tbl_SCRIPT_ENVIRONMENT_DETAILS
-  WHERE script_name like 'SQL 200% Perf Stats Script'
-    AND [Name] = 'SQL Version (SP)'
-ELSE 
-  SELECT '' AS [value]
-  </CommandText>
+        <CommandText>IF OBJECT_ID('DataSet_WaitStats_WaitStatsTop5Categories') IS NOT NULL
+   AND OBJECT_ID('tbl_SCRIPT_ENVIRONMENT_DETAILS') IS NOT NULL
+    SELECT [Value]
+    FROM tbl_SCRIPT_ENVIRONMENT_DETAILS
+    WHERE script_name LIKE 'SQL 200% Perf Stats Script'
+          AND [Name] = 'SQL Version (SP)';
+ELSE
+    SELECT '' AS [value];
+</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -67,10 +69,11 @@ ELSE
     <DataSet Name="DataSet_Shared_IsPerfStatsAvailable">
       <Query>
         <DataSourceName>DataSource_test</DataSourceName>
-        <CommandText>IF OBJECT_ID ('DataSet_WaitStats_WaitStatsTop5Categories') IS NOT NULL AND OBJECT_ID ('tbl_OS_WAIT_STATS') IS NOT NULL 
-  SELECT 1 AS IsPerfStatsAvailable
-ELSE 
-  SELECT 0 AS IsPerfStatsAvailable</CommandText>
+        <CommandText>IF OBJECT_ID('DataSet_WaitStats_WaitStatsTop5Categories') IS NOT NULL
+   AND OBJECT_ID('tbl_OS_WAIT_STATS') IS NOT NULL
+    SELECT 1 AS IsPerfStatsAvailable;
+ELSE
+    SELECT 0 AS IsPerfStatsAvailable;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -83,13 +86,14 @@ ELSE
     <DataSet Name="DataSet_WaitStats_ParamStartTime">
       <Query>
         <DataSourceName>DataSource_test</DataSourceName>
-        <CommandText>  IF OBJECT_ID ('tbl_FILESTATS') IS NOT NULL 
-begin
-	select min(runtime) as StartTime from tbl_FILESTATS
-end
+        <CommandText>IF OBJECT_ID('tbl_FileStats') IS NOT NULL
+BEGIN
+    SELECT MIN(runtime) AS StartTime
+    FROM tbl_FileStats;
+END;
 ELSE
-  SELECT cast ('1990/1/1' as datetime)  AS StartTime
-  </CommandText>
+    SELECT CAST('1990/1/1' AS DATETIME) AS StartTime;
+</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -102,13 +106,13 @@ ELSE
     <DataSet Name="DataSet_WaitStats_ParamEndTime">
       <Query>
         <DataSourceName>DataSource_test</DataSourceName>
-        <CommandText>  IF OBJECT_ID ('tbl_FILESTATS') IS NOT NULL 
-begin
-	select max(runtime) as EndTime from tbl_FILESTATS
-end
+        <CommandText>IF OBJECT_ID('tbl_FileStats') IS NOT NULL
+BEGIN
+    SELECT MAX(runtime) AS EndTime
+    FROM tbl_FileStats;
+END;
 ELSE
-  SELECT cast ('2099/12/31' as datetime)  AS EndTime
-  
+    SELECT CAST('2099/12/31' AS DATETIME) AS EndTime;
 </CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
@@ -122,17 +126,19 @@ ELSE
     <DataSet Name="DataSet_Runtime">
       <Query>
         <DataSourceName>DataSource_test</DataSourceName>
-        <CommandText>
-  IF OBJECT_ID ('tbl_FILESTATS') IS NOT NULL 
+        <CommandText>IF OBJECT_ID('tbl_FileStats') IS NOT NULL
 BEGIN
- select distinct Runtime from tbl_FILESTATS order by Runtime
-END
+    SELECT DISTINCT
+           runtime
+    FROM tbl_FileStats
+    ORDER BY runtime;
+END;
 ELSE
-begin
-    SELECT cast ('1990/1/1' as datetime)  AS Runtime 
-	union all
-	 SELECT cast ('2099/12/31' as datetime)  AS Runtime 
-end</CommandText>
+BEGIN
+    SELECT CAST('1990/1/1' AS DATETIME) AS Runtime
+    UNION ALL
+    SELECT CAST('2099/12/31' AS DATETIME) AS Runtime;
+END;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -145,15 +151,16 @@ end</CommandText>
     <DataSet Name="DataSet_Snapshot_Default">
       <Query>
         <DataSourceName>DataSource_test</DataSourceName>
-        <CommandText>if object_id('dbo.DateSet_GetSnapshotTime_Default') is not null
-begin
-exec DateSet_GetSnapshotTime_Default 'tbl_FileStats'
-end
+        <CommandText>IF OBJECT_ID('dbo.DateSet_GetSnapshotTime_Default') IS NOT NULL
+BEGIN
+    EXEC DateSet_GetSnapshotTime_Default 'tbl_FileStats';
+END;
 
-else
-begin
-	select 1 as RowNumber, '1990/1/1' as runtime
-end</CommandText>
+ELSE
+BEGIN
+    SELECT 1 AS RowNumber,
+           '1990/1/1' AS runtime;
+END;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -178,29 +185,52 @@ end</CommandText>
             <Value>=Parameters!EndTime.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>--declare @StartTime datetime
---set @StartTime = '1900-01-01'
---declare @EndTime datetime
---set @EndTime = '2099-12-31'
+        <CommandText>--DECLARE @StartTime DATETIME;
+--SET @StartTime = '1900-01-01';
+--DECLARE @EndTime DATETIME;
+--SET @EndTime = '2099-12-31';
 
-select runtime, dbid, sum(DeltaIoStallreadMs) DeltaIoStallreadMs, sum(DeltaNumberReads) DeltaNumberReads, 
-sum(DeltaIoStallWriteMs) DeltaIoStallWriteMs, sum (DeltaNumberWrites) DeltaNumberWrites , sum(DeltaIoStallreadMs) * 1.0 / case when sum(DeltaNumberReads) = 0 then null else sum(DeltaNumberReads) end  'AvgIoStallReadMs',
-sum(DeltaIoStallWriteMs) * 1.0 / case when sum (DeltaNumberWrites) = 0 then null else  sum (DeltaNumberWrites) end 'AvgIoStallWriteMs',
-sum(BytesRead) * 1.0 / datediff (second, previousruntime, runtime) 'BytesReadPerSecond',
-sum(BytesWritten) * 1.0 / datediff (second, previousruntime, runtime) 'BytesWrittenPerSecond'
-from
-(select runtime, lag(runtime, 1, null) over (partition by dbid, fileid order by runtime) 'PreviousRuntime', dbid, fileid, 
-(IoStallReadms  - lag(IoStallReadMs, 1, null) over (partition by dbid, fileid order by runtime) ) DeltaIoStallreadMs,
- ( NumberReads - lag(NumberReads, 1, null) over (partition by dbid, fileid order by runtime)) DeltaNumberReads,
-(IoStallWriteMS  - lag(IoStallWriteMS, 1, null) over (partition by dbid, fileid order by runtime) ) DeltaIoStallWriteMs,
- ( NumberWrites - lag(NumberWrites, 1, null) over (partition by dbid, fileid order by runtime)) DeltaNumberWrites ,
- ( BytesRead - lag(BytesRead, 1, null) over (partition by dbid, fileid order by runtime)) 'BytesRead',
- ( BytesWritten - lag(BytesWritten, 1, null) over (partition by dbid, fileid order by runtime)) 'BytesWritten'
-from tbl_filestats) t where runtime between @StartTime and @EndTime
+SELECT runtime,
+       DbId,
+       SUM(DeltaIoStallreadMs) DeltaIoStallreadMs,
+       SUM(DeltaNumberReads) DeltaNumberReads,
+       SUM(DeltaIoStallWriteMs) DeltaIoStallWriteMs,
+       SUM(DeltaNumberWrites) DeltaNumberWrites,
+       SUM(DeltaIoStallreadMs) * 1.0 / CASE
+                                           WHEN SUM(DeltaNumberReads) = 0 THEN
+                                               NULL
+                                           ELSE
+                                               SUM(DeltaNumberReads)
+                                       END 'AvgIoStallReadMs',
+       SUM(DeltaIoStallWriteMs) * 1.0 / CASE
+                                            WHEN SUM(DeltaNumberWrites) = 0 THEN
+                                                NULL
+                                            ELSE
+                                                SUM(DeltaNumberWrites)
+                                        END 'AvgIoStallWriteMs',
+       SUM(BytesRead) * 1.0 / DATEDIFF(SECOND, PreviousRuntime, runtime) 'BytesReadPerSecond',
+       SUM(BytesWritten) * 1.0 / DATEDIFF(SECOND, PreviousRuntime, runtime) 'BytesWrittenPerSecond'
+FROM
+(
+    SELECT runtime,
+           LAG(runtime, 1, NULL) OVER (PARTITION BY DbId, FileId ORDER BY runtime) 'PreviousRuntime',
+           DbId,
+           FileId,
+           (IoStallReadMS - LAG(IoStallReadMS, 1, NULL) OVER (PARTITION BY DbId, FileId ORDER BY runtime)) DeltaIoStallreadMs,
+           (NumberReads - LAG(NumberReads, 1, NULL) OVER (PARTITION BY DbId, FileId ORDER BY runtime)) DeltaNumberReads,
+           (IoStallWriteMS - LAG(IoStallWriteMS, 1, NULL) OVER (PARTITION BY DbId, FileId ORDER BY runtime)) DeltaIoStallWriteMs,
+           (NumberWrites - LAG(NumberWrites, 1, NULL) OVER (PARTITION BY DbId, FileId ORDER BY runtime)) DeltaNumberWrites,
+           (BytesRead - LAG(BytesRead, 1, NULL) OVER (PARTITION BY DbId, FileId ORDER BY runtime)) 'BytesRead',
+           (BytesWritten - LAG(BytesWritten, 1, NULL) OVER (PARTITION BY DbId, FileId ORDER BY runtime)) 'BytesWritten'
+    FROM tbl_FileStats
+) t
+WHERE runtime
+BETWEEN @StartTime AND @EndTime
 --where dbid=2
-group by runtime, PreviousRuntime, dbid
-order by 8 desc
-</CommandText>
+GROUP BY runtime,
+         PreviousRuntime,
+         DbId
+ORDER BY 8 DESC;</CommandText>
       </Query>
       <Fields>
         <Field Name="runtime">

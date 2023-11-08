@@ -16,11 +16,19 @@
     <DataSet Name="DataSet_Errors">
       <Query>
         <DataSourceName>SqlNexusPrivate</DataSourceName>
-        <CommandText>if object_id('dbo.tblDiagScan') is not null
-begin
-select  distinct col1 + '-- ' + col3  'Error', col4 'FirstOccurence', col5 'LastOccurence', Col2 'OccurenceCount' from tblDiagScan where TYPE= 'error' 
-and  (col1 not like '%Counts%' ) and col1 not like '%Error Number%' and col1 &lt;&gt; ''
-end</CommandText>
+        <CommandText>IF OBJECT_ID('dbo.tblDiagScan') IS NOT NULL
+BEGIN
+    SELECT DISTINCT
+           col1 + '-- ' + col3 'Error',
+           col4 'FirstOccurence',
+           col5 'LastOccurence',
+           Col2 'OccurenceCount'
+    FROM dbo.tblDiagScan
+    WHERE TYPE = 'error'
+          AND (col1 NOT LIKE '%Counts%')
+          AND col1 NOT LIKE '%Error Number%'
+          AND col1 &lt;&gt; '';
+END;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>

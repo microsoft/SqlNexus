@@ -16,11 +16,11 @@
     <DataSet Name="DataSet_StartTime">
       <Query>
         <DataSourceName>DataSource_SqlNexus_Private</DataSourceName>
-        <CommandText>if ( object_id ('counterdata ') is not null)
-	select MIN(CounterDateTime) StartTime  from counterdata
-else
-	select '1990/1/1' as StartTime
-	</CommandText>
+        <CommandText>IF (OBJECT_ID('CounterData ') IS NOT NULL)
+    SELECT MIN(CounterDateTime) StartTime
+    FROM dbo.CounterData;
+ELSE
+    SELECT '1990/1/1' AS StartTime;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -33,10 +33,11 @@ else
     <DataSet Name="DataSet_EndTime">
       <Query>
         <DataSourceName>DataSource_SqlNexus_Private</DataSourceName>
-        <CommandText>	if ( object_id ('counterdata ') is not null)
-	select max(CounterDateTime) EndTime from counterdata
-else
-	select '2099/1/1' as EndTime</CommandText>
+        <CommandText>IF (OBJECT_ID('CounterData ') IS NOT NULL)
+    SELECT MAX(CounterDateTime) EndTime
+    FROM dbo.CounterData;
+ELSE
+    SELECT '2099/1/1' AS EndTime;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -49,13 +50,15 @@ else
     <DataSet Name="DataSet_AvailableTime">
       <Query>
         <DataSourceName>DataSource_SqlNexus_Private</DataSourceName>
-        <CommandText>if ( object_id ('counterdata ') is not null)
-	Select distinct  CounterDateTime AvailableTime from counterdata order by CounterDateTime
-else
-	select '1990/1/1' as AvailableTime
-	union
-	select '2099/1/1' as AvailableTime
-	</CommandText>
+        <CommandText>IF (OBJECT_ID('CounterData ') IS NOT NULL)
+    SELECT DISTINCT
+           CounterDateTime AvailableTime
+    FROM dbo.CounterData
+    ORDER BY CounterDateTime;
+ELSE
+    SELECT '1990/1/1' AS AvailableTime
+    UNION
+    SELECT '2099/1/1' AS AvailableTime;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -78,13 +81,18 @@ else
             <rd:UserDefined>true</rd:UserDefined>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>select  InstanceName as InstName, 
-cast(CounterValue AS decimal(38,2)) as 'CounterValue',
-CounterDateTime 
-from counterdata dat inner join counterdetails dl on dat.counterid = dl.counterid 
-where dl.objectname = 'Network Interface' and CounterName = 'Output Queue Length' and InstanceName !='_Total'
-and CounterDateTime &gt;=@StartTime and CounterDateTime&lt;=@EndTime
-order by CounterDateTime</CommandText>
+        <CommandText>SELECT dl.InstanceName AS InstName,
+       CAST(dat.CounterValue AS DECIMAL(38, 2)) AS 'CounterValue',
+       dat.CounterDateTime
+FROM dbo.CounterData dat
+    INNER JOIN dbo.CounterDetails dl
+        ON dat.CounterID = dl.CounterID
+WHERE dl.ObjectName = 'Network Interface'
+      AND dl.CounterName = 'Output Queue Length'
+      AND dl.InstanceName != '_Total'
+      AND dat.CounterDateTime &gt;= @StartTime
+      AND dat.CounterDateTime &lt;= @EndTime
+ORDER BY dat.CounterDateTime;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -115,13 +123,18 @@ order by CounterDateTime</CommandText>
             <rd:UserDefined>true</rd:UserDefined>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>select  InstanceName as InstName, 
-cast(CounterValue AS decimal(38,2)) as 'CounterValue',
-CounterDateTime 
-from counterdata dat inner join counterdetails dl on dat.counterid = dl.counterid 
-where dl.objectname = 'Network Interface' and CounterName = 'Packets Received Discarded' and InstanceName !='_Total'
-and CounterDateTime &gt;=@StartTime and CounterDateTime&lt;=@EndTime
-order by CounterDateTime</CommandText>
+        <CommandText>SELECT dl.InstanceName AS InstName,
+       CAST(dat.CounterValue AS DECIMAL(38, 2)) AS 'CounterValue',
+       dat.CounterDateTime
+FROM dbo.CounterData dat
+    INNER JOIN dbo.CounterDetails dl
+        ON dat.CounterID = dl.CounterID
+WHERE dl.ObjectName = 'Network Interface'
+      AND dl.CounterName = 'Packets Received Discarded'
+      AND dl.InstanceName != '_Total'
+      AND dat.CounterDateTime &gt;= @StartTime
+      AND dat.CounterDateTime &lt;= @EndTime
+ORDER BY dat.CounterDateTime;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -152,13 +165,18 @@ order by CounterDateTime</CommandText>
             <rd:UserDefined>true</rd:UserDefined>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>select  InstanceName as InstName, 
-cast(CounterValue AS decimal(38,2)),
-CounterDateTime 
-from counterdata dat inner join counterdetails dl on dat.counterid = dl.counterid 
-where dl.objectname = 'Network Interface' and CounterName = 'Packets Outbound Discarded' and InstanceName !='_Total'
-and CounterDateTime &gt;=@StartTime and CounterDateTime&lt;=@EndTime
-order by CounterDateTime</CommandText>
+        <CommandText>SELECT dl.InstanceName AS InstName,
+       CAST(dat.CounterValue AS DECIMAL(38, 2)),
+       dat.CounterDateTime
+FROM dbo.CounterData dat
+    INNER JOIN dbo.CounterDetails dl
+        ON dat.CounterID = dl.CounterID
+WHERE dl.ObjectName = 'Network Interface'
+      AND dl.CounterName = 'Packets Outbound Discarded'
+      AND dl.InstanceName != '_Total'
+      AND dat.CounterDateTime &gt;= @StartTime
+      AND dat.CounterDateTime &lt;= @EndTime
+ORDER BY dat.CounterDateTime;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -189,13 +207,18 @@ order by CounterDateTime</CommandText>
             <rd:UserDefined>true</rd:UserDefined>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>select  InstanceName as InstName, 
-cast(CounterValue/100000000 AS decimal(38,2)),
-CounterDateTime 
-from counterdata dat inner join counterdetails dl on dat.counterid = dl.counterid 
-where dl.objectname = 'Network Interface' and CounterName = 'Bytes Total/Sec' and InstanceName !='_Total'
-and CounterDateTime &gt;=@StartTime and CounterDateTime&lt;=@EndTime
-order by CounterDateTime</CommandText>
+        <CommandText>SELECT dl.InstanceName AS InstName,
+       CAST(dat.CounterValue / 100000000 AS DECIMAL(38, 2)),
+       dat.CounterDateTime
+FROM dbo.CounterData dat
+    INNER JOIN dbo.CounterDetails dl
+        ON dat.CounterID = dl.CounterID
+WHERE dl.ObjectName = 'Network Interface'
+      AND dl.CounterName = 'Bytes Total/Sec'
+      AND dl.InstanceName != '_Total'
+      AND dat.CounterDateTime &gt;= @StartTime
+      AND dat.CounterDateTime &lt;= @EndTime
+ORDER BY dat.CounterDateTime;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>

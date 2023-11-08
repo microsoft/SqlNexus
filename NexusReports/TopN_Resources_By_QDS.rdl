@@ -5,7 +5,7 @@
     <DataSource Name="DataSource_sql4a">
       <ConnectionProperties>
         <DataProvider>SQL</DataProvider>
-        <ConnectString>Data Source=jackli2014\sql14a;Initial Catalog=QDS</ConnectString>
+        <ConnectString>="data source=" &amp; Parameters!dsServerName.Value &amp; ";initial catalog="&amp;Parameters!dsDatabaseName.Value</ConnectString>
         <IntegratedSecurity>true</IntegratedSecurity>
       </ConnectionProperties>
       <rd:SecurityType>Integrated</rd:SecurityType>
@@ -16,7 +16,8 @@
     <DataSet Name="DataSet_QueryStats">
       <Query>
         <DataSourceName>DataSource_sql4a</DataSourceName>
-        <CommandText>select * from tbl_QDS_Query_Stats</CommandText>
+        <CommandText>SELECT *
+FROM dbo.tbl_QDS_Query_Stats;</CommandText>
       </Query>
       <Fields>
         <Field Name="database_id">

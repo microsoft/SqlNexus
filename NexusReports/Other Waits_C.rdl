@@ -16,15 +16,16 @@
     <DataSet Name="DataSet_Shared_SQLServerName">
       <Query>
         <DataSourceName>DataSource_Private</DataSourceName>
-        <CommandText>IF OBJECT_ID ('DataSet_WaitStats_WaitStatsTop5Categories') IS NOT NULL AND OBJECT_ID ('tbl_SCRIPT_ENVIRONMENT_DETAILS') IS NOT NULL
-  SELECT [Value]
-  FROM tbl_SCRIPT_ENVIRONMENT_DETAILS
-  WHERE script_name = 'SQL 2005 Perf Stats Script'
-    AND [Name] = 'SQL Server Name'
-ELSE IF OBJECT_ID ('tbl_DISTINCT_BATCHES') IS NULL
-  SELECT 'No Data Loaded' AS [value]
+        <CommandText>IF OBJECT_ID('DataSet_WaitStats_WaitStatsTop5Categories') IS NOT NULL
+   AND OBJECT_ID('tbl_SCRIPT_ENVIRONMENT_DETAILS') IS NOT NULL
+    SELECT [Value]
+    FROM dbo.tbl_SCRIPT_ENVIRONMENT_DETAILS
+    WHERE script_name = 'SQL 2005 Perf Stats Script'
+          AND [Name] = 'SQL Server Name';
+ELSE IF OBJECT_ID('tbl_DISTINCT_BATCHES') IS NULL
+    SELECT 'No Data Loaded' AS [value];
 ELSE
-  SELECT '' AS [value]</CommandText>
+    SELECT '' AS [value];</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -37,13 +38,14 @@ ELSE
     <DataSet Name="DataSet_Shared_SQLVersion">
       <Query>
         <DataSourceName>DataSource_Private</DataSourceName>
-        <CommandText>IF OBJECT_ID ('DataSet_WaitStats_WaitStatsTop5Categories') IS NOT NULL AND OBJECT_ID ('tbl_SCRIPT_ENVIRONMENT_DETAILS') IS NOT NULL
-  SELECT [Value]
-  FROM tbl_SCRIPT_ENVIRONMENT_DETAILS
-  WHERE script_name = 'SQL 2005 Perf Stats Script'
-    AND [Name] = 'SQL Version (SP)'
-ELSE 
-  SELECT '' AS [value]</CommandText>
+        <CommandText>IF OBJECT_ID('DataSet_WaitStats_WaitStatsTop5Categories') IS NOT NULL
+   AND OBJECT_ID('tbl_SCRIPT_ENVIRONMENT_DETAILS') IS NOT NULL
+    SELECT [Value]
+    FROM dbo.tbl_SCRIPT_ENVIRONMENT_DETAILS
+    WHERE script_name = 'SQL 2005 Perf Stats Script'
+          AND [Name] = 'SQL Version (SP)';
+ELSE
+    SELECT '' AS [value];</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -64,16 +66,40 @@ ELSE
             <Value>=Parameters!EndTime.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>IF OBJECT_ID ('tbl_SQL_CPU_HEALTH') IS NOT NULL 
-  SELECT DISTINCT (SELECT TOP 1 EventTime FROM  tbl_SQL_CPU_HEALTH cpu2 WHERE cpu1.record_id = cpu2.record_id) AS EventTime, 
-    record_id, system_idle_cpu, sql_cpu_utilization, 100 - sql_cpu_utilization - system_idle_cpu AS nonsql_cpu_utilization 
-  FROM tbl_SQL_CPU_HEALTH cpu1
-  WHERE 
-    (EventTime &gt;= @StartTime OR @StartTime IS NULL)
-    AND (EventTime &lt;= @EndTime OR @EndTime IS NULL)
-  ORDER BY EventTime
+        <CommandText>--DECLARE @StartTime DATETIME;
+--DECLARE @EndTime DATETIME;
+--SET @StartTime = '1900/1/1';
+--SET @EndTime = '2999/1/1';
+ 
+IF OBJECT_ID('tbl_SQL_CPU_HEALTH') IS NOT NULL
+    SELECT DISTINCT
+           (
+               SELECT TOP 1
+                      cpu2.EventTime
+               FROM dbo.tbl_SQL_CPU_HEALTH cpu2
+               WHERE cpu1.record_id = cpu2.record_id
+           ) AS EventTime,
+           cpu1.record_id,
+           cpu1.system_idle_cpu,
+           cpu1.sql_cpu_utilization,
+           100 - cpu1.sql_cpu_utilization - cpu1.system_idle_cpu AS nonsql_cpu_utilization
+    FROM dbo.tbl_SQL_CPU_HEALTH cpu1
+    WHERE (
+              EventTime &gt;= @StartTime
+              OR @StartTime IS NULL
+          )
+          AND
+          (
+              EventTime &lt;= @EndTime
+              OR @EndTime IS NULL
+          )
+    ORDER BY EventTime;
 ELSE
-  SELECT GETDATE() AS EventTime, 0 AS record_id, 0 AS system_idle_cpu, 0 AS sql_cpu_utilization, 0 AS nonsql_cpu_utilization</CommandText>
+    SELECT GETDATE() AS EventTime,
+           0 AS record_id,
+           0 AS system_idle_cpu,
+           0 AS sql_cpu_utilization,
+           0 AS nonsql_cpu_utilization;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -102,14 +128,18 @@ ELSE
     <DataSet Name="DataSet_Bottleneck_WaitStatsTop5Categories">
       <Query>
         <DataSourceName>DataSource_Private</DataSourceName>
-        <CommandText>  if OBJECT_ID ('DataSet_WaitStats_WaitStatsTopCategoriesOther') is not null
-  begin
-	EXEC DataSet_WaitStats_WaitStatsTopCategoriesOther 
-  end
-  else
-  begin
-	select null 'wait_category', null 'time_interval_sec', null 'total_wait_time_ms', null 'percent_of_total_waittime', null 'wait_time_ms_per_sec'
-  end</CommandText>
+        <CommandText>IF OBJECT_ID('DataSet_WaitStats_WaitStatsTopCategoriesOther') IS NOT NULL
+BEGIN
+    EXEC DataSet_WaitStats_WaitStatsTopCategoriesOther;
+END;
+ELSE
+BEGIN
+    SELECT NULL 'wait_category',
+           NULL 'time_interval_sec',
+           NULL 'total_wait_time_ms',
+           NULL 'percent_of_total_waittime',
+           NULL 'wait_time_ms_per_sec';
+END;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -138,10 +168,11 @@ ELSE
     <DataSet Name="DataSet_Shared_IsPerfStatsAvailable">
       <Query>
         <DataSourceName>DataSource_Private</DataSourceName>
-        <CommandText>IF OBJECT_ID ('DataSet_WaitStats_WaitStatsTop5Categories') IS NOT NULL AND OBJECT_ID ('tbl_OS_WAIT_STATS') IS NOT NULL 
-  SELECT 1 AS IsPerfStatsAvailable
-ELSE 
-  SELECT 0 AS IsPerfStatsAvailable</CommandText>
+        <CommandText>IF OBJECT_ID('DataSet_WaitStats_WaitStatsTop5Categories') IS NOT NULL
+   AND OBJECT_ID('tbl_OS_WAIT_STATS') IS NOT NULL
+    SELECT 1 AS IsPerfStatsAvailable;
+ELSE
+    SELECT 0 AS IsPerfStatsAvailable;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -154,31 +185,42 @@ ELSE
     <DataSet Name="DataSet_WaitStats_ParamStartTime">
       <Query>
         <DataSourceName>DataSource_Private</DataSourceName>
-        <CommandText>  
-  IF OBJECT_ID ('vw_PERF_STATS_SCRIPT_RUNTIMES') IS NOT NULL 
+        <CommandText>--DECLARE @StartTime DATETIME;
+--DECLARE @EndTime DATETIME;
+--SET @StartTime = '1900/1/1';
+--SET @EndTime = '2999/1/1';
+
+IF OBJECT_ID('vw_PERF_STATS_SCRIPT_RUNTIMES') IS NOT NULL
 BEGIN
-  DECLARE @v_StartTime datetime
-  DECLARE @v_EndTime datetime
-  SELECT @v_StartTime = MIN (runtime) FROM vw_PERF_STATS_SCRIPT_RUNTIMES
-  SELECT @v_EndTime = MAX (runtime) FROM vw_PERF_STATS_SCRIPT_RUNTIMES
-  IF @v_StartTime IS NULL SET @v_StartTime = GETDATE()
-  IF @v_EndTime IS NULL SET @v_EndTime = GETDATE()
+    DECLARE @v_StartTime DATETIME;
+    DECLARE @v_EndTime DATETIME;
+    SELECT @v_StartTime = MIN(runtime)
+    FROM dbo.vw_PERF_STATS_SCRIPT_RUNTIMES;
+    SELECT @v_EndTime = MAX(runtime)
+    FROM dbo.vw_PERF_STATS_SCRIPT_RUNTIMES;
+    IF @v_StartTime IS NULL
+        SET @v_StartTime = GETDATE();
+    IF @v_EndTime IS NULL
+        SET @v_EndTime = GETDATE();
 
-select top 1 StartTime from
-(  
-  SELECT 
-    CASE 
-      WHEN DATEDIFF (mi, @v_StartTime, @v_EndTime) &gt; 4*60 THEN DATEADD (mi, -60, @v_EndTime)
-      ELSE @v_StartTime
-    END AS StartTime
-  UNION ALL
-  SELECT @v_StartTime 
-  ) t order by StartTime asc
+    SELECT TOP 1
+           StartTime
+    FROM
+    (
+        SELECT CASE
+                   WHEN DATEDIFF(mi, @v_StartTime, @v_EndTime) &gt; 4 * 60 THEN
+                       DATEADD(mi, -60, @v_EndTime)
+                   ELSE
+                       @v_StartTime
+               END AS StartTime
+        UNION ALL
+        SELECT @v_StartTime
+    ) t
+    ORDER BY StartTime ASC;
 
-END
+END;
 ELSE
-  SELECT cast ('2001/1/1' as datetime)  AS StartTime
-  </CommandText>
+    SELECT CAST('2001/1/1' AS DATETIME) AS StartTime;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -191,21 +233,25 @@ ELSE
     <DataSet Name="DataSet_WaitStats_ParamEndTime">
       <Query>
         <DataSourceName>DataSource_Private</DataSourceName>
-        <CommandText>  IF OBJECT_ID ('vw_PERF_STATS_SCRIPT_RUNTIMES') IS NOT NULL 
+        <CommandText>IF OBJECT_ID('vw_PERF_STATS_SCRIPT_RUNTIMES') IS NOT NULL
 BEGIN
-  DECLARE @v_StartTime datetime
-  DECLARE @v_EndTime datetime
-  SELECT @v_StartTime = MIN (runtime) FROM vw_PERF_STATS_SCRIPT_RUNTIMES
-  SELECT @v_EndTime = MAX (runtime) FROM vw_PERF_STATS_SCRIPT_RUNTIMES
-  IF @v_StartTime IS NULL SET @v_StartTime = GETDATE()
-  IF @v_EndTime IS NULL SET @v_EndTime = GETDATE()
-  
-  SELECT @v_EndTime AS EndTime 
-  
-  
-END
+    DECLARE @v_StartTime DATETIME;
+    DECLARE @v_EndTime DATETIME;
+    SELECT @v_StartTime = MIN(runtime)
+    FROM dbo.vw_PERF_STATS_SCRIPT_RUNTIMES;
+    SELECT @v_EndTime = MAX(runtime)
+    FROM dbo.vw_PERF_STATS_SCRIPT_RUNTIMES;
+    IF @v_StartTime IS NULL
+        SET @v_StartTime = GETDATE();
+    IF @v_EndTime IS NULL
+        SET @v_EndTime = GETDATE();
+
+    SELECT @v_EndTime AS EndTime;
+
+
+END;
 ELSE
-  SELECT GETDATE() AS EndTime</CommandText>
+    SELECT GETDATE() AS EndTime;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -218,12 +264,13 @@ ELSE
     <DataSet Name="DataSet_Runtime">
       <Query>
         <DataSourceName>DataSource_Private</DataSourceName>
-        <CommandText>IF OBJECT_ID ('vw_PERF_STATS_SCRIPT_RUNTIMES') IS NOT NULL 
+        <CommandText>IF OBJECT_ID('vw_PERF_STATS_SCRIPT_RUNTIMES') IS NOT NULL
 BEGIN
- select Runtime from vw_PERF_STATS_SCRIPT_RUNTIMES
-END
+    SELECT runtime
+    FROM dbo.vw_PERF_STATS_SCRIPT_RUNTIMES;
+END;
 ELSE
-  SELECT GETDATE() AS Runtime</CommandText>
+    SELECT GETDATE() AS Runtime;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>

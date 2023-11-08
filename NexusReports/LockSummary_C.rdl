@@ -16,11 +16,11 @@
     <DataSet Name="DataSet_StartTime">
       <Query>
         <DataSourceName>DataSource_SqlNexus_Private</DataSourceName>
-        <CommandText>	if ( object_id ('tbl_LockSummary ') is not null)
-		select MIN(runtime) StartTime  from tbl_LockSummary
-	else
-		select cast ('1990/1/1' as datetime) as StartTime
-</CommandText>
+        <CommandText>IF (OBJECT_ID('tbl_LockSummary ') IS NOT NULL)
+    SELECT MIN(runtime) StartTime
+    FROM dbo.tbl_LockSummary;
+ELSE
+    SELECT CAST('1990/1/1' AS DATETIME) AS StartTime;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -33,11 +33,11 @@
     <DataSet Name="DataSet_EndTime">
       <Query>
         <DataSourceName>DataSource_SqlNexus_Private</DataSourceName>
-        <CommandText>	if ( object_id ('tbl_LockSummary ') is not null)
-		select max(runtime)  EndTime from tbl_LockSummary
-	else
-		select cast ('2099/1/1' as datetime) as EndTime
-	</CommandText>
+        <CommandText>IF (OBJECT_ID('tbl_LockSummary ') IS NOT NULL)
+    SELECT MAX(runtime) EndTime
+    FROM dbo.tbl_LockSummary;
+ELSE
+    SELECT CAST('2099/1/1' AS DATETIME) AS EndTime;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -50,15 +50,15 @@
     <DataSet Name="DataSet_AvailableTime">
       <Query>
         <DataSourceName>DataSource_SqlNexus_Private</DataSourceName>
-        <CommandText>
-
-	if ( object_id ('tbl_LockSummary ') is not null)
-	Select distinct  runtime AvailableTime from tbl_LockSummary order by runtime
-else
-	select cast ('1990/1/1' as datetime) as AvailableTime
-	union
-	select  cast('2099/1/1' as datetime)  as AvailableTime
-	</CommandText>
+        <CommandText>IF (OBJECT_ID('tbl_LockSummary ') IS NOT NULL)
+    SELECT DISTINCT
+           runtime AvailableTime
+    FROM dbo.tbl_LockSummary
+    ORDER BY runtime;
+ELSE
+    SELECT CAST('1990/1/1' AS DATETIME) AS AvailableTime
+    UNION
+    SELECT CAST('2099/1/1' AS DATETIME) AS AvailableTime;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -81,11 +81,20 @@ else
             <rd:UserDefined>true</rd:UserDefined>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>select runtime, case when resource_type is null then 'All' else resource_type end 'resource_type', sum(LockCount)  'lockcount' from tbl_locksummary
-where runtime between @StartTime and @EndTime
- group by runtime, resource_type with rollup
- having runtime is not null
- </CommandText>
+        <CommandText>SELECT runtime,
+       CASE
+           WHEN resource_type IS NULL THEN
+               'All'
+           ELSE
+               resource_type
+       END 'resource_type',
+       SUM(LockCount) 'lockcount'
+FROM tbl_locksummary
+WHERE runtime
+BETWEEN @StartTime AND @EndTime
+GROUP BY runtime,
+         resource_type WITH ROLLUP
+HAVING runtime IS NOT NULL;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -116,11 +125,10 @@ where runtime between @StartTime and @EndTime
             <rd:UserDefined>true</rd:UserDefined>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>--declare @StartTime datetime = '1990-1-1'
---declare @EndTime datetime = '2099-1-1'
-
-select *  from tbl_locksummary
-where runtime between @StartTime and @EndTime</CommandText>
+        <CommandText>SELECT *
+FROM dbo.tbl_locksummary
+WHERE runtime
+BETWEEN @StartTime AND @EndTime;</CommandText>
       </Query>
       <Fields>
         <Field Name="runtime">

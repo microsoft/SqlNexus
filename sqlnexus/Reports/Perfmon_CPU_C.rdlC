@@ -16,11 +16,11 @@
     <DataSet Name="DataSet_StartTime">
       <Query>
         <DataSourceName>DataSource_SqlNexus_Private</DataSourceName>
-        <CommandText>if ( object_id ('counterdata ') is not null)
-	select MIN(CounterDateTime) StartTime  from counterdata
-else
-	select '1990/1/1' as StartTime
-	</CommandText>
+        <CommandText>IF (OBJECT_ID('CounterData ') IS NOT NULL)
+    SELECT MIN(CounterDateTime) StartTime
+    FROM dbo.CounterData;
+ELSE
+    SELECT '1990/1/1' AS StartTime;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -33,10 +33,11 @@ else
     <DataSet Name="DataSet_EndTime">
       <Query>
         <DataSourceName>DataSource_SqlNexus_Private</DataSourceName>
-        <CommandText>	if ( object_id ('counterdata ') is not null)
-	select max(CounterDateTime) EndTime from counterdata
-else
-	select '2099/1/1' as EndTime</CommandText>
+        <CommandText>IF (OBJECT_ID('CounterData ') IS NOT NULL)
+    SELECT MAX(CounterDateTime) EndTime
+    FROM dbo.CounterData;
+ELSE
+    SELECT '2099/1/1' AS EndTime;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -49,13 +50,15 @@ else
     <DataSet Name="DataSet_AvailableTime">
       <Query>
         <DataSourceName>DataSource_SqlNexus_Private</DataSourceName>
-        <CommandText>if ( object_id ('counterdata ') is not null)
-	Select distinct  CounterDateTime AvailableTime from counterdata order by CounterDateTime
-else
-	select '1990/1/1' as AvailableTime
-	union
-	select '2099/1/1' as AvailableTime
-	</CommandText>
+        <CommandText>IF (OBJECT_ID('counterdata ') IS NOT NULL)
+    SELECT DISTINCT
+           CounterDateTime AvailableTime
+    FROM dbo.CounterData
+    ORDER BY CounterDateTime;
+ELSE
+    SELECT '1990/1/1' AS AvailableTime
+    UNION
+    SELECT '2099/1/1' AS AvailableTime;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -78,16 +81,32 @@ else
             <rd:UserDefined>true</rd:UserDefined>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>select cast (CounterDateTime as datetime ) CounterDateTime, InstanceName as InstName, cast (CounterValue as float) 'CounterValue'
-from counterdata dat inner join counterdetails dl on dat.counterid = dl.counterid 
-where dl.objectname in ('Process') and CounterName = '% Processor Time' and InstanceName !='_Total'
-and CounterDateTime &gt;=@StartTime and CounterDateTime&lt;=@EndTime
-and InstanceName in (
-select top 10 InstanceName from counterdata dat inner join counterdetails dl on dat.counterid = dl.counterid 
-where dl.objectname in ('Process') and CounterName = '% Processor Time' and InstanceName !='_Total'
-and CounterDateTime &gt;=@StartTime and CounterDateTime&lt;=@EndTime
-group by InstanceName
-order by AVG(cast (CounterValue as float)) desc)</CommandText>
+        <CommandText>SELECT CAST(dat.CounterDateTime AS DATETIME) CounterDateTime,
+       dl.InstanceName AS InstName,
+       CAST(dat.CounterValue AS FLOAT) 'CounterValue'
+FROM dbo.CounterData dat
+    INNER JOIN dbo.CounterDetails dl
+        ON dat.CounterID = dl.CounterID
+WHERE dl.ObjectName IN ( 'Process' )
+      AND dl.CounterName = '% Processor Time'
+      AND dl.InstanceName != '_Total'
+      AND CounterDateTime &gt;= @StartTime
+      AND CounterDateTime &lt;= @EndTime
+      AND dl.InstanceName IN
+          (
+              SELECT TOP 10
+                     dl.InstanceName
+              FROM dbo.CounterData dat
+                  INNER JOIN dbo.CounterDetails dl
+                      ON dat.CounterID = dl.CounterID
+              WHERE dl.ObjectName IN ( 'Process' )
+                    AND dl.CounterName = '% Processor Time'
+                    AND InstanceName != '_Total'
+                    AND dat.CounterDateTime &gt;= @StartTime
+                    AND dat.CounterDateTime &lt;= @EndTime
+              GROUP BY dl.InstanceName
+              ORDER BY AVG(CAST(CounterValue AS FLOAT)) DESC
+          );</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -118,12 +137,15 @@ order by AVG(cast (CounterValue as float)) desc)</CommandText>
             <rd:UserDefined>true</rd:UserDefined>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>select  InstanceName as InstName, 
-cast(CounterValue AS decimal(38,2)) as CounterValue,
-CounterDateTime 
-from counterdata dat inner join counterdetails dl on dat.counterid = dl.counterid 
-where objectname  like '%SQL Statistics%' and countername = 'Batch Requests/sec'
-order by CounterDateTime</CommandText>
+        <CommandText>SELECT dl.InstanceName AS InstName,
+       CAST(dat.CounterValue AS DECIMAL(38, 2)) AS CounterValue,
+       dat.CounterDateTime
+FROM dbo.CounterData dat
+    INNER JOIN dbo.CounterDetails dl
+        ON dat.CounterID = dl.CounterID
+WHERE dl.ObjectName LIKE '%SQL Statistics%'
+      AND dl.CounterName = 'Batch Requests/sec'
+ORDER BY dat.CounterDateTime;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -154,12 +176,15 @@ order by CounterDateTime</CommandText>
             <rd:UserDefined>true</rd:UserDefined>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>select  InstanceName as InstName, 
-cast(CounterValue AS decimal(38,2)) as CounterValue,
-CounterDateTime 
-from counterdata dat inner join counterdetails dl on dat.counterid = dl.counterid 
-where objectname  like '%SQL Statistics%' and countername = 'SQL Compilations/sec'
-order by CounterDateTime</CommandText>
+        <CommandText>SELECT dl.InstanceName AS InstName,
+       CAST(dat.CounterValue AS DECIMAL(38, 2)) AS CounterValue,
+       dat.CounterDateTime
+FROM dbo.CounterData dat
+    INNER JOIN dbo.CounterDetails dl
+        ON dat.CounterID = dl.CounterID
+WHERE dl.ObjectName LIKE '%SQL Statistics%'
+      AND dl.CounterName = 'SQL Compilations/sec'
+ORDER BY dat.CounterDateTime;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -190,12 +215,15 @@ order by CounterDateTime</CommandText>
             <rd:UserDefined>true</rd:UserDefined>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>select  InstanceName as InstName, 
-cast(CounterValue AS decimal(38,2)) as CounterValue,
-CounterDateTime 
-from counterdata dat inner join counterdetails dl on dat.counterid = dl.counterid 
-where objectname  like '%SQL Statistics%' and countername = 'SQL Re-Compilations/sec'
-order by CounterDateTime</CommandText>
+        <CommandText>SELECT dl.InstanceName AS InstName,
+       CAST(dat.CounterValue AS DECIMAL(38, 2)) AS CounterValue,
+       dat.CounterDateTime
+FROM dbo.CounterData dat
+    INNER JOIN dbo.CounterDetails dl
+        ON dat.CounterID = dl.CounterID
+WHERE dl.ObjectName LIKE '%SQL Statistics%'
+      AND dl.CounterName = 'SQL Re-Compilations/sec'
+ORDER BY dat.CounterDateTime;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -224,16 +252,32 @@ order by CounterDateTime</CommandText>
             <Value>=Parameters!EndTime.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>select cast (CounterDateTime as datetime ) CounterDateTime, InstanceName as InstName, cast (CounterValue as float) 'CounterValue'
-from counterdata dat inner join counterdetails dl on dat.counterid = dl.counterid 
-where dl.objectname in ('Process') and CounterName = '% Privileged Time' and InstanceName !='_Total'
-and CounterDateTime &gt;=@StartTime and CounterDateTime&lt;=@EndTime
-and InstanceName in (
-select top 10 InstanceName from counterdata dat inner join counterdetails dl on dat.counterid = dl.counterid 
-where dl.objectname in ('Process') and CounterName = '% Privileged Time' and InstanceName !='_Total'
-and CounterDateTime &gt;=@StartTime and CounterDateTime&lt;=@EndTime
-group by InstanceName
-order by AVG(cast (CounterValue as float)) desc)</CommandText>
+        <CommandText>SELECT CAST(dat.CounterDateTime AS DATETIME) CounterDateTime,
+       dl.InstanceName AS InstName,
+       CAST(dat.CounterValue AS FLOAT) 'CounterValue'
+FROM dbo.CounterData dat
+    INNER JOIN dbo.CounterDetails dl
+        ON dat.CounterID = dl.CounterID
+WHERE dl.ObjectName IN ( 'Process' )
+      AND dl.CounterName = '% Privileged Time'
+      AND dl.InstanceName != '_Total'
+      AND CounterDateTime &gt;= @StartTime
+      AND CounterDateTime &lt;= @EndTime
+      AND dl.InstanceName IN
+          (
+              SELECT TOP 10
+                     dl.InstanceName
+              FROM dbo.CounterData dat
+                  INNER JOIN dbo.CounterDetails dl
+                      ON dat.CounterID = dl.CounterID
+              WHERE dl.ObjectName IN ( 'Process' )
+                    AND dl.CounterName = '% Privileged Time'
+                    AND InstanceName != '_Total'
+                    AND dat.CounterDateTime &gt;= @StartTime
+                    AND dat.CounterDateTime &lt;= @EndTime
+              GROUP BY dl.InstanceName
+              ORDER BY AVG(CAST(CounterValue AS FLOAT)) DESC
+          );</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -262,16 +306,32 @@ order by AVG(cast (CounterValue as float)) desc)</CommandText>
             <Value>=Parameters!EndTime.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>select cast (CounterDateTime as datetime ) CounterDateTime, InstanceName as InstName, cast (CounterValue as float) 'CounterValue'
-from counterdata dat inner join counterdetails dl on dat.counterid = dl.counterid 
-where dl.objectname in ('Process') and CounterName = '% User Time' and InstanceName !='_Total'
-and CounterDateTime &gt;=@StartTime and CounterDateTime&lt;=@EndTime
-and InstanceName in (
-select top 10 InstanceName from counterdata dat inner join counterdetails dl on dat.counterid = dl.counterid 
-where dl.objectname in ('Process') and CounterName = '% User Time' and InstanceName !='_Total'
-and CounterDateTime &gt;=@StartTime and CounterDateTime&lt;=@EndTime
-group by InstanceName
-order by AVG(cast (CounterValue as float)) desc)</CommandText>
+        <CommandText>SELECT CAST(dat.CounterDateTime AS DATETIME) CounterDateTime,
+       dl.InstanceName AS InstName,
+       CAST(dat.CounterValue AS FLOAT) 'CounterValue'
+FROM dbo.CounterData dat
+    INNER JOIN dbo.CounterDetails dl
+        ON dat.CounterID = dl.CounterID
+WHERE dl.ObjectName IN ( 'Process' )
+      AND dl.CounterName = '% User Time'
+      AND dl.InstanceName != '_Total'
+      AND CounterDateTime &gt;= @StartTime
+      AND CounterDateTime &lt;= @EndTime
+      AND dl.InstanceName IN
+          (
+              SELECT TOP 10
+                     dl.InstanceName
+              FROM dbo.CounterData dat
+                  INNER JOIN dbo.CounterDetails dl
+                      ON dat.CounterID = dl.CounterID
+              WHERE dl.ObjectName IN ( 'Process' )
+                    AND dl.CounterName = '% User Time'
+                    AND InstanceName != '_Total'
+                    AND dat.CounterDateTime &gt;= @StartTime
+                    AND dat.CounterDateTime &lt;= @EndTime
+              GROUP BY dl.InstanceName
+              ORDER BY AVG(CAST(CounterValue AS FLOAT)) DESC
+          );</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>

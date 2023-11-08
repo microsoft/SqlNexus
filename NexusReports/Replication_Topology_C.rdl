@@ -6,7 +6,7 @@
     <DataSource Name="DataSource_Private1">
       <ConnectionProperties>
         <DataProvider>SQL</DataProvider>
-        <ConnectString>Data Source=.;Initial Catalog=NewReplData2</ConnectString>
+        <ConnectString>="data source=" &amp; Parameters!dsServerName.Value &amp; ";initial catalog="&amp;Parameters!dsDatabaseName.Value</ConnectString>
         <IntegratedSecurity>true</IntegratedSecurity>
       </ConnectionProperties>
       <rd:SecurityType>Integrated</rd:SecurityType>
@@ -17,114 +17,179 @@
     <DataSet Name="DataSet1">
       <Query>
         <DataSourceName>DataSource_Private1</DataSourceName>
-        <CommandText>DECLARE @DistributionSQLVersion nvarchar(71)
-SET @DistributionSQLVersion = (SELECT SourceSQLVersion FROM tbl_repl_sourceserver)
+        <CommandText>DECLARE @DistributionSQLVersion NVARCHAR(71);
+SET @DistributionSQLVersion =
+(
+    SELECT SourceSQLVersion FROM dbo.tbl_repl_sourceserver
+);
 
-SELECT	distributorinfo.[Distributor_Name], publicationinfo.Publisher_Name , publicationinfo.publisher_id as Publisher_ID, publicationinfo.publisher_db AS Publisher_DB, publicationinfo.publication_id as Publication_ID,
-		publicationinfo.[Publication_Information] + '  • Article Count:' + (CASE WHEN articleinfo.[Number of Articles] IS NULL THEN  'Not Found/Merge' ELSE articleinfo.[Number of Articles] END)    AS Publication_Details,   
-		CAST((CASE WHEN subscriptioninfo.subscriber_id IS NULL THEN 'NO ID' ELSE CAST(subscriptioninfo.subscriber_id as NVARCHAR(10)) END) as NVARCHAR(100))  AS Subscriber_ID,
-		(CASE WHEN subscriptioninfo.[SubscriberInfo] IS NULL THEN 'No Subscriptions Exist!' ELSE subscriptioninfo.[SubscriberInfo] END) AS Subscriber_Details
-FROM  
-
-	(/* Distributor Query */
-	SELECT 
-		CAST(CASE WHEN srv.provider_string IS NOT NULL THEN REPLACE (provider_string, 'addr=tcp:', '') 
-		ELSE srv.[data_source] END  AS NVARCHAR(48)) AS [Distributor_Name],
-		@DistributionSQLVersion [Distributor_Version], 
-		CAST (srv.distribution_dbname AS NVARCHAR(48)) AS [Distribution_DB]
-	FROM tbl_repl_sysservers srv 
-	WHERE is_distributor = 1
-	
-	) AS	 distributorinfo
-
-INNER JOIN 
-
-
-/* Publication/Publisher/Article Count query */
-
-	(SELECT 
-			p.publisher_id,p.publisher_db,p.publication_id,p.distribution_dbname,
-			--Publisher header
-			CAST (s.[data_source] + ' (Publisher ID '+CAST(p.[publisher_id] as varchar(10)) + ')' AS VARCHAR(48)) + ' • Distribution Db: ' + p.distribution_dbname AS Publisher_Name,
-				--Publications per Publisher
-				'Publication Name: '+ p.publication + ' (Publication ID: '+ CAST(p.publication_id as VARCHAR(10))+')' + ' •' +
-				' Publication Type: ' +
-					--Logic to determine type of replication
-					(
-					CASE WHEN p.publication_type = 0 and p.options &amp; 0x1 = 1 THEN 'Peer to Peer'
-					WHEN p.publication_type = 0 and p.allow_queued_tran = 1 THEN 'Transactional (2-Way)'
-					WHEN p.publication_type = 0 and p.allow_queued_tran = 0 THEN 'Transactional (1-Way)'
-					WHEN p.publication_type = 1 THEN 'Snapshot'
-					WHEN p.publication_type = 2 THEN 'Merge'
-					END
-					)  + ' •'+ 
-				' Publication Database: ' + p.publisher_db AS [Publication_Information]
-		FROM [dbo].[tbl_repl_mspublications] p
-		INNER JOIN [dbo].[tbl_repl_msreplservers] replservers 
-			ON p.distribution_dbname = replservers.distribution_dbname and p.publisher_id = replservers.srvid
-		INNER JOIN [dbo].[tbl_repl_sysservers] s 
-			ON p.distribution_dbname = s.distribution_dbname and replservers.srvname = s.name 
+SELECT distributorinfo.Distributor_Name,
+       publicationinfo.Publisher_Name,
+       publicationinfo.publisher_id AS Publisher_ID,
+       publicationinfo.publisher_db AS Publisher_DB,
+       publicationinfo.publication_id AS Publication_ID,
+       publicationinfo.Publication_Information + '  • Article Count:'
+       + (CASE
+              WHEN articleinfo.[Number of Articles] IS NULL THEN
+                  'Not Found/Merge'
+              ELSE
+                  articleinfo.[Number of Articles]
+          END
+         ) AS Publication_Details,
+       CAST((CASE
+                 WHEN subscriptioninfo.subscriber_id IS NULL THEN
+                     'NO ID'
+                 ELSE
+                     CAST(subscriptioninfo.subscriber_id AS NVARCHAR(10))
+             END
+            ) AS NVARCHAR(100)) AS Subscriber_ID,
+       (CASE
+            WHEN subscriptioninfo.SubscriberInfo IS NULL THEN
+                'No Subscriptions Exist!'
+            ELSE
+                subscriptioninfo.SubscriberInfo
+        END
+       ) AS Subscriber_Details
+FROM
+(/* Distributor Query */
+    SELECT CAST(CASE
+                    WHEN srv.provider_string IS NOT NULL THEN
+                        REPLACE(provider_string, 'addr=tcp:', '')
+                    ELSE
+                        srv.[data_source]
+                END AS NVARCHAR(48)) AS [Distributor_Name],
+           @DistributionSQLVersion [Distributor_Version],
+           CAST(srv.distribution_dbname AS NVARCHAR(48)) AS [Distribution_DB]
+    FROM dbo.tbl_repl_sysservers srv
+    WHERE is_distributor = 1
+) AS distributorinfo
+    INNER JOIN
 
 
-	) AS publicationinfo
+    /* Publication/Publisher/Article Count query */
 
-ON distributorinfo.Distribution_DB = publicationinfo.distribution_dbname
-
-FULL JOIN 
-	(
-		--Get rows for join
-		SELECT distribution_dbname, publisher_id, publisher_db, publication_id, 
-		CONVERT(NVARCHAR(5), COUNT(*)) AS [Number of Articles]
-		FROM tbl_repl_msarticles
-		GROUP BY distribution_dbname, publisher_id, publisher_db, publication_id 
-	) AS articleinfo
-
-ON publicationinfo.publisher_id = articleinfo.publisher_id and publicationinfo.publisher_db = articleinfo.publisher_db and publicationinfo.publication_id = articleinfo.publication_id and publicationinfo.distribution_dbname = articleinfo.distribution_dbname
-
-FULL JOIN
-
-	(
-	/* Subscription Query */
-	SELECT subs.distribution_dbname, pubs.publisher_db, pubs.publication_id, pubs.publisher_id,subscriber_id,
-		'Subscriber Server: '+ replsrv.srvname + 
-		' (Subscriber ID: ' + CAST((CASE WHEN subscriber_id IS NULL THEN 'NO ID' ELSE CAST(subscriber_id as NVARCHAR(10)) END) as NVARCHAR(100)) + ')' + ' •' +
-		+ ' Subscription Database: ' + subscriber_db + ' •' +
-		' Subscription Type: ' + 	
-			CASE WHEN subscription_type = 0 THEN 'Push' 
-			WHEN subscription_type = 1 THEN 'Pull' 
-			ELSE 'No Subscriptions Exist' END AS [SubscriberInfo]
-	FROM tbl_repl_mssubscriptions subs
-	INNER JOIN [dbo].[tbl_repl_mspublications] pubs 
-	  ON subs.publisher_id = pubs.publisher_id 
-	  AND subs.distribution_dbname = pubs.distribution_dbname
-	INNER JOIN [dbo].[tbl_repl_msreplservers] replsrv 
-		ON subs.distribution_dbname = replsrv.distribution_dbname and subs.publisher_id = replsrv.srvid
-	WHERE subscriber_db &lt;&gt; 'virtual'
-	
-	UNION 
-	
-	SELECT mergesubs.distribution_dbname, publ.publisher_db, publ.publication_id, publ.publisher_id, subscriber_id,
-		'Subscriber Server: '+ replsrv2.srvname + ' (Subscriber ID: ' + (CASE WHEN subscriber_id IS NULL THEN 'NO ID' ELSE CAST(subscriber_id as nvarchar(100)) END) + ')' + ' •' +
-		' Subscription Database: ' + subscriber_db + ' •' + 
-		' Subscription Type: ' + 	
-			CASE WHEN subscription_type = 0 THEN 'Push' 
-			WHEN subscription_type = 1 THEN 'Pull' 
-			ELSE 'No Subscriptions Exist' END AS [SubscriberInfo]
-	FROM tbl_repl_msmerge_subscriptions mergesubs
-	INNER JOIN [dbo].[tbl_repl_mspublications] publ
-	  ON mergesubs.publisher_id = publ.publisher_id
-	  AND mergesubs.distribution_dbname = publ.distribution_dbname
-	INNER JOIN [dbo].[tbl_repl_msreplservers] replsrv2 
-		ON mergesubs.distribution_dbname = replsrv2.distribution_dbname and mergesubs.publisher_id = replsrv2.srvid
-	
-	WHERE subscriber_db &lt;&gt; 'virtual'
-	) subscriptioninfo
-
-ON publicationinfo.publisher_id = subscriptioninfo.publisher_id 
- AND publicationinfo.publisher_db = subscriptioninfo.publisher_db 
- AND publicationinfo.publication_id = subscriptioninfo.publication_id 
- AND publicationinfo.distribution_dbname = subscriptioninfo.distribution_dbname
-</CommandText>
+    (
+        SELECT p.publisher_id,
+               p.publisher_db,
+               p.publication_id,
+               p.distribution_dbname,
+               --Publisher header
+               CAST(s.[data_source] + ' (Publisher ID ' + CAST(p.[publisher_id] AS VARCHAR(10)) + ')' AS VARCHAR(48))
+               + ' • Distribution Db: ' + p.distribution_dbname AS Publisher_Name,
+               --Publications per Publisher
+               'Publication Name: ' + p.publication + ' (Publication ID: ' + CAST(p.publication_id AS VARCHAR(10))
+               + ')' + ' •' + ' Publication Type: ' +
+               --Logic to determine type of replication
+               (CASE
+                    WHEN p.publication_type = 0
+                         AND p.options &amp; 0x1 = 1 THEN
+                        'Peer to Peer'
+                    WHEN p.publication_type = 0
+                         AND p.allow_queued_tran = 1 THEN
+                        'Transactional (2-Way)'
+                    WHEN p.publication_type = 0
+                         AND p.allow_queued_tran = 0 THEN
+                        'Transactional (1-Way)'
+                    WHEN p.publication_type = 1 THEN
+                        'Snapshot'
+                    WHEN p.publication_type = 2 THEN
+                        'Merge'
+                END
+               ) + ' •' + ' Publication Database: ' + p.publisher_db AS [Publication_Information]
+        FROM [dbo].[tbl_repl_mspublications] p
+            INNER JOIN [dbo].[tbl_repl_msreplservers] replservers
+                ON p.distribution_dbname = replservers.distribution_dbname
+                   AND p.publisher_id = replservers.srvid
+            INNER JOIN [dbo].[tbl_repl_sysservers] s
+                ON p.distribution_dbname = s.distribution_dbname
+                   AND replservers.srvname = s.name
+    ) AS publicationinfo
+        ON distributorinfo.Distribution_DB = publicationinfo.distribution_dbname
+    FULL JOIN
+    (
+        --Get rows for join
+        SELECT distribution_dbname,
+               publisher_id,
+               publisher_db,
+               publication_id,
+               CONVERT(NVARCHAR(5), COUNT(*)) AS [Number of Articles]
+        FROM dbo.tbl_repl_msarticles
+        GROUP BY distribution_dbname,
+                 publisher_id,
+                 publisher_db,
+                 publication_id
+    ) AS articleinfo
+        ON publicationinfo.publisher_id = articleinfo.publisher_id
+           AND publicationinfo.publisher_db = articleinfo.publisher_db
+           AND publicationinfo.publication_id = articleinfo.publication_id
+           AND publicationinfo.distribution_dbname = articleinfo.distribution_dbname
+    FULL JOIN
+    (
+        /* Subscription Query */
+        SELECT subs.distribution_dbname,
+               pubs.publisher_db,
+               pubs.publication_id,
+               pubs.publisher_id,
+               subscriber_id,
+               'Subscriber Server: ' + replsrv.srvname + ' (Subscriber ID: '
+               + CAST((CASE
+                           WHEN subscriber_id IS NULL THEN
+                               'NO ID'
+                           ELSE
+                               CAST(subscriber_id AS NVARCHAR(10))
+                       END
+                      ) AS NVARCHAR(100)) + ')' + ' •' + +' Subscription Database: ' + subscriber_db + ' •'
+               + ' Subscription Type: ' + CASE
+                                              WHEN subscription_type = 0 THEN
+                                                  'Push'
+                                              WHEN subscription_type = 1 THEN
+                                                  'Pull'
+                                              ELSE
+                                                  'No Subscriptions Exist'
+                                          END AS [SubscriberInfo]
+        FROM dbo.tbl_repl_mssubscriptions subs
+            INNER JOIN [dbo].[tbl_repl_mspublications] pubs
+                ON subs.publisher_id = pubs.publisher_id
+                   AND subs.distribution_dbname = pubs.distribution_dbname
+            INNER JOIN [dbo].[tbl_repl_msreplservers] replsrv
+                ON subs.distribution_dbname = replsrv.distribution_dbname
+                   AND subs.publisher_id = replsrv.srvid
+        WHERE subscriber_db &lt;&gt; 'virtual'
+        UNION
+        SELECT mergesubs.distribution_dbname,
+               publ.publisher_db,
+               publ.publication_id,
+               publ.publisher_id,
+               subscriber_id,
+               'Subscriber Server: ' + replsrv2.srvname + ' (Subscriber ID: '
+               + (CASE
+                      WHEN subscriber_id IS NULL THEN
+                          'NO ID'
+                      ELSE
+                          CAST(subscriber_id AS NVARCHAR(100))
+                  END
+                 ) + ')' + ' •' + ' Subscription Database: ' + subscriber_db + ' •' + ' Subscription Type: '
+               + CASE
+                     WHEN subscription_type = 0 THEN
+                         'Push'
+                     WHEN subscription_type = 1 THEN
+                         'Pull'
+                     ELSE
+                         'No Subscriptions Exist'
+                 END AS [SubscriberInfo]
+        FROM dbo.tbl_repl_msmerge_subscriptions mergesubs
+            INNER JOIN [dbo].[tbl_repl_mspublications] publ
+                ON mergesubs.publisher_id = publ.publisher_id
+                   AND mergesubs.distribution_dbname = publ.distribution_dbname
+            INNER JOIN [dbo].[tbl_repl_msreplservers] replsrv2
+                ON mergesubs.distribution_dbname = replsrv2.distribution_dbname
+                   AND mergesubs.publisher_id = replsrv2.srvid
+        WHERE subscriber_db &lt;&gt; 'virtual'
+    ) subscriptioninfo
+        ON publicationinfo.publisher_id = subscriptioninfo.publisher_id
+           AND publicationinfo.publisher_db = subscriptioninfo.publisher_db
+           AND publicationinfo.publication_id = subscriptioninfo.publication_id
+           AND publicationinfo.distribution_dbname = subscriptioninfo.distribution_dbname;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>

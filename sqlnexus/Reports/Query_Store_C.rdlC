@@ -5,7 +5,7 @@
     <DataSource Name="DataSource1">
       <ConnectionProperties>
         <DataProvider>SQL</DataProvider>
-        <ConnectString>Data Source=.\rc2;Initial Catalog=sqlnexus</ConnectString>
+        <ConnectString>="data source=" &amp; Parameters!dsServerName.Value &amp; ";initial catalog="&amp;Parameters!dsDatabaseName.Value</ConnectString>
         <IntegratedSecurity>true</IntegratedSecurity>
       </ConnectionProperties>
       <rd:SecurityType>Integrated</rd:SecurityType>
@@ -34,43 +34,64 @@
 --declare @EndTime datetime='9999-12-31'
 --declare @TopN Int = 10
 --declare @dbid int = -1
-select *, row_number() over(order by Total_CPU desc) as QueryNumber from
-(SELECT
-    qt.dbid,
-    qt.query_text_id, qt.query_sql_text query_text, 
-	SUM(rs.avg_cpu_time*rs.count_executions)/1000.00 Total_CPU,
-	row_number() over(order by  SUM(rs.avg_cpu_time*rs.count_executions) desc) as CPUDescRowNumber,
-
-	SUM(rs.avg_duration*rs.count_executions) /1000.00 Total_Duration,
-	row_number() over(order by  SUM(rs.avg_duration*rs.count_executions) desc) as DurationDescRowNumber,
-
-	SUM(rs.avg_logical_io_reads*rs.count_executions) Total_Logical_IO_Reads,
-	row_number() over(order by  SUM(rs.avg_logical_io_reads*rs.count_executions) desc) as Logical_IO_ReadsDescRowNumber,
-
-	SUM(rs.avg_logical_io_writes*rs.count_executions) Total_Logical_IO_Writes,
-	row_number() over(order by  SUM(rs.avg_logical_io_writes*rs.count_executions) desc) as Logical_IO_WritesDescRowNumber,
-
-	SUM(rs.avg_query_max_used_memory*rs.count_executions) * 8 /1024.00  Total_Query_Memory,
-	row_number() over(order by  SUM(rs.avg_query_max_used_memory*rs.count_executions) desc) as Query_MemoryDescRowNumber,
-
-	sum(rs.count_executions) Count_Executions,
-	count (distinct (case when p.is_forced_plan=1 then p.plan_id else null end) ) Distinct_Forced_Plan_Count
-
-FROM tbl_query_store_runtime_stats rs
-    JOIN tbl_query_store_plan p ON p.plan_id = rs.plan_id and p.dbid=rs.dbid 
-    JOIN tbl_query_store_query q ON q.query_id = p.query_id and q.dbid=p.dbid
-    JOIN tbl_query_store_query_text qt ON q.query_text_id = qt.query_text_id and q.dbid=qt.dbid
-	join tbl_query_store_runtime_stats_interval rti on rs.runtime_stats_interval_id = rti.runtime_stats_interval_id and rs.dbid = rti.dbid
-	where rti.start_time &gt;=@StartTime and rti.end_time &lt;=@EndTime  and (p.dbid=@dbid  or @dbid = -1)
-GROUP BY qt.dbid, qt.query_text_id, qt.query_sql_text 
-) as outcome
-where 	(CPUDescRowNumber &lt;= @TopN 
-			or DurationDescRowNumber &lt;= @TopN 
-			or Logical_IO_ReadsDescRowNumber &lt;= @TopN 
-			or Logical_IO_WritesDescRowNumber &lt;= @TopN 
-			or Query_MemoryDescRowNumber &lt;= @TopN)
-order by Total_CPU desc
-</CommandText>
+SELECT *,
+       ROW_NUMBER() OVER (ORDER BY Total_CPU DESC) AS QueryNumber
+FROM
+(
+    SELECT qt.dbid,
+           qt.query_text_id,
+           qt.query_sql_text query_text,
+           SUM(rs.avg_cpu_time * rs.count_executions) / 1000.00 Total_CPU,
+           ROW_NUMBER() OVER (ORDER BY SUM(rs.avg_cpu_time * rs.count_executions) DESC) AS CPUDescRowNumber,
+           SUM(rs.avg_duration * rs.count_executions) / 1000.00 Total_Duration,
+           ROW_NUMBER() OVER (ORDER BY SUM(rs.avg_duration * rs.count_executions) DESC) AS DurationDescRowNumber,
+           SUM(rs.avg_logical_io_reads * rs.count_executions) Total_Logical_IO_Reads,
+           ROW_NUMBER() OVER (ORDER BY SUM(rs.avg_logical_io_reads * rs.count_executions) DESC) AS Logical_IO_ReadsDescRowNumber,
+           SUM(rs.avg_logical_io_writes * rs.count_executions) Total_Logical_IO_Writes,
+           ROW_NUMBER() OVER (ORDER BY SUM(rs.avg_logical_io_writes * rs.count_executions) DESC) AS Logical_IO_WritesDescRowNumber,
+           SUM(rs.avg_query_max_used_memory * rs.count_executions) * 8 / 1024.00 Total_Query_Memory,
+           ROW_NUMBER() OVER (ORDER BY SUM(rs.avg_query_max_used_memory * rs.count_executions) DESC) AS Query_MemoryDescRowNumber,
+           SUM(rs.count_executions) Count_Executions,
+           COUNT(DISTINCT (CASE
+                               WHEN p.is_forced_plan = 1 THEN
+                                   p.plan_id
+                               ELSE
+                                   NULL
+                           END
+                          )
+                ) Distinct_Forced_Plan_Count
+    FROM dbo.tbl_query_store_runtime_stats rs
+        JOIN dbo.tbl_query_store_plan p
+            ON p.plan_id = rs.plan_id
+               AND p.dbid = rs.dbid
+        JOIN dbo.tbl_query_store_query q
+            ON q.query_id = p.query_id
+               AND q.dbid = p.dbid
+        JOIN dbo.tbl_query_store_query_text qt
+            ON q.query_text_id = qt.query_text_id
+               AND q.dbid = qt.dbid
+        JOIN dbo.tbl_query_store_runtime_stats_interval rti
+            ON rs.runtime_stats_interval_id = rti.runtime_stats_interval_id
+               AND rs.dbid = rti.dbid
+    WHERE rti.start_time &gt;= @StartTime
+          AND rti.end_time &lt;= @EndTime
+          AND
+          (
+              p.dbid = @dbid
+              OR @dbid = -1
+          )
+    GROUP BY qt.dbid,
+             qt.query_text_id,
+             qt.query_sql_text
+) AS outcome
+WHERE (
+          CPUDescRowNumber &lt;= @TopN
+          OR DurationDescRowNumber &lt;= @TopN
+          OR Logical_IO_ReadsDescRowNumber &lt;= @TopN
+          OR Logical_IO_WritesDescRowNumber &lt;= @TopN
+          OR Query_MemoryDescRowNumber &lt;= @TopN
+      )
+ORDER BY Total_CPU DESC;</CommandText>
       </Query>
       <Fields>
         <Field Name="Total_CPU">
@@ -142,28 +163,33 @@ order by Total_CPU desc
     <DataSet Name="DataSet_Runtime">
       <Query>
         <DataSourceName>DataSource1</DataSourceName>
-        <CommandText>IF OBJECT_ID ('tbl_query_store_runtime_stats_interval') IS NOT NULL 
+        <CommandText>IF OBJECT_ID('tbl_query_store_runtime_stats_interval') IS NOT NULL
 BEGIN
-select * from  
-(select cast(start_time as datetime2(3)) as Runtime from tbl_query_store_runtime_stats_interval
- union
- select max(cast(end_time as datetime2(7))) from tbl_query_store_runtime_stats_interval
-) t
-order by Runtime
- 
-END
-ELSE
-begin
-   
- select * from
- (
-  SELECT cast ('1990/1/1' as datetime)  AS Runtime 
-	union
-	SELECT cast ('9999/12/31' as datetime)  AS Runtime 
-	) t
-	order by Runtime
+    SELECT t.Runtime
+    FROM
+    (
+        SELECT CAST(start_time AS DATETIME2(3)) AS Runtime
+        FROM dbo.tbl_query_store_runtime_stats_interval
+        UNION
+        SELECT MAX(CAST(end_time AS DATETIME2(7)))
+        FROM dbo.tbl_query_store_runtime_stats_interval
+    ) t
+    ORDER BY Runtime;
 
-end</CommandText>
+END;
+ELSE
+BEGIN
+
+    SELECT t.Runtime
+    FROM
+    (
+        SELECT CAST('1990/1/1' AS DATETIME) AS Runtime
+        UNION
+        SELECT CAST('9999/12/31' AS DATETIME) AS Runtime
+    ) t
+    ORDER BY Runtime;
+
+END;</CommandText>
       </Query>
       <Fields>
         <Field Name="Runtime">
@@ -175,19 +201,17 @@ end</CommandText>
     <DataSet Name="DataSet_StartTime">
       <Query>
         <DataSourceName>DataSource1</DataSourceName>
-        <CommandText>
-IF OBJECT_ID ('tbl_query_store_runtime_stats_interval') IS NOT NULL 
+        <CommandText>IF OBJECT_ID('tbl_query_store_runtime_stats_interval') IS NOT NULL
 BEGIN
- select min(cast(start_time as datetime2(3)))  as StartTime from tbl_query_store_runtime_stats_interval
- 
-END
+    SELECT MIN(CAST(start_time AS DATETIME2(3))) AS StartTime
+    FROM dbo.tbl_query_store_runtime_stats_interval;
+
+END;
 ELSE
-begin
-    SELECT cast ('1990/1/1' as datetime)  AS StartTime 
+BEGIN
+    SELECT CAST('1990/1/1' AS DATETIME) AS StartTime;
 
-end
-
-
+END;
 </CommandText>
       </Query>
       <Fields>
@@ -200,17 +224,17 @@ end
     <DataSet Name="DataSet_EndTime">
       <Query>
         <DataSourceName>DataSource1</DataSourceName>
-        <CommandText>
-IF OBJECT_ID ('tbl_query_store_runtime_stats_interval') IS NOT NULL 
+        <CommandText>IF OBJECT_ID('tbl_query_store_runtime_stats_interval') IS NOT NULL
 BEGIN
- select Max(cast(End_time as datetime2(3)))  as EndTime from tbl_query_store_runtime_stats_interval
- 
-END
-ELSE
-begin
-    SELECT cast ('9999/12/31' as datetime)  AS EndTime 
+    SELECT MAX(CAST(End_time AS DATETIME2(3))) AS EndTime
+    FROM dbo.tbl_query_store_runtime_stats_interval;
 
-end</CommandText>
+END;
+ELSE
+BEGIN
+    SELECT CAST('9999/12/31' AS DATETIME) AS EndTime;
+
+END;</CommandText>
       </Query>
       <Fields>
         <Field Name="EndTime">
@@ -222,11 +246,29 @@ end</CommandText>
     <DataSet Name="DataSet_DatabaseList">
       <Query>
         <DataSourceName>DataSource1</DataSourceName>
-        <CommandText>set nocount on
-declare @temp table  (RowNumber int identity (1,1), Database_ID int, Database_Name sysname)
-insert into @temp (Database_ID, Database_Name) select -1 Database_ID, 'All Databases' as [Database_Name]
-insert into @temp select distinct dbid, dbname  from  tbl_query_store_runtime_stats_interval  order by dbname
-select * from  @temp order by RowNumber</CommandText>
+        <CommandText>SET NOCOUNT ON;
+DECLARE @temp TABLE
+(
+    RowNumber INT IDENTITY(1, 1),
+    Database_ID INT,
+    Database_Name sysname
+);
+INSERT INTO @temp
+(
+    Database_ID,
+    Database_Name
+)
+SELECT -1 Database_ID,
+       'All Databases' AS [Database_Name];
+INSERT INTO @temp
+SELECT DISTINCT
+       dbid,
+       dbname
+FROM dbo.tbl_query_store_runtime_stats_interval
+ORDER BY dbname;
+SELECT *
+FROM @temp
+ORDER BY RowNumber;</CommandText>
       </Query>
       <Fields>
         <Field Name="RowNumber">
@@ -246,7 +288,9 @@ select * from  @temp order by RowNumber</CommandText>
     <DataSet Name="DataSet_InitialDatabase">
       <Query>
         <DataSourceName>DataSource1</DataSourceName>
-        <CommandText>select 1 as RowNumber, -1 Database_ID, 'All Databases' as [Database_Name]</CommandText>
+        <CommandText>SELECT 1 AS RowNumber,
+       -1 Database_ID,
+       'All Databases' AS [Database_Name];</CommandText>
       </Query>
       <Fields>
         <Field Name="RowNumber">

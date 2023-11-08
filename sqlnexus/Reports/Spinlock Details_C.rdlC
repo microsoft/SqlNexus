@@ -30,28 +30,40 @@
 --declare @StartTime datetime = '1990-1-1'
 --declare @EndTime datetime = '2099-1-1'
 
-if (object_id ('tbl_SPINLOCKSTATS') is not null)
-begin
-with spinlocks as (
-select first.[name] as spinlock_name
-	,  cast(last.[spins] as float) - cast(first.[spins] as float) as spin_diff
-	, cast(last.[collisions] as float) - cast(first.[collisions] as float) as collision_diff
-	, cast((cast(last.[spins] as float) - cast(first.[spins] as bigint)) as float) 
-	 / (cast((cast(last.[collisions] as float) - cast(first.[collisions] as bigint)) as float)+0.00000001 )
-	as spindiff_per_collisiondiff,
-	 cast(last.[Backoffs] as float) - cast(first.Backoffs as float) as backoff_diff,
-	 cast(last.[Sleep_Time] as float) - cast(first.[Sleep_Time] as float) as sleeptime_ms_diff
-	 
-from [tbl_SPINLOCKSTATS] as first 
-	join [tbl_SPINLOCKSTATS] as last
-		on first.[name] = last.[name]
-		and first.runtime = (select min(runtime) from tbl_spinlockstats where runtime &gt;= @StartTime)
-		and last.runtime =  (select max(runtime) from tbl_spinlockstats where runtime &lt;= @EndTime)
-where first.[name] not like '%dbcc execution%' and  last.[name] not like '%dbcc execution%') 
-select TOP 5 row_number() over (order by spindiff_per_collisiondiff desc) as rownumber,spinlock_name,spin_diff, collision_diff,spindiff_per_collisiondiff, backoff_diff, sleeptime_ms_diff
-from spinlocks
-where spindiff_per_collisiondiff &gt; 0
-end</CommandText>
+IF (OBJECT_ID('tbl_SPINLOCKSTATS') IS NOT NULL)
+BEGIN
+    WITH spinlocks
+    AS (SELECT first.[name] AS spinlock_name,
+               CAST(last.[spins] AS FLOAT) - CAST(first.[spins] AS FLOAT) AS spin_diff,
+               CAST(last.[collisions] AS FLOAT) - CAST(first.[collisions] AS FLOAT) AS collision_diff,
+               CAST((CAST(last.[spins] AS FLOAT) - CAST(first.[spins] AS BIGINT)) AS FLOAT)
+               / (CAST((CAST(last.[collisions] AS FLOAT) - CAST(first.[collisions] AS BIGINT)) AS FLOAT) + 0.00000001) AS spindiff_per_collisiondiff,
+               CAST(last.[backoffs] AS FLOAT) - CAST(first.backoffs AS FLOAT) AS backoff_diff,
+               CAST(last.[sleep_time] AS FLOAT) - CAST(first.[sleep_time] AS FLOAT) AS sleeptime_ms_diff
+        FROM dbo.tbl_SPINLOCKSTATS AS first
+            JOIN dbo.tbl_SPINLOCKSTATS AS last
+                ON first.[name] = last.[name]
+                   AND first.runtime =
+                   (
+                       SELECT MIN(runtime)FROM dbo.tbl_SPINLOCKSTATS WHERE runtime &gt;= @StartTime
+                   )
+                   AND last.runtime =
+                   (
+                       SELECT MAX(runtime)FROM dbo.tbl_SPINLOCKSTATS WHERE runtime &lt;= @EndTime
+                   )
+        WHERE first.[name] NOT LIKE '%dbcc execution%'
+              AND last.[name] NOT LIKE '%dbcc execution%')
+    SELECT TOP 5
+           ROW_NUMBER() OVER (ORDER BY spinlocks.spindiff_per_collisiondiff DESC) AS rownumber,
+           spinlocks.spinlock_name,
+           spinlocks.spin_diff,
+           spinlocks.collision_diff,
+           spinlocks.spindiff_per_collisiondiff,
+           spinlocks.backoff_diff,
+           spinlocks.sleeptime_ms_diff
+    FROM spinlocks
+    WHERE spinlocks.spindiff_per_collisiondiff &gt; 0;
+END;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -94,14 +106,15 @@ end</CommandText>
             <rd:UserDefined>true</rd:UserDefined>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>
-if (object_id ('tbl_SPINLOCKSTATS') is not null)
-begin
-select cast(min(runtime) as datetime) as starting_time, cast(max(runtime) as datetime) as ending_time, Datediff(mi, min(runtime),max(runtime)) as Duration_Minutes
-from tbl_SPINLOCKSTATS
-where runtime between @StartTime and @EndTime
-end
-</CommandText>
+        <CommandText>IF (OBJECT_ID('tbl_SPINLOCKSTATS') IS NOT NULL)
+BEGIN
+    SELECT CAST(MIN(runtime) AS DATETIME) AS starting_time,
+           CAST(MAX(runtime) AS DATETIME) AS ending_time,
+           DATEDIFF(mi, MIN(runtime), MAX(runtime)) AS Duration_Minutes
+    FROM dbo.tbl_SPINLOCKSTATS
+    WHERE runtime
+    BETWEEN @StartTime AND @EndTime;
+END;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -122,22 +135,22 @@ end
     <DataSet Name="DataSet_DeleteText">
       <Query>
         <DataSourceName>DataSource_Private</DataSourceName>
-        <CommandText>if (object_id ('tbl_SPINLOCKSTATS') is not null)
-begin
-delete from [tbl_SPINLOCKSTATS]
-where 1=0
-end</CommandText>
+        <CommandText>IF (OBJECT_ID('tbl_SPINLOCKSTATS') IS NOT NULL)
+BEGIN
+    DELETE FROM dbo.tbl_SPINLOCKSTATS
+    WHERE 1 = 0;
+END;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
     </DataSet>
     <DataSet Name="DataSet_StartTime">
       <Query>
         <DataSourceName>DataSource_Private</DataSourceName>
-        <CommandText>	if ( object_id ('tbl_SPINLOCKSTATS ') is not null)
-		select min (runtime) StartTime  from tbl_SPINLOCKSTATS
-	else
-		select cast ('1999/1/1' as datetime) as StartTime
-	</CommandText>
+        <CommandText>IF (OBJECT_ID('tbl_SPINLOCKSTATS ') IS NOT NULL)
+    SELECT MIN(runtime) StartTime
+    FROM dbo.tbl_SPINLOCKSTATS;
+ELSE
+    SELECT CAST('1999/1/1' AS DATETIME) AS StartTime;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -150,10 +163,11 @@ end</CommandText>
     <DataSet Name="DataSet_EndTime">
       <Query>
         <DataSourceName>DataSource_Private</DataSourceName>
-        <CommandText>		if ( object_id ('tbl_SPINLOCKSTATS ') is not null)
-		select max (runtime) EndTime  from tbl_SPINLOCKSTATS
-	else
-		select cast ('2099/1/1' as datetime) as EndTime</CommandText>
+        <CommandText>IF (OBJECT_ID('tbl_SPINLOCKSTATS ') IS NOT NULL)
+    SELECT MAX(runtime) EndTime
+    FROM dbo.tbl_SPINLOCKSTATS;
+ELSE
+    SELECT CAST('2099/1/1' AS DATETIME) AS EndTime;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -166,15 +180,15 @@ end</CommandText>
     <DataSet Name="DataSet_AvailableTime">
       <Query>
         <DataSourceName>DataSource_Private</DataSourceName>
-        <CommandText>
-	if ( object_id ('tbl_SPINLOCKSTATS ') is not null)
-	Select distinct  runtime AvailableTime from tbl_SPINLOCKSTATS order by runtime
-else
-
-	select cast ('1990/1/1' as datetime) as AvailableTime
-	union
-	select  cast('2099/1/1' as datetime)  as AvailableTime
-	</CommandText>
+        <CommandText>IF (OBJECT_ID('tbl_SPINLOCKSTATS ') IS NOT NULL)
+    SELECT DISTINCT
+           runtime AvailableTime
+    FROM dbo.tbl_SPINLOCKSTATS
+    ORDER BY runtime;
+ELSE
+    SELECT CAST('1990/1/1' AS DATETIME) AS AvailableTime
+    UNION
+    SELECT CAST('2099/1/1' AS DATETIME) AS AvailableTime;</CommandText>
       </Query>
       <Fields>
         <Field Name="AvailableTime">
@@ -208,16 +222,16 @@ select first.[name] as spinlock_name
 	, cast((cast(last.[spins] as float) - cast(first.[spins] as bigint)) as float) 
 	 / (cast((cast(last.[collisions] as float) - cast(first.[collisions] as bigint)) as float)+0.00000001 )
 	as spindiff_per_collisiondiff
-from [tbl_SPINLOCKSTATS] as first 
-	join [tbl_SPINLOCKSTATS] as last
+from dbo.tbl_SPINLOCKSTATS as first 
+	join dbo.tbl_SPINLOCKSTATS as last
 		on first.[name] = last.[name]
-		and first.runtime = (select min(runtime) from tbl_spinlockstats where runtime &gt;= @StartTime)
-		and last.runtime =  (select max(runtime) from tbl_spinlockstats where runtime &lt;= @EndTime)
+		and first.runtime = (select min(runtime) from dbo.tbl_spinlockstats where runtime &gt;= @StartTime)
+		and last.runtime =  (select max(runtime) from dbo.tbl_spinlockstats where runtime &lt;= @EndTime)
 where first.[name] not like '%dbcc execution%' and  last.[name] not like '%dbcc execution%') 
-select TOP 10 row_number() over (order by spindiff_per_collisiondiff desc) as rownumber,spinlock_name,spin_diff, collision_diff,spindiff_per_collisiondiff
+select TOP 10 row_number() over (order by spinlocks.spindiff_per_collisiondiff desc) as rownumber,spinlocks.spinlock_name,spinlocks.spin_diff, spinlocks.collision_diff,spinlocks.spindiff_per_collisiondiff
 into #temp
-from spinlocks
-where spindiff_per_collisiondiff &gt; 0;
+from dbo.spinlocks
+where spinlocks.spindiff_per_collisiondiff &gt; 0;
 
 
 --compute delta
@@ -233,7 +247,6 @@ where t1.[name] in (select spinlock_name from #temp)
 order by runtime
 drop table #temp
 end
-
 
 
 
@@ -287,30 +300,48 @@ end
 --declare @EndTime datetime = '2099-1-1'
 --declare @SpinlockName varchar(30) = 'lock_hash'
 
-declare @cpu_count int
-select @cpu_count =PropertyValue from tbl_ServerProperties where PropertyName = 'cpu_count'
+DECLARE @cpu_count INT;
+SELECT @cpu_count = PropertyValue
+FROM dbo.tbl_ServerProperties
+WHERE PropertyName = 'cpu_count';
 
 
-if (object_id ('tbl_SPINLOCKSTATS') is not null)
-begin
---compute delta
-select  t2.runtime, t2.[name] as spinlock_name,  t2.spins  - t1.spins 'delta_spins',  
-t2.[spins_per_collision] 'spins_per_collision', t2.[collisions]  collisions,
-t2.Backoffs  - t1.Backoffs  'delta_backoff' ,
-datediff (ms, t1.runtime, t2.runtime) 'duration_ms',
-  cast ((t2.spins  - t1.spins ) /1.0/ datediff (ms, t1.runtime, t2.runtime) as bigint) 'delta_spins_per_ms',
-  cast( ((t2.spins  - t1.spins ) /1.0/ datediff (ms, t1.runtime, t2.runtime) )as bigint)/@cpu_count 'delta_spins_per_ms_per_cpu',
-  (t2.Backoffs  - t1.Backoffs ) / datediff (ms, t1.runtime, t2.runtime)  'delta_backoffs_per_ms',
- t2.[sleep_time]- t1.[sleep_time]  'sleep_time_ms'
-from 
-(select row_number () over ( partition by [name]  order by    runtime) row, *  from [tbl_SPINLOCKSTATS] where runtime between @StartTime and @EndTime) t1
-join 
-(select row_number () over ( partition by [name]  order by    runtime) row, *  from [tbl_SPINLOCKSTATS]  where runtime between @StartTime and @EndTime) t2
-on t1.row +1 = t2.row and t1.[name]=t2.[name]
-where t1.[name] = @SpinlockName
-order by runtime
+IF (OBJECT_ID('tbl_SPINLOCKSTATS') IS NOT NULL)
+BEGIN
+    --compute delta
+    SELECT t2.runtime,
+           t2.[name] AS spinlock_name,
+           t2.spins - t1.spins 'delta_spins',
+           t2.[spins_per_collision] 'spins_per_collision',
+           t2.[collisions] collisions,
+           t2.backoffs - t1.backoffs 'delta_backoff',
+           DATEDIFF(ms, t1.runtime, t2.runtime) 'duration_ms',
+           CAST((t2.spins - t1.spins) / 1.0 / DATEDIFF(ms, t1.runtime, t2.runtime) AS BIGINT) 'delta_spins_per_ms',
+           CAST(((t2.spins - t1.spins) / 1.0 / DATEDIFF(ms, t1.runtime, t2.runtime)) AS BIGINT) / @cpu_count 'delta_spins_per_ms_per_cpu',
+           (t2.backoffs - t1.backoffs) / DATEDIFF(ms, t1.runtime, t2.runtime) 'delta_backoffs_per_ms',
+           t2.[sleep_time] - t1.[sleep_time] 'sleep_time_ms'
+    FROM
+    (
+        SELECT ROW_NUMBER() OVER (PARTITION BY [name] ORDER BY runtime) row,
+               *
+        FROM dbo.tbl_SPINLOCKSTATS
+        WHERE runtime
+        BETWEEN @StartTime AND @EndTime
+    ) t1
+        JOIN
+        (
+            SELECT ROW_NUMBER() OVER (PARTITION BY [name] ORDER BY runtime) row,
+                   *
+            FROM dbo.tbl_SPINLOCKSTATS
+            WHERE runtime
+            BETWEEN @StartTime AND @EndTime
+        ) t2
+            ON t1.row + 1 = t2.row
+               AND t1.[name] = t2.[name]
+    WHERE t1.[name] = @SpinlockName
+    ORDER BY runtime;
 
-end</CommandText>
+END;</CommandText>
       </Query>
       <Fields>
         <Field Name="runtime">

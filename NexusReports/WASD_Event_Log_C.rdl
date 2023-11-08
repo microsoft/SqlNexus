@@ -6,7 +6,7 @@
       <Transaction>true</Transaction>
       <ConnectionProperties>
         <DataProvider>SQL</DataProvider>
-        <ConnectString>Data Source=SOUTHPAW\SQL08R2;Initial Catalog=wasd_import_1121</ConnectString>
+        <ConnectString>="data source=" &amp; Parameters!dsServerName.Value &amp; ";initial catalog="&amp;Parameters!dsDatabaseName.Value</ConnectString>
         <IntegratedSecurity>true</IntegratedSecurity>
       </ConnectionProperties>
       <rd:SecurityType>Integrated</rd:SecurityType>
@@ -28,13 +28,21 @@
             <Value>=Parameters!UserDbName.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>if object_id('tbl_EVENT_LOG') is not null
-select top 20 database_name,start_time,end_time,event_type, event_subtype,severity,event_count,Description
-from tbl_EVENT_LOG
-where event_category='connectivity'
-and start_time&lt;=@StartTime
-and end_time&gt;=@EndTime
-and database_name=@UserDbName</CommandText>
+        <CommandText>IF OBJECT_ID('tbl_EVENT_LOG') IS NOT NULL
+    SELECT TOP 20
+           database_name,
+           start_time,
+           end_time,
+           event_type,
+           event_subtype,
+           severity,
+           event_count,
+           Description
+    FROM dbo.tbl_EVENT_LOG
+    WHERE event_category = 'connectivity'
+          AND start_time &lt;= @StartTime
+          AND end_time &gt;= @EndTime
+          AND database_name = @UserDbName;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>

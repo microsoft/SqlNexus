@@ -16,11 +16,11 @@
     <DataSet Name="DataSet_StartTime">
       <Query>
         <DataSourceName>DataSource_SqlNexus_Private</DataSourceName>
-        <CommandText>if ( object_id ('counterdata ') is not null)
-	select MIN(CounterDateTime) StartTime  from counterdata
-else
-	select '1990/1/1' as StartTime
-	</CommandText>
+        <CommandText>IF (OBJECT_ID('CounterData ') IS NOT NULL)
+    SELECT MIN(CounterDateTime) StartTime
+    FROM dbo.CounterData;
+ELSE
+    SELECT '1990/1/1' AS StartTime;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -33,10 +33,11 @@ else
     <DataSet Name="DataSet_EndTime">
       <Query>
         <DataSourceName>DataSource_SqlNexus_Private</DataSourceName>
-        <CommandText>	if ( object_id ('counterdata ') is not null)
-	select max(CounterDateTime) EndTime from counterdata
-else
-	select '2099/1/1' as EndTime</CommandText>
+        <CommandText>IF (OBJECT_ID('CounterData ') IS NOT NULL)
+    SELECT MAX(CounterDateTime) EndTime
+    FROM dbo.CounterData;
+ELSE
+    SELECT '2099/1/1' AS EndTime;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -49,13 +50,15 @@ else
     <DataSet Name="DataSet_AvailableTime">
       <Query>
         <DataSourceName>DataSource_SqlNexus_Private</DataSourceName>
-        <CommandText>if ( object_id ('counterdata ') is not null)
-	Select distinct  CounterDateTime AvailableTime from counterdata order by CounterDateTime
-else
-	select '1990/1/1' as AvailableTime
-	union
-	select '2099/1/1' as AvailableTime
-	</CommandText>
+        <CommandText>IF (OBJECT_ID('CounterData ') IS NOT NULL)
+    SELECT DISTINCT
+           CounterDateTime AvailableTime
+    FROM dbo.CounterData
+    ORDER BY CounterDateTime;
+ELSE
+    SELECT '1990/1/1' AS AvailableTime
+    UNION
+    SELECT '2099/1/1' AS AvailableTime;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -76,50 +79,88 @@ else
             <Value>=Parameters!EndTime.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>declare @tbl as table(instname varchar(100) null, CounterValue decimal(38,2), CounterDateTime datetime)
-insert into @tbl
-select 
-case when InstanceName like '%sqlservr%' then 'SQL Server ( Private Bytes )' + InstanceName else InstanceName end as InstName,
-cast(CounterValue as decimal(38,2 ))/1000000 as CounterValue, CounterDateTime
-from counterdata dat inner join counterdetails dl on dat.counterid = dl.counterid 
-where 
-dl.objectname in ('Process') and CounterName = 'Private Bytes' and InstanceName !='_Total'
-and CounterDateTime &gt;=@StartTime and CounterDateTime&lt;=@EndTime
-and instancename in
-(select top 10 InstanceName from counterdata dat inner join counterdetails dl on dat.counterid = dl.counterid 
-where dl.objectname in ('Process') and CounterName = 'Private Bytes' and InstanceName !='_Total'
-and CounterDateTime &gt;=@StartTime and CounterDateTime&lt;=@EndTime
-group by InstanceName
-order by AVG(cast (CounterValue as float)) desc)
-order by 3 
+        <CommandText>DECLARE @tbl AS TABLE
+(
+    instname VARCHAR(100) NULL,
+    CounterValue DECIMAL(38, 2),
+    CounterDateTime DATETIME
+);
+INSERT INTO @tbl
+SELECT CASE
+           WHEN InstanceName LIKE '%sqlservr%' THEN
+               'SQL Server ( Private Bytes )' + InstanceName
+           ELSE
+               InstanceName
+       END AS InstName,
+       CAST(CounterValue AS DECIMAL(38, 2)) / 1000000 AS CounterValue,
+       CounterDateTime
+FROM CounterData dat
+    INNER JOIN CounterDetails dl
+        ON dat.CounterID = dl.CounterID
+WHERE dl.ObjectName IN ( 'Process' )
+      AND CounterName = 'Private Bytes'
+      AND InstanceName != '_Total'
+      AND CounterDateTime &gt;= @StartTime
+      AND CounterDateTime &lt;= @EndTime
+      AND InstanceName IN
+          (
+              SELECT TOP 10
+                     InstanceName
+              FROM CounterData dat
+                  INNER JOIN CounterDetails dl
+                      ON dat.CounterID = dl.CounterID
+              WHERE dl.ObjectName IN ( 'Process' )
+                    AND CounterName = 'Private Bytes'
+                    AND InstanceName != '_Total'
+                    AND CounterDateTime &gt;= @StartTime
+                    AND CounterDateTime &lt;= @EndTime
+              GROUP BY InstanceName
+              ORDER BY AVG(CAST(CounterValue AS FLOAT)) DESC
+          )
+ORDER BY 3;
 
-insert into @tbl
-select  'SQL Server ( Total Server Memory ) ' as InstName,
-cast(CounterValue as decimal(38,2 ))/1000 as CounterValue, CounterDateTime
-from counterdata dat inner join counterdetails dl on dat.counterid = dl.counterid 
-where 
-dl.objectname like '%Memory Manager' and CounterName = 'Total Server Memory (KB)' 
-and CounterDateTime &gt;=@StartTime and CounterDateTime&lt;=@EndTime
+INSERT INTO @tbl
+SELECT 'SQL Server ( Total Server Memory ) ' AS InstName,
+       CAST(CounterValue AS DECIMAL(38, 2)) / 1000 AS CounterValue,
+       CounterDateTime
+FROM CounterData dat
+    INNER JOIN CounterDetails dl
+        ON dat.CounterID = dl.CounterID
+WHERE dl.ObjectName LIKE '%Memory Manager'
+      AND CounterName = 'Total Server Memory (KB)'
+      AND CounterDateTime &gt;= @StartTime
+      AND CounterDateTime &lt;= @EndTime;
 
-insert into @tbl
-select  'SQL Server ( Target Server Memory ) ' as InstName,
-cast(CounterValue as decimal(38,2 ))/1000 as CounterValue, CounterDateTime
-from counterdata dat inner join counterdetails dl on dat.counterid = dl.counterid 
-where 
-dl.objectname like '%Memory Manager' and CounterName = 'Target Server Memory (KB)' 
-and CounterDateTime &gt;=@StartTime and CounterDateTime&lt;=@EndTime
+INSERT INTO @tbl
+SELECT 'SQL Server ( Target Server Memory ) ' AS InstName,
+       CAST(CounterValue AS DECIMAL(38, 2)) / 1000 AS CounterValue,
+       CounterDateTime
+FROM CounterData dat
+    INNER JOIN CounterDetails dl
+        ON dat.CounterID = dl.CounterID
+WHERE dl.ObjectName LIKE '%Memory Manager'
+      AND CounterName = 'Target Server Memory (KB)'
+      AND CounterDateTime &gt;= @StartTime
+      AND CounterDateTime &lt;= @EndTime;
 
-insert into @tbl
-select  'SQL Server ( Working Set ) ' + InstanceName as InstName,
-cast(CounterValue as decimal(38,2 ))/1000 as CounterValue, CounterDateTime
-from counterdata dat inner join counterdetails dl on dat.counterid = dl.counterid 
-where 
-dl.objectname like '%Memory Manager' and CounterName = 'Working Set' and InstanceName like '%sqlservr%'
-and CounterDateTime &gt;=@StartTime and CounterDateTime&lt;=@EndTime
+INSERT INTO @tbl
+SELECT 'SQL Server ( Working Set ) ' + InstanceName AS InstName,
+       CAST(CounterValue AS DECIMAL(38, 2)) / 1000 AS CounterValue,
+       CounterDateTime
+FROM CounterData dat
+    INNER JOIN CounterDetails dl
+        ON dat.CounterID = dl.CounterID
+WHERE dl.ObjectName LIKE '%Memory Manager'
+      AND CounterName = 'Working Set'
+      AND InstanceName LIKE '%sqlservr%'
+      AND CounterDateTime &gt;= @StartTime
+      AND CounterDateTime &lt;= @EndTime;
 
-select instname , CounterValue, CounterDateTime
-from @tbl
-order by 3</CommandText>
+SELECT instname,
+       CounterValue,
+       CounterDateTime
+FROM @tbl
+ORDER BY 3;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -150,13 +191,17 @@ order by 3</CommandText>
             <rd:UserDefined>true</rd:UserDefined>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>select  InstanceName as InstName, 
-cast(CounterValue AS decimal(38,2)) as 'CounterValue',
-CounterDateTime 
-from counterdata dat inner join counterdetails dl on dat.counterid = dl.counterid 
-where dl.objectname = 'Memory' and CounterName = 'Available MBytes' 
-and CounterDateTime &gt;=@StartTime and CounterDateTime&lt;=@EndTime
-order by CounterDateTime</CommandText>
+        <CommandText>SELECT dl.InstanceName AS InstName,
+       CAST(dat.CounterValue AS DECIMAL(38, 2)) AS 'CounterValue',
+       dat.CounterDateTime
+FROM dbo.CounterData dat
+    INNER JOIN dbo.CounterDetails dl
+        ON dat.CounterID = dl.CounterID
+WHERE dl.ObjectName = 'Memory'
+      AND dl.CounterName = 'Available MBytes'
+      AND dat.CounterDateTime &gt;= @StartTime
+      AND dat.CounterDateTime &lt;= @EndTime
+ORDER BY dat.CounterDateTime;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -187,13 +232,17 @@ order by CounterDateTime</CommandText>
             <rd:UserDefined>true</rd:UserDefined>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>select  InstanceName as InstName, 
-cast(CounterValue AS decimal(38,2)) as CounterValue,
-CounterDateTime 
-from counterdata dat inner join counterdetails dl on dat.counterid = dl.counterid 
-where objectname like '%Buffer Manager%' and countername = 'Page life expectancy'
-and CounterDateTime &gt;=@StartTime and CounterDateTime&lt;=@EndTime
-order by CounterDateTime</CommandText>
+        <CommandText>SELECT dl.InstanceName AS InstName,
+       CAST(dat.CounterValue AS DECIMAL(38, 2)) AS CounterValue,
+       dat.CounterDateTime
+FROM dbo.CounterData dat
+    INNER JOIN dbo.CounterDetails dl
+        ON dat.CounterID = dl.CounterID
+WHERE dl.ObjectName LIKE '%Buffer Manager%'
+      AND dl.CounterName = 'Page life expectancy'
+      AND dat.CounterDateTime &gt;= @StartTime
+      AND dat.CounterDateTime &lt;= @EndTime
+ORDER BY dat.CounterDateTime;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -224,13 +273,17 @@ order by CounterDateTime</CommandText>
             <rd:UserDefined>true</rd:UserDefined>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>select  InstanceName as InstName, 
-cast(CounterValue AS decimal(38,2))/1000000 as CounterValue,
-CounterDateTime 
-from counterdata dat inner join counterdetails dl on dat.counterid = dl.counterid 
-where objectname  = 'Memory' and countername = 'Cache Bytes'
-and CounterDateTime &gt;=@StartTime and CounterDateTime&lt;=@EndTime
-order by CounterDateTime</CommandText>
+        <CommandText>SELECT dl.InstanceName AS InstName,
+       CAST(dat.CounterValue AS DECIMAL(38, 2)) / 1000000 AS CounterValue,
+       dat.CounterDateTime
+FROM dbo.CounterData dat
+    INNER JOIN dbo.CounterDetails dl
+        ON dat.CounterID = dl.CounterID
+WHERE dl.ObjectName = 'Memory'
+      AND dl.CounterName = 'Cache Bytes'
+      AND dat.CounterDateTime &gt;= @StartTime
+      AND dat.CounterDateTime &lt;= @EndTime
+ORDER BY dat.CounterDateTime;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -261,13 +314,17 @@ order by CounterDateTime</CommandText>
             <rd:UserDefined>true</rd:UserDefined>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>select  InstanceName as InstName, 
-cast(CounterValue AS decimal(38,2)) as CounterValue,
-CounterDateTime 
-from counterdata dat inner join counterdetails dl on dat.counterid = dl.counterid 
-where objectname  like '%Buffer Manager%' and countername = 'Checkpoint pages/sec'
-and CounterDateTime &gt;=@StartTime and CounterDateTime&lt;=@EndTime
-order by CounterDateTime</CommandText>
+        <CommandText>SELECT dl.InstanceName AS InstName,
+       CAST(dat.CounterValue AS DECIMAL(38, 2)) AS CounterValue,
+       dat.CounterDateTime
+FROM dbo.CounterData dat
+    INNER JOIN dbo.CounterDetails dl
+        ON dat.CounterID = dl.CounterID
+WHERE dl.ObjectName LIKE '%Buffer Manager%'
+      AND dl.CounterName = 'Checkpoint pages/sec'
+      AND dat.CounterDateTime &gt;= @StartTime
+      AND dat.CounterDateTime &lt;= @EndTime
+ORDER BY dat.CounterDateTime;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -298,13 +355,17 @@ order by CounterDateTime</CommandText>
             <rd:UserDefined>true</rd:UserDefined>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>select  InstanceName as InstName, 
-cast(CounterValue AS decimal(38,2)) as CounterValue,
-CounterDateTime 
-from counterdata dat inner join counterdetails dl on dat.counterid = dl.counterid 
-where objectname  like '%Buffer Manager%' and countername = 'Lazy writes/sec'
-and CounterDateTime &gt;=@StartTime and CounterDateTime&lt;=@EndTime
-order by CounterDateTime</CommandText>
+        <CommandText>SELECT dl.InstanceName AS InstName,
+       CAST(dat.CounterValue AS DECIMAL(38, 2)) AS CounterValue,
+       dat.CounterDateTime
+FROM dbo.CounterData dat
+    INNER JOIN dbo.CounterDetails dl
+        ON dat.CounterID = dl.CounterID
+WHERE dl.ObjectName LIKE '%Buffer Manager%'
+      AND dl.CounterName = 'Lazy writes/sec'
+      AND dat.CounterDateTime &gt;= @StartTime
+      AND dat.CounterDateTime &lt;= @EndTime
+ORDER BY dat.CounterDateTime;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>

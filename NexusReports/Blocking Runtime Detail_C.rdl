@@ -16,7 +16,14 @@
     <DataSet Name="DataSet_Shared_SQLVersion">
       <Query>
         <DataSourceName>DataSource_Private</DataSourceName>
-        <CommandText>EXEC DataSet_Shared_SQLVersion</CommandText>
+        <CommandText>IF OBJECT_ID('DataSet_WaitStats_WaitStatsTop5Categories') IS NOT NULL
+   AND OBJECT_ID('tbl_SCRIPT_ENVIRONMENT_DETAILS') IS NOT NULL
+    SELECT [Value]
+    FROM dbo.tbl_SCRIPT_ENVIRONMENT_DETAILS
+    WHERE script_name LIKE 'SQL 200% Perf Stats Script'
+          AND [Name] = 'SQL Version (SP)';
+ELSE
+    SELECT '' AS [value];</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -29,7 +36,7 @@
     <DataSet Name="DataSet_Shared_SQLServerName">
       <Query>
         <DataSourceName>DataSource_Private</DataSourceName>
-        <CommandText>EXEC DataSet_Shared_SQLServerName</CommandText>
+        <CommandText>EXEC DataSet_Shared_SQLServerName;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -47,12 +54,95 @@
             <Value>=Parameters!Runtime.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>SELECT r.*, q.*, CONVERT (varchar, r.runtime, 121) AS runtime_string 
-FROM tbl_REQUESTS r
-LEFT OUTER JOIN tbl_NOTABLEACTIVEQUERIES q 
-    ON q.session_id = r.session_id AND q.runtime = r.runtime 
-WHERE r.runtime = CONVERT (datetime, @Runtime)
-ORDER BY r.session_id</CommandText>
+        <CommandText>SELECT r.rownum,
+       r.runtime,
+       r.session_id,
+       r.request_id,
+       r.ecid,
+       r.blocking_session_id,
+       r.blocking_ecid,
+       r.task_state,
+       r.wait_type,
+       r.wait_duration_ms,
+       r.wait_resource,
+       r.resource_description,
+       r.last_wait_type,
+       r.open_trans,
+       r.transaction_isolation_level,
+       r.is_user_process,
+       r.request_cpu_time,
+       r.request_logical_reads,
+       r.request_reads,
+       r.request_writes,
+       r.memory_usage,
+       r.session_cpu_time,
+       r.session_reads,
+       r.session_writes,
+       r.session_logical_reads,
+       r.total_scheduled_time,
+       r.total_elapsed_time,
+       r.last_request_start_time,
+       r.last_request_end_time,
+       r.session_row_count,
+       r.prev_error,
+       r.open_resultsets,
+       r.request_total_elapsed_time,
+       r.percent_complete,
+       r.est_completion_time,
+       r.tran_name,
+       r.transaction_begin_time,
+       r.tran_type,
+       r.tran_state,
+       r.request_start_time,
+       r.request_status,
+       r.command,
+       r.statement_start_offset,
+       r.statement_end_offset,
+       r.database_id,
+       r.user_id,
+       r.executing_managed_code,
+       r.pending_io_count,
+       r.login_time,
+       r.host_name,
+       r.program_name,
+       r.host_process_id,
+       r.client_version,
+       r.client_interface_name,
+       r.login_name,
+       r.nt_domain,
+       r.nt_user_name,
+       r.net_packet_size,
+       r.client_net_address,
+       r.session_status,
+       r.scheduler_id,
+       r.group_id,
+       r.query_hash,
+       r.query_plan_hash,
+       r.plan_handle,
+       r.wait_category,
+       q.rownum,
+       q.runtime,
+       q.session_id,
+       q.request_id,
+       q.plan_total_exec_count,
+       q.plan_total_cpu_ms,
+       q.plan_total_duration_ms,
+       q.plan_total_physical_reads,
+       q.plan_total_logical_writes,
+       q.plan_total_logical_reads,
+       q.dbname,
+       q.objectid,
+       q.procname,
+       q.stmt_text,
+       q.plan_handle,
+       q.group_id,
+       CONVERT(VARCHAR, r.runtime, 121) AS runtime_string
+FROM dbo.tbl_REQUESTS r
+    LEFT OUTER JOIN dbo.tbl_NOTABLEACTIVEQUERIES q
+        ON q.session_id = r.session_id
+           AND q.runtime = r.runtime
+WHERE r.runtime = CONVERT(DATETIME, @Runtime)
+ORDER BY r.session_id;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -381,11 +471,95 @@ ORDER BY r.session_id</CommandText>
             <Value>=Parameters!HighlightSessionID.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>SELECT r.*, q.* FROM tbl_REQUESTS r
-  LEFT OUTER JOIN tbl_NOTABLEACTIVEQUERIES q 
-    ON q.session_id = r.session_id AND q.runtime = r.runtime 
-  WHERE r.runtime = CONVERT (datetime, @Runtime) AND r.session_id = @HighlightSessionID
-  ORDER BY r.session_id</CommandText>
+        <CommandText>SELECT r.rownum,
+       r.runtime,
+       r.session_id,
+       r.request_id,
+       r.ecid,
+       r.blocking_session_id,
+       r.blocking_ecid,
+       r.task_state,
+       r.wait_type,
+       r.wait_duration_ms,
+       r.wait_resource,
+       r.resource_description,
+       r.last_wait_type,
+       r.open_trans,
+       r.transaction_isolation_level,
+       r.is_user_process,
+       r.request_cpu_time,
+       r.request_logical_reads,
+       r.request_reads,
+       r.request_writes,
+       r.memory_usage,
+       r.session_cpu_time,
+       r.session_reads,
+       r.session_writes,
+       r.session_logical_reads,
+       r.total_scheduled_time,
+       r.total_elapsed_time,
+       r.last_request_start_time,
+       r.last_request_end_time,
+       r.session_row_count,
+       r.prev_error,
+       r.open_resultsets,
+       r.request_total_elapsed_time,
+       r.percent_complete,
+       r.est_completion_time,
+       r.tran_name,
+       r.transaction_begin_time,
+       r.tran_type,
+       r.tran_state,
+       r.request_start_time,
+       r.request_status,
+       r.command,
+       r.statement_start_offset,
+       r.statement_end_offset,
+       r.database_id,
+       r.user_id,
+       r.executing_managed_code,
+       r.pending_io_count,
+       r.login_time,
+       r.host_name,
+       r.program_name,
+       r.host_process_id,
+       r.client_version,
+       r.client_interface_name,
+       r.login_name,
+       r.nt_domain,
+       r.nt_user_name,
+       r.net_packet_size,
+       r.client_net_address,
+       r.session_status,
+       r.scheduler_id,
+       r.group_id,
+       r.query_hash,
+       r.query_plan_hash,
+       r.plan_handle,
+       r.wait_category,
+       q.rownum,
+       q.runtime,
+       q.session_id,
+       q.request_id,
+       q.plan_total_exec_count,
+       q.plan_total_cpu_ms,
+       q.plan_total_duration_ms,
+       q.plan_total_physical_reads,
+       q.plan_total_logical_writes,
+       q.plan_total_logical_reads,
+       q.dbname,
+       q.objectid,
+       q.procname,
+       q.stmt_text,
+       q.plan_handle,
+       q.group_id
+FROM dbo.tbl_REQUESTS r
+    LEFT OUTER JOIN dbo.tbl_NOTABLEACTIVEQUERIES q
+        ON q.session_id = r.session_id
+           AND q.runtime = r.runtime
+WHERE r.runtime = CONVERT(DATETIME, @Runtime)
+      AND r.session_id = @HighlightSessionID
+ORDER BY r.session_id;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
