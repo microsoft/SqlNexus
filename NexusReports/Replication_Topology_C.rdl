@@ -6,7 +6,7 @@
     <DataSource Name="DataSource_Private1">
       <ConnectionProperties>
         <DataProvider>SQL</DataProvider>
-        <ConnectString>="data source=" &amp; Parameters!dsServerName.Value &amp; ";initial catalog="&amp;Parameters!dsDatabaseName.Value</ConnectString>
+        <ConnectString>Data Source=.;Initial Catalog=NewReplData2</ConnectString>
         <IntegratedSecurity>true</IntegratedSecurity>
       </ConnectionProperties>
       <rd:SecurityType>Integrated</rd:SecurityType>
@@ -20,15 +20,15 @@
         <CommandText>DECLARE @DistributionSQLVersion NVARCHAR(71);
 SET @DistributionSQLVersion =
 (
-    SELECT SourceSQLVersion FROM dbo.tbl_repl_sourceserver
+    SELECT SourceSQLVersion FROM tbl_repl_sourceserver
 );
 
-SELECT distributorinfo.Distributor_Name,
+SELECT distributorinfo.[Distributor_Name],
        publicationinfo.Publisher_Name,
        publicationinfo.publisher_id AS Publisher_ID,
        publicationinfo.publisher_db AS Publisher_DB,
        publicationinfo.publication_id AS Publication_ID,
-       publicationinfo.Publication_Information + '  • Article Count:'
+       publicationinfo.[Publication_Information] + '  • Article Count:'
        + (CASE
               WHEN articleinfo.[Number of Articles] IS NULL THEN
                   'Not Found/Merge'
@@ -44,10 +44,10 @@ SELECT distributorinfo.Distributor_Name,
              END
             ) AS NVARCHAR(100)) AS Subscriber_ID,
        (CASE
-            WHEN subscriptioninfo.SubscriberInfo IS NULL THEN
+            WHEN subscriptioninfo.[SubscriberInfo] IS NULL THEN
                 'No Subscriptions Exist!'
             ELSE
-                subscriptioninfo.SubscriberInfo
+                subscriptioninfo.[SubscriberInfo]
         END
        ) AS Subscriber_Details
 FROM
@@ -60,7 +60,7 @@ FROM
                 END AS NVARCHAR(48)) AS [Distributor_Name],
            @DistributionSQLVersion [Distributor_Version],
            CAST(srv.distribution_dbname AS NVARCHAR(48)) AS [Distribution_DB]
-    FROM dbo.tbl_repl_sysservers srv
+    FROM tbl_repl_sysservers srv
     WHERE is_distributor = 1
 ) AS distributorinfo
     INNER JOIN
@@ -113,7 +113,7 @@ FROM
                publisher_db,
                publication_id,
                CONVERT(NVARCHAR(5), COUNT(*)) AS [Number of Articles]
-        FROM dbo.tbl_repl_msarticles
+        FROM tbl_repl_msarticles
         GROUP BY distribution_dbname,
                  publisher_id,
                  publisher_db,
@@ -147,7 +147,7 @@ FROM
                                               ELSE
                                                   'No Subscriptions Exist'
                                           END AS [SubscriberInfo]
-        FROM dbo.tbl_repl_mssubscriptions subs
+        FROM tbl_repl_mssubscriptions subs
             INNER JOIN [dbo].[tbl_repl_mspublications] pubs
                 ON subs.publisher_id = pubs.publisher_id
                    AND subs.distribution_dbname = pubs.distribution_dbname
@@ -177,7 +177,7 @@ FROM
                      ELSE
                          'No Subscriptions Exist'
                  END AS [SubscriberInfo]
-        FROM dbo.tbl_repl_msmerge_subscriptions mergesubs
+        FROM tbl_repl_msmerge_subscriptions mergesubs
             INNER JOIN [dbo].[tbl_repl_mspublications] publ
                 ON mergesubs.publisher_id = publ.publisher_id
                    AND mergesubs.distribution_dbname = publ.distribution_dbname
@@ -195,35 +195,35 @@ FROM
       <Fields>
         <Field Name="Distributor_Name">
           <DataField>Distributor_Name</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:UserDefined>true</rd:UserDefined>
         </Field>
         <Field Name="Publisher_Name">
           <DataField>Publisher_Name</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:UserDefined>true</rd:UserDefined>
         </Field>
         <Field Name="Publisher_ID">
           <DataField>Publisher_ID</DataField>
-          <rd:TypeName>System.Int32</rd:TypeName>
+          <rd:UserDefined>true</rd:UserDefined>
         </Field>
         <Field Name="Publisher_DB">
           <DataField>Publisher_DB</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:UserDefined>true</rd:UserDefined>
         </Field>
         <Field Name="Publication_ID">
           <DataField>Publication_ID</DataField>
-          <rd:TypeName>System.Int32</rd:TypeName>
+          <rd:UserDefined>true</rd:UserDefined>
         </Field>
         <Field Name="Publication_Details">
           <DataField>Publication_Details</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:UserDefined>true</rd:UserDefined>
         </Field>
         <Field Name="Subscriber_ID">
           <DataField>Subscriber_ID</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:UserDefined>true</rd:UserDefined>
         </Field>
         <Field Name="Subscriber_Details">
           <DataField>Subscriber_Details</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:UserDefined>true</rd:UserDefined>
         </Field>
       </Fields>
     </DataSet>

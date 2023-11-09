@@ -5,7 +5,7 @@
     <DataSource Name="SqlNexus_Private">
       <ConnectionProperties>
         <DataProvider>SQL</DataProvider>
-        <ConnectString>="data source=" &amp; Parameters!dsServerName.Value &amp; ";initial catalog="&amp;Parameters!dsDatabaseName.Value</ConnectString>
+        <ConnectString>Data Source=SOUTHPAW\SQL08R2;Initial Catalog=wasd_import_1121</ConnectString>
         <IntegratedSecurity>true</IntegratedSecurity>
       </ConnectionProperties>
       <rd:SecurityType>Integrated</rd:SecurityType>
@@ -16,22 +16,24 @@
     <DataSet Name="DataSet1">
       <Query>
         <DataSourceName>SqlNexus_Private</DataSourceName>
-        <CommandText>SELECT tbl_RESOURCE_STATS.rownum,
-       tbl_RESOURCE_STATS.database_name,
-       tbl_RESOURCE_STATS.start_time,
-       tbl_RESOURCE_STATS.[Average CPU Cores Used],
-       tbl_RESOURCE_STATS.[Maximum CPU Cores Used],
-       tbl_RESOURCE_STATS.[Average Read IOPS],
-       tbl_RESOURCE_STATS.[Maximum Read IOPS],
-       tbl_RESOURCE_STATS.[Average Write IOPS],
-       tbl_RESOURCE_STATS.[Maximum Write IOPS],
-       tbl_RESOURCE_STATS.[Average Memory Used in GB],
-       tbl_RESOURCE_STATS.[Maximum Memory Used in GB],
-       tbl_RESOURCE_STATS.[Average # of Sessions],
-       tbl_RESOURCE_STATS.[Maximum # of Sessions],
-       tbl_RESOURCE_STATS.[Average # of Workers],
-       tbl_RESOURCE_STATS.[Maximum # of Workers]
-FROM dbo.tbl_RESOURCE_STATS;</CommandText>
+        <CommandText>SELECT
+  tbl_RESOURCE_STATS.rownum
+  ,tbl_RESOURCE_STATS.database_name
+  ,tbl_RESOURCE_STATS.start_time
+  ,tbl_RESOURCE_STATS.[Average CPU Cores Used]
+  ,tbl_RESOURCE_STATS.[Maximum CPU Cores Used]
+  ,tbl_RESOURCE_STATS.[Average Read IOPS]
+  ,tbl_RESOURCE_STATS.[Maximum Read IOPS]
+  ,tbl_RESOURCE_STATS.[Average Write IOPS]
+  ,tbl_RESOURCE_STATS.[Maximum Write IOPS]
+  ,tbl_RESOURCE_STATS.[Average Memory Used in GB]
+  ,tbl_RESOURCE_STATS.[Maximum Memory Used in GB]
+  ,tbl_RESOURCE_STATS.[Average # of Sessions]
+  ,tbl_RESOURCE_STATS.[Maximum # of Sessions]
+  ,tbl_RESOURCE_STATS.[Average # of Workers]
+  ,tbl_RESOURCE_STATS.[Maximum # of Workers]
+FROM
+  tbl_RESOURCE_STATS</CommandText>
         <rd:DesignerState>
           <QueryDefinition xmlns="http://schemas.microsoft.com/ReportingServices/QueryDefinition/Relational">
             <SelectedColumns>

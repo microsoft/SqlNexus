@@ -5,7 +5,7 @@
     <DataSource Name="SqlNexus_Private">
       <ConnectionProperties>
         <DataProvider>SQL</DataProvider>
-        <ConnectString>="data source=" &amp; Parameters!dsServerName.Value &amp; ";initial catalog="&amp;Parameters!dsDatabaseName.Value</ConnectString>
+        <ConnectString>Data Source=SOUTHPAW\SQL08R2;Initial Catalog=wasd_import_1121</ConnectString>
         <IntegratedSecurity>true</IntegratedSecurity>
       </ConnectionProperties>
       <rd:SecurityType>Integrated</rd:SecurityType>
