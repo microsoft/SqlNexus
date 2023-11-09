@@ -136,7 +136,7 @@ INSERT INTO @tbl_reports
 )
 VALUES
 ('ReadTrace_Main', 'ReadTrace Reports', 'ReadTrace reports for Profiler traces or Extended Events/XEvents',
- 1 | 2 | 4 | 8, 'Performance', 'readtrace.tblBatches', 100, 'Profiler Trace', 1, 3000);
+ 1 | 2 | 4 | 8, 'Performance', 'ReadTrace.tblBatches', 100, 'Profiler Trace', 1, 3000);
 
 INSERT INTO @tbl_reports
 (
@@ -250,7 +250,7 @@ INSERT INTO @tbl_reports
     CategorySeq
 )
 VALUES
-('LockSummary_C', 'Lock Count Summary', 'Lock count graphed by resources', 2 | 4, 'Performance', 'dbo.tbl_locksummary',
+('LockSummary_C', 'Lock Count Summary', 'Lock count graphed by resources', 2 | 4, 'Performance', 'dbo.tbl_LockSummary',
  4000, 'Perf Stats Collector', 1, 3000);
 
 INSERT INTO @tbl_reports
@@ -334,7 +334,7 @@ INSERT INTO @tbl_reports
 )
 VALUES
 ('Missing Indexes_C', 'Missing Indexes', 'Missing Indexes captured by SQL Server DMVs', 2 | 4 | 8, 'Performance',
- 'dbo.tbl_missingindexes', 4000, 'Perf Stats Collector', 1, 3000);
+ 'dbo.tbl_MissingIndexes', 4000, 'Perf Stats Collector', 1, 3000);
 
 INSERT INTO @tbl_reports
 (
@@ -368,7 +368,7 @@ INSERT INTO @tbl_reports
 )
 VALUES
 ('Perfmon_C', 'Perfmon Summary', 'Summary of most commonly looked at counters', 1 | 2 | 4 | 8, 'Performance',
- 'dbo.counterdata', 4000, 'Perfmon', 1, 3000);
+ 'dbo.CounterData', 4000, 'Perfmon', 1, 3000);
 INSERT INTO @tbl_reports
 (
     ReportName,
@@ -384,7 +384,7 @@ INSERT INTO @tbl_reports
 )
 VALUES
 ('Perfmon_C', 'Perfmon Summary', 'Summary of most commonly looked at counters', 1 | 2 | 4 | 8, 'Performance',
- 'dbo.counterdetails', 4000, 'Perfmon', 1, 3000);
+ 'dbo.CounterDetails', 4000, 'Perfmon', 1, 3000);
 
 INSERT INTO @tbl_reports
 (
@@ -434,7 +434,7 @@ INSERT INTO @tbl_reports
 )
 VALUES
 ('Memory Brokers_C', 'Memory Brokers', 'Display memory brokers', 1 | 2 | 4 | 8, 'Performance',
- 'dbo.tbl_dm_os_memory_clerks', 4000, 'Perf Stats Collector', 1, 3000);
+ 'dbo.tbl_DM_OS_MEMORY_CLERKS', 4000, 'Perf Stats Collector', 1, 3000);
 
 INSERT INTO @tbl_reports
 (
@@ -633,7 +633,7 @@ INSERT INTO @tbl_reports
 )
 VALUES
 ('Active Queries_C', 'Active CPU Consuming Queries', 'Active CPU Consuming Queries', 1 | 2 | 4 | 8, 'Performance',
- 'dbo.tbl_Requests', 4000, 'Perf Stats Collector', 1, 3000);
+ 'dbo.tbl_REQUESTS', 4000, 'Perf Stats Collector', 1, 3000);
 INSERT INTO @tbl_reports
 (
     ReportName,

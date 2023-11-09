@@ -351,7 +351,7 @@ BEGIN
         scheduler_total_count INT,
         deadlock_monitor_serial_number INT
     );
-    EXEC ('INSERT INTO tbl_SYSINFO (tableinfo, cpu_count) 
+    EXEC ('INSERT INTO dbo.tbl_SYSINFO (tableinfo, cpu_count) 
     VALUES (''This table was created by PerfStatsAnalysis.sql due to missing Perf Stats Script data.'', 2)');
 END;
 GO
@@ -535,11 +535,11 @@ IF EXISTS
 GO
 CREATE UNIQUE CLUSTERED INDEX cidx
 ON dbo.vw_HEAD_BLOCKER_SUMMARY (
-                               runtime,
-                               head_blocker_session_id,
-                               blocking_wait_type,
-                               rownum
-                           );
+                                   runtime,
+                                   head_blocker_session_id,
+                                   blocking_wait_type,
+                                   rownum
+                               );
 GO
 
 
@@ -658,12 +658,12 @@ BEGIN
            (
                SELECT TOP 1
                       runtime
-               FROM vw_PERF_STATS_SCRIPT_RUNTIMES run
+               FROM dbo.vw_PERF_STATS_SCRIPT_RUNTIMES run
                WHERE run.runtime > b.runtime
                      AND NOT EXISTS
                (
                    SELECT runtime
-                   FROM vw_HEAD_BLOCKER_SUMMARY AS b2
+                   FROM dbo.vw_HEAD_BLOCKER_SUMMARY AS b2
                    WHERE b2.runtime = run.runtime
                          AND b2.head_blocker_session_id = b.head_blocker_session_id
                          AND b2.blocking_wait_type = b.blocking_wait_type
@@ -679,14 +679,14 @@ BEGIN
            tot_wait_duration_ms,
            head_blocker_session_id_orig
     INTO #head_blk_sum
-    FROM vw_HEAD_BLOCKER_SUMMARY b
+    FROM dbo.vw_HEAD_BLOCKER_SUMMARY b
     WHERE runtime IS NOT NULL;
 
     -- Set blocking end time to end-of-data-collection for any blocking chains that were still active when data collection stopped
     UPDATE #head_blk_sum
     SET blocking_end =
         (
-            SELECT MAX(runtime)FROM vw_PERF_STATS_SCRIPT_RUNTIMES
+            SELECT MAX(runtime)FROM dbo.vw_PERF_STATS_SCRIPT_RUNTIMES
         )
     WHERE blocking_end IS NULL;
 
@@ -740,7 +740,7 @@ BEGIN
            MAX(max_blocking_chain_depth) AS max_blocking_chain_depth,
            MIN(head_blocker_session_id_orig) AS head_blocker_session_id_orig
     INTO dbo.tbl_BLOCKING_CHAINS
-    FROM dbo.BlockingChainsIntermediate
+    FROM BlockingChainsIntermediate
     GROUP BY blocking_end,
              blocking_start,
              head_blocker_session_id,
@@ -836,18 +836,18 @@ AS (
           (
               SELECT TOP 1
                      runtime
-              FROM vw_PERF_STATS_SCRIPT_RUNTIMES run
+              FROM dbo.vw_PERF_STATS_SCRIPT_RUNTIMES run
               WHERE run.runtime > b.runtime
                     AND NOT EXISTS
               (
                   SELECT runtime
-                  FROM vw_HEAD_BLOCKER_SUMMARY AS b2
+                  FROM dbo.vw_HEAD_BLOCKER_SUMMARY AS b2
                   WHERE b2.runtime = run.runtime
               )
               ORDER BY run.runtime ASC
           ) AS blocking_end,
           max_wait_duration_ms
-   FROM vw_HEAD_BLOCKER_SUMMARY b)
+   FROM dbo.vw_HEAD_BLOCKER_SUMMARY b)
 SELECT p1.*,
        CASE
            WHEN DATEDIFF(s, blocking_start, blocking_end) >= 20 THEN
@@ -857,21 +857,21 @@ SELECT p1.*,
        END AS blocking_duration_sec,
        (
            SELECT MAX(blocked_task_count)
-           FROM vw_HEAD_BLOCKER_SUMMARY b3
+           FROM dbo.vw_HEAD_BLOCKER_SUMMARY b3
            WHERE b3.runtime >= p1.blocking_start
                  AND b3.runtime < p1.blocking_end
        ) AS max_blocked_task_count,
        (
            SELECT MAX(tot_wait_duration_ms)
-           FROM vw_HEAD_BLOCKER_SUMMARY b3
+           FROM dbo.vw_HEAD_BLOCKER_SUMMARY b3
            WHERE b3.runtime >= p1.blocking_start
                  AND b3.runtime < p1.blocking_end
        ) AS max_total_wait_duration_ms
-FROM dbo.BlockingPeriodsRaw p1
+FROM BlockingPeriodsRaw p1
 WHERE NOT EXISTS
 (
     SELECT blocking_start
-    FROM dbo.BlockingPeriodsRaw AS p2
+    FROM BlockingPeriodsRaw AS p2
     WHERE p2.blocking_start < p1.blocking_start
           AND p2.blocking_end = p1.blocking_end
 );
@@ -1074,11 +1074,11 @@ AS
 IF @StartTime IS NULL
    OR @StartTime = '19000101'
     SELECT @StartTime = MIN(runtime)
-    FROM vw_PERF_STATS_SCRIPT_RUNTIMES;
+    FROM dbo.vw_PERF_STATS_SCRIPT_RUNTIMES;
 IF @EndTime IS NULL
    OR @EndTime = '29990101'
     SELECT @EndTime = MAX(runtime)
-    FROM vw_PERF_STATS_SCRIPT_RUNTIMES;
+    FROM dbo.vw_PERF_STATS_SCRIPT_RUNTIMES;
 
 SELECT MIN(w1.runtime) AS interval_start,
        MAX(w2.runtime) AS interval_end,
@@ -1092,14 +1092,14 @@ SELECT MIN(w1.runtime) AS interval_start,
                  DATEDIFF(s, MIN(w1.runtime), MAX(w2.runtime))
          END AS wait_time_per_sec,
        CONVERT(DECIMAL(28, 3), MAX(w2.waiting_tasks_count) - MIN(w1.waiting_tasks_count)) + 0.001 AS wait_count
-FROM vw_WAIT_CATEGORY_STATS w2
-    LEFT OUTER JOIN vw_WAIT_CATEGORY_STATS w1
+FROM dbo.vw_WAIT_CATEGORY_STATS w2
+    LEFT OUTER JOIN dbo.vw_WAIT_CATEGORY_STATS w1
         ON w1.wait_category = w2.wait_category
            AND w1.runtime =
            (
                SELECT TOP 1
                       runtime
-               FROM tbl_OS_WAIT_STATS w3
+               FROM dbo.tbl_OS_WAIT_STATS w3
                WHERE w3.runtime < w2.runtime
                ORDER BY w3.runtime DESC
            )
@@ -1169,8 +1169,8 @@ SELECT w_end.wait_category,
                                               END
        ) / (DATEDIFF(s, @StartTime, @EndTime) + 1) AS wait_time_ms_per_sec
 INTO #waitstats_categories
-FROM vw_WAIT_CATEGORY_STATS w_end
-    LEFT OUTER JOIN vw_WAIT_CATEGORY_STATS w_start
+FROM dbo.vw_WAIT_CATEGORY_STATS w_end
+    LEFT OUTER JOIN dbo.vw_WAIT_CATEGORY_STATS w_start
         ON w_end.wait_category = w_start.wait_category
            AND w_start.runtime = @StartTime
 WHERE w_end.runtime = @EndTime
@@ -1203,7 +1203,7 @@ FROM
            (
                SELECT TOP 1
                       EventTime
-               FROM tbl_SQL_CPU_HEALTH cpu2
+               FROM dbo.tbl_SQL_CPU_HEALTH cpu2
                WHERE cpu1.record_id = cpu2.record_id
            ) AS EventTime,
            record_id,
@@ -1333,8 +1333,8 @@ SELECT w_end.wait_category,
                                               END
        ) / (DATEDIFF(s, @StartTime, @EndTime) + 1) AS wait_time_ms_per_sec
 INTO #waitstats_categories
-FROM vw_WAIT_CATEGORY_STATS w_end
-    LEFT OUTER JOIN vw_WAIT_CATEGORY_STATS w_start
+FROM dbo.vw_WAIT_CATEGORY_STATS w_end
+    LEFT OUTER JOIN dbo.vw_WAIT_CATEGORY_STATS w_start
         ON w_end.wait_category = w_start.wait_category
            AND w_start.runtime = @StartTime
 WHERE w_end.runtime = @EndTime
@@ -1462,11 +1462,11 @@ AS
 IF @StartTime IS NULL
    OR @StartTime = '19000101'
     SELECT @StartTime = MIN(runtime)
-    FROM vw_PERF_STATS_SCRIPT_RUNTIMES;
+    FROM dbo.vw_PERF_STATS_SCRIPT_RUNTIMES;
 IF @EndTime IS NULL
    OR @EndTime = '29990101'
     SELECT @EndTime = MAX(runtime)
-    FROM vw_PERF_STATS_SCRIPT_RUNTIMES;
+    FROM dbo.vw_PERF_STATS_SCRIPT_RUNTIMES;
 
 SELECT *
 FROM dbo.vw_BLOCKING_CHAINS
@@ -1788,7 +1788,6 @@ BEGIN
     ON dbo.tbl_HEADBLOCKERSUMMARY (
                                       runtime,
                                       head_blocker_session_id,
-                                      wait_type,
                                       blocked_task_count
                                   )
     INCLUDE (
@@ -2415,7 +2414,7 @@ INSERT INTO dbo.tbl_Reports
 )
 VALUES
 ('ReadTrace_Main', 'ReadTrace Reports', 'ReadTrace reports for Profiler traces (2000,2005,2008)', 1 | 2 | 4 | 8,
- 'Performance', 'readtrace.fn_ShowReports', 50);
+ 'Performance', 'ReadTrace.fn_ShowReports', 50);
 
 INSERT INTO dbo.tbl_Reports
 (
@@ -2641,9 +2640,9 @@ SELECT DISTINCT
        --ReportAvailable = 1 then 1 else 0 end as 'ReportAvailable'  
        ReportAvailable,
        SeqNo
-FROM dbo.tbl_reports rep
+FROM dbo.tbl_Reports rep
     INNER JOIN @t t
-        ON rep.ReportID = t.ReportID
+        ON rep.ReportId = t.ReportID
     CROSS JOIN dbo.tblNexusInfo
 WHERE Attribute = 'SQLVersion'
 ORDER BY SeqNo;
@@ -2816,7 +2815,7 @@ GO
 --if a wait never finishes in the tbl_requests, the waits are never counted
 --for example, if long blocking chain is detected but blocking is not finished yet, this is never reflected in bottleneck analysis
 --this update will do the following
---for any unfinished waits, we merge wait duration and task count into tbl_os_wait_stats
+--for any unfinished waits, we merge wait duration and task count into tbl_OS_WAIT_STATS
 --to avoid double counting, we only add time difference between captures
 --for example, suppose a lock wait started at t1, it lasted t2 and t3 capture.  
 --for t1, we update whatever the duration is. for t2 and t3, we just add the difference between t2 and t1 and t3 and t2
@@ -2829,7 +2828,7 @@ SET wait_time_ms = wait_time_ms + ISNULL(t.wait_duration_ms, 0),
                            ELSE
                                max_wait_time_ms
                        END
-FROM dbo.tbl_OS_Wait_Stats wait
+FROM dbo.tbl_OS_WAIT_STATS wait
     INNER JOIN
     (
         SELECT req.runtime,
@@ -2849,7 +2848,7 @@ FROM dbo.tbl_OS_Wait_Stats wait
                       END
                   ) 'task_cnt',
                MAX(wait_duration_ms) 'max_wait_duration_ms'
-        FROM dbo.tbl_Requests req
+        FROM dbo.tbl_REQUESTS req
             INNER JOIN
             (
                 SELECT t1.runtime,
@@ -3174,7 +3173,8 @@ IF OBJECT_ID('tblTopSqlPlan') IS NOT NULL
 BEGIN
     UPDATE dbo.tblTopSqlPlan
     SET xml_plan = FileContent;
-    CREATE PRIMARY XML INDEX PXML_tblTopSqlPlan ON dbo.tblTopSqlPlan (xml_plan);
+    CREATE PRIMARY XML INDEX PXML_tblTopSqlPlan
+    ON dbo.tblTopSqlPlan (xml_plan);
 END;
 
 
@@ -3280,12 +3280,12 @@ GO
 
 --select newid()
 
-INSERT INTO dbo.tbl_Analysissummary
+INSERT INTO dbo.tbl_AnalysisSummary
 (
     SolutionSourceId,
     Category,
-    type,
-    typedesc,
+    Type,
+    TypeDesc,
     Name,
     FriendlyName,
     Description,
@@ -3303,12 +3303,12 @@ VALUES
  'Some databases have auto create statistics disabled. This can negative impact performance.  See Database Configuration report for details',
  '' , 'https://docs.microsoft.com/sql/relational-databases/statistics/statistics#auto_create_statistics_async', '  ',
  1  , 99, 0, ' ');
-INSERT INTO dbo.tbl_Analysissummary
+INSERT INTO dbo.tbl_AnalysisSummary
 (
     SolutionSourceId,
     Category,
-    type,
-    typedesc,
+    Type,
+    TypeDesc,
     Name,
     FriendlyName,
     Description,
@@ -3326,12 +3326,12 @@ VALUES
  'Some databases have auto create statistics disabled. This can negative impact performance.  See Database Configuration report for details',
  '' , 'https://docs.microsoft.com/sql/relational-databases/statistics/statistics#auto_update_statistics_async', '  ',
  1  , 99, 0, ' ');
-INSERT INTO dbo.tbl_Analysissummary
+INSERT INTO dbo.tbl_AnalysisSummary
 (
     SolutionSourceId,
     Category,
-    type,
-    typedesc,
+    Type,
+    TypeDesc,
     Name,
     FriendlyName,
     Description,
@@ -3349,12 +3349,12 @@ VALUES
  'Power Plan is not set to High Performance which can impact overall server performance.', '',
  'https://docs.microsoft.com/troubleshoot/windows-server/performance/slow-performance-when-using-power-plan', '  ', 1,
  100, 0, ' ');
-INSERT INTO dbo.tbl_Analysissummary
+INSERT INTO dbo.tbl_AnalysisSummary
 (
     SolutionSourceId,
     Category,
-    type,
-    typedesc,
+    Type,
+    TypeDesc,
     Name,
     FriendlyName,
     Description,
@@ -3372,12 +3372,12 @@ VALUES
  'This trace flag is required to activiate all query optimizer fixes. Without this trace flag, none of the query optimizer fixes will be activated even you are on the latest hotfix or cumulative update. ',
  '' , 'https://docs.microsoft.com/sql/t-sql/database-console-commands/dbcc-traceon-trace-flags-transact-sql#tf4199',
  '  ', 1, 100, 0, ' ');
-INSERT INTO dbo.tbl_Analysissummary
+INSERT INTO dbo.tbl_AnalysisSummary
 (
     SolutionSourceId,
     Category,
-    type,
-    typedesc,
+    Type,
+    TypeDesc,
     Name,
     FriendlyName,
     Description,
@@ -3394,12 +3394,12 @@ VALUES
  'Some intensive XEvent tracing captured',
  'Some high-impact Extended Events (XEvents) are active on the server.  For high volume systems, this can have negative performance impact. Turn off query_pre_execution_showplan, query_post_execution_showplan,query_post_compilation_showplan,lock_acquired,sql_statement_starting,sql_statement_completed,sp_statement_starting, and sp_statement_completed to reduce impact. See pssdiag file *Profiler Traces_Startup.OUT for details',
  '' , '', '  ', 1, 200, 0, ' ');
-INSERT INTO dbo.tbl_Analysissummary
+INSERT INTO dbo.tbl_AnalysisSummary
 (
     SolutionSourceId,
     Category,
-    type,
-    typedesc,
+    Type,
+    TypeDesc,
     Name,
     FriendlyName,
     Description,
@@ -3416,12 +3416,12 @@ VALUES
  'Trace Flag 1118 not enabled', 'This trace flag help reduce tempdb contention. ', '',
  'https://docs.microsoft.com/sql/t-sql/database-console-commands/dbcc-traceon-trace-flags-transact-sql#tf1118', '  ',
  1  , 100, 0, ' ');
-INSERT INTO dbo.tbl_Analysissummary
+INSERT INTO dbo.tbl_AnalysisSummary
 (
     SolutionSourceId,
     Category,
-    type,
-    typedesc,
+    Type,
+    TypeDesc,
     Name,
     FriendlyName,
     Description,
@@ -3439,12 +3439,12 @@ VALUES
  'This trace flag partitions certain memory allocators by CPU and can improve performance for hihgly active servers.',
  '' , 'https://docs.microsoft.com/sql/t-sql/database-console-commands/dbcc-traceon-trace-flags-transact-sql#tf8048',
  '  ', 1, 100, 0, ' ');
-INSERT INTO dbo.tbl_Analysissummary
+INSERT INTO dbo.tbl_AnalysisSummary
 (
     SolutionSourceId,
     Category,
-    type,
-    typedesc,
+    Type,
+    TypeDesc,
     Name,
     FriendlyName,
     Description,
@@ -3461,12 +3461,12 @@ VALUES
  'Trace flag 9024 not enabled', 'This trace flag can help reduce recovery time and log writes.', '',
  'https://docs.microsoft.com/sql/t-sql/database-console-commands/dbcc-traceon-trace-flags-transact-sql#tf9024', '  ',
  1  , 100, 0, ' ');
-INSERT INTO dbo.tbl_Analysissummary
+INSERT INTO dbo.tbl_AnalysisSummary
 (
     SolutionSourceId,
     Category,
-    type,
-    typedesc,
+    Type,
+    TypeDesc,
     Name,
     FriendlyName,
     Description,
@@ -3484,12 +3484,12 @@ VALUES
  'This trace flag can help reduce contention on database lock for highly active servers.', '',
  'https://docs.microsoft.com/sql/t-sql/database-console-commands/dbcc-traceon-trace-flags-transact-sql#tf1236', '  ',
  1  , 100, 0, ' ');
-INSERT INTO dbo.tbl_Analysissummary
+INSERT INTO dbo.tbl_AnalysisSummary
 (
     SolutionSourceId,
     Category,
-    type,
-    typedesc,
+    Type,
+    TypeDesc,
     Name,
     FriendlyName,
     Description,
@@ -3506,12 +3506,12 @@ VALUES
  'high RESOURCE_GOVERNOR_IDLE detected',
  'High waits on RESOURCE_GOVERNOR_IDLE were deteted.  This is means CPU cap was configured for Resource Goverrnor and could force query to slowdown.  Make sure CPU cap for Resource Governor is properly configured. ',
  '' , '', '  ', 1, 100, 0, ' ');
-INSERT INTO dbo.tbl_Analysissummary
+INSERT INTO dbo.tbl_AnalysisSummary
 (
     SolutionSourceId,
     Category,
-    type,
-    typedesc,
+    Type,
+    TypeDesc,
     Name,
     FriendlyName,
     Description,
@@ -3528,12 +3528,12 @@ VALUES
  'Potential high compiles detected',
  'Potential high compilation was detected. Please verify with Perfmon counters data.  This can cause high CPU issues',
  '' , '', '  ', 1, 100, 0, ' ');
-INSERT INTO dbo.tbl_Analysissummary
+INSERT INTO dbo.tbl_AnalysisSummary
 (
     SolutionSourceId,
     Category,
-    type,
-    typedesc,
+    Type,
+    TypeDesc,
     Name,
     FriendlyName,
     Description,
@@ -3552,12 +3552,12 @@ VALUES
  '' ,
  'https://support.microsoft.com/en-us/topic/kb3026083-fix-sos-cachestore-spinlock-contention-on-ad-hoc-sql-server-plan-cache-causes-high-cpu-usage-in-sql-server-798ca4a5-3813-a3d2-f9c4-89eb1128fe68',
  '  ', 1, 100, 0, ' ');
-INSERT INTO dbo.tbl_Analysissummary
+INSERT INTO dbo.tbl_AnalysisSummary
 (
     SolutionSourceId,
     Category,
-    type,
-    typedesc,
+    Type,
+    TypeDesc,
     Name,
     FriendlyName,
     Description,
@@ -3574,12 +3574,12 @@ VALUES
  'Some queries had high statement execution count',
  'Some queries had high number statement executions.  This makes it challenging to tune the queries. ', '', '', '  ',
  1  , 100, 0, ' ');
-INSERT INTO dbo.tbl_Analysissummary
+INSERT INTO dbo.tbl_AnalysisSummary
 (
     SolutionSourceId,
     Category,
-    type,
-    typedesc,
+    Type,
+    TypeDesc,
     Name,
     FriendlyName,
     Description,
@@ -3596,12 +3596,12 @@ VALUES
  'lock_acquired or lock_released xevent was detected. ',
  'These events can cause high cpu or other performance issues. Turn lock_acquired or lock_released xevent off if not needed or use for very brief periods',
  '' , '', '  ', 1, 100, 0, ' ');
-INSERT INTO dbo.tbl_Analysissummary
+INSERT INTO dbo.tbl_AnalysisSummary
 (
     SolutionSourceId,
     Category,
-    type,
-    typedesc,
+    Type,
+    TypeDesc,
     Name,
     FriendlyName,
     Description,
@@ -3619,12 +3619,12 @@ VALUES
  'Loading McAfee Host Intrusion Prevention into SQL can lead to performance and stability issues ', '',
  'https://docs.microsoft.com/troubleshoot/sql/performance/performance-consistency-issues-filter-drivers-modules', '  ',
  1  , 100, 0, ' ');
-INSERT INTO dbo.tbl_Analysissummary
+INSERT INTO dbo.tbl_AnalysisSummary
 (
     SolutionSourceId,
     Category,
-    type,
-    typedesc,
+    Type,
+    TypeDesc,
     Name,
     FriendlyName,
     Description,
@@ -3642,12 +3642,12 @@ VALUES
  'Batch sort can cause high CPU or memory grant issues due to cardinality over-estimation ', '',
  'https://docs.microsoft.com/troubleshoot/sql/performance/decreased-perf-high-cpu-optimized-nested-loop', '  ', 1, 100,
  0  , ' ');
-INSERT INTO dbo.tbl_Analysissummary
+INSERT INTO dbo.tbl_AnalysisSummary
 (
     SolutionSourceId,
     Category,
-    type,
-    typedesc,
+    Type,
+    TypeDesc,
     Name,
     FriendlyName,
     Description,
@@ -3666,12 +3666,12 @@ VALUES
  '' ,
  'https://learn.microsoft.com/en-us/troubleshoot/sql/database-engine/performance/troubleshoot-optimizer-timeout-performance',
  '  ', 1, 100, 0, ' ');
-INSERT INTO dbo.tbl_Analysissummary
+INSERT INTO dbo.tbl_AnalysisSummary
 (
     SolutionSourceId,
     Category,
-    type,
-    typedesc,
+    Type,
+    TypeDesc,
     Name,
     FriendlyName,
     Description,
@@ -3688,12 +3688,12 @@ VALUES
  'Some statistics have sample size less than 5%',
  'Default sample size is sufficient for most normal workloads. But unevenly distributed data may require larger sample size or Full Scan sampling.',
  '' , '', '  ', 1, 100, 0, ' ');
-INSERT INTO dbo.tbl_Analysissummary
+INSERT INTO dbo.tbl_AnalysisSummary
 (
     SolutionSourceId,
     Category,
-    type,
-    typedesc,
+    Type,
+    TypeDesc,
     Name,
     FriendlyName,
     Description,
@@ -3710,12 +3710,12 @@ VALUES
  'Some indexes are disabled',
  'Disabling indexes may cause poor query performance. Check tbl_DisabledIndexes for details ', '',
  'http://aka.ms/nexus/disabledindex', '  ', 1, 100, 0, ' ');
-INSERT INTO dbo.tbl_Analysissummary
+INSERT INTO dbo.tbl_AnalysisSummary
 (
     SolutionSourceId,
     Category,
-    type,
-    typedesc,
+    Type,
+    TypeDesc,
     Name,
     FriendlyName,
     Description,
@@ -3733,12 +3733,12 @@ VALUES
  'Some auto statistics update took longer than 60 seconds.  Consider asynchronous stats update ', '',
  'https://docs.microsoft.com/sql/relational-databases/statistics/statistics#auto_update_statistics_async', '  ', 1,
  100, 0, ' ');
-INSERT INTO dbo.tbl_Analysissummary
+INSERT INTO dbo.tbl_AnalysisSummary
 (
     SolutionSourceId,
     Category,
-    type,
-    typedesc,
+    Type,
+    TypeDesc,
     Name,
     FriendlyName,
     Description,
@@ -3756,12 +3756,12 @@ VALUES
  'access check cache bucket count and access check cache quota are not configured per best practice ', '',
  'https://docs.microsoft.com/en-us/troubleshoot/sql/performance/recommended-updates-configuration-options', '  ', 1,
  100, 0, ' ');
-INSERT INTO dbo.tbl_Analysissummary
+INSERT INTO dbo.tbl_AnalysisSummary
 (
     SolutionSourceId,
     Category,
-    type,
-    typedesc,
+    Type,
+    TypeDesc,
     Name,
     FriendlyName,
     Description,
@@ -3777,12 +3777,12 @@ VALUES
 ('D3E36E57-4DDE-44D3-939F-13D2A2608F02', 'Server Performance', 'W', 'Warning', 'usp_RedoThreadBlocked',
  'Redo Thread wait ', 'Redo Thread may have waited excessively.  Check tbl_requests for command with DB STARTUP ', '',
  '' , '  ', 1, 100, 0, ' ');
-INSERT INTO dbo.tbl_Analysissummary
+INSERT INTO dbo.tbl_AnalysisSummary
 (
     SolutionSourceId,
     Category,
-    type,
-    typedesc,
+    Type,
+    TypeDesc,
     Name,
     FriendlyName,
     Description,
@@ -3799,12 +3799,12 @@ VALUES
  'Virtual bytes leak',
  'Virtual bytes for SQL process were over 7TB.  This may indicate of virtual bytes leak. Please check perfmon counter.',
  '' , 'https://support.microsoft.com/kb/3074434', '  ', 1, 100, 0, ' ');
-INSERT INTO dbo.tbl_Analysissummary
+INSERT INTO dbo.tbl_AnalysisSummary
 (
     SolutionSourceId,
     Category,
-    type,
-    typedesc,
+    Type,
+    TypeDesc,
     Name,
     FriendlyName,
     Description,
@@ -3823,12 +3823,12 @@ VALUES
  'https://blogs.msdn.microsoft.com/bobsql/2017/05/23/how-it-works-sql-server-deadlock-trace-flag-1222-output/',
  'https://blogs.msdn.microsoft.com/bobsql/2017/05/23/how-it-works-sql-server-deadlock-trace-flag-1222-output/', '  ',
  1  , 100, 0, ' ');
-INSERT INTO dbo.tbl_Analysissummary
+INSERT INTO dbo.tbl_AnalysisSummary
 (
     SolutionSourceId,
     Category,
-    type,
-    typedesc,
+    Type,
+    TypeDesc,
     Name,
     FriendlyName,
     Description,
@@ -3845,12 +3845,12 @@ VALUES
  'Perf scripts running long',
  'run time gaps between DMV queries were exceptionally large.  Some of them took more than 60 seconds between runs. check tbl_requests.runtime for details. this can be system issue',
  '' , '', '  ', 1, 100, 0, ' ');
-INSERT INTO dbo.tbl_Analysissummary
+INSERT INTO dbo.tbl_AnalysisSummary
 (
     SolutionSourceId,
     Category,
-    type,
-    typedesc,
+    Type,
+    TypeDesc,
     Name,
     FriendlyName,
     Description,
@@ -3865,14 +3865,14 @@ INSERT INTO dbo.tbl_Analysissummary
 VALUES
 ('062A4FCD-C2D9-4A08-B3B0-C57251223450', 'Server Performance', 'W', 'Warning', 'usp_AttendtionCausedBlocking',
  'Attention causing blocking',
- 'Some timeouts/attentions could have caused blocking.  see readtrace.tblInterestingEvents and vw_HEAD_BLOCKER_SUMMARY',
+ 'Some timeouts/attentions could have caused blocking.  see ReadTrace.tblInterestingEvents and vw_HEAD_BLOCKER_SUMMARY',
  '' , '', '  ', 1, 100, 0, ' ');
-INSERT INTO dbo.tbl_Analysissummary
+INSERT INTO dbo.tbl_AnalysisSummary
 (
     SolutionSourceId,
     Category,
-    type,
-    typedesc,
+    Type,
+    TypeDesc,
     Name,
     FriendlyName,
     Description,
@@ -3889,12 +3889,12 @@ VALUES
  'Max server memory (MB) is set to default', 'Consider changing the default ''max server memory'' to 75% of RAM', '',
  'https://learn.microsoft.com/sql/database-engine/configure-windows/server-memory-server-configuration-options#recommendations',
  '  ', 1, 100, 0, ' ');
-INSERT INTO dbo.tbl_Analysissummary
+INSERT INTO dbo.tbl_AnalysisSummary
 (
     SolutionSourceId,
     Category,
-    type,
-    typedesc,
+    Type,
+    TypeDesc,
     Name,
     FriendlyName,
     Description,
@@ -3911,12 +3911,12 @@ VALUES
  'Max degree of parallelism is set to 0', 'Consider changing MAXDOP to a value between 2 and 8', '',
  'https://learn.microsoft.com/sql/database-engine/configure-windows/configure-the-max-degree-of-parallelism-server-configuration-option',
  '  ', 1, 100, 0, ' ');
-INSERT INTO dbo.tbl_Analysissummary
+INSERT INTO dbo.tbl_AnalysisSummary
 (
     SolutionSourceId,
     Category,
-    type,
-    typedesc,
+    Type,
+    TypeDesc,
     Name,
     FriendlyName,
     Description,
@@ -3933,12 +3933,12 @@ VALUES
  'Max degree of parallelism is set to 1', 'Consider changing MAXDOP to a value between 2 and 8', '',
  'https://learn.microsoft.com/sql/database-engine/configure-windows/configure-the-max-degree-of-parallelism-server-configuration-option',
  '  ', 1, 100, 0, ' ');
-INSERT INTO dbo.tbl_Analysissummary
+INSERT INTO dbo.tbl_AnalysisSummary
 (
     SolutionSourceId,
     Category,
-    type,
-    typedesc,
+    Type,
+    TypeDesc,
     Name,
     FriendlyName,
     Description,
@@ -3955,12 +3955,12 @@ VALUES
  'Priority boost is set to 1', 'Change the priority boost value back to default of 0 ', '',
  'https://learn.microsoft.com/sql/database-engine/configure-windows/configure-the-priority-boost-server-configuration-option',
  '  ', 1, 100, 0, ' ');
-INSERT INTO dbo.tbl_Analysissummary
+INSERT INTO dbo.tbl_AnalysisSummary
 (
     SolutionSourceId,
     Category,
-    type,
-    typedesc,
+    Type,
+    TypeDesc,
     Name,
     FriendlyName,
     Description,
@@ -3978,12 +3978,12 @@ VALUES
  'Change the affinity I/O value back to default of 0. The option may be deprecated.', '',
  'https://learn.microsoft.com/en-us/sql/database-engine/configure-windows/affinity-input-output-mask-server-configuration-option',
  '  ', 1, 100, 0, ' ');
-INSERT INTO dbo.tbl_Analysissummary
+INSERT INTO dbo.tbl_AnalysisSummary
 (
     SolutionSourceId,
     Category,
-    type,
-    typedesc,
+    Type,
+    TypeDesc,
     Name,
     FriendlyName,
     Description,
@@ -4001,12 +4001,12 @@ VALUES
  'Change the affinity64 I/O value back to default of 0. The option may be deprecated.', '',
  'https://learn.microsoft.com/en-us/sql/database-engine/configure-windows/affinity-input-output-mask-server-configuration-option',
  '  ', 1, 100, 0, ' ');
-INSERT INTO dbo.tbl_Analysissummary
+INSERT INTO dbo.tbl_AnalysisSummary
 (
     SolutionSourceId,
     Category,
-    type,
-    typedesc,
+    Type,
+    TypeDesc,
     Name,
     FriendlyName,
     Description,
@@ -4024,12 +4024,12 @@ VALUES
  'Change the affinity mask value back to default of 0. The option will be deprecated.', '',
  'https://learn.microsoft.com/sql/database-engine/configure-windows/affinity-mask-server-configuration-option', '  ',
  1  , 100, 0, ' ');
-INSERT INTO dbo.tbl_Analysissummary
+INSERT INTO dbo.tbl_AnalysisSummary
 (
     SolutionSourceId,
     Category,
-    type,
-    typedesc,
+    Type,
+    TypeDesc,
     Name,
     FriendlyName,
     Description,
@@ -4047,12 +4047,12 @@ VALUES
  'Change the affinity64 mask value back to default of 0. The option will be deprecated.', '',
  'https://learn.microsoft.com/sql/database-engine/configure-windows/affinity-mask-server-configuration-option', '  ',
  1  , 100, 0, ' ');
-INSERT INTO dbo.tbl_Analysissummary
+INSERT INTO dbo.tbl_AnalysisSummary
 (
     SolutionSourceId,
     Category,
-    type,
-    typedesc,
+    Type,
+    TypeDesc,
     Name,
     FriendlyName,
     Description,
@@ -4070,12 +4070,12 @@ VALUES
  'Change the Lightweight Pooling value back to default of 0. The option will be deprecated.', '',
  'https://learn.microsoft.com/sql/database-engine/configure-windows/lightweight-pooling-server-configuration-option',
  '  ', 1, 100, 0, ' ');
-INSERT INTO dbo.tbl_Analysissummary
+INSERT INTO dbo.tbl_AnalysisSummary
 (
     SolutionSourceId,
     Category,
-    type,
-    typedesc,
+    Type,
+    TypeDesc,
     Name,
     FriendlyName,
     Description,
@@ -4095,12 +4095,12 @@ VALUES
  'https://learn.microsoft.com/sql/database-engine/configure-windows/configure-the-max-worker-threads-server-configuration-option',
  '  ', 1, 100, 0, ' ');
 
-INSERT INTO dbo.tbl_Analysissummary
+INSERT INTO dbo.tbl_AnalysisSummary
 (
     SolutionSourceId,
     Category,
-    type,
-    typedesc,
+    Type,
+    TypeDesc,
     Name,
     FriendlyName,
     Description,
@@ -4117,12 +4117,12 @@ VALUES
  'Potential high Recompiles detected, 50+ per second',
  'Potential high recompilations were detected. Please verify with perfmon data.  This can cause high CPU issues.', '',
  '' , '  ', 1, 100, 0, ' ');
-INSERT INTO dbo.tbl_Analysissummary
+INSERT INTO dbo.tbl_AnalysisSummary
 (
     SolutionSourceId,
     Category,
-    type,
-    typedesc,
+    Type,
+    TypeDesc,
     Name,
     FriendlyName,
     Description,
@@ -4140,12 +4140,12 @@ VALUES
  '/Pages1/Memory%20Grants.aspx',
  'https://techcommunity.microsoft.com/t5/sql-server-support-blog/memory-grants-the-mysterious-sql-server-memory-consumer-with/ba-p/333994',
  ' ', 1, 100, 0, ' ');
-INSERT INTO dbo.tbl_Analysissummary
+INSERT INTO dbo.tbl_AnalysisSummary
 (
     SolutionSourceId,
     Category,
-    type,
-    typedesc,
+    Type,
+    TypeDesc,
     Name,
     FriendlyName,
     Description,
@@ -4162,12 +4162,12 @@ VALUES
  'Optimizer Memory Leak',
  'MEMORYCLERK_SQLOPTIMIZER memory may be high.  This could be a leak issue which is fixed in SQL 2012 Sp1 CU3',
  'http://support.microsoft.com/kb/2803065', 'http://support.microsoft.com/kb/2803065', ' ', 1, 100, 0, ' ');
-INSERT INTO dbo.tbl_Analysissummary
+INSERT INTO dbo.tbl_AnalysisSummary
 (
     SolutionSourceId,
     Category,
-    type,
-    typedesc,
+    Type,
+    TypeDesc,
     Name,
     FriendlyName,
     Description,
@@ -4183,12 +4183,12 @@ VALUES
 ('5E630273-C14F-4DCE-BDA0-24A1FD8E25CA', 'Server Performance', 'W', 'Warning', 'usp_IOAnalysis', 'Disk IO Analysis',
  'The disk sec/transfer in following drives exceeded 20 ms, check the perfmon for complete analysis', '',
  'https://docs.microsoft.com/en-us/troubleshoot/sql/performance/troubleshoot-sql-io-performance', '  ', 1, 100, 0, ' ');
-INSERT INTO dbo.tbl_Analysissummary
+INSERT INTO dbo.tbl_AnalysisSummary
 (
     SolutionSourceId,
     Category,
-    type,
-    typedesc,
+    Type,
+    TypeDesc,
     Name,
     FriendlyName,
     Description,
@@ -4206,12 +4206,12 @@ VALUES
  'There are missing indexes detected.  Review the SQL Nexus report and apply some of the recommendations.', '',
  'https://learn.microsoft.com/sql/relational-databases/indexes/tune-nonclustered-missing-index-suggestions', ' ', 1,
  100, 0, ' ');
-INSERT INTO dbo.tbl_Analysissummary
+INSERT INTO dbo.tbl_AnalysisSummary
 (
     SolutionSourceId,
     Category,
-    type,
-    typedesc,
+    Type,
+    TypeDesc,
     Name,
     FriendlyName,
     Description,
@@ -4227,12 +4227,12 @@ VALUES
 ('0C73F3D4-6CCC-4FC9-AE37-58110F9C15DB', 'Server Performance', 'I', 'Info', 'StaleStatswarning2008',
  'Stale Stats warning 2008', 'Statistics of some tables has not been updated for over 7 days', '',
  'https://docs.microsoft.com/sql/relational-databases/statistics/statistics#UpdateStatistics', ' ', 1, 100, 0, ' ');
-INSERT INTO dbo.tbl_Analysissummary
+INSERT INTO dbo.tbl_AnalysisSummary
 (
     SolutionSourceId,
     Category,
-    type,
-    typedesc,
+    Type,
+    TypeDesc,
     Name,
     FriendlyName,
     Description,
@@ -4249,12 +4249,12 @@ VALUES
  'SQL High CPU consumption', 'CPU consumption from SQL Server was excessive (>80%) for an extended period of time', '',
  'https://docs.microsoft.com/en-us/troubleshoot/sql/performance/troubleshoot-high-cpu-usage-issues', '  ', 1, 100, 0,
  ' ');
-INSERT INTO dbo.tbl_Analysissummary
+INSERT INTO dbo.tbl_AnalysisSummary
 (
     SolutionSourceId,
     Category,
-    type,
-    typedesc,
+    Type,
+    TypeDesc,
     Name,
     FriendlyName,
     Description,
@@ -4270,12 +4270,12 @@ VALUES
 ('6C82DA17-D04C-4155-8702-19A9A1363A64', 'Server Performance', 'W', 'Warning', 'usp_KernelHighCPUconsumption',
  'Kernel High CPU consumption', 'Kernel CPU consumption for SQL Server exceeded for an extended period of time.', '',
  '' , '  ', 1, 100, 0, ' ');
-INSERT INTO dbo.tbl_Analysissummary
+INSERT INTO dbo.tbl_AnalysisSummary
 (
     SolutionSourceId,
     Category,
-    type,
-    typedesc,
+    Type,
+    TypeDesc,
     Name,
     FriendlyName,
     Description,
@@ -4292,12 +4292,12 @@ VALUES
  'High non-SQL CPU consumption detected',
  'Much of the CPU utilization came from non-SQL Server process(es). Review the perfmon data to identify which processes caused this (Process object)',
  '' , '', '  ', 1, 100, 0, ' ');
-INSERT INTO dbo.tbl_Analysissummary
+INSERT INTO dbo.tbl_AnalysisSummary
 (
     SolutionSourceId,
     Category,
-    type,
-    typedesc,
+    Type,
+    TypeDesc,
     Name,
     FriendlyName,
     Description,
@@ -4313,12 +4313,12 @@ VALUES
 ('57CAA4BB-C7BD-4F96-8040-3224008A3F39', 'Server Performance', 'I', 'Info', 'XEventcrash',
  'XEvent may cause SQL Server crash', 'XEvent session retrieving the Query Hash can result in SQL Server shutdown', '',
  'http://support.microsoft.com/kb/3004355', ' ', 1, 100, 0, ' ');
-INSERT INTO dbo.tbl_Analysissummary
+INSERT INTO dbo.tbl_AnalysisSummary
 (
     SolutionSourceId,
     Category,
-    type,
-    typedesc,
+    Type,
+    TypeDesc,
     Name,
     FriendlyName,
     Description,
@@ -4335,12 +4335,12 @@ VALUES
  'Oracle Driver SQL Server crash',
  'Oracle driver loaded in SQL Server memory space may cause SQL Server to crash, refer the KB for solution', '',
  'https://docs.microsoft.com/en-US/troubleshoot/sql/admin/crashes-run-oracle-linked-server-query', ' ', 1, 100, 0, ' ');
-INSERT INTO dbo.tbl_Analysissummary
+INSERT INTO dbo.tbl_AnalysisSummary
 (
     SolutionSourceId,
     Category,
-    type,
-    typedesc,
+    Type,
+    TypeDesc,
     Name,
     FriendlyName,
     Description,
@@ -4357,12 +4357,12 @@ VALUES
  'Many Active Traces Warning',
  'Multiple active SQL traces (> 4) were detected on the server.  This can negatively impact server performance. Review and see if you need all of them to be active',
  '' , 'https://learn.microsoft.com/sql/relational-databases/sql-trace/optimize-sql-trace', ' ', 1, 100, 0, ' ');
-INSERT INTO dbo.tbl_Analysissummary
+INSERT INTO dbo.tbl_AnalysisSummary
 (
     SolutionSourceId,
     Category,
-    type,
-    typedesc,
+    Type,
+    TypeDesc,
     Name,
     FriendlyName,
     Description,
@@ -4379,12 +4379,12 @@ VALUES
  'Expensive, performance-impacting Trace events were identfied',
  'Multiple non default trace events  were detected running on the server.  This can negatively impact server performance',
  '' , '', '  ', 1, 100, 0, ' ');
-INSERT INTO dbo.tbl_Analysissummary
+INSERT INTO dbo.tbl_AnalysisSummary
 (
     SolutionSourceId,
     Category,
-    type,
-    typedesc,
+    Type,
+    TypeDesc,
     Name,
     FriendlyName,
     Description,
@@ -4401,12 +4401,12 @@ VALUES
  'Expensive, performance-impacting Extended events were identfied',
  'Multiple non default trace events  were detected running on the server.  This can negatively impact server performance',
  '' , '', '  ', 1, 100, 0, ' ');
-INSERT INTO dbo.tbl_Analysissummary
+INSERT INTO dbo.tbl_AnalysisSummary
 (
     SolutionSourceId,
     Category,
-    type,
-    typedesc,
+    Type,
+    TypeDesc,
     Name,
     FriendlyName,
     Description,
@@ -4423,12 +4423,12 @@ VALUES
  'Using Legacy CE for database', 'Consider changing compatibility level to take advantage of Optimizer New CE', '',
  'https://learn.microsoft.com/sql/relational-databases/performance/cardinality-estimation-sql-server', '  ', 1, 100, 0,
  ' ');
-INSERT INTO dbo.tbl_Analysissummary
+INSERT INTO dbo.tbl_AnalysisSummary
 (
     SolutionSourceId,
     Category,
-    type,
-    typedesc,
+    Type,
+    TypeDesc,
     Name,
     FriendlyName,
     Description,
@@ -4447,12 +4447,12 @@ VALUES
  '' ,
  'https://docs.microsoft.com/sql/database-engine/install-windows/upgrade-to-a-different-edition-of-sql-server-setup',
  '  jamgrif', 1, 100, 0, ' ');
-INSERT INTO dbo.tbl_Analysissummary
+INSERT INTO dbo.tbl_AnalysisSummary
 (
     SolutionSourceId,
     Category,
-    type,
-    typedesc,
+    Type,
+    TypeDesc,
     Name,
     FriendlyName,
     Description,
@@ -4469,12 +4469,12 @@ VALUES
  'High Spinlock rates, likey causing high CPU',
  'Excessive spins have been detected from a spinlock likely driving CPU(s) to high utilization', '',
  'https://learn.microsoft.com/sql/relational-databases/diagnose-resolve-spinlock-contention', '  ', 1, 100, 0, ' ');
-INSERT INTO dbo.tbl_Analysissummary
+INSERT INTO dbo.tbl_AnalysisSummary
 (
     SolutionSourceId,
     Category,
-    type,
-    typedesc,
+    Type,
+    TypeDesc,
     Name,
     FriendlyName,
     Description,
@@ -4493,12 +4493,12 @@ VALUES
  '' ,
  'https://learn.microsoft.com/troubleshoot/sql/database-engine/performance/performance-consistency-issues-filter-drivers-modules',
  '  ', 1, 100, 0, ' ');
-INSERT INTO dbo.tbl_Analysissummary
+INSERT INTO dbo.tbl_AnalysisSummary
 (
     SolutionSourceId,
     Category,
-    type,
-    typedesc,
+    Type,
+    TypeDesc,
     Name,
     FriendlyName,
     Description,
@@ -4513,12 +4513,12 @@ INSERT INTO dbo.tbl_Analysissummary
 VALUES
 ('31E879BE-97A4-413F-880F-29BFC57C099F', 'AlwaysOn State', 'W', 'Warning', 'usp_AGHealthState',
  'AlwaysOn replica states', 'AG replica(s) is unhealthy or not online', '', '', '  ', 1, 100, 0, ' ');
-INSERT INTO dbo.tbl_Analysissummary
+INSERT INTO dbo.tbl_AnalysisSummary
 (
     SolutionSourceId,
     Category,
-    type,
-    typedesc,
+    Type,
+    TypeDesc,
     Name,
     FriendlyName,
     Description,
@@ -4535,12 +4535,12 @@ VALUES
  'AlwaysOn endpoint state', 'AG DBM endpoint is not online.', '',
  'https://learn.microsoft.com/sql/database-engine/availability-groups/windows/troubleshoot-always-on-availability-groups-configuration-sql-server#Endpoints',
  '  ', 1, 100, 0, ' ');
-INSERT INTO dbo.tbl_Analysissummary
+INSERT INTO dbo.tbl_AnalysisSummary
 (
     SolutionSourceId,
     Category,
-    type,
-    typedesc,
+    Type,
+    TypeDesc,
     Name,
     FriendlyName,
     Description,
@@ -4581,19 +4581,19 @@ GO
 CREATE PROCEDURE usp_AttendtionCausedBlocking
 AS
 BEGIN
-    IF (OBJECT_ID('[readtrace].[tblInterestingEvents]') IS NOT NULL)
+    IF (OBJECT_ID('[ReadTrace].[tblInterestingEvents]') IS NOT NULL)
     BEGIN
         IF EXISTS
         (
             SELECT *
-            FROM readtrace.tblInterestingEvents evt
-                JOIN vw_HEAD_BLOCKER_SUMMARY bloc
+            FROM ReadTrace.tblInterestingEvents evt
+                JOIN dbo.vw_HEAD_BLOCKER_SUMMARY bloc
                     ON evt.Session = bloc.head_blocker_session_id
-            WHERE eventid = 16
+            WHERE evt.EventID = 16
                   AND evt.StartTime < bloc.runtime
         )
         BEGIN
-            UPDATE tbl_AnalysisSummary
+            UPDATE dbo.tbl_AnalysisSummary
             SET Status = 1
             WHERE Name = OBJECT_NAME(@@PROCID);
 
@@ -4638,7 +4638,12 @@ IF (
        AND (OBJECT_ID('tbl_AnalysisSummary') IS NOT NULL)
    )
 BEGIN
-    IF EXISTS (SELECT * FROM dbo.tbl_TraceFlags WHERE TraceFlag IN ( 1204, 1222 ))
+    IF EXISTS
+    (
+        SELECT *
+        FROM dbo.tbl_TraceFlags
+        WHERE TraceFlag IN ( 1204, 1222 )
+    )
     BEGIN
         UPDATE dbo.tbl_AnalysisSummary
         SET Status = 1,
@@ -4652,18 +4657,18 @@ GO
 
 CREATE PROCEDURE usp_ChangeTableCauseHighCPU
 AS
-IF (OBJECT_ID('[readtrace].[tblUniqueBatches]') IS NOT NULL)
+IF (OBJECT_ID('[ReadTrace].[tblUniqueBatches]') IS NOT NULL)
 BEGIN
     IF EXISTS
     (
         SELECT *
-        FROM readtrace.tblUniqueBatches
+        FROM ReadTrace.tblUniqueBatches
         WHERE NormText LIKE '%CHANGETABLE%'
     )
        OR EXISTS
     (
         SELECT *
-        FROM readtrace.tblUniqueStatements
+        FROM ReadTrace.tblUniqueStatements
         WHERE NormText LIKE '%CHANGETABLE%'
     )
     BEGIN
@@ -4680,7 +4685,7 @@ AS
 IF EXISTS
 (
     SELECT *
-    FROM dbo.tbl_requests
+    FROM dbo.tbl_REQUESTS
     WHERE command = 'DB STARTUP'
           AND wait_duration_ms > 15000
 )
@@ -4764,16 +4769,16 @@ CREATE PROCEDURE usp_LongAutoUpdateStats
 AS
 BEGIN
     IF (
-           (OBJECT_ID('[readtrace].[tblInterestingEvents]') IS NOT NULL)
+           (OBJECT_ID('[ReadTrace].[tblInterestingEvents]') IS NOT NULL)
            AND (OBJECT_ID('tbl_AnalysisSummary') IS NOT NULL)
        )
     BEGIN
         DECLARE @statstext NVARCHAR(MAX);
-        SELECT @statstext = textdata
-        FROM readtrace.tblInterestingEvents
-        WHERE eventid = 58
-              AND (duration / 1000.00 / 1000.00) > 60
-        ORDER BY duration DESC;
+        SELECT @statstext = TextData
+        FROM ReadTrace.tblInterestingEvents
+        WHERE EventID = 58
+              AND (Duration / 1000.00 / 1000.00) > 60
+        ORDER BY Duration DESC;
         IF @statstext IS NOT NULL
         BEGIN
             UPDATE dbo.tbl_AnalysisSummary
@@ -4836,7 +4841,7 @@ DECLARE @FileName NVARCHAR(MAX),
 IF (COL_LENGTH('dbo.tblTopSqlPlan', 'xml_plan') IS NULL)
 BEGIN
     SELECT TOP 1
-           @filename = RIGHT([FileName], CHARINDEX('\', REVERSE([FileName])) - 1),
+           @FileName = RIGHT([FileName], CHARINDEX('\', REVERSE([FileName])) - 1),
            @Optimized = c.value('@Optimized[1]', 'int')
     FROM
     (SELECT FileName, xml_plan AS QueryPlan FROM dbo.tblTopSqlPlan) a
@@ -4846,7 +4851,7 @@ END;
 
 IF (@FileName IS NOT NULL)
 BEGIN
-    UPDATE tbl_AnalysisSummary
+    UPDATE dbo.tbl_AnalysisSummary
     SET [Status] = 1,
         [Description] = 'Found a query plan with a batch sort. ''' + @FileName
                         + ''' contains an example query plan. Batch sort can cause high CPU or memory grant issues due to cardinality over-estimation. Examine plan and query duration. '
@@ -4944,14 +4949,14 @@ GO
 CREATE PROCEDURE usp_ExcessiveLockXevent
 AS
 IF (
-       (OBJECT_ID('tbl_Xevents') IS NOT NULL)
+       (OBJECT_ID('tbl_XEvents') IS NOT NULL)
        AND (OBJECT_ID('tbl_AnalysisSummary') IS NOT NULL)
    )
 BEGIN
     IF EXISTS
     (
         SELECT *
-        FROM dbo.tbl_Xevents
+        FROM dbo.tbl_XEvents
         WHERE event_name IN ( 'lock_released', 'lock_acquired' )
     )
     BEGIN
@@ -4977,9 +4982,9 @@ BEGIN
             WHERE CounterName = 'Cache Object Counts'
         ) > 100000
         BEGIN
-            UPDATE tbl_analysissummary
-            SET [status] = 1
-            WHERE name = 'usp_HighCacheCount';
+            UPDATE dbo.tbl_AnalysisSummary
+            SET [Status] = 1
+            WHERE Name = 'usp_HighCacheCount';
         END;
     END;
 END;
@@ -4988,7 +4993,7 @@ GO
 CREATE PROCEDURE usp_HighStmtCount
 AS
 BEGIN
-    IF (OBJECT_ID('[readtrace].[tblStatements]') IS NOT NULL)
+    IF (OBJECT_ID('[ReadTrace].[tblStatements]') IS NOT NULL)
     BEGIN
         IF
         (
@@ -4997,7 +5002,7 @@ BEGIN
             (
                 SELECT BatchSeq,
                        COUNT(*) 'StmtCount'
-                FROM readtrace.tblStatements
+                FROM ReadTrace.tblStatements
                 GROUP BY BatchSeq
             ) t
         ) > 1000
@@ -5006,22 +5011,22 @@ BEGIN
             DECLARE @query NVARCHAR(MAX);
 
             SELECT @query = NormText
-            FROM readtrace.tblBatches bat
-                JOIN readtrace.tblUniqueBatches ub
-                    ON bat.hashid = ub.HashID
+            FROM ReadTrace.tblBatches bat
+                JOIN ReadTrace.tblUniqueBatches ub
+                    ON bat.HashID = ub.HashID
             WHERE bat.BatchSeq IN
                   (
                       SELECT TOP 1
                              bat.BatchSeq
-                      FROM readtrace.tblStatements st
-                          JOIN readtrace.tblBatches bat
+                      FROM ReadTrace.tblStatements st
+                          JOIN ReadTrace.tblBatches bat
                               ON st.BatchSeq = bat.BatchSeq
                       GROUP BY bat.BatchSeq
                       ORDER BY COUNT(*) DESC
                   );
 
-            UPDATE dbo.tbl_Analysissummary
-            SET [status] = 1,
+            UPDATE dbo.tbl_AnalysisSummary
+            SET [Status] = 1,
                 [Description] = [Description] + ' here is an example query: ' + @query
             WHERE Name = 'usp_HighStmtCount';
         END;
@@ -5057,7 +5062,7 @@ IF (
        AND (OBJECT_ID('tbl_AnalysisSummary') IS NOT NULL)
    )
 BEGIN
-    IF (dbo.fn_CputhresheldCrossed() = 1)
+    IF (dbo.fn_CPUthresheldCrossed() = 1)
     BEGIN
         DECLARE @raise BIT = 1;
         IF EXISTS
@@ -5091,8 +5096,8 @@ BEGIN
             FROM dbo.tbl_TraceFlags
             WHERE TraceFlag = 4199
         )
-            UPDATE dbo.tbl_Analysissummary
-            SET [status] = 1
+            UPDATE dbo.tbl_AnalysisSummary
+            SET [Status] = 1
             WHERE Name = 'Trace Flag 4199';
 
         IF @raise = 1
@@ -5103,8 +5108,8 @@ BEGIN
             FROM dbo.tbl_TraceFlags
             WHERE TraceFlag = 1118
         )
-            UPDATE tbl_Analysissummary
-            SET [status] = 1
+            UPDATE dbo.tbl_AnalysisSummary
+            SET [Status] = 1
             WHERE Name = 'Trace Flag 1118';
 
         IF @raise = 1
@@ -5114,8 +5119,8 @@ BEGIN
             FROM dbo.tbl_TraceFlags
             WHERE TraceFlag = 8048
         )
-            UPDATE tbl_Analysissummary
-            SET [status] = 1
+            UPDATE dbo.tbl_AnalysisSummary
+            SET [Status] = 1
             WHERE Name = 'Trace Flag 8048';
 
         IF @raise = 1
@@ -5125,8 +5130,8 @@ BEGIN
             FROM dbo.tbl_TraceFlags
             WHERE TraceFlag = 1236
         )
-            UPDATE tbl_Analysissummary
-            SET [status] = 1
+            UPDATE dbo.tbl_AnalysisSummary
+            SET [Status] = 1
             WHERE Name = 'Trace Flag 1236';
         IF @raise = 1
            AND NOT EXISTS
@@ -5135,8 +5140,8 @@ BEGIN
             FROM dbo.tbl_TraceFlags
             WHERE TraceFlag = 9024
         )
-            UPDATE tbl_Analysissummary
-            SET [status] = 1
+            UPDATE dbo.tbl_AnalysisSummary
+            SET [Status] = 1
             WHERE Name = 'Trace Flag 9024';
     END;
 END;
@@ -5157,9 +5162,9 @@ BEGIN
             WHERE c.CounterName = 'SQL Compilations/sec'
         ) > 300
         BEGIN
-            UPDATE dbo.tbl_Analysissummary
-            SET [status] = 1
-            WHERE name = 'usp_HighCompile';
+            UPDATE dbo.tbl_AnalysisSummary
+            SET [Status] = 1
+            WHERE Name = 'usp_HighCompile';
         END;
     END;
 END;
@@ -5176,9 +5181,9 @@ BEGIN
         WHERE wait_type = 'RESOURCE_GOVERNOR_IDLE'
     ) > 10000000
     BEGIN
-        UPDATE dbo.tbl_Analysissummary
-        SET [status] = 1
-        WHERE name = 'usp_RG_Idle';
+        UPDATE dbo.tbl_AnalysisSummary
+        SET [Status] = 1
+        WHERE Name = 'usp_RG_Idle';
     END;
 
 END;
@@ -5194,7 +5199,7 @@ GO
 -- 		('query_pre_execution_showplan', 'query_post_execution_showplan','query_post_compilation_showplan','lock_acquired','sql_statement_starting','sql_statement_completed','sp_statement_starting','sp_statement_completed')
 -- 	)
 -- 	begin
--- 		update tbl_analysissummary
+-- 		update tbl_AnalysisSummary
 -- 		set [status]=1
 -- 		where name ='Detailed XEvent Tracing'
 -- 	end
@@ -5703,8 +5708,8 @@ CREATE PROCEDURE [dbo].[usp_IOAnalysis]
 AS
 BEGIN
     IF (
-           (OBJECT_ID('counterdata') IS NOT NULL)
-           AND (OBJECT_ID('counterdetails') IS NOT NULL)
+           (OBJECT_ID('CounterData') IS NOT NULL)
+           AND (OBJECT_ID('CounterDetails') IS NOT NULL)
            AND (OBJECT_ID('tbl_AnalysisSummary') IS NOT NULL)
        )
     BEGIN
@@ -5980,7 +5985,7 @@ BEGIN
         --try to find CPU count different possible ways.  if we get zero or null, try another way
 
         DECLARE @schedCount INT = 0;
-        IF EXISTS (SELECT 1 FROM sys.Tables WHERE NAME = N'tbl_ServerProperties')
+        IF EXISTS (SELECT 1 FROM sys.tables WHERE name = N'tbl_ServerProperties')
         --#1 try 
         BEGIN
             --make sure there is only 1 distinct row (this process might get more than 1 server...probably FCI situtation when it does)
@@ -6008,30 +6013,30 @@ BEGIN
         -- still didnt get CPUs, try again
         BEGIN
             --consider doing this now 
-            IF (OBJECT_ID('counterdetails') IS NOT NULL)
+            IF (OBJECT_ID('CounterDetails') IS NOT NULL)
             BEGIN
                 IF 0 =
                 (
                     SELECT COUNT(*)
                     FROM sys.indexes
-                    WHERE object_id = OBJECT_ID('dbo.counterdetails')
+                    WHERE object_id = OBJECT_ID('dbo.CounterDetails')
                           AND name = 'procCount_idx'
                 )
                 BEGIN
                     CREATE INDEX procCount_idx
-                    ON dbo.CounterDetails (objectname)
+                    ON dbo.CounterDetails (ObjectName)
                     INCLUDE (
-                                countername,
-                                instancename
+                                CounterName,
+                                InstanceName
                             )
-                    WHERE objectname IN ( 'Processor Information' )
-                          AND countername IN ( '% User Time' );
+                    WHERE ObjectName IN ( 'Processor Information' )
+                          AND CounterName IN ( '% User Time' );
                 END;
                 --as long as table existed, and we either created index or it is already there, try to get CPUs
                 SELECT @cpuCount = COUNT(DISTINCT dli.InstanceName)
                 FROM dbo.CounterData dat
                     INNER JOIN dbo.CounterDetails dli
-                        ON dat.counterid = dli.counterid
+                        ON dat.CounterID = dli.CounterID
                 WHERE dli.ObjectName IN ( 'Processor Information' )
                       AND dli.CounterName IN ( '% User Time' )
                       AND dli.InstanceName NOT LIKE ('%_Total%');
@@ -6069,7 +6074,7 @@ BEGIN
                ISNULL(detl.InstanceIndex, 0)
         FROM dbo.CounterData dat
             INNER JOIN dbo.CounterDetails detl
-                ON dat.counterid = detl.counterid
+                ON dat.CounterID = detl.CounterID
         WHERE detl.ObjectName IN ( 'Process' )
               AND detl.CounterName IN ( '% User Time' )
               AND detl.InstanceName LIKE 'sqlservr%'
@@ -6103,7 +6108,7 @@ BEGIN
                 SELECT @t_AvgValue = AVG(CAST(dat.CounterValue AS BIGINT))
                 FROM dbo.CounterData dat
                     INNER JOIN dbo.CounterDetails dli
-                        ON dat.counterid = dli.counterid
+                        ON dat.CounterID = dli.CounterID
                 WHERE dli.ObjectName IN ( 'Process' )
                       AND dli.CounterName IN ( '% User Time' )
                       AND dli.InstanceName LIKE 'sqlservr%'
@@ -6147,8 +6152,8 @@ AS
 SET NOCOUNT ON;
 BEGIN
     IF (
-           (OBJECT_ID('counterdata') IS NOT NULL)
-           AND (OBJECT_ID('counterdetails') IS NOT NULL)
+           (OBJECT_ID('CounterData') IS NOT NULL)
+           AND (OBJECT_ID('CounterDetails') IS NOT NULL)
            AND (OBJECT_ID('tbl_AnalysisSummary') IS NOT NULL)
        )
     BEGIN
@@ -6168,7 +6173,7 @@ BEGIN
         --try to find CPU count different possible ways.  if we get zero or null, try another way
 
 
-        IF EXISTS (SELECT 1 FROM sys.Tables WHERE NAME = N'tbl_ServerProperties')
+        IF EXISTS (SELECT 1 FROM sys.tables WHERE name = N'tbl_ServerProperties')
         --#1 try 
         BEGIN
             --make sure there is only 1 distinct row (this process might get more than 1 server...probably FCI situtation when it does)
@@ -6196,30 +6201,30 @@ BEGIN
         -- still didnt get CPUs, try again
         BEGIN
             --consider doing this now 
-            IF (OBJECT_ID('counterdetails') IS NOT NULL)
+            IF (OBJECT_ID('CounterDetails') IS NOT NULL)
             BEGIN
                 IF 0 =
                 (
                     SELECT COUNT(*)
                     FROM sys.indexes
-                    WHERE object_id = OBJECT_ID('dbo.counterdetails')
+                    WHERE object_id = OBJECT_ID('dbo.CounterDetails')
                           AND name = 'procCount_idx'
                 )
                 BEGIN
                     CREATE INDEX procCount_idx
-                    ON dbo.CounterDetails (objectname)
+                    ON dbo.CounterDetails (ObjectName)
                     INCLUDE (
-                                countername,
-                                instancename
+                                CounterName,
+                                InstanceName
                             )
-                    WHERE objectname IN ( 'Processor Information' )
-                          AND countername IN ( '% User Time' );
+                    WHERE ObjectName IN ( 'Processor Information' )
+                          AND CounterName IN ( '% User Time' );
                 END;
                 --as long as table existed, and we either created index or it is already there, try to get CPUs
                 SELECT @cpuCount = COUNT(DISTINCT dli.InstanceName)
                 FROM dbo.CounterData dat
                     INNER JOIN dbo.CounterDetails dli
-                        ON dat.counterid = dli.counterid
+                        ON dat.CounterID = dli.CounterID
                 WHERE dli.ObjectName IN ( 'Processor Information' )
                       AND dli.CounterName IN ( '% User Time' )
                       AND dli.InstanceName NOT LIKE ('%_Total%');
@@ -6265,7 +6270,7 @@ BEGIN
                ISNULL(dli.InstanceIndex, 0)
         FROM dbo.CounterData dat
             INNER JOIN dbo.CounterDetails dli
-                ON dat.CounterID = dli.counterid
+                ON dat.CounterID = dli.CounterID
         WHERE dli.ObjectName IN ( 'Process' ) --'physicaldisk','Processor' 
               AND dli.CounterName IN ( '% Privileged Time' )
               AND dli.InstanceName LIKE 'sqlservr%'
@@ -6296,7 +6301,7 @@ BEGIN
                 SELECT @t_AvgValue = CAST(AVG(dat.CounterValue) AS DECIMAL(20, 2))
                 FROM dbo.CounterData dat
                     INNER JOIN dbo.CounterDetails dli
-                        ON dat.counterid = dli.counterid
+                        ON dat.CounterID = dli.CounterID
                 WHERE dli.ObjectName IN ( 'Process' ) --'physicaldisk','Processor' 
                       AND dli.CounterName IN ( '% Privileged Time' )
                       AND dli.InstanceName LIKE 'sqlservr%'
@@ -6338,8 +6343,8 @@ AS
 SET NOCOUNT ON;
 BEGIN
     IF (
-           (OBJECT_ID('counterdata') IS NOT NULL)
-           AND (OBJECT_ID('counterdetails') IS NOT NULL)
+           (OBJECT_ID('CounterData') IS NOT NULL)
+           AND (OBJECT_ID('CounterDetails') IS NOT NULL)
            AND (OBJECT_ID('tbl_AnalysisSummary') IS NOT NULL)
        )
     BEGIN
@@ -6364,7 +6369,7 @@ BEGIN
         --try to find CPU count different possible ways.  if we get zero or null, try another way
 
         DECLARE @schedCount INT = 0;
-        IF EXISTS (SELECT 1 FROM sys.Tables WHERE NAME = N'tbl_ServerProperties')
+        IF EXISTS (SELECT 1 FROM sys.tables WHERE name = N'tbl_ServerProperties')
         --#1 try 
         BEGIN
             --make sure there is only 1 distinct row (this process might get more than 1 server...probably FCI situtation when it does)
@@ -6403,19 +6408,19 @@ BEGIN
                 )
                 BEGIN
                     CREATE INDEX procCount_idx
-                    ON dbo.CounterDetails (objectname)
+                    ON dbo.CounterDetails (ObjectName)
                     INCLUDE (
-                                countername,
-                                instancename
+                                CounterName,
+                                InstanceName
                             )
-                    WHERE objectname IN ( 'Processor Information' )
-                          AND countername IN ( '% User Time' );
+                    WHERE ObjectName IN ( 'Processor Information' )
+                          AND CounterName IN ( '% User Time' );
                 END;
                 --as long as table existed, and we either created index or it is already there, try to get CPUs
                 SELECT @cpuCount = COUNT(DISTINCT dli.InstanceName)
                 FROM dbo.CounterData dat
                     INNER JOIN dbo.CounterDetails dli
-                        ON dat.counterid = dli.counterid
+                        ON dat.CounterID = dli.CounterID
                 WHERE dli.ObjectName IN ( 'Processor Information' )
                       AND dli.CounterName IN ( '% User Time' )
                       AND dli.InstanceName NOT LIKE ('%_Total%');
@@ -6453,7 +6458,7 @@ BEGIN
                SUM(dat.CounterValue)
         FROM dbo.CounterData dat
             INNER JOIN dbo.CounterDetails detl
-                ON dat.counterid = detl.counterid
+                ON dat.CounterID = detl.CounterID
         WHERE detl.ObjectName IN ( 'Process' )
               AND detl.CounterName IN ( '% User Time' )
               AND
@@ -6790,8 +6795,8 @@ BEGIN
         ) > 50
         BEGIN
             UPDATE dbo.tbl_AnalysisSummary
-            SET [status] = 1
-            WHERE name = 'usp_HighRecompiles';
+            SET [Status] = 1
+            WHERE Name = 'usp_HighRecompiles';
         END;
     END;
 END;
@@ -6807,8 +6812,8 @@ BEGIN
     IF EXISTS
     (
         SELECT 1
-        FROM sys.Tables
-        WHERE NAME = N'tbl_SCRIPT_ENVIRONMENT_DETAILS'
+        FROM sys.tables
+        WHERE name = N'tbl_SCRIPT_ENVIRONMENT_DETAILS'
     )
     BEGIN
         SELECT @SQLVERSION = LEFT(Value, 2)
@@ -6816,7 +6821,7 @@ BEGIN
         WHERE Name LIKE 'SQL Version%';
     END;
 
-    IF EXISTS (SELECT 1 FROM sys.Tables WHERE NAME = N'tbl_SysDatabases')
+    IF EXISTS (SELECT 1 FROM sys.tables WHERE name = N'tbl_SysDatabases')
     BEGIN
         SELECT TOP 1
                @database_id = database_id
@@ -7108,9 +7113,9 @@ BEGIN
            ) > 0
            )
         BEGIN
-            UPDATE tbl_AnalysisSummary
-            SET [status] = 1
-            WHERE name = 'usp_CCC_Enabled';
+            UPDATE dbo.tbl_AnalysisSummary
+            SET [Status] = 1
+            WHERE Name = 'usp_CCC_Enabled';
         END;
     END;
 END;

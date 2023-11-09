@@ -157,6 +157,18 @@ END;</CommandText>
           <DataField>FriendlyName</DataField>
           <rd:UserDefined>true</rd:UserDefined>
         </Field>
+        <Field Name="Description">
+          <DataField>Description</DataField>
+          <rd:UserDefined>true</rd:UserDefined>
+        </Field>
+        <Field Name="Type">
+          <DataField>Type</DataField>
+          <rd:UserDefined>true</rd:UserDefined>
+        </Field>
+        <Field Name="Report">
+          <DataField>Report</DataField>
+          <rd:UserDefined>true</rd:UserDefined>
+        </Field>
       </Fields>
       <Filters>
         <Filter>

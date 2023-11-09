@@ -16,12 +16,11 @@
     <DataSet Name="DataSet_Shared_SQLServerName">
       <Query>
         <DataSourceName>DataSource_Private</DataSourceName>
-        <CommandText>IF OBJECT_ID('DataSet_WaitStats_WaitStatsTop5Categories') IS NOT NULL
-   AND OBJECT_ID('tbl_SCRIPT_ENVIRONMENT_DETAILS') IS NOT NULL
+        <CommandText>IF OBJECT_ID('tbl_SCRIPT_ENVIRONMENT_DETAILS') IS NOT NULL
 BEGIN
     SELECT [Value]
     FROM dbo.tbl_SCRIPT_ENVIRONMENT_DETAILS
-    WHERE script_name LIKE 'SQL 200% Perf Stats Script'
+    WHERE script_name LIKE 'SQL Server Perf Stats Script'
           AND [Name] = 'SQL Server Name';
 END;
 ELSE
@@ -30,7 +29,7 @@ ELSE
       </Query>
       <Fields>
         <Field Name="value">
-          <DataField>value</DataField>
+          <DataField>Value</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>
@@ -38,11 +37,10 @@ ELSE
     <DataSet Name="DataSet_Shared_SQLVersion">
       <Query>
         <DataSourceName>DataSource_Private</DataSourceName>
-        <CommandText>IF OBJECT_ID('DataSet_WaitStats_WaitStatsTop5Categories') IS NOT NULL
-   AND OBJECT_ID('tbl_SCRIPT_ENVIRONMENT_DETAILS') IS NOT NULL
+        <CommandText>IF  OBJECT_ID('tbl_SCRIPT_ENVIRONMENT_DETAILS') IS NOT NULL
     SELECT [Value]
     FROM dbo.tbl_SCRIPT_ENVIRONMENT_DETAILS
-    WHERE script_name LIKE 'SQL 200% Perf Stats Script'
+    WHERE script_name LIKE 'SQL Server Perf Stats Script'
           AND [Name] = 'SQL Version (SP)';
 ELSE
     SELECT '' AS [value];</CommandText>
@@ -50,7 +48,7 @@ ELSE
       </Query>
       <Fields>
         <Field Name="value">
-          <DataField>value</DataField>
+          <DataField>Value</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>

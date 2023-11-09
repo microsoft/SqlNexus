@@ -89,7 +89,7 @@ ELSE
                resource_type
        END 'resource_type',
        SUM(LockCount) 'lockcount'
-FROM tbl_locksummary
+FROM dbo.tbl_LockSummary
 WHERE runtime
 BETWEEN @StartTime AND @EndTime
 GROUP BY runtime,
@@ -126,7 +126,7 @@ HAVING runtime IS NOT NULL;</CommandText>
           </QueryParameter>
         </QueryParameters>
         <CommandText>SELECT *
-FROM dbo.tbl_locksummary
+FROM dbo.tbl_LockSummary
 WHERE runtime
 BETWEEN @StartTime AND @EndTime;</CommandText>
       </Query>

@@ -33,6 +33,26 @@ END</CommandText>
           <DataField>runtime</DataField>
           <rd:UserDefined>true</rd:UserDefined>
         </Field>
+        <Field Name="create_index_statement">
+          <DataField>create_index_statement</DataField>
+          <rd:UserDefined>true</rd:UserDefined>
+        </Field>
+        <Field Name="improvement_measure">
+          <DataField>improvement_measure</DataField>
+          <rd:UserDefined>true</rd:UserDefined>
+        </Field>
+        <Field Name="user_seeks">
+          <DataField>user_seeks</DataField>
+          <rd:UserDefined>true</rd:UserDefined>
+        </Field>
+        <Field Name="user_scans">
+          <DataField>user_scans</DataField>
+          <rd:UserDefined>true</rd:UserDefined>
+        </Field>
+        <Field Name="object_id">
+          <DataField>object_id</DataField>
+          <rd:UserDefined>true</rd:UserDefined>
+        </Field>
       </Fields>
     </DataSet>
     <DataSet Name="DataSet_MissingIndexesDelta_DuringLogCollection">
