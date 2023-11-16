@@ -25,7 +25,7 @@
     <DataSet Name="DataSet_StartTime">
       <Query>
         <DataSourceName>DataSource_SqlNexus_Private</DataSourceName>
-        <CommandText>select cast ('1990/1/1' as datetime) as StartTime</CommandText>
+        <CommandText>SELECT CAST('1990/1/1' AS DATETIME) AS StartTime;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -38,7 +38,7 @@
     <DataSet Name="DataSet_EndTime">
       <Query>
         <DataSourceName>DataSource_SqlNexus_Private</DataSourceName>
-        <CommandText>select cast ('2099/1/1' as datetime) as EndTime</CommandText>
+        <CommandText>SELECT CAST('2099/1/1' AS DATETIME) AS EndTime;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -51,10 +51,10 @@
     <DataSet Name="DataSet_AvailableTime">
       <Query>
         <DataSourceName>DataSource_SqlNexus_Private</DataSourceName>
-        <CommandText>select cast ('1990/1/1' as datetime) as AvailableTime
-	union
-	select  cast('2099/1/1' as datetime)  as AvailableTime
-	</CommandText>
+        <CommandText>SELECT CAST('1990/1/1' AS DATETIME) AS AvailableTime
+UNION
+SELECT CAST('2099/1/1' AS DATETIME) AS AvailableTime;
+</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -66,13 +66,34 @@
     </DataSet>
     <DataSet Name="DataSet_ActiveTraces">
       <Query>
-        <DataSourceName>DataSource_test</DataSourceName>
-        <CommandText>SELECT DISTINCT det.trace_id, sm.value AS trace_file_path, det.trace_event_name, CASE WHEN [Value] LIKE '%\log\log%' OR
-                         [value] LIKE '%sp_trace%' THEN 1 ELSE 0 END AS 'Is_Microsoft_Trace', CASE WHEN det.expensive_event = 0 THEN '' ELSE 'Yes' END AS expensive_event
-FROM            tbl_profiler_trace_event_details AS det INNER JOIN
-                             (SELECT        traceid, value, property
-                               FROM            tbl_profiler_trace_summary
-                               WHERE        (property = 2)) AS sm ON det.trace_id = sm.traceid</CommandText>
+        <DataSourceName>DataSource_SqlNexus_Private</DataSourceName>
+        <CommandText>SELECT DISTINCT
+       det.trace_id,
+       sm.value AS trace_file_path,
+       det.trace_event_name,
+       CASE
+           WHEN sm.value LIKE '%\log\log%'
+                OR sm.value LIKE '%sp_trace%' THEN
+               1
+           ELSE
+               0
+       END AS 'Is_Microsoft_Trace',
+       CASE
+           WHEN det.expensive_event = 0 THEN
+               ''
+           ELSE
+               'Yes'
+       END AS expensive_event
+FROM dbo.tbl_profiler_trace_event_details AS det
+    INNER JOIN
+    (
+        SELECT traceid,
+               value,
+               property
+        FROM dbo.tbl_profiler_trace_summary
+        WHERE (property = 2)
+    ) AS sm
+        ON det.trace_id = sm.traceid;</CommandText>
       </Query>
       <Fields>
         <Field Name="trace_id">
@@ -100,9 +121,23 @@ FROM            tbl_profiler_trace_event_details AS det INNER JOIN
     <DataSet Name="DataSet_ActiveXEvents">
       <Query>
         <DataSourceName>DataSource_test</DataSourceName>
-        <CommandText>SELECT        session_name, event_name, CASE WHEN expensive_event = 0 THEN '' ELSE 'Yes' END AS Expensive_event, CASE WHEN session_name IN ('sp_server_diagnostics session', 'hkenginexesession', 'system_health', 
-                         'alwayson_health') THEN 1 ELSE 0 END AS 'Is_Microsoft_Session'
-FROM            tbl_XEvents</CommandText>
+        <CommandText>SELECT session_name,
+       event_name,
+       CASE
+           WHEN expensive_event = 0 THEN
+               ''
+           ELSE
+               'Yes'
+       END AS Expensive_event,
+       CASE
+           WHEN session_name IN ( 'sp_server_diagnostics session', 'hkenginexesession', 'system_health',
+                                  'alwayson_health'
+                                ) THEN
+               1
+           ELSE
+               0
+       END AS 'Is_Microsoft_Session'
+FROM dbo.tbl_XEvents;</CommandText>
       </Query>
       <Fields>
         <Field Name="session_name">

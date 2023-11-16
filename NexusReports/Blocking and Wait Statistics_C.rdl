@@ -24,10 +24,16 @@
             <Value>=Parameters!EndTime.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>IF OBJECT_ID ('DataSet_WaitStatsMain_WaitStatsChart') IS NOT NULL AND OBJECT_ID ('tbl_OS_WAIT_STATS') IS NOT NULL
-  EXEC DataSet_WaitStatsMain_WaitStatsChart @StartTime, @EndTime
+        <CommandText>IF OBJECT_ID('DataSet_WaitStatsMain_WaitStatsChart') IS NOT NULL
+   AND OBJECT_ID('dbo.tbl_OS_WAIT_STATS') IS NOT NULL
+    EXEC DataSet_WaitStatsMain_WaitStatsChart @StartTime, @EndTime;
 ELSE
-  SELECT GETDATE() AS interval_start, GETDATE() AS interval_end, '' AS wait_category, 0 AS wait_time_ms, 0 AS wait_time_per_sec, 0 AS wait_count</CommandText>
+    SELECT GETDATE() AS interval_start,
+           GETDATE() AS interval_end,
+           '' AS wait_category,
+           0 AS wait_time_ms,
+           0 AS wait_time_per_sec,
+           0 AS wait_count;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -100,17 +106,45 @@ ELSE
             <Value>=Parameters!EndTime.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>IF OBJECT_ID ('DataSet_WaitStats_BlockingChains') IS NOT NULL AND OBJECT_ID ('tbl_OS_WAIT_STATS') IS NOT NULL
-  EXEC  DataSet_WaitStats_BlockingChains @StartTime, @EndTime
+        <CommandText>IF OBJECT_ID('DataSet_WaitStats_BlockingChains') IS NOT NULL
+   AND OBJECT_ID('tbl_OS_WAIT_STATS') IS NOT NULL
+    EXEC DataSet_WaitStats_BlockingChains @StartTime, @EndTime;
 ELSE
-  SELECT 0 AS first_rownum, 0 AS last_rownum, 0 AS num_snapshots, GETDATE() AS blocking_start, GETDATE() AS blocking_end, 
-    0 AS head_blocker_session_id, 
-    'No Data' AS blocking_wait_type, 0 AS max_blocked_task_count, 0 AS max_total_wait_duration, 0 AS avg_wait_duration_ms, 0 AS max_wait_duration_ms, 
-    0 AS max_blocking_chain_length, 0 AS head_blocker_session_id_orig, 0 AS blocking_duration_sec, GETDATE() AS example_runtime, '' AS program_name, 
-    '' AS [host_name], '' AS nt_user_name, '' AS nt_domain, '' AS login_name, '' AS wait_type, 0 AS wait_duration_md, '' AS request_status, 
-    '' AS wait_resource, 0 AS open_trans, '' AS transaction_isolation_level, '' AS tran_name, GETDATE() AS transaction_begin_time, 
-    GETDATE() AS request_start_time, '' AS command, '' AS resource_description, GETDATE() AS last_request_start_time, 
-    GETDATE() AS last_request_end_time, '' AS procname, '' AS stmt_text</CommandText>
+    SELECT 0 AS first_rownum,
+           0 AS last_rownum,
+           0 AS num_snapshots,
+           GETDATE() AS blocking_start,
+           GETDATE() AS blocking_end,
+           0 AS head_blocker_session_id,
+           'No Data' AS blocking_wait_type,
+           0 AS max_blocked_task_count,
+           0 AS max_total_wait_duration,
+           0 AS avg_wait_duration_ms,
+           0 AS max_wait_duration_ms,
+           0 AS max_blocking_chain_length,
+           0 AS head_blocker_session_id_orig,
+           0 AS blocking_duration_sec,
+           GETDATE() AS example_runtime,
+           '' AS program_name,
+           '' AS [host_name],
+           '' AS nt_user_name,
+           '' AS nt_domain,
+           '' AS login_name,
+           '' AS wait_type,
+           0 AS wait_duration_md,
+           '' AS request_status,
+           '' AS wait_resource,
+           0 AS open_trans,
+           '' AS transaction_isolation_level,
+           '' AS tran_name,
+           GETDATE() AS transaction_begin_time,
+           GETDATE() AS request_start_time,
+           '' AS command,
+           '' AS resource_description,
+           GETDATE() AS last_request_start_time,
+           GETDATE() AS last_request_end_time,
+           '' AS procname,
+           '' AS stmt_text;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -259,16 +293,15 @@ ELSE
     <DataSet Name="DataSet_Shared_SQLServerName">
       <Query>
         <DataSourceName>SqlNexusPrivate</DataSourceName>
-        <CommandText>IF OBJECT_ID ('DataSet_WaitStats_WaitStatsTop5Categories') IS NOT NULL AND OBJECT_ID ('tbl_SCRIPT_ENVIRONMENT_DETAILS') IS NOT NULL
-	begin        
-  SELECT [Value]
-  FROM tbl_SCRIPT_ENVIRONMENT_DETAILS
-  WHERE script_name like 'SQL 200% Perf Stats Script'
-    AND [Name] = 'SQL Server Name'
-    end
-	ELSE
-  SELECT '' AS [value]
-</CommandText>
+        <CommandText>IF OBJECT_ID('tbl_SCRIPT_ENVIRONMENT_DETAILS') IS NOT NULL
+BEGIN
+    SELECT [Value]
+    FROM dbo.tbl_SCRIPT_ENVIRONMENT_DETAILS
+    WHERE script_name LIKE 'SQL Server Perf Stats Script'
+          AND [Name] = 'SQL Server Name';
+END;
+ELSE
+    SELECT '' AS [value];</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -281,15 +314,13 @@ ELSE
     <DataSet Name="DataSet_Shared_SQLVersion">
       <Query>
         <DataSourceName>SqlNexusPrivate</DataSourceName>
-        <CommandText>IF OBJECT_ID ('DataSet_WaitStats_WaitStatsTop5Categories') IS NOT NULL AND OBJECT_ID ('tbl_SCRIPT_ENVIRONMENT_DETAILS') IS NOT NULL
-  SELECT [Value]
-  FROM tbl_SCRIPT_ENVIRONMENT_DETAILS
-  WHERE script_name like 'SQL 200% Perf Stats Script'
-    AND [Name] = 'SQL Version (SP)'
-ELSE 
-  SELECT '' AS [value]
-
-  </CommandText>
+        <CommandText>IF  OBJECT_ID('tbl_SCRIPT_ENVIRONMENT_DETAILS') IS NOT NULL
+    SELECT [Value]
+    FROM dbo.tbl_SCRIPT_ENVIRONMENT_DETAILS
+    WHERE script_name LIKE 'SQL Server Perf Stats Script'
+          AND [Name] = 'SQL Version (SP)';
+ELSE
+    SELECT '' AS [value];</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -302,27 +333,32 @@ ELSE
     <DataSet Name="DataSet_WaitStats_ParamStartTime">
       <Query>
         <DataSourceName>SqlNexusPrivate</DataSourceName>
-        <CommandText>IF OBJECT_ID ('vw_PERF_STATS_SCRIPT_RUNTIMES') IS NOT NULL 
+        <CommandText>IF OBJECT_ID('vw_PERF_STATS_SCRIPT_RUNTIMES') IS NOT NULL
 BEGIN
-  DECLARE @v_StartTime datetime
-  DECLARE @v_EndTime datetime
-  SELECT @v_StartTime = MIN (runtime) FROM vw_PERF_STATS_SCRIPT_RUNTIMES
-  SELECT @v_EndTime = MAX (runtime) FROM vw_PERF_STATS_SCRIPT_RUNTIMES
-  IF @v_StartTime IS NULL SET @v_StartTime = GETDATE()
-  IF @v_EndTime IS NULL SET @v_EndTime = GETDATE()
-  
-  SELECT 
-    CASE 
-      WHEN DATEDIFF (mi, @v_StartTime, @v_EndTime) &gt; 4*60 THEN DATEADD (mi, -60, @v_EndTime)
-      ELSE @v_StartTime
-    END AS StartTime
-  UNION ALL
-  SELECT @v_StartTime 
-  UNION ALL
-  SELECT @v_EndTime 
-END
+    DECLARE @v_StartTime DATETIME;
+    DECLARE @v_EndTime DATETIME;
+    SELECT @v_StartTime = MIN(runtime)
+    FROM dbo.vw_PERF_STATS_SCRIPT_RUNTIMES;
+    SELECT @v_EndTime = MAX(runtime)
+    FROM dbo.vw_PERF_STATS_SCRIPT_RUNTIMES;
+    IF @v_StartTime IS NULL
+        SET @v_StartTime = GETDATE();
+    IF @v_EndTime IS NULL
+        SET @v_EndTime = GETDATE();
+
+    SELECT CASE
+               WHEN DATEDIFF(mi, @v_StartTime, @v_EndTime) &gt; 4 * 60 THEN
+                   DATEADD(mi, -60, @v_EndTime)
+               ELSE
+                   @v_StartTime
+           END AS StartTime
+    UNION ALL
+    SELECT @v_StartTime
+    UNION ALL
+    SELECT @v_EndTime;
+END;
 ELSE
-  SELECT GETDATE() AS StartTime</CommandText>
+    SELECT GETDATE() AS StartTime;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -335,23 +371,27 @@ ELSE
     <DataSet Name="DataSet_WaitStats_ParamEndTime">
       <Query>
         <DataSourceName>SqlNexusPrivate</DataSourceName>
-        <CommandText>IF OBJECT_ID ('vw_PERF_STATS_SCRIPT_RUNTIMES') IS NOT NULL 
+        <CommandText>IF OBJECT_ID('vw_PERF_STATS_SCRIPT_RUNTIMES') IS NOT NULL
 BEGIN
-  DECLARE @v_StartTime datetime
-  DECLARE @v_EndTime datetime
-  SELECT @v_StartTime = MIN (runtime) FROM vw_PERF_STATS_SCRIPT_RUNTIMES
-  SELECT @v_EndTime = MAX (runtime) FROM vw_PERF_STATS_SCRIPT_RUNTIMES
-  IF @v_StartTime IS NULL SET @v_StartTime = GETDATE()
-  IF @v_EndTime IS NULL SET @v_EndTime = GETDATE()
-  
-  SELECT @v_EndTime AS EndTime 
-  UNION ALL
-  SELECT @v_StartTime AS EndTime 
-  UNION ALL
-  SELECT @v_EndTime AS EndTime 
-END
+    DECLARE @v_StartTime DATETIME;
+    DECLARE @v_EndTime DATETIME;
+    SELECT @v_StartTime = MIN(runtime)
+    FROM dbo.vw_PERF_STATS_SCRIPT_RUNTIMES;
+    SELECT @v_EndTime = MAX(runtime)
+    FROM dbo.vw_PERF_STATS_SCRIPT_RUNTIMES;
+    IF @v_StartTime IS NULL
+        SET @v_StartTime = GETDATE();
+    IF @v_EndTime IS NULL
+        SET @v_EndTime = GETDATE();
+
+    SELECT @v_EndTime AS EndTime
+    UNION ALL
+    SELECT @v_StartTime AS EndTime
+    UNION ALL
+    SELECT @v_EndTime AS EndTime;
+END;
 ELSE
-  SELECT GETDATE() AS EndTime</CommandText>
+    SELECT GETDATE() AS EndTime;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -364,10 +404,11 @@ ELSE
     <DataSet Name="DataSet_Shared_IsPerfStatsAvailable">
       <Query>
         <DataSourceName>SqlNexusPrivate</DataSourceName>
-        <CommandText>IF OBJECT_ID ('DataSet_WaitStats_WaitStatsTop5Categories') IS NOT NULL AND OBJECT_ID ('tbl_OS_WAIT_STATS') IS NOT NULL 
-  SELECT 1 AS IsPerfStatsAvailable
-ELSE 
-  SELECT 0 AS IsPerfStatsAvailable</CommandText>
+        <CommandText>IF OBJECT_ID('DataSet_WaitStats_WaitStatsTop5Categories') IS NOT NULL
+   AND OBJECT_ID('tbl_OS_WAIT_STATS') IS NOT NULL
+    SELECT 1 AS IsPerfStatsAvailable;
+ELSE
+    SELECT 0 AS IsPerfStatsAvailable;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -380,12 +421,13 @@ ELSE
     <DataSet Name="DataSet_Runtime">
       <Query>
         <DataSourceName>SqlNexusPrivate</DataSourceName>
-        <CommandText>IF OBJECT_ID ('vw_PERF_STATS_SCRIPT_RUNTIMES') IS NOT NULL 
+        <CommandText>IF OBJECT_ID('vw_PERF_STATS_SCRIPT_RUNTIMES') IS NOT NULL
 BEGIN
- select Runtime from vw_PERF_STATS_SCRIPT_RUNTIMES
-END
+    SELECT runtime
+    FROM dbo.vw_PERF_STATS_SCRIPT_RUNTIMES;
+END;
 ELSE
-  SELECT GETDATE() AS Runtime</CommandText>
+    SELECT GETDATE() AS Runtime;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -1996,7 +2038,6 @@ ELSE
                   </Paragraph>
                 </Paragraphs>
                 <Top>0.50348in</Top>
-                <Left>0cm</Left>
                 <Height>0.25in</Height>
                 <Width>9.81249in</Width>
                 <ZIndex>1</ZIndex>
@@ -2062,7 +2103,6 @@ ELSE
                   </Paragraph>
                 </Paragraphs>
                 <Top>1.08681in</Top>
-                <Left>0cm</Left>
                 <Height>0.25in</Height>
                 <Width>9.81249in</Width>
                 <ZIndex>3</ZIndex>

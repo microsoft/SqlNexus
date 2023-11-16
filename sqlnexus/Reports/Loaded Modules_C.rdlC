@@ -27,11 +27,17 @@
         <DataSourceName>DataSource1</DataSourceName>
         <CommandText>IF OBJECT_ID('dbo.tbl_dm_os_loaded_modules') IS NOT NULL
 BEGIN
-	SELECT name, company, file_version, product_version, '0x' + CONVERT(varchar,base_address, 2) AS base_address, debug, description
-	FROM tbl_dm_os_loaded_modules
-	WHERE input_file_name like '%_Shutdown.out'
-	ORDER BY company
-END</CommandText>
+    SELECT name,
+           company,
+           file_version,
+           product_version,
+           '0x' + CONVERT(VARCHAR, base_address, 2) AS base_address,
+           debug,
+           description
+    FROM dbo.tbl_dm_os_loaded_modules
+    WHERE input_file_name LIKE '%_Shutdown.out'
+    ORDER BY company;
+END;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -53,15 +59,15 @@ END</CommandText>
         </Field>
         <Field Name="product_version">
           <DataField>product_version</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:UserDefined>true</rd:UserDefined>
         </Field>
         <Field Name="debug">
           <DataField>debug</DataField>
-          <rd:TypeName>System.Int32</rd:TypeName>
+          <rd:UserDefined>true</rd:UserDefined>
         </Field>
         <Field Name="description">
           <DataField>description</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:UserDefined>true</rd:UserDefined>
         </Field>
       </Fields>
     </DataSet>

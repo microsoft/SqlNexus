@@ -17,30 +17,34 @@
     <DataSet Name="NonMS_FilterDrivers">
       <Query>
         <DataSourceName>DataSource1</DataSourceName>
-        <CommandText>IF OBJECT_ID ('tbl_fltmc_filters') IS NOT NULL
+        <CommandText>IF OBJECT_ID('tbl_fltmc_filters') IS NOT NULL
 BEGIN
-	IF (COL_LENGTH('dbo.tbl_fltmc_filters', 'FilterType') IS NULL AND COL_LENGTH('dbo.tbl_fltmc_filters', 'Minifilter') IS NULL )
-	BEGIN
-		SELECT 'cannot determine' as [Filter Name], 
-		'cannot determine' AS [Num Instances], 
-		'cannot determine' AS Altitude, 
-		'cannot determine' AS FilterType,
-		'cannot determine' AS MiniFilter,
-		'cannot determine' AS Company
-	END
-	
-	ELSE
-	BEGIN
-	declare @sql varchar(max) = '
+    IF (
+           COL_LENGTH('dbo.tbl_fltmc_filters', 'FilterType') IS NULL
+           AND COL_LENGTH('dbo.tbl_fltmc_filters', 'Minifilter') IS NULL
+       )
+    BEGIN
+        SELECT 'cannot determine' AS [Filter Name],
+               'cannot determine' AS [Num Instances],
+               'cannot determine' AS Altitude,
+               'cannot determine' AS FilterType,
+               'cannot determine' AS MiniFilter,
+               'cannot determine' AS Company;
+    END;
+
+    ELSE
+    BEGIN
+        DECLARE @sql VARCHAR(MAX)
+            = '
 		SELECT f.[Filter Name], f.[Num Instances], f.Altitude, 
 		f.FilterType AS FilterType,
 		f.Minifilter AS MiniFilter,
 		f.Company AS Company
-		FROM tbl_fltmc_filters f
-		WHERE Company != ''Microsoft'''
-	exec(@sql)
-	END
-END</CommandText>
+		FROM dbo.tbl_fltmc_filters f
+		WHERE Company != ''Microsoft''';
+        EXEC (@sql);
+    END;
+END;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -73,64 +77,69 @@ END</CommandText>
     <DataSet Name="FilterDriverDetails">
       <Query>
         <DataSourceName>DataSource1</DataSourceName>
-        <CommandText>IF OBJECT_ID('tbl_fltmc_instances') IS NOT NULL 
-BEGIN 
-  DECLARE @sql VARCHAR(MAX) 
+        <CommandText>IF OBJECT_ID('tbl_fltmc_instances') IS NOT NULL
+BEGIN
+    DECLARE @sql VARCHAR(MAX);
 
-  IF (COL_LENGTH('dbo.tbl_fltmc_instances', 'FilterType') IS NULL AND COL_LENGTH('dbo.tbl_fltmc_filters', 'Company') IS NULL) 
-  BEGIN
-    SET                @sql = 'SELECT fi.Filter, 
+    IF (
+           COL_LENGTH('dbo.tbl_fltmc_instances', 'FilterType') IS NULL
+           AND COL_LENGTH('dbo.tbl_fltmc_filters', 'Company') IS NULL
+       )
+    BEGIN
+        SET @sql
+            = 'SELECT fi.Filter, 
 				fi.[Volume Name], 
 				fi.Altitude, 
 				fi.[Instance Name], 
 				''not available'' AS FilterType, 
 				''not available'' AS Minifilter, 
 				''not available'' AS Company 
-		FROM tbl_fltmc_instances fi' 
-  END 
-  ELSE 
-  BEGIN
-    SET                @sql = 'SELECT fi.Filter, 
+		FROM dbo.tbl_fltmc_instances fi';
+    END;
+    ELSE
+    BEGIN
+        SET @sql
+            = 'SELECT fi.Filter, 
 				fi.[Volume Name], 
 				fi.Altitude, 
 				fi.[Instance Name], 
 				fi.FilterType, 
 				fi.Minifilter, 
 				fi.Company 
-		FROM tbl_fltmc_instances fi
-		ORDER BY fi.Company' 
-  END 
-  EXEC (@sql) 
-END</CommandText>
+		FROM dbo.tbl_fltmc_instances fi
+		ORDER BY fi.Company';
+    END;
+    EXEC (@sql);
+END;</CommandText>
       </Query>
       <Fields>
         <Field Name="Filter">
           <DataField>Filter</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:UserDefined>true</rd:UserDefined>
         </Field>
         <Field Name="Volume_Name">
           <DataField>Volume Name</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:UserDefined>true</rd:UserDefined>
         </Field>
         <Field Name="Altitude">
           <DataField>Altitude</DataField>
-          <rd:TypeName>System.Int32</rd:TypeName>
+          <rd:UserDefined>true</rd:UserDefined>
         </Field>
         <Field Name="Instance_Name">
           <DataField>Instance Name</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:UserDefined>true</rd:UserDefined>
         </Field>
         <Field Name="FilterType">
           <DataField>FilterType</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:UserDefined>true</rd:UserDefined>
         </Field>
         <Field Name="Minifilter">
           <DataField>Minifilter</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:UserDefined>true</rd:UserDefined>
         </Field>
         <Field Name="Company">
           <DataField>Company</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:UserDefined>true</rd:UserDefined>
         </Field>
       </Fields>
     </DataSet>

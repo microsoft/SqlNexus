@@ -25,11 +25,34 @@
     <DataSet Name="DataSet_AG_States">
       <Query>
         <DataSourceName>DataSource_SqlNexus_Private</DataSourceName>
-        <CommandText>SELECT 
-ags.* ,agl.Listener_Name,aglip.ip_address,agl.port
-FROM   dbo.tbl_hadr_ag_states ags
-LEFT JOIN dbo.tbl_hadr_ag_listeners agl ON ags.group_id = agl.group_id
-LEFT JOIN dbo.tbl_hadr_ag_ip_information aglip ON agl.listener_id = aglip.listener_id</CommandText>
+        <CommandText>SELECT ags.group_id,
+       ags.name,
+       ags.resource_id,
+       ags.resource_group_id,
+       ags.failure_condition_level,
+       ags.health_check_timeout,
+       ags.automated_backup_preference,
+       ags.automated_backup_preference_desc,
+       ags.version,
+       ags.basic_features,
+       ags.dtc_support,
+       ags.db_failover,
+       ags.is_distributed,
+       ags.primary_replica,
+       ags.primary_recovery_health,
+       ags.primary_recovery_health_desc,
+       ags.secondary_recovery_health,
+       ags.secondary_recovery_health_desc,
+       ags.synchronization_health,
+       ags.synchronization_health_desc,
+       agl.Listener_Name,
+       aglip.ip_address,
+       agl.port
+FROM dbo.tbl_hadr_ag_states ags
+    LEFT JOIN dbo.tbl_hadr_ag_listeners agl
+        ON ags.group_id = agl.group_id
+    LEFT JOIN dbo.tbl_hadr_ag_ip_information aglip
+        ON agl.listener_id = aglip.listener_id;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>

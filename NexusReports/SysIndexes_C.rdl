@@ -16,10 +16,20 @@
     <DataSet Name="DataSet_Index_Summary">
       <Query>
         <DataSourceName>SqlNexusPrivate</DataSourceName>
-        <CommandText>select dbid, MAX(row_mods) 'MaxRowMods', MIN( stats_updated ) 'EarliestStatsUpdated', MAX(stats_updated) 'LatestStatsUpdated', COUNT (case when norecompute&lt;&gt;'no' then 1 else null end) 'NumberOfNoRecmpute'
-from tbl_SysIndexes
-group by dbid
-order by CAST(dbid as int)</CommandText>
+        <CommandText>SELECT dbid,
+       MAX(row_mods) 'MaxRowMods',
+       MIN(stats_updated) 'EarliestStatsUpdated',
+       MAX(stats_updated) 'LatestStatsUpdated',
+       COUNT(   CASE
+                    WHEN norecompute &lt;&gt; 'no' THEN
+                        1
+                    ELSE
+                        NULL
+                END
+            ) 'NumberOfNoRecmpute'
+FROM dbo.tbl_SysIndexes
+GROUP BY dbid
+ORDER BY CAST(dbid AS INT);</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -48,7 +58,15 @@ order by CAST(dbid as int)</CommandText>
     <DataSet Name="DataSet_Sysindexes">
       <Query>
         <DataSourceName>SqlNexusPrivate</DataSourceName>
-        <CommandText>select dbid, objname, type, idxname, stats_updated, [norecompute]  from tbl_SysIndexes order by CAST(dbid as int),  cast (stats_updated as datetime)</CommandText>
+        <CommandText>SELECT dbid,
+       objname,
+       type,
+       idxname,
+       stats_updated,
+       [norecompute]
+FROM dbo.tbl_SysIndexes
+ORDER BY CAST(dbid AS INT),
+         CAST(stats_updated AS DATETIME);</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>

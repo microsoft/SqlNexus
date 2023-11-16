@@ -5,7 +5,7 @@
     <DataSource Name="DataSource1">
       <ConnectionProperties>
         <DataProvider>SQL</DataProvider>
-        <ConnectString>Data Source=.\sql14a;Initial Catalog=TD0823_Alloc</ConnectString>
+        <ConnectString>="data source=" &amp; Parameters!dsServerName.Value &amp; ";initial catalog="&amp;Parameters!dsDatabaseName.Value</ConnectString>
         <IntegratedSecurity>true</IntegratedSecurity>
       </ConnectionProperties>
       <rd:SecurityType>Integrated</rd:SecurityType>
@@ -16,24 +16,27 @@
     <DataSet Name="DataSet_Runtime">
       <Query>
         <DataSourceName>DataSource1</DataSourceName>
-        <CommandText>
-IF OBJECT_ID ('tbl_System_Requests') IS NOT NULL 
+        <CommandText>IF OBJECT_ID('tbl_System_Requests') IS NOT NULL
 BEGIN
-select  distinct cast (Runtime as datetime2 (3)) Runtime from tbl_System_Requests order by Runtime
- 
-END
-ELSE
-begin
-   
- select * from
- (
-  SELECT cast ('1990/1/1' as datetime)  AS Runtime 
-	union
-	SELECT cast ('9999/12/31' as datetime)  AS Runtime 
-	) t
-	order by Runtime
+    SELECT DISTINCT
+           CAST(runtime AS DATETIME2(3)) Runtime
+    FROM dbo.tbl_System_Requests
+    ORDER BY Runtime;
 
-end</CommandText>
+END;
+ELSE
+BEGIN
+
+    SELECT *
+    FROM
+    (
+        SELECT CAST('1990/1/1' AS DATETIME) AS Runtime
+        UNION
+        SELECT CAST('9999/12/31' AS DATETIME) AS Runtime
+    ) t
+    ORDER BY Runtime;
+
+END;</CommandText>
       </Query>
       <Fields>
         <Field Name="Runtime">
@@ -45,18 +48,17 @@ end</CommandText>
     <DataSet Name="DataSet_StartTime">
       <Query>
         <DataSourceName>DataSource1</DataSourceName>
-        <CommandText>
-
-IF OBJECT_ID ('tbl_System_Requests') IS NOT NULL 
+        <CommandText>IF OBJECT_ID('tbl_System_Requests') IS NOT NULL
 BEGIN
- select cast(min(Runtime) as datetime2(3))  StartTime from tbl_System_Requests
- 
-END
-ELSE
-begin
-    SELECT cast ('1990/1/1' as datetime)  AS StartTime 
+    SELECT CAST(MIN(runtime) AS DATETIME2(3)) StartTime
+    FROM dbo.tbl_System_Requests;
 
-end</CommandText>
+END;
+ELSE
+BEGIN
+    SELECT CAST('1990/1/1' AS DATETIME) AS StartTime;
+
+END;</CommandText>
       </Query>
       <Fields>
         <Field Name="StartTime">
@@ -68,18 +70,17 @@ end</CommandText>
     <DataSet Name="DataSet_EndTime">
       <Query>
         <DataSourceName>DataSource1</DataSourceName>
-        <CommandText>
-
-IF OBJECT_ID ('tbl_System_Requests') IS NOT NULL 
+        <CommandText>IF OBJECT_ID('tbl_System_Requests') IS NOT NULL
 BEGIN
- select cast(max(Runtime) as datetime2(3)) EndTime from tbl_System_Requests
- 
-END
-ELSE
-begin
-    SELECT cast ('9999/12/31' as datetime)  AS EndTime 
+    SELECT CAST(MAX(runtime) AS DATETIME2(3)) EndTime
+    FROM dbo.tbl_System_Requests;
 
-end</CommandText>
+END;
+ELSE
+BEGIN
+    SELECT CAST('9999/12/31' AS DATETIME) AS EndTime;
+
+END;</CommandText>
       </Query>
       <Fields>
         <Field Name="EndTime">
@@ -105,17 +106,61 @@ end</CommandText>
         <CommandText>--declare @PercentThreshold float = 10
 --declare @StartTime datetime = '1900-01-01'
 --declare @EndTime datetime = '9999-12-31'
-declare @tmp table (runtime datetime, os_thread_id int, command nvarchar(128), cpu_time float, prev_cpu_time float, prev_runtime datetime)
+DECLARE @tmp TABLE
+(
+    runtime DATETIME,
+    os_thread_id INT,
+    command NVARCHAR(128),
+    cpu_time FLOAT,
+    prev_cpu_time FLOAT,
+    prev_runtime DATETIME
+);
 
-insert into @tmp
-select runtime,  os_thread_id, command, cpu_time,  lag(cpu_time,1,0) over (partition by os_thread_id, command order by runtime) as prev_cpu_time,
-lag(runtime,1,0) over (partition by os_thread_id, command order by runtime) as prev_runtime
-from tbl_System_Requests
+INSERT INTO @tmp
+SELECT runtime,
+       os_thread_id,
+       command,
+       cpu_time,
+       LAG(cpu_time, 1, 0) OVER (PARTITION BY os_thread_id, command ORDER BY runtime) AS prev_cpu_time,
+       LAG(runtime, 1, 0) OVER (PARTITION BY os_thread_id, command ORDER BY runtime) AS prev_runtime
+FROM dbo.tbl_System_Requests;
 
-select top 10 runtime, t1.command, t1.os_thread_id, (cpu_time-prev_cpu_time) delta, datediff (ms, prev_runtime, runtime) delta_elapse_time, (cpu_time-prev_cpu_time) * 100.0/case when datediff (ms, prev_runtime, runtime) = 0 then null else datediff (ms, prev_runtime, runtime) end  cpu_percent   from @tmp t1
+SELECT TOP 10
+       runtime,
+       t1.command,
+       t1.os_thread_id,
+       (cpu_time - prev_cpu_time) delta,
+       DATEDIFF(ms, prev_runtime, runtime) delta_elapse_time,
+       (cpu_time - prev_cpu_time) * 100.0 / CASE
+                                                WHEN DATEDIFF(ms, prev_runtime, runtime) = 0 THEN
+                                                    NULL
+                                                ELSE
+                                                    DATEDIFF(ms, prev_runtime, runtime)
+                                            END cpu_percent
+FROM @tmp t1
 --join (select distinct command, os_thread_id from @tmp where prev_cpu_time &gt;0  and (cpu_time-prev_cpu_time) * 100.0/datediff (ms, prev_runtime, runtime) &gt; @PercentThreshold) t on t1.command=t.command and t1.os_thread_id = t.os_thread_id
-where prev_cpu_time &gt;0   and RunTime between @StartTime and @EndTime and command in (select command  from @tmp  where prev_cpu_time &gt;0   and RunTime between @StartTime and @EndTime  group by command, runtime having sum (cpu_time-prev_cpu_time) * 100.00/(case when avg(datediff (ms, prev_runtime, runtime)) =0 then null else avg(datediff (ms, prev_runtime, runtime))  end ) &gt; @PercentThreshold)
-order by 4 desc</CommandText>
+WHERE prev_cpu_time &gt; 0
+      AND runtime
+      BETWEEN @StartTime AND @EndTime
+      AND command IN
+          (
+              SELECT command
+              FROM @tmp
+              WHERE prev_cpu_time &gt; 0
+                    AND runtime
+                    BETWEEN @StartTime AND @EndTime
+              GROUP BY command,
+                       runtime
+              HAVING SUM(cpu_time - prev_cpu_time) * 100.00
+                     / (CASE
+                            WHEN AVG(DATEDIFF(ms, prev_runtime, runtime)) = 0 THEN
+                                NULL
+                            ELSE
+                                AVG(DATEDIFF(ms, prev_runtime, runtime))
+                        END
+                       ) &gt; @PercentThreshold
+          )
+ORDER BY 4 DESC;</CommandText>
       </Query>
       <Fields>
         <Field Name="runtime">

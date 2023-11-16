@@ -16,16 +16,15 @@
     <DataSet Name="DataSet_Shared_SQLServerName">
       <Query>
         <DataSourceName>DataSource_Private</DataSourceName>
-        <CommandText>IF OBJECT_ID ('DataSet_WaitStats_WaitStatsTop5Categories') IS NOT NULL AND OBJECT_ID ('tbl_SCRIPT_ENVIRONMENT_DETAILS') IS NOT NULL
-	begin        
-  SELECT [Value]
-  FROM tbl_SCRIPT_ENVIRONMENT_DETAILS
-  WHERE script_name like 'SQL 200% Perf Stats Script'
-    AND [Name] = 'SQL Server Name'
-    end
-	ELSE
-  SELECT '' AS [value]
-  </CommandText>
+        <CommandText>IF OBJECT_ID('tbl_SCRIPT_ENVIRONMENT_DETAILS') IS NOT NULL
+BEGIN
+    SELECT [Value]
+    FROM dbo.tbl_SCRIPT_ENVIRONMENT_DETAILS
+    WHERE script_name LIKE 'SQL Server Perf Stats Script'
+          AND [Name] = 'SQL Server Name';
+END;
+ELSE
+    SELECT '' AS [value];</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -38,14 +37,13 @@
     <DataSet Name="DataSet_Shared_SQLVersion">
       <Query>
         <DataSourceName>DataSource_Private</DataSourceName>
-        <CommandText>IF OBJECT_ID ('DataSet_WaitStats_WaitStatsTop5Categories') IS NOT NULL AND OBJECT_ID ('tbl_SCRIPT_ENVIRONMENT_DETAILS') IS NOT NULL
-  SELECT [Value]
-  FROM tbl_SCRIPT_ENVIRONMENT_DETAILS
-  WHERE script_name like 'SQL 200% Perf Stats Script'
-    AND [Name] = 'SQL Version (SP)'
-ELSE 
-  SELECT '' AS [value]
-  </CommandText>
+        <CommandText>IF  OBJECT_ID('tbl_SCRIPT_ENVIRONMENT_DETAILS') IS NOT NULL
+    SELECT [Value]
+    FROM dbo.tbl_SCRIPT_ENVIRONMENT_DETAILS
+    WHERE script_name LIKE 'SQL Server Perf Stats Script'
+          AND [Name] = 'SQL Version (SP)';
+ELSE
+    SELECT '' AS [value];</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -58,10 +56,11 @@ ELSE
     <DataSet Name="DataSet_Shared_IsPerfStatsAvailable">
       <Query>
         <DataSourceName>DataSource_Private</DataSourceName>
-        <CommandText>IF OBJECT_ID ('DataSet_WaitStats_WaitStatsTop5Categories') IS NOT NULL AND OBJECT_ID ('tbl_OS_WAIT_STATS') IS NOT NULL 
-  SELECT 1 AS IsPerfStatsAvailable
-ELSE 
-  SELECT 0 AS IsPerfStatsAvailable</CommandText>
+        <CommandText>IF OBJECT_ID('DataSet_WaitStats_WaitStatsTop5Categories') IS NOT NULL
+   AND OBJECT_ID('tbl_OS_WAIT_STATS') IS NOT NULL
+    SELECT 1 AS IsPerfStatsAvailable;
+ELSE
+    SELECT 0 AS IsPerfStatsAvailable;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -74,16 +73,17 @@ ELSE
     <DataSet Name="DataSet_WaitStats_ParamStartTime">
       <Query>
         <DataSourceName>DataSource_Private</DataSourceName>
-        <CommandText>  IF OBJECT_ID ('tbl_Query_Execution_Memory') IS NOT NULL 
+        <CommandText>IF OBJECT_ID('tbl_Query_Execution_Memory') IS NOT NULL
 BEGIN
-  DECLARE @v_StartTime datetime
-  SELECT @v_StartTime = min (runtime) FROM tbl_Query_Execution_Memory
-  IF @v_StartTime IS NULL SET @v_StartTime = '1900-1-1'
-	select  @v_StartTime as StartTime
-END
+    DECLARE @v_StartTime DATETIME;
+    SELECT @v_StartTime = MIN(runtime)
+    FROM dbo.tbl_Query_Execution_Memory;
+    IF @v_StartTime IS NULL
+        SET @v_StartTime = '1900-1-1';
+    SELECT @v_StartTime AS StartTime;
+END;
 ELSE
-  SELECT cast ('1990/1/1' as datetime)  AS StartTime
-  </CommandText>
+    SELECT CAST('1990/1/1' AS DATETIME) AS StartTime;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -96,15 +96,17 @@ ELSE
     <DataSet Name="DataSet_WaitStats_ParamEndTime">
       <Query>
         <DataSourceName>DataSource_Private</DataSourceName>
-        <CommandText>  IF OBJECT_ID ('tbl_Query_Execution_Memory') IS NOT NULL 
+        <CommandText>IF OBJECT_ID('tbl_Query_Execution_Memory') IS NOT NULL
 BEGIN
-  DECLARE @v_EndTime datetime
-  SELECT @v_EndTime = MAX (runtime) FROM tbl_Query_Execution_Memory
-  IF @v_EndTime IS NULL SET @v_EndTime = GETDATE()
-  SELECT @v_EndTime AS EndTime 
-END
+    DECLARE @v_EndTime DATETIME;
+    SELECT @v_EndTime = MAX(runtime)
+    FROM dbo.tbl_Query_Execution_Memory;
+    IF @v_EndTime IS NULL
+        SET @v_EndTime = GETDATE();
+    SELECT @v_EndTime AS EndTime;
+END;
 ELSE
-  SELECT cast ('1990/1/1' as datetime)  AS EndTime</CommandText>
+    SELECT CAST('1990/1/1' AS DATETIME) AS EndTime;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -117,17 +119,19 @@ ELSE
     <DataSet Name="DataSet_Runtime">
       <Query>
         <DataSourceName>DataSource_Private</DataSourceName>
-        <CommandText>
-  IF OBJECT_ID ('tbl_Query_Execution_Memory') IS NOT NULL 
+        <CommandText>IF OBJECT_ID('tbl_Query_Execution_Memory') IS NOT NULL
 BEGIN
- select distinct Runtime from tbl_Query_Execution_Memory order by runtime
-END
+    SELECT DISTINCT
+           runtime
+    FROM dbo.tbl_Query_Execution_Memory
+    ORDER BY runtime;
+END;
 ELSE
-begin
-    SELECT cast ('1990/1/1' as datetime)  AS Runtime 
-	union all
-	select getdate() 
-end</CommandText>
+BEGIN
+    SELECT CAST('1990/1/1' AS DATETIME) AS Runtime
+    UNION ALL
+    SELECT GETDATE();
+END;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -145,16 +149,23 @@ end</CommandText>
             <rd:UserDefined>true</rd:UserDefined>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>if OBJECT_ID ('tbl_Query_Execution_Memory') is not null 
-begin 
-declare @runtime datetime 	  
-select @runtime = runtime from (SELECT     ROW_NUMBER() OVER (ORDER BY runtime) AS 'RowNumber', runtime  
-from (select distinct runtime from tbl_Query_Execution_Memory) t   ) MyRunTime  where RowNumber = @RowNumber
-select  * from tbl_Query_Execution_Memory where runtime = @runtime 
-order by cast (requested_memory_mb as int) desc
- end 
-
-</CommandText>
+        <CommandText>IF OBJECT_ID('tbl_Query_Execution_Memory') IS NOT NULL
+BEGIN
+    DECLARE @runtime DATETIME;
+    SELECT @runtime = MyRunTime.runtime
+    FROM
+    (
+        SELECT ROW_NUMBER() OVER (ORDER BY t.runtime) AS 'RowNumber',
+               t.runtime
+        FROM
+        (SELECT DISTINCT runtime FROM dbo.tbl_Query_Execution_Memory) t
+    ) MyRunTime
+    WHERE MyRunTime.RowNumber = @RowNumber;
+    SELECT *
+    FROM dbo.tbl_Query_Execution_Memory
+    WHERE runtime = @runtime
+    ORDER BY CAST(requested_memory_mb AS INT) DESC;
+END;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -195,15 +206,15 @@ order by cast (requested_memory_mb as int) desc
     <DataSet Name="DataSet_SnapshotTime">
       <Query>
         <DataSourceName>DataSource_Private</DataSourceName>
-        <CommandText>
-if object_id('dbo.DateSet_GetSnapshotTime') is not null
-begin
-exec DateSet_GetSnapshotTime  'tbl_Query_Execution_Memory'
-end
-else
-begin
-	select 1 as RowNumber, '1990/1/1' as runtime
-end</CommandText>
+        <CommandText>IF OBJECT_ID('dbo.DateSet_GetSnapshotTime') IS NOT NULL
+BEGIN
+    EXEC DateSet_GetSnapshotTime 'tbl_Query_Execution_Memory';
+END;
+ELSE
+BEGIN
+    SELECT 1 AS RowNumber,
+           '1990/1/1' AS runtime;
+END;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -220,14 +231,15 @@ end</CommandText>
     <DataSet Name="DataSet_Snapshot_Default">
       <Query>
         <DataSourceName>DataSource_Private</DataSourceName>
-        <CommandText>if object_id('dbo.DateSet_GetSnapshotTime_Default') is not null
-begin
-exec DateSet_GetSnapshotTime_Default 'tbl_Query_Execution_Memory'
-end
-else
-begin
-	select 1 as RowNumber, '1990/1/1' as runtime
-end</CommandText>
+        <CommandText>IF OBJECT_ID('dbo.DateSet_GetSnapshotTime_Default') IS NOT NULL
+BEGIN
+    EXEC DateSet_GetSnapshotTime_Default 'tbl_Query_Execution_Memory';
+END;
+ELSE
+BEGIN
+    SELECT 1 AS RowNumber,
+           '1990/1/1' AS runtime;
+END;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -260,8 +272,9 @@ end</CommandText>
         </QueryParameters>
         <CommandText>--declare @text nvarchar(4000)
 --set @text='select abc'
-select * from tbl_Query_Execution_Memory
-where text = @QueryText</CommandText>
+SELECT *
+FROM dbo.tbl_Query_Execution_Memory
+WHERE text = @QueryText;</CommandText>
       </Query>
       <Fields>
         <Field Name="runtime">
