@@ -29,8 +29,8 @@ namespace LinuxPerfImporter
         private const string POST_LOAD_SQL_SCRIPT = "";
         private bool HasPostScript = false;
         // Options to be exposed to Nexus host
-        private const string OPTION_IMPORT_TO_SQL = "Import to SQL";
-        private const string OPTION_DROP_EXISTING = "Drop Existing Tables";
+        private const string OPTION_IMPORT_TO_SQL = "Import to SQL (Linux Perf)";
+        private const string OPTION_DROP_EXISTING = "Drop existing tables (Linux Perf)";
         private const string OPTION_ENABLED = "Enabled";
 
 
