@@ -437,9 +437,11 @@ namespace sqlnexus
         {
             if (!Directory.Exists(importerDirectory))
                 return;
+            
             string[] Files = Directory.GetFiles(importerDirectory, "*.DLL");
-
             List<string> OrderedFiles = OrderedImporterFiles(Files);
+
+            // List of option names
 
             foreach (string file in OrderedFiles)
             {
@@ -504,6 +506,41 @@ namespace sqlnexus
                             prod.Options.Add("Enabled", true);
                         }
 
+
+                        //ensure that saved options get re-applied/re-activated based on the previously-selected checkboxes
+                        // get value of from user.config file (true or false) and restore it in the ToolStripMenuItem
+
+                        string[] optionNames = {
+                            "Minimize Cmd window (Relog.exe) during import",
+                            "Drop existing tables (Perfmon)",
+                            "Import events using local server time (not UTC)",
+                            "Enable -T35 to support MARs",
+                            "Output trace files (.trc) by SPID to %TEMP%\\RML",
+                            "Output RML files (.rml) to %TEMP%\\RML",
+                            "Assume QUOTED_IDENTIFIER ON",
+                            "Ignore events associated with PSSDIAG activity",
+                            "Disable event requirement checks",
+                            "Import to SQL (Linux Perf)",
+                            "Drop existing tables (Linux Perf)"
+                        };
+
+                        foreach (string optionName in optionNames)
+                        {
+                            // Check if the option name exists in prod.Options
+                            if (prod.Options.ContainsKey(optionName))
+                            {
+                                // Construct the userSavedKey using the product name and option name
+                                string userSavedKey = string.Format("{0}.{1}", prod.Name, optionName);
+                                // Get the userSavedValue using ImportOptions
+                                bool userSavedValue = ImportOptions.IsEnabled(userSavedKey);
+                                // Update the option with the userSavedValue
+                                prod.Options[optionName] = userSavedValue;
+                            }
+                        }
+                        
+
+                        
+
                         // options
                         ToolStripMenuItem subtsi;
                         foreach (string option in prod.Options.Keys)
@@ -522,7 +559,7 @@ namespace sqlnexus
                                 subtsi.CheckOnClick = true;
 
                                 bool UserSaved = ImportOptions.IsEnabled(String.Format("{0}.{1}", prod.Name, subtsi.Text));
-                                MainForm.LogMessage("load: " + String.Format("{0}.{1}", prod.Name, option), MessageOptions.Silent);
+                                MainForm.LogMessage("load: " + String.Format("{0}->{1}", prod.Name, option), MessageOptions.Silent);
 
                                 if (ImportOptions.IsEnabled("SaveImportOptions"))
                                     subtsi.Checked = UserSaved;
