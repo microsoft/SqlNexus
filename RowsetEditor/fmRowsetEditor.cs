@@ -28,8 +28,10 @@ namespace RowsetEditor
         private Boolean isHeaderChanged = false;
         private BindingSource BS;
         private Boolean hasRemovedRows;
+        private Boolean hasAddedRows;
         private DictionaryEntry entrySelectedRowset;
         private String TextRowsetXMLFile;
+        private String[] changedDatasets;
 
 
 
@@ -69,6 +71,14 @@ namespace RowsetEditor
 
         private void cmbRowsets_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (hasRemovedRows || isHeaderChanged || hasAddedRows)
+            {
+                if (MessageBox.Show("There are unsaved changes, Yes to save them? No and they will be lost", "Question", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    btnSave.PerformClick();
+                }
+            }
+
             //I user deletes rows hasRemovedRows will be set to on and we will rebuild the whole node.
             hasRemovedRows = false;
 
@@ -223,15 +233,24 @@ namespace RowsetEditor
             //overwrite original file, we can add functionality to allow users to create a copy instead.
             try
             {
-                if (MessageBox.Show("Do you want to continue?", "Save Rowsets", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                if (MessageBox.Show("Do you want to save your changes?", "Save Rowsets", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
+                    String fName = TextRowsetXMLFile;
+
+#if DEBUG 
+                    if (MessageBox.Show("In debug mode \n Do you want to save to a different file", "Save Rowsets", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    {
+                        fName = "c:\\del\\r.xml";
+                    }
                     
-                    xDoc.Save(TextRowsetXMLFile);
+#endif
+                    xDoc.Save(fName);
                     MessageBox.Show("Document updated and saved successfully", "Save Rowsets", MessageBoxButtons.OK);
                 }
 
-                isHeaderChanged = false;
                 cmbRowsets.Refresh();
+                isHeaderChanged = false;
+                hasAddedRows = false;
 
             } catch (Exception ex)
             {
@@ -358,6 +377,12 @@ namespace RowsetEditor
         private void dgvKnownColumns_DataError(object sender, DataGridViewDataErrorEventArgs e)
         {
             //ignore Data Errors from DataGrid (since they come from combobox mainly)
+            return;
+        }
+
+        private void dgvKnownColumns_UserAddedRow(object sender, DataGridViewRowEventArgs e)
+        {
+            hasAddedRows = true;
             return;
         }
     }

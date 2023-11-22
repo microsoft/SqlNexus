@@ -79,6 +79,7 @@ namespace RowsetEditor
             this.dgvKnownColumns.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvKnownColumns_CellEndEdit);
             this.dgvKnownColumns.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dgvKnownColumns_DataError);
             this.dgvKnownColumns.DefaultValuesNeeded += new System.Windows.Forms.DataGridViewRowEventHandler(this.dgvKnownColumns_DefaultValuesNeeded);
+            this.dgvKnownColumns.UserAddedRow += new System.Windows.Forms.DataGridViewRowEventHandler(this.dgvKnownColumns_UserAddedRow);
             this.dgvKnownColumns.UserDeletedRow += new System.Windows.Forms.DataGridViewRowEventHandler(this.dgvKnownColumns_UserDeletedRow);
             // 
             // ColumnName

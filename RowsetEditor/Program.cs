@@ -26,31 +26,20 @@ namespace RowsetEditor
             XmlDocument xDoc = new XmlDocument();
             String TextRowsetXMLFile = "..\\..\\..\\sqlnexus\\TextRowsets.xml";
             xDoc.Load(TextRowsetXMLFile);
-            foreach (XmlNode node in xDoc.DocumentElement.ChildNodes)
+            XmlNode nodeKnownRowsets = xDoc.DocumentElement.ChildNodes.OfType<XmlNode>().Where(x => x.Name == "KnownRowsets").First();
+            foreach (XmlNode locNode in nodeKnownRowsets.OfType<XmlNode>().Where(x => x.Name.Equals("Rowset")) )
             {
-                // first node is the url ... have to go to nexted loc node 
-                foreach (XmlNode locNode in node)
+                String att = ((XmlElement)locNode).GetAttribute("name");
+                try
                 {
-                    // thereare a couple child nodes here so only take data from node named loc 
-                    if (locNode.Name.Equals("Rowset"))
-                    {
-                        XmlElement e = (XmlElement)locNode;
+                    KnownRowsets.Add(att, locNode);
 
-                        String att = e.GetAttribute("name");
-                        
-                        try
-                        {
-                            KnownRowsets.Add(att, locNode);
-                        } catch (Exception ex) 
-                        {
-                            String msg = ex.Message;
-                            count += 1;
-                            att += "_DUP" + count.ToString("0000");
-                            KnownRowsets.Add(att, locNode);
-
-                        }
-                        
-                    }
+                } catch (Exception ex) 
+                {
+                    String msg = ex.Message;
+                    count += 1;
+                    att += "_DUP" + count.ToString("0000");
+                    KnownRowsets.Add(att, locNode);
                 }
                 
             }
