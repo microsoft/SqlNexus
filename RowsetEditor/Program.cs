@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using NexusInterfaces;
-using RowsetImportEngine;
-using sqlnexus;
 using System.Xml;
 
 namespace RowsetEditor
@@ -21,11 +17,31 @@ namespace RowsetEditor
         {
             Hashtable KnownRowsets = new Hashtable();
 
-            INexusImporter fImp = new TextRowsetImporter();
+            //INexusImporter fImp = new TextRowsetImporter();
             int count = 0;
             XmlDocument xDoc = new XmlDocument();
             String TextRowsetXMLFile = "..\\..\\..\\sqlnexus\\TextRowsets.xml";
-            xDoc.Load(TextRowsetXMLFile);
+            try
+            {
+                xDoc.Load(TextRowsetXMLFile);
+            } catch (IOException ex)
+            {
+                OpenFileDialog f = new OpenFileDialog();
+                f.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
+                f.Filter = "XML files (*.xml)|*.xml|All files (*.*)|*.*";
+                f.FileName = "TextRowsets.xml";
+                if (f.ShowDialog() == DialogResult.OK)
+                {
+                    TextRowsetXMLFile += f.FileName;
+                    xDoc.Load(f.FileName);
+                } else
+                {
+                    MessageBox.Show(ex.Message);
+                    
+                    return;
+                }
+
+            }
             XmlNode nodeKnownRowsets = xDoc.DocumentElement.ChildNodes.OfType<XmlNode>().Where(x => x.Name == "KnownRowsets").First();
             foreach (XmlNode locNode in nodeKnownRowsets.OfType<XmlNode>().Where(x => x.Name.Equals("Rowset")) )
             {

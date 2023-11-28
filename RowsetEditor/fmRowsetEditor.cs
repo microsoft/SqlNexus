@@ -14,6 +14,7 @@ using System.Xml.Linq;
 using Microsoft.VisualBasic;
 using sqlnexus;
 using Microsoft.Win32;
+using Microsoft.IdentityModel.Tokens;
 
 namespace RowsetEditor
 {
@@ -236,14 +237,21 @@ namespace RowsetEditor
                 if (MessageBox.Show("Do you want to save your changes?", "Save Rowsets", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
                     String fName = TextRowsetXMLFile;
+                    Uri xDocURI = new Uri(xDoc.BaseURI);
+                    Uri directoryURI = new Uri(xDocURI, ".");
+                    String directory = directoryURI.LocalPath;
 
-#if DEBUG 
-                    if (MessageBox.Show("In debug mode \n Do you want to save to a different file", "Save Rowsets", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                    {
-                        fName = "c:\\del\\r.xml";
-                    }
+                    SaveFileDialog f = new SaveFileDialog();
+                        f.DefaultExt = "xml";
+                        f.RestoreDirectory = true;
+                        f.Filter = "xml files (*.xml)|*.xml|All files (*.*)|*.*";
+                        f.InitialDirectory = directory;
+
+                        if (f.ShowDialog() == DialogResult.OK)
+                        {
+                            fName = f.FileName;
+                        }
                     
-#endif
                     xDoc.Save(fName);
                     MessageBox.Show("Document updated and saved successfully", "Save Rowsets", MessageBoxButtons.OK);
                 }
@@ -310,7 +318,25 @@ namespace RowsetEditor
             XmlElement xKnownRowset = xDoc.CreateElement("Rowset");
 ;
             XmlElement xKnownColumns = xDoc.CreateElement("KnownColumns");
+            DataTable columns = fmNew.tblQueryColumns;
 
+            if (columns != null && columns.Rows.Count > 0 )
+            {
+                foreach (DataRow row in columns.Rows)
+                {
+                    XmlElement xCol = xDoc.CreateElement("Column");
+                    xCol.SetAttribute("name", (String)row["Name"]);
+                    xCol.SetAttribute("type", String.Concat("RowsetImportEngine.",(String)row["Type"]));
+
+                    String length = row["Length"].ToString();
+                    if (!length.IsNullOrEmpty())
+                    {
+                        xCol.SetAttribute("length", length);
+                    }
+                    xKnownColumns.AppendChild(xCol);
+                }
+                
+            }
             xKnownRowset.AppendChild(xKnownColumns);
 
             xKnownRowset.SetAttribute("name", strRowsetName);
