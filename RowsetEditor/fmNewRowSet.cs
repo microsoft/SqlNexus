@@ -71,9 +71,11 @@ namespace RowsetEditor
                 }
                 txtServerName.Text = System.Environment.MachineName;
                 tabMain.SelectTab ("tabConnect");
-                //connectToSQL();
-                //tabMain.SelectTab("tabSQL");
-                //txtQuery.Enabled = chkFromQuery.Checked;
+
+            } else
+            {
+                tabMain.SelectTab("tabGrid");
+
             }
             
             
