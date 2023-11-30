@@ -21,7 +21,7 @@
             <Value>=Parameters!BlockingChainRowNum.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>EXEC DataSet_BlockingChain_HeadBlockerSampleRuntime @BlockingChainRowNum</CommandText>
+        <CommandText>EXEC DataSet_BlockingChain_HeadBlockerSampleRuntime @BlockingChainRowNum;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -492,15 +492,13 @@
     <DataSet Name="DataSet_Shared_SQLVersion">
       <Query>
         <DataSourceName>DataSource_Private</DataSourceName>
-        <CommandText>IF OBJECT_ID ('DataSet_WaitStats_WaitStatsTop5Categories') IS NOT NULL AND OBJECT_ID ('tbl_SCRIPT_ENVIRONMENT_DETAILS') IS NOT NULL
-  SELECT [Value]
-  FROM tbl_SCRIPT_ENVIRONMENT_DETAILS
-  WHERE script_name like 'SQL 200% Perf Stats Script'
-    AND [Name] = 'SQL Version (SP)'
-ELSE 
-  SELECT '' AS [value]
-
-  </CommandText>
+        <CommandText>IF  OBJECT_ID('tbl_SCRIPT_ENVIRONMENT_DETAILS') IS NOT NULL
+    SELECT [Value]
+    FROM dbo.tbl_SCRIPT_ENVIRONMENT_DETAILS
+    WHERE script_name LIKE 'SQL Server Perf Stats Script'
+          AND [Name] = 'SQL Version (SP)';
+ELSE
+    SELECT '' AS [value];</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -513,16 +511,15 @@ ELSE
     <DataSet Name="DataSet_Shared_SQLServerName">
       <Query>
         <DataSourceName>DataSource_Private</DataSourceName>
-        <CommandText>IF OBJECT_ID ('DataSet_WaitStats_WaitStatsTop5Categories') IS NOT NULL AND OBJECT_ID ('tbl_SCRIPT_ENVIRONMENT_DETAILS') IS NOT NULL
-	begin        
-  SELECT [Value]
-  FROM tbl_SCRIPT_ENVIRONMENT_DETAILS
-  WHERE script_name like 'SQL 200% Perf Stats Script'
-    AND [Name] = 'SQL Server Name'
-    end
-	ELSE
-  SELECT '' AS [value]
-</CommandText>
+        <CommandText>IF OBJECT_ID('tbl_SCRIPT_ENVIRONMENT_DETAILS') IS NOT NULL
+BEGIN
+    SELECT [Value]
+    FROM dbo.tbl_SCRIPT_ENVIRONMENT_DETAILS
+    WHERE script_name LIKE 'SQL Server Perf Stats Script'
+          AND [Name] = 'SQL Server Name';
+END;
+ELSE
+    SELECT '' AS [value];</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -540,7 +537,7 @@ ELSE
             <Value>=Parameters!BlockingChainRowNum.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>EXEC DataSet_BlockingChain_HeadBlockerSampleRuntime @BlockingChainRowNum</CommandText>
+        <CommandText>EXEC DataSet_BlockingChain_HeadBlockerSampleRuntime @BlockingChainRowNum;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -862,7 +859,7 @@ ELSE
             <Value>=Parameters!BlockingChainRowNum.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>EXEC DataSet_BlockingChain_BlockingChainAllRuntimes @BlockingChainRowNum</CommandText>
+        <CommandText>EXEC DataSet_BlockingChain_BlockingChainAllRuntimes @BlockingChainRowNum;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -912,7 +909,7 @@ ELSE
             <Value>=Parameters!BlockingChainRowNum.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>EXEC DataSet_BlockingChain_BlockingChainTextSummary @BlockingChainRowNum</CommandText>
+        <CommandText>EXEC DataSet_BlockingChain_BlockingChainTextSummary @BlockingChainRowNum;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>

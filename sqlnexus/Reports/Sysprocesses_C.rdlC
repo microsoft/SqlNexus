@@ -21,9 +21,27 @@
             <Value>=Parameters!rowids.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>select spid,ecid,kpid,[status],blocked,open_tran,waitresource,waittime,cmd,lastwaittype,last_batch,login_time,[dbid],loginame,[program_name]
-from tbl_sysprocesses
-where runtime = (select top 1 runtime from tbl_sysprocesses where rownum = @rowids) and spid is not null</CommandText>
+        <CommandText>SELECT spid,
+       ecid,
+       kpid,
+       [status],
+       blocked,
+       open_tran,
+       waitresource,
+       waittime,
+       cmd,
+       lastwaittype,
+       last_batch,
+       login_time,
+       [dbid],
+       loginame,
+       [program_name]
+FROM dbo.tbl_sysprocesses
+WHERE runtime =
+(
+    SELECT TOP 1 runtime FROM tbl_sysprocesses WHERE rownum = @rowids
+)
+      AND spid IS NOT NULL;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -100,13 +118,30 @@ where runtime = (select top 1 runtime from tbl_sysprocesses where rownum = @rowi
             <Value>=Parameters!SPID.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>select  a.spid,[status],blocked,open_tran,waitresource,waittime,cmd,lastwaittype,last_batch,login_time,[dbid],loginame,[program_name],hostname,b.eventinfo
-from tbl_sysprocesses a 
-left outer join tbl_inputbuffers b
-on  a.runtime = b.runtime
-and a.spid=b.spid
-where a.runtime = (select top 1 runtime from tbl_sysprocesses where rownum = @rowids) 
-and a.spid = @SPID</CommandText>
+        <CommandText>SELECT a.spid,
+       [status],
+       blocked,
+       open_tran,
+       waitresource,
+       waittime,
+       cmd,
+       lastwaittype,
+       last_batch,
+       login_time,
+       [dbid],
+       loginame,
+       [program_name],
+       hostname,
+       b.eventinfo
+FROM dbo.tbl_sysprocesses a
+    LEFT OUTER JOIN dbo.tbl_inputbuffers b
+        ON a.runtime = b.runtime
+           AND a.spid = b.spid
+WHERE a.runtime =
+(
+    SELECT TOP 1 runtime FROM dbo.tbl_sysprocesses WHERE rownum = @rowids
+)
+      AND a.spid = @SPID;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -180,7 +215,11 @@ and a.spid = @SPID</CommandText>
             <Value>=Parameters!rowids.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>select top 1 rownum,runtime from tbl_sysprocesses where rownum = @rowids</CommandText>
+        <CommandText>SELECT TOP 1
+       rownum,
+       runtime
+FROM dbo.tbl_sysprocesses
+WHERE rownum = @rowids;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>

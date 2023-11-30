@@ -17,11 +17,13 @@
     <DataSet Name="sqlnexus">
       <Query>
         <DataSourceName>DataSource_Private</DataSourceName>
-        <CommandText>if (object_id ('tbl_sysprocesses') is not null)
-begin
-select cast(min(runtime) as char(24)) as starting_time, cast(max(runtime) as char(24)) as ending_time, Datediff(mi, min(runtime), max(runtime)) as Duration_Minutes
-from tbl_sysprocesses
-end</CommandText>
+        <CommandText>IF (OBJECT_ID('tbl_sysprocesses') IS NOT NULL)
+BEGIN
+    SELECT CAST(MIN(runtime) AS CHAR(24)) AS starting_time,
+           CAST(MAX(runtime) AS CHAR(24)) AS ending_time,
+           DATEDIFF(mi, MIN(runtime), MAX(runtime)) AS Duration_Minutes
+    FROM dbo.tbl_sysprocesses;
+END;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -42,14 +44,19 @@ end</CommandText>
     <DataSet Name="DataSet_HighConcurrency">
       <Query>
         <DataSourceName>DataSource_Private</DataSourceName>
-        <CommandText>if (object_id ('tbl_sysprocesses') is not null)
-begin
-select TOP 10 waitresource=convert(varchar(40),waitresource), 'count'=count(*), 'sum waittime'=sum(cast(waittime as bigint)), 'avg waittime'=avg(cast(waittime as bigint))
-from dbo.tbl_sysprocesses 
-where waitresource &lt;&gt; ' '
-group by waitresource having sum(cast(waittime as bigint))  &gt; 0
-order by 3 desc
-end</CommandText>
+        <CommandText>IF (OBJECT_ID('tbl_sysprocesses') IS NOT NULL)
+BEGIN
+    SELECT TOP 10
+           waitresource = CONVERT(VARCHAR(40), waitresource),
+           'count' = COUNT(*),
+           'sum waittime' = SUM(CAST(waittime AS BIGINT)),
+           'avg waittime' = AVG(CAST(waittime AS BIGINT))
+    FROM dbo.tbl_sysprocesses
+    WHERE waitresource &lt;&gt; ' '
+    GROUP BY waitresource
+    HAVING SUM(CAST(waittime AS BIGINT)) &gt; 0
+    ORDER BY 3 DESC;
+END;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -74,16 +81,169 @@ end</CommandText>
     <DataSet Name="DataSet_WaittypeSummary">
       <Query>
         <DataSourceName>DataSource_Private</DataSourceName>
-        <CommandText>if (object_id ('tbl_sysprocesses') is not null)
-begin
-select top 7  'count'=count(*), 'sum waittime'=sum(cast(waittime as bigint)), 
-'avg waittime'=avg(cast(waittime as bigint)),(case when [lastwaittype] like 'LCK%' then 'Locks' when [lastwaittype] like 'PAGEIO%' then 'Page I/O Latch' when [lastwaittype] like 'PAGELATCH%' then 'Page Latch (non-I/O)' when [lastwaittype] like 'LATCH%' then 'Latch (non-buffer)' when [lastwaittype] like 'IO_COMPLETION' then 'I/O Completion' when [lastwaittype] like 'ASYNC_NETWORK_IO' then 'Network I/O (client fetch)' when [lastwaittype] like 'CLR_%' OR [lastwaittype] like 'SQLCLR%' then 'SQLCLR' when [lastwaittype]='SOS_RESERVEDMEMBLOCKLIST' OR [lastwaittype]='RESOURCE_SEMAPHORE' then 'Memory' when [lastwaittype] like 'RESOURCE_SEMAPHORE_%' OR [lastwaittype]='CMEMTHREAD' then 'Compilation' when [lastwaittype] like 'MSQL_XP' then 'XProc' when [lastwaittype] like 'WRITELOG' then 'Writelog' when [lastwaittype]='CLR_AUTO_EVENT' OR [lastwaittype]='CLR_MANUAL_EVENT' OR [lastwaittype]='SLEEP_TASK' OR [lastwaittype]='DBMIRRORING_CMD' OR [lastwaittype]='DBMIRROR_WORKER_QUEUE' OR [lastwaittype]='CHKPT' OR [lastwaittype]='ONDEMAND_TASK_QUEUE' OR [lastwaittype]='BROKER_TASK_STOP' OR [lastwaittype]='BROKER_RECEIVE_WAITFOR' OR [lastwaittype]='BROKER_EVENTHANDLER' OR [lastwaittype]='BROKER_TRANSMITTER' OR [lastwaittype]='KSOURCE_WAKEUP' OR [lastwaittype]='REQUEST_FOR_DEADLOCK_SEARCH' OR [lastwaittype]='EXCHANGE' OR [lastwaittype]='CXPACKET' OR [lastwaittype]='SQLTRACE_BUFFER_FLUSH' OR [lastwaittype]='LAZYWRITER_SLEEP' OR [lastwaittype]='WAITFOR' or [lastwaittype] = 'CHECKPOINT_QUEUE' or [lastwaittype] = 'LOGMGR_QUEUE' then 'IGNORABLE' else [lastwaittype] end) as Type_Description 
-from dbo.tbl_sysprocesses 
-where (case when [lastwaittype] like 'LCK%' then 'Locks' when [lastwaittype] like 'PAGEIO%' then 'Page I/O Latch' when [lastwaittype] like 'PAGELATCH%' then 'Page Latch (non-I/O)' when [lastwaittype] like 'LATCH%' then 'Latch (non-buffer)' when [lastwaittype] like 'IO_COMPLETION' then 'I/O Completion' when [lastwaittype] like 'ASYNC_NETWORK_IO' then 'Network I/O (client fetch)' when [lastwaittype] like 'CLR_%' OR [lastwaittype] like 'SQLCLR%' then 'SQLCLR' when [lastwaittype]='SOS_RESERVEDMEMBLOCKLIST' OR [lastwaittype]='RESOURCE_SEMAPHORE' then 'Memory' when [lastwaittype] like 'RESOURCE_SEMAPHORE_%' OR [lastwaittype]='CMEMTHREAD' then 'Compilation' when [lastwaittype] like 'MSQL_XP' then 'XProc' when [lastwaittype] like 'WRITELOG' then 'Writelog' when [lastwaittype]='CLR_AUTO_EVENT' OR [lastwaittype]='CLR_MANUAL_EVENT' OR [lastwaittype]='SLEEP_TASK' OR [lastwaittype]='DBMIRRORING_CMD' OR [lastwaittype]='DBMIRROR_WORKER_QUEUE' OR [lastwaittype]='CHKPT' OR [lastwaittype]='ONDEMAND_TASK_QUEUE' OR [lastwaittype]='BROKER_TASK_STOP' OR [lastwaittype]='BROKER_RECEIVE_WAITFOR' OR [lastwaittype]='BROKER_EVENTHANDLER' OR [lastwaittype]='BROKER_TRANSMITTER' OR [lastwaittype]='KSOURCE_WAKEUP' OR [lastwaittype]='REQUEST_FOR_DEADLOCK_SEARCH' OR [lastwaittype]='EXCHANGE' OR [lastwaittype]='CXPACKET' OR [lastwaittype]='SQLTRACE_BUFFER_FLUSH' OR [lastwaittype]='LAZYWRITER_SLEEP' OR [lastwaittype]='WAITFOR' or [lastwaittype] = 'CHECKPOINT_QUEUE' or [lastwaittype] = 'LOGMGR_QUEUE' then 'IGNORABLE' else [lastwaittype] end) &lt;&gt; 'IGNORABLE'
-group by (case when [lastwaittype] like 'LCK%' then 'Locks' when [lastwaittype] like 'PAGEIO%' then 'Page I/O Latch' when [lastwaittype] like 'PAGELATCH%' then 'Page Latch (non-I/O)' when [lastwaittype] like 'LATCH%' then 'Latch (non-buffer)' when [lastwaittype] like 'IO_COMPLETION' then 'I/O Completion' when [lastwaittype] like 'ASYNC_NETWORK_IO' then 'Network I/O (client fetch)' when [lastwaittype] like 'CLR_%' OR [lastwaittype] like 'SQLCLR%' then 'SQLCLR' when [lastwaittype]='SOS_RESERVEDMEMBLOCKLIST' OR [lastwaittype]='RESOURCE_SEMAPHORE' then 'Memory' when [lastwaittype] like 'RESOURCE_SEMAPHORE_%' OR [lastwaittype]='CMEMTHREAD' then 'Compilation' when [lastwaittype] like 'MSQL_XP' then 'XProc' when [lastwaittype] like 'WRITELOG' then 'Writelog' when [lastwaittype]='CLR_AUTO_EVENT' OR [lastwaittype]='CLR_MANUAL_EVENT' OR [lastwaittype]='SLEEP_TASK' OR [lastwaittype]='DBMIRRORING_CMD' OR [lastwaittype]='DBMIRROR_WORKER_QUEUE' OR [lastwaittype]='CHKPT' OR [lastwaittype]='ONDEMAND_TASK_QUEUE' OR [lastwaittype]='BROKER_TASK_STOP' OR [lastwaittype]='BROKER_RECEIVE_WAITFOR' OR [lastwaittype]='BROKER_EVENTHANDLER' OR [lastwaittype]='BROKER_TRANSMITTER' OR [lastwaittype]='KSOURCE_WAKEUP' OR [lastwaittype]='REQUEST_FOR_DEADLOCK_SEARCH' OR [lastwaittype]='EXCHANGE' OR [lastwaittype]='CXPACKET' OR [lastwaittype]='SQLTRACE_BUFFER_FLUSH' OR [lastwaittype]='LAZYWRITER_SLEEP' OR [lastwaittype]='WAITFOR' or [lastwaittype] = 'CHECKPOINT_QUEUE' or [lastwaittype] = 'LOGMGR_QUEUE' then 'IGNORABLE' else [lastwaittype] end)
-having sum(cast(waittime as bigint)) &gt; 0
-order by 2 desc
-end</CommandText>
+        <CommandText>IF (OBJECT_ID('tbl_sysprocesses') IS NOT NULL)
+BEGIN
+    SELECT TOP 7
+           'count' = COUNT(*),
+           'sum waittime' = SUM(CAST(waittime AS BIGINT)),
+           'avg waittime' = AVG(CAST(waittime AS BIGINT)),
+           (CASE
+                WHEN [lastwaittype] LIKE 'LCK%' THEN
+                    'Locks'
+                WHEN [lastwaittype] LIKE 'PAGEIO%' THEN
+                    'Page I/O Latch'
+                WHEN [lastwaittype] LIKE 'PAGELATCH%' THEN
+                    'Page Latch (non-I/O)'
+                WHEN [lastwaittype] LIKE 'LATCH%' THEN
+                    'Latch (non-buffer)'
+                WHEN [lastwaittype] LIKE 'IO_COMPLETION' THEN
+                    'I/O Completion'
+                WHEN [lastwaittype] LIKE 'ASYNC_NETWORK_IO' THEN
+                    'Network I/O (client fetch)'
+                WHEN [lastwaittype] LIKE 'CLR_%'
+                     OR [lastwaittype] LIKE 'SQLCLR%' THEN
+                    'SQLCLR'
+                WHEN [lastwaittype] = 'SOS_RESERVEDMEMBLOCKLIST'
+                     OR [lastwaittype] = 'RESOURCE_SEMAPHORE' THEN
+                    'Memory'
+                WHEN [lastwaittype] LIKE 'RESOURCE_SEMAPHORE_%'
+                     OR [lastwaittype] = 'CMEMTHREAD' THEN
+                    'Compilation'
+                WHEN [lastwaittype] LIKE 'MSQL_XP' THEN
+                    'XProc'
+                WHEN [lastwaittype] LIKE 'WRITELOG' THEN
+                    'Writelog'
+                WHEN [lastwaittype] = 'CLR_AUTO_EVENT'
+                     OR [lastwaittype] = 'CLR_MANUAL_EVENT'
+                     OR [lastwaittype] = 'SLEEP_TASK'
+                     OR [lastwaittype] = 'DBMIRRORING_CMD'
+                     OR [lastwaittype] = 'DBMIRROR_WORKER_QUEUE'
+                     OR [lastwaittype] = 'CHKPT'
+                     OR [lastwaittype] = 'ONDEMAND_TASK_QUEUE'
+                     OR [lastwaittype] = 'BROKER_TASK_STOP'
+                     OR [lastwaittype] = 'BROKER_RECEIVE_WAITFOR'
+                     OR [lastwaittype] = 'BROKER_EVENTHANDLER'
+                     OR [lastwaittype] = 'BROKER_TRANSMITTER'
+                     OR [lastwaittype] = 'KSOURCE_WAKEUP'
+                     OR [lastwaittype] = 'REQUEST_FOR_DEADLOCK_SEARCH'
+                     OR [lastwaittype] = 'EXCHANGE'
+                     OR [lastwaittype] = 'CXPACKET'
+                     OR [lastwaittype] = 'SQLTRACE_BUFFER_FLUSH'
+                     OR [lastwaittype] = 'LAZYWRITER_SLEEP'
+                     OR [lastwaittype] = 'WAITFOR'
+                     OR [lastwaittype] = 'CHECKPOINT_QUEUE'
+                     OR [lastwaittype] = 'LOGMGR_QUEUE' THEN
+                    'IGNORABLE'
+                ELSE
+                    [lastwaittype]
+            END
+           ) AS Type_Description
+    FROM dbo.tbl_sysprocesses
+    WHERE (CASE
+               WHEN [lastwaittype] LIKE 'LCK%' THEN
+                   'Locks'
+               WHEN [lastwaittype] LIKE 'PAGEIO%' THEN
+                   'Page I/O Latch'
+               WHEN [lastwaittype] LIKE 'PAGELATCH%' THEN
+                   'Page Latch (non-I/O)'
+               WHEN [lastwaittype] LIKE 'LATCH%' THEN
+                   'Latch (non-buffer)'
+               WHEN [lastwaittype] LIKE 'IO_COMPLETION' THEN
+                   'I/O Completion'
+               WHEN [lastwaittype] LIKE 'ASYNC_NETWORK_IO' THEN
+                   'Network I/O (client fetch)'
+               WHEN [lastwaittype] LIKE 'CLR_%'
+                    OR [lastwaittype] LIKE 'SQLCLR%' THEN
+                   'SQLCLR'
+               WHEN [lastwaittype] = 'SOS_RESERVEDMEMBLOCKLIST'
+                    OR [lastwaittype] = 'RESOURCE_SEMAPHORE' THEN
+                   'Memory'
+               WHEN [lastwaittype] LIKE 'RESOURCE_SEMAPHORE_%'
+                    OR [lastwaittype] = 'CMEMTHREAD' THEN
+                   'Compilation'
+               WHEN [lastwaittype] LIKE 'MSQL_XP' THEN
+                   'XProc'
+               WHEN [lastwaittype] LIKE 'WRITELOG' THEN
+                   'Writelog'
+               WHEN [lastwaittype] = 'CLR_AUTO_EVENT'
+                    OR [lastwaittype] = 'CLR_MANUAL_EVENT'
+                    OR [lastwaittype] = 'SLEEP_TASK'
+                    OR [lastwaittype] = 'DBMIRRORING_CMD'
+                    OR [lastwaittype] = 'DBMIRROR_WORKER_QUEUE'
+                    OR [lastwaittype] = 'CHKPT'
+                    OR [lastwaittype] = 'ONDEMAND_TASK_QUEUE'
+                    OR [lastwaittype] = 'BROKER_TASK_STOP'
+                    OR [lastwaittype] = 'BROKER_RECEIVE_WAITFOR'
+                    OR [lastwaittype] = 'BROKER_EVENTHANDLER'
+                    OR [lastwaittype] = 'BROKER_TRANSMITTER'
+                    OR [lastwaittype] = 'KSOURCE_WAKEUP'
+                    OR [lastwaittype] = 'REQUEST_FOR_DEADLOCK_SEARCH'
+                    OR [lastwaittype] = 'EXCHANGE'
+                    OR [lastwaittype] = 'CXPACKET'
+                    OR [lastwaittype] = 'SQLTRACE_BUFFER_FLUSH'
+                    OR [lastwaittype] = 'LAZYWRITER_SLEEP'
+                    OR [lastwaittype] = 'WAITFOR'
+                    OR [lastwaittype] = 'CHECKPOINT_QUEUE'
+                    OR [lastwaittype] = 'LOGMGR_QUEUE' THEN
+                   'IGNORABLE'
+               ELSE
+                   [lastwaittype]
+           END
+          ) &lt;&gt; 'IGNORABLE'
+    GROUP BY (CASE
+                  WHEN [lastwaittype] LIKE 'LCK%' THEN
+                      'Locks'
+                  WHEN [lastwaittype] LIKE 'PAGEIO%' THEN
+                      'Page I/O Latch'
+                  WHEN [lastwaittype] LIKE 'PAGELATCH%' THEN
+                      'Page Latch (non-I/O)'
+                  WHEN [lastwaittype] LIKE 'LATCH%' THEN
+                      'Latch (non-buffer)'
+                  WHEN [lastwaittype] LIKE 'IO_COMPLETION' THEN
+                      'I/O Completion'
+                  WHEN [lastwaittype] LIKE 'ASYNC_NETWORK_IO' THEN
+                      'Network I/O (client fetch)'
+                  WHEN [lastwaittype] LIKE 'CLR_%'
+                       OR [lastwaittype] LIKE 'SQLCLR%' THEN
+                      'SQLCLR'
+                  WHEN [lastwaittype] = 'SOS_RESERVEDMEMBLOCKLIST'
+                       OR [lastwaittype] = 'RESOURCE_SEMAPHORE' THEN
+                      'Memory'
+                  WHEN [lastwaittype] LIKE 'RESOURCE_SEMAPHORE_%'
+                       OR [lastwaittype] = 'CMEMTHREAD' THEN
+                      'Compilation'
+                  WHEN [lastwaittype] LIKE 'MSQL_XP' THEN
+                      'XProc'
+                  WHEN [lastwaittype] LIKE 'WRITELOG' THEN
+                      'Writelog'
+                  WHEN [lastwaittype] = 'CLR_AUTO_EVENT'
+                       OR [lastwaittype] = 'CLR_MANUAL_EVENT'
+                       OR [lastwaittype] = 'SLEEP_TASK'
+                       OR [lastwaittype] = 'DBMIRRORING_CMD'
+                       OR [lastwaittype] = 'DBMIRROR_WORKER_QUEUE'
+                       OR [lastwaittype] = 'CHKPT'
+                       OR [lastwaittype] = 'ONDEMAND_TASK_QUEUE'
+                       OR [lastwaittype] = 'BROKER_TASK_STOP'
+                       OR [lastwaittype] = 'BROKER_RECEIVE_WAITFOR'
+                       OR [lastwaittype] = 'BROKER_EVENTHANDLER'
+                       OR [lastwaittype] = 'BROKER_TRANSMITTER'
+                       OR [lastwaittype] = 'KSOURCE_WAKEUP'
+                       OR [lastwaittype] = 'REQUEST_FOR_DEADLOCK_SEARCH'
+                       OR [lastwaittype] = 'EXCHANGE'
+                       OR [lastwaittype] = 'CXPACKET'
+                       OR [lastwaittype] = 'SQLTRACE_BUFFER_FLUSH'
+                       OR [lastwaittype] = 'LAZYWRITER_SLEEP'
+                       OR [lastwaittype] = 'WAITFOR'
+                       OR [lastwaittype] = 'CHECKPOINT_QUEUE'
+                       OR [lastwaittype] = 'LOGMGR_QUEUE' THEN
+                      'IGNORABLE'
+                  ELSE
+                      [lastwaittype]
+              END
+             )
+    HAVING SUM(CAST(waittime AS BIGINT)) &gt; 0
+    ORDER BY 2 DESC;
+END;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -108,12 +268,12 @@ end</CommandText>
     <DataSet Name="DataSet_Sum_HighConcurrency">
       <Query>
         <DataSourceName>DataSource_Private</DataSourceName>
-        <CommandText>if (object_id ('tbl_sysprocesses') is not null)
-begin
-select sum(cast(isnull(waittime,0) as bigint))  as sum_waittime
-from dbo.tbl_sysprocesses 
-where waitresource &lt;&gt; ' '
-end</CommandText>
+        <CommandText>IF (OBJECT_ID('tbl_sysprocesses') IS NOT NULL)
+BEGIN
+    SELECT SUM(CAST(ISNULL(waittime, 0) AS BIGINT)) AS sum_waittime
+    FROM dbo.tbl_sysprocesses
+    WHERE waitresource &lt;&gt; ' ';
+END;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -126,12 +286,62 @@ end</CommandText>
     <DataSet Name="DataSet_Sum_WaittypeSummary">
       <Query>
         <DataSourceName>DataSource_Private</DataSourceName>
-        <CommandText>if (object_id ('tbl_sysprocesses') is not null)
-begin
-select sum(cast(waittime as bigint)) as sum_waittime
-from dbo.tbl_sysprocesses 
-where  (case when [lastwaittype] like 'LCK%' then 'Locks' when [lastwaittype] like 'PAGEIO%' then 'Page I/O Latch' when [lastwaittype] like 'PAGELATCH%' then 'Page Latch (non-I/O)' when [lastwaittype] like 'LATCH%' then 'Latch (non-buffer)' when [lastwaittype] like 'IO_COMPLETION' then 'I/O Completion' when [lastwaittype] like 'ASYNC_NETWORK_IO' then 'Network I/O (client fetch)' when [lastwaittype] like 'CLR_%' OR [lastwaittype] like 'SQLCLR%' then 'SQLCLR' when [lastwaittype]='SOS_RESERVEDMEMBLOCKLIST' OR [lastwaittype]='RESOURCE_SEMAPHORE' then 'Memory' when [lastwaittype] like 'RESOURCE_SEMAPHORE_%' OR [lastwaittype]='CMEMTHREAD' then 'Compilation' when [lastwaittype] like 'MSQL_XP' then 'XProc' when [lastwaittype] like 'WRITELOG' then 'Writelog' when [lastwaittype]='CLR_AUTO_EVENT' OR [lastwaittype]='CLR_MANUAL_EVENT' OR [lastwaittype]='SLEEP_TASK' OR [lastwaittype]='DBMIRRORING_CMD' OR [lastwaittype]='DBMIRROR_WORKER_QUEUE' OR [lastwaittype]='CHKPT' OR [lastwaittype]='ONDEMAND_TASK_QUEUE' OR [lastwaittype]='BROKER_TASK_STOP' OR [lastwaittype]='BROKER_RECEIVE_WAITFOR' OR [lastwaittype]='BROKER_EVENTHANDLER' OR [lastwaittype]='BROKER_TRANSMITTER' OR [lastwaittype]='KSOURCE_WAKEUP' OR [lastwaittype]='REQUEST_FOR_DEADLOCK_SEARCH' OR [lastwaittype]='EXCHANGE' OR [lastwaittype]='CXPACKET' OR [lastwaittype]='SQLTRACE_BUFFER_FLUSH' OR [lastwaittype]='LAZYWRITER_SLEEP' OR [lastwaittype]='WAITFOR' or [lastwaittype] = 'CHECKPOINT_QUEUE' or [lastwaittype] = 'LOGMGR_QUEUE' then 'IGNORABLE' else [lastwaittype] end) &lt;&gt; 'IGNORABLE'
-end</CommandText>
+        <CommandText>IF (OBJECT_ID('tbl_sysprocesses') IS NOT NULL)
+BEGIN
+    SELECT SUM(CAST(waittime AS BIGINT)) AS sum_waittime
+    FROM dbo.tbl_sysprocesses
+    WHERE (CASE
+               WHEN [lastwaittype] LIKE 'LCK%' THEN
+                   'Locks'
+               WHEN [lastwaittype] LIKE 'PAGEIO%' THEN
+                   'Page I/O Latch'
+               WHEN [lastwaittype] LIKE 'PAGELATCH%' THEN
+                   'Page Latch (non-I/O)'
+               WHEN [lastwaittype] LIKE 'LATCH%' THEN
+                   'Latch (non-buffer)'
+               WHEN [lastwaittype] LIKE 'IO_COMPLETION' THEN
+                   'I/O Completion'
+               WHEN [lastwaittype] LIKE 'ASYNC_NETWORK_IO' THEN
+                   'Network I/O (client fetch)'
+               WHEN [lastwaittype] LIKE 'CLR_%'
+                    OR [lastwaittype] LIKE 'SQLCLR%' THEN
+                   'SQLCLR'
+               WHEN [lastwaittype] = 'SOS_RESERVEDMEMBLOCKLIST'
+                    OR [lastwaittype] = 'RESOURCE_SEMAPHORE' THEN
+                   'Memory'
+               WHEN [lastwaittype] LIKE 'RESOURCE_SEMAPHORE_%'
+                    OR [lastwaittype] = 'CMEMTHREAD' THEN
+                   'Compilation'
+               WHEN [lastwaittype] LIKE 'MSQL_XP' THEN
+                   'XProc'
+               WHEN [lastwaittype] LIKE 'WRITELOG' THEN
+                   'Writelog'
+               WHEN [lastwaittype] = 'CLR_AUTO_EVENT'
+                    OR [lastwaittype] = 'CLR_MANUAL_EVENT'
+                    OR [lastwaittype] = 'SLEEP_TASK'
+                    OR [lastwaittype] = 'DBMIRRORING_CMD'
+                    OR [lastwaittype] = 'DBMIRROR_WORKER_QUEUE'
+                    OR [lastwaittype] = 'CHKPT'
+                    OR [lastwaittype] = 'ONDEMAND_TASK_QUEUE'
+                    OR [lastwaittype] = 'BROKER_TASK_STOP'
+                    OR [lastwaittype] = 'BROKER_RECEIVE_WAITFOR'
+                    OR [lastwaittype] = 'BROKER_EVENTHANDLER'
+                    OR [lastwaittype] = 'BROKER_TRANSMITTER'
+                    OR [lastwaittype] = 'KSOURCE_WAKEUP'
+                    OR [lastwaittype] = 'REQUEST_FOR_DEADLOCK_SEARCH'
+                    OR [lastwaittype] = 'EXCHANGE'
+                    OR [lastwaittype] = 'CXPACKET'
+                    OR [lastwaittype] = 'SQLTRACE_BUFFER_FLUSH'
+                    OR [lastwaittype] = 'LAZYWRITER_SLEEP'
+                    OR [lastwaittype] = 'WAITFOR'
+                    OR [lastwaittype] = 'CHECKPOINT_QUEUE'
+                    OR [lastwaittype] = 'LOGMGR_QUEUE' THEN
+                   'IGNORABLE'
+               ELSE
+                   [lastwaittype]
+           END
+          ) &lt;&gt; 'IGNORABLE';
+END;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -144,22 +354,27 @@ end</CommandText>
     <DataSet Name="DataSet_Runtimes">
       <Query>
         <DataSourceName>DataSource_Private</DataSourceName>
-        <CommandText>if (object_id ('tbl_sysprocesses') is not null)
-begin
-with cte_runtimes as
-(
-select rownum,runtime,row_number() over (partition by runtime order by runtime) as rownumber
-from tbl_sysprocesses
-)
-select a.rownum,a.runtime,count(*) as blocked_sessions,max(cast(b.waittime as bigint))/1000 as max_waittime
-from cte_runtimes a
-left outer join tbl_sysprocesses b
-on a.runtime = b.runtime
-where a.rownumber  = 1 and b.blocked &lt;&gt; 0
-group by a.runtime,a.rownum
-having max(cast(b.waittime as bigint)) &gt; 1000
-order by a.runtime
-end</CommandText>
+        <CommandText>IF (OBJECT_ID('tbl_sysprocesses') IS NOT NULL)
+BEGIN
+    WITH cte_runtimes
+    AS (SELECT rownum,
+               runtime,
+               ROW_NUMBER() OVER (PARTITION BY runtime ORDER BY runtime) AS rownumber
+        FROM dbo.tbl_sysprocesses)
+    SELECT a.rownum,
+           a.runtime,
+           COUNT(*) AS blocked_sessions,
+           MAX(CAST(b.waittime AS BIGINT)) / 1000 AS max_waittime
+    FROM cte_runtimes a
+        LEFT OUTER JOIN dbo.tbl_sysprocesses b
+            ON a.runtime = b.runtime
+    WHERE a.rownumber = 1
+          AND b.blocked &lt;&gt; 0
+    GROUP BY a.runtime,
+             a.rownum
+    HAVING MAX(CAST(b.waittime AS BIGINT)) &gt; 1000
+    ORDER BY a.runtime;
+END;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>

@@ -24,7 +24,9 @@
             <Value>=Parameters!EndTime.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>select * from tbl_ServerProperties</CommandText>
+        <CommandText>SELECT PropertyName,
+       PropertyValue
+FROM dbo.tbl_ServerProperties;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -41,7 +43,7 @@
     <DataSet Name="DataSet_StartTime">
       <Query>
         <DataSourceName>DataSource_SqlNexus_Private</DataSourceName>
-        <CommandText>select cast ('1990/1/1' as datetime) as StartTime</CommandText>
+        <CommandText>SELECT CAST('1990/1/1' AS DATETIME) AS StartTime;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -54,7 +56,7 @@
     <DataSet Name="DataSet_EndTime">
       <Query>
         <DataSourceName>DataSource_SqlNexus_Private</DataSourceName>
-        <CommandText>select cast ('2099/1/1' as datetime) as EndTime</CommandText>
+        <CommandText>SELECT CAST('2099/1/1' AS DATETIME) AS EndTime;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -67,10 +69,10 @@
     <DataSet Name="DataSet_AvailableTime">
       <Query>
         <DataSourceName>DataSource_SqlNexus_Private</DataSourceName>
-        <CommandText>select cast ('1990/1/1' as datetime) as AvailableTime
-	union
-	select  cast('2099/1/1' as datetime)  as AvailableTime
-	</CommandText>
+        <CommandText>SELECT CAST('1990/1/1' AS DATETIME) AS AvailableTime
+UNION
+SELECT CAST('2099/1/1' AS DATETIME) AS AvailableTime;
+</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -91,16 +93,26 @@
             <Value>=Parameters!EndTime.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>SELECT conf.*,
+        <CommandText>SELECT conf.configuration_id,
+       conf.value,
+       conf.value_in_use,
+       conf.minimum,
+       conf.maximum,
+       conf.is_dynamic,
+       conf.is_advanced,
+       conf.name,
        CASE
-           WHEN cast(value_in_use AS int) = DefaultOption
-                OR DefaultOption IS NULL THEN 0
-           ELSE 1
+           WHEN CAST(conf.value_in_use AS INT) = def.DefaultOption
+                OR def.DefaultOption IS NULL THEN
+               0
+           ELSE
+               1
        END AS 'NonDefault',
-           def.DefaultOption
-FROM tbl_Sys_Configurations conf
-LEFT JOIN tblDefaultConfigures def ON conf.name = def.[Configuration Option]
-ORDER BY conf.name</CommandText>
+       def.DefaultOption
+FROM dbo.tbl_Sys_Configurations conf
+    LEFT JOIN dbo.tblDefaultConfigures def
+        ON conf.name = def.[Configuration Option]
+ORDER BY conf.name;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -141,7 +153,11 @@ ORDER BY conf.name</CommandText>
             <Value>=Parameters!EndTime.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>select * from tbl_TraceFlags</CommandText>
+        <CommandText>SELECT TraceFlag,
+       Status,
+       Global,
+       Session
+FROM dbo.tbl_TraceFlags;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -166,7 +182,9 @@ ORDER BY conf.name</CommandText>
     <DataSet Name="DataSet_StartupParameters">
       <Query>
         <DataSourceName>DataSource_SqlNexus_Private</DataSourceName>
-        <CommandText>select * from tbl_StartupParameters</CommandText>
+        <CommandText>SELECT ArgsName,
+       ArgsValue
+FROM dbo.tbl_StartupParameters;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>

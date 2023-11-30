@@ -25,10 +25,12 @@
     <DataSet Name="DataSet_DataAvailable">
       <Query>
         <DataSourceName>DataSource_Private</DataSourceName>
-        <CommandText>if OBJECT_ID ('tbl_TopNLogicalReadsByQueryHash') is not null and OBJECT_ID ('tbl_TopNDurationByQueryHash') is not null and OBJECT_ID ('tbl_TopNCPUByQueryHash')  is not null
-   select 1  as Available
-   else
-   select 0  as Available</CommandText>
+        <CommandText>IF OBJECT_ID('tbl_TopNLogicalReadsByQueryHash') IS NOT NULL
+   AND OBJECT_ID('tbl_TopNDurationByQueryHash') IS NOT NULL
+   AND OBJECT_ID('tbl_TopNCPUByQueryHash') IS NOT NULL
+    SELECT 1 AS Available;
+ELSE
+    SELECT 0 AS Available;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -39,15 +41,37 @@
     </DataSet>
     <DataSet Name="DataSet_Running_Queries">
       <Query>
-        <DataSourceName>DataSource_test</DataSourceName>
-        <CommandText>select top 20  format(datediff (MI, request_start_time, req.runtime), 'N', 'en-us') 'running_duration_minutes', 
-req.request_start_time, 'still running' request_end_time ,
-req.request_logical_reads, 
-format((req.request_cpu_time/1000.00/60.0), 'N', 'en-us') 'cpu_time_minutes', naq.stmt_text from 
-(select runtime, session_id, max(request_cpu_time) 'request_cpu_time', min(request_start_time) 'request_start_time', max(request_logical_reads) 'request_logical_reads' from tbl_REQUESTS
-group by runtime, session_id)  req join tbl_NOTABLEACTIVEQUERIES naq on req.session_id = naq.session_id and req.runtime=naq.runtime
-where req.runtime =(select max(runtime) from tbl_requests) and naq.runtime =(select max(runtime) from tbl_requests)
-order by req.request_cpu_time desc</CommandText>
+        <DataSourceName>DataSource_Private</DataSourceName>
+        <CommandText>SELECT TOP 20
+       FORMAT(DATEDIFF(MI, req.request_start_time, req.runtime), 'N', 'en-us') 'running_duration_minutes',
+       req.request_start_time,
+       'still running' request_end_time,
+       req.request_logical_reads,
+       FORMAT((req.request_cpu_time / 1000.00 / 60.0), 'N', 'en-us') 'cpu_time_minutes',
+       naq.stmt_text
+FROM
+(
+    SELECT runtime,
+           session_id,
+           MAX(request_cpu_time) 'request_cpu_time',
+           MIN(request_start_time) 'request_start_time',
+           MAX(request_logical_reads) 'request_logical_reads'
+    FROM dbo.tbl_REQUESTS
+    GROUP BY runtime,
+             session_id
+) req
+    JOIN dbo.tbl_NOTABLEACTIVEQUERIES naq
+        ON req.session_id = naq.session_id
+           AND req.runtime = naq.runtime
+WHERE req.runtime =
+(
+    SELECT MAX(runtime)FROM dbo.tbl_REQUESTS
+)
+      AND naq.runtime =
+      (
+          SELECT MAX(runtime)FROM dbo.tbl_REQUESTS
+      )
+ORDER BY req.request_cpu_time DESC;</CommandText>
       </Query>
       <Fields>
         <Field Name="running_duration_minutes">

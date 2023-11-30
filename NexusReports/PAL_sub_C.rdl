@@ -31,14 +31,15 @@
             <rd:UserDefined>true</rd:UserDefined>
           </QueryParameter>
         </QueryParameters>
-        <CommandText> declare @sqlCmd nvarchar(max) = 'Select c1.ObjectName  
+        <CommandText>DECLARE @sqlCmd NVARCHAR(MAX)
+    = N'Select c1.ObjectName  
  ,c1.CounterName  
  ,c1.InstanceName  
  ,CounterDateTime  
  ,c1.CounterValue  
 from dbo.Counters c1   
-where c1.countername IN (' + (@Counters) + ') or c1.fullcounternamewithwildchar in (' + (@Counters) + ')'  
- exec sp_executesql @sqlcmd  </CommandText>
+where c1.countername IN (' + (@Counters) + N') or c1.fullcounternamewithwildchar in (' + (@Counters) + N')';
+EXEC sp_executesql @sqlcmd;</CommandText>
       </Query>
       <Fields>
         <Field Name="CounterName">

@@ -21,14 +21,21 @@
             <Value>=Parameters!OrderByCriteria.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>if OBJECT_ID ('tbl_TopNLogicalReadsByQueryHash') is not null and OBJECT_ID ('tbl_TopNDurationByQueryHash') is not null and OBJECT_ID ('tbl_TopNCPUByQueryHash')  is not null
-     exec GetTopNQueryHash @OrderByCriteria
-else
-
-  select 
-  1 rownumber, null  runtime   , null query_hash, 0 [distinct query_plan_hash count],
-  0 execution_count, 0 total_worker_time, 0 total_elapsed_time,
-  0 total_logical_reads, null sample_statement_text, 0 displayvalue</CommandText>
+        <CommandText>IF OBJECT_ID('tbl_TopNLogicalReadsByQueryHash') IS NOT NULL
+   AND OBJECT_ID('tbl_TopNDurationByQueryHash') IS NOT NULL
+   AND OBJECT_ID('tbl_TopNCPUByQueryHash') IS NOT NULL
+    EXEC GetTopNQueryHash @OrderByCriteria;
+ELSE
+    SELECT 1 rownumber,
+           NULL runtime,
+           NULL query_hash,
+           0 [distinct query_plan_hash count],
+           0 execution_count,
+           0 total_worker_time,
+           0 total_elapsed_time,
+           0 total_logical_reads,
+           NULL sample_statement_text,
+           0 displayvalue;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -77,10 +84,12 @@ else
     <DataSet Name="DataSet_DataAvailable">
       <Query>
         <DataSourceName>DataSource_Private</DataSourceName>
-        <CommandText>if OBJECT_ID ('tbl_TopNLogicalReadsByQueryHash') is not null and OBJECT_ID ('tbl_TopNDurationByQueryHash') is not null and OBJECT_ID ('tbl_TopNCPUByQueryHash')  is not null
-   select 1  as Available
-   else
-   select 0  as Available</CommandText>
+        <CommandText>IF OBJECT_ID('tbl_TopNLogicalReadsByQueryHash') IS NOT NULL
+   AND OBJECT_ID('tbl_TopNDurationByQueryHash') IS NOT NULL
+   AND OBJECT_ID('tbl_TopNCPUByQueryHash') IS NOT NULL
+    SELECT 1 AS Available;
+ELSE
+    SELECT 0 AS Available;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>

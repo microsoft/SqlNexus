@@ -17,18 +17,17 @@
     <DataSet Name="tbl_dm_db_file_space_usage">
       <Query>
         <DataSourceName>sqlnexus_private</DataSourceName>
-        <CommandText>SELECT 
-	runtime
-	,database_id
-	,file_id
-	,allocated_extent_page_count
-	,unallocated_extent_page_count
-	,version_store_reserved_page_count
-	,user_object_reserved_page_count
-	,internal_object_reserved_page_count
-	,mixed_extent_page_count
-	,modified_extent_page_count
-FROM dbo.tbl_dm_db_file_space_usage</CommandText>
+        <CommandText>SELECT runtime,
+       database_id,
+       file_id,
+       allocated_extent_page_count,
+       unallocated_extent_page_count,
+       version_store_reserved_page_count,
+       user_object_reserved_page_count,
+       internal_object_reserved_page_count,
+       mixed_extent_page_count,
+       modified_extent_page_count
+FROM dbo.tbl_dm_db_file_space_usage;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -77,9 +76,11 @@ FROM dbo.tbl_dm_db_file_space_usage</CommandText>
     <DataSet Name="TempDbUsagePerCategory">
       <Query>
         <DataSourceName>sqlnexus_private</DataSourceName>
-        <CommandText>SELECT        runtime AS Runtime, CONVERT(DECIMAL(10, 3), user_object_reserved_page_count / 128.0) AS user_objects_mb, CONVERT(DECIMAL(10, 3), internal_object_reserved_page_count / 128.0) AS internal_objects_mb, 
-                         CONVERT(DECIMAL(10, 3), version_store_reserved_page_count / 128.0) AS version_store_objects_mb
-FROM            tbl_dm_db_file_space_usage</CommandText>
+        <CommandText>SELECT runtime AS Runtime,
+       CONVERT(DECIMAL(10, 3), user_object_reserved_page_count / 128.0) AS user_objects_mb,
+       CONVERT(DECIMAL(10, 3), internal_object_reserved_page_count / 128.0) AS internal_objects_mb,
+       CONVERT(DECIMAL(10, 3), version_store_reserved_page_count / 128.0) AS version_store_objects_mb
+FROM dbo.tbl_dm_db_file_space_usage;</CommandText>
       </Query>
       <Fields>
         <Field Name="Runtime">
@@ -104,14 +105,27 @@ FROM            tbl_dm_db_file_space_usage</CommandText>
       <Query>
         <DataSourceName>sqlnexus_private</DataSourceName>
         <CommandText>-- show over 10 MB allocations
-SELECT        ssu.runtime, ssu.session_id, tsu.exec_context_id, tsu.cpu_time, CONVERT(DECIMAL(10, 3), ssu.internal_objects_alloc_page_count / 128.0) AS internal_objects_alloc_MB, CONVERT(DECIMAL(10, 3), 
-                         ssu.internal_objects_dealloc_page_count / 128.0) AS internal_objects_dealloc_MB, CONVERT(DECIMAL(10, 3), ssu.user_objects_alloc_page_count / 128.0) AS user_objects_alloc_MB, CONVERT(DECIMAL(10, 3), 
-                         ssu.user_objects_dealloc_page_count / 128.0) AS user_objects_dealloc_MB, CONVERT(DECIMAL(10, 3), ssu.user_objects_deferred_dealloc_page_count / 128.0) AS user_objects_deferred_dealloc_MB, 
-                         ssu.open_transaction_count, ssu.program_name, ssu.most_recent_query, tsu.batch_text, tsu.statement_text, tsu.wait_type, tsu.wait_time
-FROM            tbl_dm_db_session_space_usage AS ssu LEFT OUTER JOIN
-                         tbl_dm_db_task_space_usage AS tsu ON ssu.session_id = tsu.session_id
-WHERE        (ssu.internal_objects_alloc_page_count &gt;= 1280) OR
-                         (ssu.user_objects_alloc_page_count &gt;= 1280)</CommandText>
+SELECT ssu.runtime,
+       ssu.session_id,
+       tsu.exec_context_id,
+       tsu.cpu_time,
+       CONVERT(DECIMAL(10, 3), ssu.internal_objects_alloc_page_count / 128.0) AS internal_objects_alloc_MB,
+       CONVERT(DECIMAL(10, 3), ssu.internal_objects_dealloc_page_count / 128.0) AS internal_objects_dealloc_MB,
+       CONVERT(DECIMAL(10, 3), ssu.user_objects_alloc_page_count / 128.0) AS user_objects_alloc_MB,
+       CONVERT(DECIMAL(10, 3), ssu.user_objects_dealloc_page_count / 128.0) AS user_objects_dealloc_MB,
+       CONVERT(DECIMAL(10, 3), ssu.user_objects_deferred_dealloc_page_count / 128.0) AS user_objects_deferred_dealloc_MB,
+       ssu.open_transaction_count,
+       ssu.program_name,
+       ssu.most_recent_query,
+       tsu.batch_text,
+       tsu.statement_text,
+       tsu.wait_type,
+       tsu.wait_time
+FROM dbo.tbl_dm_db_session_space_usage AS ssu
+    LEFT OUTER JOIN dbo.tbl_dm_db_task_space_usage AS tsu
+        ON ssu.session_id = tsu.session_id
+WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
+      OR (ssu.user_objects_alloc_page_count &gt;= 1280);</CommandText>
       </Query>
       <Fields>
         <Field Name="runtime">

@@ -5,7 +5,7 @@
     <DataSource Name="SqlNexus_Private">
       <ConnectionProperties>
         <DataProvider>SQL</DataProvider>
-        <ConnectString>Data Source=SOUTHPAW\SQL08R2;Initial Catalog=wasd_import_1121</ConnectString>
+        <ConnectString>="data source=" &amp; Parameters!dsServerName.Value &amp; ";initial catalog="&amp;Parameters!dsDatabaseName.Value</ConnectString>
         <IntegratedSecurity>true</IntegratedSecurity>
       </ConnectionProperties>
       <rd:SecurityType>Integrated</rd:SecurityType>
@@ -16,38 +16,41 @@
     <DataSet Name="DataSet_WASD_Deadlock_Graph_Details">
       <Query>
         <DataSourceName>SqlNexus_Private</DataSourceName>
-        <CommandText>if object_id('tbl_EVENT_LOG') is not null
-select 
-database_name, start_time, end_time,
-C.value('(victim-list/victimProcess/@id)[1]','nvarchar(15)') as 'Victim_ProcessId',	
-C.value('(process-list/process[1]/@id)[1]','nvarchar(15)') as 'ProcessId_1',	
-C.value('(process-list/process[1]/@lasttranstarted)[1]','nvarchar(25)') as 'ProcessId_1_LastTranStarted',	
-C.value('(process-list/process[1]/@lastbatchstarted)[1]','nvarchar(25)') as 'ProcessId_1_LastBatchStarted',	
-C.value('(process-list/process[1]/@lastbatchcompleted)[1]','nvarchar(25)') as 'ProcessId_1_LastBatchCompleted',	
-C.value('(process-list/process[1]/executionStack/frame[1]/@procname)[1]','nvarchar(100)') as 'ProcessId_1_ProcName',	
-C.value('(process-list/process[1]/inputbuf)[1]','nvarchar(100)') as 'ProcessId_1_InputBuffer',	
-C.value('(process-list/process[2]/@id)[1]','nvarchar(15)') as 'ProcessId_2',	
-C.value('(process-list/process[2]/@lasttranstarted)[1]','nvarchar(25)') as 'ProcessId_2_LastTranStarted',	
-C.value('(process-list/process[2]/@lastbatchstarted)[1]','nvarchar(25)') as 'ProcessId_2_LastBatchStarted',	
-C.value('(process-list/process[2]/@lastbatchcompleted)[1]','nvarchar(25)') as 'ProcessId_2_LastBatchCompleted',	
-C.value('(process-list/process[2]/executionStack/frame[1]/@procname)[1]','nvarchar(100)') as 'ProcessId_2_ProcName',	
-C.value('(process-list/process[2]/inputbuf)[1]','nvarchar(100)') as 'ProcessId_2_InputBuffer',
-C.value('(resource-list/objectlock[1]/owner-list/owner/@id)[1]','nvarchar(25)') as 'Node1_OwnerId',	
-C.value('(resource-list/objectlock[1]/owner-list/owner/@mode)[1]','varchar(5)') as 'Node1_Owner_Lock Mode',	
-C.value('(resource-list/objectlock[1]/waiter-list/waiter/@id)[1]','nvarchar(25)') as 'Node1_WaiterId',	
-C.value('(resource-list/objectlock[1]/waiter-list/waiter/@mode)[1]','varchar(5)') as 'Node1_Waiter_Lock Mode',	
-C.value('(resource-list/objectlock[2]/owner-list/owner/@id)[1]','nvarchar(25)') as 'Node2_OwnerId',	
-C.value('(resource-list/objectlock[2]/owner-list/owner/@mode)[1]','varchar(5)') as 'Node2_Owner_Lock Mode',	
-C.value('(resource-list/objectlock[2]/waiter-list/waiter/@id)[1]','nvarchar(25)') as 'Node2_WaiterId',	
-C.value('(resource-list/objectlock[2]/waiter-list/waiter/@mode)[1]','varchar(5)') as 'Node2_Waiter_Lock Mode'
-FROM 	
-(
-select database_name, start_time, end_time,
-CAST(additional_data AS XML)  as ddg
-from tbl_EVENT_LOG
-where event_type='deadlock'
-) AS ET
-CROSS APPLY ddg.nodes('/deadlock') AS P(C)</CommandText>
+        <CommandText>IF OBJECT_ID('tbl_EVENT_LOG') IS NOT NULL
+    SELECT database_name,
+           start_time,
+           end_time,
+           C.value('(victim-list/victimProcess/@id)[1]', 'nvarchar(15)') AS 'Victim_ProcessId',
+           C.value('(process-list/process[1]/@id)[1]', 'nvarchar(15)') AS 'ProcessId_1',
+           C.value('(process-list/process[1]/@lasttranstarted)[1]', 'nvarchar(25)') AS 'ProcessId_1_LastTranStarted',
+           C.value('(process-list/process[1]/@lastbatchstarted)[1]', 'nvarchar(25)') AS 'ProcessId_1_LastBatchStarted',
+           C.value('(process-list/process[1]/@lastbatchcompleted)[1]', 'nvarchar(25)') AS 'ProcessId_1_LastBatchCompleted',
+           C.value('(process-list/process[1]/executionStack/frame[1]/@procname)[1]', 'nvarchar(100)') AS 'ProcessId_1_ProcName',
+           C.value('(process-list/process[1]/inputbuf)[1]', 'nvarchar(100)') AS 'ProcessId_1_InputBuffer',
+           C.value('(process-list/process[2]/@id)[1]', 'nvarchar(15)') AS 'ProcessId_2',
+           C.value('(process-list/process[2]/@lasttranstarted)[1]', 'nvarchar(25)') AS 'ProcessId_2_LastTranStarted',
+           C.value('(process-list/process[2]/@lastbatchstarted)[1]', 'nvarchar(25)') AS 'ProcessId_2_LastBatchStarted',
+           C.value('(process-list/process[2]/@lastbatchcompleted)[1]', 'nvarchar(25)') AS 'ProcessId_2_LastBatchCompleted',
+           C.value('(process-list/process[2]/executionStack/frame[1]/@procname)[1]', 'nvarchar(100)') AS 'ProcessId_2_ProcName',
+           C.value('(process-list/process[2]/inputbuf)[1]', 'nvarchar(100)') AS 'ProcessId_2_InputBuffer',
+           C.value('(resource-list/objectlock[1]/owner-list/owner/@id)[1]', 'nvarchar(25)') AS 'Node1_OwnerId',
+           C.value('(resource-list/objectlock[1]/owner-list/owner/@mode)[1]', 'varchar(5)') AS 'Node1_Owner_Lock Mode',
+           C.value('(resource-list/objectlock[1]/waiter-list/waiter/@id)[1]', 'nvarchar(25)') AS 'Node1_WaiterId',
+           C.value('(resource-list/objectlock[1]/waiter-list/waiter/@mode)[1]', 'varchar(5)') AS 'Node1_Waiter_Lock Mode',
+           C.value('(resource-list/objectlock[2]/owner-list/owner/@id)[1]', 'nvarchar(25)') AS 'Node2_OwnerId',
+           C.value('(resource-list/objectlock[2]/owner-list/owner/@mode)[1]', 'varchar(5)') AS 'Node2_Owner_Lock Mode',
+           C.value('(resource-list/objectlock[2]/waiter-list/waiter/@id)[1]', 'nvarchar(25)') AS 'Node2_WaiterId',
+           C.value('(resource-list/objectlock[2]/waiter-list/waiter/@mode)[1]', 'varchar(5)') AS 'Node2_Waiter_Lock Mode'
+    FROM
+    (
+        SELECT database_name,
+               start_time,
+               end_time,
+               CAST(additional_data AS XML) AS ddg
+        FROM dbo.tbl_EVENT_LOG
+        WHERE event_type = 'deadlock'
+    ) AS ET
+        CROSS APPLY ddg.nodes('/deadlock') AS P(C);</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>

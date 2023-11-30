@@ -24,16 +24,27 @@
             <Value>=Parameters!EndTime.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>select  top 10 InstanceName as InstName, 
-sum (cast(cast(CounterValue as float)/1000000 as decimal(38,2))) as 'SumCounterValue', 
-min (cast(cast (CounterValue as float)/1000000 as decimal(38,2))) as 'MinCounterValue', 
-avg(cast(cast (CounterValue as float)/1000000 as decimal(38,2))) as 'AvgCounterValue', 
-max(cast(cast(CounterValue as float)/1000000 as decimal(38,2)))  as 'MaxCounterValue'
-from counterdata dat inner join counterdetails dl on dat.counterid = dl.counterid 
-where dl.objectname in ('Process') and CounterName = 'IO Data Bytes/sec' and InstanceName !='_Total'
-and CounterDateTime &gt;=@StartTime and CounterDateTime&lt;=@EndTime
-group by InstanceName
-order by 4 desc</CommandText>
+        <CommandText>--DECLARE @StartTime DATETIME;
+--DECLARE @EndTime DATETIME;
+--SET @StartTime = '1900/1/1';
+--SET @EndTime = '2999/1/1';
+
+SELECT TOP 10
+       dl.InstanceName AS InstName,
+       SUM(CAST(CAST(dat.CounterValue AS FLOAT) / 1000000 AS DECIMAL(38, 2))) AS 'SumCounterValue',
+       MIN(CAST(CAST(dat.CounterValue AS FLOAT) / 1000000 AS DECIMAL(38, 2))) AS 'MinCounterValue',
+       AVG(CAST(CAST(dat.CounterValue AS FLOAT) / 1000000 AS DECIMAL(38, 2))) AS 'AvgCounterValue',
+       MAX(CAST(CAST(dat.CounterValue AS FLOAT) / 1000000 AS DECIMAL(38, 2))) AS 'MaxCounterValue'
+FROM dbo.CounterData dat
+    INNER JOIN dbo.CounterDetails dl
+        ON dat.CounterID = dl.CounterID
+WHERE dl.ObjectName IN ( 'Process' )
+      AND dl.CounterName = 'IO Data Bytes/sec'
+      AND dl.InstanceName != '_Total'
+      AND dat.CounterDateTime &gt;= @StartTime
+      AND dat.CounterDateTime &lt;= @EndTime
+GROUP BY dl.InstanceName
+ORDER BY 4 DESC;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -62,11 +73,11 @@ order by 4 desc</CommandText>
     <DataSet Name="DataSet_StartTime">
       <Query>
         <DataSourceName>DataSource_SqlNexus_Private</DataSourceName>
-        <CommandText>if ( object_id ('counterdata ') is not null)
-	select MIN(CounterDateTime) StartTime  from counterdata
-else
-	select '1990/1/1' as StartTime
-	</CommandText>
+        <CommandText>IF (OBJECT_ID('CounterData ') IS NOT NULL)
+    SELECT MIN(CounterDateTime) StartTime
+    FROM dbo.CounterData;
+ELSE
+    SELECT '1990/1/1' AS StartTime;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -79,10 +90,11 @@ else
     <DataSet Name="DataSet_EndTime">
       <Query>
         <DataSourceName>DataSource_SqlNexus_Private</DataSourceName>
-        <CommandText>	if ( object_id ('counterdata ') is not null)
-	select max(CounterDateTime) EndTime from counterdata
-else
-	select '2099/1/1' as EndTime</CommandText>
+        <CommandText>IF (OBJECT_ID('CounterData ') IS NOT NULL)
+    SELECT MAX(CounterDateTime) EndTime
+    FROM dbo.CounterData;
+ELSE
+    SELECT '2099/1/1' AS EndTime;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -95,13 +107,15 @@ else
     <DataSet Name="DataSet_AvailableTime">
       <Query>
         <DataSourceName>DataSource_SqlNexus_Private</DataSourceName>
-        <CommandText>if ( object_id ('counterdata ') is not null)
-	Select distinct  CounterDateTime AvailableTime from counterdata order by CounterDateTime
-else
-	select '1990/1/1' as AvailableTime
-	union
-	select '2099/1/1' as AvailableTime
-	</CommandText>
+        <CommandText>IF (OBJECT_ID('CounterData ') IS NOT NULL)
+    SELECT DISTINCT
+           CounterDateTime AvailableTime
+    FROM dbo.CounterData
+    ORDER BY CounterDateTime;
+ELSE
+    SELECT '1990/1/1' AS AvailableTime
+    UNION
+    SELECT '2099/1/1' AS AvailableTime;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -123,20 +137,26 @@ else
           </QueryParameter>
         </QueryParameters>
         <CommandText>
-declare @proc int
+DECLARE @proc INT;
 SELECT @proc = PropertyValue
 FROM dbo.tbl_ServerProperties
-  where PropertyName = 'cpu_count'
+WHERE PropertyName = 'cpu_count';
 
-select  top 10 InstanceName as InstName, 
-min (cast(CounterValue as decimal(38,2 )))/@proc as 'MinCounterValue', 
-avg (cast(CounterValue as decimal(38,2 )))/@proc as 'AvgCounterValue', 
-max (cast(CounterValue as decimal(38,2 )))/@proc as 'MaxCounterValue'
-from counterdata dat inner join counterdetails dl on dat.counterid = dl.counterid 
-where dl.objectname in ('Process') and CounterName = '% Processor Time' and InstanceName !='_Total'
-and CounterDateTime &gt;=@StartTime and CounterDateTime&lt;=@EndTime
-group by InstanceName
-order by 4 desc</CommandText>
+SELECT TOP 10
+       dl.InstanceName AS InstName,
+       MIN(CAST(dat.CounterValue AS DECIMAL(38, 2))) / @proc AS 'MinCounterValue',
+       AVG(CAST(dat.CounterValue AS DECIMAL(38, 2))) / @proc AS 'AvgCounterValue',
+       MAX(CAST(dat.CounterValue AS DECIMAL(38, 2))) / @proc AS 'MaxCounterValue'
+FROM dbo.CounterData dat
+    INNER JOIN dbo.CounterDetails dl
+        ON dat.CounterID = dl.CounterID
+WHERE dl.ObjectName IN ( 'Process' )
+      AND dl.CounterName = '% Processor Time'
+      AND dl.InstanceName != '_Total'
+      AND dat.CounterDateTime &gt;= @StartTime
+      AND dat.CounterDateTime &lt;= @EndTime
+GROUP BY dl.InstanceName
+ORDER BY 4 DESC;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -169,32 +189,54 @@ order by 4 desc</CommandText>
             <Value>=Parameters!EndTime.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>declare @tbl as table(instname varchar(100) null, minval decimal(38,2), avgval decimal(38,2), maxval decimal(38,2))
-insert into @tbl
-select  top 9 case when InstanceName = 'sqlservr' then 'SQL Server ( Private Bytes )' else InstanceName end as InstName,
-min (cast(CounterValue as decimal(38,2 )))/1000000 as 'MinCounterValue', 
-avg (cast(CounterValue as decimal(38,2 )))/1000000 as 'AvgCounterValue', 
-max (cast(CounterValue as decimal(38,2 )))/1000000 as 'MaxCounterValue'
-from counterdata dat inner join counterdetails dl on dat.counterid = dl.counterid 
-where 
-dl.objectname in ('Process') and CounterName = 'Private Bytes' and InstanceName !='_Total'
-and CounterDateTime &gt;=@StartTime and CounterDateTime&lt;=@EndTime
-group by InstanceName
-order by 3 desc
+        <CommandText>DECLARE @tbl AS TABLE
+(
+    instname VARCHAR(100) NULL,
+    minval DECIMAL(38, 2),
+    avgval DECIMAL(38, 2),
+    maxval DECIMAL(38, 2)
+);
+INSERT INTO @tbl
+SELECT TOP 9
+       CASE
+           WHEN dl.InstanceName = 'sqlservr' THEN
+               'SQL Server ( Private Bytes )'
+           ELSE
+               dl.InstanceName
+       END AS InstName,
+       MIN(CAST(dat.CounterValue AS DECIMAL(38, 2))) / 1000000 AS 'MinCounterValue',
+       AVG(CAST(dat.CounterValue AS DECIMAL(38, 2))) / 1000000 AS 'AvgCounterValue',
+       MAX(CAST(dat.CounterValue AS DECIMAL(38, 2))) / 1000000 AS 'MaxCounterValue'
+FROM dbo.CounterData dat
+    INNER JOIN dbo.CounterDetails dl
+        ON dat.CounterID = dl.CounterID
+WHERE dl.ObjectName IN ( 'Process' )
+      AND dl.CounterName = 'Private Bytes'
+      AND dl.InstanceName != '_Total'
+      AND dat.CounterDateTime &gt;= @StartTime
+      AND dat.CounterDateTime &lt;= @EndTime
+GROUP BY dl.InstanceName
+ORDER BY 3 DESC;
 
-insert into @tbl
-select  'SQL Server ( Total Server Memory ) ' as InstName,
-min (cast(CounterValue as decimal(38,2 )))/1000 as 'MinCounterValue', 
-avg (cast(CounterValue as decimal(38,2 )))/1000 as 'AvgCounterValue', 
-max (cast(CounterValue as decimal(38,2 )))/1000 as 'MaxCounterValue'
-from counterdata dat inner join counterdetails dl on dat.counterid = dl.counterid 
-where 
-dl.objectname like '%Memory Manager' and CounterName = 'Total Server Memory (KB)' 
-and CounterDateTime &gt;=@StartTime and CounterDateTime&lt;=@EndTime
+INSERT INTO @tbl
+SELECT 'SQL Server ( Total Server Memory ) ' AS InstName,
+       MIN(CAST(dat.CounterValue AS DECIMAL(38, 2))) / 1000 AS 'MinCounterValue',
+       AVG(CAST(dat.CounterValue AS DECIMAL(38, 2))) / 1000 AS 'AvgCounterValue',
+       MAX(CAST(dat.CounterValue AS DECIMAL(38, 2))) / 1000 AS 'MaxCounterValue'
+FROM dbo.CounterData dat
+    INNER JOIN dbo.CounterDetails dl
+        ON dat.CounterID = dl.CounterID
+WHERE dl.ObjectName LIKE '%Memory Manager'
+      AND dl.CounterName = 'Total Server Memory (KB)'
+      AND dat.CounterDateTime &gt;= @StartTime
+      AND dat.CounterDateTime &lt;= @EndTime;
 
-select instname , minval, avgval, maxval
-from @tbl
-order by avgval desc</CommandText>
+SELECT instname,
+       minval,
+       avgval,
+       maxval
+FROM @tbl
+ORDER BY avgval DESC;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>

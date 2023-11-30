@@ -5,7 +5,7 @@
     <DataSource Name="SqlNexus_Private">
       <ConnectionProperties>
         <DataProvider>SQL</DataProvider>
-        <ConnectString>Data Source=SOUTHPAW\SQL08R2;Initial Catalog=wasd_import_1121</ConnectString>
+        <ConnectString>="data source=" &amp; Parameters!dsServerName.Value &amp; ";initial catalog="&amp;Parameters!dsDatabaseName.Value</ConnectString>
         <IntegratedSecurity>true</IntegratedSecurity>
       </ConnectionProperties>
       <rd:SecurityType>Integrated</rd:SecurityType>
@@ -16,9 +16,16 @@
     <DataSet Name="DataSet_WASD_Connection_Stats">
       <Query>
         <DataSourceName>SqlNexus_Private</DataSourceName>
-        <CommandText>if object_id('tbl_DB_CONN_STATS') is not null
-select database_name,start_time,end_time,success_count,total_failure_count,connection_failure_count,terminated_connection_count,throttled_connection_count 
-from tbl_DB_CONN_STATS</CommandText>
+        <CommandText>IF OBJECT_ID('tbl_DB_CONN_STATS') IS NOT NULL
+    SELECT database_name,
+           start_time,
+           end_time,
+           success_count,
+           total_failure_count,
+           connection_failure_count,
+           terminated_connection_count,
+           throttled_connection_count
+    FROM dbo.tbl_DB_CONN_STATS;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>

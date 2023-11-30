@@ -25,9 +25,44 @@
     <DataSet Name="DataSet_AG_ReplicaStates">
       <Query>
         <DataSourceName>DataSource_SqlNexus_Private</DataSourceName>
-        <CommandText>
-SELECT *
-  FROM [dbo].[tbl_hadr_ag_replica_states]</CommandText>
+        <CommandText>SELECT group_name,
+       replica_server_name,
+       node_name,
+       replica_id,
+       group_id,
+       replica_metadata_id,
+       owner_sid,
+       endpoint_url,
+       availability_mode,
+       availability_mode_desc,
+       failover_mode,
+       failover_mode_desc,
+       session_timeout,
+       primary_role_allow_connections,
+       primary_role_allow_connections_desc,
+       secondary_role_allow_connections,
+       secondary_role_allow_connections_desc,
+       create_date,
+       modify_date,
+       backup_priority,
+       read_only_routing_url,
+       seeding_mode,
+       seeding_mode_desc,
+       is_local,
+       role,
+       role_desc,
+       operational_state,
+       operational_state_desc,
+       connected_state,
+       connected_state_desc,
+       recovery_health,
+       recovery_health_desc,
+       synchronization_health,
+       synchronization_health_desc,
+       last_connect_error_number,
+       last_connect_error_description,
+       last_connect_error_timestamp
+FROM [dbo].[tbl_hadr_ag_replica_states];</CommandText>
       </Query>
       <Fields>
         <Field Name="group_name">
@@ -204,9 +239,22 @@ SELECT *
     <DataSet Name="DataSet_AG_Listeners">
       <Query>
         <DataSourceName>DataSource_SqlNexus_Private</DataSourceName>
-        <CommandText>SELECT A.*,B.ip_address,ip_subnet_mask,is_dhcp,state_desc
+        <CommandText>SELECT A.Listener_Name,
+       A.AG_Name,
+       A.group_id,
+       A.listener_id,
+       A.dns_name,
+       A.port,
+       A.is_conformant,
+       A.ip_configuration_string_from_cluster,
+       A.is_distributed_network_name,
+       B.ip_address,
+       B.ip_subnet_mask,
+       B.is_dhcp,
+       B.state_desc
 FROM [dbo].[tbl_hadr_ag_listeners] A
-LEFT JOIN [dbo].[tbl_hadr_ag_ip_information] B ON A.listener_id = B.listener_id</CommandText>
+    LEFT JOIN [dbo].[tbl_hadr_ag_ip_information] B
+        ON A.listener_id = B.listener_id;</CommandText>
       </Query>
       <Fields>
         <Field Name="Listener_Name">
@@ -275,8 +323,12 @@ LEFT JOIN [dbo].[tbl_hadr_ag_ip_information] B ON A.listener_id = B.listener_id<
     <DataSet Name="DataSet_AG_DDL_Statements">
       <Query>
         <DataSourceName>DataSource_SqlNexus_Private</DataSourceName>
-        <CommandText>SELECT  *
-FROM [dbo].[tbl_hadr_alwayson_health_alwayson_ddl_executed]</CommandText>
+        <CommandText>SELECT TimeStampUTC,
+       DDLAction,
+       DDLPhase,
+       AGName,
+       DDLStatement
+FROM [dbo].[tbl_hadr_alwayson_health_alwayson_ddl_executed];</CommandText>
       </Query>
       <Fields>
         <Field Name="TimeStampUTC">
@@ -313,9 +365,69 @@ FROM [dbo].[tbl_hadr_alwayson_health_alwayson_ddl_executed]</CommandText>
     <DataSet Name="DataSet_AG_DatabaseStates">
       <Query>
         <DataSourceName>DataSource_SqlNexus_Private</DataSourceName>
-        <CommandText>SELECT B.replica_server_name,A.*
+        <CommandText>SELECT B.replica_server_name,
+       A.Availability_Group,
+       A.replica_id,
+       A.group_database_id,
+       A.database_name,
+       A.is_failover_ready,
+       A.is_pending_secondary_suspend,
+       A.is_database_joined,
+       A.recovery_lsn,
+       A.truncation_lsn,
+       A.database_id,
+       A.group_id,
+       A.is_local,
+       A.is_primary_replica,
+       A.synchronization_state,
+       A.synchronization_state_desc,
+       A.is_commit_participant,
+       A.synchronization_health,
+       A.synchronization_health_desc,
+       A.database_state,
+       A.database_state_desc,
+       A.is_suspended,
+       A.suspend_reason,
+       A.suspend_reason_desc,
+       A.last_sent_lsn,
+       A.last_sent_time,
+       A.last_received_lsn,
+       A.last_received_time,
+       A.last_hardened_lsn,
+       A.last_hardened_time,
+       A.last_redone_lsn,
+       A.last_redone_time,
+       A.log_send_queue_size,
+       A.log_send_rate,
+       A.redo_queue_size,
+       A.redo_rate,
+       A.filestream_send_rate,
+       A.end_of_log_lsn,
+       A.last_commit_lsn,
+       A.last_commit_time,
+       A.low_water_mark_for_ghosts,
+       A.secondary_lag_seconds,
+       A.file_id,
+       A.page_id,
+       A.error_type,
+       A.page_status,
+       A.modification_time,
+       A.name,
+       A.resource_id,
+       A.resource_group_id,
+       A.failure_condition_level,
+       A.health_check_timeout,
+       A.automated_backup_preference,
+       A.automated_backup_preference_desc,
+       A.version,
+       A.basic_features,
+       A.dtc_support,
+       A.db_failover,
+       A.is_distributed
 FROM [dbo].[tbl_hadr_ag_database_replica_states] A
-INNER JOIN [dbo].[tbl_hadr_ag_replica_states] B ON A.group_id = B.group_id AND A.replica_id = B.replica_id</CommandText>
+    INNER JOIN [dbo].[tbl_hadr_ag_replica_states] B
+        ON A.group_id = B.group_id
+           AND A.replica_id = B.replica_id;</CommandText>
       </Query>
       <Fields>
         <Field Name="replica_server_name">

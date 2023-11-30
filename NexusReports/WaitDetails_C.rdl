@@ -27,22 +27,41 @@
             <Value>=Parameters!WaitCategory.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>with ordered_set (row_order, wait_type, wait_category, runtime, waiting_tasks_count, wait_time_ms, max_wait_time_ms) as
-(
-	select ROW_NUMBER() over (partition by wait_type order by rownum), wait_type, wait_category, runtime, waiting_tasks_count, wait_time_ms, max_wait_time_ms from dbo.tbl_OS_WAIT_STATS where runtime between isnull(@StartTime, '1/1/1900') and isnull(@EndTime, '12/31/9999')
-)
-select 
-	b.wait_type,
-	b.runtime as start, 
-	e.runtime as endtime, 
-	datediff(ss, b.runtime, e.runtime) as delta_seconds,
-	case when e.max_wait_time_ms &gt;= b.max_wait_time_ms then e.wait_time_ms - b.wait_time_ms else NULL end as delta_wait_time_ms,
-	case when e.max_wait_time_ms &gt;= b.max_wait_time_ms then e.wait_time_ms - b.wait_time_ms else NULL end / datediff(ss, b.runtime, e.runtime) as wait_ms_per_sec
-from ordered_set e
-	left join ordered_set b on  e.wait_type = b.wait_type and e.row_order = b.row_order + 1
-where e.wait_category = @WaitCategory
-	and b.runtime is not null
-order by start, wait_type</CommandText>
+        <CommandText>WITH ordered_set (row_order, wait_type, wait_category, runtime, waiting_tasks_count, wait_time_ms, max_wait_time_ms)
+AS (SELECT ROW_NUMBER() OVER (PARTITION BY wait_type ORDER BY rownum),
+           wait_type,
+           wait_category,
+           runtime,
+           waiting_tasks_count,
+           wait_time_ms,
+           max_wait_time_ms
+    FROM dbo.tbl_OS_WAIT_STATS
+    WHERE runtime
+    BETWEEN ISNULL(@StartTime, '1/1/1900') AND ISNULL(@EndTime, '12/31/9999'))
+SELECT b.wait_type,
+       b.runtime AS start,
+       e.runtime AS endtime,
+       DATEDIFF(ss, b.runtime, e.runtime) AS delta_seconds,
+       CASE
+           WHEN e.max_wait_time_ms &gt;= b.max_wait_time_ms THEN
+               e.wait_time_ms - b.wait_time_ms
+           ELSE
+               NULL
+       END AS delta_wait_time_ms,
+       CASE
+           WHEN e.max_wait_time_ms &gt;= b.max_wait_time_ms THEN
+               e.wait_time_ms - b.wait_time_ms
+           ELSE
+               NULL
+       END / DATEDIFF(ss, b.runtime, e.runtime) AS wait_ms_per_sec
+FROM ordered_set e
+    LEFT JOIN ordered_set b
+        ON e.wait_type = b.wait_type
+           AND e.row_order = b.row_order + 1
+WHERE e.wait_category = @WaitCategory
+      AND b.runtime IS NOT NULL
+ORDER BY start,
+         wait_type;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -80,8 +99,77 @@ order by start, wait_type</CommandText>
             <Value>=Parameters!WaitCategory.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>select top 50 * from dbo.tbl_REQUESTS where wait_category = @WaitCategory or wait_type = @WaitCategory
-order by wait_duration_ms desc</CommandText>
+        <CommandText>SELECT TOP 50
+       rownum,
+       runtime,
+       session_id,
+       request_id,
+       ecid,
+       blocking_session_id,
+       blocking_ecid,
+       task_state,
+       wait_type,
+       wait_duration_ms,
+       wait_resource,
+       resource_description,
+       last_wait_type,
+       open_trans,
+       transaction_isolation_level,
+       is_user_process,
+       request_cpu_time,
+       request_logical_reads,
+       request_reads,
+       request_writes,
+       memory_usage,
+       session_cpu_time,
+       session_reads,
+       session_writes,
+       session_logical_reads,
+       total_scheduled_time,
+       total_elapsed_time,
+       last_request_start_time,
+       last_request_end_time,
+       session_row_count,
+       prev_error,
+       open_resultsets,
+       request_total_elapsed_time,
+       percent_complete,
+       est_completion_time,
+       tran_name,
+       transaction_begin_time,
+       tran_type,
+       tran_state,
+       request_start_time,
+       request_status,
+       command,
+       statement_start_offset,
+       statement_end_offset,
+       database_id,
+       user_id,
+       executing_managed_code,
+       pending_io_count,
+       login_time,
+       host_name,
+       program_name,
+       host_process_id,
+       client_version,
+       client_interface_name,
+       login_name,
+       nt_domain,
+       nt_user_name,
+       net_packet_size,
+       client_net_address,
+       session_status,
+       scheduler_id,
+       group_id,
+       query_hash,
+       query_plan_hash,
+       plan_handle,
+       wait_category
+FROM dbo.tbl_REQUESTS
+WHERE wait_category = @WaitCategory
+      OR wait_type = @WaitCategory
+ORDER BY wait_duration_ms DESC;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -338,12 +426,13 @@ order by wait_duration_ms desc</CommandText>
     <DataSet Name="DataSet_Runtime">
       <Query>
         <DataSourceName>DataSource_Private</DataSourceName>
-        <CommandText>IF OBJECT_ID ('vw_PERF_STATS_SCRIPT_RUNTIMES') IS NOT NULL 
+        <CommandText>IF OBJECT_ID('vw_PERF_STATS_SCRIPT_RUNTIMES') IS NOT NULL
 BEGIN
- select Runtime from vw_PERF_STATS_SCRIPT_RUNTIMES
-END
+    SELECT runtime
+    FROM dbo.vw_PERF_STATS_SCRIPT_RUNTIMES;
+END;
 ELSE
-  SELECT GETDATE() AS Runtime</CommandText>
+    SELECT GETDATE() AS Runtime;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -355,29 +444,37 @@ ELSE
     <DataSet Name="DataSet_StartTime">
       <Query>
         <DataSourceName>DataSource_Private</DataSourceName>
-        <CommandText>IF OBJECT_ID ('vw_PERF_STATS_SCRIPT_RUNTIMES') IS NOT NULL 
+        <CommandText>IF OBJECT_ID('vw_PERF_STATS_SCRIPT_RUNTIMES') IS NOT NULL
 BEGIN
-  DECLARE @v_StartTime datetime
-  DECLARE @v_EndTime datetime
-  SELECT @v_StartTime = MIN (runtime) FROM vw_PERF_STATS_SCRIPT_RUNTIMES
-  SELECT @v_EndTime = MAX (runtime) FROM vw_PERF_STATS_SCRIPT_RUNTIMES
-  IF @v_StartTime IS NULL SET @v_StartTime = GETDATE()
-  IF @v_EndTime IS NULL SET @v_EndTime = GETDATE()
+    DECLARE @v_StartTime DATETIME;
+    DECLARE @v_EndTime DATETIME;
+    SELECT @v_StartTime = MIN(runtime)
+    FROM dbo.vw_PERF_STATS_SCRIPT_RUNTIMES;
+    SELECT @v_EndTime = MAX(runtime)
+    FROM dbo.vw_PERF_STATS_SCRIPT_RUNTIMES;
+    IF @v_StartTime IS NULL
+        SET @v_StartTime = GETDATE();
+    IF @v_EndTime IS NULL
+        SET @v_EndTime = GETDATE();
 
-select top 1 StartTime from
-(  
-  SELECT 
-    CASE 
-      WHEN DATEDIFF (mi, @v_StartTime, @v_EndTime) &gt; 4*60 THEN DATEADD (mi, -60, @v_EndTime)
-      ELSE @v_StartTime
-    END AS StartTime
-  UNION ALL
-  SELECT @v_StartTime 
-  ) t order by StartTime asc
+    SELECT TOP 1
+           StartTime
+    FROM
+    (
+        SELECT CASE
+                   WHEN DATEDIFF(mi, @v_StartTime, @v_EndTime) &gt; 4 * 60 THEN
+                       DATEADD(mi, -60, @v_EndTime)
+                   ELSE
+                       @v_StartTime
+               END AS StartTime
+        UNION ALL
+        SELECT @v_StartTime
+    ) t
+    ORDER BY StartTime ASC;
 
-END
+END;
 ELSE
-  SELECT cast ('2001/1/1' as datetime)  AS StartTime</CommandText>
+    SELECT CAST('2001/1/1' AS DATETIME) AS StartTime;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -390,21 +487,25 @@ ELSE
     <DataSet Name="DataSet_EndTime">
       <Query>
         <DataSourceName>DataSource_Private</DataSourceName>
-        <CommandText>IF OBJECT_ID ('vw_PERF_STATS_SCRIPT_RUNTIMES') IS NOT NULL 
+        <CommandText>IF OBJECT_ID('vw_PERF_STATS_SCRIPT_RUNTIMES') IS NOT NULL
 BEGIN
-  DECLARE @v_StartTime datetime
-  DECLARE @v_EndTime datetime
-  SELECT @v_StartTime = MIN (runtime) FROM vw_PERF_STATS_SCRIPT_RUNTIMES
-  SELECT @v_EndTime = MAX (runtime) FROM vw_PERF_STATS_SCRIPT_RUNTIMES
-  IF @v_StartTime IS NULL SET @v_StartTime = GETDATE()
-  IF @v_EndTime IS NULL SET @v_EndTime = GETDATE()
-  
-  SELECT @v_EndTime AS EndTime 
-  
-  
-END
+    DECLARE @v_StartTime DATETIME;
+    DECLARE @v_EndTime DATETIME;
+    SELECT @v_StartTime = MIN(runtime)
+    FROM dbo.vw_PERF_STATS_SCRIPT_RUNTIMES;
+    SELECT @v_EndTime = MAX(runtime)
+    FROM dbo.vw_PERF_STATS_SCRIPT_RUNTIMES;
+    IF @v_StartTime IS NULL
+        SET @v_StartTime = GETDATE();
+    IF @v_EndTime IS NULL
+        SET @v_EndTime = GETDATE();
+
+    SELECT @v_EndTime AS EndTime;
+
+
+END;
 ELSE
-  SELECT GETDATE() AS EndTime</CommandText>
+    SELECT GETDATE() AS EndTime;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>

@@ -31,7 +31,10 @@ namespace ReadTrace
         const string OPTION_QUOTED_IDENTIFIERS = "Assume QUOTED_IDENTIFIER ON";
         const string OPTION_IGNORE_PSSDIAG_HOST = "Ignore events associated with PSSDIAG activity";
         const string OPTION_DISABLE_EVENT_REQUIREMENTS = "Disable event requirement checks";
-        const string OPTION_ENABLE_MARS = "Enabled -T35 to support MARs";
+        const string OPTION_ENABLE_MARS = "Enable -T35 to support MARs";
+        const string OPTION_USE_LOCAL_SERVER_TIME = "Import events using local server time (not UTC)";
+
+        
         //      Due to the batch flush levels for the BCP from ReadTrace these are often 
         //      going to be 0 until you exceed 1 million loaded.  The progress for ReadTrace 
         //      has been updated some to help this display 
@@ -41,6 +44,11 @@ namespace ReadTrace
                                          "              object_id('ReadTrace.tblStatements')," +
                                          "              object_id('ReadTrace.tblUniqueBatches')," +
                                          "              object_id('ReadTrace.tblUniqueStatements') )";
+
+        const string LOCAL_SRV_TIME_QUERY = "SELECT CONVERT(decimal, PropertyValue) UtcToLocalOffset FROM " +
+                                            "tbl_ServerProperties " +
+                                            "WHERE PropertyName = 'UTCOffset_in_Hours'";
+
 
         // Private members
         private ArrayList knownRowsets = new ArrayList();	// List of the rowsets we know how to interpret
@@ -74,6 +82,7 @@ namespace ReadTrace
             options.Add(OPTION_IGNORE_PSSDIAG_HOST, true);
             options.Add(OPTION_DISABLE_EVENT_REQUIREMENTS, false);
             options.Add(OPTION_ENABLE_MARS, false);
+            options.Add(OPTION_USE_LOCAL_SERVER_TIME, false);
 
 
             // TODO: update enabled-by-default based on whether we found ReadTrace
@@ -130,6 +139,7 @@ namespace ReadTrace
 
             catch (Exception e)
             {
+                Util.Logger.LogMessage("FindReadTraceExe() exception:" + e.Message);
                 //string exception_message = e.Message;
                 //MessageBox.Show("There was a problem", "Title: Missing ReadTrace", MessageBoxButtons.OK,MessageBoxIcon.Exclamation);
             }
@@ -283,12 +293,41 @@ namespace ReadTrace
                     sqlcmd.CommandText = PROGRESS_QUERY;
                     return (long)sqlcmd.ExecuteScalar();
                 }
-                catch
+                catch (Exception e)
                 {
+                    logger.LogMessage("Failed with exception" + e.Message);
                     return 0;
                 }
             }
         }
+
+        private decimal GetLocalServerTimeOffset()
+        {
+            using (SqlConnection cn = new SqlConnection(connStr))
+            {
+                try
+                {
+                    decimal utc_offset;
+
+                    cn.Open();
+
+                    SqlCommand sqlcmd = new SqlCommand();
+                    sqlcmd.Connection = cn;
+                    sqlcmd.CommandTimeout = 0;
+                    sqlcmd.CommandText = LOCAL_SRV_TIME_QUERY;
+                    utc_offset = (decimal)sqlcmd.ExecuteScalar();
+                    logger.LogMessage("UTC_Offset: " + utc_offset);
+                    return utc_offset;
+                }
+                catch (Exception e)
+                {
+                    logger.LogMessage("Failed with exception" + e.Message);
+                    return -99;
+                }
+            }
+        }
+
+
 
 
         private bool SkipFile(string FullFileName)
@@ -347,7 +386,7 @@ namespace ReadTrace
 
             foreach (string file in files)
             {
-                logger.LogMessage("looking a file " + file);
+                logger.LogMessage("Looking at file " + file);
                 FileInfo fs = new FileInfo(file);
                 DateTime CurrentFileCreateTime =  fs.CreationTime;
                 if (CurrentFileCreateTime < LastFileCreateTime)
@@ -398,6 +437,8 @@ namespace ReadTrace
         public bool DoImport()
         {
             string firstTrcFile = "";
+            string timeAdjForLocalTimeMinutes = "";
+            decimal UtcToLocalOffsetHours = 99;
             Util.Logger.LogMessage("ReadTraceNexusImporter - Starting import...");
             string[] files = Directory.GetFiles(Path.GetDirectoryName(this.traceFileSpec), Path.GetFileName(this.traceFileSpec));
 
@@ -414,10 +455,13 @@ namespace ReadTrace
             // Find the first trace file. 
             firstTrcFile = FindFirstTraceFile(files);
 
+            //Get local server time offset
+            UtcToLocalOffsetHours = GetLocalServerTimeOffset();
+            timeAdjForLocalTimeMinutes = (UtcToLocalOffsetHours * 60).ToString();
 
             // -T18 means to disable pop up of reporter.exe at end of load 
             // -T35 to enable mars
-            string args = String.Format("-S\"{0}\" \"-d{1}\" {2} -T18 -T28 -T29 \"-I{3}\" {4} {5} {6} \"-o{7}\" {8} {9} {10}",
+            string args = String.Format("-S\"{0}\" \"-d{1}\" {2} -T18 -T28 -T29 \"-I{3}\" {4} {5} {6} \"-o{7}\" {8} {9} {10} {11}",
                 this.sqlServer,                                                 // -S{0}                            SQL Server name 
                 this.database,                                                  // -d{1}                            Database name
                 (this.useWindowsAuth ? "-E" : String.Format("-U\"{0}\" -P\"{1}\"", this.sqlLogin, this.sqlPassword)), // {2} = -E (or) -Uuser -PPassword  Credentials
@@ -428,7 +472,8 @@ namespace ReadTrace
                 Path.GetTempPath() + "RML",     // -o{7}  Temp output path (%TEMP%\RML)
                 ((bool)this.options[OPTION_IGNORE_PSSDIAG_HOST] ? "-H\"!PSSDIAG\"" : ""),   //  {8}   Using 9.00.009 ReadTrace ignore events with HOST=PSSDIAG 
                 ((bool)this.options[OPTION_DISABLE_EVENT_REQUIREMENTS] ? "-T28 -T29 " : ""),       //  {9} tell ReadTrace to override event requirement checks 
-                ((bool)this.options[OPTION_ENABLE_MARS] ? "-T35":"")
+                ((bool)this.options[OPTION_ENABLE_MARS] ? "-T35":""),  //  {10} tell ReadTrace that there's MARS sessions 
+                ((bool)this.options[OPTION_USE_LOCAL_SERVER_TIME] ? "-B"+timeAdjForLocalTimeMinutes : "") //{11} Optional: -B### Time bias: Adjusts the start and end times, as read by (+-)### minutes. 
             );
 
             Util.Env["RMLLogDir"] = Path.GetTempPath() + "RML";
@@ -441,7 +486,7 @@ namespace ReadTrace
             Util.Logger.LogMessage("ReadTraceNexusImporter (DEBUG ONLY BEFORE): Cmd Line: " + this.readTracePath + " " + args);
 #endif
 
-            //      Don't log clear text password 
+            //Don't log clear text password 
             string argsOut = args;
             if (false == this.useWindowsAuth)
             {
@@ -450,6 +495,7 @@ namespace ReadTrace
 
             Util.Logger.LogMessage("ReadTraceNexusImporter: Cmd Line: " + this.readTracePath + " " + argsOut);
 
+            // configure the arguments and window properties
             ProcessStartInfo pi = new ProcessStartInfo(this.readTracePath, args);
             pi.CreateNoWindow = false;
             pi.UseShellExecute = false;
@@ -459,6 +505,8 @@ namespace ReadTrace
 
             pi.RedirectStandardOutput = false;  // don't redirect -- we can always use the log file at %TEMP%\RML for tshooting
             pi.RedirectStandardError = false;
+
+            //launch Readtrace.exe
             processReadTrace = Process.Start(pi);
 
             int i = 0;

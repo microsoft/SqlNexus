@@ -16,14 +16,12 @@
     <DataSet Name="DataSet1">
       <Query>
         <DataSourceName>SqlNexus_Private</DataSourceName>
-        <CommandText>SELECT
-  tbl_RESOURCE_USAGE.rownum
-  ,tbl_RESOURCE_USAGE.database_name
-  ,tbl_RESOURCE_USAGE.start_time
-  ,tbl_RESOURCE_USAGE.Average_usage_in_seconds
-  ,tbl_RESOURCE_USAGE.Average_storage_in_megabytes
-FROM
-  tbl_RESOURCE_USAGE</CommandText>
+        <CommandText>SELECT tbl_RESOURCE_USAGE.rownum,
+       tbl_RESOURCE_USAGE.database_name,
+       tbl_RESOURCE_USAGE.start_time,
+       tbl_RESOURCE_USAGE.Average_usage_in_seconds,
+       tbl_RESOURCE_USAGE.Average_storage_in_megabytes
+FROM dbo.tbl_RESOURCE_USAGE;</CommandText>
         <rd:DesignerState>
           <QueryDefinition xmlns="http://schemas.microsoft.com/ReportingServices/QueryDefinition/Relational">
             <SelectedColumns>

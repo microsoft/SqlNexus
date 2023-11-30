@@ -16,34 +16,34 @@
     <DataSet Name="DataSet_StartTime">
       <Query>
         <DataSourceName>DataSource_SqlNexus_Private</DataSourceName>
-        <CommandText>DECLARE @sql VARCHAR(MAX) 
+        <CommandText>DECLARE @sql VARCHAR(MAX);
 
-IF (OBJECT_ID ('tbl_RUNTIMES') IS NOT NULL)
+IF (OBJECT_ID('tbl_RUNTIMES') IS NOT NULL)
 BEGIN
-	IF EXISTS(SELECT TOP 1 (runtime) AS StartTime FROM tbl_RUNTIMES)
-	BEGIN
-		SET @sql = 'SELECT MIN(runtime) AS StartTime FROM tbl_RUNTIMES'
-		EXEC (@sql)
-	END
-	ELSE
-		SELECT CAST ('2000/1/1 00:00:01' AS DATETIME) AS StartTime
+    IF EXISTS (SELECT TOP 1 (runtime) AS StartTime FROM dbo.tbl_RUNTIMES)
+    BEGIN
+        SET @sql = 'SELECT MIN(runtime) AS StartTime FROM dbo.tbl_RUNTIMES';
+        EXEC (@sql);
+    END;
+    ELSE
+        SELECT CAST('2000/1/1 00:00:01' AS DATETIME) AS StartTime;
 
-END
-ELSE IF OBJECT_ID ('tbl_REQUESTS') IS NOT NULL
+END;
+ELSE IF OBJECT_ID('tbl_REQUESTS') IS NOT NULL
 BEGIN
 
-	IF EXISTS(SELECT TOP 1 (runtime) AS StartTime FROM tbl_REQUESTS)
-	BEGIN
-		SET @sql = 'SELECT MIN(runtime) AS StartTime  FROM tbl_REQUESTS'
-		EXEC (@sql)
-	END
-	ELSE
-		SELECT CAST ('2000/1/1 00:00:02' AS DATETIME) AS StartTime
-END
+    IF EXISTS (SELECT TOP 1 (runtime) AS StartTime FROM dbo.tbl_REQUESTS)
+    BEGIN
+        SET @sql = 'SELECT MIN(runtime) AS StartTime  FROM dbo.tbl_REQUESTS';
+        EXEC (@sql);
+    END;
+    ELSE
+        SELECT CAST('2000/1/1 00:00:02' AS DATETIME) AS StartTime;
+END;
 ELSE
 BEGIN
-	SELECT CAST ('2000/1/1 00:00:03' AS DATETIME) AS StartTime
-END</CommandText>
+    SELECT CAST('2000/1/1 00:00:03' AS DATETIME) AS StartTime;
+END;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -56,31 +56,31 @@ END</CommandText>
     <DataSet Name="DataSet_EndTime">
       <Query>
         <DataSourceName>DataSource_SqlNexus_Private</DataSourceName>
-        <CommandText>DECLARE @sql VARCHAR(MAX) 
-IF OBJECT_ID ('tbl_RUNTIMES') IS NOT NULL
+        <CommandText>DECLARE @sql VARCHAR(MAX);
+IF OBJECT_ID('tbl_RUNTIMES') IS NOT NULL
 BEGIN
-	IF EXISTS(SELECT TOP 1 (runtime) AS StartTime FROM tbl_RUNTIMES)
-	BEGIN
-		SET @sql = 'SELECT MAX(runtime) AS EndTime FROM tbl_RUNTIMES'
-		EXEC (@sql)
-	END
-	ELSE
-		SELECT CAST ('2099/1/1 00:00:01' AS DATETIME) AS EndTime
-END
-ELSE IF OBJECT_ID ('tbl_REQUESTS') IS NOT NULL
+    IF EXISTS (SELECT TOP 1 (runtime) AS StartTime FROM dbo.tbl_RUNTIMES)
+    BEGIN
+        SET @sql = 'SELECT MAX(runtime) AS EndTime FROM dbo.tbl_RUNTIMES';
+        EXEC (@sql);
+    END;
+    ELSE
+        SELECT CAST('2099/1/1 00:00:01' AS DATETIME) AS EndTime;
+END;
+ELSE IF OBJECT_ID('tbl_REQUESTS') IS NOT NULL
 BEGIN
-	IF EXISTS(SELECT TOP 1 (runtime) AS StartTime FROM tbl_REQUESTS)
-	BEGIN
-		SET @sql = 'SELECT MAX(runtime) AS EndTime  FROM tbl_REQUESTS'
-		EXEC (@sql)
-	END
-	ELSE
-		SELECT CAST ('2000/1/1 00:00:02' AS DATETIME) AS EndTime
-END
+    IF EXISTS (SELECT TOP 1 (runtime) AS StartTime FROM dbo.tbl_REQUESTS)
+    BEGIN
+        SET @sql = 'SELECT MAX(runtime) AS EndTime  FROM dbo.tbl_REQUESTS';
+        EXEC (@sql);
+    END;
+    ELSE
+        SELECT CAST('2000/1/1 00:00:02' AS DATETIME) AS EndTime;
+END;
 ELSE
 BEGIN
-	SELECT CAST ('2099/1/1 00:00:03' AS DATETIME) AS EndTime
-END</CommandText>
+    SELECT CAST('2099/1/1 00:00:03' AS DATETIME) AS EndTime;
+END;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -93,10 +93,10 @@ END</CommandText>
     <DataSet Name="DataSet_AvailableTime">
       <Query>
         <DataSourceName>DataSource_SqlNexus_Private</DataSourceName>
-        <CommandText>	select cast ('2000/1/1' as datetime) as AvailableTime
-	union
-	select cast ('2099/1/1' as datetime) as AvailableTime
-	</CommandText>
+        <CommandText>SELECT CAST('2000/1/1' AS DATETIME) AS AvailableTime
+UNION
+SELECT CAST('2099/1/1' AS DATETIME) AS AvailableTime;
+</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -109,37 +109,34 @@ END</CommandText>
     <DataSet Name="DataSet_Summary">
       <Query>
         <DataSourceName>DataSource_SqlNexus_Private</DataSourceName>
-        <CommandText>
-DECLARE @sql varchar(max) 
+        <CommandText>DECLARE @sql VARCHAR(MAX);
 
-IF OBJECT_ID ('tbl_AnalysisSummary') IS NOT NULL
+IF OBJECT_ID('dbo.tbl_AnalysisSummary') IS NOT NULL
 BEGIN
-   IF (COL_LENGTH('dbo.tbl_AnalysisSummary', 'Report') IS NULL)
-   BEGIN
-      SELECT [FriendlyName], [Description], [ExternalUrl], [Type], [TypeDesc], [Status], 'Not available due to import from an older SQLNexus version' AS [Report]
-      FROM tbl_AnalysisSummary 
-      ORDER BY SeqNum		
-   END
-   ELSE
-   BEGIN
-      SET @sql = 
-       'SELECT [FriendlyName], [Description], [ExternalUrl], [Type], [TypeDesc], [Status], [Report]
-        FROM tbl_AnalysisSummary 
-        ORDER BY SeqNum'
-      EXEC (@sql)
-   END
-END</CommandText>
+    IF (COL_LENGTH('dbo.tbl_AnalysisSummary', 'Report') IS NULL)
+    BEGIN
+        SELECT [FriendlyName],
+               [Description],
+               [ExternalUrl],
+               [Type],
+               [TypeDesc],
+               [Status],
+               'Not available due to import from an older SQLNexus version' AS [Report]
+        FROM dbo.tbl_AnalysisSummary
+        ORDER BY SeqNum;
+    END;
+    ELSE
+    BEGIN
+        SET @sql
+            = 'SELECT [FriendlyName], [Description], [ExternalUrl], [Type], [TypeDesc], [Status], [Report]
+        FROM dbo.tbl_AnalysisSummary 
+        ORDER BY SeqNum';
+        EXEC (@sql);
+    END;
+END;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
-        <Field Name="Description">
-          <DataField>Description</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="Type">
-          <DataField>Type</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
         <Field Name="InternalUrl">
           <DataField>InternalUrl</DataField>
           <rd:UserDefined>true</rd:UserDefined>
@@ -160,9 +157,17 @@ END</CommandText>
           <DataField>FriendlyName</DataField>
           <rd:UserDefined>true</rd:UserDefined>
         </Field>
+        <Field Name="Description">
+          <DataField>Description</DataField>
+          <rd:UserDefined>true</rd:UserDefined>
+        </Field>
+        <Field Name="Type">
+          <DataField>Type</DataField>
+          <rd:UserDefined>true</rd:UserDefined>
+        </Field>
         <Field Name="Report">
           <DataField>Report</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:UserDefined>true</rd:UserDefined>
         </Field>
       </Fields>
       <Filters>

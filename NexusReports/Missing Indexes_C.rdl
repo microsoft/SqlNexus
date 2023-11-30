@@ -19,39 +19,39 @@
         <CommandText>IF OBJECT_ID ('tbl_MissingIndexes') IS NOT NULL
 BEGIN
 	DECLARE @max_dt DATETIME
-	SELECT @max_dt = MAX(runtime) FROM tbl_MissingIndexes
+	SELECT @max_dt = MAX(runtime) FROM dbo.tbl_MissingIndexes
 
 	SELECT TOP 20 create_index_statement, CONVERT(DECIMAL(12,1), improvement_measure) AS improvement_measure, user_seeks, user_scans, runtime, object_id 
-	FROM tbl_MissingIndexes
+	FROM dbo.tbl_MissingIndexes
 	WHERE runtime = @max_dt
 	ORDER BY improvement_measure DESC
 END</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
-        <Field Name="create_index_statement">
-          <DataField>create_index_statement</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="improvement_measure">
-          <DataField>improvement_measure</DataField>
-          <rd:TypeName>System.Decimal</rd:TypeName>
-        </Field>
-        <Field Name="user_seeks">
-          <DataField>user_seeks</DataField>
-          <rd:TypeName>System.Int64</rd:TypeName>
-        </Field>
-        <Field Name="user_scans">
-          <DataField>user_scans</DataField>
-          <rd:TypeName>System.Int64</rd:TypeName>
-        </Field>
         <Field Name="runtime">
           <DataField>runtime</DataField>
           <rd:UserDefined>true</rd:UserDefined>
         </Field>
+        <Field Name="create_index_statement">
+          <DataField>create_index_statement</DataField>
+          <rd:UserDefined>true</rd:UserDefined>
+        </Field>
+        <Field Name="improvement_measure">
+          <DataField>improvement_measure</DataField>
+          <rd:UserDefined>true</rd:UserDefined>
+        </Field>
+        <Field Name="user_seeks">
+          <DataField>user_seeks</DataField>
+          <rd:UserDefined>true</rd:UserDefined>
+        </Field>
+        <Field Name="user_scans">
+          <DataField>user_scans</DataField>
+          <rd:UserDefined>true</rd:UserDefined>
+        </Field>
         <Field Name="object_id">
           <DataField>object_id</DataField>
-          <rd:TypeName>System.Int64</rd:TypeName>
+          <rd:UserDefined>true</rd:UserDefined>
         </Field>
       </Fields>
     </DataSet>
@@ -63,7 +63,7 @@ IF OBJECT_ID ('tbl_MissingIndexes') IS NOT NULL
 BEGIN
 	BEGIN
 		DECLARE @max_dt DATETIME, @min_dt DATETIME
-		SELECT @max_dt = MAX(runtime), @min_dt = MIN(runtime) FROM tbl_MissingIndexes
+		SELECT @max_dt = MAX(runtime), @min_dt = MIN(runtime) FROM dbo.tbl_MissingIndexes
 
 		SELECT  TOP 20 sd.create_index_statement, 
 				CONVERT(DECIMAL(12,1),sd.improvement_measure - su.improvement_measure) AS delta_improvement_measure,
@@ -72,12 +72,12 @@ BEGIN
 				sd.object_id
 		FROM 
 			(SELECT create_index_statement, improvement_measure, user_seeks, user_scans, runtime, object_id, index_handle 
-			FROM tbl_MissingIndexes
+			FROM dbo.tbl_MissingIndexes
 			WHERE runtime = @max_dt) as sd
 
 		JOIN 
 			(SELECT create_index_statement, improvement_measure, user_seeks, user_scans, runtime, object_id, index_handle
-			FROM tbl_MissingIndexes
+			FROM dbo.tbl_MissingIndexes
 			WHERE runtime = @min_dt) as su
 
 		ON sd.index_handle = su.index_handle
@@ -90,23 +90,23 @@ END</CommandText>
       <Fields>
         <Field Name="create_index_statement">
           <DataField>create_index_statement</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:UserDefined>true</rd:UserDefined>
         </Field>
         <Field Name="delta_improvement_measure">
           <DataField>delta_improvement_measure</DataField>
-          <rd:TypeName>System.Decimal</rd:TypeName>
+          <rd:UserDefined>true</rd:UserDefined>
         </Field>
         <Field Name="delta_user_seeks">
           <DataField>delta_user_seeks</DataField>
-          <rd:TypeName>System.Int64</rd:TypeName>
+          <rd:UserDefined>true</rd:UserDefined>
         </Field>
         <Field Name="delta_user_scans">
           <DataField>delta_user_scans</DataField>
-          <rd:TypeName>System.Int64</rd:TypeName>
+          <rd:UserDefined>true</rd:UserDefined>
         </Field>
         <Field Name="object_id">
           <DataField>object_id</DataField>
-          <rd:TypeName>System.Int64</rd:TypeName>
+          <rd:UserDefined>true</rd:UserDefined>
         </Field>
       </Fields>
     </DataSet>

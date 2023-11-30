@@ -16,7 +16,88 @@
     <DataSet Name="DataSet_SysDatabases">
       <Query>
         <DataSourceName>DataSource_SqlNexus_Private</DataSourceName>
-        <CommandText>select * from tbl_SysDatabases order by name</CommandText>
+        <CommandText>SELECT IsAutoCreateStatistics,
+       IsAutoUpdateStatistics,
+       IsAutoCreateStatisticsIncremental,
+       name,
+       database_id,
+       source_database_id,
+       owner_sid,
+       create_date,
+       compatibility_level,
+       collation_name,
+       user_access,
+       user_access_desc,
+       is_read_only,
+       is_auto_close_on,
+       is_auto_shrink_on,
+       state,
+       state_desc,
+       is_in_standby,
+       is_cleanly_shutdown,
+       is_supplemental_logging_enabled,
+       snapshot_isolation_state,
+       snapshot_isolation_state_desc,
+       is_read_committed_snapshot_on,
+       recovery_model,
+       recovery_model_desc,
+       page_verify_option,
+       page_verify_option_desc,
+       is_auto_create_stats_on,
+       is_auto_create_stats_incremental_on,
+       is_auto_update_stats_on,
+       is_auto_update_stats_async_on,
+       is_ansi_null_default_on,
+       is_ansi_nulls_on,
+       is_ansi_padding_on,
+       is_ansi_warnings_on,
+       is_arithabort_on,
+       is_concat_null_yields_null_on,
+       is_numeric_roundabort_on,
+       is_quoted_identifier_on,
+       is_recursive_triggers_on,
+       is_cursor_close_on_commit_on,
+       is_local_cursor_default,
+       is_fulltext_enabled,
+       is_trustworthy_on,
+       is_db_chaining_on,
+       is_parameterization_forced,
+       is_master_key_encrypted_by_server,
+       is_query_store_on,
+       is_published,
+       is_subscribed,
+       is_merge_published,
+       is_distributor,
+       is_sync_with_backup,
+       service_broker_guid,
+       is_broker_enabled,
+       log_reuse_wait,
+       log_reuse_wait_desc,
+       is_date_correlation_on,
+       is_cdc_enabled,
+       is_encrypted,
+       is_honor_broker_priority_on,
+       replica_id,
+       group_database_id,
+       resource_pool_id,
+       default_language_lcid,
+       default_language_name,
+       default_fulltext_language_lcid,
+       default_fulltext_language_name,
+       is_nested_triggers_on,
+       is_transform_noise_words_on,
+       two_digit_year_cutoff,
+       containment,
+       containment_desc,
+       target_recovery_time_in_seconds,
+       delayed_durability,
+       delayed_durability_desc,
+       is_memory_optimized_elevate_to_snapshot_on,
+       is_federation_member,
+       is_remote_data_archive_enabled,
+       is_mixed_page_allocation_on
+FROM dbo.tbl_SysDatabases
+ORDER BY name;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -381,49 +462,81 @@
     <DataSet Name="DataSet_StartTime">
       <Query>
         <DataSourceName>DataSource_SqlNexus_Private</DataSourceName>
-        <CommandText>select cast ('1990/1/1' as datetime) as StartTime</CommandText>
+        <CommandText>SELECT CAST('1990/1/1' AS DATETIME) AS StartTime;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
         <Field Name="StartTime">
           <DataField>StartTime</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:TypeName>System.DateTime</rd:TypeName>
         </Field>
       </Fields>
     </DataSet>
     <DataSet Name="DataSet_EndTime">
       <Query>
         <DataSourceName>DataSource_SqlNexus_Private</DataSourceName>
-        <CommandText>select cast ('2099/1/1' as datetime) as EndTime</CommandText>
+        <CommandText>SELECT CAST('2099/1/1' AS DATETIME) AS EndTime;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
         <Field Name="EndTime">
           <DataField>EndTime</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:TypeName>System.DateTime</rd:TypeName>
         </Field>
       </Fields>
     </DataSet>
     <DataSet Name="DataSet_AvailableTime">
       <Query>
         <DataSourceName>DataSource_SqlNexus_Private</DataSourceName>
-        <CommandText>	select cast ('1990/1/1' as datetime) as AvailableTime
-	union
-	select  cast('2099/1/1' as datetime)  as AvailableTime
-	</CommandText>
+        <CommandText>SELECT CAST('1990/1/1' AS DATETIME) AS AvailableTime
+UNION
+SELECT CAST('2099/1/1' AS DATETIME) AS AvailableTime;
+</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
         <Field Name="AvailableTime">
           <DataField>AvailableTime</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:TypeName>System.DateTime</rd:TypeName>
         </Field>
       </Fields>
     </DataSet>
     <DataSet Name="DataSet_DatabaseFiles">
       <Query>
         <DataSourceName>DataSource_SqlNexus_Private</DataSourceName>
-        <CommandText>select * from dbo.tbl_DatabaseFiles order by Database_Name</CommandText>
+        <CommandText>SELECT database_id,
+       file_id,
+       file_guid,
+       type,
+       type_desc,
+       data_space_id,
+       state,
+       state_desc,
+       size,
+       max_size,
+       growth,
+       is_media_read_only,
+       is_read_only,
+       is_sparse,
+       is_percent_growth,
+       is_name_reserved,
+       create_lsn,
+       drop_lsn,
+       read_only_lsn,
+       read_write_lsn,
+       differential_base_lsn,
+       differential_base_guid,
+       differential_base_time,
+       redo_start_lsn,
+       redo_start_fork_guid,
+       redo_target_lsn,
+       redo_target_fork_guid,
+       backup_lsn,
+       Database_name,
+       name,
+       physical_name
+FROM dbo.tbl_DatabaseFiles
+ORDER BY Database_name;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -448,109 +561,110 @@
     <DataSet Name="DataSet_DatabaseScopedConfiguration">
       <Query>
         <DataSourceName>DataSource_SqlNexus_Private</DataSourceName>
-        <CommandText>IF OBJECT_ID('tbl_database_scoped_configurations') IS NOT NULL 
-BEGIN 
+        <CommandText>IF OBJECT_ID('tbl_database_scoped_configurations') IS NOT NULL
+BEGIN
 
-  DECLARE @sql VARCHAR(MAX) 
+    DECLARE @sql VARCHAR(MAX);
 
-  IF COL_LENGTH('tbl_database_scoped_configurations', 'is_value_default') IS NULL 
-  BEGIN
-    SET                @sql = 'SELECT database_id, dbname, configuration_id, name, value, value_for_secondary, NULL AS is_value_default
-                          FROM tbl_database_scoped_configurations
+    IF COL_LENGTH('tbl_database_scoped_configurations', 'is_value_default') IS NULL
+    BEGIN
+        SET @sql
+            = 'SELECT database_id, dbname, configuration_id, name, value, value_for_secondary, NULL AS is_value_default
+                          FROM dbo.tbl_database_scoped_configurations
                          WHERE input_file_name like ''%Shutdown.out''
-                         ORDER BY dbname, configuration_id'
-  END
-  ELSE 
-  BEGIN
-    SET                @sql = 'SELECT database_id, dbname, configuration_id, name, value, value_for_secondary, is_value_default
-                           FROM tbl_database_scoped_configurations
+                         ORDER BY dbname, configuration_id';
+    END;
+    ELSE
+    BEGIN
+        SET @sql
+            = 'SELECT database_id, dbname, configuration_id, name, value, value_for_secondary, is_value_default
+                           FROM dbo.tbl_database_scoped_configurations
                           WHERE input_file_name like ''%Shutdown.out''
-                         ORDER BY dbname, configuration_id'
-  END 
+                         ORDER BY dbname, configuration_id';
+    END;
 
-EXEC (@sql) 
-END</CommandText>
+    EXEC (@sql);
+END;</CommandText>
       </Query>
       <Fields>
         <Field Name="database_id">
           <DataField>database_id</DataField>
-          <rd:TypeName>System.Int32</rd:TypeName>
+          <rd:UserDefined>true</rd:UserDefined>
         </Field>
         <Field Name="dbname">
           <DataField>dbname</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:UserDefined>true</rd:UserDefined>
         </Field>
         <Field Name="configuration_id">
           <DataField>configuration_id</DataField>
-          <rd:TypeName>System.Int32</rd:TypeName>
+          <rd:UserDefined>true</rd:UserDefined>
         </Field>
         <Field Name="name">
           <DataField>name</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:UserDefined>true</rd:UserDefined>
         </Field>
         <Field Name="value">
           <DataField>value</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:UserDefined>true</rd:UserDefined>
         </Field>
         <Field Name="value_for_secondary">
           <DataField>value_for_secondary</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:UserDefined>true</rd:UserDefined>
         </Field>
         <Field Name="is_value_default">
           <DataField>is_value_default</DataField>
-          <rd:TypeName>System.Int32</rd:TypeName>
+          <rd:UserDefined>true</rd:UserDefined>
         </Field>
       </Fields>
     </DataSet>
     <DataSet Name="DataSet_Dm_Db_Log_Info">
       <Query>
         <DataSourceName>DataSource_SqlNexus_Private</DataSourceName>
-        <CommandText>IF OBJECT_ID ('tbl_dm_db_log_info') IS NOT NULL
+        <CommandText>IF OBJECT_ID('tbl_dm_db_log_info') IS NOT NULL
 BEGIN
-    SELECT 
-	database_id	,
-	database_name ,
-	vlf_count ,
-	vlf_avg_size_mb	,
-	vlf_min_size_mb	,
-	vlf_max_size_mb	,
-	vlf_status ,
-	vlf_active 
-    FROM tbl_dm_db_log_info
-END</CommandText>
+    SELECT database_id,
+           database_name,
+           vlf_count,
+           vlf_avg_size_mb,
+           vlf_min_size_mb,
+           vlf_max_size_mb,
+           vlf_status,
+           vlf_active
+    FROM dbo.tbl_dm_db_log_info;
+END;</CommandText>
       </Query>
       <Fields>
         <Field Name="database_id">
           <DataField>database_id</DataField>
-          <rd:TypeName>System.Int32</rd:TypeName>
+          <rd:UserDefined>true</rd:UserDefined>
         </Field>
         <Field Name="database_name">
           <DataField>database_name</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:UserDefined>true</rd:UserDefined>
         </Field>
         <Field Name="vlf_count">
           <DataField>vlf_count</DataField>
-          <rd:TypeName>System.Int32</rd:TypeName>
+          <rd:UserDefined>true</rd:UserDefined>
         </Field>
         <Field Name="vlf_avg_size_mb">
           <DataField>vlf_avg_size_mb</DataField>
-          <rd:TypeName>System.Decimal</rd:TypeName>
+          <rd:UserDefined>true</rd:UserDefined>
         </Field>
         <Field Name="vlf_min_size_mb">
           <DataField>vlf_min_size_mb</DataField>
-          <rd:TypeName>System.Decimal</rd:TypeName>
+          <rd:UserDefined>true</rd:UserDefined>
         </Field>
         <Field Name="vlf_max_size_mb">
           <DataField>vlf_max_size_mb</DataField>
-          <rd:TypeName>System.Decimal</rd:TypeName>
+          <rd:UserDefined>true</rd:UserDefined>
         </Field>
         <Field Name="vlf_status">
           <DataField>vlf_status</DataField>
-          <rd:TypeName>System.Int32</rd:TypeName>
+          <rd:UserDefined>true</rd:UserDefined>
         </Field>
         <Field Name="vlf_active">
           <DataField>vlf_active</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:UserDefined>true</rd:UserDefined>
         </Field>
       </Fields>
     </DataSet>
