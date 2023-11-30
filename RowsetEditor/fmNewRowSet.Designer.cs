@@ -41,14 +41,14 @@
             this.tabMain = new System.Windows.Forms.TabControl();
             this.tabGrid = new System.Windows.Forms.TabPage();
             this.dgvNewRowset = new System.Windows.Forms.DataGridView();
-            this.tabConnect = new System.Windows.Forms.TabPage();
-            this.txtServerName = new System.Windows.Forms.TextBox();
-            this.btnconnect = new System.Windows.Forms.Button();
-            this.tabSQL = new System.Windows.Forms.TabPage();
             this.colName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colType = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.colLength = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tabConnect = new System.Windows.Forms.TabPage();
             this.label3 = new System.Windows.Forms.Label();
+            this.txtServerName = new System.Windows.Forms.TextBox();
+            this.btnconnect = new System.Windows.Forms.Button();
+            this.tabSQL = new System.Windows.Forms.TabPage();
             this.tabMain.SuspendLayout();
             this.tabGrid.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvNewRowset)).BeginInit();
@@ -62,7 +62,7 @@
             this.btnReturn.Name = "btnReturn";
             this.btnReturn.Size = new System.Drawing.Size(116, 23);
             this.btnReturn.TabIndex = 0;
-            this.btnReturn.Text = "Return Rowset";
+            this.btnReturn.Text = "Back to Main";
             this.btnReturn.UseVisualStyleBackColor = true;
             this.btnReturn.Click += new System.EventHandler(this.btnReturn_Click);
             // 
@@ -174,48 +174,6 @@
             this.dgvNewRowset.Size = new System.Drawing.Size(705, 314);
             this.dgvNewRowset.TabIndex = 0;
             // 
-            // tabConnect
-            // 
-            this.tabConnect.Controls.Add(this.label3);
-            this.tabConnect.Controls.Add(this.txtServerName);
-            this.tabConnect.Controls.Add(this.btnconnect);
-            this.tabConnect.Location = new System.Drawing.Point(4, 5);
-            this.tabConnect.Name = "tabConnect";
-            this.tabConnect.Padding = new System.Windows.Forms.Padding(3);
-            this.tabConnect.Size = new System.Drawing.Size(749, 515);
-            this.tabConnect.TabIndex = 2;
-            this.tabConnect.Text = "tabConnect";
-            this.tabConnect.UseVisualStyleBackColor = true;
-            // 
-            // txtServerName
-            // 
-            this.txtServerName.Location = new System.Drawing.Point(81, 191);
-            this.txtServerName.Name = "txtServerName";
-            this.txtServerName.Size = new System.Drawing.Size(331, 22);
-            this.txtServerName.TabIndex = 4;
-            // 
-            // btnconnect
-            // 
-            this.btnconnect.Location = new System.Drawing.Point(478, 190);
-            this.btnconnect.Name = "btnconnect";
-            this.btnconnect.Size = new System.Drawing.Size(179, 23);
-            this.btnconnect.TabIndex = 5;
-            this.btnconnect.Text = "Connect to SQL";
-            this.btnconnect.UseVisualStyleBackColor = true;
-            this.btnconnect.Click += new System.EventHandler(this.btnconnect_Click);
-            // 
-            // tabSQL
-            // 
-            this.tabSQL.Controls.Add(this.btnExec);
-            this.tabSQL.Controls.Add(this.txtQuery);
-            this.tabSQL.Location = new System.Drawing.Point(4, 5);
-            this.tabSQL.Name = "tabSQL";
-            this.tabSQL.Padding = new System.Windows.Forms.Padding(3);
-            this.tabSQL.Size = new System.Drawing.Size(749, 515);
-            this.tabSQL.TabIndex = 0;
-            this.tabSQL.Text = "tabSQL";
-            this.tabSQL.UseVisualStyleBackColor = true;
-            // 
             // colName
             // 
             this.colName.DataPropertyName = "Name";
@@ -250,6 +208,19 @@
             this.colLength.Name = "colLength";
             this.colLength.Width = 125;
             // 
+            // tabConnect
+            // 
+            this.tabConnect.Controls.Add(this.label3);
+            this.tabConnect.Controls.Add(this.txtServerName);
+            this.tabConnect.Controls.Add(this.btnconnect);
+            this.tabConnect.Location = new System.Drawing.Point(4, 5);
+            this.tabConnect.Name = "tabConnect";
+            this.tabConnect.Padding = new System.Windows.Forms.Padding(3);
+            this.tabConnect.Size = new System.Drawing.Size(749, 515);
+            this.tabConnect.TabIndex = 2;
+            this.tabConnect.Text = "tabConnect";
+            this.tabConnect.UseVisualStyleBackColor = true;
+            // 
             // label3
             // 
             this.label3.AutoSize = true;
@@ -258,6 +229,35 @@
             this.label3.Size = new System.Drawing.Size(116, 16);
             this.label3.TabIndex = 2;
             this.label3.Text = "SQL Server Name";
+            // 
+            // txtServerName
+            // 
+            this.txtServerName.Location = new System.Drawing.Point(81, 191);
+            this.txtServerName.Name = "txtServerName";
+            this.txtServerName.Size = new System.Drawing.Size(331, 22);
+            this.txtServerName.TabIndex = 4;
+            // 
+            // btnconnect
+            // 
+            this.btnconnect.Location = new System.Drawing.Point(478, 190);
+            this.btnconnect.Name = "btnconnect";
+            this.btnconnect.Size = new System.Drawing.Size(179, 23);
+            this.btnconnect.TabIndex = 5;
+            this.btnconnect.Text = "Connect to SQL";
+            this.btnconnect.UseVisualStyleBackColor = true;
+            this.btnconnect.Click += new System.EventHandler(this.btnconnect_Click);
+            // 
+            // tabSQL
+            // 
+            this.tabSQL.Controls.Add(this.btnExec);
+            this.tabSQL.Controls.Add(this.txtQuery);
+            this.tabSQL.Location = new System.Drawing.Point(4, 5);
+            this.tabSQL.Name = "tabSQL";
+            this.tabSQL.Padding = new System.Windows.Forms.Padding(3);
+            this.tabSQL.Size = new System.Drawing.Size(749, 515);
+            this.tabSQL.TabIndex = 0;
+            this.tabSQL.Text = "tabSQL";
+            this.tabSQL.UseVisualStyleBackColor = true;
             // 
             // fmNewRowset
             // 
