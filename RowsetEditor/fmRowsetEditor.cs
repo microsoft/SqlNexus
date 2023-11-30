@@ -242,18 +242,17 @@ namespace RowsetEditor
                     String directory = directoryURI.LocalPath;
 
                     SaveFileDialog f = new SaveFileDialog();
-                        f.DefaultExt = "xml";
-                        f.RestoreDirectory = true;
-                        f.Filter = "xml files (*.xml)|*.xml|All files (*.*)|*.*";
-                        f.InitialDirectory = directory;
+                    f.DefaultExt = "xml";
+                    f.RestoreDirectory = true;
+                    f.Filter = "xml files (*.xml)|*.xml|All files (*.*)|*.*";
+                    f.InitialDirectory = directory;
 
-                        if (f.ShowDialog() == DialogResult.OK)
-                        {
-                            fName = f.FileName;
-                        }
-                    
-                    xDoc.Save(fName);
-                    MessageBox.Show("Document updated and saved successfully", "Save Rowsets", MessageBoxButtons.OK);
+                    if (f.ShowDialog() == DialogResult.OK)
+                    {
+                        fName = f.FileName;
+                        xDoc.Save(fName);
+                        MessageBox.Show("Document updated and saved successfully", "Save Rowsets", MessageBoxButtons.OK);
+                    } 
                 }
 
                 cmbRowsets.Refresh();
@@ -262,7 +261,7 @@ namespace RowsetEditor
 
             } catch (Exception ex)
             {
-                MessageBox.Show("Document failed to save with message :  \n" + ex.Message, "Save Rowsets", MessageBoxButtons.OK);
+                MessageBox.Show("Document failed to save with message :  \n\n" + ex.Message, "Save Rowsets", MessageBoxButtons.OK);
             }
         }
 
