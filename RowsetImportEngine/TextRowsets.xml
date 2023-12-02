@@ -4228,6 +4228,7 @@
     </Rowset>
 	  
     <Rowset name="tbl_sysmail_event_log_sysmail_faileditems" enabled="true" identifier="-- sysmail_event_log_sysmail_faileditems --" type="RowsetImportEngine.TextRowset">
+
 	    <KnownColumns>
 		    <Column name="LogID" type="RowsetImportEngine.BigIntColumn" />
 		    <Column name="LogDate" type="RowsetImportEngine.DateTimeColumn" />
