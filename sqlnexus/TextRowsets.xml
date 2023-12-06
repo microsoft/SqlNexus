@@ -4323,7 +4323,7 @@
       </KnownColumns>
     </Rowset>
 
-    <Rowset name="tbl_environment_variables" enabled="true" identifier="-- Environment Variables --" type="RowsetImportEngine.TextRowset">
+    <Rowset name="tbl_environment_variables" enabled="true" identifier="-- environment variables --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
         <Column name="Name" type="RowsetImportEngine.VarCharColumn" length="300" />
         <Column name="Value" type="RowsetImportEngine.VarCharColumn" length="4000" />
