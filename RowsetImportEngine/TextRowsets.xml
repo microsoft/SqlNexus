@@ -4228,7 +4228,6 @@
     </Rowset>
 	  
     <Rowset name="tbl_sysmail_event_log_sysmail_faileditems" enabled="true" identifier="-- sysmail_event_log_sysmail_faileditems --" type="RowsetImportEngine.TextRowset">
-
 	    <KnownColumns>
 		    <Column name="LogID" type="RowsetImportEngine.BigIntColumn" />
 		    <Column name="LogDate" type="RowsetImportEngine.DateTimeColumn" />
@@ -4321,6 +4320,13 @@
         <Column name="sequence_number" type="RowsetImportEngine.BigIntColumn" />
         <Column name="last_mod_datetime" type="RowsetImportEngine.DateTimeColumn" />
         <Column name="last_mod_user" type="RowsetImportEngine.VarCharColumn" />
+      </KnownColumns>
+    </Rowset>
+
+    <Rowset name="tbl_environment_variables" enabled="true" identifier="-- environment variables --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="Name" type="RowsetImportEngine.VarCharColumn" length="300" />
+        <Column name="Value" type="RowsetImportEngine.VarCharColumn" length="4000" />
       </KnownColumns>
     </Rowset>
   </KnownRowsets>
