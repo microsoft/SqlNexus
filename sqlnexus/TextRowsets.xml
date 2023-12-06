@@ -4263,8 +4263,9 @@
         <Column name="query" type="RowsetImportEngine.VarCharColumn" />
         <Column name="execute_query_database" type="RowsetImportEngine.VarCharColumn" />
         <Column name="attach_query_result_as_file" type="RowsetImportEngine.IntColumn" />
-	  </KnownColumns>
-	</Rowset>
+	    </KnownColumns>
+    </Rowset>
+
     <Rowset name="tbl_sysmail_account" enabled="true" identifier="-- sysmail_account --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
         <Column name="account_id" type="RowsetImportEngine.BigIntColumn" />
@@ -4289,7 +4290,7 @@
     </Rowset>
 	  
     <Rowset name="tbl_sysmail_log" enabled="true" identifier="-- sysmail_log --" type="RowsetImportEngine.TextRowset">
-	  <KnownColumns>
+	    <KnownColumns>
         <Column name="log_id" type="RowsetImportEngine.BigIntColumn" />
         <Column name="event_type" type="RowsetImportEngine.VarCharColumn" length="11" />
         <Column name="log_date" type="RowsetImportEngine.DateTimeColumn" />
@@ -4319,6 +4320,13 @@
         <Column name="sequence_number" type="RowsetImportEngine.BigIntColumn" />
         <Column name="last_mod_datetime" type="RowsetImportEngine.DateTimeColumn" />
         <Column name="last_mod_user" type="RowsetImportEngine.VarCharColumn" />
+      </KnownColumns>
+    </Rowset>
+
+    <Rowset name="tbl_environment_variables" enabled="true" identifier="-- environment variables --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="Name" type="RowsetImportEngine.VarCharColumn" length="300" />
+        <Column name="Value" type="RowsetImportEngine.VarCharColumn" length="4000" />
       </KnownColumns>
     </Rowset>
   </KnownRowsets>
