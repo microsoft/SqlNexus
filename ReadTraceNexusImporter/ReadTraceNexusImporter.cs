@@ -8,7 +8,7 @@ using System.IO;
 using System.Diagnostics;
 using System.Data;
 using System.Data.SqlTypes;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Data.Common;
 using Microsoft.Win32;
 using NexusInterfaces;

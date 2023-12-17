@@ -39,7 +39,7 @@ namespace sqlnexus
         private void btnConnect_Click(object sender, EventArgs e)
         {
             
-            Globals.credentialMgr = new CredentialManager(txtServerName.Text, txtUserName.Text, txtPassword.Text, "master", (cmbAuthentication.SelectedIndex == 0 ? true : false));
+            Globals.credentialMgr = new CredentialManager(txtServerName.Text, txtUserName.Text, txtPassword.Text, "master", (cmbAuthentication.SelectedIndex == 0 ? true : false), chkTrustServerCertificate.Checked, chkEncryptConnection.Checked);
 
 
             try
@@ -85,6 +85,11 @@ namespace sqlnexus
             else
                 txtServerName.Text = Environment.MachineName;
 
+        }
+
+        private void chkEncryptConnection_CheckedChanged(object sender, EventArgs e)
+        {
+            chkTrustServerCertificate.Enabled = chkEncryptConnection.Checked;
         }
     }
 }

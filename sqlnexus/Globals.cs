@@ -5,8 +5,8 @@ using NexusInterfaces;
 using System.Diagnostics;
 using System.Windows.Forms;
 using System.Globalization;
-using System.Data;
-using System.Data.SqlClient;
+using Microsoft.Data;
+using Microsoft.Data.SqlClient;
 using Microsoft.Reporting.WinForms;
 using Microsoft.Win32;
 namespace sqlnexus

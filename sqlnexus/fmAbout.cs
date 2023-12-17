@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.Reflection;
+using Microsoft.Reporting.WinForms;
 
 namespace sqlnexus
 {
@@ -118,6 +119,12 @@ namespace sqlnexus
                 if (a is AssemblyFileVersionAttribute)
                     laVersion.Text = "Version: " + (a as AssemblyFileVersionAttribute).Version;
             }
+
+            ReportViewer rv = new ReportViewer();
+            Assembly rvAssembly = rv.GetType().Assembly;
+            Version rvVersion = rvAssembly.GetName().Version;
+            
+            laRVVersion.Text = "ReportViewer : " + rvVersion;
         }
 
         private void btClose_Paint(object sender, PaintEventArgs e)
@@ -166,5 +173,9 @@ namespace sqlnexus
 
         }
 
+        private void laRVVersion_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

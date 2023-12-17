@@ -11,7 +11,7 @@ using System.Diagnostics;
 using System.Globalization;
 //using Microsoft.SqlServer.Management;
 //using Microsoft.SqlServer.Management.Smo;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using NexusInterfaces;
 using System.Text.RegularExpressions;
 namespace sqlnexus

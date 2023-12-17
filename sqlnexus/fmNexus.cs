@@ -10,8 +10,9 @@ using System.Drawing.Printing;
 using System.Text;
 using System.Windows.Forms;
 using Microsoft.Reporting.WinForms;
+using Microsoft.ReportingServices;
 using System.IO;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Xml;
 using System.Xml.XPath;
 using System.Runtime.InteropServices;
@@ -1023,7 +1024,8 @@ namespace sqlnexus
                 }
                 else
                 {
-                    return ((tcReports.SelectedTab).Controls[0] as ReportViewer);
+                    ReportViewer rv = ((tcReports.SelectedTab).Controls[0] as ReportViewer);
+                    return rv;
                 }
             }
         }
@@ -1899,7 +1901,7 @@ namespace sqlnexus
             return filename;
         }
 
-        #endregion Report mgmt
+#endregion Report mgmt
 
         #region Menu syncs
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
