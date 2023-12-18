@@ -31,7 +31,7 @@ using System.Security.Permissions;
 
 //using Microsoft.SqlServer.Management.Smo.RegSvrEnum;
 
-[assembly: System.Security.Permissions.PermissionSet(System.Security.Permissions.SecurityAction.RequestMinimum, Name = "FullTrust")]
+//[assembly: System.Security.Permissions.PermissionSet(System.Security.Permissions.SecurityAction.RequestMinimum, Name = "FullTrust")]
 namespace sqlnexus
 {
     
@@ -1427,7 +1427,7 @@ namespace sqlnexus
                         //rv.LocalReport.ExecuteReportInCurrentAppDomain(AppDomain.CurrentDomain.Evidence);
                         //fixing error related to System.InvalidOperationException: Report execution in the current AppDomain requires Code Access Security policy, which is off by default in .NET 4.0 and later.  Enable legacy CAS policy or execute the report in the sandbox AppDomain.
 
-                        rv.LocalReport.ExecuteReportInSandboxAppDomain();
+                        //rv.LocalReport.ExecuteReportInSandboxAppDomain();
                         //rv.LocalReport.AddTrustedCodeModuleInCurrentAppDomain("System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089");
                         Globals.ListOfReports.Add(rv);
 
@@ -1546,10 +1546,10 @@ namespace sqlnexus
                 nsmgr.AddNamespace("rds", "http://schemas.microsoft.com/sqlserver/reporting/2008/01/reportdefinition");
             }
 
-            foreach (XmlNode n in doc.DocumentElement.SelectNodes("//rds:CodeModule", nsmgr))
-            {
-                rv.LocalReport.AddTrustedCodeModuleInCurrentAppDomain(n.InnerText);
-            }
+            //foreach (XmlNode n in doc.DocumentElement.SelectNodes("//rds:CodeModule", nsmgr))
+            //{
+            //    rv.LocalReport.AddTrustedCodeModuleInCurrentAppDomain(n.InnerText);
+            //}
         }
 
         /// <summary>

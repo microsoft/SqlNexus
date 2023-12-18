@@ -9,7 +9,7 @@ namespace sqlnexus
 {
     class NexusInfo
     {
-        private static bool m_SchemaCreated = false;
+        //private static bool m_SchemaCreated = false;
         private ILogger m_logger;
         private string m_ConnectionString;
 
