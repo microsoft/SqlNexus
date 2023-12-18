@@ -980,7 +980,8 @@ IF NOT EXISTS
                                       'HADR_SEEDING_SYNC_COMPLETION', 'HADR_SEEDING_TIMEOUT_TASK',
                                       'HADR_SEEDING_FILE_LIST', 'HADR_SEEDING_WAIT_FOR_COMPLETION',
                                       'HADR_DBHEALTH_INFOMAP_ACCESS', 'HADR_SEEDING_READY_FOR_RESTORE_STREAM',
-                                      'REDO_THREAD_PENDING_WORK'
+                                      'REDO_THREAD_PENDING_WORK', 'CHECKPOINT_QUEUE', 'QDS_ASYNC_QUEUE',
+                                      'PARALLEL_REDO_WORKER_WAIT_WORK', 'PWAIT_EXTENSIBILITY_CLEANUP_TASK'
                                   ) THEN
                     'IGNORABLE'
                 ELSE
