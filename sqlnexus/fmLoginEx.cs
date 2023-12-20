@@ -14,6 +14,8 @@ namespace sqlnexus
         public fmLoginEx()
         {
             InitializeComponent();
+            chkTrustServerCertificate.Checked = Properties.Settings.Default.TrustCertificate;
+            chkEncryptConnection.Checked =  Properties.Settings.Default.EncryptConnection;
         }
 
         private void EnableSqlLogin(bool enable)
@@ -70,6 +72,11 @@ namespace sqlnexus
 
                 txtPassword.Text = "";//since this object is cached, erase the password
             }
+            
+            //Saving trustcertificate and encrypt connection for the user.
+            Properties.Settings.Default.EncryptConnection = chkEncryptConnection.Checked;
+            Properties.Settings.Default.TrustCertificate = chkTrustServerCertificate.Checked;
+
             //this.Dispose();
         }
 
