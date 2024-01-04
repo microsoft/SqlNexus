@@ -14,6 +14,8 @@ namespace sqlnexus
         public fmLoginEx()
         {
             InitializeComponent();
+            chkTrustServerCertificate.Checked = Properties.Settings.Default.TrustCertificate;
+            chkEncryptConnection.Checked =  Properties.Settings.Default.EncryptConnection;
         }
 
         private void EnableSqlLogin(bool enable)
@@ -39,7 +41,7 @@ namespace sqlnexus
         private void btnConnect_Click(object sender, EventArgs e)
         {
             
-            Globals.credentialMgr = new CredentialManager(txtServerName.Text, txtUserName.Text, txtPassword.Text, "master", (cmbAuthentication.SelectedIndex == 0 ? true : false));
+            Globals.credentialMgr = new CredentialManager(txtServerName.Text, txtUserName.Text, txtPassword.Text, "master", (cmbAuthentication.SelectedIndex == 0 ? true : false), chkTrustServerCertificate.Checked, chkEncryptConnection.Checked);
 
 
             try
@@ -70,6 +72,11 @@ namespace sqlnexus
 
                 txtPassword.Text = "";//since this object is cached, erase the password
             }
+            
+            //Saving trustcertificate and encrypt connection for the user.
+            Properties.Settings.Default.EncryptConnection = chkEncryptConnection.Checked;
+            Properties.Settings.Default.TrustCertificate = chkTrustServerCertificate.Checked;
+
             //this.Dispose();
         }
 
@@ -85,6 +92,11 @@ namespace sqlnexus
             else
                 txtServerName.Text = Environment.MachineName;
 
+        }
+
+        private void chkEncryptConnection_CheckedChanged(object sender, EventArgs e)
+        {
+            chkTrustServerCertificate.Enabled = chkEncryptConnection.Checked;
         }
     }
 }

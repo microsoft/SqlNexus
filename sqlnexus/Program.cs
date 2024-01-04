@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Globalization;
 using NexusInterfaces;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 //App can be run as a console or GUI app.  Passing parameters causes console mode.
 //Sample cmd line for running as a console app
 //  "/Cserver='.\ss2k5_rtm';Trusted_Connection=true;database='sqlnexus';Application Name=' ';Pooling=false;Packet Size=4096;multipleactiveresultsets=false" "/XD:\_data\src\Nexus\sqlnexus\sqlnexus\bin\Debug\Reports\Profiler Trace Analysis_M.rdlc"
@@ -293,7 +293,8 @@ namespace sqlnexus
 
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
-                DependencyManager.CheckReportViewer();
+                //we ship ReportViewer as nuget package now. so Dependency check is no longer needed
+                //DependencyManager.CheckReportViewer();
 
                 //initialize the main form
                 fmNexus fmN = new fmNexus();

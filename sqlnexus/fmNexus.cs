@@ -10,8 +10,9 @@ using System.Drawing.Printing;
 using System.Text;
 using System.Windows.Forms;
 using Microsoft.Reporting.WinForms;
+using Microsoft.ReportingServices;
 using System.IO;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Xml;
 using System.Xml.XPath;
 using System.Runtime.InteropServices;
@@ -30,7 +31,7 @@ using System.Security.Permissions;
 
 //using Microsoft.SqlServer.Management.Smo.RegSvrEnum;
 
-[assembly: System.Security.Permissions.PermissionSet(System.Security.Permissions.SecurityAction.RequestMinimum, Name = "FullTrust")]
+//[assembly: System.Security.Permissions.PermissionSet(System.Security.Permissions.SecurityAction.RequestMinimum, Name = "FullTrust")]
 namespace sqlnexus
 {
     
@@ -1023,7 +1024,8 @@ namespace sqlnexus
                 }
                 else
                 {
-                    return ((tcReports.SelectedTab).Controls[0] as ReportViewer);
+                    ReportViewer rv = ((tcReports.SelectedTab).Controls[0] as ReportViewer);
+                    return rv;
                 }
             }
         }
@@ -1425,7 +1427,7 @@ namespace sqlnexus
                         //rv.LocalReport.ExecuteReportInCurrentAppDomain(AppDomain.CurrentDomain.Evidence);
                         //fixing error related to System.InvalidOperationException: Report execution in the current AppDomain requires Code Access Security policy, which is off by default in .NET 4.0 and later.  Enable legacy CAS policy or execute the report in the sandbox AppDomain.
 
-                        rv.LocalReport.ExecuteReportInSandboxAppDomain();
+                        //rv.LocalReport.ExecuteReportInSandboxAppDomain();
                         //rv.LocalReport.AddTrustedCodeModuleInCurrentAppDomain("System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089");
                         Globals.ListOfReports.Add(rv);
 
@@ -1544,10 +1546,10 @@ namespace sqlnexus
                 nsmgr.AddNamespace("rds", "http://schemas.microsoft.com/sqlserver/reporting/2008/01/reportdefinition");
             }
 
-            foreach (XmlNode n in doc.DocumentElement.SelectNodes("//rds:CodeModule", nsmgr))
-            {
-                rv.LocalReport.AddTrustedCodeModuleInCurrentAppDomain(n.InnerText);
-            }
+            //foreach (XmlNode n in doc.DocumentElement.SelectNodes("//rds:CodeModule", nsmgr))
+            //{
+            //    rv.LocalReport.AddTrustedCodeModuleInCurrentAppDomain(n.InnerText);
+            //}
         }
 
         /// <summary>
@@ -1899,7 +1901,7 @@ namespace sqlnexus
             return filename;
         }
 
-        #endregion Report mgmt
+#endregion Report mgmt
 
         #region Menu syncs
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)

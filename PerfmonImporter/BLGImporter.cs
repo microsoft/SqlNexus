@@ -6,7 +6,7 @@ using NexusInterfaces;
 using System.IO;
 using System.Diagnostics;
 using System.Data;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Runtime.InteropServices;
 //using System.Windows.Forms;
 

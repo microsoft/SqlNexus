@@ -7,7 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using Microsoft.Reporting.WinForms;
 using System.Xml;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Globalization;
 using NexusInterfaces;
 

@@ -2,14 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using NexusInterfaces;
-using System.Data;
-using System.Data.SqlClient;
+using Microsoft.Data;
+using Microsoft.Data.SqlClient;
 
 namespace sqlnexus
 {
     class NexusInfo
     {
-        private static bool m_SchemaCreated = false;
+        //private static bool m_SchemaCreated = false;
         private ILogger m_logger;
         private string m_ConnectionString;
 

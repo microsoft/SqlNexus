@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Data;
 using System.Data.SqlTypes;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Data.Common;
 using System.Xml;
 using System.Threading;
@@ -832,7 +832,7 @@ namespace RowsetImportEngine
 
 		private void InsertRow ()
 		{
-			bool	ret = false;
+			//bool	ret = false;
 			int		ColNum = 0;
 			object	ColData;
             DataRow row = CurrentRowset.Bulkload.GetNewRow();
@@ -870,7 +870,7 @@ namespace RowsetImportEngine
 		// suffer from excessive tran log autogrow. 
 		private void FlushRowsets  ()
 		{
-			long ret;
+			//long ret;
 			foreach (TextRowset r in this.KnownRowsets)
 			{
                 if (r.InBCPRowset && r.Bulkload != null)
