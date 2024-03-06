@@ -941,7 +941,7 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>statement_test</Value>
+                                  <Value>statement_text</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                   </Style>
@@ -1224,7 +1224,7 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!user_objects_dealloc_MB.Value</Value>
+                                  <Value>=Fields!internal_objects_dealloc_MB.Value</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                   </Style>
