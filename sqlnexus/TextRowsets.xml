@@ -2235,14 +2235,11 @@
       <Column name="compatibility_level" type="RowsetImportEngine.IntColumn" />
       <Column name="query_plan_hash" type="RowsetImportEngine.VarBinaryColumn" length="8" />
       <Column name="is_forced_plan" type="RowsetImportEngine.IntColumn" />
-      <!-- 620 JAMGRIF 022024 -->
       <Column name="force_failure_count" type="RowsetImportEngine.BigIntColumn" />
       <Column name="last_force_failure_reason_desc"  type="RowsetImportEngine.VarCharColumn" length="256" />
-      <!-- 620 JAMGRIF 022024 2017+ only-->
       <Column name="plan_forcing_type_desc"  type="RowsetImportEngine.VarCharColumn" length="120" />
     </Rowset>
 
-    <!-- 620 JAMGRIF 022024 -->
     <Rowset name="tbl_dm_db_tuning_recommendations" enabled="true" identifier="--sys.dm_db_tuning_recommendations--" type="RowsetImportEngine.TextRowset">
       <Column name="reason" type="RowsetImportEngine.NVarCharColumn" length="4000" />
       <Column name="score" type="RowsetImportEngine.IntColumn" />
