@@ -4349,7 +4349,7 @@
       </KnownColumns>
     </Rowset>
 
-    <Rowset name="tbl_setup_missing_msp_msp_packages" enabled="true" identifier="-- missing installer msi or msp packages --" type="RowsetImportEngine.TextRowset">
+    <Rowset name="tbl_setup_missing_msi_msp_packages" enabled="true" identifier="-- missing installer msi or msp packages --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
         <Column name="ProductName" type="RowsetImportEngine.NVarCharColumn" length="65" />
         <Column name="Version" type="RowsetImportEngine.VarCharColumn" length="14" />
