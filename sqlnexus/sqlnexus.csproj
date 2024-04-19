@@ -582,6 +582,9 @@
     <Content Include="Reports\Tempdb_Space_Use_C.rdlC">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Reports\Missing_MSIs_or_MSPs_C.rdlC">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="SqlNexus.snk" />
   </ItemGroup>
   <ItemGroup>
@@ -1079,6 +1082,16 @@
       <FileType>File</FileType>
     </PublishFile>
     <PublishFile Include="Reports\Missing Indexes_C.rdlC">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>File</FileType>
+    </PublishFile>
+    <PublishFile Include="Reports\Missing_MSIs_or_MSPs_C.rdlC">
       <Visible>False</Visible>
       <Group>
       </Group>
