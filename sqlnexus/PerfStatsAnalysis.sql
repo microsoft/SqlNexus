@@ -7161,15 +7161,19 @@ BEGIN
            )
         BEGIN
             
-            DECLARE @InstCacheFiles VARCHAR(8000) 
-            SELECT @InstCacheFiles  = COALESCE(@InstCacheFiles + CHAR(13) + CHAR(10) , '') + ISNULL([ExpectedInstallerCacheFile], '') 
+            DECLARE @InstCacheFiles VARCHAR(8000), @InstCacheCorruptFiles VARCHAR(8000)  
+            SELECT @InstCacheFiles  = COALESCE(@InstCacheFiles + CHAR(13) + CHAR(10) , '') + ISNULL([ExpectedInstallerCacheFile], ''), 
+                   @InstCacheCorruptFiles = COALESCE(@InstCacheCorruptFiles + CHAR(13) + CHAR(10) , '') + ISNULL([FileIsPresentInCacheButLikelyCorrupt], '') 
             FROM dbo.tbl_setup_missing_msi_msp_packages
             
 
             UPDATE dbo.tbl_AnalysisSummary
             SET [Status] = 1,
             [Description] = 'The following SQL Server MSI/MSPs are missing from the system. These can cause various CU or SP upgrade issues or unexpected behaviors: '
-                            + CHAR(13) + CHAR(10) + @InstCacheFiles  + CHAR(13) + CHAR(10) + 'Be sure to use the linked article to resolve the missing MSI/MSP issues.'
+                            + CHAR(13) + CHAR(10) + @InstCacheFiles  + CHAR(13) + CHAR(10) +
+                            'And the following SQL Server MSI/MSPs are possibly corrupt: '
+                             + @InstCacheCorruptFiles
+                            + CHAR(13) + CHAR(10) + 'Be sure to use the linked article to resolve the missing MSI/MSP issues.'
             WHERE [Name] = OBJECT_NAME(@@PROCID);
         END;
     END;
