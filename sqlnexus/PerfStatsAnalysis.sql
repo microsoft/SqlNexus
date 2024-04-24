@@ -7163,7 +7163,7 @@ BEGIN
             
             DECLARE @InstCacheFiles VARCHAR(8000), @InstCacheCorruptFiles VARCHAR(8000)  
             SELECT @InstCacheFiles  = COALESCE(@InstCacheFiles + CHAR(13) + CHAR(10) , '') + ISNULL([ExpectedInstallerCacheFile], ''), 
-                   @InstCacheCorruptFiles = COALESCE(@InstCacheCorruptFiles + CHAR(13) + CHAR(10) , '') + ISNULL([FileIsPresentInCacheButLikelyCorrupt], '') 
+                   @InstCacheCorruptFiles = COALESCE(@InstCacheCorruptFiles + CHAR(13) + CHAR(10) , '') + ISNULL([FileIsPresentInCacheButPossiblyCorrupt], '') 
             FROM dbo.tbl_setup_missing_msi_msp_packages
             
 

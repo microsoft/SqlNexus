@@ -4353,7 +4353,7 @@
       <KnownColumns>
         <Column name="ProductName" type="RowsetImportEngine.NVarCharColumn" length="65" />
         <Column name="ExpectedInstallerCacheFile" type="RowsetImportEngine.NVarCharColumn" length="52" />
-        <Column name="FileIsPresentInCacheButLikelyCorrupt" type="RowsetImportEngine.NVarCharColumn" length="52" />
+        <Column name="FileIsPresentInCacheButPossiblyCorrupt" type="RowsetImportEngine.NVarCharColumn" length="52" />
         <Column name="ProductVersion" type="RowsetImportEngine.VarCharColumn" length="14" />
         <Column name="PackageName" type="RowsetImportEngine.NVarCharColumn" length="32" />
       </KnownColumns>
