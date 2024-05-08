@@ -16,6 +16,7 @@ namespace sqlnexus
             InitializeComponent();
             chkTrustServerCertificate.Checked = Properties.Settings.Default.TrustCertificate;
             chkEncryptConnection.Checked =  Properties.Settings.Default.EncryptConnection;
+            cmbTheme.SelectedItem = Properties.Settings.Default.Theme; 
         }
 
         private void EnableSqlLogin(bool enable)
@@ -73,9 +74,11 @@ namespace sqlnexus
                 txtPassword.Text = "";//since this object is cached, erase the password
             }
             
-            //Saving trustcertificate and encrypt connection for the user.
+            //Saving loginscreen user settings (Encryption choice and Theme)
             Properties.Settings.Default.EncryptConnection = chkEncryptConnection.Checked;
             Properties.Settings.Default.TrustCertificate = chkTrustServerCertificate.Checked;
+
+            Properties.Settings.Default.Theme = cmbTheme.SelectedItem.ToString();
 
             //this.Dispose();
         }

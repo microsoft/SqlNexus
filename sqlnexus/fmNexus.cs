@@ -1389,8 +1389,20 @@ namespace sqlnexus
         /// <param name="report">File name (.RDL)</param>
         /// <param name="master">true for top-level reports (.RDL), false for child reports (.RDLC)</param>
         /// <param name="parameters">Report parameter collection (can be null)</param>
-        public void SelectLoadReport(string report, bool master, ReportParameter[] parameters)
+        public void SelectLoadReport(string report, bool master, ReportParameter[] _parameters)
         {
+            //Theme is a standard parameter that has to exist in all reports to make sure we comply with accessiblity review 
+            //if the report does not contain the parameter "Theme" it will fail to load.
+            ReportParameter paramTheme = new ReportParameter("Theme", Properties.Settings.Default.Theme);
+            ReportParameter[] parameters = new ReportParameter[1];
+            parameters[0] = paramTheme;
+
+            if (_parameters != null)
+            {
+                _parameters.CopyTo(parameters,1);
+                parameters[parameters.Length] = paramTheme;
+
+            }
 
             NexusInfo nInfo = new NexusInfo(Globals.credentialMgr.ConnectionString, this);
             nInfo.SetAttribute("Nexus Report Version", Application.ProductVersion);
@@ -1518,8 +1530,16 @@ namespace sqlnexus
                     UpdateTitle();
                     UpdateReportButtons();
                 }
+                catch (LocalProcessingException ex)
+                {
+                    MessageBox.Show(report + " : Failed to load \r\n" + ex.InnerException.Message);
+                }
                 catch (Exception ex)
                 {
+                    
+                    
+                    
+
                     Globals.HandleException(ex, this, this);
                 }
             }

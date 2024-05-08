@@ -233,10 +233,10 @@ namespace sqlnexus
             // 
             // toolStripContainer1.TopToolStripPanel
             // 
-            this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.menuBarMain);
-            this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.toolbarService);
             this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.toolbarReport);
+            this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.toolbarService);
             this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.toolbarMain);
+            this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.menuBarMain);
             // 
             // ssStatus
             // 
@@ -672,6 +672,7 @@ namespace sqlnexus
             // 
             resources.ApplyResources(this.rvTemplate, "rvTemplate");
             this.rvTemplate.Name = "rvTemplate";
+            this.rvTemplate.ServerReport.BearerToken = null;
             // 
             // tcReports
             // 
