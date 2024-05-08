@@ -2053,6 +2053,15 @@ END;</CommandText>
       </DefaultValue>
       <Prompt>Show all reports even data is not available</Prompt>
     </ReportParameter>
+	<ReportParameter Name="Theme">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>Default</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>enter Theme here</Prompt>
+    </ReportParameter>
   </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>
@@ -2088,6 +2097,11 @@ END;</CommandText>
           <ColumnIndex>0</ColumnIndex>
           <RowIndex>2</RowIndex>
           <ParameterName>ShowAllReports</ParameterName>
+        </CellDefinition>
+		<CellDefinition>
+          <ColumnIndex>1</ColumnIndex>
+          <RowIndex>2</RowIndex>
+          <ParameterName>Theme</ParameterName>
         </CellDefinition>
       </CellDefinitions>
     </GridLayoutDefinition>

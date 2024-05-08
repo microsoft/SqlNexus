@@ -34,12 +34,24 @@ namespace sqlnexus
             this.ssStatus = new System.Windows.Forms.StatusStrip();
             this.ssText = new System.Windows.Forms.ToolStripStatusLabel();
             this.ssProgress = new System.Windows.Forms.ToolStripProgressBar();
-            this.splClient = new System.Windows.Forms.SplitContainer();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.cmNav = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.collapseAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.expandAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hideReportNavigatorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.imGlyphs = new System.Windows.Forms.ImageList(this.components);
+            this.cmReport = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.reportParametersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.closeAllButThisToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveToClipboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ps_Report = new System.Windows.Forms.PageSetupDialog();
+            this.sd_Report = new System.Windows.Forms.SaveFileDialog();
+            this.scSQLDiag = new System.ServiceProcess.ServiceController();
+            this.tiServicePoll = new System.Windows.Forms.Timer(this.components);
+            this.od_Report = new System.Windows.Forms.OpenFileDialog();
+            this.tiReportAutoUpdate = new System.Windows.Forms.Timer(this.components);
+            this.splClient = new System.Windows.Forms.SplitContainer();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.paTasks = new System.Windows.Forms.Panel();
             this.paTasksBody = new System.Windows.Forms.Panel();
             this.llPrint = new System.Windows.Forms.LinkLabel();
@@ -70,46 +82,21 @@ namespace sqlnexus
             this.linkLabelPowerBI = new System.Windows.Forms.LinkLabel();
             this.bpPowerBIrpt = new System.Windows.Forms.PictureBox();
             this.tvReports = new System.Windows.Forms.TreeView();
-            this.imGlyphs = new System.Windows.Forms.ImageList(this.components);
             this.paReportsHeader = new System.Windows.Forms.Panel();
             this.llReports = new System.Windows.Forms.LinkLabel();
             this.pbExpandReports = new System.Windows.Forms.PictureBox();
             this.pbCollapseReports = new System.Windows.Forms.PictureBox();
             this.rvTemplate = new Microsoft.Reporting.WinForms.ReportViewer();
             this.tcReports = new System.Windows.Forms.TabControl();
-            this.menuBarMain = new System.Windows.Forms.MenuStrip();
-            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.connectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.miOpen = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
-            this.runAllReportsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripSeparator12 = new System.Windows.Forms.ToolStripSeparator();
-            this.importToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.getReportParametersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolbarsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.mainMenuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.mainToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.reportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.serviceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.promptsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.askWhetherToStartTheSQLDiagCollectionServiceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.askWhetherToStopTheSQLDiagCollectionServiceWhenExitingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsiShowReportTabs = new System.Windows.Forms.ToolStripMenuItem();
-            this.windowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.closeToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
-            this.closeAllButCurrentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.closeAllToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
-            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.contentsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.indexToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.supportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.contactUsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolbarMain = new System.Windows.Forms.ToolStrip();
+            this.tspUnpin = new System.Windows.Forms.ToolStripButton();
+            this.tstbConnect = new System.Windows.Forms.ToolStripButton();
+            this.tspPin = new System.Windows.Forms.ToolStripButton();
+            this.tstbOpen = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
+            this.tstbRunAll = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
+            this.tspHelp = new System.Windows.Forms.ToolStripButton();
             this.toolbarService = new System.Windows.Forms.ToolStrip();
             this.tsbStart = new System.Windows.Forms.ToolStripButton();
             this.tsbStop = new System.Windows.Forms.ToolStripButton();
@@ -155,37 +142,51 @@ namespace sqlnexus
             this.tsbFindNext = new System.Windows.Forms.ToolStripButton();
             this.tsLabelCurDB = new System.Windows.Forms.ToolStripLabel();
             this.tscCurrentDatabase = new System.Windows.Forms.ToolStripComboBox();
-            this.toolbarMain = new System.Windows.Forms.ToolStrip();
-            this.tspUnpin = new System.Windows.Forms.ToolStripButton();
-            this.tstbConnect = new System.Windows.Forms.ToolStripButton();
-            this.tspPin = new System.Windows.Forms.ToolStripButton();
-            this.tstbOpen = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
-            this.tstbRunAll = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
-            this.tspHelp = new System.Windows.Forms.ToolStripButton();
-            this.cmReport = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.reportParametersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.closeAllButThisToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveToClipboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ps_Report = new System.Windows.Forms.PageSetupDialog();
-            this.sd_Report = new System.Windows.Forms.SaveFileDialog();
-            this.scSQLDiag = new System.ServiceProcess.ServiceController();
-            this.tiServicePoll = new System.Windows.Forms.Timer(this.components);
-            this.od_Report = new System.Windows.Forms.OpenFileDialog();
-            this.tiReportAutoUpdate = new System.Windows.Forms.Timer(this.components);
+            this.menuBarMain = new System.Windows.Forms.MenuStrip();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.connectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.miOpen = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
+            this.runAllReportsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator12 = new System.Windows.Forms.ToolStripSeparator();
+            this.importToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.getReportParametersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolbarsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.mainMenuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.mainToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.reportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.serviceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.promptsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.askWhetherToStartTheSQLDiagCollectionServiceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.askWhetherToStopTheSQLDiagCollectionServiceWhenExitingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsiShowReportTabs = new System.Windows.Forms.ToolStripMenuItem();
+            this.windowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.closeToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.closeAllButCurrentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.closeAllToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.contentsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.indexToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.supportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.contactUsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
             this.toolStripContainer1.ContentPanel.SuspendLayout();
             this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
             this.toolStripContainer1.SuspendLayout();
             this.ssStatus.SuspendLayout();
+            this.cmNav.SuspendLayout();
+            this.cmReport.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splClient)).BeginInit();
             this.splClient.Panel1.SuspendLayout();
             this.splClient.Panel2.SuspendLayout();
             this.splClient.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
-            this.cmNav.SuspendLayout();
             this.paTasks.SuspendLayout();
             this.paTasksBody.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbPrint)).BeginInit();
@@ -208,11 +209,10 @@ namespace sqlnexus
             this.paReportsHeader.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbExpandReports)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbCollapseReports)).BeginInit();
-            this.menuBarMain.SuspendLayout();
+            this.toolbarMain.SuspendLayout();
             this.toolbarService.SuspendLayout();
             this.toolbarReport.SuspendLayout();
-            this.toolbarMain.SuspendLayout();
-            this.cmReport.SuspendLayout();
+            this.menuBarMain.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStripContainer1
@@ -233,9 +233,9 @@ namespace sqlnexus
             // 
             // toolStripContainer1.TopToolStripPanel
             // 
-            this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.toolbarReport);
-            this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.toolbarService);
             this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.toolbarMain);
+            this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.toolbarService);
+            this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.toolbarReport);
             this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.menuBarMain);
             // 
             // ssStatus
@@ -257,35 +257,6 @@ namespace sqlnexus
             this.ssProgress.MarqueeAnimationSpeed = 25;
             this.ssProgress.Name = "ssProgress";
             resources.ApplyResources(this.ssProgress, "ssProgress");
-            // 
-            // splClient
-            // 
-            this.splClient.BackColor = System.Drawing.SystemColors.Control;
-            this.splClient.DataBindings.Add(new System.Windows.Forms.Binding("Panel1Collapsed", global::sqlnexus.Properties.Settings.Default, "ShowReportNavigator", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            resources.ApplyResources(this.splClient, "splClient");
-            this.splClient.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-            this.splClient.Name = "splClient";
-            // 
-            // splClient.Panel1
-            // 
-            this.splClient.Panel1.Controls.Add(this.tableLayoutPanel1);
-            this.splClient.Panel1.Controls.Add(this.rvTemplate);
-            this.splClient.Panel1Collapsed = global::sqlnexus.Properties.Settings.Default.ShowReportNavigator;
-            // 
-            // splClient.Panel2
-            // 
-            this.splClient.Panel2.Controls.Add(this.tcReports);
-            // 
-            // tableLayoutPanel1
-            // 
-            this.tableLayoutPanel1.BackColor = System.Drawing.Color.LightSkyBlue;
-            resources.ApplyResources(this.tableLayoutPanel1, "tableLayoutPanel1");
-            this.tableLayoutPanel1.ContextMenuStrip = this.cmNav;
-            this.tableLayoutPanel1.Controls.Add(this.paTasks, 0, 2);
-            this.tableLayoutPanel1.Controls.Add(this.paData, 0, 2);
-            this.tableLayoutPanel1.Controls.Add(this.paReports, 0, 0);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel1_Paint);
             // 
             // cmNav
             // 
@@ -317,6 +288,114 @@ namespace sqlnexus
             resources.ApplyResources(this.hideReportNavigatorToolStripMenuItem, "hideReportNavigatorToolStripMenuItem");
             this.hideReportNavigatorToolStripMenuItem.Name = "hideReportNavigatorToolStripMenuItem";
             this.hideReportNavigatorToolStripMenuItem.Click += new System.EventHandler(this.tspUnpin_Click);
+            // 
+            // imGlyphs
+            // 
+            this.imGlyphs.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imGlyphs.ImageStream")));
+            this.imGlyphs.TransparentColor = System.Drawing.Color.Transparent;
+            this.imGlyphs.Images.SetKeyName(0, "report.bmp");
+            this.imGlyphs.Images.SetKeyName(1, "GRAPH07.ICO");
+            this.imGlyphs.Images.SetKeyName(2, "GRAPH08.ICO");
+            this.imGlyphs.Images.SetKeyName(3, "performance.ico");
+            this.imGlyphs.Images.SetKeyName(4, "clipboard.bmp");
+            this.imGlyphs.Images.SetKeyName(5, "Control_TabControl.bmp");
+            this.imGlyphs.Images.SetKeyName(6, "Control_WebBrowser.bmp");
+            this.imGlyphs.Images.SetKeyName(7, "VSProject_genericfile.bmp");
+            this.imGlyphs.Images.SetKeyName(8, "Webcontrol_Webpartzone.bmp");
+            this.imGlyphs.Images.SetKeyName(9, "CopyHS.bmp");
+            this.imGlyphs.Images.SetKeyName(10, "performance.ico");
+            // 
+            // cmReport
+            // 
+            this.cmReport.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.cmReport.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.reportParametersToolStripMenuItem,
+            this.closeToolStripMenuItem,
+            this.closeAllButThisToolStripMenuItem,
+            this.saveToClipboardToolStripMenuItem});
+            this.cmReport.Name = "contextMenuStrip1";
+            resources.ApplyResources(this.cmReport, "cmReport");
+            // 
+            // reportParametersToolStripMenuItem
+            // 
+            this.reportParametersToolStripMenuItem.Image = global::sqlnexus.Properties.Resources.Control_Form;
+            resources.ApplyResources(this.reportParametersToolStripMenuItem, "reportParametersToolStripMenuItem");
+            this.reportParametersToolStripMenuItem.Name = "reportParametersToolStripMenuItem";
+            this.reportParametersToolStripMenuItem.Click += new System.EventHandler(this.tspParams_Click);
+            // 
+            // closeToolStripMenuItem
+            // 
+            this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
+            resources.ApplyResources(this.closeToolStripMenuItem, "closeToolStripMenuItem");
+            this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem2_Click);
+            // 
+            // closeAllButThisToolStripMenuItem
+            // 
+            this.closeAllButThisToolStripMenuItem.Name = "closeAllButThisToolStripMenuItem";
+            resources.ApplyResources(this.closeAllButThisToolStripMenuItem, "closeAllButThisToolStripMenuItem");
+            this.closeAllButThisToolStripMenuItem.Click += new System.EventHandler(this.closeAllButCurrentToolStripMenuItem_Click);
+            // 
+            // saveToClipboardToolStripMenuItem
+            // 
+            this.saveToClipboardToolStripMenuItem.Image = global::sqlnexus.Properties.Resources.CopyHS1;
+            this.saveToClipboardToolStripMenuItem.Name = "saveToClipboardToolStripMenuItem";
+            resources.ApplyResources(this.saveToClipboardToolStripMenuItem, "saveToClipboardToolStripMenuItem");
+            this.saveToClipboardToolStripMenuItem.Click += new System.EventHandler(this.tspCopy_Click);
+            // 
+            // sd_Report
+            // 
+            this.sd_Report.DefaultExt = "JPEG";
+            resources.ApplyResources(this.sd_Report, "sd_Report");
+            // 
+            // scSQLDiag
+            // 
+            this.scSQLDiag.ServiceName = "diag$sqlnexus";
+            // 
+            // tiServicePoll
+            // 
+            this.tiServicePoll.Interval = 5000;
+            this.tiServicePoll.Tick += new System.EventHandler(this.tiServicePoll_Tick);
+            // 
+            // od_Report
+            // 
+            this.od_Report.DefaultExt = "RDL";
+            resources.ApplyResources(this.od_Report, "od_Report");
+            this.od_Report.Multiselect = true;
+            this.od_Report.ShowReadOnly = true;
+            // 
+            // tiReportAutoUpdate
+            // 
+            this.tiReportAutoUpdate.Interval = 60000;
+            this.tiReportAutoUpdate.Tick += new System.EventHandler(this.tiReportAutoUpdate_Tick);
+            // 
+            // splClient
+            // 
+            this.splClient.BackColor = System.Drawing.SystemColors.Control;
+            this.splClient.DataBindings.Add(new System.Windows.Forms.Binding("Panel1Collapsed", global::sqlnexus.Properties.Settings.Default, "ShowReportNavigator", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            resources.ApplyResources(this.splClient, "splClient");
+            this.splClient.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splClient.Name = "splClient";
+            // 
+            // splClient.Panel1
+            // 
+            this.splClient.Panel1.Controls.Add(this.tableLayoutPanel1);
+            this.splClient.Panel1.Controls.Add(this.rvTemplate);
+            this.splClient.Panel1Collapsed = global::sqlnexus.Properties.Settings.Default.ShowReportNavigator;
+            // 
+            // splClient.Panel2
+            // 
+            this.splClient.Panel2.Controls.Add(this.tcReports);
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.BackColor = System.Drawing.Color.LightSkyBlue;
+            resources.ApplyResources(this.tableLayoutPanel1, "tableLayoutPanel1");
+            this.tableLayoutPanel1.ContextMenuStrip = this.cmNav;
+            this.tableLayoutPanel1.Controls.Add(this.paTasks, 0, 2);
+            this.tableLayoutPanel1.Controls.Add(this.paData, 0, 2);
+            this.tableLayoutPanel1.Controls.Add(this.paReports, 0, 0);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel1_Paint);
             // 
             // paTasks
             // 
@@ -612,22 +691,6 @@ namespace sqlnexus
             this.tvReports.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvReports_AfterSelect);
             this.tvReports.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvReports_NodeMouseClick);
             // 
-            // imGlyphs
-            // 
-            this.imGlyphs.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imGlyphs.ImageStream")));
-            this.imGlyphs.TransparentColor = System.Drawing.Color.Transparent;
-            this.imGlyphs.Images.SetKeyName(0, "report.bmp");
-            this.imGlyphs.Images.SetKeyName(1, "GRAPH07.ICO");
-            this.imGlyphs.Images.SetKeyName(2, "GRAPH08.ICO");
-            this.imGlyphs.Images.SetKeyName(3, "performance.ico");
-            this.imGlyphs.Images.SetKeyName(4, "clipboard.bmp");
-            this.imGlyphs.Images.SetKeyName(5, "Control_TabControl.bmp");
-            this.imGlyphs.Images.SetKeyName(6, "Control_WebBrowser.bmp");
-            this.imGlyphs.Images.SetKeyName(7, "VSProject_genericfile.bmp");
-            this.imGlyphs.Images.SetKeyName(8, "Webcontrol_Webpartzone.bmp");
-            this.imGlyphs.Images.SetKeyName(9, "CopyHS.bmp");
-            this.imGlyphs.Images.SetKeyName(10, "performance.ico");
-            // 
             // paReportsHeader
             // 
             this.paReportsHeader.BackColor = System.Drawing.Color.DarkBlue;
@@ -683,6 +746,467 @@ namespace sqlnexus
             this.tcReports.SelectedIndex = 0;
             this.tcReports.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.tcReports.SelectedIndexChanged += new System.EventHandler(this.tcReports_SelectedIndexChanged_1);
+            // 
+            // toolbarMain
+            // 
+            this.toolbarMain.DataBindings.Add(new System.Windows.Forms.Binding("Visible", global::sqlnexus.Properties.Settings.Default, "ShowStandardToolbar", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            resources.ApplyResources(this.toolbarMain, "toolbarMain");
+            this.toolbarMain.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.toolbarMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tspUnpin,
+            this.tstbConnect,
+            this.tspPin,
+            this.tstbOpen,
+            this.toolStripSeparator8,
+            this.tstbRunAll,
+            this.toolStripSeparator9,
+            this.tspHelp});
+            this.toolbarMain.Name = "toolbarMain";
+            this.toolbarMain.Visible = global::sqlnexus.Properties.Settings.Default.ShowStandardToolbar;
+            this.toolbarMain.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.toolbarMain_ItemClicked);
+            // 
+            // tspUnpin
+            // 
+            this.tspUnpin.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tspUnpin.Image = global::sqlnexus.Properties.Resources.Collapse_large_left;
+            resources.ApplyResources(this.tspUnpin, "tspUnpin");
+            this.tspUnpin.Name = "tspUnpin";
+            this.tspUnpin.Click += new System.EventHandler(this.tspUnpin_Click);
+            // 
+            // tstbConnect
+            // 
+            this.tstbConnect.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tstbConnect.Image = global::sqlnexus.Properties.Resources.Webcontrol_Sqldatasrc;
+            resources.ApplyResources(this.tstbConnect, "tstbConnect");
+            this.tstbConnect.Name = "tstbConnect";
+            this.tstbConnect.Click += new System.EventHandler(this.tstbConnect_Click);
+            // 
+            // tspPin
+            // 
+            this.tspPin.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tspPin.Image = global::sqlnexus.Properties.Resources.Collapse_large_right;
+            resources.ApplyResources(this.tspPin, "tspPin");
+            this.tspPin.Name = "tspPin";
+            this.tspPin.Click += new System.EventHandler(this.tspPin_Click);
+            // 
+            // tstbOpen
+            // 
+            this.tstbOpen.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tstbOpen.Image = global::sqlnexus.Properties.Resources.openHS;
+            resources.ApplyResources(this.tstbOpen, "tstbOpen");
+            this.tstbOpen.Name = "tstbOpen";
+            this.tstbOpen.Click += new System.EventHandler(this.tstbOpen_Click);
+            // 
+            // toolStripSeparator8
+            // 
+            this.toolStripSeparator8.Name = "toolStripSeparator8";
+            resources.ApplyResources(this.toolStripSeparator8, "toolStripSeparator8");
+            // 
+            // tstbRunAll
+            // 
+            this.tstbRunAll.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tstbRunAll.Image = global::sqlnexus.Properties.Resources.Book_StackOfReportsHS;
+            resources.ApplyResources(this.tstbRunAll, "tstbRunAll");
+            this.tstbRunAll.Name = "tstbRunAll";
+            this.tstbRunAll.Click += new System.EventHandler(this.tstbRunAll_Click);
+            // 
+            // toolStripSeparator9
+            // 
+            this.toolStripSeparator9.Name = "toolStripSeparator9";
+            resources.ApplyResources(this.toolStripSeparator9, "toolStripSeparator9");
+            // 
+            // tspHelp
+            // 
+            this.tspHelp.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tspHelp.Image = global::sqlnexus.Properties.Resources.Help;
+            resources.ApplyResources(this.tspHelp, "tspHelp");
+            this.tspHelp.Name = "tspHelp";
+            this.tspHelp.Click += new System.EventHandler(this.indexToolStripMenuItem_Click);
+            // 
+            // toolbarService
+            // 
+            resources.ApplyResources(this.toolbarService, "toolbarService");
+            this.toolbarService.DataBindings.Add(new System.Windows.Forms.Binding("Visible", global::sqlnexus.Properties.Settings.Default, "ShowDataCollectionToolbar", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.toolbarService.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.toolbarService.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsbStart,
+            this.tsbStop,
+            this.tscbAutoUpdate});
+            this.toolbarService.Name = "toolbarService";
+            this.toolbarService.Visible = global::sqlnexus.Properties.Settings.Default.ShowDataCollectionToolbar;
+            // 
+            // tsbStart
+            // 
+            this.tsbStart.AutoToolTip = false;
+            resources.ApplyResources(this.tsbStart, "tsbStart");
+            this.tsbStart.Image = global::sqlnexus.Properties.Resources.Run;
+            this.tsbStart.Name = "tsbStart";
+            this.tsbStart.Click += new System.EventHandler(this.tsbStart_Click);
+            // 
+            // tsbStop
+            // 
+            this.tsbStop.AutoToolTip = false;
+            resources.ApplyResources(this.tsbStop, "tsbStop");
+            this.tsbStop.Image = global::sqlnexus.Properties.Resources.Stop;
+            this.tsbStop.Name = "tsbStop";
+            this.tsbStop.Click += new System.EventHandler(this.tsbStop_Click);
+            // 
+            // tscbAutoUpdate
+            // 
+            resources.ApplyResources(this.tscbAutoUpdate, "tscbAutoUpdate");
+            this.tscbAutoUpdate.Items.AddRange(new object[] {
+            resources.GetString("tscbAutoUpdate.Items"),
+            resources.GetString("tscbAutoUpdate.Items1"),
+            resources.GetString("tscbAutoUpdate.Items2"),
+            resources.GetString("tscbAutoUpdate.Items3"),
+            resources.GetString("tscbAutoUpdate.Items4"),
+            resources.GetString("tscbAutoUpdate.Items5"),
+            resources.GetString("tscbAutoUpdate.Items6"),
+            resources.GetString("tscbAutoUpdate.Items7")});
+            this.tscbAutoUpdate.Name = "tscbAutoUpdate";
+            this.tscbAutoUpdate.SelectedIndexChanged += new System.EventHandler(this.toolStripComboBox1_SelectedIndexChanged);
+            // 
+            // toolbarReport
+            // 
+            this.toolbarReport.DataBindings.Add(new System.Windows.Forms.Binding("Visible", global::sqlnexus.Properties.Settings.Default, "ShowReportToolbar", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            resources.ApplyResources(this.toolbarReport, "toolbarReport");
+            this.toolbarReport.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.toolbarReport.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsbDocMap,
+            this.toolStripSeparator1,
+            this.tsbFirst,
+            this.tsbPrev,
+            this.tstbPage,
+            this.tslaPages,
+            this.tsbNext,
+            this.tsbLast,
+            this.toolStripSeparator2,
+            this.tsbBack,
+            this.tsbStopAct,
+            this.tsbRefresh,
+            this.toolStripSeparator3,
+            this.tstbParams,
+            this.toolStripSeparator7,
+            this.tsbPrint,
+            this.tsbLayout,
+            this.tsbPageSetup,
+            this.toolStripSeparator6,
+            this.tstbCopy,
+            this.tsbExport,
+            this.tstbEmail,
+            this.toolStripSeparator4,
+            this.tscZoom,
+            this.tstbFind,
+            this.tsbFind,
+            this.toolStripSeparator5,
+            this.tsbFindNext,
+            this.tsLabelCurDB,
+            this.tscCurrentDatabase});
+            this.toolbarReport.Name = "toolbarReport";
+            this.toolbarReport.Visible = global::sqlnexus.Properties.Settings.Default.ShowReportToolbar;
+            this.toolbarReport.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.toolbarReport_ItemClicked);
+            // 
+            // tsbDocMap
+            // 
+            this.tsbDocMap.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            resources.ApplyResources(this.tsbDocMap, "tsbDocMap");
+            this.tsbDocMap.Image = global::sqlnexus.Properties.Resources.Control_TreeView;
+            this.tsbDocMap.Name = "tsbDocMap";
+            this.tsbDocMap.Click += new System.EventHandler(this.tsbDocMap_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            resources.ApplyResources(this.toolStripSeparator1, "toolStripSeparator1");
+            // 
+            // tsbFirst
+            // 
+            this.tsbFirst.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            resources.ApplyResources(this.tsbFirst, "tsbFirst");
+            this.tsbFirst.Image = global::sqlnexus.Properties.Resources.DataContainer_MoveFirst;
+            this.tsbFirst.Name = "tsbFirst";
+            this.tsbFirst.Click += new System.EventHandler(this.tsbFirst_Click);
+            // 
+            // tsbPrev
+            // 
+            this.tsbPrev.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            resources.ApplyResources(this.tsbPrev, "tsbPrev");
+            this.tsbPrev.Image = global::sqlnexus.Properties.Resources.DataContainer_MovePrevious;
+            this.tsbPrev.Name = "tsbPrev";
+            this.tsbPrev.Click += new System.EventHandler(this.tsbPrev_Click);
+            // 
+            // tstbPage
+            // 
+            this.tstbPage.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.tstbPage.Name = "tstbPage";
+            resources.ApplyResources(this.tstbPage, "tstbPage");
+            this.tstbPage.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tstbPage_KeyPress);
+            // 
+            // tslaPages
+            // 
+            this.tslaPages.Name = "tslaPages";
+            resources.ApplyResources(this.tslaPages, "tslaPages");
+            // 
+            // tsbNext
+            // 
+            this.tsbNext.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbNext.Image = global::sqlnexus.Properties.Resources.DataContainer_MoveNext;
+            resources.ApplyResources(this.tsbNext, "tsbNext");
+            this.tsbNext.Name = "tsbNext";
+            this.tsbNext.Click += new System.EventHandler(this.tsbNext_Click);
+            // 
+            // tsbLast
+            // 
+            this.tsbLast.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbLast.Image = global::sqlnexus.Properties.Resources.DataContainer_MoveLast;
+            resources.ApplyResources(this.tsbLast, "tsbLast");
+            this.tsbLast.Name = "tsbLast";
+            this.tsbLast.Click += new System.EventHandler(this.tsbLast_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            resources.ApplyResources(this.toolStripSeparator2, "toolStripSeparator2");
+            // 
+            // tsbBack
+            // 
+            this.tsbBack.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            resources.ApplyResources(this.tsbBack, "tsbBack");
+            this.tsbBack.Image = global::sqlnexus.Properties.Resources.GoToPrevious;
+            this.tsbBack.Name = "tsbBack";
+            this.tsbBack.Click += new System.EventHandler(this.tsbBack_Click);
+            // 
+            // tsbStopAct
+            // 
+            this.tsbStopAct.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            resources.ApplyResources(this.tsbStopAct, "tsbStopAct");
+            this.tsbStopAct.Image = global::sqlnexus.Properties.Resources.Critical;
+            this.tsbStopAct.Name = "tsbStopAct";
+            this.tsbStopAct.Click += new System.EventHandler(this.tsbStopAct_Click);
+            // 
+            // tsbRefresh
+            // 
+            this.tsbRefresh.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbRefresh.Image = global::sqlnexus.Properties.Resources.RefreshDocView;
+            resources.ApplyResources(this.tsbRefresh, "tsbRefresh");
+            this.tsbRefresh.Name = "tsbRefresh";
+            this.tsbRefresh.Click += new System.EventHandler(this.tsbRefresh_Click);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            resources.ApplyResources(this.toolStripSeparator3, "toolStripSeparator3");
+            // 
+            // tstbParams
+            // 
+            this.tstbParams.AutoToolTip = false;
+            this.tstbParams.Image = global::sqlnexus.Properties.Resources.Control_Form;
+            resources.ApplyResources(this.tstbParams, "tstbParams");
+            this.tstbParams.Name = "tstbParams";
+            this.tstbParams.Click += new System.EventHandler(this.tspParams_Click);
+            // 
+            // toolStripSeparator7
+            // 
+            this.toolStripSeparator7.Name = "toolStripSeparator7";
+            resources.ApplyResources(this.toolStripSeparator7, "toolStripSeparator7");
+            // 
+            // tsbPrint
+            // 
+            this.tsbPrint.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbPrint.Image = global::sqlnexus.Properties.Resources.PrintHS1;
+            resources.ApplyResources(this.tsbPrint, "tsbPrint");
+            this.tsbPrint.Name = "tsbPrint";
+            this.tsbPrint.Click += new System.EventHandler(this.tsbPrint_Click);
+            // 
+            // tsbLayout
+            // 
+            this.tsbLayout.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbLayout.Image = global::sqlnexus.Properties.Resources.pagelayout;
+            resources.ApplyResources(this.tsbLayout, "tsbLayout");
+            this.tsbLayout.Name = "tsbLayout";
+            this.tsbLayout.Click += new System.EventHandler(this.tsbLayout_Click);
+            // 
+            // tsbPageSetup
+            // 
+            this.tsbPageSetup.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbPageSetup.Image = global::sqlnexus.Properties.Resources.PageSetup;
+            resources.ApplyResources(this.tsbPageSetup, "tsbPageSetup");
+            this.tsbPageSetup.Name = "tsbPageSetup";
+            this.tsbPageSetup.Click += new System.EventHandler(this.tsbPageSetup_Click);
+            // 
+            // toolStripSeparator6
+            // 
+            this.toolStripSeparator6.Name = "toolStripSeparator6";
+            resources.ApplyResources(this.toolStripSeparator6, "toolStripSeparator6");
+            // 
+            // tstbCopy
+            // 
+            this.tstbCopy.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tstbCopy.Image = global::sqlnexus.Properties.Resources.CopyHS1;
+            resources.ApplyResources(this.tstbCopy, "tstbCopy");
+            this.tstbCopy.Name = "tstbCopy";
+            this.tstbCopy.Click += new System.EventHandler(this.tspCopy_Click);
+            // 
+            // tsbExport
+            // 
+            this.tsbExport.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbExport.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.excelToolStripMenuItem,
+            this.acrobatPDFFileToolStripMenuItem,
+            this.jPEGToolStripMenuItem,
+            this.bitmapToolStripMenuItem,
+            this.windowsEMFToolStripMenuItem,
+            this.GIFToolStripMenuItem,
+            this.PNGToolStripMenuItem,
+            this.TIFFToolStripMenuItem});
+            this.tsbExport.Image = global::sqlnexus.Properties.Resources.saveHS;
+            resources.ApplyResources(this.tsbExport, "tsbExport");
+            this.tsbExport.Name = "tsbExport";
+            // 
+            // excelToolStripMenuItem
+            // 
+            this.excelToolStripMenuItem.MergeIndex = 1;
+            this.excelToolStripMenuItem.Name = "excelToolStripMenuItem";
+            resources.ApplyResources(this.excelToolStripMenuItem, "excelToolStripMenuItem");
+            this.excelToolStripMenuItem.Click += new System.EventHandler(this.excelToolStripMenuItem_Click);
+            // 
+            // acrobatPDFFileToolStripMenuItem
+            // 
+            this.acrobatPDFFileToolStripMenuItem.MergeIndex = 2;
+            this.acrobatPDFFileToolStripMenuItem.Name = "acrobatPDFFileToolStripMenuItem";
+            resources.ApplyResources(this.acrobatPDFFileToolStripMenuItem, "acrobatPDFFileToolStripMenuItem");
+            this.acrobatPDFFileToolStripMenuItem.Click += new System.EventHandler(this.excelToolStripMenuItem_Click);
+            // 
+            // jPEGToolStripMenuItem
+            // 
+            this.jPEGToolStripMenuItem.MergeIndex = 3;
+            this.jPEGToolStripMenuItem.Name = "jPEGToolStripMenuItem";
+            resources.ApplyResources(this.jPEGToolStripMenuItem, "jPEGToolStripMenuItem");
+            this.jPEGToolStripMenuItem.Click += new System.EventHandler(this.excelToolStripMenuItem_Click);
+            // 
+            // bitmapToolStripMenuItem
+            // 
+            this.bitmapToolStripMenuItem.MergeIndex = 4;
+            this.bitmapToolStripMenuItem.Name = "bitmapToolStripMenuItem";
+            resources.ApplyResources(this.bitmapToolStripMenuItem, "bitmapToolStripMenuItem");
+            this.bitmapToolStripMenuItem.Click += new System.EventHandler(this.excelToolStripMenuItem_Click);
+            // 
+            // windowsEMFToolStripMenuItem
+            // 
+            this.windowsEMFToolStripMenuItem.MergeIndex = 5;
+            this.windowsEMFToolStripMenuItem.Name = "windowsEMFToolStripMenuItem";
+            resources.ApplyResources(this.windowsEMFToolStripMenuItem, "windowsEMFToolStripMenuItem");
+            this.windowsEMFToolStripMenuItem.Click += new System.EventHandler(this.excelToolStripMenuItem_Click);
+            // 
+            // GIFToolStripMenuItem
+            // 
+            this.GIFToolStripMenuItem.MergeIndex = 6;
+            this.GIFToolStripMenuItem.Name = "GIFToolStripMenuItem";
+            resources.ApplyResources(this.GIFToolStripMenuItem, "GIFToolStripMenuItem");
+            this.GIFToolStripMenuItem.Click += new System.EventHandler(this.excelToolStripMenuItem_Click);
+            // 
+            // PNGToolStripMenuItem
+            // 
+            this.PNGToolStripMenuItem.MergeIndex = 7;
+            this.PNGToolStripMenuItem.Name = "PNGToolStripMenuItem";
+            resources.ApplyResources(this.PNGToolStripMenuItem, "PNGToolStripMenuItem");
+            this.PNGToolStripMenuItem.Click += new System.EventHandler(this.excelToolStripMenuItem_Click);
+            // 
+            // TIFFToolStripMenuItem
+            // 
+            this.TIFFToolStripMenuItem.MergeIndex = 8;
+            this.TIFFToolStripMenuItem.Name = "TIFFToolStripMenuItem";
+            resources.ApplyResources(this.TIFFToolStripMenuItem, "TIFFToolStripMenuItem");
+            this.TIFFToolStripMenuItem.Click += new System.EventHandler(this.excelToolStripMenuItem_Click);
+            // 
+            // tstbEmail
+            // 
+            this.tstbEmail.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tstbEmail.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.emailReportToolStripMenuItem,
+            this.emailAllReportsToolStripMenuItem});
+            this.tstbEmail.Image = global::sqlnexus.Properties.Resources.eps_open_largelHS;
+            resources.ApplyResources(this.tstbEmail, "tstbEmail");
+            this.tstbEmail.Name = "tstbEmail";
+            // 
+            // emailReportToolStripMenuItem
+            // 
+            this.emailReportToolStripMenuItem.Name = "emailReportToolStripMenuItem";
+            resources.ApplyResources(this.emailReportToolStripMenuItem, "emailReportToolStripMenuItem");
+            this.emailReportToolStripMenuItem.Click += new System.EventHandler(this.mailCurrentReportToolStripMenuItem_Click);
+            // 
+            // emailAllReportsToolStripMenuItem
+            // 
+            this.emailAllReportsToolStripMenuItem.Name = "emailAllReportsToolStripMenuItem";
+            resources.ApplyResources(this.emailAllReportsToolStripMenuItem, "emailAllReportsToolStripMenuItem");
+            this.emailAllReportsToolStripMenuItem.Click += new System.EventHandler(this.mailAllReportsToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            resources.ApplyResources(this.toolStripSeparator4, "toolStripSeparator4");
+            // 
+            // tscZoom
+            // 
+            this.tscZoom.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.tscZoom.Items.AddRange(new object[] {
+            resources.GetString("tscZoom.Items"),
+            resources.GetString("tscZoom.Items1"),
+            resources.GetString("tscZoom.Items2"),
+            resources.GetString("tscZoom.Items3"),
+            resources.GetString("tscZoom.Items4"),
+            resources.GetString("tscZoom.Items5"),
+            resources.GetString("tscZoom.Items6"),
+            resources.GetString("tscZoom.Items7"),
+            resources.GetString("tscZoom.Items8")});
+            this.tscZoom.Name = "tscZoom";
+            resources.ApplyResources(this.tscZoom, "tscZoom");
+            this.tscZoom.SelectedIndexChanged += new System.EventHandler(this.tscZoom_SelectedIndexChanged);
+            // 
+            // tstbFind
+            // 
+            this.tstbFind.Margin = new System.Windows.Forms.Padding(10, 0, 1, 0);
+            this.tstbFind.Name = "tstbFind";
+            resources.ApplyResources(this.tstbFind, "tstbFind");
+            this.tstbFind.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tstbFind_KeyPress);
+            this.tstbFind.TextChanged += new System.EventHandler(this.tstbFind_TextChanged);
+            // 
+            // tsbFind
+            // 
+            this.tsbFind.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            resources.ApplyResources(this.tsbFind, "tsbFind");
+            this.tsbFind.Name = "tsbFind";
+            this.tsbFind.Click += new System.EventHandler(this.tsbFind_Click);
+            // 
+            // toolStripSeparator5
+            // 
+            this.toolStripSeparator5.Name = "toolStripSeparator5";
+            resources.ApplyResources(this.toolStripSeparator5, "toolStripSeparator5");
+            // 
+            // tsbFindNext
+            // 
+            this.tsbFindNext.AutoToolTip = false;
+            this.tsbFindNext.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            resources.ApplyResources(this.tsbFindNext, "tsbFindNext");
+            this.tsbFindNext.Name = "tsbFindNext";
+            this.tsbFindNext.Click += new System.EventHandler(this.tsbFindNext_Click);
+            // 
+            // tsLabelCurDB
+            // 
+            this.tsLabelCurDB.Name = "tsLabelCurDB";
+            resources.ApplyResources(this.tsLabelCurDB, "tsLabelCurDB");
+            // 
+            // tscCurrentDatabase
+            // 
+            this.tscCurrentDatabase.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.tscCurrentDatabase.Name = "tscCurrentDatabase";
+            resources.ApplyResources(this.tscCurrentDatabase, "tscCurrentDatabase");
+            this.tscCurrentDatabase.SelectedIndexChanged += new System.EventHandler(this.tscCurrentDatabase_SelectedIndexChanged);
+            this.tscCurrentDatabase.TextUpdate += new System.EventHandler(this.tscCurrentDatabase_TextUpdate);
+            this.tscCurrentDatabase.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tscCurrentDatabase_KeyPress);
+            this.tscCurrentDatabase.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tscCurrentDatabase_KeyUp);
+            this.tscCurrentDatabase.Click += new System.EventHandler(this.tscCurrentDatabase_Click);
+            this.tscCurrentDatabase.TextChanged += new System.EventHandler(this.tscCurrentDatabase_TextChanged);
             // 
             // menuBarMain
             // 
@@ -941,530 +1465,6 @@ namespace sqlnexus
             resources.ApplyResources(this.aboutToolStripMenuItem, "aboutToolStripMenuItem");
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
-            // toolbarService
-            // 
-            resources.ApplyResources(this.toolbarService, "toolbarService");
-            this.toolbarService.DataBindings.Add(new System.Windows.Forms.Binding("Visible", global::sqlnexus.Properties.Settings.Default, "ShowDataCollectionToolbar", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.toolbarService.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.toolbarService.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsbStart,
-            this.tsbStop,
-            this.tscbAutoUpdate});
-            this.toolbarService.Name = "toolbarService";
-            this.toolbarService.Visible = global::sqlnexus.Properties.Settings.Default.ShowDataCollectionToolbar;
-            // 
-            // tsbStart
-            // 
-            this.tsbStart.AutoToolTip = false;
-            resources.ApplyResources(this.tsbStart, "tsbStart");
-            this.tsbStart.Image = global::sqlnexus.Properties.Resources.Run;
-            this.tsbStart.Name = "tsbStart";
-            this.tsbStart.Click += new System.EventHandler(this.tsbStart_Click);
-            // 
-            // tsbStop
-            // 
-            this.tsbStop.AutoToolTip = false;
-            resources.ApplyResources(this.tsbStop, "tsbStop");
-            this.tsbStop.Image = global::sqlnexus.Properties.Resources.Stop;
-            this.tsbStop.Name = "tsbStop";
-            this.tsbStop.Click += new System.EventHandler(this.tsbStop_Click);
-            // 
-            // tscbAutoUpdate
-            // 
-            resources.ApplyResources(this.tscbAutoUpdate, "tscbAutoUpdate");
-            this.tscbAutoUpdate.Items.AddRange(new object[] {
-            resources.GetString("tscbAutoUpdate.Items"),
-            resources.GetString("tscbAutoUpdate.Items1"),
-            resources.GetString("tscbAutoUpdate.Items2"),
-            resources.GetString("tscbAutoUpdate.Items3"),
-            resources.GetString("tscbAutoUpdate.Items4"),
-            resources.GetString("tscbAutoUpdate.Items5"),
-            resources.GetString("tscbAutoUpdate.Items6"),
-            resources.GetString("tscbAutoUpdate.Items7")});
-            this.tscbAutoUpdate.Name = "tscbAutoUpdate";
-            this.tscbAutoUpdate.SelectedIndexChanged += new System.EventHandler(this.toolStripComboBox1_SelectedIndexChanged);
-            // 
-            // toolbarReport
-            // 
-            this.toolbarReport.DataBindings.Add(new System.Windows.Forms.Binding("Visible", global::sqlnexus.Properties.Settings.Default, "ShowReportToolbar", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            resources.ApplyResources(this.toolbarReport, "toolbarReport");
-            this.toolbarReport.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.toolbarReport.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsbDocMap,
-            this.toolStripSeparator1,
-            this.tsbFirst,
-            this.tsbPrev,
-            this.tstbPage,
-            this.tslaPages,
-            this.tsbNext,
-            this.tsbLast,
-            this.toolStripSeparator2,
-            this.tsbBack,
-            this.tsbStopAct,
-            this.tsbRefresh,
-            this.toolStripSeparator3,
-            this.tstbParams,
-            this.toolStripSeparator7,
-            this.tsbPrint,
-            this.tsbLayout,
-            this.tsbPageSetup,
-            this.toolStripSeparator6,
-            this.tstbCopy,
-            this.tsbExport,
-            this.tstbEmail,
-            this.toolStripSeparator4,
-            this.tscZoom,
-            this.tstbFind,
-            this.tsbFind,
-            this.toolStripSeparator5,
-            this.tsbFindNext,
-            this.tsLabelCurDB,
-            this.tscCurrentDatabase});
-            this.toolbarReport.Name = "toolbarReport";
-            this.toolbarReport.Visible = global::sqlnexus.Properties.Settings.Default.ShowReportToolbar;
-            this.toolbarReport.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.toolbarReport_ItemClicked);
-            // 
-            // tsbDocMap
-            // 
-            this.tsbDocMap.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            resources.ApplyResources(this.tsbDocMap, "tsbDocMap");
-            this.tsbDocMap.Image = global::sqlnexus.Properties.Resources.Control_TreeView;
-            this.tsbDocMap.Name = "tsbDocMap";
-            this.tsbDocMap.Click += new System.EventHandler(this.tsbDocMap_Click);
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            resources.ApplyResources(this.toolStripSeparator1, "toolStripSeparator1");
-            // 
-            // tsbFirst
-            // 
-            this.tsbFirst.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            resources.ApplyResources(this.tsbFirst, "tsbFirst");
-            this.tsbFirst.Image = global::sqlnexus.Properties.Resources.DataContainer_MoveFirst;
-            this.tsbFirst.Name = "tsbFirst";
-            this.tsbFirst.Click += new System.EventHandler(this.tsbFirst_Click);
-            // 
-            // tsbPrev
-            // 
-            this.tsbPrev.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            resources.ApplyResources(this.tsbPrev, "tsbPrev");
-            this.tsbPrev.Image = global::sqlnexus.Properties.Resources.DataContainer_MovePrevious;
-            this.tsbPrev.Name = "tsbPrev";
-            this.tsbPrev.Click += new System.EventHandler(this.tsbPrev_Click);
-            // 
-            // tstbPage
-            // 
-            this.tstbPage.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            resources.ApplyResources(this.tstbPage, "tstbPage");
-            this.tstbPage.Name = "tstbPage";
-            this.tstbPage.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tstbPage_KeyPress);
-            // 
-            // tslaPages
-            // 
-            this.tslaPages.Name = "tslaPages";
-            resources.ApplyResources(this.tslaPages, "tslaPages");
-            // 
-            // tsbNext
-            // 
-            this.tsbNext.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbNext.Image = global::sqlnexus.Properties.Resources.DataContainer_MoveNext;
-            resources.ApplyResources(this.tsbNext, "tsbNext");
-            this.tsbNext.Name = "tsbNext";
-            this.tsbNext.Click += new System.EventHandler(this.tsbNext_Click);
-            // 
-            // tsbLast
-            // 
-            this.tsbLast.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbLast.Image = global::sqlnexus.Properties.Resources.DataContainer_MoveLast;
-            resources.ApplyResources(this.tsbLast, "tsbLast");
-            this.tsbLast.Name = "tsbLast";
-            this.tsbLast.Click += new System.EventHandler(this.tsbLast_Click);
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            resources.ApplyResources(this.toolStripSeparator2, "toolStripSeparator2");
-            // 
-            // tsbBack
-            // 
-            this.tsbBack.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            resources.ApplyResources(this.tsbBack, "tsbBack");
-            this.tsbBack.Image = global::sqlnexus.Properties.Resources.GoToPrevious;
-            this.tsbBack.Name = "tsbBack";
-            this.tsbBack.Click += new System.EventHandler(this.tsbBack_Click);
-            // 
-            // tsbStopAct
-            // 
-            this.tsbStopAct.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            resources.ApplyResources(this.tsbStopAct, "tsbStopAct");
-            this.tsbStopAct.Image = global::sqlnexus.Properties.Resources.Critical;
-            this.tsbStopAct.Name = "tsbStopAct";
-            this.tsbStopAct.Click += new System.EventHandler(this.tsbStopAct_Click);
-            // 
-            // tsbRefresh
-            // 
-            this.tsbRefresh.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbRefresh.Image = global::sqlnexus.Properties.Resources.RefreshDocView;
-            resources.ApplyResources(this.tsbRefresh, "tsbRefresh");
-            this.tsbRefresh.Name = "tsbRefresh";
-            this.tsbRefresh.Click += new System.EventHandler(this.tsbRefresh_Click);
-            // 
-            // toolStripSeparator3
-            // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            resources.ApplyResources(this.toolStripSeparator3, "toolStripSeparator3");
-            // 
-            // tstbParams
-            // 
-            this.tstbParams.AutoToolTip = false;
-            this.tstbParams.Image = global::sqlnexus.Properties.Resources.Control_Form;
-            resources.ApplyResources(this.tstbParams, "tstbParams");
-            this.tstbParams.Name = "tstbParams";
-            this.tstbParams.Click += new System.EventHandler(this.tspParams_Click);
-            // 
-            // toolStripSeparator7
-            // 
-            this.toolStripSeparator7.Name = "toolStripSeparator7";
-            resources.ApplyResources(this.toolStripSeparator7, "toolStripSeparator7");
-            // 
-            // tsbPrint
-            // 
-            this.tsbPrint.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbPrint.Image = global::sqlnexus.Properties.Resources.PrintHS1;
-            resources.ApplyResources(this.tsbPrint, "tsbPrint");
-            this.tsbPrint.Name = "tsbPrint";
-            this.tsbPrint.Click += new System.EventHandler(this.tsbPrint_Click);
-            // 
-            // tsbLayout
-            // 
-            this.tsbLayout.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbLayout.Image = global::sqlnexus.Properties.Resources.pagelayout;
-            resources.ApplyResources(this.tsbLayout, "tsbLayout");
-            this.tsbLayout.Name = "tsbLayout";
-            this.tsbLayout.Click += new System.EventHandler(this.tsbLayout_Click);
-            // 
-            // tsbPageSetup
-            // 
-            this.tsbPageSetup.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbPageSetup.Image = global::sqlnexus.Properties.Resources.PageSetup;
-            resources.ApplyResources(this.tsbPageSetup, "tsbPageSetup");
-            this.tsbPageSetup.Name = "tsbPageSetup";
-            this.tsbPageSetup.Click += new System.EventHandler(this.tsbPageSetup_Click);
-            // 
-            // toolStripSeparator6
-            // 
-            this.toolStripSeparator6.Name = "toolStripSeparator6";
-            resources.ApplyResources(this.toolStripSeparator6, "toolStripSeparator6");
-            // 
-            // tstbCopy
-            // 
-            this.tstbCopy.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tstbCopy.Image = global::sqlnexus.Properties.Resources.CopyHS1;
-            resources.ApplyResources(this.tstbCopy, "tstbCopy");
-            this.tstbCopy.Name = "tstbCopy";
-            this.tstbCopy.Click += new System.EventHandler(this.tspCopy_Click);
-            // 
-            // tsbExport
-            // 
-            this.tsbExport.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbExport.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.excelToolStripMenuItem,
-            this.acrobatPDFFileToolStripMenuItem,
-            this.jPEGToolStripMenuItem,
-            this.bitmapToolStripMenuItem,
-            this.windowsEMFToolStripMenuItem,
-            this.GIFToolStripMenuItem,
-            this.PNGToolStripMenuItem,
-            this.TIFFToolStripMenuItem});
-            this.tsbExport.Image = global::sqlnexus.Properties.Resources.saveHS;
-            resources.ApplyResources(this.tsbExport, "tsbExport");
-            this.tsbExport.Name = "tsbExport";
-            // 
-            // excelToolStripMenuItem
-            // 
-            this.excelToolStripMenuItem.MergeIndex = 1;
-            this.excelToolStripMenuItem.Name = "excelToolStripMenuItem";
-            resources.ApplyResources(this.excelToolStripMenuItem, "excelToolStripMenuItem");
-            this.excelToolStripMenuItem.Click += new System.EventHandler(this.excelToolStripMenuItem_Click);
-            // 
-            // acrobatPDFFileToolStripMenuItem
-            // 
-            this.acrobatPDFFileToolStripMenuItem.MergeIndex = 2;
-            this.acrobatPDFFileToolStripMenuItem.Name = "acrobatPDFFileToolStripMenuItem";
-            resources.ApplyResources(this.acrobatPDFFileToolStripMenuItem, "acrobatPDFFileToolStripMenuItem");
-            this.acrobatPDFFileToolStripMenuItem.Click += new System.EventHandler(this.excelToolStripMenuItem_Click);
-            // 
-            // jPEGToolStripMenuItem
-            // 
-            this.jPEGToolStripMenuItem.MergeIndex = 3;
-            this.jPEGToolStripMenuItem.Name = "jPEGToolStripMenuItem";
-            resources.ApplyResources(this.jPEGToolStripMenuItem, "jPEGToolStripMenuItem");
-            this.jPEGToolStripMenuItem.Click += new System.EventHandler(this.excelToolStripMenuItem_Click);
-            // 
-            // bitmapToolStripMenuItem
-            // 
-            this.bitmapToolStripMenuItem.MergeIndex = 4;
-            this.bitmapToolStripMenuItem.Name = "bitmapToolStripMenuItem";
-            resources.ApplyResources(this.bitmapToolStripMenuItem, "bitmapToolStripMenuItem");
-            this.bitmapToolStripMenuItem.Click += new System.EventHandler(this.excelToolStripMenuItem_Click);
-            // 
-            // windowsEMFToolStripMenuItem
-            // 
-            this.windowsEMFToolStripMenuItem.MergeIndex = 5;
-            this.windowsEMFToolStripMenuItem.Name = "windowsEMFToolStripMenuItem";
-            resources.ApplyResources(this.windowsEMFToolStripMenuItem, "windowsEMFToolStripMenuItem");
-            this.windowsEMFToolStripMenuItem.Click += new System.EventHandler(this.excelToolStripMenuItem_Click);
-            // 
-            // GIFToolStripMenuItem
-            // 
-            this.GIFToolStripMenuItem.MergeIndex = 6;
-            this.GIFToolStripMenuItem.Name = "GIFToolStripMenuItem";
-            resources.ApplyResources(this.GIFToolStripMenuItem, "GIFToolStripMenuItem");
-            this.GIFToolStripMenuItem.Click += new System.EventHandler(this.excelToolStripMenuItem_Click);
-            // 
-            // PNGToolStripMenuItem
-            // 
-            this.PNGToolStripMenuItem.MergeIndex = 7;
-            this.PNGToolStripMenuItem.Name = "PNGToolStripMenuItem";
-            resources.ApplyResources(this.PNGToolStripMenuItem, "PNGToolStripMenuItem");
-            this.PNGToolStripMenuItem.Click += new System.EventHandler(this.excelToolStripMenuItem_Click);
-            // 
-            // TIFFToolStripMenuItem
-            // 
-            this.TIFFToolStripMenuItem.MergeIndex = 8;
-            this.TIFFToolStripMenuItem.Name = "TIFFToolStripMenuItem";
-            resources.ApplyResources(this.TIFFToolStripMenuItem, "TIFFToolStripMenuItem");
-            this.TIFFToolStripMenuItem.Click += new System.EventHandler(this.excelToolStripMenuItem_Click);
-            // 
-            // tstbEmail
-            // 
-            this.tstbEmail.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tstbEmail.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.emailReportToolStripMenuItem,
-            this.emailAllReportsToolStripMenuItem});
-            this.tstbEmail.Image = global::sqlnexus.Properties.Resources.eps_open_largelHS;
-            resources.ApplyResources(this.tstbEmail, "tstbEmail");
-            this.tstbEmail.Name = "tstbEmail";
-            // 
-            // emailReportToolStripMenuItem
-            // 
-            this.emailReportToolStripMenuItem.Name = "emailReportToolStripMenuItem";
-            resources.ApplyResources(this.emailReportToolStripMenuItem, "emailReportToolStripMenuItem");
-            this.emailReportToolStripMenuItem.Click += new System.EventHandler(this.mailCurrentReportToolStripMenuItem_Click);
-            // 
-            // emailAllReportsToolStripMenuItem
-            // 
-            this.emailAllReportsToolStripMenuItem.Name = "emailAllReportsToolStripMenuItem";
-            resources.ApplyResources(this.emailAllReportsToolStripMenuItem, "emailAllReportsToolStripMenuItem");
-            this.emailAllReportsToolStripMenuItem.Click += new System.EventHandler(this.mailAllReportsToolStripMenuItem_Click);
-            // 
-            // toolStripSeparator4
-            // 
-            this.toolStripSeparator4.Name = "toolStripSeparator4";
-            resources.ApplyResources(this.toolStripSeparator4, "toolStripSeparator4");
-            // 
-            // tscZoom
-            // 
-            this.tscZoom.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.tscZoom.Items.AddRange(new object[] {
-            resources.GetString("tscZoom.Items"),
-            resources.GetString("tscZoom.Items1"),
-            resources.GetString("tscZoom.Items2"),
-            resources.GetString("tscZoom.Items3"),
-            resources.GetString("tscZoom.Items4"),
-            resources.GetString("tscZoom.Items5"),
-            resources.GetString("tscZoom.Items6"),
-            resources.GetString("tscZoom.Items7"),
-            resources.GetString("tscZoom.Items8")});
-            this.tscZoom.Name = "tscZoom";
-            resources.ApplyResources(this.tscZoom, "tscZoom");
-            this.tscZoom.SelectedIndexChanged += new System.EventHandler(this.tscZoom_SelectedIndexChanged);
-            // 
-            // tstbFind
-            // 
-            resources.ApplyResources(this.tstbFind, "tstbFind");
-            this.tstbFind.Margin = new System.Windows.Forms.Padding(10, 0, 1, 0);
-            this.tstbFind.Name = "tstbFind";
-            this.tstbFind.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tstbFind_KeyPress);
-            this.tstbFind.TextChanged += new System.EventHandler(this.tstbFind_TextChanged);
-            // 
-            // tsbFind
-            // 
-            this.tsbFind.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            resources.ApplyResources(this.tsbFind, "tsbFind");
-            this.tsbFind.Name = "tsbFind";
-            this.tsbFind.Click += new System.EventHandler(this.tsbFind_Click);
-            // 
-            // toolStripSeparator5
-            // 
-            this.toolStripSeparator5.Name = "toolStripSeparator5";
-            resources.ApplyResources(this.toolStripSeparator5, "toolStripSeparator5");
-            // 
-            // tsbFindNext
-            // 
-            this.tsbFindNext.AutoToolTip = false;
-            this.tsbFindNext.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            resources.ApplyResources(this.tsbFindNext, "tsbFindNext");
-            this.tsbFindNext.Name = "tsbFindNext";
-            this.tsbFindNext.Click += new System.EventHandler(this.tsbFindNext_Click);
-            // 
-            // tsLabelCurDB
-            // 
-            this.tsLabelCurDB.Name = "tsLabelCurDB";
-            resources.ApplyResources(this.tsLabelCurDB, "tsLabelCurDB");
-            // 
-            // tscCurrentDatabase
-            // 
-            this.tscCurrentDatabase.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.tscCurrentDatabase.Name = "tscCurrentDatabase";
-            resources.ApplyResources(this.tscCurrentDatabase, "tscCurrentDatabase");
-            this.tscCurrentDatabase.SelectedIndexChanged += new System.EventHandler(this.tscCurrentDatabase_SelectedIndexChanged);
-            this.tscCurrentDatabase.TextUpdate += new System.EventHandler(this.tscCurrentDatabase_TextUpdate);
-            this.tscCurrentDatabase.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tscCurrentDatabase_KeyPress);
-            this.tscCurrentDatabase.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tscCurrentDatabase_KeyUp);
-            this.tscCurrentDatabase.Click += new System.EventHandler(this.tscCurrentDatabase_Click);
-            this.tscCurrentDatabase.TextChanged += new System.EventHandler(this.tscCurrentDatabase_TextChanged);
-            // 
-            // toolbarMain
-            // 
-            this.toolbarMain.DataBindings.Add(new System.Windows.Forms.Binding("Visible", global::sqlnexus.Properties.Settings.Default, "ShowStandardToolbar", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            resources.ApplyResources(this.toolbarMain, "toolbarMain");
-            this.toolbarMain.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.toolbarMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tspUnpin,
-            this.tstbConnect,
-            this.tspPin,
-            this.tstbOpen,
-            this.toolStripSeparator8,
-            this.tstbRunAll,
-            this.toolStripSeparator9,
-            this.tspHelp});
-            this.toolbarMain.Name = "toolbarMain";
-            this.toolbarMain.Visible = global::sqlnexus.Properties.Settings.Default.ShowStandardToolbar;
-            this.toolbarMain.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.toolbarMain_ItemClicked);
-            // 
-            // tspUnpin
-            // 
-            this.tspUnpin.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tspUnpin.Image = global::sqlnexus.Properties.Resources.Collapse_large_left;
-            resources.ApplyResources(this.tspUnpin, "tspUnpin");
-            this.tspUnpin.Name = "tspUnpin";
-            this.tspUnpin.Click += new System.EventHandler(this.tspUnpin_Click);
-            // 
-            // tstbConnect
-            // 
-            this.tstbConnect.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tstbConnect.Image = global::sqlnexus.Properties.Resources.Webcontrol_Sqldatasrc;
-            resources.ApplyResources(this.tstbConnect, "tstbConnect");
-            this.tstbConnect.Name = "tstbConnect";
-            this.tstbConnect.Click += new System.EventHandler(this.tstbConnect_Click);
-            // 
-            // tspPin
-            // 
-            this.tspPin.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tspPin.Image = global::sqlnexus.Properties.Resources.Collapse_large_right;
-            resources.ApplyResources(this.tspPin, "tspPin");
-            this.tspPin.Name = "tspPin";
-            this.tspPin.Click += new System.EventHandler(this.tspPin_Click);
-            // 
-            // tstbOpen
-            // 
-            this.tstbOpen.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tstbOpen.Image = global::sqlnexus.Properties.Resources.openHS;
-            resources.ApplyResources(this.tstbOpen, "tstbOpen");
-            this.tstbOpen.Name = "tstbOpen";
-            this.tstbOpen.Click += new System.EventHandler(this.tstbOpen_Click);
-            // 
-            // toolStripSeparator8
-            // 
-            this.toolStripSeparator8.Name = "toolStripSeparator8";
-            resources.ApplyResources(this.toolStripSeparator8, "toolStripSeparator8");
-            // 
-            // tstbRunAll
-            // 
-            this.tstbRunAll.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tstbRunAll.Image = global::sqlnexus.Properties.Resources.Book_StackOfReportsHS;
-            resources.ApplyResources(this.tstbRunAll, "tstbRunAll");
-            this.tstbRunAll.Name = "tstbRunAll";
-            this.tstbRunAll.Click += new System.EventHandler(this.tstbRunAll_Click);
-            // 
-            // toolStripSeparator9
-            // 
-            this.toolStripSeparator9.Name = "toolStripSeparator9";
-            resources.ApplyResources(this.toolStripSeparator9, "toolStripSeparator9");
-            // 
-            // tspHelp
-            // 
-            this.tspHelp.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tspHelp.Image = global::sqlnexus.Properties.Resources.Help;
-            resources.ApplyResources(this.tspHelp, "tspHelp");
-            this.tspHelp.Name = "tspHelp";
-            this.tspHelp.Click += new System.EventHandler(this.indexToolStripMenuItem_Click);
-            // 
-            // cmReport
-            // 
-            this.cmReport.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.cmReport.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.reportParametersToolStripMenuItem,
-            this.closeToolStripMenuItem,
-            this.closeAllButThisToolStripMenuItem,
-            this.saveToClipboardToolStripMenuItem});
-            this.cmReport.Name = "contextMenuStrip1";
-            resources.ApplyResources(this.cmReport, "cmReport");
-            // 
-            // reportParametersToolStripMenuItem
-            // 
-            this.reportParametersToolStripMenuItem.Image = global::sqlnexus.Properties.Resources.Control_Form;
-            resources.ApplyResources(this.reportParametersToolStripMenuItem, "reportParametersToolStripMenuItem");
-            this.reportParametersToolStripMenuItem.Name = "reportParametersToolStripMenuItem";
-            this.reportParametersToolStripMenuItem.Click += new System.EventHandler(this.tspParams_Click);
-            // 
-            // closeToolStripMenuItem
-            // 
-            this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            resources.ApplyResources(this.closeToolStripMenuItem, "closeToolStripMenuItem");
-            this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem2_Click);
-            // 
-            // closeAllButThisToolStripMenuItem
-            // 
-            this.closeAllButThisToolStripMenuItem.Name = "closeAllButThisToolStripMenuItem";
-            resources.ApplyResources(this.closeAllButThisToolStripMenuItem, "closeAllButThisToolStripMenuItem");
-            this.closeAllButThisToolStripMenuItem.Click += new System.EventHandler(this.closeAllButCurrentToolStripMenuItem_Click);
-            // 
-            // saveToClipboardToolStripMenuItem
-            // 
-            this.saveToClipboardToolStripMenuItem.Image = global::sqlnexus.Properties.Resources.CopyHS1;
-            this.saveToClipboardToolStripMenuItem.Name = "saveToClipboardToolStripMenuItem";
-            resources.ApplyResources(this.saveToClipboardToolStripMenuItem, "saveToClipboardToolStripMenuItem");
-            this.saveToClipboardToolStripMenuItem.Click += new System.EventHandler(this.tspCopy_Click);
-            // 
-            // sd_Report
-            // 
-            this.sd_Report.DefaultExt = "JPEG";
-            resources.ApplyResources(this.sd_Report, "sd_Report");
-            // 
-            // scSQLDiag
-            // 
-            this.scSQLDiag.ServiceName = "diag$sqlnexus";
-            // 
-            // tiServicePoll
-            // 
-            this.tiServicePoll.Interval = 5000;
-            this.tiServicePoll.Tick += new System.EventHandler(this.tiServicePoll_Tick);
-            // 
-            // od_Report
-            // 
-            this.od_Report.DefaultExt = "RDL";
-            resources.ApplyResources(this.od_Report, "od_Report");
-            this.od_Report.Multiselect = true;
-            this.od_Report.ShowReadOnly = true;
-            // 
-            // tiReportAutoUpdate
-            // 
-            this.tiReportAutoUpdate.Interval = 60000;
-            this.tiReportAutoUpdate.Tick += new System.EventHandler(this.tiReportAutoUpdate_Tick);
-            // 
             // fmNexus
             // 
             resources.ApplyResources(this, "$this");
@@ -1487,13 +1487,14 @@ namespace sqlnexus
             this.toolStripContainer1.PerformLayout();
             this.ssStatus.ResumeLayout(false);
             this.ssStatus.PerformLayout();
+            this.cmNav.ResumeLayout(false);
+            this.cmReport.ResumeLayout(false);
             this.splClient.Panel1.ResumeLayout(false);
             this.splClient.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splClient)).EndInit();
             this.splClient.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
-            this.cmNav.ResumeLayout(false);
             this.paTasks.ResumeLayout(false);
             this.paTasksBody.ResumeLayout(false);
             this.paTasksBody.PerformLayout();
@@ -1522,15 +1523,14 @@ namespace sqlnexus
             this.paReportsHeader.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbExpandReports)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbCollapseReports)).EndInit();
-            this.menuBarMain.ResumeLayout(false);
-            this.menuBarMain.PerformLayout();
+            this.toolbarMain.ResumeLayout(false);
+            this.toolbarMain.PerformLayout();
             this.toolbarService.ResumeLayout(false);
             this.toolbarService.PerformLayout();
             this.toolbarReport.ResumeLayout(false);
             this.toolbarReport.PerformLayout();
-            this.toolbarMain.ResumeLayout(false);
-            this.toolbarMain.PerformLayout();
-            this.cmReport.ResumeLayout(false);
+            this.menuBarMain.ResumeLayout(false);
+            this.menuBarMain.PerformLayout();
             this.ResumeLayout(false);
 
         }
