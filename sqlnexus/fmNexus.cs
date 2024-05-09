@@ -28,6 +28,7 @@ using System.Web;
 using System.Threading;
 using System.Security;
 using System.Security.Permissions;
+using System.Linq;
 
 //using Microsoft.SqlServer.Management.Smo.RegSvrEnum;
 
@@ -1392,16 +1393,14 @@ namespace sqlnexus
         public void SelectLoadReport(string report, bool master, ReportParameter[] _parameters)
         {
             //Theme is a standard parameter that has to exist in all reports to make sure we comply with accessiblity review 
-            //if the report does not contain the parameter "Theme" it will fail to load.
-            ReportParameter paramTheme = new ReportParameter("Theme", Properties.Settings.Default.Theme);
+            //if the report does not contain the parameter "ContrastTheme" it will fail to load.
+            ReportParameter paramTheme = new ReportParameter("ContrastTheme", Properties.Settings.Default.Theme);
             ReportParameter[] parameters = new ReportParameter[1];
             parameters[0] = paramTheme;
 
             if (_parameters != null)
             {
-                _parameters.CopyTo(parameters,1);
-                parameters[parameters.Length] = paramTheme;
-
+                ((ReportParameter[])_parameters.Where(x => x.Name != "ContrastTheme")).CopyTo(parameters,1);
             }
 
             NexusInfo nInfo = new NexusInfo(Globals.credentialMgr.ConnectionString, this);
@@ -1605,10 +1604,13 @@ namespace sqlnexus
                 return;
             }
 
-            ReportParameter[] rparameters = new ReportParameter[nodes.Count];
-            int i = 0;
+            //Manually adding ContrastTheme since this is needed for Accessiblity and TrIP reviews
+            ReportParameter[] rparameters = new ReportParameter[nodes.Count+1];
+            rparameters[0] = new ReportParameter("ContrastTheme", Properties.Settings.Default.Theme);
+            int i = 1;
             foreach (XmlNode node in nodes)
             {
+                
                 // Get the name of the DataSet associated with this param default
                 XmlNode dsetnode = node.SelectSingleNode("rds:DefaultValue/rds:DataSetReference/rds:DataSetName", nsmgr);
                 
@@ -1623,8 +1625,9 @@ namespace sqlnexus
                     SqlDataAdapter da = new SqlDataAdapter(fmNexus.GetQueryText(report.ReportPath, report.GetParameters(), dsetnode.InnerText), Globals.credentialMgr.ConnectionString);
                     da.Fill(dt);
                     // Add a new param to our param array
-                    if (dt.Rows.Count > 0)
-                        rparameters[i++] = new ReportParameter(node.Attributes["Name"].Value, dt.Rows[0][vfnode.InnerText].ToString());
+                    String paramName = node.Attributes["Name"].Value;
+                    if ((dt.Rows.Count > 0) && (!paramName.Equals("ContrastTheme")))
+                        rparameters[i++] = new ReportParameter(paramName, dt.Rows[0][vfnode.InnerText].ToString());
                 }
             }
             if (0!=i)
@@ -1744,6 +1747,11 @@ namespace sqlnexus
                         FixupDataSources(filename, reportpath, report.DataSources, report.GetParameters());
                         return false;
                     }
+                }
+                catch (LocalProcessingException lex)
+                {
+                    MessageBox.Show(report.DisplayName + " Failed to load report : \r\n" + lex.InnerException.Message);
+                    return false;
                 }
                 catch (Exception ex)
                 {
@@ -2935,6 +2943,10 @@ namespace sqlnexus
                     LogMessage("rvTemplate_Drillthrough - Drillthrough", MessageOptions.Silent);
                     e.Cancel = DrillThrough((LocalReport)e.Report, e.ReportPath);
                     LogMessage("rvTemplate_Drillthrough - Done with Drillthrough", MessageOptions.Silent);
+                }
+                catch (LocalProcessingException lex)
+                {
+                    MessageBox.Show(e.Report.DisplayName + " Failed to load report : \r\n" + lex.InnerException.Message);
                 }
                 catch (Exception ex)
                 {

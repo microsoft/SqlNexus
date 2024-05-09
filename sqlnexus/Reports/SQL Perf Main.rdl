@@ -2053,7 +2053,7 @@ END;</CommandText>
       </DefaultValue>
       <Prompt>Show all reports even data is not available</Prompt>
     </ReportParameter>
-	<ReportParameter Name="Theme">
+	<ReportParameter Name="ContrastTheme">
       <DataType>String</DataType>
       <DefaultValue>
         <Values>
@@ -2101,7 +2101,7 @@ END;</CommandText>
 		<CellDefinition>
           <ColumnIndex>1</ColumnIndex>
           <RowIndex>2</RowIndex>
-          <ParameterName>Theme</ParameterName>
+          <ParameterName>ContrastTheme</ParameterName>
         </CellDefinition>
       </CellDefinitions>
     </GridLayoutDefinition>
