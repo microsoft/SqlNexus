@@ -47,20 +47,20 @@ namespace sqlnexus
             // lblServerName
             // 
             this.lblServerName.AutoSize = true;
-            this.lblServerName.Location = new System.Drawing.Point(112, 72);
+            this.lblServerName.Location = new System.Drawing.Point(100, 58);
             this.lblServerName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblServerName.Name = "lblServerName";
-            this.lblServerName.Size = new System.Drawing.Size(101, 20);
+            this.lblServerName.Size = new System.Drawing.Size(87, 16);
             this.lblServerName.TabIndex = 100;
             this.lblServerName.Text = "Server Name";
             // 
             // lblAuthentication
             // 
             this.lblAuthentication.AutoSize = true;
-            this.lblAuthentication.Location = new System.Drawing.Point(112, 122);
+            this.lblAuthentication.Location = new System.Drawing.Point(100, 98);
             this.lblAuthentication.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblAuthentication.Name = "lblAuthentication";
-            this.lblAuthentication.Size = new System.Drawing.Size(112, 20);
+            this.lblAuthentication.Size = new System.Drawing.Size(90, 16);
             this.lblAuthentication.TabIndex = 200;
             this.lblAuthentication.Text = "Authentication";
             // 
@@ -68,10 +68,10 @@ namespace sqlnexus
             // 
             this.lblUserName.AutoSize = true;
             this.lblUserName.Enabled = false;
-            this.lblUserName.Location = new System.Drawing.Point(165, 172);
+            this.lblUserName.Location = new System.Drawing.Point(147, 138);
             this.lblUserName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblUserName.Name = "lblUserName";
-            this.lblUserName.Size = new System.Drawing.Size(89, 20);
+            this.lblUserName.Size = new System.Drawing.Size(76, 16);
             this.lblUserName.TabIndex = 300;
             this.lblUserName.Text = "User Name";
             // 
@@ -79,19 +79,19 @@ namespace sqlnexus
             // 
             this.lblPassword.AutoSize = true;
             this.lblPassword.Enabled = false;
-            this.lblPassword.Location = new System.Drawing.Point(165, 215);
+            this.lblPassword.Location = new System.Drawing.Point(147, 172);
             this.lblPassword.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblPassword.Name = "lblPassword";
-            this.lblPassword.Size = new System.Drawing.Size(78, 20);
+            this.lblPassword.Size = new System.Drawing.Size(67, 16);
             this.lblPassword.TabIndex = 400;
             this.lblPassword.Text = "Password";
             // 
             // txtServerName
             // 
-            this.txtServerName.Location = new System.Drawing.Point(260, 61);
-            this.txtServerName.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtServerName.Location = new System.Drawing.Point(231, 49);
+            this.txtServerName.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.txtServerName.Name = "txtServerName";
-            this.txtServerName.Size = new System.Drawing.Size(247, 26);
+            this.txtServerName.Size = new System.Drawing.Size(220, 22);
             this.txtServerName.TabIndex = 0;
             // 
             // cmbAuthentication
@@ -100,10 +100,10 @@ namespace sqlnexus
             this.cmbAuthentication.Items.AddRange(new object[] {
             "Windows Authentication",
             "SQL Server Authentication"});
-            this.cmbAuthentication.Location = new System.Drawing.Point(260, 111);
-            this.cmbAuthentication.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.cmbAuthentication.Location = new System.Drawing.Point(231, 89);
+            this.cmbAuthentication.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.cmbAuthentication.Name = "cmbAuthentication";
-            this.cmbAuthentication.Size = new System.Drawing.Size(247, 28);
+            this.cmbAuthentication.Size = new System.Drawing.Size(220, 24);
             this.cmbAuthentication.TabIndex = 1;
             this.cmbAuthentication.Text = "Windows Authentication";
             this.cmbAuthentication.SelectedIndexChanged += new System.EventHandler(this.cmbAuthentication_SelectedIndexChanged);
@@ -111,29 +111,29 @@ namespace sqlnexus
             // txtUserName
             // 
             this.txtUserName.Enabled = false;
-            this.txtUserName.Location = new System.Drawing.Point(260, 161);
-            this.txtUserName.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtUserName.Location = new System.Drawing.Point(231, 129);
+            this.txtUserName.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.txtUserName.Name = "txtUserName";
-            this.txtUserName.Size = new System.Drawing.Size(247, 26);
+            this.txtUserName.Size = new System.Drawing.Size(220, 22);
             this.txtUserName.TabIndex = 2;
             // 
             // txtPassword
             // 
             this.txtPassword.Enabled = false;
-            this.txtPassword.Location = new System.Drawing.Point(260, 211);
-            this.txtPassword.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.txtPassword.Location = new System.Drawing.Point(231, 169);
+            this.txtPassword.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.PasswordChar = '*';
-            this.txtPassword.Size = new System.Drawing.Size(247, 26);
+            this.txtPassword.Size = new System.Drawing.Size(220, 22);
             this.txtPassword.TabIndex = 3;
             // 
             // btnConnect
             // 
             this.btnConnect.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnConnect.Location = new System.Drawing.Point(117, 351);
-            this.btnConnect.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnConnect.Location = new System.Drawing.Point(104, 281);
+            this.btnConnect.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnConnect.Name = "btnConnect";
-            this.btnConnect.Size = new System.Drawing.Size(170, 35);
+            this.btnConnect.Size = new System.Drawing.Size(151, 28);
             this.btnConnect.TabIndex = 200;
             this.btnConnect.Text = "Connect";
             this.btnConnect.UseVisualStyleBackColor = true;
@@ -142,10 +142,10 @@ namespace sqlnexus
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(387, 351);
-            this.btnCancel.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnCancel.Location = new System.Drawing.Point(344, 281);
+            this.btnCancel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(170, 35);
+            this.btnCancel.Size = new System.Drawing.Size(151, 28);
             this.btnCancel.TabIndex = 201;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
@@ -154,10 +154,9 @@ namespace sqlnexus
             // chkTrustServerCertificate
             // 
             this.chkTrustServerCertificate.AutoSize = true;
-            this.chkTrustServerCertificate.Location = new System.Drawing.Point(400, 318);
-            this.chkTrustServerCertificate.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.chkTrustServerCertificate.Location = new System.Drawing.Point(356, 254);
             this.chkTrustServerCertificate.Name = "chkTrustServerCertificate";
-            this.chkTrustServerCertificate.Size = new System.Drawing.Size(197, 24);
+            this.chkTrustServerCertificate.Size = new System.Drawing.Size(164, 20);
             this.chkTrustServerCertificate.TabIndex = 6;
             this.chkTrustServerCertificate.Text = "Trust Server Certificate";
             this.chkTrustServerCertificate.UseVisualStyleBackColor = true;
@@ -167,10 +166,9 @@ namespace sqlnexus
             this.chkEncryptConnection.AutoSize = true;
             this.chkEncryptConnection.Checked = true;
             this.chkEncryptConnection.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkEncryptConnection.Location = new System.Drawing.Point(116, 318);
-            this.chkEncryptConnection.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.chkEncryptConnection.Location = new System.Drawing.Point(103, 254);
             this.chkEncryptConnection.Name = "chkEncryptConnection";
-            this.chkEncryptConnection.Size = new System.Drawing.Size(174, 24);
+            this.chkEncryptConnection.Size = new System.Drawing.Size(144, 20);
             this.chkEncryptConnection.TabIndex = 5;
             this.chkEncryptConnection.Text = "Encrypt Connection";
             this.chkEncryptConnection.UseVisualStyleBackColor = true;
@@ -181,32 +179,31 @@ namespace sqlnexus
             this.cmbTheme.AccessibleDescription = "Pick your layout theme";
             this.cmbTheme.FormattingEnabled = true;
             this.cmbTheme.Items.AddRange(new object[] {
-            "Default",
+            "None",
             "Aquatic",
             "Desert"});
-            this.cmbTheme.Location = new System.Drawing.Point(260, 266);
-            this.cmbTheme.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.cmbTheme.Location = new System.Drawing.Point(231, 213);
             this.cmbTheme.Name = "cmbTheme";
-            this.cmbTheme.Size = new System.Drawing.Size(247, 28);
+            this.cmbTheme.Size = new System.Drawing.Size(220, 24);
             this.cmbTheme.TabIndex = 4;
             this.cmbTheme.SelectedIndexChanged += new System.EventHandler(this.cmbTheme_SelectedIndexChanged);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(140, 271);
+            this.label1.Location = new System.Drawing.Point(124, 217);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(58, 20);
+            this.label1.Size = new System.Drawing.Size(50, 16);
             this.label1.TabIndex = 401;
             this.label1.Text = "Theme";
             // 
             // fmLoginEx
             // 
             this.AcceptButton = this.btnConnect;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(630, 414);
+            this.ClientSize = new System.Drawing.Size(560, 331);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.cmbTheme);
             this.Controls.Add(this.chkEncryptConnection);
@@ -221,7 +218,7 @@ namespace sqlnexus
             this.Controls.Add(this.lblUserName);
             this.Controls.Add(this.lblAuthentication);
             this.Controls.Add(this.lblServerName);
-            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "fmLoginEx";
             this.Text = "Connect to Server";
             this.Load += new System.EventHandler(this.fmLoginEx_Load);
