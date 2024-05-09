@@ -71,46 +71,48 @@ namespace sqlnexus
             this.paTop.Controls.Add(this.laPath);
             this.paTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.paTop.Location = new System.Drawing.Point(0, 0);
+            this.paTop.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.paTop.Name = "paTop";
-            this.paTop.Size = new System.Drawing.Size(457, 86);
+            this.paTop.Size = new System.Drawing.Size(686, 131);
             this.paTop.TabIndex = 0;
             this.paTop.Paint += new System.Windows.Forms.PaintEventHandler(this.paTop_Paint);
             // 
             // cmOptions
             // 
+            this.cmOptions.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.cmOptions.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsiImporters,
             this.tsiDropDBBeforeImporting,
             this.tsiSaveOptions,
             this.tsiUseDefaultOptions});
             this.cmOptions.Name = "cmOptions";
-            this.cmOptions.Size = new System.Drawing.Size(255, 92);
+            this.cmOptions.Size = new System.Drawing.Size(358, 132);
             this.cmOptions.Opening += new System.ComponentModel.CancelEventHandler(this.cmOptions_Opening);
             // 
             // tsiImporters
             // 
             this.tsiImporters.Name = "tsiImporters";
-            this.tsiImporters.Size = new System.Drawing.Size(254, 22);
+            this.tsiImporters.Size = new System.Drawing.Size(357, 32);
             this.tsiImporters.Text = "Importers";
             // 
             // tsiDropDBBeforeImporting
             // 
             this.tsiDropDBBeforeImporting.CheckOnClick = true;
             this.tsiDropDBBeforeImporting.Name = "tsiDropDBBeforeImporting";
-            this.tsiDropDBBeforeImporting.Size = new System.Drawing.Size(254, 22);
+            this.tsiDropDBBeforeImporting.Size = new System.Drawing.Size(357, 32);
             this.tsiDropDBBeforeImporting.Text = "Drop Current DB Before Importing";
             // 
             // tsiSaveOptions
             // 
             this.tsiSaveOptions.CheckOnClick = true;
             this.tsiSaveOptions.Name = "tsiSaveOptions";
-            this.tsiSaveOptions.Size = new System.Drawing.Size(254, 22);
+            this.tsiSaveOptions.Size = new System.Drawing.Size(357, 32);
             this.tsiSaveOptions.Text = "Save My Options";
             // 
             // tsiUseDefaultOptions
             // 
             this.tsiUseDefaultOptions.Name = "tsiUseDefaultOptions";
-            this.tsiUseDefaultOptions.Size = new System.Drawing.Size(254, 22);
+            this.tsiUseDefaultOptions.Size = new System.Drawing.Size(357, 32);
             this.tsiUseDefaultOptions.Text = "Restore Default Options";
             // 
             // btnClose
@@ -120,9 +122,10 @@ namespace sqlnexus
             this.btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnClose.Image = global::sqlnexus.Properties.Resources.CriticalErrorImport;
             this.btnClose.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnClose.Location = new System.Drawing.Point(376, 56);
+            this.btnClose.Location = new System.Drawing.Point(566, 86);
+            this.btnClose.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(75, 25);
+            this.btnClose.Size = new System.Drawing.Size(112, 38);
             this.btnClose.TabIndex = 6;
             this.btnClose.Text = " Close";
             this.btnClose.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -135,9 +138,10 @@ namespace sqlnexus
             this.cbPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cbPath.FormattingEnabled = true;
-            this.cbPath.Location = new System.Drawing.Point(115, 32);
+            this.cbPath.Location = new System.Drawing.Point(172, 49);
+            this.cbPath.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cbPath.Name = "cbPath";
-            this.cbPath.Size = new System.Drawing.Size(302, 21);
+            this.cbPath.Size = new System.Drawing.Size(453, 28);
             this.cbPath.TabIndex = 1;
             this.cbPath.SelectedIndexChanged += new System.EventHandler(this.tbPath_TextChanged);
             this.cbPath.TextChanged += new System.EventHandler(this.tbPath_TextChanged);
@@ -145,9 +149,10 @@ namespace sqlnexus
             // llOptions
             // 
             this.llOptions.AutoSize = true;
-            this.llOptions.Location = new System.Drawing.Point(9, 66);
+            this.llOptions.Location = new System.Drawing.Point(14, 102);
+            this.llOptions.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.llOptions.Name = "llOptions";
-            this.llOptions.Size = new System.Drawing.Size(43, 13);
+            this.llOptions.Size = new System.Drawing.Size(64, 20);
             this.llOptions.TabIndex = 3;
             this.llOptions.TabStop = true;
             this.llOptions.Text = "Options";
@@ -159,9 +164,10 @@ namespace sqlnexus
             this.btPath.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btPath.Image = global::sqlnexus.Properties.Resources.openHS;
             this.btPath.ImageAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.btPath.Location = new System.Drawing.Point(419, 32);
+            this.btPath.Location = new System.Drawing.Point(630, 49);
+            this.btPath.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btPath.Name = "btPath";
-            this.btPath.Size = new System.Drawing.Size(25, 21);
+            this.btPath.Size = new System.Drawing.Size(38, 32);
             this.btPath.TabIndex = 2;
             this.btPath.UseVisualStyleBackColor = true;
             this.btPath.Click += new System.EventHandler(this.tsbPath_Click);
@@ -174,9 +180,10 @@ namespace sqlnexus
             this.tsbGo.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.tsbGo.Image = global::sqlnexus.Properties.Resources.PlayHS1;
             this.tsbGo.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.tsbGo.Location = new System.Drawing.Point(295, 56);
+            this.tsbGo.Location = new System.Drawing.Point(444, 86);
+            this.tsbGo.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tsbGo.Name = "tsbGo";
-            this.tsbGo.Size = new System.Drawing.Size(75, 25);
+            this.tsbGo.Size = new System.Drawing.Size(112, 38);
             this.tsbGo.TabIndex = 4;
             this.tsbGo.Text = "Import";
             this.tsbGo.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -186,18 +193,20 @@ namespace sqlnexus
             // laInstructions
             // 
             this.laInstructions.AutoSize = true;
-            this.laInstructions.Location = new System.Drawing.Point(12, 6);
+            this.laInstructions.Location = new System.Drawing.Point(18, 9);
+            this.laInstructions.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.laInstructions.Name = "laInstructions";
-            this.laInstructions.Size = new System.Drawing.Size(290, 13);
+            this.laInstructions.Size = new System.Drawing.Size(433, 20);
             this.laInstructions.TabIndex = 5;
             this.laInstructions.Text = "Please supply the source path for the files you wish to import";
             // 
             // pictureBox1
             // 
             this.pictureBox1.Image = global::sqlnexus.Properties.Resources.otheroptions;
-            this.pictureBox1.Location = new System.Drawing.Point(9, 26);
+            this.pictureBox1.Location = new System.Drawing.Point(14, 40);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(32, 32);
+            this.pictureBox1.Size = new System.Drawing.Size(48, 48);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.pictureBox1.TabIndex = 2;
             this.pictureBox1.TabStop = false;
@@ -205,9 +214,10 @@ namespace sqlnexus
             // laPath
             // 
             this.laPath.AutoSize = true;
-            this.laPath.Location = new System.Drawing.Point(47, 36);
+            this.laPath.Location = new System.Drawing.Point(70, 55);
+            this.laPath.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.laPath.Name = "laPath";
-            this.laPath.Size = new System.Drawing.Size(68, 13);
+            this.laPath.Size = new System.Drawing.Size(100, 20);
             this.laPath.TabIndex = 0;
             this.laPath.Text = "Source path:";
             // 
@@ -222,11 +232,12 @@ namespace sqlnexus
             this.tlpFiles.Controls.Add(this.progressBar1, 1, 0);
             this.tlpFiles.Controls.Add(this.linkLabel1, 2, 0);
             this.tlpFiles.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpFiles.Location = new System.Drawing.Point(0, 86);
+            this.tlpFiles.Location = new System.Drawing.Point(0, 131);
+            this.tlpFiles.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tlpFiles.Name = "tlpFiles";
             this.tlpFiles.RowCount = 1;
             this.tlpFiles.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tlpFiles.Size = new System.Drawing.Size(457, 0);
+            this.tlpFiles.Size = new System.Drawing.Size(686, 1);
             this.tlpFiles.TabIndex = 1;
             this.tlpFiles.Visible = false;
             // 
@@ -236,16 +247,17 @@ namespace sqlnexus
             this.progressBar1.Location = new System.Drawing.Point(0, 0);
             this.progressBar1.Margin = new System.Windows.Forms.Padding(0);
             this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(100, 13);
+            this.progressBar1.Size = new System.Drawing.Size(150, 20);
             this.progressBar1.TabIndex = 0;
             this.progressBar1.Visible = false;
             // 
             // linkLabel1
             // 
             this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(103, 0);
+            this.linkLabel1.Location = new System.Drawing.Point(154, 0);
+            this.linkLabel1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(55, 13);
+            this.linkLabel1.Size = new System.Drawing.Size(80, 20);
             this.linkLabel1.TabIndex = 1;
             this.linkLabel1.TabStop = true;
             this.linkLabel1.Text = "linkLabel1";
@@ -254,11 +266,13 @@ namespace sqlnexus
             // ssStatus
             // 
             this.ssStatus.AutoSize = false;
+            this.ssStatus.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.ssStatus.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ssText});
-            this.ssStatus.Location = new System.Drawing.Point(0, 64);
+            this.ssStatus.Location = new System.Drawing.Point(0, 98);
             this.ssStatus.Name = "ssStatus";
-            this.ssStatus.Size = new System.Drawing.Size(457, 22);
+            this.ssStatus.Padding = new System.Windows.Forms.Padding(2, 0, 21, 0);
+            this.ssStatus.Size = new System.Drawing.Size(686, 34);
             this.ssStatus.TabIndex = 2;
             this.ssStatus.Text = "statusStrip1";
             this.ssStatus.Visible = false;
@@ -267,22 +281,23 @@ namespace sqlnexus
             // 
             this.ssText.AutoSize = false;
             this.ssText.Name = "ssText";
-            this.ssText.Size = new System.Drawing.Size(442, 17);
+            this.ssText.Size = new System.Drawing.Size(663, 27);
             this.ssText.Spring = true;
             this.ssText.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // fmImport
             // 
             this.AcceptButton = this.tsbGo;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(457, 86);
+            this.ClientSize = new System.Drawing.Size(686, 132);
             this.Controls.Add(this.ssStatus);
             this.Controls.Add(this.tlpFiles);
             this.Controls.Add(this.paTop);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "fmImport";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Data Import";

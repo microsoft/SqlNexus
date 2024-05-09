@@ -20,6 +20,7 @@ namespace sqlnexus
         public fmConnect(ILogger logger)
         {
             InitializeComponent();
+            g_theme.fRec_setControlColors(this);
             if (null == logger || !(logger is ILogger))
             {
                 MessageBox.Show(Properties.Resources.Error_InvalidLogger);

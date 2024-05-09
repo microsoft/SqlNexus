@@ -21,13 +21,14 @@ namespace sqlnexus
         private List<ToolStripMenuItem> m_OptionList = new List<ToolStripMenuItem>();
         private SqlInstances instances;
         private fmImport()
-        {
-            InitializeComponent();
+        {           
+            InitializeComponent();          
         }
         private fmNexus MainForm;  //Cache an instance of this for logging to the log file and other stuff
         public fmImport(fmNexus mainform)
         {
             InitializeComponent();
+            g_theme.fRec_setControlColors(this);
             MainForm = mainform;
         }
         public static void ImportFiles(fmNexus mainform, string path)
@@ -338,15 +339,6 @@ namespace sqlnexus
 
 
 
-        private void llTemplate_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            if (null == ((sender as LinkLabel).Tag))
-                return;
-            INexusImporter ri = ((sender as LinkLabel).Tag as INexusImporter);
-            frmImportSummary fmIS = new frmImportSummary(ri);
-            fmIS.ShowDialog(this);
-        }
-
         private bool CheckAndStop()
         {
             if ("Stop" == tsbGo.Text)
@@ -437,7 +429,7 @@ namespace sqlnexus
         {
             if (!Directory.Exists(importerDirectory))
                 return;
-            
+
             string[] Files = Directory.GetFiles(importerDirectory, "*.DLL");
             List<string> OrderedFiles = OrderedImporterFiles(Files);
 
@@ -495,6 +487,8 @@ namespace sqlnexus
                         ToolStripMenuItem tsi = new ToolStripMenuItem(prod.Name);
                         tsi.Tag = prod;
                         tsiImporters.DropDownItems.Add(tsi);
+                        tsiImporters.ForeColor = g_theme.ForeColor;
+                        tsiImporters.BackColor = g_theme.BackColor;
 
                         // Add subitems
 
@@ -537,9 +531,9 @@ namespace sqlnexus
                                 prod.Options[optionName] = userSavedValue;
                             }
                         }
-                        
 
-                        
+
+
 
                         // options
                         ToolStripMenuItem subtsi;
@@ -568,8 +562,13 @@ namespace sqlnexus
 
                                 subtsi.Click += new System.EventHandler(this.tsiBool_Click);
                             }
-
+                            
                             tsi.DropDownItems.Add(subtsi);
+                            tsi.ForeColor = g_theme.ForeColor;
+                            tsi.BackColor = g_theme.BackColor;
+                            subtsi.ForeColor = g_theme.ForeColor;
+                            subtsi.BackColor = g_theme.BackColor;
+
                         }
                     }
                 }
@@ -686,7 +685,7 @@ namespace sqlnexus
                 //MainForm.BringToFront();
 
                 //make the Close button visible instead
-                this.btnClose.Visible = true;                
+                this.btnClose.Visible = true;
                 return;
             }
 
@@ -761,7 +760,7 @@ namespace sqlnexus
 
             RunScript("SqlNexus_PreProcessing.sql");
             MainForm.LogMessage("SQL Nexus importer version " + Application.ProductVersion.ToString());
-            MainForm.LogMessage("SQL Nexus connection to server: '" + Globals.credentialMgr.Server + "', database: '"+ Globals.credentialMgr.Database + "'");
+            MainForm.LogMessage("SQL Nexus connection to server: '" + Globals.credentialMgr.Server + "', database: '" + Globals.credentialMgr.Database + "'");
             NexusInfo nInfo = new NexusInfo(Globals.credentialMgr.ConnectionString, this.MainForm);
             nInfo.SetAttribute("Nexus Importer Version", Application.ProductVersion);
 
@@ -801,7 +800,7 @@ namespace sqlnexus
             }
             catch
             {
-                
+
             }
 
             // Setting working directory for linux perf importer
@@ -1032,7 +1031,7 @@ namespace sqlnexus
                         RunPostProcessing(srcPath);
 
                         currBar.Value = 100;
-                        currLabel.Text = "(Post-import Processing) Done. ("  + (Environment.TickCount - postProcessStartTicks) / 1000 + " sec) " ;
+                        currLabel.Text = "(Post-import Processing) Done. (" + (Environment.TickCount - postProcessStartTicks) / 1000 + " sec) ";
                         MainForm.LogMessage("End of Post-Import processing");
 
                         Application.DoEvents();
@@ -1068,7 +1067,7 @@ namespace sqlnexus
                         Application.DoEvents();
 
                         int runtimeStartTicks = Environment.TickCount;
-                        
+
                         //run Perfstats Analysis script just once
                         currBar = (ProgressBar)tlpFiles.Controls[i + 1];
                         currBar.Value = 20;
@@ -1185,12 +1184,12 @@ namespace sqlnexus
             process.BeginOutputReadLine();
             process.WaitForExit();
 
-            if ((error_stream != null) & (error_stream.Length != 0 ))
+            if ((error_stream != null) & (error_stream.Length != 0))
             {
                 MainForm.LogMessage("PostProcess error output: " + error_stream.ToString());
             }
 
-            if ((output_stream != null) & (output_stream.Length != 0 ))
+            if ((output_stream != null) & (output_stream.Length != 0))
             {
                 MainForm.LogMessage("PostProcess console output: " + output_stream.ToString().Replace("+++", "\r\n\t"));
             }
@@ -1198,7 +1197,7 @@ namespace sqlnexus
 
             process.CancelOutputRead();
             process.Close();
-            
+
 
         }
 
@@ -1234,7 +1233,7 @@ namespace sqlnexus
                     retString = NumberOfRuntimes.ToString() + " runtimes found.";
                 }
 
-               
+
             }
 
             catch (Exception ex)
@@ -1360,6 +1359,7 @@ namespace sqlnexus
         private void llOptions_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Point p = new Point(this.Location.X + llOptions.Location.X, this.Location.Y + llOptions.Location.Y + llOptions.Height + 25);
+            g_theme.fRec_setControlColors(cmOptions);
             cmOptions.Show(p);
         }
 

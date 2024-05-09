@@ -690,6 +690,9 @@ namespace sqlnexus
             this.tvReports.ShowRootLines = false;
             this.tvReports.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvReports_AfterSelect);
             this.tvReports.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvReports_NodeMouseClick);
+            this.tvReports.DrawMode = System.Windows.Forms.TreeViewDrawMode.OwnerDrawText;
+            this.tvReports.DrawNode += tvReports_DrawMode;
+
             // 
             // paReportsHeader
             // 

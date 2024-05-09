@@ -27,6 +27,7 @@ namespace sqlnexus
         public fmCustomRowset(ILogger lgr)
         {
             InitializeComponent();
+            g_theme.fRec_setControlColors(this);
             logger = lgr;
         }
 

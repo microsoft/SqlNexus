@@ -14,6 +14,7 @@ namespace sqlnexus
         public fmLoginEx()
         {
             InitializeComponent();
+            g_theme.fRec_setControlColors(this);
             chkTrustServerCertificate.Checked = Properties.Settings.Default.TrustCertificate;
             chkEncryptConnection.Checked =  Properties.Settings.Default.EncryptConnection;
             cmbTheme.SelectedItem = Properties.Settings.Default.Theme; 
@@ -43,7 +44,7 @@ namespace sqlnexus
         {
             
             Globals.credentialMgr = new CredentialManager(txtServerName.Text, txtUserName.Text, txtPassword.Text, "master", (cmbAuthentication.SelectedIndex == 0 ? true : false), chkTrustServerCertificate.Checked, chkEncryptConnection.Checked);
-
+ 
 
             try
             {
@@ -100,6 +101,14 @@ namespace sqlnexus
         private void chkEncryptConnection_CheckedChanged(object sender, EventArgs e)
         {
             chkTrustServerCertificate.Enabled = chkEncryptConnection.Checked;
+        }
+
+        private void cmbTheme_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            g_theme.setThemeColors(cmbTheme.Text);
+            g_theme.fRec_setControlColors(this);
+            g_theme.fRec_setControlColors(fmNexus.singleton);
+
         }
     }
 }

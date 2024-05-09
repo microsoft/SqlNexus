@@ -18,6 +18,7 @@ namespace sqlnexus
         public fmPBReports()
         {
             InitializeComponent();
+            g_theme.fRec_setControlColors(this);
             string directory = AppDomain.CurrentDomain.BaseDirectory;
             path = Path.Combine(directory + @"Reports\PowerBIReports");
            

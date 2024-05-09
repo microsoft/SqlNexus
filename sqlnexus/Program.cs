@@ -37,7 +37,7 @@ namespace sqlnexus
                     try
                     {
                         if (ex.Message.Contains("Could not load file or assembly"))
-                        { 
+                        {
 
                         }
                         else
@@ -45,7 +45,7 @@ namespace sqlnexus
                     }
                     finally
                     {
-                        Application.Exit(); 
+                        Application.Exit();
                     }
                 }
             }
@@ -64,6 +64,67 @@ namespace sqlnexus
         }
     }
 
+    /// <summary>
+    /// adding a static class for theme options
+    /// </summary>
+    public static class g_theme
+    {
+        public static string name;
+        public static System.Drawing.Color ForeColor;
+        public static System.Drawing.Color BackColor;
+        public static System.Drawing.Color otherColor;
+
+        public static void fRec_setControlColors(Control control)
+        {
+            control.ForeColor = g_theme.ForeColor;
+            control.BackColor = g_theme.BackColor;
+
+            //adding special checks for control types as some properties are control specific
+            if (control.GetType() == typeof(System.Windows.Forms.LinkLabel))
+            {
+                ((LinkLabel)control).LinkColor = ForeColor;
+                ((LinkLabel)control).ActiveLinkColor = ForeColor;
+                ((LinkLabel)control).DisabledLinkColor = ForeColor;
+            }
+            //this was not there on the original design but the differentiation was background colors , using this as border line to separate different panels
+            if (control.GetType() == typeof(System.Windows.Forms.Panel))
+            {
+                ((Panel)control).BorderStyle = BorderStyle.FixedSingle;
+            }
+            if (control.HasChildren)
+            {
+                foreach (Control childControl in control.Controls)
+                {
+                    fRec_setControlColors(childControl);
+                }
+            }
+        }
+
+        public static void setThemeColors(String theme)
+        {
+            switch (theme)
+            {
+                case "Aquatic":
+                    g_theme.ForeColor = System.Drawing.ColorTranslator.FromHtml("#FFFFFF");
+                    g_theme.BackColor = System.Drawing.ColorTranslator.FromHtml("#202020");
+                    g_theme.otherColor = System.Drawing.ColorTranslator.FromHtml("#75E9FC");
+                    g_theme.name = "Aquatic";
+                    break;
+                case "Desert":
+                    g_theme.ForeColor = System.Drawing.ColorTranslator.FromHtml("#3D3D3D");
+                    g_theme.BackColor = System.Drawing.ColorTranslator.FromHtml("#FFFAEF");
+                    g_theme.otherColor = System.Drawing.ColorTranslator.FromHtml("#1C5E75");
+                    g_theme.name = "Desert";
+                    break;
+                default:
+                    g_theme.ForeColor = System.Drawing.Color.Black;
+                    g_theme.BackColor = Form.DefaultBackColor;
+                    g_theme.otherColor = System.Drawing.ColorTranslator.FromHtml("#75E9FC");
+                    g_theme.name = "None";
+                    break;
+            }
+        }
+    }
     enum ProgramExitCodes
     {
         UserCancel = -1,
@@ -110,14 +171,14 @@ namespace sqlnexus
             // TODO: print out command line params as they are processed
             // TODO: exit if -? passed
             //Special case usage info
-            if ((1 == args.Length) && (("/?" == args[0]) || ("-?" == args[0]) || ("--help" == args[0]) ))
+            if ((1 == args.Length) && (("/?" == args[0]) || ("-?" == args[0]) || ("--help" == args[0])))
             {
                 ShowUsage();
                 return false;
             }
 
             //logger.LogMessage(sqlnexus.Properties.Resources.Msg_ProcessParams);
-            Console.WriteLine (sqlnexus.Properties.Resources.Msg_ProcessParams);
+            Console.WriteLine(sqlnexus.Properties.Resources.Msg_ProcessParams);
             Console.WriteLine("");
 
             //Loop through the cmd line args
@@ -133,7 +194,7 @@ namespace sqlnexus
 
                 // Some switches require a string to immediately follow the switch
                 char switchChar = arg.ToUpper(CultureInfo.InvariantCulture)[1];
-                if (('C'==switchChar) || ('S'==switchChar) || ('U'==switchChar) || ('P'==switchChar) || ('R'==switchChar)
+                if (('C' == switchChar) || ('S' == switchChar) || ('U' == switchChar) || ('P' == switchChar) || ('R' == switchChar)
                     || ('O' == switchChar) || ('I' == switchChar) || ('V' == switchChar) || ('D' == switchChar))
                 {
                     if (arg.Length < 3)
@@ -144,11 +205,11 @@ namespace sqlnexus
                     }
                 }
 
-                string arg_slash_validation = arg.Replace("/","");
+                string arg_slash_validation = arg.Replace("/", "");
 
                 if (arg.Length - arg_slash_validation.Length > 1)
                 {
-                    Console.WriteLine(sqlnexus.Properties.Resources.Msg_InvalidSwitch + arg.Substring(0,2));
+                    Console.WriteLine(sqlnexus.Properties.Resources.Msg_InvalidSwitch + arg.Substring(0, 2));
                     Console.WriteLine("Possible reason: An extra backslash exists at the end of " + arg.Substring(0, 2) + " parameter in your command");
                     return false;
                 }
@@ -213,7 +274,7 @@ namespace sqlnexus
                     case 'O':
                         {
                             Console.WriteLine(@"Command Line Arg (/O): OutputPath=" + arg.Substring(2));
-                            Globals.ReportExportPath = arg.Substring(2).Trim().Replace("\"","");
+                            Globals.ReportExportPath = arg.Substring(2).Trim().Replace("\"", "");
                             // Path is assumed to be terminated by a backslash
                             if (@"\" != Globals.ReportExportPath.Substring(Globals.ReportExportPath.Length - 1))
                                 Globals.ReportExportPath += @"\";
@@ -222,13 +283,13 @@ namespace sqlnexus
                     case 'I':
                         {
                             Console.WriteLine(@"Command Line Arg (/I): InputPath=" + arg.Substring(2));
-                            
+
                             String ipath = arg.Substring(2).Replace("\"", "").Trim();
                             if (ipath.EndsWith(@"\"))
-                                ipath =  ipath.Substring(0, ipath.Length-1);
+                                ipath = ipath.Substring(0, ipath.Length - 1);
 
                             Globals.PathsToImport.Enqueue(ipath);
-                            Globals.QuietNonInteractiveMode = true; 
+                            Globals.QuietNonInteractiveMode = true;
                             break;
                         }
                     case 'V':
@@ -236,7 +297,7 @@ namespace sqlnexus
                             Console.WriteLine(@"Command Line Arg (/V): Parameter " + arg.Substring(2));
                             string tmpStr = arg.Substring(2);
                             string param = tmpStr.Substring(0, tmpStr.IndexOf('='));
-                            string val = tmpStr.Substring(tmpStr.IndexOf('=')+1);
+                            string val = tmpStr.Substring(tmpStr.IndexOf('=') + 1);
                             Globals.UserSuppliedReportParameters.Add(param, val);
                             break;
                         }
@@ -253,7 +314,7 @@ namespace sqlnexus
                         }
                 }
 
-                
+
             }
             //create a database
 
@@ -287,9 +348,9 @@ namespace sqlnexus
         [STAThread]
         static int Main(string[] args)
         {
-           
+
             try
-            {   
+            {
 
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
@@ -298,8 +359,8 @@ namespace sqlnexus
 
                 //initialize the main form
                 fmNexus fmN = new fmNexus();
-            
-                
+
+
 
                 if (0 != args.Length)
                 {
@@ -315,7 +376,7 @@ namespace sqlnexus
                 }
                 Application.Run(fmN);
             }
-            
+
             catch (Exception ex)
             {
                 Console.WriteLine(string.Format("Exception encountered in Main(): [{0}]", ex.Message));
