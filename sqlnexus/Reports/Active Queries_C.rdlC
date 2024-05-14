@@ -36,6 +36,7 @@ ELSE
       <Fields>
         <Field Name="Available">
           <DataField>Available</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
       </Fields>
     </DataSet>
@@ -117,7 +118,9 @@ ORDER BY req.request_cpu_time DESC;</CommandText>
                       <FontFamily>Tahoma</FontFamily>
                       <FontSize>20pt</FontSize>
                       <FontWeight>Bold</FontWeight>
-                      <Color>SteelBlue</Color>
+                      <Color>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+Parameters!ContrastTheme.Value="None", "SteelBlue")</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -131,6 +134,9 @@ ORDER BY req.request_cpu_time DESC;</CommandText>
             <Height>0.36in</Height>
             <Width>8in</Width>
             <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
               <PaddingTop>2pt</PaddingTop>
@@ -360,6 +366,7 @@ ORDER BY req.request_cpu_time DESC;</CommandText>
                                   <Value>=Fields!running_duration_minutes.Value</Value>
                                   <Style>
                                     <Format>#,0.00;(#,0.00)</Format>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -392,6 +399,7 @@ ORDER BY req.request_cpu_time DESC;</CommandText>
                                   <Value>=Fields!request_start_time.Value</Value>
                                   <Style>
                                     <Format>M/d/yyyy h:mm tt</Format>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -422,7 +430,9 @@ ORDER BY req.request_cpu_time DESC;</CommandText>
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!request_end_time.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -454,6 +464,7 @@ ORDER BY req.request_cpu_time DESC;</CommandText>
                                   <Value>=Fields!request_logical_reads.Value</Value>
                                   <Style>
                                     <Format>#,0;(#,0)</Format>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -486,6 +497,7 @@ ORDER BY req.request_cpu_time DESC;</CommandText>
                                   <Value>=Fields!cpu_time_minutes.Value</Value>
                                   <Style>
                                     <Format>#,0.00;(#,0.00)</Format>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -516,7 +528,9 @@ ORDER BY req.request_cpu_time DESC;</CommandText>
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!stmt_text.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -580,7 +594,9 @@ ORDER BY req.request_cpu_time DESC;</CommandText>
                 <TextRuns>
                   <TextRun>
                     <Value>This report displays top 20 CPU intensive queries that were still running when pssdiag capture was shut down.  These queries were not counted by readtrace reports because they only count finished queries</Value>
-                    <Style />
+                    <Style>
+                      <Color>=Variables!ReportTextColor.Value</Color>
+                    </Style>
                   </TextRun>
                 </TextRuns>
                 <Style />
@@ -643,7 +659,9 @@ ORDER BY req.request_cpu_time DESC;</CommandText>
                     <TextRuns>
                       <TextRun>
                         <Value>=DataSets!DataSet_Running_Queries.CommandText</Value>
-                        <Style />
+                        <Style>
+                          <Color>=IIf(Parameters!ContrastTheme.Value="Aquatic","Red","Green")</Color>
+                        </Style>
                       </TextRun>
                     </TextRuns>
                     <Style />
@@ -845,12 +863,12 @@ Parameters!ContrastTheme.Value="None", "Black")</Value>
     <Variable Name="BodyColor">
       <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
 Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
-Parameters!ContrastTheme.Value="None", "No Color")</Value>
+Parameters!ContrastTheme.Value="None", "#E8F8FF")</Value>
     </Variable>
     <Variable Name="TitleColor">
       <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
 Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
-Parameters!ContrastTheme.Value="None", "#1c3a70")</Value>
+Parameters!ContrastTheme.Value="None", "SteelBlue")</Value>
     </Variable>
     <Variable Name="TableHeadingColor">
       <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
