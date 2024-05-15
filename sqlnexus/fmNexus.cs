@@ -3409,6 +3409,7 @@ namespace sqlnexus
             {
                 refreshAfterDBChange();
             }
+            g_theme.fRec_setControlColors(fmNexus.singleton);
         }
 
         private void refreshAfterDBChange()
@@ -3419,7 +3420,7 @@ namespace sqlnexus
             if (0 != tvReports.Nodes.Count)
                 tvReports.SelectedNode = tvReports.Nodes[0];
             ShowHideUIElements();
-            Application.DoEvents();
+            Application.DoEvents();            
         }
 
         private void tsb_CustomRowset_Click(object sender, EventArgs e)
