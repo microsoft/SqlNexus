@@ -5,7 +5,7 @@
     <DataSource Name="DataSource_Private">
       <ConnectionProperties>
         <DataProvider>SQL</DataProvider>
-        <ConnectString>="data source=" &amp; Parameters!dsServerName.Value &amp; ";initial catalog="&amp;Parameters!dsDatabaseName.Value</ConnectString>
+        <ConnectString>Data Source=.;Initial Catalog=sqlnexus</ConnectString>
         <IntegratedSecurity>true</IntegratedSecurity>
       </ConnectionProperties>
       <rd:SecurityType>Integrated</rd:SecurityType>
@@ -118,9 +118,7 @@ ORDER BY req.request_cpu_time DESC;</CommandText>
                       <FontFamily>Tahoma</FontFamily>
                       <FontSize>20pt</FontSize>
                       <FontWeight>Bold</FontWeight>
-                      <Color>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
-Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
-Parameters!ContrastTheme.Value="None", "SteelBlue")</Color>
+                      <Color>=Variables!TitleColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -147,10 +145,10 @@ Parameters!ContrastTheme.Value="None", "SteelBlue")</Color>
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>1.62799in</Width>
+                  <Width>1.80507in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.78299in</Width>
+                  <Width>1.6059in</Width>
                 </TablixColumn>
                 <TablixColumn>
                   <Width>1.63715in</Width>
@@ -159,7 +157,7 @@ Parameters!ContrastTheme.Value="None", "SteelBlue")</Color>
                   <Width>1.49132in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.37674in</Width>
+                  <Width>1.53299in</Width>
                 </TablixColumn>
                 <TablixColumn>
                   <Width>5.26215in</Width>
@@ -179,7 +177,11 @@ Parameters!ContrastTheme.Value="None", "SteelBlue")</Color>
                               <TextRuns>
                                 <TextRun>
                                   <Value>running_duration_minutes</Value>
-                                  <Style />
+                                  <Style>
+                                    <FontFamily>Tahoma</FontFamily>
+                                    <FontSize>11pt</FontSize>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -191,6 +193,7 @@ Parameters!ContrastTheme.Value="None", "SteelBlue")</Color>
                               <Color>LightGrey</Color>
                               <Style>Solid</Style>
                             </Border>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -209,7 +212,11 @@ Parameters!ContrastTheme.Value="None", "SteelBlue")</Color>
                               <TextRuns>
                                 <TextRun>
                                   <Value>request_start_time</Value>
-                                  <Style />
+                                  <Style>
+                                    <FontFamily>Tahoma</FontFamily>
+                                    <FontSize>11pt</FontSize>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -221,6 +228,7 @@ Parameters!ContrastTheme.Value="None", "SteelBlue")</Color>
                               <Color>LightGrey</Color>
                               <Style>Solid</Style>
                             </Border>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -239,7 +247,11 @@ Parameters!ContrastTheme.Value="None", "SteelBlue")</Color>
                               <TextRuns>
                                 <TextRun>
                                   <Value>request_end _time</Value>
-                                  <Style />
+                                  <Style>
+                                    <FontFamily>Tahoma</FontFamily>
+                                    <FontSize>11pt</FontSize>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -251,6 +263,7 @@ Parameters!ContrastTheme.Value="None", "SteelBlue")</Color>
                               <Color>LightGrey</Color>
                               <Style>Solid</Style>
                             </Border>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -269,7 +282,11 @@ Parameters!ContrastTheme.Value="None", "SteelBlue")</Color>
                               <TextRuns>
                                 <TextRun>
                                   <Value>request_logical_reads</Value>
-                                  <Style />
+                                  <Style>
+                                    <FontFamily>Tahoma</FontFamily>
+                                    <FontSize>11pt</FontSize>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -281,6 +298,7 @@ Parameters!ContrastTheme.Value="None", "SteelBlue")</Color>
                               <Color>LightGrey</Color>
                               <Style>Solid</Style>
                             </Border>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -299,7 +317,11 @@ Parameters!ContrastTheme.Value="None", "SteelBlue")</Color>
                               <TextRuns>
                                 <TextRun>
                                   <Value>cpu_time_minutes</Value>
-                                  <Style />
+                                  <Style>
+                                    <FontFamily>Tahoma</FontFamily>
+                                    <FontSize>11pt</FontSize>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -311,6 +333,7 @@ Parameters!ContrastTheme.Value="None", "SteelBlue")</Color>
                               <Color>LightGrey</Color>
                               <Style>Solid</Style>
                             </Border>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -329,7 +352,11 @@ Parameters!ContrastTheme.Value="None", "SteelBlue")</Color>
                               <TextRuns>
                                 <TextRun>
                                   <Value>stmt text</Value>
-                                  <Style />
+                                  <Style>
+                                    <FontFamily>Tahoma</FontFamily>
+                                    <FontSize>11pt</FontSize>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -341,6 +368,7 @@ Parameters!ContrastTheme.Value="None", "SteelBlue")</Color>
                               <Color>LightGrey</Color>
                               <Style>Solid</Style>
                             </Border>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -578,7 +606,7 @@ Parameters!ContrastTheme.Value="None", "SteelBlue")</Color>
             <Top>1.30083in</Top>
             <Left>1.48833in</Left>
             <Height>0.5in</Height>
-            <Width>13.17834in</Width>
+            <Width>13.33458in</Width>
             <ZIndex>1</ZIndex>
             <Style>
               <Border>
@@ -628,6 +656,7 @@ Parameters!ContrastTheme.Value="None", "SteelBlue")</Color>
                     <Value>Show queries for this report.</Value>
                     <Style>
                       <FontWeight>Bold</FontWeight>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -660,7 +689,7 @@ Parameters!ContrastTheme.Value="None", "SteelBlue")</Color>
                       <TextRun>
                         <Value>=DataSets!DataSet_Running_Queries.CommandText</Value>
                         <Style>
-                          <Color>=IIf(Parameters!ContrastTheme.Value="Aquatic","Red","Green")</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Style>
                       </TextRun>
                     </TextRuns>
@@ -668,7 +697,7 @@ Parameters!ContrastTheme.Value="None", "SteelBlue")</Color>
                   </Paragraph>
                 </Paragraphs>
                 <Top>0.2257in</Top>
-                <Left>0.01042in</Left>
+                <Left>0.03125in</Left>
                 <Height>0.25in</Height>
                 <Width>9.81249in</Width>
                 <Visibility>
@@ -688,7 +717,7 @@ Parameters!ContrastTheme.Value="None", "SteelBlue")</Color>
             </ReportItems>
             <KeepTogether>true</KeepTogether>
             <Top>2.98437in</Top>
-            <Left>1.48833in</Left>
+            <Left>1.52583in</Left>
             <Height>0.68403in</Height>
             <Width>9.84374in</Width>
             <ZIndex>4</ZIndex>
@@ -698,13 +727,19 @@ Parameters!ContrastTheme.Value="None", "SteelBlue")</Color>
             </Visibility>
             <Style>
               <Border>
+                <Color>=Variables!ReportTextColor.Value</Color>
                 <Style>Solid</Style>
               </Border>
             </Style>
           </Rectangle>
         </ReportItems>
         <Height>6.25in</Height>
-        <Style />
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
+        </Style>
       </Body>
       <Width>16.04167in</Width>
       <Page>
@@ -860,10 +895,10 @@ Parameters!ContrastTheme.Value="None", "SteelBlue")</Color>
 Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
 Parameters!ContrastTheme.Value="None", "Black")</Value>
     </Variable>
-    <Variable Name="BodyColor">
+    <Variable Name="BodyBackgroundColor">
       <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
 Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
-Parameters!ContrastTheme.Value="None", "#E8F8FF")</Value>
+Parameters!ContrastTheme.Value="None", "#FAFDFF")</Value>
     </Variable>
     <Variable Name="TitleColor">
       <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
@@ -873,7 +908,7 @@ Parameters!ContrastTheme.Value="None", "SteelBlue")</Value>
     <Variable Name="TableHeadingColor">
       <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
 Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
-Parameters!ContrastTheme.Value="None", "Gainsboro")</Value>
+Parameters!ContrastTheme.Value="None", "SteelBlue")</Value>
     </Variable>
     <Variable Name="TableRowFillColor">
       <Value>="LightSteelBlue"</Value>
@@ -898,6 +933,11 @@ Parameters!ContrastTheme.Value="None", "TopBottom")</Value>
     </Variable>
     <Variable Name="TableHidcell">
       <Value>"Green"</Value>
+    </Variable>
+    <Variable Name="TableHeadingFontColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+Parameters!ContrastTheme.Value="None", "#FFFFFF")</Value>
     </Variable>
   </Variables>
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>

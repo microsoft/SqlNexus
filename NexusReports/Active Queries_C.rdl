@@ -118,9 +118,7 @@ ORDER BY req.request_cpu_time DESC;</CommandText>
                       <FontFamily>Tahoma</FontFamily>
                       <FontSize>20pt</FontSize>
                       <FontWeight>Bold</FontWeight>
-                      <Color>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
-Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
-Parameters!ContrastTheme.Value="None", "SteelBlue")</Color>
+                      <Color>=Variables!TitleColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -719,7 +717,7 @@ Parameters!ContrastTheme.Value="None", "SteelBlue")</Color>
             </ReportItems>
             <KeepTogether>true</KeepTogether>
             <Top>2.98437in</Top>
-            <Left>1.48833in</Left>
+            <Left>1.52583in</Left>
             <Height>0.68403in</Height>
             <Width>9.84374in</Width>
             <ZIndex>4</ZIndex>
@@ -729,6 +727,7 @@ Parameters!ContrastTheme.Value="None", "SteelBlue")</Color>
             </Visibility>
             <Style>
               <Border>
+                <Color>=Variables!ReportTextColor.Value</Color>
                 <Style>Solid</Style>
               </Border>
             </Style>
@@ -739,7 +738,7 @@ Parameters!ContrastTheme.Value="None", "SteelBlue")</Color>
           <Border>
             <Style>None</Style>
           </Border>
-          <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
+          <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
         </Style>
       </Body>
       <Width>16.04167in</Width>
@@ -896,7 +895,7 @@ Parameters!ContrastTheme.Value="None", "SteelBlue")</Color>
 Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
 Parameters!ContrastTheme.Value="None", "Black")</Value>
     </Variable>
-    <Variable Name="BodyColor">
+    <Variable Name="BodyBackgroundColor">
       <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
 Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
 Parameters!ContrastTheme.Value="None", "#FAFDFF")</Value>
