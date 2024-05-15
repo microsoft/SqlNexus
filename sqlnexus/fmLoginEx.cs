@@ -16,8 +16,8 @@ namespace sqlnexus
             InitializeComponent();
             g_theme.fRec_setControlColors(this);
             chkTrustServerCertificate.Checked = Properties.Settings.Default.TrustCertificate;
-            chkEncryptConnection.Checked =  Properties.Settings.Default.EncryptConnection;
-            cmbTheme.SelectedItem = Properties.Settings.Default.Theme; 
+            chkEncryptConnection.Checked = Properties.Settings.Default.EncryptConnection;
+            cmbTheme.SelectedItem = Properties.Settings.Default.Theme;
         }
 
         private void EnableSqlLogin(bool enable)
@@ -30,7 +30,7 @@ namespace sqlnexus
         }
         private void cmbAuthentication_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cmbAuthentication.SelectedIndex ==1) 
+            if (cmbAuthentication.SelectedIndex == 1)
             {
                 EnableSqlLogin(true);
             }
@@ -42,9 +42,9 @@ namespace sqlnexus
 
         private void btnConnect_Click(object sender, EventArgs e)
         {
-            
+
             Globals.credentialMgr = new CredentialManager(txtServerName.Text, txtUserName.Text, txtPassword.Text, "master", (cmbAuthentication.SelectedIndex == 0 ? true : false), chkTrustServerCertificate.Checked, chkEncryptConnection.Checked);
- 
+
 
             try
             {
@@ -74,7 +74,7 @@ namespace sqlnexus
 
                 txtPassword.Text = "";//since this object is cached, erase the password
             }
-            
+
             //Saving loginscreen user settings (Encryption choice and Theme)
             Properties.Settings.Default.EncryptConnection = chkEncryptConnection.Checked;
             Properties.Settings.Default.TrustCertificate = chkTrustServerCertificate.Checked;
@@ -86,7 +86,9 @@ namespace sqlnexus
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
-
+            g_theme.setThemeColors(Properties.Settings.Default.Theme);
+            g_theme.fRec_setControlColors(this);
+            g_theme.fRec_setControlColors(fmNexus.singleton);
         }
 
         private void fmLoginEx_Load(object sender, EventArgs e)
@@ -108,7 +110,13 @@ namespace sqlnexus
             g_theme.setThemeColors(cmbTheme.Text);
             g_theme.fRec_setControlColors(this);
             g_theme.fRec_setControlColors(fmNexus.singleton);
+        }
 
+        private void fmLoginEx_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            g_theme.setThemeColors(Properties.Settings.Default.Theme);
+            g_theme.fRec_setControlColors(this);
+            g_theme.fRec_setControlColors(fmNexus.singleton);
         }
     }
 }
