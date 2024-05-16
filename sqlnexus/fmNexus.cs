@@ -262,6 +262,18 @@ namespace sqlnexus
             g_theme.setThemeColors(Properties.Settings.Default.Theme);
             g_theme.fRec_setControlColors(this);
             singleton = this;
+
+            ToolStripLabel lblTheme = new ToolStripLabel("Contrast Theme");
+            ToolStripComboBox cmbTheme = new ToolStripComboBox("ContrastTheme");
+            cmbTheme.Items.Add("None");
+            cmbTheme.Items.Add("Aquatic");
+            cmbTheme.Items.Add("Desert");
+            cmbTheme.SelectedItem = Properties.Settings.Default.Theme;
+            cmbTheme.SelectedIndexChanged += new EventHandler (cmbTheme_SelectedItemChanged);
+
+
+            toolbarReport.Items.Add(lblTheme);
+            toolbarReport.Items.Add(cmbTheme);
         }
 
         // treeview hottracking is forcing color as blue , overriding its drawing to stick our own color
@@ -329,6 +341,9 @@ namespace sqlnexus
             DialogResult dr = connect.ShowDialog();
             if (dr == DialogResult.OK)
             {
+                //set the theme to match login box.
+                ((ToolStripComboBox)toolbarReport.Items["ContrastTheme"]).SelectedItem = Properties.Settings.Default.Theme;
+
                 if (!CreateDB("sqlnexus"))
                 {
                     dr = DialogResult.Abort;
@@ -1518,6 +1533,8 @@ namespace sqlnexus
                             fmNexus.GetReportParameters(false,"");
 
                         rv.RefreshReport();
+                    
+
                         toolbarReport.Visible = reportToolStripMenuItem.Checked;
                         TreeNode n = AddFindReportNode(report, null);
                         n.ImageIndex = 1;
@@ -2481,6 +2498,14 @@ namespace sqlnexus
             }
         }
 
+        private void cmbTheme_SelectedItemChanged (object sender, EventArgs e)
+        {
+            String sTheme = (string)((ToolStripComboBox)toolbarReport.Items["ContrastTheme"]).SelectedItem;
+            Properties.Settings.Default.Theme = sTheme;
+            g_theme.setThemeColors(sTheme);
+            g_theme.fRec_setControlColors(this);
+            g_theme.fRec_setControlColors(fmNexus.singleton);
+        }
         private void tscZoom_SelectedIndexChanged(object sender, EventArgs e)
         {
             try

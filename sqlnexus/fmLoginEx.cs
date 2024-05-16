@@ -73,13 +73,16 @@ namespace sqlnexus
             {
 
                 txtPassword.Text = "";//since this object is cached, erase the password
+                                      
+                //Saving loginscreen user settings (Encryption choice and Theme)
+                Properties.Settings.Default.EncryptConnection = chkEncryptConnection.Checked;
+                Properties.Settings.Default.TrustCertificate = chkTrustServerCertificate.Checked;
+
+                Properties.Settings.Default.Theme = cmbTheme.SelectedItem.ToString();
+
             }
 
-            //Saving loginscreen user settings (Encryption choice and Theme)
-            Properties.Settings.Default.EncryptConnection = chkEncryptConnection.Checked;
-            Properties.Settings.Default.TrustCertificate = chkTrustServerCertificate.Checked;
-
-            Properties.Settings.Default.Theme = cmbTheme.SelectedItem.ToString();
+         
 
             //this.Dispose();
         }
@@ -117,6 +120,11 @@ namespace sqlnexus
             g_theme.setThemeColors(Properties.Settings.Default.Theme);
             g_theme.fRec_setControlColors(this);
             g_theme.fRec_setControlColors(fmNexus.singleton);
+        }
+
+        private void toolStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
         }
     }
 }
