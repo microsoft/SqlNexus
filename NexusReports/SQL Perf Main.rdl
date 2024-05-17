@@ -932,6 +932,25 @@ VALUES
 ('Filter_Drivers_C', 'Filter Drivers Report', 'Filter Drivers Report', 1 | 2 | 4 | 8, 'Common',
  'dbo.tbl_fltmc_filters', 2000, 'SQL Base Collector', 1, 2000);
 
+ -- Missing MSI/MSPs
+INSERT INTO @tbl_reports
+(
+    ReportName,
+    ReportDisplayName,
+    ReportDescription,
+    VersionApplied,
+    Category,
+    ValidationObject,
+    SeqNo,
+    DataCollection,
+    Manditory,
+    CategorySeq
+)
+VALUES
+('Missing_MSIs_or_MSPs_C', 'Missing MSI or MSPs', 'Shows missing MSI/MSP package', 1 | 2 | 4 | 8, 'Setup',
+ 'dbo.tbl_setup_missing_msi_msp_packages', 2000, 'Setup', 1, 2022);
+
+
 
 --Azure
 INSERT INTO @tbl_reports

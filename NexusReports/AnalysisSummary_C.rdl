@@ -675,6 +675,7 @@ Fields!Report.Value = "Missing Indexes", "Missing Indexes_C",
 Fields!Report.Value = "Spinlock Stats", "Spinlock Stats_C",
 Fields!Report.Value = "Loaded Modules", "Loaded Modules_C",
 Fields!Report.Value = "AlwaysOn Report", "AlwaysOn_AGBasics_C",
+Fields!Report.Value = "Missing MSI or MSPs", "Missing_MSIs_or_MSPs_C",
 Fields!Report.Value = "data imported with older SQLNexus version", Nothing, 
 Fields!Report.Value = "", Nothing)</ReportName>
                                 </Drillthrough>
@@ -699,6 +700,7 @@ Fields!Report.Value = "", Nothing)</ReportName>
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
+                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                   </TablixCells>
