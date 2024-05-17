@@ -4559,6 +4559,28 @@ VALUES
  'Common Criteria Compliance Enabled', 'Enabling this can cause performance issues', '',
  'https://learn.microsoft.com/en-us/sql/database-engine/configure-windows/common-criteria-compliance-enabled-server-configuration-option?view=sql-server-ver16',
  '  ', 1, 100, 0, 'Server Configuration');
+INSERT INTO dbo.tbl_AnalysisSummary
+(
+    SolutionSourceId,
+    Category,
+    Type,
+    TypeDesc,
+    Name,
+    FriendlyName,
+    Description,
+    InternalUrl,
+    ExternalUrl,
+    Author,
+    Priority,
+    SeqNum,
+    Status,
+    Report
+)
+VALUES
+('E57F6CE6-EFCC-48B0-B82A-373ED6DF3434', 'Setup', 'W', 'Warning', 'usp_MissingMSI_MSP',
+ 'Missing installation MSI/MSPs on the system', 'These can cause various CU/SP upgrade error messages or unexpected behaviors', '',
+ 'https://learn.microsoft.com/en-us/troubleshoot/sql/database-engine/install/windows/restore-missing-windows-installer-cache-files',
+ '  ', 1, 100, 0, 'Missing MSI or MSPs');
 
 
 
@@ -5551,7 +5573,7 @@ BEGIN
 END;
 GO
 
-CREATE PROCEDURE usp_DBMEndPointState
+CREATE PROCEDURE dbo.usp_DBMEndPointState
 AS
 BEGIN
     DECLARE @hadr_endpoint VARCHAR(128),
@@ -5583,7 +5605,7 @@ BEGIN
 END;
 GO
 
-CREATE PROCEDURE usp_HugeGrant
+CREATE PROCEDURE dbo.usp_HugeGrant
 AS
 BEGIN
     DECLARE @cnt INT,
@@ -5620,7 +5642,7 @@ END;
 
 GO
 
-CREATE PROCEDURE Optimizer_Memory_Leak
+CREATE PROCEDURE dbo.Optimizer_Memory_Leak
 AS
 BEGIN
     DECLARE @SQLVersion VARCHAR(100);
@@ -7117,7 +7139,42 @@ BEGIN
         BEGIN
             UPDATE dbo.tbl_AnalysisSummary
             SET [Status] = 1
-            WHERE Name = 'usp_CCC_Enabled';
+            WHERE [Name] = OBJECT_NAME(@@PROCID);
+        END;
+    END;
+END;
+GO
+
+CREATE PROCEDURE [dbo].[usp_MissingMSI_MSP]
+AS
+BEGIN
+    IF (
+           OBJECT_ID('tbl_setup_missing_msi_msp_packages') IS NOT NULL
+           AND (OBJECT_ID('tbl_AnalysisSummary') IS NOT NULL)
+       )
+    BEGIN
+        IF (
+           (
+               SELECT COUNT(*)
+               FROM [dbo].[tbl_setup_missing_msi_msp_packages]
+           ) > 0
+           )
+        BEGIN
+            
+            DECLARE @InstCacheFiles VARCHAR(8000), @InstCacheCorruptFiles VARCHAR(8000)  
+            SELECT @InstCacheFiles  = COALESCE(@InstCacheFiles + CHAR(13) + CHAR(10) , '') + ISNULL([ExpectedInstallerCacheFile], ''), 
+                   @InstCacheCorruptFiles = COALESCE(@InstCacheCorruptFiles + CHAR(13) + CHAR(10) , '') + ISNULL([FileIsPresentInCacheButPossiblyCorrupt], '') 
+            FROM dbo.tbl_setup_missing_msi_msp_packages
+            
+
+            UPDATE dbo.tbl_AnalysisSummary
+            SET [Status] = 1,
+            [Description] = 'The following SQL Server MSI/MSPs are missing from the system. These can cause various CU or SP upgrade issues or unexpected behaviors: '
+                            + CHAR(13) + CHAR(10) + @InstCacheFiles  + CHAR(13) + CHAR(10) +
+                            'And the following SQL Server MSI/MSPs are possibly corrupt: '
+                             + @InstCacheCorruptFiles
+                            + CHAR(13) + CHAR(10) + 'Be sure to use the linked article to resolve the missing MSI/MSP issues.'
+            WHERE [Name] = OBJECT_NAME(@@PROCID);
         END;
     END;
 END;
@@ -7129,89 +7186,91 @@ GO
 firing rules
 ********************************************************/
 
-EXEC usp_AttendtionCausedBlocking;
+EXEC dbo.usp_AttendtionCausedBlocking;
 GO
-EXEC usp_PerfScriptsRunningLong;
+EXEC dbo.usp_PerfScriptsRunningLong;
 GO
-EXEC usp_LongAutoUpdateStats;
+EXEC dbo.usp_LongAutoUpdateStats;
 GO
-EXEC usp_HighStmtCount;
+EXEC dbo.usp_HighStmtCount;
 GO
-EXEC usp_RG_Idle;
+EXEC dbo.usp_RG_Idle;
 GO
-EXEC usp_HighCompile;
+EXEC dbo.usp_HighCompile;
 GO
-EXEC usp_HighCacheCount;
+EXEC dbo.usp_HighCacheCount;
 GO
-EXEC proc_PowerPlan;
+EXEC dbo.proc_PowerPlan;
 GO
-EXEC proc_CheckTraceFlags;
+EXEC dbo.proc_CheckTraceFlags;
 GO
-EXEC proc_AutoStats;
+EXEC dbo.proc_AutoStats;
 GO
-EXEC proc_ConfigAlert;
+EXEC dbo.proc_ConfigAlert;
 GO
-EXEC usp_ExcessiveLockXevent;
+EXEC dbo.usp_ExcessiveLockXevent;
 GO
-EXEC usp_McAFee_Intrusion;
+EXEC dbo.usp_McAFee_Intrusion;
 GO
-EXEC usp_BatchSort;
+EXEC dbo.usp_BatchSort;
 GO
 EXEC dbo.usp_OptimizerTimeout;
 GO
-EXEC usp_SmallSampledStats;
+EXEC dbo.usp_SmallSampledStats;
 GO
-EXEC usp_DisabledIndex;
+EXEC dbo.usp_DisabledIndex;
 GO
-EXEC usp_AccessCheck;
+EXEC dbo.usp_AccessCheck;
 GO
-EXEC usp_RedoThreadBlocked;
+EXEC dbo.usp_RedoThreadBlocked;
 GO
-EXEC usp_VirtualBytesLeak;
+EXEC dbo.usp_VirtualBytesLeak;
 GO
-EXEC usp_ChangeTableCauseHighCPU;
+EXEC dbo.usp_ChangeTableCauseHighCPU;
 GO
 EXEC dbo.usp_DeadlockTraceFlag;
 GO
-EXEC usp_Expensive_TraceEvts_Used;
+EXEC dbo.usp_Expensive_TraceEvts_Used;
 GO
 EXEC usp_Expensive_XEvts_Used;
 GO
-EXEC usp_ExcessiveTrace_Warning;
+EXEC dbo.usp_ExcessiveTrace_Warning;
 GO
-EXEC OracleLinkedServerIssue;
+EXEC dbo.OracleLinkedServerIssue;
 GO
-EXEC XEventcrash;
+EXEC dbo.XEventcrash;
 GO
-EXEC usp_Non_SQL_CPU_consumption;
+EXEC dbo.usp_Non_SQL_CPU_consumption;
 GO
-EXEC usp_KernelHighCPUconsumption;
+EXEC dbo.usp_KernelHighCPUconsumption;
 GO
-EXEC usp_SQLHighCPUconsumption;
+EXEC dbo.usp_SQLHighCPUconsumption;
 GO
-EXEC StaleStatswarning2008;
+EXEC dbo.StaleStatswarning2008;
 GO
 EXEC dbo.usp_IOAnalysis;
 GO
-EXEC usp_WarnmissingIndex;
+EXEC dbo.usp_WarnmissingIndex;
 GO
-EXEC Optimizer_Memory_Leak;
+EXEC dbo.Optimizer_Memory_Leak;
 GO
 EXEC dbo.usp_HugeGrant;
 GO
-EXEC usp_HighRecompiles;
+EXEC dbo.usp_HighRecompiles;
 GO
-EXEC usp_oldce;
+EXEC dbo.usp_oldce;
 GO
-EXEC usp_CalvsCore;
+EXEC dbo.usp_CalvsCore;
 GO
-EXEC usp_Spinlock_HighCPU;
+EXEC dbo.usp_Spinlock_HighCPU;
 GO
-EXEC usp_NonMS_LoadedModules;
+EXEC dbo.usp_NonMS_LoadedModules;
 GO
-EXEC usp_DBMEndPointState;
+EXEC dbo.usp_DBMEndPointState;
 GO
-EXEC usp_AGHealthState;
+EXEC dbo.usp_AGHealthState;
 GO
-EXEC usp_CCC_Enabled;
+EXEC dbo.usp_CCC_Enabled;
+GO
+EXEC dbo.usp_MissingMSI_MSP
 /******END of script***/

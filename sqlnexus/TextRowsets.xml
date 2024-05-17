@@ -4348,6 +4348,16 @@
         <Column name="Value" type="RowsetImportEngine.VarCharColumn" length="4000" />
       </KnownColumns>
     </Rowset>
+
+    <Rowset name="tbl_setup_missing_msi_msp_packages" enabled="true" identifier="-- missing or corrupt installer msi or msp packages --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="ProductName" type="RowsetImportEngine.NVarCharColumn" length="65" />
+        <Column name="ExpectedInstallerCacheFile" type="RowsetImportEngine.NVarCharColumn" length="52" />
+        <Column name="FileIsPresentInCacheButPossiblyCorrupt" type="RowsetImportEngine.NVarCharColumn" length="52" />
+        <Column name="ProductVersion" type="RowsetImportEngine.VarCharColumn" length="14" />
+        <Column name="PackageName" type="RowsetImportEngine.NVarCharColumn" length="32" />
+      </KnownColumns>
+    </Rowset>
   </KnownRowsets>
 </TextImport>
 
