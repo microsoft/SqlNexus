@@ -2235,6 +2235,25 @@
       <Column name="compatibility_level" type="RowsetImportEngine.IntColumn" />
       <Column name="query_plan_hash" type="RowsetImportEngine.VarBinaryColumn" length="8" />
       <Column name="is_forced_plan" type="RowsetImportEngine.IntColumn" />
+      <Column name="force_failure_count" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="last_force_failure_reason_desc"  type="RowsetImportEngine.VarCharColumn" length="256" />
+      <Column name="plan_forcing_type_desc"  type="RowsetImportEngine.VarCharColumn" length="120" />
+    </Rowset>
+
+    <Rowset name="tbl_dm_db_tuning_recommendations" enabled="true" identifier="--sys.dm_db_tuning_recommendations--" type="RowsetImportEngine.TextRowset">
+      <Column name="reason" type="RowsetImportEngine.NVarCharColumn" length="4000" />
+      <Column name="score" type="RowsetImportEngine.IntColumn" />
+      <Column name="query_id" type="RowsetImportEngine.IntColumn" />
+      <Column name="regressedPlanId" type="RowsetImportEngine.IntColumn" />
+      <Column name="recommendedPlanId" type="RowsetImportEngine.IntColumn" />
+      <Column name="regressedPlanErrorCount" type="RowsetImportEngine.IntColumn" />
+      <Column name="recommendedPlanErrorCount" type="RowsetImportEngine.IntColumn" />
+      <Column name="regressedPlanExecutionCount" type="RowsetImportEngine.IntColumn" />
+      <Column name="regressedPlanCpuTimeAverage" type="RowsetImportEngine.FloatColumn" />
+      <Column name="recommendedPlanExecutionCount" type="RowsetImportEngine.IntColumn" />
+      <Column name="recommendedPlanCpuTimeAverage" type="RowsetImportEngine.FloatColumn" />
+      <Column name="estimated_gain" type="RowsetImportEngine.FloatColumn" />
+      <Column name="error_prone" type="RowsetImportEngine.VarCharColumn" length="3" />
     </Rowset>
 
 
@@ -4327,6 +4346,16 @@
       <KnownColumns>
         <Column name="Name" type="RowsetImportEngine.VarCharColumn" length="300" />
         <Column name="Value" type="RowsetImportEngine.VarCharColumn" length="4000" />
+      </KnownColumns>
+    </Rowset>
+
+    <Rowset name="tbl_setup_missing_msi_msp_packages" enabled="true" identifier="-- missing or corrupt installer msi or msp packages --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="ProductName" type="RowsetImportEngine.NVarCharColumn" length="65" />
+        <Column name="ExpectedInstallerCacheFile" type="RowsetImportEngine.NVarCharColumn" length="52" />
+        <Column name="FileIsPresentInCacheButPossiblyCorrupt" type="RowsetImportEngine.NVarCharColumn" length="52" />
+        <Column name="ProductVersion" type="RowsetImportEngine.VarCharColumn" length="14" />
+        <Column name="PackageName" type="RowsetImportEngine.NVarCharColumn" length="32" />
       </KnownColumns>
     </Rowset>
   </KnownRowsets>
