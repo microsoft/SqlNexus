@@ -184,7 +184,10 @@ FROM dbo.tbl_hadr_ag_states ags
                   <TextRun>
                     <Value>     Availability Group Summary Report</Value>
                     <Style>
+                      <FontFamily>Tahoma</FontFamily>
                       <FontSize>16pt</FontSize>
+                      <FontWeight>Bold</FontWeight>
+                      <Color>=Variables!TitleColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -252,8 +255,8 @@ FROM dbo.tbl_hadr_ag_states ags
                                     <TextRun>
                                       <Value>AG Name</Value>
                                       <Style>
-                                        <FontStyle>Italic</FontStyle>
                                         <FontWeight>Bold</FontWeight>
+                                        <Color>=Variables!TableHeadingFontColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -268,6 +271,7 @@ FROM dbo.tbl_hadr_ag_states ags
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <VerticalAlign>Top</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -288,8 +292,8 @@ FROM dbo.tbl_hadr_ag_states ags
                                     <TextRun>
                                       <Value>ClusterType</Value>
                                       <Style>
-                                        <FontStyle>Italic</FontStyle>
                                         <FontWeight>Bold</FontWeight>
+                                        <Color>=Variables!TableHeadingFontColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -302,8 +306,8 @@ FROM dbo.tbl_hadr_ag_states ags
                                     <TextRun>
                                       <Value />
                                       <Style>
-                                        <FontStyle>Italic</FontStyle>
                                         <FontWeight>Bold</FontWeight>
+                                        <Color>=Variables!TableHeadingFontColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -316,6 +320,7 @@ FROM dbo.tbl_hadr_ag_states ags
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <VerticalAlign>Top</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -336,8 +341,8 @@ FROM dbo.tbl_hadr_ag_states ags
                                     <TextRun>
                                       <Value>Primary Replica</Value>
                                       <Style>
-                                        <FontStyle>Italic</FontStyle>
                                         <FontWeight>Bold</FontWeight>
+                                        <Color>=Variables!TableHeadingFontColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -350,8 +355,8 @@ FROM dbo.tbl_hadr_ag_states ags
                                     <TextRun>
                                       <Value />
                                       <Style>
-                                        <FontStyle>Italic</FontStyle>
                                         <FontWeight>Bold</FontWeight>
+                                        <Color>=Variables!TableHeadingFontColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -364,6 +369,7 @@ FROM dbo.tbl_hadr_ag_states ags
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <VerticalAlign>Top</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -384,8 +390,8 @@ FROM dbo.tbl_hadr_ag_states ags
                                     <TextRun>
                                       <Value>Failure Condition Level</Value>
                                       <Style>
-                                        <FontStyle>Italic</FontStyle>
                                         <FontWeight>Bold</FontWeight>
+                                        <Color>=Variables!TableHeadingFontColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -400,6 +406,7 @@ FROM dbo.tbl_hadr_ag_states ags
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <VerticalAlign>Top</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -420,8 +427,8 @@ FROM dbo.tbl_hadr_ag_states ags
                                     <TextRun>
                                       <Value>Healthcheck Timeout</Value>
                                       <Style>
-                                        <FontStyle>Italic</FontStyle>
                                         <FontWeight>Bold</FontWeight>
+                                        <Color>=Variables!TableHeadingFontColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -436,6 +443,7 @@ FROM dbo.tbl_hadr_ag_states ags
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <VerticalAlign>Top</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -456,8 +464,8 @@ FROM dbo.tbl_hadr_ag_states ags
                                     <TextRun>
                                       <Value>Backup Preference </Value>
                                       <Style>
-                                        <FontStyle>Italic</FontStyle>
                                         <FontWeight>Bold</FontWeight>
+                                        <Color>=Variables!TableHeadingFontColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -472,6 +480,7 @@ FROM dbo.tbl_hadr_ag_states ags
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <VerticalAlign>Top</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -492,8 +501,8 @@ FROM dbo.tbl_hadr_ag_states ags
                                     <TextRun>
                                       <Value>DTC Support</Value>
                                       <Style>
-                                        <FontStyle>Italic</FontStyle>
                                         <FontWeight>Bold</FontWeight>
+                                        <Color>=Variables!TableHeadingFontColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -508,6 +517,7 @@ FROM dbo.tbl_hadr_ag_states ags
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <VerticalAlign>Top</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -528,8 +538,8 @@ FROM dbo.tbl_hadr_ag_states ags
                                     <TextRun>
                                       <Value>Listener Name</Value>
                                       <Style>
-                                        <FontStyle>Italic</FontStyle>
                                         <FontWeight>Bold</FontWeight>
+                                        <Color>=Variables!TableHeadingFontColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -544,6 +554,7 @@ FROM dbo.tbl_hadr_ag_states ags
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <VerticalAlign>Top</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -572,7 +583,7 @@ FROM dbo.tbl_hadr_ag_states ags
                                       <Style>
                                         <FontWeight>Bold</FontWeight>
                                         <TextDecoration>Underline</TextDecoration>
-                                        <Color>Blue</Color>
+                                        <Color>=Variables!URILinkFontColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -602,7 +613,9 @@ FROM dbo.tbl_hadr_ag_states ags
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 , "#c7d7ff","Transparent")</BackgroundColor>
+                                <BackgroundColor>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
+Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
+Parameters!ContrastTheme.Value="None", "LightSteelBlue")</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -622,7 +635,9 @@ FROM dbo.tbl_hadr_ag_states ags
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!cluster_type_desc.Value</Value>
-                                      <Style />
+                                      <Style>
+                                        <Color>=Variables!ReportTextColor.Value</Color>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -636,7 +651,9 @@ FROM dbo.tbl_hadr_ag_states ags
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 , "#c7d7ff","Transparent")</BackgroundColor>
+                                <BackgroundColor>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
+Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
+Parameters!ContrastTheme.Value="None", "LightSteelBlue")</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -656,7 +673,9 @@ FROM dbo.tbl_hadr_ag_states ags
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!primary_replica.Value</Value>
-                                      <Style />
+                                      <Style>
+                                        <Color>=Variables!ReportTextColor.Value</Color>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -670,7 +689,9 @@ FROM dbo.tbl_hadr_ag_states ags
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 , "#c7d7ff","Transparent")</BackgroundColor>
+                                <BackgroundColor>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
+Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
+Parameters!ContrastTheme.Value="None", "LightSteelBlue")</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -690,7 +711,9 @@ FROM dbo.tbl_hadr_ag_states ags
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!failure_condition_level.Value</Value>
-                                      <Style />
+                                      <Style>
+                                        <Color>=Variables!ReportTextColor.Value</Color>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -704,7 +727,9 @@ FROM dbo.tbl_hadr_ag_states ags
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 , "#c7d7ff","Transparent")</BackgroundColor>
+                                <BackgroundColor>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
+Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
+Parameters!ContrastTheme.Value="None", "LightSteelBlue")</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -724,7 +749,9 @@ FROM dbo.tbl_hadr_ag_states ags
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!health_check_timeout.Value</Value>
-                                      <Style />
+                                      <Style>
+                                        <Color>=Variables!ReportTextColor.Value</Color>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -738,7 +765,9 @@ FROM dbo.tbl_hadr_ag_states ags
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 , "#c7d7ff","Transparent")</BackgroundColor>
+                                <BackgroundColor>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
+Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
+Parameters!ContrastTheme.Value="None", "LightSteelBlue")</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -758,7 +787,9 @@ FROM dbo.tbl_hadr_ag_states ags
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!automated_backup_preference_desc.Value</Value>
-                                      <Style />
+                                      <Style>
+                                        <Color>=Variables!ReportTextColor.Value</Color>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -772,7 +803,9 @@ FROM dbo.tbl_hadr_ag_states ags
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 , "#c7d7ff","Transparent")</BackgroundColor>
+                                <BackgroundColor>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
+Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
+Parameters!ContrastTheme.Value="None", "LightSteelBlue")</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -792,7 +825,9 @@ FROM dbo.tbl_hadr_ag_states ags
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!dtc_support.Value</Value>
-                                      <Style />
+                                      <Style>
+                                        <Color>=Variables!ReportTextColor.Value</Color>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -806,7 +841,9 @@ FROM dbo.tbl_hadr_ag_states ags
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 , "#c7d7ff","Transparent")</BackgroundColor>
+                                <BackgroundColor>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
+Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
+Parameters!ContrastTheme.Value="None", "LightSteelBlue")</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -826,7 +863,9 @@ FROM dbo.tbl_hadr_ag_states ags
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!Listener_Name.Value</Value>
-                                      <Style />
+                                      <Style>
+                                        <Color>=Variables!ReportTextColor.Value</Color>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -840,7 +879,9 @@ FROM dbo.tbl_hadr_ag_states ags
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 , "#c7d7ff","Transparent")</BackgroundColor>
+                                <BackgroundColor>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
+Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
+Parameters!ContrastTheme.Value="None", "LightSteelBlue")</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -882,7 +923,7 @@ FROM dbo.tbl_hadr_ag_states ags
                 <Width>10.51903in</Width>
                 <Style>
                   <Border>
-                    <Style>None</Style>
+                    <Style>Solid</Style>
                   </Border>
                 </Style>
               </Tablix>
@@ -893,27 +934,11 @@ FROM dbo.tbl_hadr_ag_states ags
                   <Paragraph>
                     <TextRuns>
                       <TextRun>
-                        <Value>Availability Groups Info (</Value>
+                        <Value>Availability Groups Info (Click AG Name for AG  Details Report)</Value>
                         <Style>
                           <FontSize>12pt</FontSize>
                           <FontWeight>Bold</FontWeight>
-                          <Color>Blue</Color>
-                        </Style>
-                      </TextRun>
-                      <TextRun>
-                        <Value>Click AG Name for AG  Details Report</Value>
-                        <Style>
-                          <FontSize>12pt</FontSize>
-                          <FontWeight>Bold</FontWeight>
-                          <Color>Red</Color>
-                        </Style>
-                      </TextRun>
-                      <TextRun>
-                        <Value>)</Value>
-                        <Style>
-                          <FontSize>12pt</FontSize>
-                          <FontWeight>Bold</FontWeight>
-                          <Color>Blue</Color>
+                          <Color>=Variables!TitleColor.Value</Color>
                         </Style>
                       </TextRun>
                     </TextRuns>
@@ -948,7 +973,6 @@ FROM dbo.tbl_hadr_ag_states ags
               <Border>
                 <Style>None</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
             </Style>
           </Rectangle>
           <Textbox Name="tb_ReportQueryHeader">
@@ -961,6 +985,7 @@ FROM dbo.tbl_hadr_ag_states ags
                     <Value>Show queries for this report.</Value>
                     <Style>
                       <FontWeight>Bold</FontWeight>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -992,7 +1017,9 @@ FROM dbo.tbl_hadr_ag_states ags
                     <TextRuns>
                       <TextRun>
                         <Value>=DataSets!DataSet_AG_States.CommandText</Value>
-                        <Style />
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </TextRun>
                     </TextRuns>
                     <Style />
@@ -1038,7 +1065,7 @@ FROM dbo.tbl_hadr_ag_states ags
           <Border>
             <Style>None</Style>
           </Border>
-          <BackgroundColor>=Parameters!FmtAmbientBackground.Value</BackgroundColor>
+          <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
         </Style>
       </Body>
       <Width>15.48253in</Width>
@@ -1166,6 +1193,74 @@ FROM dbo.tbl_hadr_ag_states ags
   <Variables>
     <Variable Name="IsLocalReport">
       <Value>= (Globals!ReportServerUrl="")</Value>
+    </Variable>
+    <Variable Name="FLocalMode">
+      <Value>=Globals!ReportServerUrl = ""</Value>
+    </Variable>
+    <Variable Name="ReportTextColor">
+      <Value>
+        =Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+        Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+        Parameters!ContrastTheme.Value="None", "Black")
+      </Value>
+    </Variable>
+    <Variable Name="BodyBackgroundColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
+        Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
+        Parameters!ContrastTheme.Value="None", "#FAFDFF")</Value>
+    </Variable>
+    <Variable Name="TitleColor">
+      <Value>
+        =Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+        Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+        Parameters!ContrastTheme.Value="None", "SteelBlue")
+      </Value>
+    </Variable>
+    <Variable Name="TableHeadingColor">
+      <Value>
+        =Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
+        Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
+        Parameters!ContrastTheme.Value="None", "SteelBlue")
+      </Value>
+    </Variable>
+    <Variable Name="ChartColor">
+      <Value>
+        =Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
+        Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
+        Parameters!ContrastTheme.Value="None", "LightSteelBlue")
+      </Value>
+    </Variable>
+    <Variable Name="ChartSecondaryColor">
+      <Value>
+        =Switch(Parameters!ContrastTheme.Value="Aquatic", "No Color",
+        Parameters!ContrastTheme.Value="Desert", "No Color",
+        Parameters!ContrastTheme.Value="None", "Automatic")
+      </Value>
+    </Variable>
+    <Variable Name="ChartGradientStyle">
+      <Value>
+        =Switch(Parameters!ContrastTheme.Value="Aquatic", "None",
+        Parameters!ContrastTheme.Value="Desert", "None",
+        Parameters!ContrastTheme.Value="None", "TopBottom")
+      </Value>
+    </Variable>
+    <Variable Name="TableShowCell">
+      <Value>"Red"</Value>
+    </Variable>
+    <Variable Name="TableHidcell">
+      <Value>"Green"</Value>
+    </Variable>
+    <Variable Name="TableHeadingFontColor">
+      <Value>
+        =Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+        Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+        Parameters!ContrastTheme.Value="None", "#FFFFFF")
+      </Value>
+    </Variable>
+    <Variable Name="URILinkFontColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#75E9FC",
+Parameters!ContrastTheme.Value="Desert", "#1C5E75",
+Parameters!ContrastTheme.Value="None", "Blue")</Value>
     </Variable>
   </Variables>
   <rd:ReportUnitType>Inch</rd:ReportUnitType>

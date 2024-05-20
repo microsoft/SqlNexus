@@ -910,9 +910,6 @@ Parameters!ContrastTheme.Value="None", "SteelBlue")</Value>
 Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
 Parameters!ContrastTheme.Value="None", "SteelBlue")</Value>
     </Variable>
-    <Variable Name="TableRowFillColor">
-      <Value>="LightSteelBlue"</Value>
-    </Variable>
     <Variable Name="ChartColor">
       <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
 Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
@@ -938,6 +935,13 @@ Parameters!ContrastTheme.Value="None", "TopBottom")</Value>
       <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
 Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
 Parameters!ContrastTheme.Value="None", "#FFFFFF")</Value>
+    </Variable>
+    <Variable Name="URILinkFontColor">
+      <Value>
+        =Switch(Parameters!ContrastTheme.Value="Aquatic", "#75E9FC",
+        Parameters!ContrastTheme.Value="Desert", "#1C5E75",
+        Parameters!ContrastTheme.Value="None", "Blue")
+      </Value>
     </Variable>
   </Variables>
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
