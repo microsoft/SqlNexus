@@ -1775,8 +1775,23 @@ namespace sqlnexus
                         /*if (true == ReportFileManager.NeedToSupplyParameter(report.ReportPath))
                         {*/
 
+                        ReportParameterInfoCollection paramc = report.GetParameters();
+                        
+                        ReportParameter[] parameters = new ReportParameter[paramc.Where(x => x.Name != "ContrastTheme").Count() + 1];
+
+                        ReportParameter ContrastTheme = new ReportParameter("ContrastTheme", Properties.Settings.Default.Theme);
+                        parameters[0] = ContrastTheme;
+                        int i = 1;
+                        foreach (ReportParameterInfo p in paramc.Where (x => x.Name != "ContrastTheme"))
+                        {
+                            parameters[i++] = new ReportParameter(p.Name, p.Values[0]);
+                            
+                        }
+
+                        report.SetParameters(parameters);
+
                         //don't know whey we needed to call it twice
-                            SetReportQueryParameters(report);
+                        SetReportQueryParameters(report);
                             //SetReportQueryParameters(report);
                         /*}*/
 
@@ -2505,6 +2520,19 @@ namespace sqlnexus
             g_theme.setThemeColors(sTheme);
             g_theme.fRec_setControlColors(this);
             g_theme.fRec_setControlColors(fmNexus.singleton);
+            /*
+            ReportParameterInfoCollection paramcol = CurrentReportViewer.LocalReport.GetParameters();
+            ReportParameterInfo[] paramcol2 = paramcol.ToArray();
+            ReportParameter[] parameters = new ReportParameter[paramcol.Count];
+            int i = 0;
+            foreach (ReportParameterInfo param in paramcol2)
+            {
+                Debug.WriteLine("Parameter : " + param.Name );
+                parameters[i++] = new ReportParameter(param.Name, param.Values[0]);
+                
+            }
+            CurrentReportViewer.LocalReport.SetParameters(parameters);
+            */
         }
         private void tscZoom_SelectedIndexChanged(object sender, EventArgs e)
         {
