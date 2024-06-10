@@ -2520,19 +2520,11 @@ namespace sqlnexus
             g_theme.setThemeColors(sTheme);
             g_theme.fRec_setControlColors(this);
             g_theme.fRec_setControlColors(fmNexus.singleton);
-            /*
-            ReportParameterInfoCollection paramcol = CurrentReportViewer.LocalReport.GetParameters();
-            ReportParameterInfo[] paramcol2 = paramcol.ToArray();
-            ReportParameter[] parameters = new ReportParameter[paramcol.Count];
-            int i = 0;
-            foreach (ReportParameterInfo param in paramcol2)
-            {
-                Debug.WriteLine("Parameter : " + param.Name );
-                parameters[i++] = new ReportParameter(param.Name, param.Values[0]);
-                
-            }
-            CurrentReportViewer.LocalReport.SetParameters(parameters);
-            */
+            
+            CurrentReport.SetParameters(new ReportParameter("ContrastTheme",sTheme));
+            
+            CurrentReportViewer.RefreshReport();
+            
         }
         private void tscZoom_SelectedIndexChanged(object sender, EventArgs e)
         {
