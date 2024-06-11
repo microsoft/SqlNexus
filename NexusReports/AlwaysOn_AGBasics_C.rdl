@@ -613,9 +613,7 @@ FROM dbo.tbl_hadr_ag_states ags
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
-Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
-Parameters!ContrastTheme.Value="None", "LightSteelBlue")</BackgroundColor>
+                                <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(nothing) )</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -623,6 +621,7 @@ Parameters!ContrastTheme.Value="None", "LightSteelBlue")</BackgroundColor>
                                 <PaddingBottom>2pt</PaddingBottom>
                               </Style>
                             </Textbox>
+                            <rd:Selected>true</rd:Selected>
                           </CellContents>
                         </TablixCell>
                         <TablixCell>
@@ -651,9 +650,7 @@ Parameters!ContrastTheme.Value="None", "LightSteelBlue")</BackgroundColor>
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
-Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
-Parameters!ContrastTheme.Value="None", "LightSteelBlue")</BackgroundColor>
+                                <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(nothing) )</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -661,6 +658,7 @@ Parameters!ContrastTheme.Value="None", "LightSteelBlue")</BackgroundColor>
                                 <PaddingBottom>2pt</PaddingBottom>
                               </Style>
                             </Textbox>
+                            <rd:Selected>true</rd:Selected>
                           </CellContents>
                         </TablixCell>
                         <TablixCell>
@@ -689,9 +687,7 @@ Parameters!ContrastTheme.Value="None", "LightSteelBlue")</BackgroundColor>
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
-Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
-Parameters!ContrastTheme.Value="None", "LightSteelBlue")</BackgroundColor>
+                                <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(nothing) )</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -699,6 +695,7 @@ Parameters!ContrastTheme.Value="None", "LightSteelBlue")</BackgroundColor>
                                 <PaddingBottom>2pt</PaddingBottom>
                               </Style>
                             </Textbox>
+                            <rd:Selected>true</rd:Selected>
                           </CellContents>
                         </TablixCell>
                         <TablixCell>
@@ -727,9 +724,7 @@ Parameters!ContrastTheme.Value="None", "LightSteelBlue")</BackgroundColor>
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
-Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
-Parameters!ContrastTheme.Value="None", "LightSteelBlue")</BackgroundColor>
+                                <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(nothing) )</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -737,6 +732,7 @@ Parameters!ContrastTheme.Value="None", "LightSteelBlue")</BackgroundColor>
                                 <PaddingBottom>2pt</PaddingBottom>
                               </Style>
                             </Textbox>
+                            <rd:Selected>true</rd:Selected>
                           </CellContents>
                         </TablixCell>
                         <TablixCell>
@@ -765,9 +761,7 @@ Parameters!ContrastTheme.Value="None", "LightSteelBlue")</BackgroundColor>
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
-Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
-Parameters!ContrastTheme.Value="None", "LightSteelBlue")</BackgroundColor>
+                                <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(nothing) )</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -775,6 +769,7 @@ Parameters!ContrastTheme.Value="None", "LightSteelBlue")</BackgroundColor>
                                 <PaddingBottom>2pt</PaddingBottom>
                               </Style>
                             </Textbox>
+                            <rd:Selected>true</rd:Selected>
                           </CellContents>
                         </TablixCell>
                         <TablixCell>
@@ -803,9 +798,7 @@ Parameters!ContrastTheme.Value="None", "LightSteelBlue")</BackgroundColor>
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
-Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
-Parameters!ContrastTheme.Value="None", "LightSteelBlue")</BackgroundColor>
+                                <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(nothing) )</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -813,6 +806,7 @@ Parameters!ContrastTheme.Value="None", "LightSteelBlue")</BackgroundColor>
                                 <PaddingBottom>2pt</PaddingBottom>
                               </Style>
                             </Textbox>
+                            <rd:Selected>true</rd:Selected>
                           </CellContents>
                         </TablixCell>
                         <TablixCell>
@@ -841,9 +835,7 @@ Parameters!ContrastTheme.Value="None", "LightSteelBlue")</BackgroundColor>
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
-Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
-Parameters!ContrastTheme.Value="None", "LightSteelBlue")</BackgroundColor>
+                                <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(nothing) )</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -851,6 +843,7 @@ Parameters!ContrastTheme.Value="None", "LightSteelBlue")</BackgroundColor>
                                 <PaddingBottom>2pt</PaddingBottom>
                               </Style>
                             </Textbox>
+                            <rd:Selected>true</rd:Selected>
                           </CellContents>
                         </TablixCell>
                         <TablixCell>
@@ -879,9 +872,7 @@ Parameters!ContrastTheme.Value="None", "LightSteelBlue")</BackgroundColor>
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
-Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
-Parameters!ContrastTheme.Value="None", "LightSteelBlue")</BackgroundColor>
+                                <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(nothing) )</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -889,6 +880,7 @@ Parameters!ContrastTheme.Value="None", "LightSteelBlue")</BackgroundColor>
                                 <PaddingBottom>2pt</PaddingBottom>
                               </Style>
                             </Textbox>
+                            <rd:Selected>true</rd:Selected>
                           </CellContents>
                         </TablixCell>
                       </TablixCells>
@@ -1190,6 +1182,18 @@ Parameters!ContrastTheme.Value="None", "LightSteelBlue")</BackgroundColor>
       </CellDefinitions>
     </GridLayoutDefinition>
   </ReportParametersLayout>
+  <Code>Function GetTableRowFillColor(Theme as String, RowNumber As Integer) As String
+  If Theme ="Aquatic" Then 
+	return "#202020"
+  ElseIf Theme ="Desert" Then 
+	return "#FFFAEF"
+  Elseif RowNumber Mod 2 &lt;&gt; 0 Then
+		return "White"
+  Else 
+		Return "LightSteelBlue"
+  End If
+End Function
+</Code>
   <Variables>
     <Variable Name="IsLocalReport">
       <Value>= (Globals!ReportServerUrl="")</Value>

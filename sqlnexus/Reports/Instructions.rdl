@@ -432,19 +432,15 @@ You can add your own reports to those included with SQL Nexus by simply creating
                   </Paragraph>
                 </Paragraphs>
                 <rd:DefaultName>textbox15</rd:DefaultName>
-                <ActionInfo>
-                  <Actions>
-                    <Action>
-                      <Hyperlink>http://encarta.msn.com/dictionary_/sql.html</Hyperlink>
-                    </Action>
-                  </Actions>
-                </ActionInfo>
                 <Top>1in</Top>
                 <Left>0.125in</Left>
                 <Height>0.25in</Height>
                 <Width>0.5in</Width>
                 <ZIndex>16</ZIndex>
                 <Style>
+                  <Border>
+                    <Style>None</Style>
+                  </Border>
                   <PaddingLeft>2pt</PaddingLeft>
                   <PaddingRight>2pt</PaddingRight>
                   <PaddingTop>2pt</PaddingTop>
@@ -471,7 +467,7 @@ You can add your own reports to those included with SQL Nexus by simply creating
                 <ActionInfo>
                   <Actions>
                     <Action>
-                      <Hyperlink>http://encarta.msn.com/dictionary_/nexus.html</Hyperlink>
+                      <Hyperlink>https://www.merriam-webster.com/dictionary/nexus</Hyperlink>
                     </Action>
                   </Actions>
                 </ActionInfo>
@@ -481,6 +477,9 @@ You can add your own reports to those included with SQL Nexus by simply creating
                 <Width>0.625in</Width>
                 <ZIndex>17</ZIndex>
                 <Style>
+                  <Border>
+                    <Style>None</Style>
+                  </Border>
                   <PaddingLeft>2pt</PaddingLeft>
                   <PaddingRight>2pt</PaddingRight>
                   <PaddingTop>2pt</PaddingTop>
@@ -546,7 +545,7 @@ You can add your own reports to those included with SQL Nexus by simply creating
                 <ActionInfo>
                   <Actions>
                     <Action>
-                      <Hyperlink>http://www.khen.com/sqlnexus.htm</Hyperlink>
+                      <Hyperlink>https://github.com/microsoft/SqlNexus/wiki</Hyperlink>
                     </Action>
                   </Actions>
                 </ActionInfo>
@@ -556,6 +555,9 @@ You can add your own reports to those included with SQL Nexus by simply creating
                 <Width>0.875in</Width>
                 <ZIndex>20</ZIndex>
                 <Style>
+                  <Border>
+                    <Style>None</Style>
+                  </Border>
                   <PaddingLeft>2pt</PaddingLeft>
                   <PaddingRight>2pt</PaddingRight>
                   <PaddingTop>2pt</PaddingTop>
