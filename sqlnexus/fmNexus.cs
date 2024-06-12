@@ -1776,19 +1776,22 @@ namespace sqlnexus
                         {*/
 
                         ReportParameterInfoCollection paramc = report.GetParameters();
-                        
-                        ReportParameter[] parameters = new ReportParameter[paramc.Where(x => x.Name != "ContrastTheme").Count() + 1];
+
+                        List<ReportParameter> parameters = new List<ReportParameter>();//[paramc.Where(x => x.Name != "ContrastTheme").Count() + 1];
 
                         ReportParameter ContrastTheme = new ReportParameter("ContrastTheme", Properties.Settings.Default.Theme);
-                        parameters[0] = ContrastTheme;
-                        int i = 1;
+                        parameters.Add(ContrastTheme);
+
                         foreach (ReportParameterInfo p in paramc.Where (x => x.Name != "ContrastTheme"))
                         {
-                            parameters[i++] = new ReportParameter(p.Name, p.Values[0]);
-                            
+
+                            if (p.Values.Count > 0)
+                            {
+                                parameters.Add(new ReportParameter(p.Name, p.Values[0]));
+                            } 
                         }
 
-                        report.SetParameters(parameters);
+                        report.SetParameters(parameters.ToArray());
 
                         //don't know whey we needed to call it twice
                         SetReportQueryParameters(report);
