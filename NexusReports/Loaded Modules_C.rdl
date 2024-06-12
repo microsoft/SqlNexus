@@ -34,8 +34,7 @@ BEGIN
            '0x' + CONVERT(VARCHAR, base_address, 2) AS base_address,
            debug,
            description
-    FROM dbo.tbl_dm_os_loaded_modules
-    WHERE input_file_name LIKE '%_Shutdown.out'
+    FROM dbo.tbl_dm_os_loaded_modules   
     ORDER BY company;
 END;</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
