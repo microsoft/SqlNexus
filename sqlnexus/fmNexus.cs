@@ -2524,16 +2524,27 @@ namespace sqlnexus
 
         private void cmbTheme_SelectedItemChanged (object sender, EventArgs e)
         {
-            String sTheme = (string)((ToolStripComboBox)toolbarReport.Items["ContrastTheme"]).SelectedItem;
-            Properties.Settings.Default.Theme = sTheme;
-            g_theme.setThemeColors(sTheme);
-            g_theme.fRec_setControlColors(this);
-            g_theme.fRec_setControlColors(fmNexus.singleton);
+            try
+            {
+                String sTheme = (string)((ToolStripComboBox)toolbarReport.Items["ContrastTheme"]).SelectedItem;
+                Properties.Settings.Default.Theme = sTheme;
+                g_theme.setThemeColors(sTheme);
+                g_theme.fRec_setControlColors(this);
+                g_theme.fRec_setControlColors(fmNexus.singleton);
 
-            if (CurrentReport.GetParameters().Where(x => x.Name == "ContrastTheme").Any())
-                CurrentReport.SetParameters(new ReportParameter("ContrastTheme",sTheme));
+                if (CurrentReport.GetParameters().Where(x => x.Name == "ContrastTheme").Any())
+                    CurrentReport.SetParameters(new ReportParameter("ContrastTheme", sTheme));
+
+                CurrentReportViewer.RefreshReport();
+            }
+            catch(Exception ex)
+            {
+                Debug.WriteLine("Exception while changing theme");
+                Debug.WriteLine(ex.InnerException.Message);
+               // Debug.WriteLine (ex.ToString());
+
+            }
             
-            CurrentReportViewer.RefreshReport();
             
         }
         private void tscZoom_SelectedIndexChanged(object sender, EventArgs e)
