@@ -2530,8 +2530,7 @@ namespace sqlnexus
             g_theme.fRec_setControlColors(this);
             g_theme.fRec_setControlColors(fmNexus.singleton);
 
-            ReportParameterInfoCollection paramc = CurrentReport.GetParameters();
-            if (paramc.Where( x => x.Name == "ContrastTheme").Any())
+            if (CurrentReport.GetParameters().Where(x => x.Name == "ContrastTheme").Any())
                 CurrentReport.SetParameters(new ReportParameter("ContrastTheme",sTheme));
             
             CurrentReportViewer.RefreshReport();
