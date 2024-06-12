@@ -1780,15 +1780,21 @@ namespace sqlnexus
                         List<ReportParameter> parameters = new List<ReportParameter>();//[paramc.Where(x => x.Name != "ContrastTheme").Count() + 1];
 
                         ReportParameter ContrastTheme = new ReportParameter("ContrastTheme", Properties.Settings.Default.Theme);
-                        parameters.Add(ContrastTheme);
 
-                        foreach (ReportParameterInfo p in paramc.Where (x => x.Name != "ContrastTheme"))
+                        foreach (ReportParameterInfo p in paramc)//.Where (x => x.Name != "ContrastTheme"))
                         {
-
-                            if (p.Values.Count > 0)
+                            if (p.Name == "ContrastTheme")
                             {
-                                parameters.Add(new ReportParameter(p.Name, p.Values[0]));
-                            } 
+                                parameters.Add(ContrastTheme);
+                            } else
+                            {
+                                if (p.Values.Count > 0)
+                                {
+                                    parameters.Add(new ReportParameter(p.Name, p.Values[0]));
+                                }
+                            }
+
+                             
                         }
 
                         report.SetParameters(parameters.ToArray());
@@ -2523,8 +2529,10 @@ namespace sqlnexus
             g_theme.setThemeColors(sTheme);
             g_theme.fRec_setControlColors(this);
             g_theme.fRec_setControlColors(fmNexus.singleton);
-            
-            CurrentReport.SetParameters(new ReportParameter("ContrastTheme",sTheme));
+
+            ReportParameterInfoCollection paramc = CurrentReport.GetParameters();
+            if (paramc.Where( x => x.Name == "ContrastTheme").Any())
+                CurrentReport.SetParameters(new ReportParameter("ContrastTheme",sTheme));
             
             CurrentReportViewer.RefreshReport();
             
