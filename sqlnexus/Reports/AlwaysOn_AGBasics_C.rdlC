@@ -1192,8 +1192,8 @@ FROM dbo.tbl_hadr_ag_states ags
   Else 
 		Return "LightSteelBlue"
   End If
-End Function
-</Code>
+  End Function
+  </Code>
   <Variables>
     <Variable Name="IsLocalReport">
       <Value>= (Globals!ReportServerUrl="")</Value>
