@@ -2524,6 +2524,10 @@ namespace sqlnexus
 
         private void cmbTheme_SelectedItemChanged (object sender, EventArgs e)
         {
+            if (CurrentReport == null)
+            {
+                return;
+            }
             try
             {
                 String sTheme = (string)((ToolStripComboBox)toolbarReport.Items["ContrastTheme"]).SelectedItem;
