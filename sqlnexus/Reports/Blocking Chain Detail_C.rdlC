@@ -928,28 +928,28 @@ ELSE
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>1.5in</Width>
+                  <Width>1.61069in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.75in</Width>
+                  <Width>1.27474in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.5in</Width>
+                  <Width>1.51432in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.75in</Width>
+                  <Width>1.27457in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.875in</Width>
+                  <Width>1.44324in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.875in</Width>
+                  <Width>0.98958in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.75in</Width>
+                  <Width>1.28516in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>5.80208in</Width>
+                  <Width>6.19608in</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -970,8 +970,8 @@ ELSE
                                 <TextRun>
                                   <Value>Runtime</Value>
                                   <Style>
-                                    <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -985,7 +985,7 @@ ELSE
                               <Color>DarkGray</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>LightSteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <VerticalAlign>Bottom</VerticalAlign>
                             <PaddingLeft>1pt</PaddingLeft>
                           </Style>
@@ -1003,8 +1003,8 @@ ELSE
                                 <TextRun>
                                   <Value>Blocker Task State</Value>
                                   <Style>
-                                    <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1018,7 +1018,7 @@ ELSE
                               <Color>DarkGray</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>LightSteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <VerticalAlign>Bottom</VerticalAlign>
                             <PaddingLeft>1pt</PaddingLeft>
                           </Style>
@@ -1036,8 +1036,8 @@ ELSE
                                 <TextRun>
                                   <Value>Blocker Wait Category</Value>
                                   <Style>
-                                    <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1051,7 +1051,7 @@ ELSE
                               <Color>DarkGray</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>LightSteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <VerticalAlign>Bottom</VerticalAlign>
                             <PaddingLeft>1pt</PaddingLeft>
                           </Style>
@@ -1072,8 +1072,8 @@ ELSE
                                 <TextRun>
                                   <Value>Wait Time (ms)</Value>
                                   <Style>
-                                    <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1087,7 +1087,7 @@ ELSE
                               <Color>DarkGray</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>LightSteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <VerticalAlign>Bottom</VerticalAlign>
                             <PaddingLeft>1pt</PaddingLeft>
                           </Style>
@@ -1108,8 +1108,8 @@ ELSE
                                 <TextRun>
                                   <Value>Blocker Query Duration (ms)</Value>
                                   <Style>
-                                    <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1123,7 +1123,7 @@ ELSE
                               <Color>DarkGray</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>LightSteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <VerticalAlign>Bottom</VerticalAlign>
                             <PaddingLeft>1pt</PaddingLeft>
                           </Style>
@@ -1144,8 +1144,8 @@ ELSE
                                 <TextRun>
                                   <Value>Blocked Tasks</Value>
                                   <Style>
-                                    <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1159,7 +1159,7 @@ ELSE
                               <Color>DarkGray</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>LightSteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <VerticalAlign>Bottom</VerticalAlign>
                             <PaddingLeft>1pt</PaddingLeft>
                           </Style>
@@ -1177,8 +1177,8 @@ ELSE
                                 <TextRun>
                                   <Value>Blocker Command</Value>
                                   <Style>
-                                    <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1192,7 +1192,7 @@ ELSE
                               <Color>DarkGray</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>LightSteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <VerticalAlign>Bottom</VerticalAlign>
                             <PaddingLeft>1pt</PaddingLeft>
                           </Style>
@@ -1210,8 +1210,8 @@ ELSE
                                 <TextRun>
                                   <Value>Most Recent Head Blocker Query</Value>
                                   <Style>
-                                    <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1225,7 +1225,7 @@ ELSE
                               <Color>DarkGray</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>LightSteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <VerticalAlign>Bottom</VerticalAlign>
                             <PaddingLeft>1pt</PaddingLeft>
                           </Style>
@@ -1248,9 +1248,9 @@ ELSE
                                 <TextRun>
                                   <Value>=Fields!runtime.Value</Value>
                                   <Style>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
                                     <TextDecoration>Underline</TextDecoration>
-                                    <Color>Blue</Color>
+                                    <Color>=Variables!URILinkFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1285,7 +1285,10 @@ ELSE
                           </ActionInfo>
                           <ZIndex>7</ZIndex>
                           <Style>
-                            <BackgroundColor>=iif(RowNumber(nothing) Mod 2, "", "AliceBlue")</BackgroundColor>
+                            <Border>
+                              <Style>None</Style>
+                            </Border>
+                            <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(nothing) )</BackgroundColor>
                           </Style>
                         </Textbox>
                       </CellContents>
@@ -1301,7 +1304,8 @@ ELSE
                                 <TextRun>
                                   <Value>=IIf (IsNothing (Fields!task_state.Value) Or Fields!task_state.Value="NULL", "not running", Fields!task_state.Value)</Value>
                                   <Style>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1313,7 +1317,7 @@ ELSE
                           <rd:DefaultName>task_state</rd:DefaultName>
                           <ZIndex>6</ZIndex>
                           <Style>
-                            <BackgroundColor>=iif(RowNumber(nothing) Mod 2, "", "AliceBlue")</BackgroundColor>
+                            <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(nothing) )</BackgroundColor>
                           </Style>
                         </Textbox>
                       </CellContents>
@@ -1329,7 +1333,8 @@ ELSE
                                 <TextRun>
                                   <Value>=IIf (IsNothing(Fields!wait_category.Value), "Not waiting", Fields!wait_category.Value)</Value>
                                   <Style>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1341,7 +1346,7 @@ ELSE
                           <rd:DefaultName>command</rd:DefaultName>
                           <ZIndex>5</ZIndex>
                           <Style>
-                            <BackgroundColor>=iif(RowNumber(nothing) Mod 2, "", "AliceBlue")</BackgroundColor>
+                            <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(nothing) )</BackgroundColor>
                           </Style>
                         </Textbox>
                       </CellContents>
@@ -1357,7 +1362,8 @@ ELSE
                                 <TextRun>
                                   <Value>=Fields!wait_duration_ms.Value</Value>
                                   <Style>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1369,7 +1375,7 @@ ELSE
                           <rd:DefaultName>textbox9</rd:DefaultName>
                           <ZIndex>4</ZIndex>
                           <Style>
-                            <BackgroundColor>=iif(RowNumber(nothing) Mod 2, "", "AliceBlue")</BackgroundColor>
+                            <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(nothing) )</BackgroundColor>
                           </Style>
                         </Textbox>
                       </CellContents>
@@ -1385,7 +1391,8 @@ ELSE
                                 <TextRun>
                                   <Value>=Fields!request_elapsed_time.Value</Value>
                                   <Style>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1397,7 +1404,7 @@ ELSE
                           <rd:DefaultName>blocking_session_id</rd:DefaultName>
                           <ZIndex>3</ZIndex>
                           <Style>
-                            <BackgroundColor>=iif(RowNumber(nothing) Mod 2, "", "AliceBlue")</BackgroundColor>
+                            <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(nothing) )</BackgroundColor>
                           </Style>
                         </Textbox>
                       </CellContents>
@@ -1413,7 +1420,8 @@ ELSE
                                 <TextRun>
                                   <Value>=Fields!blocked_tasks.Value</Value>
                                   <Style>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1425,7 +1433,7 @@ ELSE
                           <rd:DefaultName>wait_duration_ms_1</rd:DefaultName>
                           <ZIndex>2</ZIndex>
                           <Style>
-                            <BackgroundColor>=iif(RowNumber(nothing) Mod 2, "", "AliceBlue")</BackgroundColor>
+                            <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(nothing) )</BackgroundColor>
                           </Style>
                         </Textbox>
                       </CellContents>
@@ -1441,7 +1449,8 @@ ELSE
                                 <TextRun>
                                   <Value>=IIf (IsNothing (Fields!command.Value) Or Fields!command.Value="NULL", "AWAITING CMD", Fields!command.Value)</Value>
                                   <Style>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1453,7 +1462,7 @@ ELSE
                           <rd:DefaultName>wait_type_1</rd:DefaultName>
                           <ZIndex>1</ZIndex>
                           <Style>
-                            <BackgroundColor>=iif(RowNumber(nothing) Mod 2, "", "AliceBlue")</BackgroundColor>
+                            <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(nothing) )</BackgroundColor>
                           </Style>
                         </Textbox>
                       </CellContents>
@@ -1469,7 +1478,8 @@ ELSE
                                 <TextRun>
                                   <Value>=IIf (IsNothing (Fields!query.Value), "", Left(Fields!query.Value, 100) &amp; "...")</Value>
                                   <Style>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>9pt</FontSize>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1480,7 +1490,7 @@ ELSE
                           </Paragraphs>
                           <rd:DefaultName>wait_resource_1</rd:DefaultName>
                           <Style>
-                            <BackgroundColor>=iif(RowNumber(nothing) Mod 2, "", "AliceBlue")</BackgroundColor>
+                            <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(nothing) )</BackgroundColor>
                           </Style>
                         </Textbox>
                       </CellContents>
@@ -1766,9 +1776,9 @@ ELSE
             </TablixRowHierarchy>
             <DataSetName>DataSet_BlockingChain_BlockingChainAllRuntimes</DataSetName>
             <Top>3.625in</Top>
-            <Left>0.25in</Left>
+            <Left>0.13541in</Left>
             <Height>0.92858in</Height>
-            <Width>12.80208in</Width>
+            <Width>15.58838in</Width>
             <Style>
               <Border>
                 <Color>DarkGray</Color>
@@ -1786,28 +1796,28 @@ ELSE
                   <TextRun>
                     <Value>Head Blocker Session ID</Value>
                     <Style>
-                      <FontSize>8pt</FontSize>
                       <FontWeight>SemiBold</FontWeight>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
                 <Style>
-                  <TextAlign>Right</TextAlign>
+                  <TextAlign>Left</TextAlign>
                 </Style>
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>textbox22</rd:DefaultName>
-            <Top>0.875in</Top>
-            <Left>0.25in</Left>
+            <Top>0.94792in</Top>
+            <Left>0.11458in</Left>
             <Height>0.25in</Height>
-            <Width>1.5in</Width>
+            <Width>1.77084in</Width>
             <ZIndex>1</ZIndex>
             <Style>
               <Border>
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>LightSteelBlue</BackgroundColor>
+              <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -1824,27 +1834,27 @@ ELSE
                   <TextRun>
                     <Value>Blocking Duration (sec)</Value>
                     <Style>
-                      <FontSize>8pt</FontSize>
                       <FontWeight>SemiBold</FontWeight>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
                 <Style>
-                  <TextAlign>Right</TextAlign>
+                  <TextAlign>Left</TextAlign>
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <Top>0.875in</Top>
-            <Left>4.75in</Left>
+            <Top>0.96875in</Top>
+            <Left>5.76043in</Left>
             <Height>0.25in</Height>
-            <Width>1.5in</Width>
+            <Width>1.82292in</Width>
             <ZIndex>2</ZIndex>
             <Style>
               <Border>
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>LightSteelBlue</BackgroundColor>
+              <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -1861,27 +1871,27 @@ ELSE
                   <TextRun>
                     <Value>Max Blocking Chain Size</Value>
                     <Style>
-                      <FontSize>8pt</FontSize>
                       <FontWeight>SemiBold</FontWeight>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
                 <Style>
-                  <TextAlign>Right</TextAlign>
+                  <TextAlign>Left</TextAlign>
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <Top>1.125in</Top>
-            <Left>4.75in</Left>
+            <Top>1.20833in</Top>
+            <Left>5.76043in</Left>
             <Height>0.25in</Height>
-            <Width>1.5in</Width>
+            <Width>1.82292in</Width>
             <ZIndex>3</ZIndex>
             <Style>
               <Border>
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>LightSteelBlue</BackgroundColor>
+              <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -1898,27 +1908,25 @@ ELSE
                   <TextRun>
                     <Value>Program Name</Value>
                     <Style>
-                      <FontSize>8pt</FontSize>
                       <FontWeight>SemiBold</FontWeight>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
-                <Style>
-                  <TextAlign>Right</TextAlign>
-                </Style>
+                <Style />
               </Paragraph>
             </Paragraphs>
-            <Top>1.875in</Top>
-            <Left>0.25in</Left>
+            <Top>2.02083in</Top>
+            <Left>0.11458in</Left>
             <Height>0.25in</Height>
-            <Width>1.5in</Width>
+            <Width>1.77084in</Width>
             <ZIndex>4</ZIndex>
             <Style>
               <Border>
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>LightSteelBlue</BackgroundColor>
+              <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -1935,27 +1943,25 @@ ELSE
                   <TextRun>
                     <Value>Host Name</Value>
                     <Style>
-                      <FontSize>8pt</FontSize>
                       <FontWeight>SemiBold</FontWeight>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
-                <Style>
-                  <TextAlign>Right</TextAlign>
-                </Style>
+                <Style />
               </Paragraph>
             </Paragraphs>
-            <Top>2.125in</Top>
-            <Left>0.25in</Left>
+            <Top>2.23958in</Top>
+            <Left>0.11666in</Left>
             <Height>0.25in</Height>
-            <Width>1.5in</Width>
+            <Width>1.77084in</Width>
             <ZIndex>5</ZIndex>
             <Style>
               <Border>
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>LightSteelBlue</BackgroundColor>
+              <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -1972,27 +1978,25 @@ ELSE
                   <TextRun>
                     <Value>NT User</Value>
                     <Style>
-                      <FontSize>8pt</FontSize>
                       <FontWeight>SemiBold</FontWeight>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
-                <Style>
-                  <TextAlign>Right</TextAlign>
-                </Style>
+                <Style />
               </Paragraph>
             </Paragraphs>
-            <Top>2.375in</Top>
-            <Left>0.25in</Left>
+            <Top>2.48958in</Top>
+            <Left>0.11666in</Left>
             <Height>0.25in</Height>
-            <Width>1.5in</Width>
+            <Width>1.77084in</Width>
             <ZIndex>6</ZIndex>
             <Style>
               <Border>
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>LightSteelBlue</BackgroundColor>
+              <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2009,27 +2013,25 @@ ELSE
                   <TextRun>
                     <Value>Login Name</Value>
                     <Style>
-                      <FontSize>8pt</FontSize>
                       <FontWeight>SemiBold</FontWeight>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
-                <Style>
-                  <TextAlign>Right</TextAlign>
-                </Style>
+                <Style />
               </Paragraph>
             </Paragraphs>
-            <Top>2.625in</Top>
-            <Left>0.25in</Left>
+            <Top>2.73958in</Top>
+            <Left>0.11666in</Left>
             <Height>0.25in</Height>
-            <Width>1.5in</Width>
+            <Width>1.77084in</Width>
             <ZIndex>7</ZIndex>
             <Style>
               <Border>
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>LightSteelBlue</BackgroundColor>
+              <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2046,7 +2048,7 @@ ELSE
                   <TextRun>
                     <Value>=First(Fields!head_blocker_session_id.Value, "DataSet_BlockingChain_BlockingChainDetails")</Value>
                     <Style>
-                      <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2055,8 +2057,8 @@ ELSE
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <Top>0.875in</Top>
-            <Left>1.75in</Left>
+            <Top>0.9375in</Top>
+            <Left>1.88819in</Left>
             <Height>0.25in</Height>
             <Width>2.75in</Width>
             <ZIndex>8</ZIndex>
@@ -2065,7 +2067,6 @@ ELSE
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2082,7 +2083,7 @@ ELSE
                   <TextRun>
                     <Value>=Sum(Fields!blocking_duration_sec.Value, "DataSet_BlockingChain_BlockingChainDetails")</Value>
                     <Style>
-                      <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2091,8 +2092,8 @@ ELSE
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <Top>0.875in</Top>
-            <Left>6.25in</Left>
+            <Top>0.95833in</Top>
+            <Left>7.58543in</Left>
             <Height>0.25in</Height>
             <Width>2.625in</Width>
             <ZIndex>9</ZIndex>
@@ -2101,7 +2102,6 @@ ELSE
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2118,7 +2118,7 @@ ELSE
                   <TextRun>
                     <Value>=First(Fields!login_name.Value, "DataSet_BlockingChain_HeadBlockerSampleRuntime")</Value>
                     <Style>
-                      <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2127,8 +2127,8 @@ ELSE
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <Top>2.625in</Top>
-            <Left>1.75in</Left>
+            <Top>2.75in</Top>
+            <Left>1.91528in</Left>
             <Height>0.25in</Height>
             <Width>2.75in</Width>
             <ZIndex>10</ZIndex>
@@ -2137,7 +2137,6 @@ ELSE
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2154,15 +2153,15 @@ ELSE
                   <TextRun>
                     <Value>=First(Fields!nt_domain.Value, "DataSet_BlockingChain_HeadBlockerSampleRuntime") &amp; "\" &amp; First(Fields!nt_user_name.Value, "DataSet_BlockingChain_HeadBlockerSampleRuntime")</Value>
                     <Style>
-                      <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
                 <Style />
               </Paragraph>
             </Paragraphs>
-            <Top>2.375in</Top>
-            <Left>1.75in</Left>
+            <Top>2.5in</Top>
+            <Left>1.91528in</Left>
             <Height>0.25in</Height>
             <Width>2.75in</Width>
             <ZIndex>11</ZIndex>
@@ -2171,7 +2170,6 @@ ELSE
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2188,15 +2186,15 @@ ELSE
                   <TextRun>
                     <Value>=First(Fields!host_name.Value, "DataSet_BlockingChain_HeadBlockerSampleRuntime")</Value>
                     <Style>
-                      <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
                 <Style />
               </Paragraph>
             </Paragraphs>
-            <Top>2.125in</Top>
-            <Left>1.75in</Left>
+            <Top>2.26042in</Top>
+            <Left>1.91528in</Left>
             <Height>0.25in</Height>
             <Width>2.75in</Width>
             <ZIndex>12</ZIndex>
@@ -2205,7 +2203,6 @@ ELSE
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2221,15 +2218,15 @@ ELSE
                   <TextRun>
                     <Value>=First(Fields!program_name.Value, "DataSet_BlockingChain_HeadBlockerSampleRuntime")</Value>
                     <Style>
-                      <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
                 <Style />
               </Paragraph>
             </Paragraphs>
-            <Top>1.875in</Top>
-            <Left>1.75in</Left>
+            <Top>2.01042in</Top>
+            <Left>1.91528in</Left>
             <Height>0.25in</Height>
             <Width>2.75in</Width>
             <ZIndex>13</ZIndex>
@@ -2238,7 +2235,6 @@ ELSE
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2255,7 +2251,7 @@ ELSE
                   <TextRun>
                     <Value>=Sum(Fields!max_blocked_task_count.Value, "DataSet_BlockingChain_BlockingChainDetails")</Value>
                     <Style>
-                      <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2264,8 +2260,8 @@ ELSE
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <Top>1.125in</Top>
-            <Left>6.25in</Left>
+            <Top>1.19375in</Top>
+            <Left>7.58543in</Left>
             <Height>0.25in</Height>
             <Width>2.625in</Width>
             <ZIndex>14</ZIndex>
@@ -2274,7 +2270,6 @@ ELSE
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2291,27 +2286,25 @@ ELSE
                   <TextRun>
                     <Value>Blocking Start</Value>
                     <Style>
-                      <FontSize>8pt</FontSize>
                       <FontWeight>SemiBold</FontWeight>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
-                <Style>
-                  <TextAlign>Right</TextAlign>
-                </Style>
+                <Style />
               </Paragraph>
             </Paragraphs>
-            <Top>1.125in</Top>
-            <Left>0.25in</Left>
+            <Top>1.20833in</Top>
+            <Left>0.11458in</Left>
             <Height>0.25in</Height>
-            <Width>1.5in</Width>
+            <Width>1.77084in</Width>
             <ZIndex>15</ZIndex>
             <Style>
               <Border>
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>LightSteelBlue</BackgroundColor>
+              <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2328,27 +2321,25 @@ ELSE
                   <TextRun>
                     <Value>Blocking End</Value>
                     <Style>
-                      <FontSize>8pt</FontSize>
                       <FontWeight>SemiBold</FontWeight>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
-                <Style>
-                  <TextAlign>Right</TextAlign>
-                </Style>
+                <Style />
               </Paragraph>
             </Paragraphs>
-            <Top>1.375in</Top>
-            <Left>0.25in</Left>
+            <Top>1.46875in</Top>
+            <Left>0.11666in</Left>
             <Height>0.25in</Height>
-            <Width>1.5in</Width>
+            <Width>1.77084in</Width>
             <ZIndex>16</ZIndex>
             <Style>
               <Border>
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>LightSteelBlue</BackgroundColor>
+              <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2365,7 +2356,7 @@ ELSE
                   <TextRun>
                     <Value>=First(Fields!blocking_start.Value, "DataSet_BlockingChain_BlockingChainDetails")</Value>
                     <Style>
-                      <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2374,8 +2365,8 @@ ELSE
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <Top>1.125in</Top>
-            <Left>1.75in</Left>
+            <Top>1.1875in</Top>
+            <Left>1.88819in</Left>
             <Height>0.25in</Height>
             <Width>2.75in</Width>
             <ZIndex>17</ZIndex>
@@ -2384,7 +2375,6 @@ ELSE
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2401,7 +2391,7 @@ ELSE
                   <TextRun>
                     <Value>=First(Fields!blocking_end.Value, "DataSet_BlockingChain_BlockingChainDetails")</Value>
                     <Style>
-                      <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2410,8 +2400,8 @@ ELSE
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <Top>1.375in</Top>
-            <Left>1.75in</Left>
+            <Top>1.42708in</Top>
+            <Left>1.88819in</Left>
             <Height>0.25in</Height>
             <Width>2.75in</Width>
             <ZIndex>18</ZIndex>
@@ -2420,7 +2410,6 @@ ELSE
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2437,27 +2426,27 @@ ELSE
                   <TextRun>
                     <Value>Transaction Name</Value>
                     <Style>
-                      <FontSize>8pt</FontSize>
                       <FontWeight>SemiBold</FontWeight>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
                 <Style>
-                  <TextAlign>Right</TextAlign>
+                  <TextAlign>Left</TextAlign>
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <Top>2.375in</Top>
-            <Left>4.75in</Left>
+            <Top>2.46875in</Top>
+            <Left>5.77085in</Left>
             <Height>0.25in</Height>
-            <Width>1.5in</Width>
+            <Width>1.8125in</Width>
             <ZIndex>19</ZIndex>
             <Style>
               <Border>
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>LightSteelBlue</BackgroundColor>
+              <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2474,15 +2463,15 @@ ELSE
                   <TextRun>
                     <Value>=First(Fields!tran_name.Value, "DataSet_BlockingChain_HeadBlockerSampleRuntime")</Value>
                     <Style>
-                      <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
                 <Style />
               </Paragraph>
             </Paragraphs>
-            <Top>2.375in</Top>
-            <Left>6.25in</Left>
+            <Top>2.45625in</Top>
+            <Left>7.58543in</Left>
             <Height>0.25in</Height>
             <Width>2.625in</Width>
             <ZIndex>20</ZIndex>
@@ -2491,7 +2480,6 @@ ELSE
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2508,27 +2496,27 @@ ELSE
                   <TextRun>
                     <Value>Trans Start (Duration)</Value>
                     <Style>
-                      <FontSize>8pt</FontSize>
                       <FontWeight>SemiBold</FontWeight>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
                 <Style>
-                  <TextAlign>Right</TextAlign>
+                  <TextAlign>Left</TextAlign>
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <Top>2.625in</Top>
-            <Left>4.75in</Left>
+            <Top>2.71875in</Top>
+            <Left>5.77085in</Left>
             <Height>0.25in</Height>
-            <Width>1.5in</Width>
+            <Width>1.8125in</Width>
             <ZIndex>21</ZIndex>
             <Style>
               <Border>
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>LightSteelBlue</BackgroundColor>
+              <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2545,7 +2533,7 @@ ELSE
                   <TextRun>
                     <Value>=IIF(IsNothing (First(Fields!transaction_begin_time.Value, "DataSet_BlockingChain_HeadBlockerSampleRuntime")), "Unknown",  First(Fields!transaction_begin_time.Value, "DataSet_BlockingChain_HeadBlockerSampleRuntime") &amp; " ("   &amp; IIF(DateDiff ("s", First(Fields!transaction_begin_time.Value, "DataSet_BlockingChain_HeadBlockerSampleRuntime"), First(Fields!runtime.Value, "DataSet_BlockingChain_HeadBlockerSampleRuntime"))&lt;0, "unknown", DateDiff ("s", First(Fields!transaction_begin_time.Value, "DataSet_BlockingChain_HeadBlockerSampleRuntime"), First(Fields!runtime.Value, "DataSet_BlockingChain_HeadBlockerSampleRuntime"))) &amp; " sec)")</Value>
                     <Style>
-                      <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2554,8 +2542,8 @@ ELSE
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <Top>2.625in</Top>
-            <Left>6.25in</Left>
+            <Top>2.70625in</Top>
+            <Left>7.58543in</Left>
             <Height>0.25in</Height>
             <Width>2.625in</Width>
             <ZIndex>22</ZIndex>
@@ -2564,7 +2552,6 @@ ELSE
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2581,27 +2568,27 @@ ELSE
                   <TextRun>
                     <Value># Open Transactions</Value>
                     <Style>
-                      <FontSize>8pt</FontSize>
                       <FontWeight>SemiBold</FontWeight>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
                 <Style>
-                  <TextAlign>Right</TextAlign>
+                  <TextAlign>Left</TextAlign>
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <Top>2.875in</Top>
-            <Left>4.75in</Left>
+            <Top>2.96875in</Top>
+            <Left>5.77085in</Left>
             <Height>0.25in</Height>
-            <Width>1.5in</Width>
+            <Width>1.8125in</Width>
             <ZIndex>23</ZIndex>
             <Style>
               <Border>
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>LightSteelBlue</BackgroundColor>
+              <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2618,7 +2605,7 @@ ELSE
                   <TextRun>
                     <Value>=Sum(Fields!open_trans.Value, "DataSet_BlockingChain_HeadBlockerSampleRuntime")</Value>
                     <Style>
-                      <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2627,8 +2614,8 @@ ELSE
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <Top>2.875in</Top>
-            <Left>6.25in</Left>
+            <Top>2.95625in</Top>
+            <Left>7.58543in</Left>
             <Height>0.25in</Height>
             <Width>2.625in</Width>
             <ZIndex>24</ZIndex>
@@ -2637,7 +2624,6 @@ ELSE
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2657,6 +2643,7 @@ ELSE
                       <FontFamily>Trebuchet MS</FontFamily>
                       <FontSize>12pt</FontSize>
                       <FontWeight>Bold</FontWeight>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2665,12 +2652,15 @@ ELSE
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <Top>0.625in</Top>
+            <Top>0.65in</Top>
             <Left>0.125in</Left>
             <Height>0.25in</Height>
             <Width>4.25in</Width>
             <ZIndex>25</ZIndex>
             <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
               <VerticalAlign>Bottom</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2690,6 +2680,7 @@ ELSE
                       <FontFamily>Trebuchet MS</FontFamily>
                       <FontSize>12pt</FontSize>
                       <FontWeight>Bold</FontWeight>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2698,8 +2689,8 @@ ELSE
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <Top>1.625in</Top>
-            <Left>0.125in</Left>
+            <Top>1.7125in</Top>
+            <Left>0.12291in</Left>
             <Height>0.25in</Height>
             <Width>4.25in</Width>
             <ZIndex>26</ZIndex>
@@ -2720,8 +2711,9 @@ ELSE
                   <TextRun>
                     <Value>Blocking Chain Detail</Value>
                     <Style>
-                      <FontSize>14pt</FontSize>
+                      <FontSize>18pt</FontSize>
                       <FontWeight>Bold</FontWeight>
+                      <Color>=Variables!TitleColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2730,164 +2722,19 @@ ELSE
             </Paragraphs>
             <rd:DefaultName>textbox6</rd:DefaultName>
             <Left>0.125in</Left>
-            <Height>0.25in</Height>
-            <Width>3.125in</Width>
+            <Height>0.29861in</Height>
+            <Width>3.33333in</Width>
             <ZIndex>27</ZIndex>
             <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
               <PaddingTop>2pt</PaddingTop>
               <PaddingBottom>2pt</PaddingBottom>
             </Style>
           </Textbox>
-          <Rectangle Name="rectangle1">
-            <ReportItems>
-              <Textbox Name="textbox60">
-                <CanGrow>true</CanGrow>
-                <KeepTogether>true</KeepTogether>
-                <Paragraphs>
-                  <Paragraph>
-                    <TextRuns>
-                      <TextRun>
-                        <Value>Server</Value>
-                        <Style>
-                          <FontSize>8pt</FontSize>
-                          <FontWeight>Bold</FontWeight>
-                        </Style>
-                      </TextRun>
-                    </TextRuns>
-                    <Style>
-                      <TextAlign>Right</TextAlign>
-                    </Style>
-                  </Paragraph>
-                </Paragraphs>
-                <Height>0.25in</Height>
-                <Width>1in</Width>
-                <Style>
-                  <Border>
-                    <Color>DarkGray</Color>
-                    <Style>Solid</Style>
-                  </Border>
-                  <BackgroundColor>LightSteelBlue</BackgroundColor>
-                  <VerticalAlign>Middle</VerticalAlign>
-                  <PaddingLeft>2pt</PaddingLeft>
-                  <PaddingRight>2pt</PaddingRight>
-                  <PaddingTop>1pt</PaddingTop>
-                  <PaddingBottom>1pt</PaddingBottom>
-                </Style>
-              </Textbox>
-              <Textbox Name="textbox59">
-                <CanGrow>true</CanGrow>
-                <KeepTogether>true</KeepTogether>
-                <Paragraphs>
-                  <Paragraph>
-                    <TextRuns>
-                      <TextRun>
-                        <Value>=First(Fields!value.Value, "DataSet_Shared_SQLServerName")</Value>
-                        <Style>
-                          <FontSize>8pt</FontSize>
-                        </Style>
-                      </TextRun>
-                    </TextRuns>
-                    <Style />
-                  </Paragraph>
-                </Paragraphs>
-                <Left>1in</Left>
-                <Height>0.25in</Height>
-                <Width>1.125in</Width>
-                <ZIndex>1</ZIndex>
-                <Style>
-                  <Border>
-                    <Color>DarkGray</Color>
-                    <Style>Solid</Style>
-                  </Border>
-                  <BackgroundColor>White</BackgroundColor>
-                  <VerticalAlign>Middle</VerticalAlign>
-                  <PaddingLeft>2pt</PaddingLeft>
-                  <PaddingRight>2pt</PaddingRight>
-                  <PaddingTop>1pt</PaddingTop>
-                  <PaddingBottom>1pt</PaddingBottom>
-                </Style>
-              </Textbox>
-              <Textbox Name="textbox58">
-                <CanGrow>true</CanGrow>
-                <KeepTogether>true</KeepTogether>
-                <Paragraphs>
-                  <Paragraph>
-                    <TextRuns>
-                      <TextRun>
-                        <Value>Version (SP)</Value>
-                        <Style>
-                          <FontSize>8pt</FontSize>
-                          <FontWeight>Bold</FontWeight>
-                        </Style>
-                      </TextRun>
-                    </TextRuns>
-                    <Style>
-                      <TextAlign>Right</TextAlign>
-                    </Style>
-                  </Paragraph>
-                </Paragraphs>
-                <Top>0.25in</Top>
-                <Height>0.25in</Height>
-                <Width>1in</Width>
-                <ZIndex>2</ZIndex>
-                <Style>
-                  <Border>
-                    <Color>DarkGray</Color>
-                    <Style>Solid</Style>
-                  </Border>
-                  <BackgroundColor>LightSteelBlue</BackgroundColor>
-                  <VerticalAlign>Middle</VerticalAlign>
-                  <PaddingLeft>2pt</PaddingLeft>
-                  <PaddingRight>2pt</PaddingRight>
-                  <PaddingTop>1pt</PaddingTop>
-                  <PaddingBottom>1pt</PaddingBottom>
-                </Style>
-              </Textbox>
-              <Textbox Name="textbox57">
-                <CanGrow>true</CanGrow>
-                <KeepTogether>true</KeepTogether>
-                <Paragraphs>
-                  <Paragraph>
-                    <TextRuns>
-                      <TextRun>
-                        <Value>=First(Fields!value.Value, "DataSet_Shared_SQLVersion")</Value>
-                        <Style>
-                          <FontSize>8pt</FontSize>
-                        </Style>
-                      </TextRun>
-                    </TextRuns>
-                    <Style />
-                  </Paragraph>
-                </Paragraphs>
-                <Top>0.25in</Top>
-                <Left>1in</Left>
-                <Height>0.25in</Height>
-                <Width>1.125in</Width>
-                <ZIndex>3</ZIndex>
-                <Style>
-                  <Border>
-                    <Color>DarkGray</Color>
-                    <Style>Solid</Style>
-                  </Border>
-                  <BackgroundColor>White</BackgroundColor>
-                  <VerticalAlign>Middle</VerticalAlign>
-                  <PaddingLeft>2pt</PaddingLeft>
-                  <PaddingRight>2pt</PaddingRight>
-                  <PaddingTop>1pt</PaddingTop>
-                  <PaddingBottom>1pt</PaddingBottom>
-                </Style>
-              </Textbox>
-            </ReportItems>
-            <DataElementOutput>ContentsOnly</DataElementOutput>
-            <Top>0.125in</Top>
-            <Left>6.75in</Left>
-            <Height>0.5in</Height>
-            <Width>2.125in</Width>
-            <ZIndex>28</ZIndex>
-            <Style />
-          </Rectangle>
           <Textbox Name="textbox63">
             <CanGrow>true</CanGrow>
             <KeepTogether>true</KeepTogether>
@@ -2906,11 +2753,11 @@ ELSE
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <Top>0.86111in</Top>
-            <Left>8.89in</Left>
+            <Top>0.95486in</Top>
+            <Left>9.85876in</Left>
             <Height>0.25in</Height>
             <Width>0.14583in</Width>
-            <ZIndex>29</ZIndex>
+            <ZIndex>28</ZIndex>
             <Visibility>
               <Hidden>=iif (Max(Fields!blocking_duration_sec.Value, "DataSet_BlockingChain_BlockingChainDetails") &gt; 30, False, True)</Hidden>
             </Visibility>
@@ -2950,11 +2797,11 @@ ELSE
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <Top>1.11111in</Top>
-            <Left>8.89in</Left>
+            <Top>1.20486in</Top>
+            <Left>9.85876in</Left>
             <Height>0.25in</Height>
             <Width>0.14583in</Width>
-            <ZIndex>30</ZIndex>
+            <ZIndex>29</ZIndex>
             <Visibility>
               <Hidden>=iif (Max(Fields!max_blocked_task_count.Value, "DataSet_BlockingChain_BlockingChainDetails") &gt; 10, False, True)</Hidden>
             </Visibility>
@@ -2994,11 +2841,11 @@ ELSE
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <Top>2.625in</Top>
-            <Left>8.89in</Left>
+            <Top>2.74583in</Top>
+            <Left>10.08793in</Left>
             <Height>0.25in</Height>
             <Width>0.14583in</Width>
-            <ZIndex>31</ZIndex>
+            <ZIndex>30</ZIndex>
             <Visibility>
               <Hidden>=iif (DateDiff ("s", First(Fields!transaction_begin_time.Value, "DataSet_BlockingChain_BlockingChainDetails"), First(Fields!example_runtime.Value, "DataSet_BlockingChain_BlockingChainDetails")) &gt; 30, False, True)</Hidden>
             </Visibility>
@@ -3038,11 +2885,11 @@ ELSE
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <Top>2.875in</Top>
-            <Left>8.89in</Left>
+            <Top>2.99583in</Top>
+            <Left>10.08793in</Left>
             <Height>0.25in</Height>
             <Width>0.14583in</Width>
-            <ZIndex>32</ZIndex>
+            <ZIndex>31</ZIndex>
             <Visibility>
               <Hidden>=iif (Max(Fields!open_trans.Value, "DataSet_BlockingChain_BlockingChainDetails")&gt;2, False, True)</Hidden>
             </Visibility>
@@ -3073,27 +2920,27 @@ ELSE
                   <TextRun>
                     <Value>Transaction Isolation</Value>
                     <Style>
-                      <FontSize>8pt</FontSize>
                       <FontWeight>SemiBold</FontWeight>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
                 <Style>
-                  <TextAlign>Right</TextAlign>
+                  <TextAlign>Left</TextAlign>
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <Top>2.125in</Top>
-            <Left>4.75in</Left>
+            <Top>2.20833in</Top>
+            <Left>5.77085in</Left>
             <Height>0.25in</Height>
-            <Width>1.5in</Width>
-            <ZIndex>33</ZIndex>
+            <Width>1.8125in</Width>
+            <ZIndex>32</ZIndex>
             <Style>
               <Border>
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>LightSteelBlue</BackgroundColor>
+              <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -3110,24 +2957,23 @@ ELSE
                   <TextRun>
                     <Value>=First(Fields!transaction_isolation_level.Value, "DataSet_BlockingChain_HeadBlockerSampleRuntime")</Value>
                     <Style>
-                      <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
                 <Style />
               </Paragraph>
             </Paragraphs>
-            <Top>2.125in</Top>
-            <Left>6.25in</Left>
+            <Top>2.20625in</Top>
+            <Left>7.58543in</Left>
             <Height>0.25in</Height>
             <Width>2.625in</Width>
-            <ZIndex>34</ZIndex>
+            <ZIndex>33</ZIndex>
             <Style>
               <Border>
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -3144,27 +2990,27 @@ ELSE
                   <TextRun>
                     <Value>Transaction Type</Value>
                     <Style>
-                      <FontSize>8pt</FontSize>
                       <FontWeight>SemiBold</FontWeight>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
                 <Style>
-                  <TextAlign>Right</TextAlign>
+                  <TextAlign>Left</TextAlign>
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <Top>1.875in</Top>
-            <Left>4.75in</Left>
+            <Top>1.95833in</Top>
+            <Left>5.77085in</Left>
             <Height>0.25in</Height>
-            <Width>1.5in</Width>
-            <ZIndex>35</ZIndex>
+            <Width>1.8125in</Width>
+            <ZIndex>34</ZIndex>
             <Style>
               <Border>
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>LightSteelBlue</BackgroundColor>
+              <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -3181,24 +3027,23 @@ ELSE
                   <TextRun>
                     <Value>=First(Fields!tran_type.Value, "DataSet_BlockingChain_HeadBlockerSampleRuntime")</Value>
                     <Style>
-                      <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
                 <Style />
               </Paragraph>
             </Paragraphs>
-            <Top>1.875in</Top>
-            <Left>6.25in</Left>
+            <Top>1.95625in</Top>
+            <Left>7.58543in</Left>
             <Height>0.25in</Height>
             <Width>2.625in</Width>
-            <ZIndex>36</ZIndex>
+            <ZIndex>35</ZIndex>
             <Style>
               <Border>
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -3220,6 +3065,7 @@ ELSE
                       <FontFamily>Trebuchet MS</FontFamily>
                       <FontSize>12pt</FontSize>
                       <FontWeight>Bold</FontWeight>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -3232,7 +3078,7 @@ ELSE
             <Left>0.125in</Left>
             <Height>0.25in</Height>
             <Width>4.25in</Width>
-            <ZIndex>37</ZIndex>
+            <ZIndex>36</ZIndex>
             <Style>
               <VerticalAlign>Bottom</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
@@ -3250,15 +3096,12 @@ ELSE
                   <TextRun>
                     <Value>Click here to copy text summary to clipboard:</Value>
                     <Style>
-                      <FontSize>8pt</FontSize>
                       <TextDecoration>Underline</TextDecoration>
-                      <Color>Blue</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
-                <Style>
-                  <TextAlign>Right</TextAlign>
-                </Style>
+                <Style />
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>textbox20</rd:DefaultName>
@@ -3269,12 +3112,15 @@ ELSE
                 </Action>
               </Actions>
             </ActionInfo>
-            <Top>0.25in</Top>
+            <Top>0.3in</Top>
             <Left>0.125in</Left>
             <Height>0.25in</Height>
-            <Width>2.5in</Width>
-            <ZIndex>38</ZIndex>
+            <Width>3.33333in</Width>
+            <ZIndex>37</ZIndex>
             <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
               <PaddingTop>2pt</PaddingTop>
@@ -3295,7 +3141,7 @@ ELSE
             <Left>2.625in</Left>
             <Height>0.16667in</Height>
             <Width>0.16667in</Width>
-            <ZIndex>39</ZIndex>
+            <ZIndex>38</ZIndex>
             <Style />
           </Image>
           <Textbox Name="tb_ReportQueryHeader">
@@ -3308,17 +3154,18 @@ ELSE
                     <Value>Show queries for this report.</Value>
                     <Style>
                       <FontWeight>Bold</FontWeight>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
                 <Style />
               </Paragraph>
             </Paragraphs>
-            <Top>4.79589in</Top>
+            <Top>4.89589in</Top>
             <Left>0.13541in</Left>
             <Height>0.25in</Height>
             <Width>3.74913in</Width>
-            <ZIndex>40</ZIndex>
+            <ZIndex>39</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -3339,7 +3186,9 @@ ELSE
                     <TextRuns>
                       <TextRun>
                         <Value>=DataSets!DataSet_BlockingChain_BlockingChainAllRuntimes.CommandText</Value>
-                        <Style />
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </TextRun>
                     </TextRuns>
                     <Style />
@@ -3371,7 +3220,9 @@ ELSE
                     <TextRuns>
                       <TextRun>
                         <Value>=DataSets!DataSet_BlockingChain_BlockingChainSampleRuntime.CommandText</Value>
-                        <Style />
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </TextRun>
                     </TextRuns>
                     <Style />
@@ -3403,7 +3254,9 @@ ELSE
                     <TextRuns>
                       <TextRun>
                         <Value>=DataSets!DataSet_BlockingChain_BlockingChainDetails.CommandText</Value>
-                        <Style />
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </TextRun>
                     </TextRuns>
                     <Style />
@@ -3436,7 +3289,9 @@ ELSE
                     <TextRuns>
                       <TextRun>
                         <Value>=DataSets!DataSet_BlockingChain_HeadBlockerSampleRuntime.CommandText</Value>
-                        <Style />
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </TextRun>
                     </TextRuns>
                     <Style />
@@ -3468,7 +3323,9 @@ ELSE
                     <TextRuns>
                       <TextRun>
                         <Value>=DataSets("DataSet_BlockingChain_BlockingChainAllRuntimes").CommandText</Value>
-                        <Style />
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </TextRun>
                     </TextRuns>
                     <Style />
@@ -3501,7 +3358,9 @@ ELSE
                     <TextRuns>
                       <TextRun>
                         <Value>=DataSets("DataSet_BlockingChain_BlockingChainTextSummary").CommandText</Value>
-                        <Style />
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </TextRun>
                     </TextRuns>
                     <Style />
@@ -3532,7 +3391,7 @@ ELSE
             <Left>0.11458in</Left>
             <Height>2.13542in</Height>
             <Width>9.84374in</Width>
-            <ZIndex>41</ZIndex>
+            <ZIndex>40</ZIndex>
             <Visibility>
               <Hidden>true</Hidden>
               <ToggleItem>tb_ReportQueryHeader</ToggleItem>
@@ -3543,16 +3402,156 @@ ELSE
               </Border>
             </Style>
           </Rectangle>
+          <Textbox Name="textbox59">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>=First(Fields!value.Value, "DataSet_Shared_SQLServerName")</Value>
+                    <Style>
+                      <Color>=Variables!ReportTextColor.Value</Color>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style />
+              </Paragraph>
+            </Paragraphs>
+            <Top>0.18403in</Top>
+            <Left>7.57293in</Left>
+            <Height>0.25in</Height>
+            <Width>2.625in</Width>
+            <ZIndex>41</ZIndex>
+            <Style>
+              <Border>
+                <Color>DarkGray</Color>
+                <Style>Solid</Style>
+              </Border>
+              <VerticalAlign>Middle</VerticalAlign>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>1pt</PaddingTop>
+              <PaddingBottom>1pt</PaddingBottom>
+            </Style>
+          </Textbox>
+          <Textbox Name="textbox57">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>=First(Fields!value.Value, "DataSet_Shared_SQLVersion")</Value>
+                    <Style>
+                      <Color>=Variables!ReportTextColor.Value</Color>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style />
+              </Paragraph>
+            </Paragraphs>
+            <Top>0.43403in</Top>
+            <Left>7.58474in</Left>
+            <Height>0.25in</Height>
+            <Width>2.61458in</Width>
+            <ZIndex>42</ZIndex>
+            <Style>
+              <Border>
+                <Color>DarkGray</Color>
+                <Style>Solid</Style>
+              </Border>
+              <VerticalAlign>Middle</VerticalAlign>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>1pt</PaddingTop>
+              <PaddingBottom>1pt</PaddingBottom>
+            </Style>
+          </Textbox>
+          <Textbox Name="textbox58">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>Version (SP)</Value>
+                    <Style>
+                      <FontWeight>Bold</FontWeight>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style>
+                  <TextAlign>Left</TextAlign>
+                </Style>
+              </Paragraph>
+            </Paragraphs>
+            <Top>0.44444in</Top>
+            <Left>5.77085in</Left>
+            <Height>0.25in</Height>
+            <Width>1.8125in</Width>
+            <ZIndex>43</ZIndex>
+            <Style>
+              <Border>
+                <Color>DarkGray</Color>
+                <Style>Solid</Style>
+              </Border>
+              <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
+              <VerticalAlign>Middle</VerticalAlign>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>1pt</PaddingTop>
+              <PaddingBottom>1pt</PaddingBottom>
+            </Style>
+          </Textbox>
+          <Textbox Name="textbox60">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>Server</Value>
+                    <Style>
+                      <FontWeight>Bold</FontWeight>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style>
+                  <TextAlign>Left</TextAlign>
+                </Style>
+              </Paragraph>
+            </Paragraphs>
+            <Top>0.19444in</Top>
+            <Left>5.76043in</Left>
+            <Height>0.25in</Height>
+            <Width>1.82292in</Width>
+            <ZIndex>44</ZIndex>
+            <Style>
+              <Border>
+                <Color>DarkGray</Color>
+                <Style>Solid</Style>
+              </Border>
+              <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
+              <VerticalAlign>Middle</VerticalAlign>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>1pt</PaddingTop>
+              <PaddingBottom>1pt</PaddingBottom>
+            </Style>
+          </Textbox>
         </ReportItems>
         <Height>7.47991in</Height>
         <Style>
           <Border>
             <Color>DarkGray</Color>
           </Border>
-          <BackgroundColor>=Parameters!FmtAmbientBackground.Value</BackgroundColor>
+          <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
         </Style>
       </Body>
-      <Width>13.61458in</Width>
+      <Width>16.2342in</Width>
       <Page>
         <InteractiveHeight>40in</InteractiveHeight>
         <LeftMargin>0.5in</LeftMargin>
@@ -3660,6 +3659,19 @@ ELSE
       </CellDefinitions>
     </GridLayoutDefinition>
   </ReportParametersLayout>
+  <Code>
+    Function GetTableRowFillColor(Theme as String, RowNumber As Integer) As String
+    If Theme ="Aquatic" Then
+    return "#202020"
+    ElseIf Theme ="Desert" Then
+    return "#FFFAEF"
+    Elseif RowNumber Mod 2 &lt;&gt; 0 Then
+    return "White"
+    Else
+    Return "LightSteelBlue"
+    End If
+    End Function
+  </Code>
   <EmbeddedImages>
     <EmbeddedImage Name="copyhs">
       <MIMEType>image/png</MIMEType>
@@ -3671,6 +3683,83 @@ ELSE
     </EmbeddedImage>
   </EmbeddedImages>
   <Language>en-US</Language>
+  <Variables>
+    <Variable Name="IsLocalReport">
+      <Value>= (Globals!ReportServerUrl="")</Value>
+    </Variable>
+    <Variable Name="FLocalMode">
+      <Value>=Globals!ReportServerUrl = ""</Value>
+    </Variable>
+    <Variable Name="ReportTextColor">
+      <Value>
+        =Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+        Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+        Parameters!ContrastTheme.Value="None", "Black")
+      </Value>
+    </Variable>
+    <Variable Name="BodyBackgroundColor">
+      <Value>
+        =Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
+        Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
+        Parameters!ContrastTheme.Value="None", "#FAFDFF")
+      </Value>
+    </Variable>
+    <Variable Name="TitleColor">
+      <Value>
+        =Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+        Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+        Parameters!ContrastTheme.Value="None", "SteelBlue")
+      </Value>
+    </Variable>
+    <Variable Name="TableHeadingColor">
+      <Value>
+        =Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
+        Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
+        Parameters!ContrastTheme.Value="None", "SteelBlue")
+      </Value>
+    </Variable>
+    <Variable Name="ChartColor">
+      <Value>
+        =Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
+        Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
+        Parameters!ContrastTheme.Value="None", "LightSteelBlue")
+      </Value>
+    </Variable>
+    <Variable Name="ChartSecondaryColor">
+      <Value>
+        =Switch(Parameters!ContrastTheme.Value="Aquatic", "No Color",
+        Parameters!ContrastTheme.Value="Desert", "No Color",
+        Parameters!ContrastTheme.Value="None", "Automatic")
+      </Value>
+    </Variable>
+    <Variable Name="ChartGradientStyle">
+      <Value>
+        =Switch(Parameters!ContrastTheme.Value="Aquatic", "None",
+        Parameters!ContrastTheme.Value="Desert", "None",
+        Parameters!ContrastTheme.Value="None", "TopBottom")
+      </Value>
+    </Variable>
+    <Variable Name="TableShowCell">
+      <Value>"Red"</Value>
+    </Variable>
+    <Variable Name="TableHidcell">
+      <Value>"Green"</Value>
+    </Variable>
+    <Variable Name="TableHeadingFontColor">
+      <Value>
+        =Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+        Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+        Parameters!ContrastTheme.Value="None", "#FFFFFF")
+      </Value>
+    </Variable>
+    <Variable Name="URILinkFontColor">
+      <Value>
+        =Switch(Parameters!ContrastTheme.Value="Aquatic", "#75E9FC",
+        Parameters!ContrastTheme.Value="Desert", "#1C5E75",
+        Parameters!ContrastTheme.Value="None", "Blue")
+      </Value>
+    </Variable>
+  </Variables>
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
   <rd:ReportUnitType>Inch</rd:ReportUnitType>
   <rd:ReportID>7e6c1a85-c19e-48ee-84bd-8d94d5d48c23</rd:ReportID>
