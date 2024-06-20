@@ -14,8 +14,17 @@
                   <Paragraph>
                     <TextRuns>
                       <TextRun>
-                        <Value>nex·us [ néksəss ] (plural nex·us or nex·us·es).  Noun.  Definition: 1) connection: a connection or link associating two or more people or things  2) connected group: a group or series of connected people or things  3) center: the center or focus of something.</Value>
-                        <Style />
+                        <Value>nex·us</Value>
+                        <Style>
+                          <FontWeight>Bold</FontWeight>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
+                      </TextRun>
+                      <TextRun>
+                        <Value> [ néksəss ] (plural nex·us or nex·us·es).  Noun.  Definition: 1) connection: a connection or link associating two or more people or things  2) connected group: a group or series of connected people or things  3) center: the center or focus of something.</Value>
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </TextRun>
                     </TextRuns>
                     <Style />
@@ -25,7 +34,7 @@
                 <Top>1.375in</Top>
                 <Left>0.125in</Left>
                 <Height>0.75in</Height>
-                <Width>5.75in</Width>
+                <Width>7.58333in</Width>
                 <Style>
                   <PaddingLeft>2pt</PaddingLeft>
                   <PaddingRight>2pt</PaddingRight>
@@ -45,7 +54,7 @@
                           <FontFamily>Bell MT</FontFamily>
                           <FontSize>36pt</FontSize>
                           <FontWeight>Bold</FontWeight>
-                          <Color>Purple</Color>
+                          <Color>=Variables!TitleColor.Value</Color>
                         </Style>
                       </TextRun>
                     </TextRuns>
@@ -59,333 +68,15 @@
                 <Width>5.75in</Width>
                 <ZIndex>1</ZIndex>
                 <Style>
-                  <PaddingLeft>2pt</PaddingLeft>
-                  <PaddingRight>2pt</PaddingRight>
-                  <PaddingTop>2pt</PaddingTop>
-                  <PaddingBottom>2pt</PaddingBottom>
-                </Style>
-              </Textbox>
-              <Textbox Name="textbox2">
-                <CanGrow>true</CanGrow>
-                <KeepTogether>true</KeepTogether>
-                <Paragraphs>
-                  <Paragraph>
-                    <TextRuns>
-                      <TextRun>
-                        <Value>
-
-Click one of the reports on the left to view it.  If the report includes a link to another report, click the link to view the linked report.  Hold down the Control key while you click a linked report to view it in a separate window.
-
-</Value>
-                        <Style />
-                      </TextRun>
-                    </TextRuns>
-                    <Style />
-                  </Paragraph>
-                </Paragraphs>
-                <rd:DefaultName>textbox2</rd:DefaultName>
-                <Top>2.875in</Top>
-                <Left>0.125in</Left>
-                <Height>1.375in</Height>
-                <Width>2.75in</Width>
-                <ZIndex>2</ZIndex>
-                <Style>
-                  <PaddingLeft>2pt</PaddingLeft>
-                  <PaddingRight>2pt</PaddingRight>
-                  <PaddingTop>2pt</PaddingTop>
-                  <PaddingBottom>2pt</PaddingBottom>
-                </Style>
-              </Textbox>
-              <Line Name="line1">
-                <Top>3.25in</Top>
-                <Left>3in</Left>
-                <Height>3.375in</Height>
-                <Width>0in</Width>
-                <ZIndex>3</ZIndex>
-                <Style>
                   <Border>
-                    <Style>Solid</Style>
+                    <Style>None</Style>
                   </Border>
-                </Style>
-              </Line>
-              <Textbox Name="textbox3">
-                <CanGrow>true</CanGrow>
-                <KeepTogether>true</KeepTogether>
-                <Paragraphs>
-                  <Paragraph>
-                    <TextRuns>
-                      <TextRun>
-                        <Value>
-
-SQL Nexus provides built-in support for emailing reports.  Click the Email button on the Report toolbar to attach a report to an email as a Excel worksheet.</Value>
-                        <Style />
-                      </TextRun>
-                    </TextRuns>
-                    <Style />
-                  </Paragraph>
-                </Paragraphs>
-                <rd:DefaultName>textbox3</rd:DefaultName>
-                <Top>5.625in</Top>
-                <Left>0.125in</Left>
-                <Height>1.25in</Height>
-                <Width>2.75in</Width>
-                <ZIndex>4</ZIndex>
-                <Style>
                   <PaddingLeft>2pt</PaddingLeft>
                   <PaddingRight>2pt</PaddingRight>
                   <PaddingTop>2pt</PaddingTop>
                   <PaddingBottom>2pt</PaddingBottom>
                 </Style>
               </Textbox>
-              <Textbox Name="textbox4">
-                <CanGrow>true</CanGrow>
-                <KeepTogether>true</KeepTogether>
-                <Paragraphs>
-                  <Paragraph>
-                    <TextRuns>
-                      <TextRun>
-                        <Value>
-
-You can export reports in a variety of file formats including: Excel, PDF, and several image types. Click the Export button on the Report toolbar to export a report.</Value>
-                        <Style />
-                      </TextRun>
-                    </TextRuns>
-                    <Style />
-                  </Paragraph>
-                </Paragraphs>
-                <rd:DefaultName>textbox4</rd:DefaultName>
-                <Top>4.375in</Top>
-                <Left>0.125in</Left>
-                <Height>1.125in</Height>
-                <Width>2.75in</Width>
-                <ZIndex>5</ZIndex>
-                <Style>
-                  <PaddingLeft>2pt</PaddingLeft>
-                  <PaddingRight>2pt</PaddingRight>
-                  <PaddingTop>2pt</PaddingTop>
-                  <PaddingBottom>2pt</PaddingBottom>
-                </Style>
-              </Textbox>
-              <Textbox Name="textbox5">
-                <CanGrow>true</CanGrow>
-                <KeepTogether>true</KeepTogether>
-                <Paragraphs>
-                  <Paragraph>
-                    <TextRuns>
-                      <TextRun>
-                        <Value>Running reports</Value>
-                        <Style>
-                          <FontSize>14pt</FontSize>
-                        </Style>
-                      </TextRun>
-                    </TextRuns>
-                    <Style />
-                  </Paragraph>
-                </Paragraphs>
-                <rd:DefaultName>textbox5</rd:DefaultName>
-                <Top>2.875in</Top>
-                <Left>0.5in</Left>
-                <Height>0.375in</Height>
-                <Width>2.375in</Width>
-                <ZIndex>6</ZIndex>
-                <Style>
-                  <PaddingLeft>2pt</PaddingLeft>
-                  <PaddingRight>2pt</PaddingRight>
-                  <PaddingTop>2pt</PaddingTop>
-                  <PaddingBottom>2pt</PaddingBottom>
-                </Style>
-              </Textbox>
-              <Textbox Name="textbox6">
-                <CanGrow>true</CanGrow>
-                <KeepTogether>true</KeepTogether>
-                <Paragraphs>
-                  <Paragraph>
-                    <TextRuns>
-                      <TextRun>
-                        <Value>Exporting</Value>
-                        <Style>
-                          <FontSize>14pt</FontSize>
-                        </Style>
-                      </TextRun>
-                    </TextRuns>
-                    <Style />
-                  </Paragraph>
-                </Paragraphs>
-                <rd:DefaultName>textbox6</rd:DefaultName>
-                <Top>4.375in</Top>
-                <Left>0.5in</Left>
-                <Height>0.375in</Height>
-                <Width>2.375in</Width>
-                <ZIndex>7</ZIndex>
-                <Style>
-                  <PaddingLeft>2pt</PaddingLeft>
-                  <PaddingRight>2pt</PaddingRight>
-                  <PaddingTop>2pt</PaddingTop>
-                  <PaddingBottom>2pt</PaddingBottom>
-                </Style>
-              </Textbox>
-              <Textbox Name="textbox7">
-                <CanGrow>true</CanGrow>
-                <KeepTogether>true</KeepTogether>
-                <Paragraphs>
-                  <Paragraph>
-                    <TextRuns>
-                      <TextRun>
-                        <Value>Emailing</Value>
-                        <Style>
-                          <FontSize>14pt</FontSize>
-                        </Style>
-                      </TextRun>
-                    </TextRuns>
-                    <Style />
-                  </Paragraph>
-                </Paragraphs>
-                <rd:DefaultName>textbox7</rd:DefaultName>
-                <Top>5.625in</Top>
-                <Left>0.5in</Left>
-                <Height>0.375in</Height>
-                <Width>2.375in</Width>
-                <ZIndex>8</ZIndex>
-                <Style>
-                  <PaddingLeft>2pt</PaddingLeft>
-                  <PaddingRight>2pt</PaddingRight>
-                  <PaddingTop>2pt</PaddingTop>
-                  <PaddingBottom>2pt</PaddingBottom>
-                </Style>
-              </Textbox>
-              <Textbox Name="textbox8">
-                <CanGrow>true</CanGrow>
-                <KeepTogether>true</KeepTogether>
-                <Paragraphs>
-                  <Paragraph>
-                    <TextRuns>
-                      <TextRun>
-                        <Value>
-
-You can add your own reports to those included with SQL Nexus by simply creating them with SQL Server Reporting Services or Visual Studio and dropping the resulting file into the %appdata%\sqlnexus\Reports subfolder.</Value>
-                        <Style />
-                      </TextRun>
-                    </TextRuns>
-                    <Style />
-                  </Paragraph>
-                </Paragraphs>
-                <Top>2.875in</Top>
-                <Left>3.25in</Left>
-                <Height>1.375in</Height>
-                <Width>2.75in</Width>
-                <ZIndex>9</ZIndex>
-                <Style>
-                  <PaddingLeft>2pt</PaddingLeft>
-                  <PaddingRight>2pt</PaddingRight>
-                  <PaddingTop>2pt</PaddingTop>
-                  <PaddingBottom>2pt</PaddingBottom>
-                </Style>
-              </Textbox>
-              <Textbox Name="textbox11">
-                <CanGrow>true</CanGrow>
-                <KeepTogether>true</KeepTogether>
-                <Paragraphs>
-                  <Paragraph>
-                    <TextRuns>
-                      <TextRun>
-                        <Value>Adding new reports</Value>
-                        <Style>
-                          <FontSize>14pt</FontSize>
-                        </Style>
-                      </TextRun>
-                    </TextRuns>
-                    <Style />
-                  </Paragraph>
-                </Paragraphs>
-                <rd:DefaultName>textbox11</rd:DefaultName>
-                <Top>2.875in</Top>
-                <Left>3.625in</Left>
-                <Height>0.375in</Height>
-                <Width>2.375in</Width>
-                <ZIndex>10</ZIndex>
-                <Style>
-                  <PaddingLeft>2pt</PaddingLeft>
-                  <PaddingRight>2pt</PaddingRight>
-                  <PaddingTop>2pt</PaddingTop>
-                  <PaddingBottom>2pt</PaddingBottom>
-                </Style>
-              </Textbox>
-              <Image Name="image1">
-                <Source>Embedded</Source>
-                <Value>book_reporths_1</Value>
-                <MIMEType>image/png</MIMEType>
-                <Sizing>Fit</Sizing>
-                <ActionInfo>
-                  <Actions>
-                    <Action>
-                      <Hyperlink>sqlnexus://./sqlnexus.fmNexus/ShowHelp/runningreports.htm/0</Hyperlink>
-                    </Action>
-                  </Actions>
-                </ActionInfo>
-                <Top>2.875in</Top>
-                <Left>0.125in</Left>
-                <Height>0.375in</Height>
-                <Width>0.375in</Width>
-                <ZIndex>11</ZIndex>
-                <Style />
-              </Image>
-              <Image Name="image2">
-                <Source>Embedded</Source>
-                <Value>graphhs_2</Value>
-                <MIMEType>image/png</MIMEType>
-                <Sizing>Fit</Sizing>
-                <ActionInfo>
-                  <Actions>
-                    <Action>
-                      <Hyperlink>sqlnexus://./sqlnexus.fmNexus/ShowHelp/exportingreports.htm/0</Hyperlink>
-                    </Action>
-                  </Actions>
-                </ActionInfo>
-                <Top>4.375in</Top>
-                <Left>0.125in</Left>
-                <Height>0.375in</Height>
-                <Width>0.375in</Width>
-                <ZIndex>12</ZIndex>
-                <Style />
-              </Image>
-              <Image Name="image3">
-                <Source>Embedded</Source>
-                <Value>envelopehs</Value>
-                <MIMEType>image/png</MIMEType>
-                <Sizing>Fit</Sizing>
-                <ActionInfo>
-                  <Actions>
-                    <Action>
-                      <Hyperlink>sqlnexus://./sqlnexus.fmNexus/ShowHelp/emailingreports.htm/0</Hyperlink>
-                    </Action>
-                  </Actions>
-                </ActionInfo>
-                <Top>5.625in</Top>
-                <Left>0.125in</Left>
-                <Height>0.375in</Height>
-                <Width>0.375in</Width>
-                <ZIndex>13</ZIndex>
-                <Style />
-              </Image>
-              <Image Name="image4">
-                <Source>Embedded</Source>
-                <Value>newreporths</Value>
-                <MIMEType>image/png</MIMEType>
-                <Sizing>Fit</Sizing>
-                <ActionInfo>
-                  <Actions>
-                    <Action>
-                      <Hyperlink>sqlnexus://./sqlnexus.fmNexus/ShowHelp/addingnewreports.htm/0</Hyperlink>
-                    </Action>
-                  </Actions>
-                </ActionInfo>
-                <Top>2.875in</Top>
-                <Left>3.25in</Left>
-                <Height>0.375in</Height>
-                <Width>0.375in</Width>
-                <ZIndex>14</ZIndex>
-                <Style />
-              </Image>
               <Textbox Name="textbox14">
                 <CanGrow>true</CanGrow>
                 <KeepTogether>true</KeepTogether>
@@ -393,10 +84,19 @@ You can add your own reports to those included with SQL Nexus by simply creating
                   <Paragraph>
                     <TextRuns>
                       <TextRun>
-                        <Value>SQL [ èss kyoo él, sékwəl ]. Noun.  Definition: computer language: a standardized language that approximates the structure of natural English for obtaining information from databases. 
+                        <Value>SQL</Value>
+                        <Style>
+                          <FontWeight>Bold</FontWeight>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
+                      </TextRun>
+                      <TextRun>
+                        <Value> [ èss kyoo él, sékwəl ]. Noun.  Definition: computer language: a standardized language that approximates the structure of natural English for obtaining information from databases. 
 
 </Value>
-                        <Style />
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </TextRun>
                     </TextRuns>
                     <Style />
@@ -406,8 +106,8 @@ You can add your own reports to those included with SQL Nexus by simply creating
                 <Top>1in</Top>
                 <Left>0.125in</Left>
                 <Height>0.375in</Height>
-                <Width>5.75in</Width>
-                <ZIndex>15</ZIndex>
+                <Width>7.58333in</Width>
+                <ZIndex>2</ZIndex>
                 <Style>
                   <PaddingLeft>2pt</PaddingLeft>
                   <PaddingRight>2pt</PaddingRight>
@@ -415,89 +115,6 @@ You can add your own reports to those included with SQL Nexus by simply creating
                   <PaddingBottom>2pt</PaddingBottom>
                 </Style>
               </Textbox>
-              <Textbox Name="textbox15">
-                <CanGrow>true</CanGrow>
-                <KeepTogether>true</KeepTogether>
-                <Paragraphs>
-                  <Paragraph>
-                    <TextRuns>
-                      <TextRun>
-                        <Value>SQL</Value>
-                        <Style>
-                          <Color>Blue</Color>
-                        </Style>
-                      </TextRun>
-                    </TextRuns>
-                    <Style />
-                  </Paragraph>
-                </Paragraphs>
-                <rd:DefaultName>textbox15</rd:DefaultName>
-                <Top>1in</Top>
-                <Left>0.125in</Left>
-                <Height>0.25in</Height>
-                <Width>0.5in</Width>
-                <ZIndex>16</ZIndex>
-                <Style>
-                  <Border>
-                    <Style>None</Style>
-                  </Border>
-                  <PaddingLeft>2pt</PaddingLeft>
-                  <PaddingRight>2pt</PaddingRight>
-                  <PaddingTop>2pt</PaddingTop>
-                  <PaddingBottom>2pt</PaddingBottom>
-                </Style>
-              </Textbox>
-              <Textbox Name="textbox16">
-                <CanGrow>true</CanGrow>
-                <KeepTogether>true</KeepTogether>
-                <Paragraphs>
-                  <Paragraph>
-                    <TextRuns>
-                      <TextRun>
-                        <Value>nex·us</Value>
-                        <Style>
-                          <Color>Blue</Color>
-                        </Style>
-                      </TextRun>
-                    </TextRuns>
-                    <Style />
-                  </Paragraph>
-                </Paragraphs>
-                <rd:DefaultName>textbox16</rd:DefaultName>
-                <ActionInfo>
-                  <Actions>
-                    <Action>
-                      <Hyperlink>https://www.merriam-webster.com/dictionary/nexus</Hyperlink>
-                    </Action>
-                  </Actions>
-                </ActionInfo>
-                <Top>1.375in</Top>
-                <Left>0.125in</Left>
-                <Height>0.25in</Height>
-                <Width>0.625in</Width>
-                <ZIndex>17</ZIndex>
-                <Style>
-                  <Border>
-                    <Style>None</Style>
-                  </Border>
-                  <PaddingLeft>2pt</PaddingLeft>
-                  <PaddingRight>2pt</PaddingRight>
-                  <PaddingTop>2pt</PaddingTop>
-                  <PaddingBottom>2pt</PaddingBottom>
-                </Style>
-              </Textbox>
-              <Line Name="line2">
-                <Top>6.875in</Top>
-                <Left>0.5in</Left>
-                <Height>0in</Height>
-                <Width>5.125in</Width>
-                <ZIndex>18</ZIndex>
-                <Style>
-                  <Border>
-                    <Style>Solid</Style>
-                  </Border>
-                </Style>
-              </Line>
               <Textbox Name="textbox18">
                 <CanGrow>true</CanGrow>
                 <KeepTogether>true</KeepTogether>
@@ -505,8 +122,17 @@ You can add your own reports to those included with SQL Nexus by simply creating
                   <Paragraph>
                     <TextRuns>
                       <TextRun>
-                        <Value>SQL Nexus is a SQL Server-based diagnostics analysis tool.  It provides an extensible facility for analyzing, reporting, and charting diagnostic data, particularly that related to SQL Server itself.</Value>
-                        <Style />
+                        <Value>SQL Nexus</Value>
+                        <Style>
+                          <FontWeight>Bold</FontWeight>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
+                      </TextRun>
+                      <TextRun>
+                        <Value> is a SQL Server-based diagnostics analysis tool.  It provides an extensible facility for analyzing, reporting, and charting diagnostic data, particularly that related to SQL Server itself.</Value>
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </TextRun>
                     </TextRuns>
                     <Style />
@@ -516,8 +142,8 @@ You can add your own reports to those included with SQL Nexus by simply creating
                 <Top>2.125in</Top>
                 <Left>0.125in</Left>
                 <Height>0.625in</Height>
-                <Width>5.75in</Width>
-                <ZIndex>19</ZIndex>
+                <Width>7.58333in</Width>
+                <ZIndex>3</ZIndex>
                 <Style>
                   <PaddingLeft>2pt</PaddingLeft>
                   <PaddingRight>2pt</PaddingRight>
@@ -525,129 +151,371 @@ You can add your own reports to those included with SQL Nexus by simply creating
                   <PaddingBottom>2pt</PaddingBottom>
                 </Style>
               </Textbox>
-              <Textbox Name="textbox19">
-                <CanGrow>true</CanGrow>
-                <KeepTogether>true</KeepTogether>
-                <Paragraphs>
-                  <Paragraph>
-                    <TextRuns>
-                      <TextRun>
-                        <Value>SQL Nexus</Value>
-                        <Style>
-                          <Color>Blue</Color>
-                        </Style>
-                      </TextRun>
-                    </TextRuns>
+              <Rectangle Name="Rectangle2">
+                <ReportItems>
+                  <Textbox Name="textbox2">
+                    <CanGrow>true</CanGrow>
+                    <KeepTogether>true</KeepTogether>
+                    <Paragraphs>
+                      <Paragraph>
+                        <TextRuns>
+                          <TextRun>
+                            <Value>
+
+Click one of the reports on the left to view it.  If the report includes a link to another report, click the link to view the linked report.  Hold down the Control key while you click a linked report to view it in a separate window.
+
+</Value>
+                            <Style>
+                              <Color>=Variables!ReportTextColor.Value</Color>
+                            </Style>
+                          </TextRun>
+                        </TextRuns>
+                        <Style />
+                      </Paragraph>
+                    </Paragraphs>
+                    <rd:DefaultName>textbox2</rd:DefaultName>
+                    <Top>0.28125in</Top>
+                    <Height>1.09375in</Height>
+                    <Width>3.595in</Width>
+                    <Style>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingBottom>2pt</PaddingBottom>
+                    </Style>
+                  </Textbox>
+                  <Textbox Name="textbox5">
+                    <CanGrow>true</CanGrow>
+                    <KeepTogether>true</KeepTogether>
+                    <Paragraphs>
+                      <Paragraph>
+                        <TextRuns>
+                          <TextRun>
+                            <Value>Running reports</Value>
+                            <Style>
+                              <FontSize>14pt</FontSize>
+                              <Color>=Variables!ReportTextColor.Value</Color>
+                            </Style>
+                          </TextRun>
+                        </TextRuns>
+                        <Style />
+                      </Paragraph>
+                    </Paragraphs>
+                    <rd:DefaultName>textbox5</rd:DefaultName>
+                    <Left>0.44917in</Left>
+                    <Height>0.375in</Height>
+                    <Width>2.375in</Width>
+                    <ZIndex>1</ZIndex>
+                    <Style>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingBottom>2pt</PaddingBottom>
+                    </Style>
+                  </Textbox>
+                  <Image Name="image1">
+                    <Source>Embedded</Source>
+                    <Value>book_reporths_1</Value>
+                    <MIMEType>image/png</MIMEType>
+                    <Sizing>Fit</Sizing>
+                    <ActionInfo>
+                      <Actions>
+                        <Action>
+                          <Hyperlink>sqlnexus://./sqlnexus.fmNexus/ShowHelp/runningreports.htm/0</Hyperlink>
+                        </Action>
+                      </Actions>
+                    </ActionInfo>
+                    <Height>0.375in</Height>
+                    <Width>0.375in</Width>
+                    <ZIndex>2</ZIndex>
                     <Style />
-                  </Paragraph>
-                </Paragraphs>
-                <rd:DefaultName>textbox19</rd:DefaultName>
-                <ActionInfo>
-                  <Actions>
-                    <Action>
-                      <Hyperlink>https://github.com/microsoft/SqlNexus/wiki</Hyperlink>
-                    </Action>
-                  </Actions>
-                </ActionInfo>
-                <Top>2.125in</Top>
-                <Left>0.125in</Left>
-                <Height>0.25in</Height>
-                <Width>0.875in</Width>
-                <ZIndex>20</ZIndex>
+                  </Image>
+                </ReportItems>
+                <KeepTogether>true</KeepTogether>
+                <Top>3.30556in</Top>
+                <Left>0.08625in</Left>
+                <Height>1.44792in</Height>
+                <Width>3.72917in</Width>
+                <ZIndex>4</ZIndex>
                 <Style>
                   <Border>
                     <Style>None</Style>
                   </Border>
-                  <PaddingLeft>2pt</PaddingLeft>
-                  <PaddingRight>2pt</PaddingRight>
-                  <PaddingTop>2pt</PaddingTop>
-                  <PaddingBottom>2pt</PaddingBottom>
                 </Style>
-              </Textbox>
-              <Textbox Name="textbox22">
-                <CanGrow>true</CanGrow>
-                <KeepTogether>true</KeepTogether>
-                <Paragraphs>
-                  <Paragraph>
-                    <TextRuns>
-                      <TextRun>
-                        <Value />
-                        <Style>
-                          <FontFamily>Bell MT</FontFamily>
-                          <FontSize>12pt</FontSize>
-                          <Color>Purple</Color>
-                        </Style>
-                      </TextRun>
-                    </TextRuns>
+              </Rectangle>
+              <Rectangle Name="Rectangle3">
+                <ReportItems>
+                  <Textbox Name="textbox4">
+                    <CanGrow>true</CanGrow>
+                    <KeepTogether>true</KeepTogether>
+                    <Paragraphs>
+                      <Paragraph>
+                        <TextRuns>
+                          <TextRun>
+                            <Value>
+
+You can export reports in a variety of file formats including: Excel, PDF, and several image types. Click the Export button on the Report toolbar to export a report.</Value>
+                            <Style>
+                              <Color>=Variables!ReportTextColor.Value</Color>
+                            </Style>
+                          </TextRun>
+                        </TextRuns>
+                        <Style />
+                      </Paragraph>
+                    </Paragraphs>
+                    <rd:DefaultName>textbox4</rd:DefaultName>
+                    <Top>0.32292in</Top>
+                    <Height>1.125in</Height>
+                    <Width>3.07292in</Width>
                     <Style>
-                      <TextAlign>Center</TextAlign>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingBottom>2pt</PaddingBottom>
                     </Style>
-                  </Paragraph>
-                </Paragraphs>
-                <rd:DefaultName>textbox22</rd:DefaultName>
-                <ActionInfo>
-                  <Actions>
-                    <Action>
-                      <Hyperlink>sqlnexus://./sqlnexus.fmNexus/ContactUs</Hyperlink>
-                    </Action>
-                  </Actions>
-                </ActionInfo>
-                <Top>7in</Top>
-                <Left>0.5in</Left>
-                <Height>0.25in</Height>
-                <Width>5.125in</Width>
-                <ZIndex>21</ZIndex>
-                <Style>
-                  <PaddingLeft>2pt</PaddingLeft>
-                  <PaddingRight>2pt</PaddingRight>
-                  <PaddingTop>2pt</PaddingTop>
-                  <PaddingBottom>2pt</PaddingBottom>
-                </Style>
-              </Textbox>
-              <Textbox Name="textbox23">
-                <CanGrow>true</CanGrow>
-                <KeepTogether>true</KeepTogether>
-                <Paragraphs>
-                  <Paragraph>
-                    <TextRuns>
-                      <TextRun>
-                        <Value>*Dictionary excerpts from MSN Encarta</Value>
-                        <Style>
-                          <FontSize>8pt</FontSize>
-                        </Style>
-                      </TextRun>
-                    </TextRuns>
+                  </Textbox>
+                  <Image Name="image2">
+                    <Source>Embedded</Source>
+                    <Value>graphhs_2</Value>
+                    <MIMEType>image/png</MIMEType>
+                    <Sizing>Fit</Sizing>
+                    <ActionInfo>
+                      <Actions>
+                        <Action>
+                          <Hyperlink>sqlnexus://./sqlnexus.fmNexus/ShowHelp/exportingreports.htm/0</Hyperlink>
+                        </Action>
+                      </Actions>
+                    </ActionInfo>
+                    <Height>0.375in</Height>
+                    <Width>0.375in</Width>
+                    <ZIndex>1</ZIndex>
+                    <Style />
+                  </Image>
+                  <Textbox Name="textbox6">
+                    <CanGrow>true</CanGrow>
+                    <KeepTogether>true</KeepTogether>
+                    <Paragraphs>
+                      <Paragraph>
+                        <TextRuns>
+                          <TextRun>
+                            <Value>Exporting</Value>
+                            <Style>
+                              <FontSize>14pt</FontSize>
+                              <Color>=Variables!ReportTextColor.Value</Color>
+                            </Style>
+                          </TextRun>
+                        </TextRuns>
+                        <Style />
+                      </Paragraph>
+                    </Paragraphs>
+                    <rd:DefaultName>textbox6</rd:DefaultName>
+                    <Left>0.43056in</Left>
+                    <Height>0.375in</Height>
+                    <Width>2.375in</Width>
+                    <ZIndex>2</ZIndex>
                     <Style>
-                      <TextAlign>Center</TextAlign>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingBottom>2pt</PaddingBottom>
                     </Style>
-                  </Paragraph>
-                </Paragraphs>
-                <rd:DefaultName>textbox23</rd:DefaultName>
-                <ActionInfo>
-                  <Actions>
-                    <Action>
-                      <Hyperlink> http://dictionary.msn.com</Hyperlink>
-                    </Action>
-                  </Actions>
-                </ActionInfo>
-                <Top>7.375in</Top>
-                <Left>0.5in</Left>
-                <Height>0.25in</Height>
-                <Width>5.125in</Width>
-                <ZIndex>22</ZIndex>
+                  </Textbox>
+                </ReportItems>
+                <KeepTogether>true</KeepTogether>
+                <Top>4.93625in</Top>
+                <Left>0.08625in</Left>
+                <Height>1.52083in</Height>
+                <Width>3.66667in</Width>
+                <ZIndex>5</ZIndex>
                 <Style>
-                  <PaddingLeft>2pt</PaddingLeft>
-                  <PaddingRight>2pt</PaddingRight>
-                  <PaddingTop>2pt</PaddingTop>
-                  <PaddingBottom>2pt</PaddingBottom>
+                  <Border>
+                    <Style>None</Style>
+                  </Border>
                 </Style>
-              </Textbox>
+              </Rectangle>
+              <Rectangle Name="Rectangle5">
+                <ReportItems>
+                  <Textbox Name="textbox3">
+                    <CanGrow>true</CanGrow>
+                    <KeepTogether>true</KeepTogether>
+                    <Paragraphs>
+                      <Paragraph>
+                        <TextRuns>
+                          <TextRun>
+                            <Value>
+
+SQL Nexus provides built-in support for emailing reports.  Click the Email button on the Report toolbar to attach a report to an email as a Excel worksheet.</Value>
+                            <Style>
+                              <Color>=Variables!ReportTextColor.Value</Color>
+                            </Style>
+                          </TextRun>
+                        </TextRuns>
+                        <Style />
+                      </Paragraph>
+                    </Paragraphs>
+                    <rd:DefaultName>textbox3</rd:DefaultName>
+                    <Top>0.27083in</Top>
+                    <Height>1.25in</Height>
+                    <Width>3.07292in</Width>
+                    <Style>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingBottom>2pt</PaddingBottom>
+                    </Style>
+                  </Textbox>
+                  <Image Name="image3">
+                    <Source>Embedded</Source>
+                    <Value>envelopehs</Value>
+                    <MIMEType>image/png</MIMEType>
+                    <Sizing>Fit</Sizing>
+                    <ActionInfo>
+                      <Actions>
+                        <Action>
+                          <Hyperlink>sqlnexus://./sqlnexus.fmNexus/ShowHelp/emailingreports.htm/0</Hyperlink>
+                        </Action>
+                      </Actions>
+                    </ActionInfo>
+                    <Height>0.375in</Height>
+                    <Width>0.375in</Width>
+                    <ZIndex>1</ZIndex>
+                    <Style />
+                  </Image>
+                  <Textbox Name="textbox7">
+                    <CanGrow>true</CanGrow>
+                    <KeepTogether>true</KeepTogether>
+                    <Paragraphs>
+                      <Paragraph>
+                        <TextRuns>
+                          <TextRun>
+                            <Value>Emailing</Value>
+                            <Style>
+                              <FontSize>14pt</FontSize>
+                              <Color>=Variables!ReportTextColor.Value</Color>
+                            </Style>
+                          </TextRun>
+                        </TextRuns>
+                        <Style />
+                      </Paragraph>
+                    </Paragraphs>
+                    <rd:DefaultName>textbox7</rd:DefaultName>
+                    <Left>0.375in</Left>
+                    <Height>0.375in</Height>
+                    <Width>2.375in</Width>
+                    <ZIndex>2</ZIndex>
+                    <Style>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingBottom>2pt</PaddingBottom>
+                    </Style>
+                  </Textbox>
+                </ReportItems>
+                <KeepTogether>true</KeepTogether>
+                <Top>4.93625in</Top>
+                <Left>4.24181in</Left>
+                <Height>1.52083in</Height>
+                <Width>3.21875in</Width>
+                <ZIndex>6</ZIndex>
+                <Style>
+                  <Border>
+                    <Style>None</Style>
+                  </Border>
+                </Style>
+              </Rectangle>
+              <Rectangle Name="Rectangle6">
+                <ReportItems>
+                  <Image Name="image4">
+                    <Source>Embedded</Source>
+                    <Value>newreporths</Value>
+                    <MIMEType>image/png</MIMEType>
+                    <Sizing>Fit</Sizing>
+                    <ActionInfo>
+                      <Actions>
+                        <Action>
+                          <Hyperlink>sqlnexus://./sqlnexus.fmNexus/ShowHelp/addingnewreports.htm/0</Hyperlink>
+                        </Action>
+                      </Actions>
+                    </ActionInfo>
+                    <Height>0.375in</Height>
+                    <Width>0.375in</Width>
+                    <Style />
+                  </Image>
+                  <Textbox Name="textbox11">
+                    <CanGrow>true</CanGrow>
+                    <KeepTogether>true</KeepTogether>
+                    <Paragraphs>
+                      <Paragraph>
+                        <TextRuns>
+                          <TextRun>
+                            <Value>Adding new reports</Value>
+                            <Style>
+                              <FontSize>14pt</FontSize>
+                              <Color>=Variables!ReportTextColor.Value</Color>
+                            </Style>
+                          </TextRun>
+                        </TextRuns>
+                        <Style />
+                      </Paragraph>
+                    </Paragraphs>
+                    <rd:DefaultName>textbox11</rd:DefaultName>
+                    <Left>0.44444in</Left>
+                    <Height>0.375in</Height>
+                    <Width>2.19792in</Width>
+                    <ZIndex>1</ZIndex>
+                    <Style>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingBottom>2pt</PaddingBottom>
+                    </Style>
+                  </Textbox>
+                  <Textbox Name="textbox8">
+                    <CanGrow>true</CanGrow>
+                    <KeepTogether>true</KeepTogether>
+                    <Paragraphs>
+                      <Paragraph>
+                        <TextRuns>
+                          <TextRun>
+                            <Value>You can add your own reports to those included with SQL Nexus by simply creating them with SQL Server Reporting Services or Visual Studio and dropping the resulting file into the %appdata%\sqlnexus\Reports subfolder.</Value>
+                            <Style>
+                              <Color>=Variables!ReportTextColor.Value</Color>
+                            </Style>
+                          </TextRun>
+                        </TextRuns>
+                        <Style />
+                      </Paragraph>
+                    </Paragraphs>
+                    <Top>0.41667in</Top>
+                    <Height>1.06597in</Height>
+                    <Width>3.27083in</Width>
+                    <ZIndex>2</ZIndex>
+                    <Style>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingBottom>2pt</PaddingBottom>
+                    </Style>
+                  </Textbox>
+                </ReportItems>
+                <KeepTogether>true</KeepTogether>
+                <Top>3.30556in</Top>
+                <Left>4.24181in</Left>
+                <Height>1.48264in</Height>
+                <Width>3.65625in</Width>
+                <ZIndex>7</ZIndex>
+                <Style>
+                  <Border>
+                    <Style>None</Style>
+                  </Border>
+                </Style>
+              </Rectangle>
             </ReportItems>
             <DataElementOutput>ContentsOnly</DataElementOutput>
             <Top>1.25in</Top>
             <Left>2.125in</Left>
             <Height>7.625in</Height>
-            <Width>6in</Width>
+            <Width>8.59375in</Width>
             <Style />
           </Rectangle>
           <Textbox Name="textbox20">
@@ -660,13 +528,11 @@ You can add your own reports to those included with SQL Nexus by simply creating
                     <Value>About</Value>
                     <Style>
                       <TextDecoration>Underline</TextDecoration>
-                      <Color>Blue</Color>
+                      <Color>=Variables!URILinkFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
-                <Style>
-                  <TextAlign>Right</TextAlign>
-                </Style>
+                <Style />
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>textbox20</rd:DefaultName>
@@ -677,10 +543,10 @@ You can add your own reports to those included with SQL Nexus by simply creating
                 </Action>
               </Actions>
             </ActionInfo>
-            <Top>0.375in</Top>
-            <Left>7in</Left>
+            <Top>0.29167in</Top>
+            <Left>8.58333in</Left>
             <Height>0.25in</Height>
-            <Width>1in</Width>
+            <Width>0.775in</Width>
             <ZIndex>1</ZIndex>
             <Style>
               <PaddingLeft>2pt</PaddingLeft>
@@ -699,13 +565,11 @@ You can add your own reports to those included with SQL Nexus by simply creating
                     <Value>Support</Value>
                     <Style>
                       <TextDecoration>Underline</TextDecoration>
-                      <Color>Blue</Color>
+                      <Color>=Variables!URILinkFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
-                <Style>
-                  <TextAlign>Right</TextAlign>
-                </Style>
+                <Style />
               </Paragraph>
             </Paragraphs>
             <ActionInfo>
@@ -715,10 +579,10 @@ You can add your own reports to those included with SQL Nexus by simply creating
                 </Action>
               </Actions>
             </ActionInfo>
-            <Top>0.95833in</Top>
-            <Left>7in</Left>
+            <Top>0.875in</Top>
+            <Left>8.58333in</Left>
             <Height>0.25in</Height>
-            <Width>1in</Width>
+            <Width>0.875in</Width>
             <ZIndex>2</ZIndex>
             <Style>
               <PaddingLeft>2pt</PaddingLeft>
@@ -738,8 +602,8 @@ You can add your own reports to those included with SQL Nexus by simply creating
                 </Action>
               </Actions>
             </ActionInfo>
-            <Top>1.25in</Top>
-            <Left>7.7999in</Left>
+            <Top>1.325in</Top>
+            <Left>8.0999in</Left>
             <Height>0.16667in</Height>
             <Width>0.16667in</Width>
             <ZIndex>3</ZIndex>
@@ -755,29 +619,30 @@ You can add your own reports to those included with SQL Nexus by simply creating
                     <Value>Check for updates</Value>
                     <Style>
                       <TextDecoration>Underline</TextDecoration>
-                      <Color>Blue</Color>
+                      <Color>=Variables!URILinkFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
-                <Style>
-                  <TextAlign>Right</TextAlign>
-                </Style>
+                <Style />
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>textbox24</rd:DefaultName>
             <ActionInfo>
               <Actions>
                 <Action>
-                  <Hyperlink>https://github.com/microsoft/SqlNexus</Hyperlink>
+                  <Hyperlink>https://github.com/microsoft/SqlNexus/releases</Hyperlink>
                 </Action>
               </Actions>
             </ActionInfo>
-            <Top>0.66667in</Top>
-            <Left>6.5in</Left>
+            <Top>0.58334in</Top>
+            <Left>8.58333in</Left>
             <Height>0.25in</Height>
             <Width>1.5in</Width>
             <ZIndex>4</ZIndex>
             <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
               <PaddingTop>2pt</PaddingTop>
@@ -786,9 +651,14 @@ You can add your own reports to those included with SQL Nexus by simply creating
           </Textbox>
         </ReportItems>
         <Height>8.875in</Height>
-        <Style />
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
+        </Style>
       </Body>
-      <Width>8.125in</Width>
+      <Width>12.54167in</Width>
       <Page>
         <LeftMargin>1in</LeftMargin>
         <RightMargin>1in</RightMargin>
@@ -968,6 +838,83 @@ VCKhFpFwREn866JcvPFIlnUZAH3DM5LjhsE3GuGI8+KZw6Ab0NgMRgyaGiCsw8DoNGVl+dx68EIAB2BO
     </EmbeddedImage>
   </EmbeddedImages>
   <Language>en-US</Language>
+  <Variables>
+    <Variable Name="IsLocalReport">
+      <Value>= (Globals!ReportServerUrl="")</Value>
+    </Variable>
+    <Variable Name="FLocalMode">
+      <Value>=Globals!ReportServerUrl = ""</Value>
+    </Variable>
+    <Variable Name="ReportTextColor">
+      <Value>
+        =Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+        Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+        Parameters!ContrastTheme.Value="None", "Black")
+      </Value>
+    </Variable>
+    <Variable Name="BodyBackgroundColor">
+      <Value>
+        =Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
+        Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
+        Parameters!ContrastTheme.Value="None", "#FAFDFF")
+      </Value>
+    </Variable>
+    <Variable Name="TitleColor">
+      <Value>
+        =Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+        Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+        Parameters!ContrastTheme.Value="None", "SteelBlue")
+      </Value>
+    </Variable>
+    <Variable Name="TableHeadingColor">
+      <Value>
+        =Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
+        Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
+        Parameters!ContrastTheme.Value="None", "SteelBlue")
+      </Value>
+    </Variable>
+    <Variable Name="ChartColor">
+      <Value>
+        =Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
+        Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
+        Parameters!ContrastTheme.Value="None", "LightSteelBlue")
+      </Value>
+    </Variable>
+    <Variable Name="ChartSecondaryColor">
+      <Value>
+        =Switch(Parameters!ContrastTheme.Value="Aquatic", "No Color",
+        Parameters!ContrastTheme.Value="Desert", "No Color",
+        Parameters!ContrastTheme.Value="None", "Automatic")
+      </Value>
+    </Variable>
+    <Variable Name="ChartGradientStyle">
+      <Value>
+        =Switch(Parameters!ContrastTheme.Value="Aquatic", "None",
+        Parameters!ContrastTheme.Value="Desert", "None",
+        Parameters!ContrastTheme.Value="None", "TopBottom")
+      </Value>
+    </Variable>
+    <Variable Name="TableShowCell">
+      <Value>"Red"</Value>
+    </Variable>
+    <Variable Name="TableHidcell">
+      <Value>"Green"</Value>
+    </Variable>
+    <Variable Name="TableHeadingFontColor">
+      <Value>
+        =Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+        Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+        Parameters!ContrastTheme.Value="None", "#FFFFFF")
+      </Value>
+    </Variable>
+    <Variable Name="URILinkFontColor">
+      <Value>
+        =Switch(Parameters!ContrastTheme.Value="Aquatic", "#75E9FC",
+        Parameters!ContrastTheme.Value="Desert", "#1C5E75",
+        Parameters!ContrastTheme.Value="None", "Blue")
+      </Value>
+    </Variable>
+  </Variables>
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
   <rd:ReportUnitType>Inch</rd:ReportUnitType>
   <rd:ReportID>28517d01-03aa-4dc1-962e-cfc90cfc6b73</rd:ReportID>
