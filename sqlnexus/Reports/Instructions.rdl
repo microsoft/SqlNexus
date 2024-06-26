@@ -14,7 +14,14 @@
                   <Paragraph>
                     <TextRuns>
                       <TextRun>
-                        <Value>nex·us [ néksəss ] (plural nex·us or nex·us·es).  Noun.  Definition: 1) connection: a connection or link associating two or more people or things  2) connected group: a group or series of connected people or things  3) center: the center or focus of something.</Value>
+                        <Value>nex·us</Value>
+                        <Style>
+                          <FontWeight>Bold</FontWeight>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
+                      </TextRun>
+                      <TextRun>
+                        <Value> [ néksəss ] (plural nex·us or nex·us·es).  Noun.  Definition: 1) connection: a connection or link associating two or more people or things  2) connected group: a group or series of connected people or things  3) center: the center or focus of something.</Value>
                         <Style>
                           <Color>=Variables!ReportTextColor.Value</Color>
                         </Style>
@@ -77,7 +84,14 @@
                   <Paragraph>
                     <TextRuns>
                       <TextRun>
-                        <Value>SQL [ èss kyoo él, sékwəl ]. Noun.  Definition: computer language: a standardized language that approximates the structure of natural English for obtaining information from databases. 
+                        <Value>SQL</Value>
+                        <Style>
+                          <FontWeight>Bold</FontWeight>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
+                      </TextRun>
+                      <TextRun>
+                        <Value> [ èss kyoo él, sékwəl ]. Noun.  Definition: computer language: a standardized language that approximates the structure of natural English for obtaining information from databases. 
 
 </Value>
                         <Style>
@@ -101,77 +115,6 @@
                   <PaddingBottom>2pt</PaddingBottom>
                 </Style>
               </Textbox>
-              <Textbox Name="textbox15">
-                <CanGrow>true</CanGrow>
-                <KeepTogether>true</KeepTogether>
-                <Paragraphs>
-                  <Paragraph>
-                    <TextRuns>
-                      <TextRun>
-                        <Value>SQL</Value>
-                        <Style>
-                          <Color>=Variables!URILinkFontColor.Value</Color>
-                        </Style>
-                      </TextRun>
-                    </TextRuns>
-                    <Style />
-                  </Paragraph>
-                </Paragraphs>
-                <rd:DefaultName>textbox15</rd:DefaultName>
-                <Top>1in</Top>
-                <Left>0.125in</Left>
-                <Height>0.25in</Height>
-                <Width>0.5in</Width>
-                <ZIndex>3</ZIndex>
-                <Style>
-                  <Border>
-                    <Style>None</Style>
-                  </Border>
-                  <PaddingLeft>2pt</PaddingLeft>
-                  <PaddingRight>2pt</PaddingRight>
-                  <PaddingTop>2pt</PaddingTop>
-                  <PaddingBottom>2pt</PaddingBottom>
-                </Style>
-              </Textbox>
-              <Textbox Name="textbox16">
-                <CanGrow>true</CanGrow>
-                <KeepTogether>true</KeepTogether>
-                <Paragraphs>
-                  <Paragraph>
-                    <TextRuns>
-                      <TextRun>
-                        <Value>nex·us</Value>
-                        <Style>
-                          <Color>=Variables!URILinkFontColor.Value</Color>
-                        </Style>
-                      </TextRun>
-                    </TextRuns>
-                    <Style />
-                  </Paragraph>
-                </Paragraphs>
-                <rd:DefaultName>textbox16</rd:DefaultName>
-                <ActionInfo>
-                  <Actions>
-                    <Action>
-                      <Hyperlink>https://www.merriam-webster.com/dictionary/nexus</Hyperlink>
-                    </Action>
-                  </Actions>
-                </ActionInfo>
-                <Top>1.375in</Top>
-                <Left>0.125in</Left>
-                <Height>0.25in</Height>
-                <Width>0.625in</Width>
-                <ZIndex>4</ZIndex>
-                <Style>
-                  <Border>
-                    <Style>None</Style>
-                  </Border>
-                  <PaddingLeft>2pt</PaddingLeft>
-                  <PaddingRight>2pt</PaddingRight>
-                  <PaddingTop>2pt</PaddingTop>
-                  <PaddingBottom>2pt</PaddingBottom>
-                </Style>
-              </Textbox>
               <Textbox Name="textbox18">
                 <CanGrow>true</CanGrow>
                 <KeepTogether>true</KeepTogether>
@@ -179,7 +122,14 @@
                   <Paragraph>
                     <TextRuns>
                       <TextRun>
-                        <Value>SQL Nexus is a SQL Server-based diagnostics analysis tool.  It provides an extensible facility for analyzing, reporting, and charting diagnostic data, particularly that related to SQL Server itself.</Value>
+                        <Value>SQL Nexus</Value>
+                        <Style>
+                          <FontWeight>Bold</FontWeight>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
+                      </TextRun>
+                      <TextRun>
+                        <Value> is a SQL Server-based diagnostics analysis tool.  It provides an extensible facility for analyzing, reporting, and charting diagnostic data, particularly that related to SQL Server itself.</Value>
                         <Style>
                           <Color>=Variables!ReportTextColor.Value</Color>
                         </Style>
@@ -193,47 +143,8 @@
                 <Left>0.125in</Left>
                 <Height>0.625in</Height>
                 <Width>7.58333in</Width>
-                <ZIndex>5</ZIndex>
+                <ZIndex>3</ZIndex>
                 <Style>
-                  <PaddingLeft>2pt</PaddingLeft>
-                  <PaddingRight>2pt</PaddingRight>
-                  <PaddingTop>2pt</PaddingTop>
-                  <PaddingBottom>2pt</PaddingBottom>
-                </Style>
-              </Textbox>
-              <Textbox Name="textbox19">
-                <CanGrow>true</CanGrow>
-                <KeepTogether>true</KeepTogether>
-                <Paragraphs>
-                  <Paragraph>
-                    <TextRuns>
-                      <TextRun>
-                        <Value>SQL Nexus</Value>
-                        <Style>
-                          <Color>=Variables!URILinkFontColor.Value</Color>
-                        </Style>
-                      </TextRun>
-                    </TextRuns>
-                    <Style />
-                  </Paragraph>
-                </Paragraphs>
-                <rd:DefaultName>textbox19</rd:DefaultName>
-                <ActionInfo>
-                  <Actions>
-                    <Action>
-                      <Hyperlink>https://github.com/microsoft/SqlNexus/wiki</Hyperlink>
-                    </Action>
-                  </Actions>
-                </ActionInfo>
-                <Top>2.125in</Top>
-                <Left>0.125in</Left>
-                <Height>0.25in</Height>
-                <Width>0.875in</Width>
-                <ZIndex>6</ZIndex>
-                <Style>
-                  <Border>
-                    <Style>None</Style>
-                  </Border>
                   <PaddingLeft>2pt</PaddingLeft>
                   <PaddingRight>2pt</PaddingRight>
                   <PaddingTop>2pt</PaddingTop>
@@ -325,7 +236,7 @@ Click one of the reports on the left to view it.  If the report includes a link 
                 <Left>0.08625in</Left>
                 <Height>1.44792in</Height>
                 <Width>3.72917in</Width>
-                <ZIndex>7</ZIndex>
+                <ZIndex>4</ZIndex>
                 <Style>
                   <Border>
                     <Style>None</Style>
@@ -415,7 +326,7 @@ You can export reports in a variety of file formats including: Excel, PDF, and s
                 <Left>0.08625in</Left>
                 <Height>1.52083in</Height>
                 <Width>3.66667in</Width>
-                <ZIndex>8</ZIndex>
+                <ZIndex>5</ZIndex>
                 <Style>
                   <Border>
                     <Style>None</Style>
@@ -505,7 +416,7 @@ SQL Nexus provides built-in support for emailing reports.  Click the Email butto
                 <Left>4.24181in</Left>
                 <Height>1.52083in</Height>
                 <Width>3.21875in</Width>
-                <ZIndex>9</ZIndex>
+                <ZIndex>6</ZIndex>
                 <Style>
                   <Border>
                     <Style>None</Style>
@@ -592,7 +503,7 @@ SQL Nexus provides built-in support for emailing reports.  Click the Email butto
                 <Left>4.24181in</Left>
                 <Height>1.48264in</Height>
                 <Width>3.65625in</Width>
-                <ZIndex>10</ZIndex>
+                <ZIndex>7</ZIndex>
                 <Style>
                   <Border>
                     <Style>None</Style>
