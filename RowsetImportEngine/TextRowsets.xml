@@ -4391,6 +4391,60 @@
         <Column name="UniqueIndexName" type="RowsetImportEngine.VarCharColumn" length="128" />
       </KnownColumns>
     </Rowset>
+	<Rowset name="tbl_FullText_Column_Info" enabled="true" identifier="-- tbl_FullText_Column_Info --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="DatabaseName" type="RowsetImportEngine.VarCharColumn" length="128" />
+        <Column name="ColumnName" type="RowsetImportEngine.VarCharColumn" length="128" />
+        <Column name="TableName" type="RowsetImportEngine.VarCharColumn" length="128" />
+      </KnownColumns>
+    </Rowset>
+	<Rowset name="tbl_FullText_WordBreaking_Language_Info" enabled="true" identifier="-- tbl_FullText_WordBreaking_Language_Info --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="DatabaseName" type="RowsetImportEngine.VarCharColumn" length="128" />
+        <Column name="ObjectID" type="RowsetImportEngine.IntColumn" />
+        <Column name="TableName" type="RowsetImportEngine.VarCharColumn" length="128" />
+        <Column name="ColumnName" type="RowsetImportEngine.VarCharColumn" length="128" />
+        <Column name="WordBreaker_Language" type="RowsetImportEngine.VarCharColumn" length="500" />
+        <Column name="LCID" type="RowsetImportEngine.IntColumn" />
+      </KnownColumns>
+    </Rowset>
+	<Rowset name="tbl_FullText_IFilters" enabled="true" identifier="-- tbl_FullText_IFilters --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="Extension" type="RowsetImportEngine.VarCharColumn" length="128" />
+        <Column name="manufacturer" type="RowsetImportEngine.VarCharColumn" length="128" />
+        <Column name="version" type="RowsetImportEngine.VarCharColumn" length="128" />
+        <Column name="path" type="RowsetImportEngine.VarCharColumn" length="260" />
+        <Column name="class_id" type="RowsetImportEngine.VarCharColumn" />
+      </KnownColumns>
+    </Rowset>
+	<Rowset name="tbl_FullText_NonMicrosoft_IFilters" enabled="true" identifier="-- tbl_FullText_NonMicrosoft_IFilters --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="Extension" type="RowsetImportEngine.VarCharColumn" length="128" />
+        <Column name="manufacturer" type="RowsetImportEngine.VarCharColumn" length="128" />
+        <Column name="version" type="RowsetImportEngine.VarCharColumn" length="128" />
+        <Column name="path" type="RowsetImportEngine.VarCharColumn" length="260" />
+        <Column name="class_id" type="RowsetImportEngine.VarCharColumn" />
+      </KnownColumns>
+    </Rowset>
+	<Rowset name="tbl_FullText_StopLists" enabled="true" identifier="-- tbl_FullText_StopLists --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="DatabaseName" type="RowsetImportEngine.VarCharColumn" length="128" />
+        <Column name="stoplist_id" type="RowsetImportEngine.IntColumn" />
+        <Column name="name" type="RowsetImportEngine.VarCharColumn" length="128" />
+        <Column name="create_date" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="modify_date" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="principal_id" type="RowsetImportEngine.IntColumn" />
+      </KnownColumns>
+    </Rowset>
+	<Rowset name="tbl_FullText_StopWords" enabled="true" identifier="-- tbl_FullText_StopWords --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="DatabaseName" type="RowsetImportEngine.VarCharColumn" length="128" />
+        <Column name="stoplist_id" type="RowsetImportEngine.IntColumn" />
+        <Column name="stopword" type="RowsetImportEngine.VarCharColumn" length="64" />
+        <Column name="language" type="RowsetImportEngine.VarCharColumn" length="128" />
+        <Column name="language_id" type="RowsetImportEngine.IntColumn" />
+      </KnownColumns>
+    </Rowset>
   </KnownRowsets>
 </TextImport>
 
