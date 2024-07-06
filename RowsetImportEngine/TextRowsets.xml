@@ -4358,6 +4358,23 @@
         <Column name="PackageName" type="RowsetImportEngine.NVarCharColumn" length="32" />
       </KnownColumns>
     </Rowset>
+    <Rowset name="tbl_disk_information" enabled="true" identifier="-- Disk_Information --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="Disk_Drive" type="RowsetImportEngine.NVarCharColumn" length="24" />
+        <Column name="Disk_Model" type="RowsetImportEngine.NVarCharColumn" length="36" />
+        <Column name="Partn_Id" type="RowsetImportEngine.IntColumn" />
+        <Column name="Volume_Size_GB" type="RowsetImportEngine.DecimalColumn" />
+        <Column name="Volume_Free_Space_GB" type="RowsetImportEngine.DecimalColumn" />
+        <Column name="Volume_Caption" type="RowsetImportEngine.NVarCharColumn" length="24" />
+        <Column name="Volume_Label" type="RowsetImportEngine.NVarCharColumn" length="24" />
+        <Column name="Primary_Part" type="RowsetImportEngine.VarCharColumn" length="8" />
+        <Column name="Boot_Part" type="RowsetImportEngine.VarCharColumn" length="8" />
+        <Column name="Volume_Letter" type="RowsetImportEngine.VarCharColumn" length="8" />
+        <Column name="Total_Disk_Size_GB" type="RowsetImportEngine.DecimalColumn" />
+        <Column name="BytesPerSector" type="RowsetImportEngine.IntColumn" />
+        <Column name="SCSIPort" type="RowsetImportEngine.IntColumn" />
+      </KnownColumns>
+    </Rowset>
 	<Rowset name=" tbl_FullText_Catalog_Info_Properties" enabled="true" identifier="-- tbl_FullText_Catalog_Info_Properties --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
         <Column name="DatabaseName" type="RowsetImportEngine.VarCharColumn" length="128" />
