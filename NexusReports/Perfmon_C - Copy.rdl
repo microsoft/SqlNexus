@@ -2283,10 +2283,9 @@ ORDER BY avgval DESC;</CommandText>
       <Value>= (Globals!ReportServerUrl="")</Value>
     </Variable>
     <Variable Name="ReportTextColor">
-      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic #FFFFFF",
-                            Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
-                            Parameters!ContrastTheme.Value="None", "Black")
-                            </Value>
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+Parameters!ContrastTheme.Value="None", "Black")</Value>
     </Variable>
     <Variable Name="BodyBackgroundColor">
       <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
