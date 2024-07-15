@@ -8,7 +8,6 @@
         <ConnectString>="data source=" &amp; Parameters!dsServerName.Value &amp; ";Connect Timeout=60;initial catalog="&amp;Parameters!dsDatabaseName.Value</ConnectString>
         <IntegratedSecurity>true</IntegratedSecurity>
       </ConnectionProperties>
-      <rd:SecurityType>Integrated</rd:SecurityType>
       <rd:DataSourceID>af2b7bc2-6e25-4254-9bc8-158577b66b97</rd:DataSourceID>
     </DataSource>
   </DataSources>
@@ -273,6 +272,7 @@ ORDER BY avgval DESC;</CommandText>
                     <Value>     Perfmon Summary</Value>
                     <Style>
                       <FontSize>16pt</FontSize>
+                      <Color>=Variables!TitleColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -283,7 +283,7 @@ ORDER BY avgval DESC;</CommandText>
             </Paragraphs>
             <rd:WatermarkTextbox>Title</rd:WatermarkTextbox>
             <rd:DefaultName>ReportTitle</rd:DefaultName>
-            <Left>2.49667in</Left>
+            <Left>2.4862in</Left>
             <Height>0.275in</Height>
             <Width>8.30208in</Width>
             <Style>
@@ -333,6 +333,7 @@ ORDER BY avgval DESC;</CommandText>
                                       <Value>Instance Name</Value>
                                       <Style>
                                         <FontWeight>Bold</FontWeight>
+                                        <Color>=Variables!TableHeadingFontColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -347,6 +348,7 @@ ORDER BY avgval DESC;</CommandText>
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <VerticalAlign>Top</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -368,6 +370,7 @@ ORDER BY avgval DESC;</CommandText>
                                       <Value>Sum - IO Data MB/Sec</Value>
                                       <Style>
                                         <FontWeight>Bold</FontWeight>
+                                        <Color>=Variables!TableHeadingFontColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -379,7 +382,9 @@ ORDER BY avgval DESC;</CommandText>
                                   <TextRuns>
                                     <TextRun>
                                       <Value />
-                                      <Style />
+                                      <Style>
+                                        <Color>=Variables!TableHeadingFontColor.Value</Color>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -393,6 +398,7 @@ ORDER BY avgval DESC;</CommandText>
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <VerticalAlign>Top</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -414,6 +420,7 @@ ORDER BY avgval DESC;</CommandText>
                                       <Value>Min - IO Data MB/sec</Value>
                                       <Style>
                                         <FontWeight>Bold</FontWeight>
+                                        <Color>=Variables!TableHeadingFontColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -427,6 +434,7 @@ ORDER BY avgval DESC;</CommandText>
                                       <Value />
                                       <Style>
                                         <FontWeight>Bold</FontWeight>
+                                        <Color>=Variables!TableHeadingFontColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -439,6 +447,7 @@ ORDER BY avgval DESC;</CommandText>
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <VerticalAlign>Top</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -460,6 +469,7 @@ ORDER BY avgval DESC;</CommandText>
                                       <Value>Avg - IO Data MB/Sec</Value>
                                       <Style>
                                         <FontWeight>Bold</FontWeight>
+                                        <Color>=Variables!TableHeadingFontColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -473,6 +483,7 @@ ORDER BY avgval DESC;</CommandText>
                                       <Value />
                                       <Style>
                                         <FontWeight>Bold</FontWeight>
+                                        <Color>=Variables!TableHeadingFontColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -485,6 +496,7 @@ ORDER BY avgval DESC;</CommandText>
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <VerticalAlign>Top</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -506,6 +518,7 @@ ORDER BY avgval DESC;</CommandText>
                                       <Value>Max - IO Data MB/Sec</Value>
                                       <Style>
                                         <FontWeight>Bold</FontWeight>
+                                        <Color>=Variables!TableHeadingFontColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -520,6 +533,7 @@ ORDER BY avgval DESC;</CommandText>
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <VerticalAlign>Top</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -544,7 +558,9 @@ ORDER BY avgval DESC;</CommandText>
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!instname.Value</Value>
-                                      <Style />
+                                      <Style>
+                                        <Color>=Variables!ReportTextColor.Value</Color>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -577,7 +593,9 @@ ORDER BY avgval DESC;</CommandText>
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!SumCounterValue.Value</Value>
-                                      <Style />
+                                      <Style>
+                                        <Color>=Variables!ReportTextColor.Value</Color>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -610,7 +628,9 @@ ORDER BY avgval DESC;</CommandText>
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!MinCounterValue.Value</Value>
-                                      <Style />
+                                      <Style>
+                                        <Color>=Variables!ReportTextColor.Value</Color>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -643,7 +663,9 @@ ORDER BY avgval DESC;</CommandText>
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!AvgCounterValue.Value</Value>
-                                      <Style />
+                                      <Style>
+                                        <Color>=Variables!ReportTextColor.Value</Color>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -676,7 +698,9 @@ ORDER BY avgval DESC;</CommandText>
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!MaxCounterValue.Value</Value>
-                                      <Style />
+                                      <Style>
+                                        <Color>=Variables!ReportTextColor.Value</Color>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -770,7 +794,7 @@ ORDER BY avgval DESC;</CommandText>
                           <FontSize>12pt</FontSize>
                           <FontWeight>Bold</FontWeight>
                           <TextDecoration>Underline</TextDecoration>
-                          <Color>Blue</Color>
+                          <Color>=Variables!URILinkFontColor.Value</Color>
                         </Style>
                       </TextRun>
                     </TextRuns>
@@ -805,7 +829,7 @@ ORDER BY avgval DESC;</CommandText>
                   </Actions>
                 </ActionInfo>
                 <Top>1.08379in</Top>
-                <Left>2.31771in</Left>
+                <Left>2.31759in</Left>
                 <Height>0.27951in</Height>
                 <Width>4.44063in</Width>
                 <ZIndex>1</ZIndex>
@@ -830,6 +854,7 @@ ORDER BY avgval DESC;</CommandText>
                         <Style>
                           <FontSize>12pt</FontSize>
                           <FontWeight>Bold</FontWeight>
+                          <Color>=Variables!TitleColor.Value</Color>
                         </Style>
                       </TextRun>
                     </TextRuns>
@@ -864,7 +889,6 @@ ORDER BY avgval DESC;</CommandText>
               <Border>
                 <Style>None</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
             </Style>
           </Rectangle>
           <Rectangle Name="RectangleCPU">
@@ -901,6 +925,7 @@ ORDER BY avgval DESC;</CommandText>
                                       <Value>Instance Name</Value>
                                       <Style>
                                         <FontWeight>Bold</FontWeight>
+                                        <Color>=Variables!TableHeadingFontColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -915,6 +940,7 @@ ORDER BY avgval DESC;</CommandText>
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <VerticalAlign>Top</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -936,6 +962,7 @@ ORDER BY avgval DESC;</CommandText>
                                       <Value>Min -% Processor Time</Value>
                                       <Style>
                                         <FontWeight>Bold</FontWeight>
+                                        <Color>=Variables!TableHeadingFontColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -949,6 +976,7 @@ ORDER BY avgval DESC;</CommandText>
                                       <Value />
                                       <Style>
                                         <FontWeight>Bold</FontWeight>
+                                        <Color>=Variables!TableHeadingFontColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -961,6 +989,7 @@ ORDER BY avgval DESC;</CommandText>
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <VerticalAlign>Top</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -982,6 +1011,7 @@ ORDER BY avgval DESC;</CommandText>
                                       <Value>Avg - % Processor Time</Value>
                                       <Style>
                                         <FontWeight>Bold</FontWeight>
+                                        <Color>=Variables!TableHeadingFontColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -995,6 +1025,7 @@ ORDER BY avgval DESC;</CommandText>
                                       <Value />
                                       <Style>
                                         <FontWeight>Bold</FontWeight>
+                                        <Color>=Variables!TableHeadingFontColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -1007,6 +1038,7 @@ ORDER BY avgval DESC;</CommandText>
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <VerticalAlign>Top</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -1028,6 +1060,7 @@ ORDER BY avgval DESC;</CommandText>
                                       <Value>Max - % Processor Time</Value>
                                       <Style>
                                         <FontWeight>Bold</FontWeight>
+                                        <Color>=Variables!TableHeadingFontColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -1041,6 +1074,7 @@ ORDER BY avgval DESC;</CommandText>
                                       <Value />
                                       <Style>
                                         <FontWeight>Bold</FontWeight>
+                                        <Color>=Variables!TableHeadingFontColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -1055,6 +1089,7 @@ ORDER BY avgval DESC;</CommandText>
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <VerticalAlign>Top</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -1079,7 +1114,9 @@ ORDER BY avgval DESC;</CommandText>
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!InstName.Value</Value>
-                                      <Style />
+                                      <Style>
+                                        <Color>=Variables!ReportTextColor.Value</Color>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -1112,7 +1149,9 @@ ORDER BY avgval DESC;</CommandText>
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!MinCounterValue.Value</Value>
-                                      <Style />
+                                      <Style>
+                                        <Color>=Variables!ReportTextColor.Value</Color>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -1145,7 +1184,9 @@ ORDER BY avgval DESC;</CommandText>
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!AvgCounterValue.Value</Value>
-                                      <Style />
+                                      <Style>
+                                        <Color>=Variables!ReportTextColor.Value</Color>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -1178,7 +1219,9 @@ ORDER BY avgval DESC;</CommandText>
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!MaxCounterValue.Value</Value>
-                                      <Style />
+                                      <Style>
+                                        <Color>=Variables!ReportTextColor.Value</Color>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -1269,8 +1312,8 @@ ORDER BY avgval DESC;</CommandText>
                         <Style>
                           <FontSize>12pt</FontSize>
                           <FontWeight>Bold</FontWeight>
-                          <TextDecoration>Underline</TextDecoration>
-                          <Color>Blue</Color>
+                          <TextDecoration>=Variables!URILinkFontColor.Value</TextDecoration>
+                          <Color>=Variables!URILinkFontColor.Value</Color>
                         </Style>
                       </TextRun>
                     </TextRuns>
@@ -1330,6 +1373,7 @@ ORDER BY avgval DESC;</CommandText>
                         <Style>
                           <FontSize>12pt</FontSize>
                           <FontWeight>Bold</FontWeight>
+                          <Color>=Variables!TitleColor.Value</Color>
                         </Style>
                       </TextRun>
                     </TextRuns>
@@ -1364,7 +1408,6 @@ ORDER BY avgval DESC;</CommandText>
               <Border>
                 <Style>None</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
             </Style>
           </Rectangle>
           <Rectangle Name="RectangleMemory">
@@ -1401,6 +1444,7 @@ ORDER BY avgval DESC;</CommandText>
                                       <Value>Instance Name</Value>
                                       <Style>
                                         <FontWeight>Bold</FontWeight>
+                                        <Color>=Variables!TableHeadingFontColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -1415,6 +1459,7 @@ ORDER BY avgval DESC;</CommandText>
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <VerticalAlign>Top</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -1436,6 +1481,7 @@ ORDER BY avgval DESC;</CommandText>
                                       <Value>Min - Pvt Bytes ( in MB )</Value>
                                       <Style>
                                         <FontWeight>Bold</FontWeight>
+                                        <Color>=Variables!TableHeadingFontColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -1449,6 +1495,7 @@ ORDER BY avgval DESC;</CommandText>
                                       <Value />
                                       <Style>
                                         <FontWeight>Bold</FontWeight>
+                                        <Color>=Variables!TableHeadingFontColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -1461,6 +1508,7 @@ ORDER BY avgval DESC;</CommandText>
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <VerticalAlign>Top</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -1482,6 +1530,7 @@ ORDER BY avgval DESC;</CommandText>
                                       <Value>Avg - Pvt Bytes ( in MB )</Value>
                                       <Style>
                                         <FontWeight>Bold</FontWeight>
+                                        <Color>=Variables!TableHeadingFontColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -1495,6 +1544,7 @@ ORDER BY avgval DESC;</CommandText>
                                       <Value />
                                       <Style>
                                         <FontWeight>Bold</FontWeight>
+                                        <Color>=Variables!TableHeadingFontColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -1507,6 +1557,7 @@ ORDER BY avgval DESC;</CommandText>
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <VerticalAlign>Top</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -1528,6 +1579,7 @@ ORDER BY avgval DESC;</CommandText>
                                       <Value>Max - Pvt Bytes ( in MB )</Value>
                                       <Style>
                                         <FontWeight>Bold</FontWeight>
+                                        <Color>=Variables!TableHeadingFontColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -1541,6 +1593,7 @@ ORDER BY avgval DESC;</CommandText>
                                       <Value />
                                       <Style>
                                         <FontWeight>Bold</FontWeight>
+                                        <Color>=Variables!TableHeadingFontColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -1555,6 +1608,7 @@ ORDER BY avgval DESC;</CommandText>
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <VerticalAlign>Top</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -1579,7 +1633,9 @@ ORDER BY avgval DESC;</CommandText>
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!instname.Value</Value>
-                                      <Style />
+                                      <Style>
+                                        <Color>=Variables!ReportTextColor.Value</Color>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -1612,7 +1668,9 @@ ORDER BY avgval DESC;</CommandText>
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!minval.Value</Value>
-                                      <Style />
+                                      <Style>
+                                        <Color>=Variables!ReportTextColor.Value</Color>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -1645,7 +1703,9 @@ ORDER BY avgval DESC;</CommandText>
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!avgval.Value</Value>
-                                      <Style />
+                                      <Style>
+                                        <Color>=Variables!ReportTextColor.Value</Color>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -1678,7 +1738,9 @@ ORDER BY avgval DESC;</CommandText>
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!maxval.Value</Value>
-                                      <Style />
+                                      <Style>
+                                        <Color>=Variables!ReportTextColor.Value</Color>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -1770,7 +1832,7 @@ ORDER BY avgval DESC;</CommandText>
                           <FontSize>12pt</FontSize>
                           <FontWeight>Bold</FontWeight>
                           <TextDecoration>Underline</TextDecoration>
-                          <Color>Blue</Color>
+                          <Color>=Variables!URILinkFontColor.Value</Color>
                         </Style>
                       </TextRun>
                     </TextRuns>
@@ -1830,6 +1892,7 @@ ORDER BY avgval DESC;</CommandText>
                         <Style>
                           <FontSize>12pt</FontSize>
                           <FontWeight>Bold</FontWeight>
+                          <Color>=Variables!TitleColor.Value</Color>
                         </Style>
                       </TextRun>
                     </TextRuns>
@@ -1864,7 +1927,6 @@ ORDER BY avgval DESC;</CommandText>
               <Border>
                 <Style>None</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
             </Style>
           </Rectangle>
           <Textbox Name="TextboxNetwork">
@@ -1904,7 +1966,7 @@ ORDER BY avgval DESC;</CommandText>
                       <FontSize>12pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                       <TextDecoration>Underline</TextDecoration>
-                      <Color>Blue</Color>
+                      <Color>=Variables!URILinkFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1963,6 +2025,7 @@ ORDER BY avgval DESC;</CommandText>
                     <Value>Show queries for this report.</Value>
                     <Style>
                       <FontWeight>Bold</FontWeight>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1994,7 +2057,9 @@ ORDER BY avgval DESC;</CommandText>
                     <TextRuns>
                       <TextRun>
                         <Value>=DataSets!DataSet_IOPct.CommandText</Value>
-                        <Style />
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </TextRun>
                     </TextRuns>
                     <Style />
@@ -2025,7 +2090,9 @@ ORDER BY avgval DESC;</CommandText>
                     <TextRuns>
                       <TextRun>
                         <Value>=DataSets!DataSet_CPU.CommandText</Value>
-                        <Style />
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </TextRun>
                     </TextRuns>
                     <Style />
@@ -2057,7 +2124,9 @@ ORDER BY avgval DESC;</CommandText>
                     <TextRuns>
                       <TextRun>
                         <Value>=DataSets!DataSet_Memory.CommandText</Value>
-                        <Style />
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </TextRun>
                     </TextRuns>
                     <Style />
@@ -2105,7 +2174,7 @@ ORDER BY avgval DESC;</CommandText>
           <Border>
             <Style>None</Style>
           </Border>
-          <BackgroundColor>=Parameters!FmtAmbientBackground.Value</BackgroundColor>
+          <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
         </Style>
       </Body>
       <Width>17in</Width>
@@ -2283,10 +2352,9 @@ ORDER BY avgval DESC;</CommandText>
       <Value>= (Globals!ReportServerUrl="")</Value>
     </Variable>
     <Variable Name="ReportTextColor">
-      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic #FFFFFF",
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
                             Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
-                            Parameters!ContrastTheme.Value="None", "Black")
-                            </Value>
+                            Parameters!ContrastTheme.Value="None", "Black")</Value>
     </Variable>
     <Variable Name="BodyBackgroundColor">
       <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
