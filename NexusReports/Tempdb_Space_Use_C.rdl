@@ -350,7 +350,7 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
                       </Border>
                       <FontSize>8pt</FontSize>
                       <Format>hh:mm:ss tt</Format>
-                      <Color>#5c5c5c</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                     <ChartAxisTitle>
                       <Caption />
@@ -464,7 +464,7 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
                         <Style>None</Style>
                       </Border>
                       <FontSize>8pt</FontSize>
-                      <Color>#5c5c5c</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                     <ChartAxisTitle>
                       <Caption />
@@ -578,6 +578,7 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
                 <Style>
                   <BackgroundGradientType>None</BackgroundGradientType>
                   <FontSize>8pt</FontSize>
+                  <Color>=Variables!ReportTextColor.Value</Color>
                 </Style>
                 <Position>TopLeft</Position>
                 <ChartLegendTitle>
@@ -588,6 +589,7 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
                     <TextAlign>Center</TextAlign>
                   </Style>
                 </ChartLegendTitle>
+                <MinFontSize>9pt</MinFontSize>
                 <HeaderSeparatorColor>Black</HeaderSeparatorColor>
                 <ColumnSeparatorColor>Black</ColumnSeparatorColor>
               </ChartLegend>
@@ -597,10 +599,11 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
                 <Caption>TempDb Space Usage by Object Types (MB)</Caption>
                 <Style>
                   <BackgroundGradientType>None</BackgroundGradientType>
-                  <FontSize>18pt</FontSize>
+                  <FontSize>12pt</FontSize>
                   <FontWeight>Normal</FontWeight>
                   <TextAlign>Left</TextAlign>
                   <VerticalAlign>Top</VerticalAlign>
+                  <Color>=Variables!ReportTextColor.Value</Color>
                 </Style>
               </ChartTitle>
             </ChartTitles>
@@ -622,8 +625,8 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
               </Style>
             </ChartNoDataMessage>
             <DataSetName>TempDbUsagePerCategory</DataSetName>
-            <Top>0.20708in</Top>
-            <Left>0.20708in</Left>
+            <Top>1.20709in</Top>
+            <Left>0.18625in</Left>
             <Height>3.11458in</Height>
             <Width>12.54292in</Width>
             <Style>
@@ -631,7 +634,7 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
                 <Color>LightGrey</Color>
                 <Style>None</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
+              <BackgroundColor>=Variables!ChartColor.Value</BackgroundColor>
               <BackgroundGradientType>None</BackgroundGradientType>
             </Style>
           </Chart>
@@ -639,10 +642,10 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>0.95833in</Width>
+                  <Width>1.21662in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.63542in</Width>
+                  <Width>0.84375in</Width>
                 </TablixColumn>
                 <TablixColumn>
                   <Width>0.50125in</Width>
@@ -660,13 +663,13 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
                   <Width>1.35417in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1in</Width>
+                  <Width>1.60504in</Width>
                 </TablixColumn>
                 <TablixColumn>
                   <Width>1in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1in</Width>
+                  <Width>1.63542in</Width>
                 </TablixColumn>
                 <TablixColumn>
                   <Width>0.84375in</Width>
@@ -692,7 +695,9 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
                               <TextRuns>
                                 <TextRun>
                                   <Value>runtime</Value>
-                                  <Style />
+                                  <Style>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -701,9 +706,10 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
                           <rd:DefaultName>Textbox1</rd:DefaultName>
                           <Style>
                             <Border>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>PaleTurquoise</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -722,7 +728,9 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
                               <TextRuns>
                                 <TextRun>
                                   <Value>session id</Value>
-                                  <Style />
+                                  <Style>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -731,9 +739,10 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
                           <rd:DefaultName>Textbox3</rd:DefaultName>
                           <Style>
                             <Border>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>PaleTurquoise</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -752,7 +761,9 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
                               <TextRuns>
                                 <TextRun>
                                   <Value>exec context id</Value>
-                                  <Style />
+                                  <Style>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -761,9 +772,10 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
                           <rd:DefaultName>Textbox5</rd:DefaultName>
                           <Style>
                             <Border>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>PaleTurquoise</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -784,6 +796,7 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
                                   <Value>internal objects alloc (MB)</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -793,9 +806,10 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
                           <rd:DefaultName>Textbox9</rd:DefaultName>
                           <Style>
                             <Border>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>PaleTurquoise</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -816,6 +830,7 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
                                   <Value>internal objects dealloc (MB)</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -825,9 +840,10 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
                           <rd:DefaultName>Textbox11</rd:DefaultName>
                           <Style>
                             <Border>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>PaleTurquoise</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -848,6 +864,7 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
                                   <Value>user objects alloc (MB)</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -857,9 +874,10 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
                           <rd:DefaultName>Textbox13</rd:DefaultName>
                           <Style>
                             <Border>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>PaleTurquoise</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -880,6 +898,7 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
                                   <Value>user objects dealloc (MB)</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -889,9 +908,10 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
                           <rd:DefaultName>Textbox15</rd:DefaultName>
                           <Style>
                             <Border>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>PaleTurquoise</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -912,6 +932,7 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
                                   <Value>program name</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -921,9 +942,10 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
                           <rd:DefaultName>Textbox17</rd:DefaultName>
                           <Style>
                             <Border>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>PaleTurquoise</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -944,6 +966,7 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
                                   <Value>statement_text</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -953,9 +976,10 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
                           <rd:DefaultName>Textbox21</rd:DefaultName>
                           <Style>
                             <Border>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>PaleTurquoise</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -976,6 +1000,7 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
                                   <Value>most recent query</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -985,9 +1010,10 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
                           <rd:DefaultName>Textbox31</rd:DefaultName>
                           <Style>
                             <Border>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>PaleTurquoise</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -1008,6 +1034,7 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
                                   <Value>wait type</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1017,9 +1044,10 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
                           <rd:DefaultName>Textbox25</rd:DefaultName>
                           <Style>
                             <Border>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>PaleTurquoise</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -1040,6 +1068,7 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
                                   <Value>wait time</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1049,9 +1078,10 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
                           <rd:DefaultName>Textbox23</rd:DefaultName>
                           <Style>
                             <Border>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>PaleTurquoise</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -1072,6 +1102,7 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
                                   <Value>cpu time</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1081,9 +1112,10 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
                           <rd:DefaultName>Textbox27</rd:DefaultName>
                           <Style>
                             <Border>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>PaleTurquoise</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -1107,7 +1139,9 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!runtime.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -1116,6 +1150,7 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
                           <rd:DefaultName>runtime</rd:DefaultName>
                           <Style>
                             <Border>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>Solid</Style>
                             </Border>
                             <PaddingLeft>2pt</PaddingLeft>
@@ -1136,7 +1171,9 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!session_id.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -1145,6 +1182,7 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
                           <rd:DefaultName>session_id</rd:DefaultName>
                           <Style>
                             <Border>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>Solid</Style>
                             </Border>
                             <PaddingLeft>2pt</PaddingLeft>
@@ -1165,7 +1203,9 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!exec_context_id.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -1174,6 +1214,7 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
                           <rd:DefaultName>exec_context_id</rd:DefaultName>
                           <Style>
                             <Border>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>Solid</Style>
                             </Border>
                             <PaddingLeft>2pt</PaddingLeft>
@@ -1196,6 +1237,7 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
                                   <Value>=Fields!internal_objects_alloc_MB.Value</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1205,6 +1247,7 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
                           <rd:DefaultName>internal_objects_alloc_MB</rd:DefaultName>
                           <Style>
                             <Border>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>Solid</Style>
                             </Border>
                             <PaddingLeft>2pt</PaddingLeft>
@@ -1227,6 +1270,7 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
                                   <Value>=Fields!internal_objects_dealloc_MB.Value</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1236,6 +1280,7 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
                           <rd:DefaultName>user_objects_dealloc_MB1</rd:DefaultName>
                           <Style>
                             <Border>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>Solid</Style>
                             </Border>
                             <PaddingLeft>2pt</PaddingLeft>
@@ -1258,6 +1303,7 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
                                   <Value>=Fields!user_objects_alloc_MB.Value</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1267,6 +1313,7 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
                           <rd:DefaultName>user_objects_alloc_MB</rd:DefaultName>
                           <Style>
                             <Border>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>Solid</Style>
                             </Border>
                             <PaddingLeft>2pt</PaddingLeft>
@@ -1289,6 +1336,7 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
                                   <Value>=Fields!user_objects_dealloc_MB.Value</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1298,6 +1346,7 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
                           <rd:DefaultName>user_objects_dealloc_MB</rd:DefaultName>
                           <Style>
                             <Border>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>Solid</Style>
                             </Border>
                             <PaddingLeft>2pt</PaddingLeft>
@@ -1320,6 +1369,7 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
                                   <Value>=Fields!program_name.Value</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1329,6 +1379,7 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
                           <rd:DefaultName>program_name</rd:DefaultName>
                           <Style>
                             <Border>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>Solid</Style>
                             </Border>
                             <PaddingLeft>2pt</PaddingLeft>
@@ -1351,6 +1402,7 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
                                   <Value>=Fields!statement_text.Value</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1360,6 +1412,7 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
                           <rd:DefaultName>statement_text</rd:DefaultName>
                           <Style>
                             <Border>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>Solid</Style>
                             </Border>
                             <PaddingLeft>2pt</PaddingLeft>
@@ -1382,6 +1435,7 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
                                   <Value>=Fields!most_recent_query.Value</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1391,6 +1445,7 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
                           <rd:DefaultName>most_recent_query</rd:DefaultName>
                           <Style>
                             <Border>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>Solid</Style>
                             </Border>
                             <PaddingLeft>2pt</PaddingLeft>
@@ -1413,6 +1468,7 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
                                   <Value>=Fields!wait_type.Value</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1422,6 +1478,7 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
                           <rd:DefaultName>wait_type</rd:DefaultName>
                           <Style>
                             <Border>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>Solid</Style>
                             </Border>
                             <PaddingLeft>2pt</PaddingLeft>
@@ -1444,6 +1501,7 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
                                   <Value>=Fields!wait_time.Value</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1453,6 +1511,7 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
                           <rd:DefaultName>wait_time</rd:DefaultName>
                           <Style>
                             <Border>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>Solid</Style>
                             </Border>
                             <PaddingLeft>2pt</PaddingLeft>
@@ -1475,6 +1534,7 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
                                   <Value>=Fields!cpu_time.Value</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1484,6 +1544,7 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
                           <rd:DefaultName>cpu_time</rd:DefaultName>
                           <Style>
                             <Border>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>Solid</Style>
                             </Border>
                             <PaddingLeft>2pt</PaddingLeft>
@@ -1526,10 +1587,10 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>session_task_space_usage</DataSetName>
-            <Top>3.69667in</Top>
-            <Left>0.20708in</Left>
+            <Top>4.69668in</Top>
+            <Left>0.18625in</Left>
             <Height>0.5in</Height>
-            <Width>12.54292in</Width>
+            <Width>14.25in</Width>
             <ZIndex>1</ZIndex>
             <Visibility>
               <Hidden>=IIf(CountRows("session_task_space_usage") &gt; 0, False, True)</Hidden>
@@ -1550,14 +1611,15 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
                     <Value>Show queries for this report.</Value>
                     <Style>
                       <FontWeight>Bold</FontWeight>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
                 <Style />
               </Paragraph>
             </Paragraphs>
-            <Top>4.45799in</Top>
-            <Left>0.22791in</Left>
+            <Top>5.458in</Top>
+            <Left>0.20708in</Left>
             <Height>0.25in</Height>
             <Width>3.74913in</Width>
             <ZIndex>2</ZIndex>
@@ -1581,7 +1643,9 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
                     <TextRuns>
                       <TextRun>
                         <Value>=DataSets!TempDbUsagePerCategory.CommandText</Value>
-                        <Style />
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </TextRun>
                     </TextRuns>
                     <Style />
@@ -1613,7 +1677,9 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
                     <TextRuns>
                       <TextRun>
                         <Value>=DataSets!tbl_dm_db_file_space_usage.CommandText</Value>
-                        <Style />
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </TextRun>
                     </TextRuns>
                     <Style />
@@ -1645,7 +1711,9 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
                     <TextRuns>
                       <TextRun>
                         <Value>=DataSets!session_task_space_usage.CommandText</Value>
-                        <Style />
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </TextRun>
                     </TextRuns>
                     <Style />
@@ -1672,8 +1740,8 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
               </Textbox>
             </ReportItems>
             <KeepTogether>true</KeepTogether>
-            <Top>4.90937in</Top>
-            <Left>0.20708in</Left>
+            <Top>5.90938in</Top>
+            <Left>0.18625in</Left>
             <Height>1.19098in</Height>
             <Width>9.84374in</Width>
             <ZIndex>3</ZIndex>
@@ -1687,11 +1755,45 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
               </Border>
             </Style>
           </Rectangle>
+          <Textbox Name="TempdbSpaceRptTitle">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>Tempdb Space Usage by Object Types (MB)</Value>
+                    <Style>
+                      <FontSize>16pt</FontSize>
+                      <Color>=Variables!TitleColor.Value</Color>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style>
+                  <TextAlign>Center</TextAlign>
+                </Style>
+              </Paragraph>
+            </Paragraphs>
+            <Top>0.33208in</Top>
+            <Left>3.43625in</Left>
+            <Height>0.39583in</Height>
+            <Width>5.82292in</Width>
+            <ZIndex>4</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
         </ReportItems>
-        <Height>6.94028in</Height>
+        <Height>7.10036in</Height>
         <Style />
       </Body>
-      <Width>13.84375in</Width>
+      <Width>14.75in</Width>
       <Page>
         <LeftMargin>1in</LeftMargin>
         <RightMargin>1in</RightMargin>
@@ -1741,6 +1843,7 @@ WHERE (ssu.internal_objects_alloc_page_count &gt;= 1280)
       </CellDefinitions>
     </GridLayoutDefinition>
   </ReportParametersLayout>
+  <Language>en-US</Language>
   <Variables>
     <Variable Name="ReportTextColor">
       <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
@@ -1794,7 +1897,6 @@ Parameters!ContrastTheme.Value="Desert", "#1C5E75",
 Parameters!ContrastTheme.Value="None", "Blue")</Value>
     </Variable>
   </Variables>
-  <Language>en-US</Language>
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
   <rd:ReportUnitType>Inch</rd:ReportUnitType>
   <rd:ReportID>f026a17c-b277-4455-9390-25012cc05075</rd:ReportID>
