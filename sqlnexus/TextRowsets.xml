@@ -4463,6 +4463,25 @@
       </KnownColumns>
     </Rowset>
   </KnownRowsets>
+  <Rowset name="tbl_net_tcp_connections" enabled="true" identifier="-- net_tcp_connection --" type="RowsetImportEngine.TextRowset">
+    <KnownColumns>
+      <Column name="LocalAddress" type="RowsetImportEngine.VarCharColumn" length="29" />
+      <Column name="LocalPort" type="RowsetImportEngine.IntColumn" />
+      <Column name="RemoteAddress" type="RowsetImportEngine.VarCharColumn" length="15" />
+      <Column name="RemotePort" type="RowsetImportEngine.VarCharColumn" length="15" />
+      <Column name="State" type="RowsetImportEngine.VarCharColumn" length="6" />
+      <Column name="ProcessID" type="RowsetImportEngine.IntColumn" />
+      <Column name="ProcessName" type="RowsetImportEngine.NVarCharColumn" length="64" />
+    </KnownColumns>
+  </Rowset>
+  <Rowset name="tbl_net_udp_connections" enabled="true" identifier="-- net_udp_endpoint --" type="RowsetImportEngine.TextRowset">
+    <KnownColumns>
+      <Column name="LocalAddress" type="RowsetImportEngine.VarCharColumn" length="29" />
+      <Column name="LocalPort" type="RowsetImportEngine.IntColumn" />
+      <Column name="ProcessID" type="RowsetImportEngine.IntColumn" />
+      <Column name="ProcessName" type="RowsetImportEngine.NVarCharColumn" length="64" />
+    </KnownColumns>
+  </Rowset>
 </TextImport>
 
 
