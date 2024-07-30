@@ -244,6 +244,7 @@ FROM
                       <FontFamily>Segoe UI Light</FontFamily>
                       <FontSize>24pt</FontSize>
                       <FontWeight>Bold</FontWeight>
+                      <Color>=Variables!TitleColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -255,6 +256,9 @@ FROM
             <Height>0.43in</Height>
             <Width>5in</Width>
             <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
               <PaddingTop>2pt</PaddingTop>
@@ -295,6 +299,7 @@ FROM
                                     <FontFamily />
                                     <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -309,7 +314,7 @@ FROM
                             <BottomBorder>
                               <Style>Solid</Style>
                             </BottomBorder>
-                            <BackgroundColor>CornflowerBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <FontFamily />
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
@@ -333,6 +338,7 @@ FROM
                                     <FontFamily />
                                     <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -347,7 +353,7 @@ FROM
                             <BottomBorder>
                               <Style>Solid</Style>
                             </BottomBorder>
-                            <BackgroundColor>CornflowerBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <FontFamily />
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
@@ -371,6 +377,7 @@ FROM
                                     <FontFamily />
                                     <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -385,7 +392,7 @@ FROM
                             <BottomBorder>
                               <Style>Solid</Style>
                             </BottomBorder>
-                            <BackgroundColor>CornflowerBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <FontFamily />
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
@@ -409,6 +416,7 @@ FROM
                                     <FontFamily />
                                     <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -423,7 +431,7 @@ FROM
                             <BottomBorder>
                               <Style>Solid</Style>
                             </BottomBorder>
-                            <BackgroundColor>CornflowerBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <FontFamily />
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
@@ -450,6 +458,7 @@ FROM
                                   <Value>=Fields!Distributor_Name.Value</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -462,11 +471,13 @@ FROM
                           <rd:DefaultName>Distributor_Name</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>LightGrey</Color>
+                              <Color>=Variables!ReportTextColor.Value</Color>
+                              <Style>None</Style>
                             </Border>
                             <BottomBorder>
                               <Style>Solid</Style>
                             </BottomBorder>
+                            <BackgroundColor>=Variables!ChartColor.Value</BackgroundColor>
                             <FontFamily />
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
@@ -488,7 +499,7 @@ FROM
                                   <Value />
                                   <Style>
                                     <FontFamily />
-                                    <Color>#333333</Color>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -501,11 +512,13 @@ FROM
                           <rd:DefaultName>textbox9</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>LightGrey</Color>
+                              <Color>=Variables!ReportTextColor.Value</Color>
+                              <Style>None</Style>
                             </Border>
                             <BottomBorder>
                               <Style>Solid</Style>
                             </BottomBorder>
+                            <BackgroundColor>=Variables!ChartColor.Value</BackgroundColor>
                             <FontFamily />
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
@@ -527,7 +540,7 @@ FROM
                                   <Value />
                                   <Style>
                                     <FontFamily />
-                                    <Color>#333333</Color>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -540,11 +553,13 @@ FROM
                           <rd:DefaultName>textbox10</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>LightGrey</Color>
+                              <Color>=Variables!ReportTextColor.Value</Color>
+                              <Style>None</Style>
                             </Border>
                             <BottomBorder>
                               <Style>Solid</Style>
                             </BottomBorder>
+                            <BackgroundColor>=Variables!ChartColor.Value</BackgroundColor>
                             <FontFamily />
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
@@ -566,7 +581,7 @@ FROM
                                   <Value />
                                   <Style>
                                     <FontFamily />
-                                    <Color>#333333</Color>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -579,11 +594,13 @@ FROM
                           <rd:DefaultName>textbox11</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>LightGrey</Color>
+                              <Color>=Variables!ReportTextColor.Value</Color>
+                              <Style>None</Style>
                             </Border>
                             <BottomBorder>
                               <Style>Solid</Style>
                             </BottomBorder>
+                            <BackgroundColor>=Variables!ChartColor.Value</BackgroundColor>
                             <FontFamily />
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
@@ -610,6 +627,7 @@ FROM
                                   <Value />
                                   <Style>
                                     <FontFamily />
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -622,8 +640,10 @@ FROM
                           <rd:DefaultName>textbox12</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>LightGrey</Color>
+                              <Color>=Variables!ReportTextColor.Value</Color>
+                              <Style>None</Style>
                             </Border>
+                            <BackgroundColor>=Variables!ChartColor.Value</BackgroundColor>
                             <FontFamily />
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
@@ -645,6 +665,7 @@ FROM
                                   <Value>=Fields!Publisher_Name.Value</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -657,11 +678,13 @@ FROM
                           <rd:DefaultName>Publisher_Name</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>LightGrey</Color>
+                              <Color>=Variables!ReportTextColor.Value</Color>
+                              <Style>None</Style>
                             </Border>
                             <BottomBorder>
                               <Style>Solid</Style>
                             </BottomBorder>
+                            <BackgroundColor>=Variables!ChartColor.Value</BackgroundColor>
                             <FontFamily />
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
@@ -683,7 +706,7 @@ FROM
                                   <Value />
                                   <Style>
                                     <FontFamily />
-                                    <Color>#333333</Color>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -696,11 +719,13 @@ FROM
                           <rd:DefaultName>textbox13</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>LightGrey</Color>
+                              <Color>=Variables!ReportTextColor.Value</Color>
+                              <Style>None</Style>
                             </Border>
                             <BottomBorder>
                               <Style>Solid</Style>
                             </BottomBorder>
+                            <BackgroundColor>=Variables!ChartColor.Value</BackgroundColor>
                             <FontFamily />
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
@@ -722,7 +747,7 @@ FROM
                                   <Value />
                                   <Style>
                                     <FontFamily />
-                                    <Color>#333333</Color>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -735,11 +760,13 @@ FROM
                           <rd:DefaultName>textbox14</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>LightGrey</Color>
+                              <Color>=Variables!ReportTextColor.Value</Color>
+                              <Style>None</Style>
                             </Border>
                             <BottomBorder>
                               <Style>Solid</Style>
                             </BottomBorder>
+                            <BackgroundColor>=Variables!ChartColor.Value</BackgroundColor>
                             <FontFamily />
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
@@ -766,6 +793,7 @@ FROM
                                   <Value />
                                   <Style>
                                     <FontFamily />
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -778,8 +806,10 @@ FROM
                           <rd:DefaultName>textbox15</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>LightGrey</Color>
+                              <Color>=Variables!ReportTextColor.Value</Color>
+                              <Style>None</Style>
                             </Border>
+                            <BackgroundColor>=Variables!ChartColor.Value</BackgroundColor>
                             <FontFamily />
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
@@ -801,6 +831,7 @@ FROM
                                   <Value />
                                   <Style>
                                     <FontFamily />
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -813,8 +844,10 @@ FROM
                           <rd:DefaultName>textbox16</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>LightGrey</Color>
+                              <Color>=Variables!ReportTextColor.Value</Color>
+                              <Style>None</Style>
                             </Border>
+                            <BackgroundColor>=Variables!ChartColor.Value</BackgroundColor>
                             <FontFamily />
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
@@ -836,6 +869,7 @@ FROM
                                   <Value>=Fields!Publication_Details.Value</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -848,11 +882,13 @@ FROM
                           <rd:DefaultName>Publication_Details</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>LightGrey</Color>
+                              <Color>=Variables!ReportTextColor.Value</Color>
+                              <Style>None</Style>
                             </Border>
                             <BottomBorder>
                               <Style>Solid</Style>
                             </BottomBorder>
+                            <BackgroundColor>=Variables!ChartColor.Value</BackgroundColor>
                             <FontFamily />
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
@@ -874,7 +910,7 @@ FROM
                                   <Value />
                                   <Style>
                                     <FontFamily />
-                                    <Color>#333333</Color>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -887,11 +923,13 @@ FROM
                           <rd:DefaultName>textbox17</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>LightGrey</Color>
+                              <Color>=Variables!ReportTextColor.Value</Color>
+                              <Style>None</Style>
                             </Border>
                             <BottomBorder>
                               <Style>Solid</Style>
                             </BottomBorder>
+                            <BackgroundColor>=Variables!ChartColor.Value</BackgroundColor>
                             <FontFamily />
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
@@ -918,7 +956,7 @@ FROM
                                   <Value />
                                   <Style>
                                     <FontFamily />
-                                    <Color>#333333</Color>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -928,8 +966,10 @@ FROM
                           <rd:DefaultName>textbox3</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>LightGrey</Color>
+                              <Color>=Variables!ReportTextColor.Value</Color>
+                              <Style>None</Style>
                             </Border>
+                            <BackgroundColor>=Variables!ChartColor.Value</BackgroundColor>
                             <FontFamily />
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
@@ -951,7 +991,7 @@ FROM
                                   <Value />
                                   <Style>
                                     <FontFamily />
-                                    <Color>#333333</Color>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -961,8 +1001,10 @@ FROM
                           <rd:DefaultName>textbox5</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>LightGrey</Color>
+                              <Color>=Variables!ReportTextColor.Value</Color>
+                              <Style>None</Style>
                             </Border>
+                            <BackgroundColor>=Variables!ChartColor.Value</BackgroundColor>
                             <FontFamily />
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
@@ -984,7 +1026,7 @@ FROM
                                   <Value />
                                   <Style>
                                     <FontFamily />
-                                    <Color>#333333</Color>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -994,8 +1036,10 @@ FROM
                           <rd:DefaultName>textbox7</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>LightGrey</Color>
+                              <Color>=Variables!ReportTextColor.Value</Color>
+                              <Style>None</Style>
                             </Border>
+                            <BackgroundColor>=Variables!ChartColor.Value</BackgroundColor>
                             <FontFamily />
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
@@ -1017,6 +1061,7 @@ FROM
                                   <Value>=Fields!Subscriber_Details.Value</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1028,11 +1073,13 @@ FROM
                           <rd:DefaultName>Subscriber_Details</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>LightGrey</Color>
+                              <Color>=Variables!ReportTextColor.Value</Color>
+                              <Style>None</Style>
                             </Border>
                             <BottomBorder>
                               <Style>Solid</Style>
                             </BottomBorder>
+                            <BackgroundColor>=Variables!ChartColor.Value</BackgroundColor>
                             <FontFamily />
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
@@ -1157,6 +1204,7 @@ FROM
                     <Value>Show queries for this report.</Value>
                     <Style>
                       <FontWeight>Bold</FontWeight>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1188,7 +1236,9 @@ FROM
                     <TextRuns>
                       <TextRun>
                         <Value>=DataSets!DataSet1.CommandText</Value>
-                        <Style />
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </TextRun>
                     </TextRuns>
                     <Style />
@@ -1225,6 +1275,7 @@ FROM
             </Visibility>
             <Style>
               <Border>
+                <Color>=Variables!ReportTextColor.Value</Color>
                 <Style>Solid</Style>
               </Border>
             </Style>
@@ -1235,7 +1286,7 @@ FROM
           <Border>
             <Style>None</Style>
           </Border>
-          <BackgroundColor>Azure</BackgroundColor>
+          <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
         </Style>
       </Body>
       <Width>16.78127in</Width>
@@ -1288,6 +1339,7 @@ FROM
       </CellDefinitions>
     </GridLayoutDefinition>
   </ReportParametersLayout>
+  <Language>en-US</Language>
   <Variables>
     <Variable Name="ReportTextColor">
       <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
@@ -1341,7 +1393,6 @@ Parameters!ContrastTheme.Value="Desert", "#1C5E75",
 Parameters!ContrastTheme.Value="None", "Blue")</Value>
     </Variable>
   </Variables>
-  <Language>en-US</Language>
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
   <rd:ReportUnitType>Inch</rd:ReportUnitType>
   <rd:ReportID>25c17dc0-d484-49d5-90f4-875ef2fa7ad4</rd:ReportID>
