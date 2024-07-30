@@ -847,22 +847,6 @@ INSERT INTO @tbl_reports
 VALUES
 ('Replication_Topology_C', 'Replication Topology', 'Replication Topology in hierarchycal order', 1 | 2 | 4 | 8,
  'Replication', 'dbo.tbl_repl_mssubscriptions', 200, 'Replication', 1, 2000);
-INSERT INTO @tbl_reports
-(
-    ReportName,
-    ReportDisplayName,
-    ReportDescription,
-    VersionApplied,
-    Category,
-    ValidationObject,
-    SeqNo,
-    DataCollection,
-    Manditory,
-    CategorySeq
-)
-VALUES
-('Replication_Topology_C', 'Replication Topology', 'Replication Topology in hierarchycal order', 1 | 2 | 4 | 8,
- 'Replication', 'dbo.tbl_repl_msmerge_subscriptions', 200, 'Replication', 1, 2000);
 
 --AG
 INSERT INTO @tbl_reports
