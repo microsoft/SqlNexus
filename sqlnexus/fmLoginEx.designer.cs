@@ -91,6 +91,7 @@ namespace sqlnexus
             this.txtServerName.Name = "txtServerName";
             this.txtServerName.Size = new System.Drawing.Size(220, 22);
             this.txtServerName.TabIndex = 0;
+            this.txtServerName.AccessibleName = "Server Name";
             // 
             // cmbAuthentication
             // 
@@ -114,6 +115,7 @@ namespace sqlnexus
             this.txtUserName.Name = "txtUserName";
             this.txtUserName.Size = new System.Drawing.Size(220, 22);
             this.txtUserName.TabIndex = 2;
+            this.txtUserName.AccessibleName = "UserName";
             // 
             // txtPassword
             // 
@@ -124,6 +126,7 @@ namespace sqlnexus
             this.txtPassword.PasswordChar = '*';
             this.txtPassword.Size = new System.Drawing.Size(220, 22);
             this.txtPassword.TabIndex = 3;
+            this.txtPassword.AccessibleName = "Password";
             // 
             // btnConnect
             // 
@@ -132,7 +135,7 @@ namespace sqlnexus
             this.btnConnect.Margin = new System.Windows.Forms.Padding(4);
             this.btnConnect.Name = "btnConnect";
             this.btnConnect.Size = new System.Drawing.Size(151, 28);
-            this.btnConnect.TabIndex = 4;
+            this.btnConnect.TabIndex = 6;
             this.btnConnect.Text = "Connect";
             this.btnConnect.UseVisualStyleBackColor = true;
             this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
@@ -144,7 +147,7 @@ namespace sqlnexus
             this.btnCancel.Margin = new System.Windows.Forms.Padding(4);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(151, 28);
-            this.btnCancel.TabIndex = 5;
+            this.btnCancel.TabIndex = 7;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
@@ -155,7 +158,7 @@ namespace sqlnexus
             this.chkTrustServerCertificate.Location = new System.Drawing.Point(356, 212);
             this.chkTrustServerCertificate.Name = "chkTrustServerCertificate";
             this.chkTrustServerCertificate.Size = new System.Drawing.Size(164, 20);
-            this.chkTrustServerCertificate.TabIndex = 401;
+            this.chkTrustServerCertificate.TabIndex = 5;
             this.chkTrustServerCertificate.Text = "Trust Server Certificate";
             this.chkTrustServerCertificate.UseVisualStyleBackColor = true;
             // 
@@ -167,7 +170,7 @@ namespace sqlnexus
             this.chkEncryptConnection.Location = new System.Drawing.Point(103, 212);
             this.chkEncryptConnection.Name = "chkEncryptConnection";
             this.chkEncryptConnection.Size = new System.Drawing.Size(144, 20);
-            this.chkEncryptConnection.TabIndex = 402;
+            this.chkEncryptConnection.TabIndex = 4;
             this.chkEncryptConnection.Text = "Encrypt Connection";
             this.chkEncryptConnection.UseVisualStyleBackColor = true;
             this.chkEncryptConnection.CheckedChanged += new System.EventHandler(this.chkEncryptConnection_CheckedChanged);

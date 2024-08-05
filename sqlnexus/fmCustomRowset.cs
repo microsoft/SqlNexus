@@ -241,7 +241,8 @@ namespace sqlnexus
         //todo: this needs to move to BOL
         private void llCustomRowsetHelp_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            MessageBox.Show(String.Format("Current version doesn't have UI to add your own column data types.  Using this form will treat all columns as varchar.  Please modify {0} directly", CustomXmlFile));
+            string message = String.Format("Current version doesn't have UI to add your own column data types.  Using this form will treat all columns as varchar.  Please modify {0} directly", CustomXmlFile);
+            MessageBox.Show(message, "Validation Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
     }
