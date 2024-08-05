@@ -358,7 +358,7 @@ namespace sqlnexus
             this.ll_CustomRowset.LinkColor = System.Drawing.Color.DarkBlue;
             this.ll_CustomRowset.Name = "ll_CustomRowset";
             this.ll_CustomRowset.TabStop = true;
-            this.ll_CustomRowset.Click += new System.EventHandler(this.ll_CustomRowset_Click);
+            this.ll_CustomRowset.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.ll_CustomRowset_Click);
             // 
             // pbPrint
             // 
@@ -429,7 +429,7 @@ namespace sqlnexus
             this.linkLabelImport.TabStop = true;
             this.linkLabelImport.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelImport_LinkClicked);
             this.linkLabelImport.LocationChanged += new System.EventHandler(this.linkLabelImport_LocationChanged);
-            this.linkLabelImport.Click += new System.EventHandler(this.importToolStripMenuItem_Click);
+            this.linkLabelImport.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.importToolStripMenuItem_Click);
             // 
             // paTasksHeader
             // 
@@ -1054,7 +1054,7 @@ namespace sqlnexus
             // 
             // tstbPage
             // 
-            this.tstbPage.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.tstbPage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             resources.ApplyResources(this.tstbPage, "tstbPage");
             this.tstbPage.Name = "tstbPage";
             this.tstbPage.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tstbPage_KeyPress);
@@ -1265,7 +1265,8 @@ namespace sqlnexus
             // 
             // tscZoom
             // 
-            this.tscZoom.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            resources.ApplyResources(this.tscZoom, "tscZoom");
+            this.tscZoom.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.tscZoom.Items.AddRange(new object[] {
             resources.GetString("tscZoom.Items"),
             resources.GetString("tscZoom.Items1"),
@@ -1277,12 +1278,12 @@ namespace sqlnexus
             resources.GetString("tscZoom.Items7"),
             resources.GetString("tscZoom.Items8")});
             this.tscZoom.Name = "tscZoom";
-            resources.ApplyResources(this.tscZoom, "tscZoom");
             this.tscZoom.SelectedIndexChanged += new System.EventHandler(this.tscZoom_SelectedIndexChanged);
             // 
             // tstbFind
             // 
             resources.ApplyResources(this.tstbFind, "tstbFind");
+            this.tstbFind.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.tstbFind.Margin = new System.Windows.Forms.Padding(10, 0, 1, 0);
             this.tstbFind.Name = "tstbFind";
             this.tstbFind.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tstbFind_KeyPress);
@@ -1315,9 +1316,9 @@ namespace sqlnexus
             // 
             // tscCurrentDatabase
             // 
+            resources.ApplyResources(this.tscCurrentDatabase, "tscCurrentDatabase");
             this.tscCurrentDatabase.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.tscCurrentDatabase.Name = "tscCurrentDatabase";
-            resources.ApplyResources(this.tscCurrentDatabase, "tscCurrentDatabase");
             this.tscCurrentDatabase.SelectedIndexChanged += new System.EventHandler(this.tscCurrentDatabase_SelectedIndexChanged);
             this.tscCurrentDatabase.TextUpdate += new System.EventHandler(this.tscCurrentDatabase_TextUpdate);
             this.tscCurrentDatabase.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tscCurrentDatabase_KeyPress);
