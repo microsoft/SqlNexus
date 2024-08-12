@@ -406,8 +406,9 @@ END;</CommandText>
                   <TextRun>
                     <Value>Working Set Trimming Report</Value>
                     <Style>
-                      <FontSize>14pt</FontSize>
+                      <FontSize>16pt</FontSize>
                       <FontWeight>Bold</FontWeight>
+                      <Color>=Variables!TitleColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -418,6 +419,9 @@ END;</CommandText>
             <Height>0.375in</Height>
             <Width>4.01042in</Width>
             <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
               <PaddingTop>2pt</PaddingTop>
@@ -433,7 +437,7 @@ END;</CommandText>
                   <TextRun>
                     <Value>No data available.  To use this report, the Nexus database needs to have the tbl_workingset_trimming table present in the database.</Value>
                     <Style>
-                      <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -456,7 +460,6 @@ END;</CommandText>
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>LemonChiffon</BackgroundColor>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
               <PaddingTop>1pt</PaddingTop>
@@ -471,7 +474,9 @@ END;</CommandText>
                 <TextRuns>
                   <TextRun>
                     <Value>This report shows aggregations of the RING_BUFFER_RESOURCE_MONITOR ring buffer output captured from the SQL instance. The graph below shows the variation of the SQL working set. The most recent snapshot is shown. This can be changed using the Parameters tab and selecting a different snapshot time.</Value>
-                    <Style />
+                    <Style>
+                      <Color>=Variables!ReportTextColor.Value</Color>
+                    </Style>
                   </TextRun>
                 </TextRuns>
                 <Style />
@@ -488,27 +493,6 @@ END;</CommandText>
                 <Color>Silver</Color>
                 <Style>Solid</Style>
               </Border>
-              <TopBorder>
-                <Color>Silver</Color>
-                <Style>Solid</Style>
-                <Width>1pt</Width>
-              </TopBorder>
-              <BottomBorder>
-                <Color>Silver</Color>
-                <Style>Solid</Style>
-                <Width>1pt</Width>
-              </BottomBorder>
-              <LeftBorder>
-                <Color>Silver</Color>
-                <Style>Solid</Style>
-                <Width>1pt</Width>
-              </LeftBorder>
-              <RightBorder>
-                <Color>Silver</Color>
-                <Style>Solid</Style>
-                <Width>1pt</Width>
-              </RightBorder>
-              <BackgroundColor>White</BackgroundColor>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
               <PaddingTop>2pt</PaddingTop>
@@ -707,6 +691,7 @@ END;</CommandText>
                         <Style>None</Style>
                         <Width>0.75pt</Width>
                       </Border>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                     <ChartAxisTitle>
                       <Caption />
@@ -719,6 +704,7 @@ END;</CommandText>
                       <Enabled>True</Enabled>
                       <Style>
                         <Border>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                           <Style>Solid</Style>
                           <Width>0.75pt</Width>
                         </Border>
@@ -785,10 +771,11 @@ END;</CommandText>
                 </ChartThreeDProperties>
                 <Style>
                   <Border>
+                    <Color>=Variables!ReportTextColor.Value</Color>
                     <Style>Solid</Style>
                     <Width>0.75pt</Width>
                   </Border>
-                  <BackgroundColor>LightGrey</BackgroundColor>
+                  <BackgroundColor>=Variables!ChartColor.Value</BackgroundColor>
                 </Style>
               </ChartArea>
             </ChartAreas>
@@ -799,7 +786,7 @@ END;</CommandText>
                     <Style>Solid</Style>
                     <Width>0.75pt</Width>
                   </Border>
-                  <FontSize>9pt</FontSize>
+                  <Color>=Variables!ReportTextColor.Value</Color>
                 </Style>
                 <Position>BottomCenter</Position>
                 <ChartLegendTitle>
@@ -846,7 +833,7 @@ END;</CommandText>
                 <Color>Silver</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
+              <BackgroundColor>=Variables!ChartColor.Value</BackgroundColor>
             </Style>
           </Chart>
           <Tablix Name="Tablix2">
@@ -906,7 +893,7 @@ END;</CommandText>
                                   <Style>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -939,7 +926,7 @@ END;</CommandText>
                               <Style>Solid</Style>
                               <Width>1pt</Width>
                             </RightBorder>
-                            <BackgroundColor>SteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -961,7 +948,7 @@ END;</CommandText>
                                   <Style>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -994,7 +981,7 @@ END;</CommandText>
                               <Style>Solid</Style>
                               <Width>1pt</Width>
                             </RightBorder>
-                            <BackgroundColor>SteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -1016,7 +1003,7 @@ END;</CommandText>
                                   <Style>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1049,7 +1036,7 @@ END;</CommandText>
                               <Style>Solid</Style>
                               <Width>1pt</Width>
                             </RightBorder>
-                            <BackgroundColor>SteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -1071,7 +1058,7 @@ END;</CommandText>
                                   <Style>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1106,7 +1093,7 @@ END;</CommandText>
                               <Style>Solid</Style>
                               <Width>1pt</Width>
                             </RightBorder>
-                            <BackgroundColor>SteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -1131,7 +1118,7 @@ END;</CommandText>
                                   <Style>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1146,7 +1133,7 @@ END;</CommandText>
                               <Color>Silver</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>SteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -1171,7 +1158,7 @@ END;</CommandText>
                                   <Style>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1186,7 +1173,7 @@ END;</CommandText>
                               <Color>Silver</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>SteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -1208,7 +1195,7 @@ END;</CommandText>
                                   <Style>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1243,7 +1230,7 @@ END;</CommandText>
                               <Style>Solid</Style>
                               <Width>1pt</Width>
                             </RightBorder>
-                            <BackgroundColor>SteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -1268,7 +1255,7 @@ END;</CommandText>
                                   <Style>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1283,7 +1270,7 @@ END;</CommandText>
                               <Color>Silver</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>SteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -1305,7 +1292,7 @@ END;</CommandText>
                                   <Style>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1320,7 +1307,7 @@ END;</CommandText>
                                   <Style>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1355,7 +1342,7 @@ END;</CommandText>
                               <Style>Solid</Style>
                               <Width>1pt</Width>
                             </RightBorder>
-                            <BackgroundColor>SteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -1377,7 +1364,7 @@ END;</CommandText>
                                   <Style>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1412,7 +1399,7 @@ END;</CommandText>
                               <Style>Solid</Style>
                               <Width>1pt</Width>
                             </RightBorder>
-                            <BackgroundColor>SteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -1434,7 +1421,7 @@ END;</CommandText>
                                   <Style>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1469,7 +1456,7 @@ END;</CommandText>
                               <Style>Solid</Style>
                               <Width>1pt</Width>
                             </RightBorder>
-                            <BackgroundColor>SteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -1491,7 +1478,7 @@ END;</CommandText>
                                   <Style>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1526,7 +1513,7 @@ END;</CommandText>
                               <Style>Solid</Style>
                               <Width>1pt</Width>
                             </RightBorder>
-                            <BackgroundColor>SteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -1552,6 +1539,7 @@ END;</CommandText>
                                   <Value>=Fields!runtime.Value</Value>
                                   <Style>
                                     <FontSize>9pt</FontSize>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1586,6 +1574,7 @@ END;</CommandText>
                               <Style>Solid</Style>
                               <Width>1pt</Width>
                             </RightBorder>
+                            <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(nothing))</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -1606,6 +1595,7 @@ END;</CommandText>
                                   <Value>=Fields!Notification_time.Value</Value>
                                   <Style>
                                     <FontSize>9pt</FontSize>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1640,6 +1630,7 @@ END;</CommandText>
                               <Style>Solid</Style>
                               <Width>1pt</Width>
                             </RightBorder>
+                            <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(nothing))</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -1661,6 +1652,7 @@ END;</CommandText>
                                   <Style>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1695,6 +1687,7 @@ END;</CommandText>
                               <Style>Solid</Style>
                               <Width>1pt</Width>
                             </RightBorder>
+                            <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(nothing))</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -1715,6 +1708,7 @@ END;</CommandText>
                                   <Value>=Fields!MemoryUtilization__.Value</Value>
                                   <Style>
                                     <FontSize>9pt</FontSize>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1749,6 +1743,7 @@ END;</CommandText>
                               <Style>Solid</Style>
                               <Width>1pt</Width>
                             </RightBorder>
+                            <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(nothing))</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -1769,6 +1764,7 @@ END;</CommandText>
                                   <Value>=Fields!AvailablePhysicalMemory_KB.Value/1024</Value>
                                   <Style>
                                     <FontSize>9pt</FontSize>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1803,6 +1799,7 @@ END;</CommandText>
                               <Style>Solid</Style>
                               <Width>1pt</Width>
                             </RightBorder>
+                            <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(nothing))</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -1823,6 +1820,7 @@ END;</CommandText>
                                   <Value>=Fields!AvailablePageFile_KB.Value/1024</Value>
                                   <Style>
                                     <FontSize>9pt</FontSize>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1857,6 +1855,7 @@ END;</CommandText>
                               <Style>Solid</Style>
                               <Width>1pt</Width>
                             </RightBorder>
+                            <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(nothing))</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -1877,6 +1876,7 @@ END;</CommandText>
                                   <Value>=Fields!SQL_ReservedMemory_KB.Value/1024</Value>
                                   <Style>
                                     <FontSize>9pt</FontSize>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1911,6 +1911,7 @@ END;</CommandText>
                               <Style>Solid</Style>
                               <Width>1pt</Width>
                             </RightBorder>
+                            <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(nothing))</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -1931,6 +1932,7 @@ END;</CommandText>
                                   <Value>=Fields!SQL_CommittedMemory_KB.Value/1024</Value>
                                   <Style>
                                     <FontSize>9pt</FontSize>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1965,6 +1967,7 @@ END;</CommandText>
                               <Style>Solid</Style>
                               <Width>1pt</Width>
                             </RightBorder>
+                            <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(nothing))</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -1985,6 +1988,7 @@ END;</CommandText>
                                   <Value>=Fields!Node_Id.Value</Value>
                                   <Style>
                                     <FontSize>9pt</FontSize>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -2019,6 +2023,7 @@ END;</CommandText>
                               <Style>Solid</Style>
                               <Width>1pt</Width>
                             </RightBorder>
+                            <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(nothing))</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -2039,6 +2044,7 @@ END;</CommandText>
                                   <Value>=Fields!IndicatorsProcess.Value</Value>
                                   <Style>
                                     <FontSize>9pt</FontSize>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -2073,6 +2079,7 @@ END;</CommandText>
                               <Style>Solid</Style>
                               <Width>1pt</Width>
                             </RightBorder>
+                            <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(nothing))</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -2093,6 +2100,7 @@ END;</CommandText>
                                   <Value>=Fields!IndicatorsSystem.Value</Value>
                                   <Style>
                                     <FontSize>9pt</FontSize>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -2127,6 +2135,7 @@ END;</CommandText>
                               <Style>Solid</Style>
                               <Width>1pt</Width>
                             </RightBorder>
+                            <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(nothing))</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -2147,6 +2156,7 @@ END;</CommandText>
                                   <Value>=Fields!IndicatorsPool.Value</Value>
                                   <Style>
                                     <FontSize>9pt</FontSize>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -2181,6 +2191,7 @@ END;</CommandText>
                               <Style>Solid</Style>
                               <Width>1pt</Width>
                             </RightBorder>
+                            <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(nothing))</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -2222,7 +2233,7 @@ END;</CommandText>
             <RepeatRowHeaders>true</RepeatRowHeaders>
             <DataSetName>DataSet_MemClerks</DataSetName>
             <Top>6.00709in</Top>
-            <Left>0.29875in</Left>
+            <Left>0.30917in</Left>
             <Height>1.11458in</Height>
             <Width>14.43041in</Width>
             <ZIndex>4</ZIndex>
@@ -2262,8 +2273,8 @@ END;</CommandText>
                   <TextRun>
                     <Value>Server</Value>
                     <Style>
-                      <FontSize>8pt</FontSize>
                       <FontWeight>Bold</FontWeight>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2273,7 +2284,7 @@ END;</CommandText>
               </Paragraph>
             </Paragraphs>
             <Top>0.125in</Top>
-            <Left>7.25in</Left>
+            <Left>6.625in</Left>
             <Height>0.25in</Height>
             <Width>1in</Width>
             <ZIndex>5</ZIndex>
@@ -2282,7 +2293,7 @@ END;</CommandText>
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>=Parameters!FmtChartBackground.Value</BackgroundColor>
+              <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2299,7 +2310,7 @@ END;</CommandText>
                   <TextRun>
                     <Value>=First(Fields!value.Value, "DataSet_Shared_SQLServerName")</Value>
                     <Style>
-                      <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2307,16 +2318,15 @@ END;</CommandText>
               </Paragraph>
             </Paragraphs>
             <Top>0.125in</Top>
-            <Left>8.25in</Left>
+            <Left>7.625in</Left>
             <Height>0.25in</Height>
-            <Width>1.10069in</Width>
+            <Width>1.3507in</Width>
             <ZIndex>6</ZIndex>
             <Style>
               <Border>
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2333,8 +2343,8 @@ END;</CommandText>
                   <TextRun>
                     <Value>Version (SP)</Value>
                     <Style>
-                      <FontSize>8pt</FontSize>
                       <FontWeight>Bold</FontWeight>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2344,7 +2354,7 @@ END;</CommandText>
               </Paragraph>
             </Paragraphs>
             <Top>0.375in</Top>
-            <Left>7.25in</Left>
+            <Left>6.625in</Left>
             <Height>0.25in</Height>
             <Width>1in</Width>
             <ZIndex>7</ZIndex>
@@ -2353,7 +2363,7 @@ END;</CommandText>
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>=Parameters!FmtChartBackground.Value</BackgroundColor>
+              <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2370,7 +2380,7 @@ END;</CommandText>
                   <TextRun>
                     <Value>=First(Fields!value.Value, "DataSet_Shared_SQLVersion")</Value>
                     <Style>
-                      <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2378,16 +2388,15 @@ END;</CommandText>
               </Paragraph>
             </Paragraphs>
             <Top>0.375in</Top>
-            <Left>8.25in</Left>
+            <Left>7.625in</Left>
             <Height>0.25in</Height>
-            <Width>1.10069in</Width>
+            <Width>1.3507in</Width>
             <ZIndex>8</ZIndex>
             <Style>
               <Border>
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2404,8 +2413,8 @@ END;</CommandText>
                   <TextRun>
                     <Value>End Time</Value>
                     <Style>
-                      <FontSize>8pt</FontSize>
                       <FontWeight>Bold</FontWeight>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2415,7 +2424,7 @@ END;</CommandText>
               </Paragraph>
             </Paragraphs>
             <Top>0.375in</Top>
-            <Left>9.3507in</Left>
+            <Left>8.9757in</Left>
             <Height>0.25in</Height>
             <Width>1in</Width>
             <ZIndex>9</ZIndex>
@@ -2424,7 +2433,7 @@ END;</CommandText>
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>=Parameters!FmtChartBackground.Value</BackgroundColor>
+              <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2441,8 +2450,8 @@ END;</CommandText>
                   <TextRun>
                     <Value>Start Time</Value>
                     <Style>
-                      <FontSize>8pt</FontSize>
                       <FontWeight>Bold</FontWeight>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2452,7 +2461,7 @@ END;</CommandText>
               </Paragraph>
             </Paragraphs>
             <Top>0.125in</Top>
-            <Left>9.36459in</Left>
+            <Left>8.98959in</Left>
             <Height>0.25in</Height>
             <Width>1in</Width>
             <ZIndex>10</ZIndex>
@@ -2461,7 +2470,7 @@ END;</CommandText>
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>=Parameters!FmtChartBackground.Value</BackgroundColor>
+              <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2478,7 +2487,7 @@ END;</CommandText>
                   <TextRun>
                     <Value>=Parameters!StartTime.Value</Value>
                     <Style>
-                      <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2486,16 +2495,15 @@ END;</CommandText>
               </Paragraph>
             </Paragraphs>
             <Top>0.125in</Top>
-            <Left>10.36459in</Left>
+            <Left>9.98959in</Left>
             <Height>0.25in</Height>
-            <Width>1.375in</Width>
+            <Width>1.73958in</Width>
             <ZIndex>11</ZIndex>
             <Style>
               <Border>
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2512,7 +2520,7 @@ END;</CommandText>
                   <TextRun>
                     <Value>=Parameters!EndTime.Value</Value>
                     <Style>
-                      <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2520,16 +2528,15 @@ END;</CommandText>
               </Paragraph>
             </Paragraphs>
             <Top>0.375in</Top>
-            <Left>10.36459in</Left>
+            <Left>9.98959in</Left>
             <Height>0.25in</Height>
-            <Width>1.375in</Width>
+            <Width>1.73958in</Width>
             <ZIndex>12</ZIndex>
             <Style>
               <Border>
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2547,6 +2554,7 @@ END;</CommandText>
                     <Value>Show queries for this report.</Value>
                     <Style>
                       <FontWeight>Bold</FontWeight>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2578,7 +2586,9 @@ END;</CommandText>
                     <TextRuns>
                       <TextRun>
                         <Value>=DataSets!DataSet_Graph.CommandText</Value>
-                        <Style />
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </TextRun>
                     </TextRuns>
                     <Style />
@@ -2610,7 +2620,9 @@ END;</CommandText>
                     <TextRuns>
                       <TextRun>
                         <Value>=DataSets!DataSet_MemClerks.CommandText</Value>
-                        <Style />
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </TextRun>
                     </TextRuns>
                     <Style />
@@ -2647,15 +2659,21 @@ END;</CommandText>
             </Visibility>
             <Style>
               <Border>
+                <Color>=Variables!ReportTextColor.Value</Color>
                 <Style>Solid</Style>
               </Border>
             </Style>
           </Rectangle>
         </ReportItems>
         <Height>9.14597in</Height>
-        <Style />
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
+        </Style>
       </Body>
-      <Width>14.72916in</Width>
+      <Width>14.73958in</Width>
       <Page>
         <InteractiveHeight>40in</InteractiveHeight>
         <LeftMargin>1in</LeftMargin>
@@ -2840,6 +2858,20 @@ END;</CommandText>
       </CellDefinitions>
     </GridLayoutDefinition>
   </ReportParametersLayout>
+  <Code>
+    Function GetTableRowFillColor(Theme as String, RowNumber As Integer) As String
+    If Theme ="Aquatic" Then
+    return "#202020"
+    ElseIf Theme ="Desert" Then
+    return "#FFFAEF"
+    Elseif RowNumber Mod 2 &lt;&gt; 0 Then
+    return "White"
+    Else
+    Return "LightSteelBlue"
+    End If
+    End Function
+  </Code>
+  <Language>en-US</Language>
   <Variables>
     <Variable Name="ReportTextColor">
       <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
@@ -2893,7 +2925,6 @@ Parameters!ContrastTheme.Value="Desert", "#1C5E75",
 Parameters!ContrastTheme.Value="None", "Blue")</Value>
     </Variable>
   </Variables>
-  <Language>en-US</Language>
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
   <rd:ReportUnitType>Inch</rd:ReportUnitType>
   <rd:ReportID>d307f978-9c11-4047-a5fd-f12c22be445c</rd:ReportID>
