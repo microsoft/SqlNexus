@@ -2521,43 +2521,29 @@ namespace sqlnexus
 
         #endregion Report toolbar syncs
 
-        #region Explorer bar syncs
+        #region Explorer bar syncs   
 
-        private void pbExpandReports_Click(object sender, EventArgs e)
-        {
-            CollapseExpandPanel(paReportsBody, pbCollapseReports, pbExpandReports);
-        }
-
-        private void CollapseExpandPanel(Panel panel, PictureBox collapseBox, PictureBox expandBox)
+        private void CollapseExpandPanel(Panel panel, Button collapseBox, Button expandBox)
         {
             panel.Visible = !panel.Visible;
             expandBox.Visible = !panel.Visible;
             collapseBox.Visible = panel.Visible;
         }
 
-        private void pbExpandData_Click(object sender, EventArgs e)
-        {
-            CollapseExpandPanel(paLogBody, pbCollapseData, pbExpandData);
-        }
-
         private void llReports_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            CollapseExpandPanel(paReportsBody, pbCollapseReports, pbExpandReports);
+            CollapseExpandPanel(paReportsBody, btncollapsReports, btnexpandReports);
         }
 
         private void llData_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            CollapseExpandPanel(paLogBody, pbCollapseData, pbExpandData);
+            CollapseExpandPanel(paLogBody, btnCollapseData, btnExpandData);
         }
 
-        private void pbCollapseTasks_Click(object sender, EventArgs e)
-        {
-            CollapseExpandPanel(paTasksBody, pbCollapseTasks, pbExpandTasks);
-        }
 
         private void llTasks_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            CollapseExpandPanel(paTasksBody, pbCollapseTasks, pbExpandTasks);
+            CollapseExpandPanel(paTasksBody, btnCollapseTasks, btnExpandTasks);
         }
 
         private void llPrint_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -2588,11 +2574,11 @@ namespace sqlnexus
         private void CollapseExpandAll(bool collapse)
         {
             if (paReportsBody.Visible == collapse)
-                CollapseExpandPanel(paReportsBody, pbCollapseReports, pbExpandReports);
+                CollapseExpandPanel(paReportsBody, btncollapsReports, btnexpandReports);
             if (paTasksBody.Visible == collapse)
-                CollapseExpandPanel(paTasksBody, pbCollapseTasks, pbExpandTasks);
+                CollapseExpandPanel(paTasksBody, btnCollapseTasks, btnExpandTasks);
             if (paLogBody.Visible == collapse)
-                CollapseExpandPanel(paLogBody, pbCollapseData, pbExpandData);
+                CollapseExpandPanel(paLogBody, btnCollapseData, btnExpandData);
         }
 
         private void expandAllToolStripMenuItem_Click(object sender, EventArgs e)
@@ -3499,6 +3485,21 @@ namespace sqlnexus
         private void llData_LinkClicked_1(object sender, LinkLabelLinkClickedEventArgs e)
         {
 
+        }
+
+        private void btnexpandReports_Click(object sender, EventArgs e)
+        {
+            CollapseExpandPanel(paReportsBody, btncollapsReports, btnexpandReports);
+        }      
+
+        private void btnExpandData_Click(object sender, EventArgs e)
+        {
+            CollapseExpandPanel(paLogBody, btnCollapseData, btnExpandData);
+        }
+
+        private void btnExpandTasks_Click(object sender, EventArgs e)
+        {
+            CollapseExpandPanel(paTasksBody, btnCollapseTasks, btnExpandTasks);
         }
     }
 

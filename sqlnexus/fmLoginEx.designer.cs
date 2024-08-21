@@ -139,6 +139,8 @@ namespace sqlnexus
             this.btnConnect.Text = "Connect";
             this.btnConnect.UseVisualStyleBackColor = true;
             this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
+            this.btnConnect.Enter += new System.EventHandler(this.btnConnect_Enter);
+            this.btnConnect.Leave += new System.EventHandler(this.btnConnect_Leave);           
             // 
             // btnCancel
             // 
@@ -151,6 +153,10 @@ namespace sqlnexus
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            this.btnCancel.Enter += new System.EventHandler(this.btnCancel_Enter);
+            this.btnCancel.Leave += new System.EventHandler(this.btnCancel_Leave);
+            this.btnCancel.MouseLeave += new System.EventHandler(this.btnCancel_Leave);
+            this.btnCancel.MouseHover += new System.EventHandler(this.btnCancel_MouseHover);
             // 
             // chkTrustServerCertificate
             // 

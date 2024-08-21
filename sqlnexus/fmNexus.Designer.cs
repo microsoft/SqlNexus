@@ -52,14 +52,14 @@ namespace sqlnexus
             this.pbExport = new System.Windows.Forms.PictureBox();
             this.linkLabelImport = new System.Windows.Forms.LinkLabel();
             this.paTasksHeader = new System.Windows.Forms.Panel();
-            this.pbExpandTasks = new System.Windows.Forms.PictureBox();
-            this.pbCollapseTasks = new System.Windows.Forms.PictureBox();
+            this.btnExpandTasks = new System.Windows.Forms.Button();
+            this.btnCollapseTasks = new System.Windows.Forms.Button();
             this.llTasks = new System.Windows.Forms.LinkLabel();
             this.paData = new System.Windows.Forms.Panel();
             this.paDataHeader = new System.Windows.Forms.Panel();
             this.llData = new System.Windows.Forms.LinkLabel();
-            this.pbCollapseData = new System.Windows.Forms.PictureBox();
-            this.pbExpandData = new System.Windows.Forms.PictureBox();
+            this.btnExpandData = new System.Windows.Forms.Button();
+            this.btnCollapseData = new System.Windows.Forms.Button();
             this.paLogBody = new System.Windows.Forms.Panel();
             this.llOpenNexusLog = new System.Windows.Forms.LinkLabel();
             this.picOpenNexusLog = new System.Windows.Forms.PictureBox();
@@ -73,8 +73,8 @@ namespace sqlnexus
             this.imGlyphs = new System.Windows.Forms.ImageList(this.components);
             this.paReportsHeader = new System.Windows.Forms.Panel();
             this.llReports = new System.Windows.Forms.LinkLabel();
-            this.pbExpandReports = new System.Windows.Forms.PictureBox();
-            this.pbCollapseReports = new System.Windows.Forms.PictureBox();
+            this.btnexpandReports = new System.Windows.Forms.Button();
+            this.btncollapsReports = new System.Windows.Forms.Button();
             this.rvTemplate = new Microsoft.Reporting.WinForms.ReportViewer();
             this.tcReports = new System.Windows.Forms.TabControl();
             this.menuBarMain = new System.Windows.Forms.MenuStrip();
@@ -192,25 +192,19 @@ namespace sqlnexus
             ((System.ComponentModel.ISupportInitialize)(this.pbEditCustRowset)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbCopy)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbExport)).BeginInit();
-            this.paTasksHeader.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbExpandTasks)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbCollapseTasks)).BeginInit();
+            this.paTasksHeader.SuspendLayout();          
             this.paData.SuspendLayout();
             this.paDataHeader.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbCollapseData)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbExpandData)).BeginInit();
             this.paLogBody.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picOpenNexusLog)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picOpenReadTraceLog)).BeginInit();
             this.paReports.SuspendLayout();
             this.paReportsBody.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bpPowerBIrpt)).BeginInit();
-            this.paReportsHeader.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbExpandReports)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbCollapseReports)).BeginInit();
-            this.menuBarMain.SuspendLayout();
+            this.paReportsHeader.SuspendLayout();                
+this.menuBarMain.SuspendLayout();
             this.toolbarService.SuspendLayout();
-            this.toolbarReport.SuspendLayout();
+            this.toolbarReport.SuspendLayout();        
             this.toolbarMain.SuspendLayout();
             this.cmReport.SuspendLayout();
             this.SuspendLayout();
@@ -235,7 +229,7 @@ namespace sqlnexus
             // 
             this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.menuBarMain);
             this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.toolbarService);
-            this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.toolbarReport);
+            this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.toolbarReport);           
             this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.toolbarMain);
             // 
             // ssStatus
@@ -434,31 +428,30 @@ namespace sqlnexus
             // paTasksHeader
             // 
             this.paTasksHeader.BackColor = System.Drawing.Color.DarkBlue;
-            this.paTasksHeader.Controls.Add(this.pbExpandTasks);
-            this.paTasksHeader.Controls.Add(this.pbCollapseTasks);
+            this.paTasksHeader.Controls.Add(this.btnExpandTasks);
+            this.paTasksHeader.Controls.Add(this.btnCollapseTasks);
             this.paTasksHeader.Controls.Add(this.llTasks);
             resources.ApplyResources(this.paTasksHeader, "paTasksHeader");
             this.paTasksHeader.Name = "paTasksHeader";
             // 
-            // pbExpandTasks
+            // btnExpandTasks
             // 
-            this.pbExpandTasks.BackColor = System.Drawing.Color.Transparent;
-            this.pbExpandTasks.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pbExpandTasks.Image = global::sqlnexus.Properties.Resources.expand_tran;
-            resources.ApplyResources(this.pbExpandTasks, "pbExpandTasks");
-            this.pbExpandTasks.Name = "pbExpandTasks";
-            this.pbExpandTasks.TabStop = false;
-            this.pbExpandTasks.Click += new System.EventHandler(this.pbCollapseTasks_Click);
+            resources.ApplyResources(this.btnExpandTasks, "btnExpandTasks");
+            this.btnExpandTasks.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
+            this.btnExpandTasks.BackColor = System.Drawing.Color.Transparent;
+            this.btnExpandTasks.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.btnExpandTasks.Name = "btnExpandTasks";
+            this.btnExpandTasks.UseVisualStyleBackColor = false;
+            this.btnExpandTasks.Click += new System.EventHandler(this.btnExpandTasks_Click);
             // 
-            // pbCollapseTasks
+            // btnCollapseTasks
             // 
-            this.pbCollapseTasks.BackColor = System.Drawing.Color.Transparent;
-            this.pbCollapseTasks.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pbCollapseTasks.Image = global::sqlnexus.Properties.Resources.collapse_tran;
-            resources.ApplyResources(this.pbCollapseTasks, "pbCollapseTasks");
-            this.pbCollapseTasks.Name = "pbCollapseTasks";
-            this.pbCollapseTasks.TabStop = false;
-            this.pbCollapseTasks.Click += new System.EventHandler(this.pbCollapseTasks_Click);
+            resources.ApplyResources(this.btnCollapseTasks, "btnCollapseTasks");
+            this.btnCollapseTasks.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
+            this.btnCollapseTasks.BackColor = System.Drawing.Color.Transparent;
+            this.btnCollapseTasks.Name = "btnCollapseTasks";
+            this.btnCollapseTasks.UseVisualStyleBackColor = false;
+            this.btnCollapseTasks.Click += new System.EventHandler(this.btnExpandTasks_Click);
             // 
             // llTasks
             // 
@@ -482,8 +475,8 @@ namespace sqlnexus
             // 
             this.paDataHeader.BackColor = System.Drawing.Color.DarkBlue;
             this.paDataHeader.Controls.Add(this.llData);
-            this.paDataHeader.Controls.Add(this.pbCollapseData);
-            this.paDataHeader.Controls.Add(this.pbExpandData);
+            this.paDataHeader.Controls.Add(this.btnExpandData);
+            this.paDataHeader.Controls.Add(this.btnCollapseData);
             resources.ApplyResources(this.paDataHeader, "paDataHeader");
             this.paDataHeader.Name = "paDataHeader";
             // 
@@ -497,27 +490,25 @@ namespace sqlnexus
             this.llData.Name = "llData";
             this.llData.TabStop = true;
             this.llData.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llData_LinkClicked_1);
-            this.llData.Click += new System.EventHandler(this.pbExpandData_Click);
             // 
-            // pbCollapseData
+            // btnExpandData
             // 
-            this.pbCollapseData.BackColor = System.Drawing.Color.Transparent;
-            this.pbCollapseData.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pbCollapseData.Image = global::sqlnexus.Properties.Resources.collapse_tran;
-            resources.ApplyResources(this.pbCollapseData, "pbCollapseData");
-            this.pbCollapseData.Name = "pbCollapseData";
-            this.pbCollapseData.TabStop = false;
-            this.pbCollapseData.Click += new System.EventHandler(this.pbExpandData_Click);
+            resources.ApplyResources(this.btnExpandData, "btnExpandData");
+            this.btnExpandData.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
+            this.btnExpandData.BackColor = System.Drawing.Color.Transparent;
+            this.btnExpandData.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.btnExpandData.Name = "btnExpandData";
+            this.btnExpandData.UseVisualStyleBackColor = false;
+            this.btnExpandData.Click += new System.EventHandler(this.btnExpandData_Click);
             // 
-            // pbExpandData
+            // btnCollapseData
             // 
-            this.pbExpandData.BackColor = System.Drawing.Color.Transparent;
-            this.pbExpandData.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pbExpandData.Image = global::sqlnexus.Properties.Resources.expand_tran;
-            resources.ApplyResources(this.pbExpandData, "pbExpandData");
-            this.pbExpandData.Name = "pbExpandData";
-            this.pbExpandData.TabStop = false;
-            this.pbExpandData.Click += new System.EventHandler(this.pbExpandData_Click);
+            resources.ApplyResources(this.btnCollapseData, "btnCollapseData");
+            this.btnCollapseData.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
+            this.btnCollapseData.BackColor = System.Drawing.Color.Transparent;
+            this.btnCollapseData.Name = "btnCollapseData";
+            this.btnCollapseData.UseVisualStyleBackColor = false;
+            this.btnCollapseData.Click += new System.EventHandler(this.btnExpandData_Click);
             // 
             // paLogBody
             // 
@@ -632,8 +623,8 @@ namespace sqlnexus
             // 
             this.paReportsHeader.BackColor = System.Drawing.Color.DarkBlue;
             this.paReportsHeader.Controls.Add(this.llReports);
-            this.paReportsHeader.Controls.Add(this.pbExpandReports);
-            this.paReportsHeader.Controls.Add(this.pbCollapseReports);
+            this.paReportsHeader.Controls.Add(this.btnexpandReports);
+            this.paReportsHeader.Controls.Add(this.btncollapsReports);
             resources.ApplyResources(this.paReportsHeader, "paReportsHeader");
             this.paReportsHeader.Name = "paReportsHeader";
             // 
@@ -648,30 +639,29 @@ namespace sqlnexus
             this.llReports.TabStop = true;
             this.llReports.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llReports_LinkClicked);
             // 
-            // pbExpandReports
+            // btnexpandReports
             // 
-            this.pbExpandReports.BackColor = System.Drawing.Color.Transparent;
-            this.pbExpandReports.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pbExpandReports.Image = global::sqlnexus.Properties.Resources.expand_tran;
-            resources.ApplyResources(this.pbExpandReports, "pbExpandReports");
-            this.pbExpandReports.Name = "pbExpandReports";
-            this.pbExpandReports.TabStop = false;
-            this.pbExpandReports.Click += new System.EventHandler(this.pbExpandReports_Click);
+            resources.ApplyResources(this.btnexpandReports, "btnexpandReports");
+            this.btnexpandReports.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
+            this.btnexpandReports.BackColor = System.Drawing.Color.Transparent;
+            this.btnexpandReports.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.btnexpandReports.Name = "btnexpandReports";
+            this.btnexpandReports.UseVisualStyleBackColor = false;
+            this.btnexpandReports.Click += new System.EventHandler(this.btnexpandReports_Click);
             // 
-            // pbCollapseReports
+            // btncollapsReports
             // 
-            this.pbCollapseReports.BackColor = System.Drawing.Color.Transparent;
-            this.pbCollapseReports.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.pbCollapseReports.Image = global::sqlnexus.Properties.Resources.collapse_tran;
-            resources.ApplyResources(this.pbCollapseReports, "pbCollapseReports");
-            this.pbCollapseReports.Name = "pbCollapseReports";
-            this.pbCollapseReports.TabStop = false;
-            this.pbCollapseReports.Click += new System.EventHandler(this.pbExpandReports_Click);
+            resources.ApplyResources(this.btncollapsReports, "btncollapsReports");
+            this.btncollapsReports.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
+            this.btncollapsReports.BackColor = System.Drawing.Color.Transparent;
+            this.btncollapsReports.Name = "btncollapsReports";
+            this.btncollapsReports.UseVisualStyleBackColor = false;
+            this.btncollapsReports.Click += new System.EventHandler(this.btnexpandReports_Click);
             // 
             // rvTemplate
             // 
             resources.ApplyResources(this.rvTemplate, "rvTemplate");
-            this.rvTemplate.Name = "rvTemplate";
+            this.rvTemplate.Name = "rvTemplate";          
             // 
             // tcReports
             // 
@@ -1325,7 +1315,7 @@ namespace sqlnexus
             this.tscCurrentDatabase.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tscCurrentDatabase_KeyUp);
             this.tscCurrentDatabase.Click += new System.EventHandler(this.tscCurrentDatabase_Click);
             this.tscCurrentDatabase.TextChanged += new System.EventHandler(this.tscCurrentDatabase_TextChanged);
-            // 
+            //             
             // toolbarMain
             // 
             this.toolbarMain.DataBindings.Add(new System.Windows.Forms.Binding("Visible", global::sqlnexus.Properties.Settings.Default, "ShowStandardToolbar", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
@@ -1401,7 +1391,7 @@ namespace sqlnexus
             resources.ApplyResources(this.tspHelp, "tspHelp");
             this.tspHelp.Name = "tspHelp";
             this.tspHelp.Click += new System.EventHandler(this.indexToolStripMenuItem_Click);
-            // 
+            //            
             // cmReport
             // 
             this.cmReport.ImageScalingSize = new System.Drawing.Size(20, 20);
@@ -1502,14 +1492,8 @@ namespace sqlnexus
             ((System.ComponentModel.ISupportInitialize)(this.pbCopy)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbExport)).EndInit();
             this.paTasksHeader.ResumeLayout(false);
-            this.paTasksHeader.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbExpandTasks)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbCollapseTasks)).EndInit();
             this.paData.ResumeLayout(false);
             this.paDataHeader.ResumeLayout(false);
-            this.paDataHeader.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbCollapseData)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbExpandData)).EndInit();
             this.paLogBody.ResumeLayout(false);
             this.paLogBody.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picOpenNexusLog)).EndInit();
@@ -1519,9 +1503,8 @@ namespace sqlnexus
             this.paReportsBody.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bpPowerBIrpt)).EndInit();
             this.paReportsHeader.ResumeLayout(false);
-            this.paReportsHeader.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbExpandReports)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbCollapseReports)).EndInit();
+            this.paReportsHeader.ResumeLayout(false);
+            this.paReportsHeader.PerformLayout();                        
             this.menuBarMain.ResumeLayout(false);
             this.menuBarMain.PerformLayout();
             this.toolbarService.ResumeLayout(false);
@@ -1682,5 +1665,12 @@ namespace sqlnexus
         private System.Windows.Forms.PictureBox picOpenNexusLog;
         private System.Windows.Forms.LinkLabel llOpenReadTraceLog;
         private System.Windows.Forms.PictureBox picOpenReadTraceLog;
+        private System.Windows.Forms.Button btnExpandTasks;
+        private System.Windows.Forms.Button btnCollapseTasks;
+        private System.Windows.Forms.Button btnexpandReports;
+        private System.Windows.Forms.Button btncollapsReports;
+        private System.Windows.Forms.Button btnExpandData;
+        private System.Windows.Forms.Button btnCollapseData;
+
     }
 }
