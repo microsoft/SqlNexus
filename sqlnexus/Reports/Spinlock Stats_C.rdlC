@@ -429,6 +429,12 @@ END;</CommandText>
                       <Style />
                     </ChartDataLabel>
                   </ChartEmptyPoints>
+                  <CustomProperties>
+                    <CustomProperty>
+                      <Name>DrawingStyle</Name>
+                      <Value>Cylinder</Value>
+                    </CustomProperty>
+                  </CustomProperties>
                   <ChartItemInLegend>
                     <LegendText>delta spins/millisecond/cpu</LegendText>
                   </ChartItemInLegend>
@@ -450,13 +456,15 @@ END;</CommandText>
                         <Color>LightGrey</Color>
                       </Border>
                       <FontFamily>Tahoma</FontFamily>
-                      <FontSize>8pt</FontSize>
+                      <FontSize>9pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                     <ChartAxisTitle>
                       <Caption>Spinlock Names</Caption>
                       <Style>
                         <FontFamily>Tahoma</FontFamily>
-                        <FontSize>8pt</FontSize>
+                        <FontSize>9pt</FontSize>
+                        <Color>=Variables!ReportTextColor.Value</Color>
                       </Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
@@ -493,6 +501,7 @@ END;</CommandText>
                     <CrossAt>NaN</CrossAt>
                     <Minimum>NaN</Minimum>
                     <Maximum>NaN</Maximum>
+                    <LabelsAutoFitDisabled>true</LabelsAutoFitDisabled>
                     <ChartAxisScaleBreak>
                       <Style />
                     </ChartAxisScaleBreak>
@@ -559,20 +568,24 @@ END;</CommandText>
                         <Color>LightGrey</Color>
                       </Border>
                       <FontFamily>Tahoma</FontFamily>
-                      <FontSize>8pt</FontSize>
+                      <FontSize>9pt</FontSize>
                       <Format>#,0;(#,0)</Format>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                     <ChartAxisTitle>
                       <Caption>Delta spin per ms per cpu</Caption>
                       <Style>
                         <FontFamily>Tahoma</FontFamily>
-                        <FontSize>8pt</FontSize>
+                        <FontSize>9pt</FontSize>
+                        <Color>=Variables!ReportTextColor.Value</Color>
                       </Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                          <Style>Solid</Style>
+                          <Width>0.75pt</Width>
                         </Border>
                       </Style>
                     </ChartMajorGridLines>
@@ -662,9 +675,14 @@ END;</CommandText>
                 </ChartValueAxes>
                 <ChartThreeDProperties>
                   <Enabled>true</Enabled>
+                  <ProjectionMode>Perspective</ProjectionMode>
+                  <Rotation>0</Rotation>
+                  <Inclination>25</Inclination>
+                  <WallThickness>0</WallThickness>
+                  <Clustered>true</Clustered>
                 </ChartThreeDProperties>
                 <Style>
-                  <BackgroundColor>#e6eefc</BackgroundColor>
+                  <BackgroundColor>=Variables!ChartColor.Value</BackgroundColor>
                   <BackgroundGradientType>None</BackgroundGradientType>
                 </Style>
               </ChartArea>
@@ -673,14 +691,16 @@ END;</CommandText>
               <ChartLegend Name="Default">
                 <Style>
                   <Border>
-                    <Color>#7292cc</Color>
+                    <Color>=Variables!ReportTextColor.Value</Color>
+                    <Style>Solid</Style>
                   </Border>
-                  <BackgroundColor>#e6eefc</BackgroundColor>
-                  <BackgroundGradientType>TopBottom</BackgroundGradientType>
-                  <BackgroundGradientEndColor>#c6daf8</BackgroundGradientEndColor>
+                  <BackgroundGradientType>None</BackgroundGradientType>
+                  <BackgroundGradientEndColor>#00ffffff</BackgroundGradientEndColor>
                   <FontFamily>Tahoma</FontFamily>
-                  <FontSize>8pt</FontSize>
+                  <Color>=Variables!ReportTextColor.Value</Color>
+                  <ShadowColor>#00ffffff</ShadowColor>
                 </Style>
+                <DockOutsideChartArea>true</DockOutsideChartArea>
                 <ChartLegendTitle>
                   <Caption />
                   <Style>
@@ -690,6 +710,7 @@ END;</CommandText>
                     <TextAlign>Center</TextAlign>
                   </Style>
                 </ChartLegendTitle>
+                <AutoFitTextDisabled>true</AutoFitTextDisabled>
                 <HeaderSeparatorColor>Black</HeaderSeparatorColor>
                 <ColumnSeparatorColor>Black</ColumnSeparatorColor>
               </ChartLegend>
@@ -704,6 +725,7 @@ END;</CommandText>
                   <FontWeight>Bold</FontWeight>
                   <TextAlign>General</TextAlign>
                   <VerticalAlign>Top</VerticalAlign>
+                  <Color>=Variables!ReportTextColor.Value</Color>
                 </Style>
               </ChartTitle>
             </ChartTitles>
@@ -739,18 +761,19 @@ END;</CommandText>
               </Style>
             </ChartNoDataMessage>
             <DataSetName>sqlnexus</DataSetName>
-            <Top>6.59722in</Top>
-            <Left>0.23958in</Left>
+            <Top>6.86805in</Top>
+            <Left>0.12501in</Left>
             <Height>5.59375in</Height>
-            <Width>10.7175in</Width>
+            <Width>11.01957in</Width>
             <Style>
               <Border>
                 <Color>#7292cc</Color>
-                <Style>Solid</Style>
+                <Style>None</Style>
                 <Width>2pt</Width>
               </Border>
-              <BackgroundGradientType>TopBottom</BackgroundGradientType>
-              <BackgroundGradientEndColor>LightGrey</BackgroundGradientEndColor>
+              <BackgroundColor>=Variables!ChartFrameColor.Value</BackgroundColor>
+              <BackgroundGradientType>None</BackgroundGradientType>
+              <BackgroundGradientEndColor>=Variables!ChartFrameSecondaryColor.Value</BackgroundGradientEndColor>
             </Style>
           </Chart>
           <Tablix Name="table1">
@@ -763,10 +786,10 @@ END;</CommandText>
                   <Width>2.08823in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.37867in</Width>
+                  <Width>1.56617in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>3.67771in</Width>
+                  <Width>3.88479in</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -785,9 +808,8 @@ END;</CommandText>
                                   <Value>Spinlock Name</Value>
                                   <Style>
                                     <FontFamily>Tahoma</FontFamily>
-                                    <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -803,7 +825,7 @@ END;</CommandText>
                               <Color>Silver</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>SteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -827,10 +849,9 @@ END;</CommandText>
                                   <Value>Spins</Value>
                                   <Style>
                                     <FontFamily>Tahoma</FontFamily>
-                                    <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                     <Format>g</Format>
-                                    <Color>White</Color>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -846,7 +867,7 @@ END;</CommandText>
                               <Color>Silver</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>SteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -870,9 +891,8 @@ END;</CommandText>
                                   <Value>Collisions</Value>
                                   <Style>
                                     <FontFamily>Tahoma</FontFamily>
-                                    <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -888,7 +908,7 @@ END;</CommandText>
                               <Color>Silver</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>SteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -912,9 +932,8 @@ END;</CommandText>
                                   <Value>Avg. Spins/Collisions</Value>
                                   <Style>
                                     <FontFamily>Tahoma</FontFamily>
-                                    <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -930,7 +949,7 @@ END;</CommandText>
                               <Color>Silver</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>SteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -954,7 +973,9 @@ END;</CommandText>
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!spinlock_name.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -967,6 +988,7 @@ END;</CommandText>
                               <Color>Silver</Color>
                               <Style>Solid</Style>
                             </Border>
+                            <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(nothing))</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -985,7 +1007,9 @@ END;</CommandText>
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!spin_diff.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style>
@@ -1000,6 +1024,7 @@ END;</CommandText>
                               <Color>Silver</Color>
                               <Style>Solid</Style>
                             </Border>
+                            <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(nothing))</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -1018,7 +1043,9 @@ END;</CommandText>
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!collision_diff.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style>
@@ -1033,6 +1060,7 @@ END;</CommandText>
                               <Color>Silver</Color>
                               <Style>Solid</Style>
                             </Border>
+                            <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(nothing))</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -1053,6 +1081,7 @@ END;</CommandText>
                                   <Value>=Fields!spindiff_per_collisiondiff.Value</Value>
                                   <Style>
                                     <Format>F</Format>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1067,6 +1096,7 @@ END;</CommandText>
                               <Color>Silver</Color>
                               <Style>Solid</Style>
                             </Border>
+                            <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(nothing))</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -1111,7 +1141,7 @@ END;</CommandText>
             <Top>13.70709in</Top>
             <Left>0.125in</Left>
             <Height>0.625in</Height>
-            <Width>10.625in</Width>
+            <Width>11.01958in</Width>
             <ZIndex>1</ZIndex>
             <Style>
               <Border>
@@ -1132,7 +1162,7 @@ END;</CommandText>
                       <FontFamily>Tahoma</FontFamily>
                       <FontSize>20pt</FontSize>
                       <FontWeight>Bold</FontWeight>
-                      <Color>SteelBlue</Color>
+                      <Color>=Variables!TitleColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1163,8 +1193,8 @@ END;</CommandText>
                     <Value>=iif(First(Fields!starting_time.Value, "DataSet_RuntimeStats") = First(Fields!ending_time.Value, "DataSet_RuntimeStats"),"Spinlock data not imported completely","Run Time Summary")</Value>
                     <Style>
                       <FontFamily>Tahoma</FontFamily>
-                      <FontSize>14pt</FontSize>
-                      <Color>Navy</Color>
+                      <FontSize>12pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1216,9 +1246,8 @@ END;</CommandText>
                                   <Value>Start Time</Value>
                                   <Style>
                                     <FontFamily>Tahoma</FontFamily>
-                                    <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1230,9 +1259,10 @@ END;</CommandText>
                           <ZIndex>5</ZIndex>
                           <Style>
                             <Border>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>SteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -1253,9 +1283,8 @@ END;</CommandText>
                                   <Value>End Time</Value>
                                   <Style>
                                     <FontFamily>Tahoma</FontFamily>
-                                    <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1267,9 +1296,10 @@ END;</CommandText>
                           <ZIndex>4</ZIndex>
                           <Style>
                             <Border>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>SteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -1290,9 +1320,8 @@ END;</CommandText>
                                   <Value>Duration (Minutes)</Value>
                                   <Style>
                                     <FontFamily>Tahoma</FontFamily>
-                                    <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1304,9 +1333,10 @@ END;</CommandText>
                           <ZIndex>3</ZIndex>
                           <Style>
                             <Border>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>SteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -1332,6 +1362,7 @@ END;</CommandText>
                                   <Value>=First(Fields!starting_time.Value, "DataSet_RuntimeStats")</Value>
                                   <Style>
                                     <FontWeight>Bold</FontWeight>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1344,8 +1375,10 @@ END;</CommandText>
                           <ZIndex>2</ZIndex>
                           <Style>
                             <Border>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>Solid</Style>
                             </Border>
+                            <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(nothing))</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -1367,6 +1400,7 @@ END;</CommandText>
                                   <Style>
                                     <FontFamily>Tahoma</FontFamily>
                                     <FontWeight>Bold</FontWeight>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1379,8 +1413,10 @@ END;</CommandText>
                           <ZIndex>1</ZIndex>
                           <Style>
                             <Border>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>Solid</Style>
                             </Border>
+                            <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(nothing))</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -1402,7 +1438,7 @@ END;</CommandText>
                                   <Style>
                                     <FontFamily>Tahoma</FontFamily>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>Maroon</Color>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1414,8 +1450,10 @@ END;</CommandText>
                           <rd:DefaultName>Duration_Minutes</rd:DefaultName>
                           <Style>
                             <Border>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>Solid</Style>
                             </Border>
+                            <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(nothing))</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -1463,6 +1501,7 @@ END;</CommandText>
             <ZIndex>4</ZIndex>
             <Style>
               <Border>
+                <Color>=Variables!ReportTextColor.Value</Color>
                 <Style>Solid</Style>
               </Border>
               <TextAlign>Left</TextAlign>
@@ -1478,7 +1517,9 @@ END;</CommandText>
                     <Value>*The report shows deltas between start time and end time which can be adjusted by the repport parameters.  Click on each bar to drill through detailed charts for the specific spinlock.</Value>
                     <Style>
                       <FontSize>9pt</FontSize>
-                      <Color>Maroon</Color>
+                      <Color>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+Parameters!ContrastTheme.Value="Desert", "Maroon",
+Parameters!ContrastTheme.Value="None", "Maroon")</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1490,7 +1531,9 @@ END;</CommandText>
                     <Value>Note that "Delta spins" uses the primary Axis (left) and "Spins/Collision" and "Delta backoffs" use the secondary Axis (right)</Value>
                     <Style>
                       <FontSize>9pt</FontSize>
-                      <Color>Maroon</Color>
+                      <Color>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+Parameters!ContrastTheme.Value="Desert", "Maroon",
+Parameters!ContrastTheme.Value="None", "Maroon")</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1619,7 +1662,8 @@ END;</CommandText>
                         <Style>None</Style>
                         <Width>0.75pt</Width>
                       </Border>
-                      <FontSize>8pt</FontSize>
+                      <FontSize>9pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                     <ChartAxisTitle>
                       <Caption />
@@ -1668,6 +1712,7 @@ END;</CommandText>
                     <PreventFontShrink>true</PreventFontShrink>
                     <PreventFontGrow>true</PreventFontGrow>
                     <IncludeZero>false</IncludeZero>
+                    <LabelsAutoFitDisabled>true</LabelsAutoFitDisabled>
                     <ChartAxisScaleBreak>
                       <Style />
                     </ChartAxisScaleBreak>
@@ -1699,18 +1744,20 @@ END;</CommandText>
                         <Width>0.75pt</Width>
                       </Border>
                       <Format>#,0;(#,0)</Format>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                     <ChartAxisTitle>
                       <Caption>Delta Spins</Caption>
                       <Style>
-                        <FontSize>8pt</FontSize>
+                        <FontSize>9pt</FontSize>
+                        <Color>=Variables!ReportTextColor.Value</Color>
                       </Style>
                     </ChartAxisTitle>
                     <Margin>True</Margin>
                     <ChartMajorGridLines>
-                      <Enabled>True</Enabled>
                       <Style>
                         <Border>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                           <Style>Solid</Style>
                           <Width>0.75pt</Width>
                         </Border>
@@ -1781,7 +1828,7 @@ END;</CommandText>
                     <Style>Solid</Style>
                     <Width>0.75pt</Width>
                   </Border>
-                  <BackgroundColor>LightSteelBlue</BackgroundColor>
+                  <BackgroundColor>=Variables!ChartColor.Value</BackgroundColor>
                 </Style>
               </ChartArea>
             </ChartAreas>
@@ -1789,9 +1836,11 @@ END;</CommandText>
               <ChartLegend Name="Default">
                 <Style>
                   <Border>
+                    <Color>=Variables!ReportTextColor.Value</Color>
                     <Style>Solid</Style>
                     <Width>0.75pt</Width>
                   </Border>
+                  <Color>=Variables!ReportTextColor.Value</Color>
                 </Style>
                 <Position>RightCenter</Position>
                 <Layout>TallTable</Layout>
@@ -1812,8 +1861,9 @@ END;</CommandText>
               <ChartTitle Name="Default">
                 <Caption>Top Spinlock Categories</Caption>
                 <Style>
-                  <FontSize>8pt</FontSize>
+                  <FontSize>14pt</FontSize>
                   <FontWeight>Bold</FontWeight>
+                  <Color>=Variables!ReportTextColor.Value</Color>
                 </Style>
               </ChartTitle>
             </ChartTitles>
@@ -1835,10 +1885,10 @@ END;</CommandText>
               </Style>
             </ChartNoDataMessage>
             <DataSetName>sqlnexus</DataSetName>
-            <Top>1.22167in</Top>
+            <Top>1.4925in</Top>
             <Left>0.125in</Left>
             <Height>5.43111in</Height>
-            <Width>10.83208in</Width>
+            <Width>11.01958in</Width>
             <ZIndex>6</ZIndex>
             <CustomProperties>
               <CustomProperty>
@@ -1851,7 +1901,9 @@ END;</CommandText>
                 <Color>LightGrey</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundGradientType>DiagonalRight</BackgroundGradientType>
+              <BackgroundColor>=Variables!ChartFrameColor.Value</BackgroundColor>
+              <BackgroundGradientType>None</BackgroundGradientType>
+              <BackgroundGradientEndColor>=Variables!ChartFrameSecondaryColor.Value</BackgroundGradientEndColor>
             </Style>
           </Chart>
           <Textbox Name="Textbox_spinlockdetails">
@@ -1862,7 +1914,9 @@ END;</CommandText>
                 <TextRuns>
                   <TextRun>
                     <Value>Spin lock Details</Value>
-                    <Style />
+                    <Style>
+                      <Color>=Variables!ReportTextColor.Value</Color>
+                    </Style>
                   </TextRun>
                 </TextRuns>
                 <Style />
@@ -1893,6 +1947,7 @@ END;</CommandText>
                     <Value>Show queries for this report.</Value>
                     <Style>
                       <FontWeight>Bold</FontWeight>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1924,7 +1979,9 @@ END;</CommandText>
                     <TextRuns>
                       <TextRun>
                         <Value>=DataSets!sqlnexus.CommandText</Value>
-                        <Style />
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </TextRun>
                     </TextRuns>
                     <Style />
@@ -1955,7 +2012,9 @@ END;</CommandText>
                     <TextRuns>
                       <TextRun>
                         <Value>=DataSets!DataSet_Top10Seriesnew.CommandText</Value>
-                        <Style />
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </TextRun>
                     </TextRuns>
                     <Style />
@@ -1984,7 +2043,7 @@ END;</CommandText>
             <Top>14.90847in</Top>
             <Left>0.10417in</Left>
             <Height>0.88542in</Height>
-            <Width>9.84374in</Width>
+            <Width>10.85291in</Width>
             <ZIndex>9</ZIndex>
             <Visibility>
               <Hidden>true</Hidden>
@@ -1994,6 +2053,18 @@ END;</CommandText>
               <Border>
                 <Style>Solid</Style>
               </Border>
+              <TopBorder>
+                <Color>=Variables!ReportTextColor.Value</Color>
+              </TopBorder>
+              <BottomBorder>
+                <Color>=Variables!ReportTextColor.Value</Color>
+              </BottomBorder>
+              <LeftBorder>
+                <Color>=Variables!ReportTextColor.Value</Color>
+              </LeftBorder>
+              <RightBorder>
+                <Color>=Variables!ReportTextColor.Value</Color>
+              </RightBorder>
             </Style>
           </Rectangle>
         </ReportItems>
@@ -2002,10 +2073,10 @@ END;</CommandText>
           <Border>
             <Style>None</Style>
           </Border>
-          <BackgroundColor>=Parameters!FmtAmbientBackground.Value</BackgroundColor>
+          <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
         </Style>
       </Body>
-      <Width>11.15625in</Width>
+      <Width>11.96875in</Width>
       <Page>
         <PageHeader>
           <Height>0.45833in</Height>
@@ -2257,6 +2328,21 @@ END;</CommandText>
       </CellDefinitions>
     </GridLayoutDefinition>
   </ReportParametersLayout>
+  <Code>
+    Function GetTableRowFillColor(Theme as String, RowNumber As Integer) As String
+    If Theme ="Aquatic" Then
+    return "#202020"
+    ElseIf Theme ="Desert" Then
+    return "#FFFAEF"
+    Elseif RowNumber Mod 2 &lt;&gt; 0 Then
+    return "White"
+    Else
+    Return "LightSteelBlue"
+    End If
+    End Function
+  
+</Code>
+  <Language>en-US</Language>
   <Variables>
     <Variable Name="ReportTextColor">
       <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
@@ -2281,7 +2367,7 @@ Parameters!ContrastTheme.Value="None", "SteelBlue")</Value>
     <Variable Name="ChartColor">
       <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
 Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
-Parameters!ContrastTheme.Value="None", "LightSteelBlue")</Value>
+Parameters!ContrastTheme.Value="None", "None")</Value>
     </Variable>
     <Variable Name="ChartSecondaryColor">
       <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "No Color",
@@ -2309,8 +2395,17 @@ Parameters!ContrastTheme.Value="None", "#FFFFFF")</Value>
 Parameters!ContrastTheme.Value="Desert", "#1C5E75",
 Parameters!ContrastTheme.Value="None", "Blue")</Value>
     </Variable>
+    <Variable Name="ChartFrameColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
+Parameters!ContrastTheme.Value="Desert", "#c6daf8",
+Parameters!ContrastTheme.Value="None", "#c6daf8")</Value>
+    </Variable>
+    <Variable Name="ChartFrameSecondaryColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
+Parameters!ContrastTheme.Value="Desert", "#e6eefc",
+Parameters!ContrastTheme.Value="None", "#e6eefc")</Value>
+    </Variable>
   </Variables>
-  <Language>en-US</Language>
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
   <rd:ReportUnitType>Inch</rd:ReportUnitType>
   <rd:ReportID>064bed88-bef0-40a9-bfa1-0f3b4dfa6a35</rd:ReportID>
