@@ -476,7 +476,11 @@ END;</CommandText>
                         </Style>
                       </ChartDataLabel>
                       <ToolTip>#VALY</ToolTip>
-                      <Style />
+                      <Style>
+                        <Border>
+                          <Width>1.5pt</Width>
+                        </Border>
+                      </Style>
                       <ChartMarker>
                         <Style />
                       </ChartMarker>
@@ -485,7 +489,7 @@ END;</CommandText>
                   </ChartDataPoints>
                   <Type>Line</Type>
                   <Style>
-                    <ShadowColor>DimGray</ShadowColor>
+                    <ShadowColor>#00ffffff</ShadowColor>
                     <ShadowOffset>1pt</ShadowOffset>
                   </Style>
                   <ChartEmptyPoints>
@@ -515,13 +519,15 @@ END;</CommandText>
                         <Color>LightGrey</Color>
                       </Border>
                       <FontFamily>Tahoma</FontFamily>
-                      <FontSize>8pt</FontSize>
+                      <FontSize>9pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                     <ChartAxisTitle>
                       <Caption>Runtime</Caption>
                       <Style>
                         <FontFamily>Tahoma</FontFamily>
-                        <FontSize>8pt</FontSize>
+                        <FontSize>9pt</FontSize>
+                        <Color>=Variables!ReportTextColor.Value</Color>
                       </Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
@@ -558,6 +564,7 @@ END;</CommandText>
                     <CrossAt>NaN</CrossAt>
                     <Minimum>NaN</Minimum>
                     <Maximum>NaN</Maximum>
+                    <LabelsAutoFitDisabled>true</LabelsAutoFitDisabled>
                     <ChartAxisScaleBreak>
                       <Style />
                     </ChartAxisScaleBreak>
@@ -631,7 +638,8 @@ END;</CommandText>
                       <Caption>Sleep time (ms)</Caption>
                       <Style>
                         <FontFamily>Tahoma</FontFamily>
-                        <FontSize>8pt</FontSize>
+                        <FontSize>9pt</FontSize>
+                        <Color>=Variables!ReportTextColor.Value</Color>
                       </Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
@@ -726,7 +734,7 @@ END;</CommandText>
                   </ChartAxis>
                 </ChartValueAxes>
                 <Style>
-                  <BackgroundColor>#e6eefc</BackgroundColor>
+                  <BackgroundColor>=Variables!ChartColor.Value</BackgroundColor>
                   <BackgroundGradientType>None</BackgroundGradientType>
                 </Style>
               </ChartArea>
@@ -741,6 +749,7 @@ END;</CommandText>
                   <FontWeight>Bold</FontWeight>
                   <TextAlign>General</TextAlign>
                   <VerticalAlign>Top</VerticalAlign>
+                  <Color>=Variables!ReportTextColor.Value</Color>
                 </Style>
               </ChartTitle>
             </ChartTitles>
@@ -786,9 +795,9 @@ END;</CommandText>
                 <Style>Solid</Style>
                 <Width>2pt</Width>
               </Border>
-              <BackgroundColor>#c6daf8</BackgroundColor>
-              <BackgroundGradientType>TopBottom</BackgroundGradientType>
-              <BackgroundGradientEndColor>#e6eefc</BackgroundGradientEndColor>
+              <BackgroundColor>=Variables!ChartFrameColor.Value</BackgroundColor>
+              <BackgroundGradientType>=Variables!ChartFrameGradientStyle.Value</BackgroundGradientType>
+              <BackgroundGradientEndColor>=Variables!ChartFrameSecondaryColor.Value</BackgroundGradientEndColor>
             </Style>
           </Chart>
           <Chart Name="Chart3">
@@ -841,7 +850,11 @@ END;</CommandText>
                         </Style>
                       </ChartDataLabel>
                       <ToolTip>#VALY</ToolTip>
-                      <Style />
+                      <Style>
+                        <Border>
+                          <Width>1.5pt</Width>
+                        </Border>
+                      </Style>
                       <ChartMarker>
                         <Style />
                       </ChartMarker>
@@ -850,7 +863,7 @@ END;</CommandText>
                   </ChartDataPoints>
                   <Type>Line</Type>
                   <Style>
-                    <ShadowColor>DimGray</ShadowColor>
+                    <ShadowColor>#00ffffff</ShadowColor>
                     <ShadowOffset>1pt</ShadowOffset>
                   </Style>
                   <ChartEmptyPoints>
@@ -880,13 +893,15 @@ END;</CommandText>
                         <Color>LightGrey</Color>
                       </Border>
                       <FontFamily>Tahoma</FontFamily>
-                      <FontSize>8pt</FontSize>
+                      <FontSize>9pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                     <ChartAxisTitle>
                       <Caption>Runtime</Caption>
                       <Style>
                         <FontFamily>Tahoma</FontFamily>
-                        <FontSize>8pt</FontSize>
+                        <FontSize>9pt</FontSize>
+                        <Color>=Variables!ReportTextColor.Value</Color>
                       </Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
@@ -923,6 +938,7 @@ END;</CommandText>
                     <CrossAt>NaN</CrossAt>
                     <Minimum>NaN</Minimum>
                     <Maximum>NaN</Maximum>
+                    <LabelsAutoFitDisabled>true</LabelsAutoFitDisabled>
                     <ChartAxisScaleBreak>
                       <Style />
                     </ChartAxisScaleBreak>
@@ -989,14 +1005,15 @@ END;</CommandText>
                         <Color>LightGrey</Color>
                       </Border>
                       <FontFamily>Tahoma</FontFamily>
-                      <FontSize>8pt</FontSize>
+                      <FontSize>9pt</FontSize>
                       <Format>#,0;(#,0)</Format>
                     </Style>
                     <ChartAxisTitle>
                       <Caption>spins per collision</Caption>
                       <Style>
                         <FontFamily>Tahoma</FontFamily>
-                        <FontSize>8pt</FontSize>
+                        <FontSize>9pt</FontSize>
+                        <Color>=Variables!ReportTextColor.Value</Color>
                       </Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
@@ -1032,6 +1049,7 @@ END;</CommandText>
                     <CrossAt>NaN</CrossAt>
                     <Minimum>NaN</Minimum>
                     <Maximum>NaN</Maximum>
+                    <LabelsAutoFitDisabled>true</LabelsAutoFitDisabled>
                     <ChartAxisScaleBreak>
                       <Style />
                     </ChartAxisScaleBreak>
@@ -1091,7 +1109,7 @@ END;</CommandText>
                   </ChartAxis>
                 </ChartValueAxes>
                 <Style>
-                  <BackgroundColor>#e6eefc</BackgroundColor>
+                  <BackgroundColor>=Variables!ChartColor.Value</BackgroundColor>
                   <BackgroundGradientType>None</BackgroundGradientType>
                 </Style>
               </ChartArea>
@@ -1106,6 +1124,7 @@ END;</CommandText>
                   <FontWeight>Bold</FontWeight>
                   <TextAlign>General</TextAlign>
                   <VerticalAlign>Top</VerticalAlign>
+                  <Color>=Variables!ReportTextColor.Value</Color>
                 </Style>
               </ChartTitle>
             </ChartTitles>
@@ -1152,9 +1171,9 @@ END;</CommandText>
                 <Style>Solid</Style>
                 <Width>2pt</Width>
               </Border>
-              <BackgroundColor>#c6daf8</BackgroundColor>
-              <BackgroundGradientType>TopBottom</BackgroundGradientType>
-              <BackgroundGradientEndColor>#e6eefc</BackgroundGradientEndColor>
+              <BackgroundColor>=Variables!ChartFrameColor.Value</BackgroundColor>
+              <BackgroundGradientType>=Variables!ChartFrameGradientStyle.Value</BackgroundGradientType>
+              <BackgroundGradientEndColor>=Variables!ChartFrameSecondaryColor.Value</BackgroundGradientEndColor>
             </Style>
           </Chart>
           <Chart Name="Chart2">
@@ -1207,7 +1226,11 @@ END;</CommandText>
                         </Style>
                       </ChartDataLabel>
                       <ToolTip>#VALY</ToolTip>
-                      <Style />
+                      <Style>
+                        <Border>
+                          <Width>1.5pt</Width>
+                        </Border>
+                      </Style>
                       <ChartMarker>
                         <Style />
                       </ChartMarker>
@@ -1216,7 +1239,7 @@ END;</CommandText>
                   </ChartDataPoints>
                   <Type>Line</Type>
                   <Style>
-                    <ShadowColor>DimGray</ShadowColor>
+                    <ShadowColor>#00ffffff</ShadowColor>
                     <ShadowOffset>1pt</ShadowOffset>
                   </Style>
                   <ChartEmptyPoints>
@@ -1246,13 +1269,15 @@ END;</CommandText>
                         <Color>LightGrey</Color>
                       </Border>
                       <FontFamily>Tahoma</FontFamily>
-                      <FontSize>8pt</FontSize>
+                      <FontSize>9pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                     <ChartAxisTitle>
                       <Caption>RunTime</Caption>
                       <Style>
                         <FontFamily>Tahoma</FontFamily>
-                        <FontSize>8pt</FontSize>
+                        <FontSize>9pt</FontSize>
+                        <Color>=Variables!ReportTextColor.Value</Color>
                       </Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
@@ -1289,6 +1314,7 @@ END;</CommandText>
                     <CrossAt>NaN</CrossAt>
                     <Minimum>NaN</Minimum>
                     <Maximum>NaN</Maximum>
+                    <LabelsAutoFitDisabled>true</LabelsAutoFitDisabled>
                     <ChartAxisScaleBreak>
                       <Style />
                     </ChartAxisScaleBreak>
@@ -1355,14 +1381,15 @@ END;</CommandText>
                         <Color>LightGrey</Color>
                       </Border>
                       <FontFamily>Tahoma</FontFamily>
-                      <FontSize>8pt</FontSize>
+                      <FontSize>9pt</FontSize>
                       <Format>#,0;(#,0)</Format>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                     <ChartAxisTitle>
                       <Caption>Delta backoffs</Caption>
                       <Style>
                         <FontFamily>Tahoma</FontFamily>
-                        <FontSize>8pt</FontSize>
+                        <Color>=Variables!ReportTextColor.Value</Color>
                       </Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
@@ -1398,6 +1425,7 @@ END;</CommandText>
                     <CrossAt>NaN</CrossAt>
                     <Minimum>NaN</Minimum>
                     <Maximum>NaN</Maximum>
+                    <LabelsAutoFitDisabled>true</LabelsAutoFitDisabled>
                     <ChartAxisScaleBreak>
                       <Style />
                     </ChartAxisScaleBreak>
@@ -1457,7 +1485,7 @@ END;</CommandText>
                   </ChartAxis>
                 </ChartValueAxes>
                 <Style>
-                  <BackgroundColor>#e6eefc</BackgroundColor>
+                  <BackgroundColor>=Variables!ChartColor.Value</BackgroundColor>
                   <BackgroundGradientType>None</BackgroundGradientType>
                 </Style>
               </ChartArea>
@@ -1472,6 +1500,7 @@ END;</CommandText>
                   <FontWeight>Bold</FontWeight>
                   <TextAlign>General</TextAlign>
                   <VerticalAlign>Top</VerticalAlign>
+                  <Color>=Variables!ReportTextColor.Value</Color>
                 </Style>
               </ChartTitle>
             </ChartTitles>
@@ -1518,9 +1547,9 @@ END;</CommandText>
                 <Style>Solid</Style>
                 <Width>2pt</Width>
               </Border>
-              <BackgroundColor>#c6daf8</BackgroundColor>
-              <BackgroundGradientType>TopBottom</BackgroundGradientType>
-              <BackgroundGradientEndColor>#e6eefc</BackgroundGradientEndColor>
+              <BackgroundColor>=Variables!ChartFrameColor.Value</BackgroundColor>
+              <BackgroundGradientType>=Variables!ChartFrameGradientStyle.Value</BackgroundGradientType>
+              <BackgroundGradientEndColor>=Variables!ChartFrameSecondaryColor.Value</BackgroundGradientEndColor>
             </Style>
           </Chart>
           <Chart Name="Chart1">
@@ -1573,7 +1602,11 @@ END;</CommandText>
                         </Style>
                       </ChartDataLabel>
                       <ToolTip>#VALY</ToolTip>
-                      <Style />
+                      <Style>
+                        <Border>
+                          <Width>1.5pt</Width>
+                        </Border>
+                      </Style>
                       <ChartMarker>
                         <Style />
                       </ChartMarker>
@@ -1582,7 +1615,7 @@ END;</CommandText>
                   </ChartDataPoints>
                   <Type>Line</Type>
                   <Style>
-                    <ShadowColor>DimGray</ShadowColor>
+                    <ShadowColor>#00ffffff</ShadowColor>
                     <ShadowOffset>1pt</ShadowOffset>
                   </Style>
                   <ChartEmptyPoints>
@@ -1612,13 +1645,14 @@ END;</CommandText>
                         <Color>LightGrey</Color>
                       </Border>
                       <FontFamily>Tahoma</FontFamily>
-                      <FontSize>8pt</FontSize>
+                      <FontSize>9pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                     <ChartAxisTitle>
                       <Caption>Runtime</Caption>
                       <Style>
                         <FontFamily>Tahoma</FontFamily>
-                        <FontSize>8pt</FontSize>
+                        <Color>=Variables!ReportTextColor.Value</Color>
                       </Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
@@ -1655,6 +1689,7 @@ END;</CommandText>
                     <CrossAt>NaN</CrossAt>
                     <Minimum>NaN</Minimum>
                     <Maximum>NaN</Maximum>
+                    <LabelsAutoFitDisabled>true</LabelsAutoFitDisabled>
                     <ChartAxisScaleBreak>
                       <Style />
                     </ChartAxisScaleBreak>
@@ -1721,14 +1756,15 @@ END;</CommandText>
                         <Color>LightGrey</Color>
                       </Border>
                       <FontFamily>Tahoma</FontFamily>
-                      <FontSize>8pt</FontSize>
+                      <FontSize>9pt</FontSize>
                       <Format>#,0;(#,0)</Format>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                     <ChartAxisTitle>
                       <Caption>delta spins /ms/cpu</Caption>
                       <Style>
                         <FontFamily>Tahoma</FontFamily>
-                        <FontSize>8pt</FontSize>
+                        <Color>=Variables!ReportTextColor.Value</Color>
                       </Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
@@ -1764,6 +1800,7 @@ END;</CommandText>
                     <CrossAt>NaN</CrossAt>
                     <Minimum>NaN</Minimum>
                     <Maximum>NaN</Maximum>
+                    <LabelsAutoFitDisabled>true</LabelsAutoFitDisabled>
                     <ChartAxisScaleBreak>
                       <Style />
                     </ChartAxisScaleBreak>
@@ -1823,7 +1860,7 @@ END;</CommandText>
                   </ChartAxis>
                 </ChartValueAxes>
                 <Style>
-                  <BackgroundColor>#e6eefc</BackgroundColor>
+                  <BackgroundColor>=Variables!ChartColor.Value</BackgroundColor>
                   <BackgroundGradientType>None</BackgroundGradientType>
                 </Style>
               </ChartArea>
@@ -1838,6 +1875,7 @@ END;</CommandText>
                   <FontWeight>Bold</FontWeight>
                   <TextAlign>General</TextAlign>
                   <VerticalAlign>Top</VerticalAlign>
+                  <Color>=Variables!ReportTextColor.Value</Color>
                 </Style>
               </ChartTitle>
             </ChartTitles>
@@ -1884,9 +1922,9 @@ END;</CommandText>
                 <Style>Solid</Style>
                 <Width>2pt</Width>
               </Border>
-              <BackgroundColor>#c6daf8</BackgroundColor>
-              <BackgroundGradientType>TopBottom</BackgroundGradientType>
-              <BackgroundGradientEndColor>#e6eefc</BackgroundGradientEndColor>
+              <BackgroundColor>=Variables!ChartFrameColor.Value</BackgroundColor>
+              <BackgroundGradientType>=Variables!ChartFrameGradientStyle.Value</BackgroundGradientType>
+              <BackgroundGradientEndColor>=Variables!ChartFrameSecondaryColor.Value</BackgroundGradientEndColor>
             </Style>
           </Chart>
           <Textbox Name="textbox1">
@@ -1901,7 +1939,7 @@ END;</CommandText>
                       <FontFamily>Tahoma</FontFamily>
                       <FontSize>20pt</FontSize>
                       <FontWeight>Bold</FontWeight>
-                      <Color>SteelBlue</Color>
+                      <Color>=Variables!TitleColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1913,6 +1951,9 @@ END;</CommandText>
             <Width>5in</Width>
             <ZIndex>4</ZIndex>
             <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
               <PaddingTop>2pt</PaddingTop>
@@ -1929,6 +1970,7 @@ END;</CommandText>
                     <Value>Show queries for this report.</Value>
                     <Style>
                       <FontWeight>Bold</FontWeight>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1960,7 +2002,9 @@ END;</CommandText>
                     <TextRuns>
                       <TextRun>
                         <Value>=DataSets!DataSet_Spinlock_Details.CommandText</Value>
-                        <Style />
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </TextRun>
                     </TextRuns>
                     <Style />
@@ -1992,7 +2036,9 @@ END;</CommandText>
                     <TextRuns>
                       <TextRun>
                         <Value>=DataSets!DataSet_Top10Seriesnew.CommandText</Value>
-                        <Style />
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </TextRun>
                     </TextRuns>
                     <Style />
@@ -2031,11 +2077,28 @@ END;</CommandText>
               <Border>
                 <Style>Solid</Style>
               </Border>
+              <TopBorder>
+                <Color>=Variables!ReportTextColor.Value</Color>
+              </TopBorder>
+              <BottomBorder>
+                <Color>=Variables!ReportTextColor.Value</Color>
+              </BottomBorder>
+              <LeftBorder>
+                <Color>=Variables!ReportTextColor.Value</Color>
+              </LeftBorder>
+              <RightBorder>
+                <Color>=Variables!ReportTextColor.Value</Color>
+              </RightBorder>
             </Style>
           </Rectangle>
         </ReportItems>
         <Height>21.47792in</Height>
-        <Style />
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
+        </Style>
       </Body>
       <Width>15.13542in</Width>
       <Page>
@@ -2257,6 +2320,7 @@ END;</CommandText>
       </CellDefinitions>
     </GridLayoutDefinition>
   </ReportParametersLayout>
+  <Language>en-US</Language>
   <Variables>
     <Variable Name="ReportTextColor">
       <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
@@ -2281,7 +2345,7 @@ Parameters!ContrastTheme.Value="None", "SteelBlue")</Value>
     <Variable Name="ChartColor">
       <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
 Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
-Parameters!ContrastTheme.Value="None", "LightSteelBlue")</Value>
+Parameters!ContrastTheme.Value="None", "None")</Value>
     </Variable>
     <Variable Name="ChartSecondaryColor">
       <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "No Color",
@@ -2309,8 +2373,22 @@ Parameters!ContrastTheme.Value="None", "#FFFFFF")</Value>
 Parameters!ContrastTheme.Value="Desert", "#1C5E75",
 Parameters!ContrastTheme.Value="None", "Blue")</Value>
     </Variable>
+    <Variable Name="ChartFrameColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
+Parameters!ContrastTheme.Value="Desert", "#c6daf8",
+Parameters!ContrastTheme.Value="None", "#c6daf8")</Value>
+    </Variable>
+    <Variable Name="ChartFrameSecondaryColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "No Color",
+Parameters!ContrastTheme.Value="Desert", "#e6eefc",
+Parameters!ContrastTheme.Value="None", "#e6eefc")</Value>
+    </Variable>
+    <Variable Name="ChartFrameGradientStyle">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "None",
+Parameters!ContrastTheme.Value="Desert", "TopBottom",
+Parameters!ContrastTheme.Value="None", "TopBottom")</Value>
+    </Variable>
   </Variables>
-  <Language>en-US</Language>
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
   <rd:ReportUnitType>Inch</rd:ReportUnitType>
   <rd:ReportID>064bed88-bef0-40a9-bfa1-0f3b4dfa6a35</rd:ReportID>
