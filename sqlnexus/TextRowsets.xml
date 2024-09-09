@@ -4482,6 +4482,22 @@
       <Column name="ProcessName" type="RowsetImportEngine.NVarCharColumn" length="64" />
     </KnownColumns>
   </Rowset>
+  <Rowset name="tbl_sysmail_server" enabled="true" identifier="-- sysmail_server --" type="RowsetImportEngine.TextRowset">
+    <KnownColumns>
+      <Column name="account_id" type="RowsetImportEngine.IntColumn" />
+      <Column name="servertype" type="RowsetImportEngine.VarCharColumn" length="128" />
+      <Column name="servername" type="RowsetImportEngine.VarCharColumn" length="128" />
+      <Column name="port" type="RowsetImportEngine.IntColumn" />
+      <Column name="username" type="RowsetImportEngine.VarCharColumn" length="128" />
+      <Column name="credential_id" type="RowsetImportEngine.IntColumn" />
+      <Column name="use_default_credentials" type="RowsetImportEngine.VarCharColumn" />
+      <Column name="enable_ssl" type="RowsetImportEngine.VarCharColumn" />
+      <Column name="flags" type="RowsetImportEngine.IntColumn" />
+      <Column name="timeout" type="RowsetImportEngine.IntColumn" />
+      <Column name="last_mod_datetime" type="RowsetImportEngine.DateTimeColumn" />
+      <Column name="last_mod_user" type="RowsetImportEngine.VarCharColumn" length="128" />
+    </KnownColumns>
+  </Rowset>
 </TextImport>
 
 
