@@ -3147,6 +3147,38 @@
         <Column name="date_modified" type="RowsetImportEngine.DateTimeColumn"/>
       </KnownColumns>
     </Rowset>
+
+    <Rowset name="tbl_repl_msdb_jobhistory" enabled="true" identifier="-- repl_msdb_jobhistory --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="job_id" type="RowsetImportEngine.VarCharColumn" />
+        <Column name="name" type="RowsetImportEngine.VarCharColumn" length="128" />
+        <Column name="instance_id" type="RowsetImportEngine.IntColumn" />
+        <Column name="step_id" type="RowsetImportEngine.IntColumn" />
+        <Column name="step_name" type="RowsetImportEngine.VarCharColumn" length="128" />
+        <Column name="sql_message_id" type="RowsetImportEngine.IntColumn" />
+        <Column name="sql_severity" type="RowsetImportEngine.IntColumn" />
+        <Column name="message" type="RowsetImportEngine.VarCharColumn" length="256" />
+        <Column name="run_status" type="RowsetImportEngine.IntColumn" />
+        <Column name="run_date" type="RowsetImportEngine.IntColumn" />
+        <Column name="run_time" type="RowsetImportEngine.IntColumn" />
+        <Column name="run_duration" type="RowsetImportEngine.IntColumn" />
+        <Column name="retries_attempted" type="RowsetImportEngine.IntColumn" />
+        <Column name="server" type="RowsetImportEngine.VarCharColumn" length="128" />
+      </KnownColumns>
+    </Rowset>
+
+    <Rowset name="tbl_repl_msdb_msagent_profileandparameters" enabled="true" identifier="-- repl_msdb_msagent_profileandparameters --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="profile_id" type="RowsetImportEngine.IntColumn" />
+        <Column name="profile_name" type="RowsetImportEngine.VarCharColumn" length="128" />
+        <Column name="agent_type" type="RowsetImportEngine.IntColumn" />
+        <Column name="type" type="RowsetImportEngine.IntColumn" />
+        <Column name="description" type="RowsetImportEngine.VarCharColumn" length="256" />
+        <Column name="def_profile" type="RowsetImportEngine.VarCharColumn" />
+        <Column name="parameter_name" type="RowsetImportEngine.VarCharColumn" length="128" />
+        <Column name="value" type="RowsetImportEngine.VarCharColumn" length="255" />
+      </KnownColumns>
+    </Rowset>
     
     <Rowset name="tbl_repl_msarticles" enabled="true" identifier="-- repl_msarticles --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
