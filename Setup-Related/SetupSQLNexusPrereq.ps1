@@ -1,6 +1,7 @@
 ﻿# 04/2017 Joseph.Pilov  - Initial build
 # 02/2021 Joseph.Pilov  - Update with PowerBI installation and web downloads
 # 05/2023 Joseph.Pilov -  Update with .NET Framework 4.8 installation and change RML download URL
+# 10/2024 Joseph.Pilov -  Remove SQLCLR types and Report Viewer Control prerequisites
 
 
 
@@ -12,6 +13,7 @@ function DownloadNexusPrereqFile ([string] $url, [string] $destination_file)
 }
 
 
+<# commenting out the SQL CLR types and Report Viewer control checks as they are packed with app
 
 Write-Host "Checking for 'System CLR Types for SQL' installation"
 
@@ -48,6 +50,7 @@ else
  {
     Write-Host "  The required 64-bit version 13.x of 'Microsoft System CLR Types for SQL Server' is already installed. Version(s) found,", $cLR_sw_found64bit.DisplayVersion -BackgroundColor DarkGreen
  }
+
 
 #*******************************************************************************************************
 #install Report Viewer
@@ -87,13 +90,15 @@ if ($rViewer_sw_found -eq $null)
     Write-Host "  The minimum required version of 'Microsoft Report Viewer Runtime' is already installed. Version (s) found: " , $rViewer_sw_found.DisplayVersion -BackgroundColor DarkGreen
  }
 
+#>
+
 #*******************************************************************************************************
 #install RML Utilities
 Write-Host "Checking for 'RML Utilities' installation"
 
 $RMLsw_found64bit = Get-ItemProperty HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\* |
                      Select-Object DisplayVersion , DisplayName | 
-                     Where {$_.DisplayName -Match 'rml utilities for SQL'}
+                     Where {($_.DisplayName -Match 'RMLUtilities for SQL Server') -or ($_.DisplayName -Match 'RML Utilities for SQL Server')}
 
 # take the version which is in this format 09.04.0102 and split it into an array where element 0 would be 09, element 1 woudl be 04, etc.
 if ($RMLsw_found64bit)
