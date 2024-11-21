@@ -2,6 +2,7 @@
 # 02/2021 Joseph.Pilov  - Update with PowerBI installation and web downloads
 # 05/2023 Joseph.Pilov -  Update with .NET Framework 4.8 installation and change RML download URL
 # 10/2024 Joseph.Pilov -  Remove SQLCLR types and Report Viewer Control prerequisites
+# 11/2024 Joseph.Pilov -  Updated RML to download the latest 103 version and put the download and install in a function
 
 
 
