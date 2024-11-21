@@ -2,6 +2,7 @@
 # 02/2021 Joseph.Pilov  - Update with PowerBI installation and web downloads
 # 05/2023 Joseph.Pilov -  Update with .NET Framework 4.8 installation and change RML download URL
 # 10/2024 Joseph.Pilov -  Remove SQLCLR types and Report Viewer Control prerequisites
+# 11/2024 Joseph.Pilov -  Updated RML to download the latest 103 version and put the download and install in a function
 
 
 
@@ -12,6 +13,23 @@ function DownloadNexusPrereqFile ([string] $url, [string] $destination_file)
     $client.DownloadFile($url,$destination_file)
 }
 
+function DownloadInstallRMLUtils ()
+{
+	$rml_utils_installation_file = "$env:temp\RMLSetup_AMD64.msi"
+	Write-Host "  Downloading RML Utilities from the Web..." -BackgroundColor DarkYellow
+	
+	#download version 103 directly
+	DownloadNexusPrereqFile -url "https://download.microsoft.com/download/6/5/8/65855c73-97a1-438c-b95e-d610a9bb05b0/RMLSetup.msi" -destination_file $rml_utils_installation_file
+	Start-Sleep -Seconds 1
+	
+	Write-Host "  Launching RML Utilities installation" -BackgroundColor DarkYellow
+	Start-Process -FilePath "msiexec" -ArgumentList "/i $rml_utils_installation_file /lv $env:temp\RMLSetup_AMD64_Install.log" -Wait
+	
+	Write-Host "  Removing the downloaded RML Utilities installation file..." -BackgroundColor DarkYellow
+	Remove-Item -Path $rml_utils_installation_file
+	
+	
+}
 
 <# commenting out the SQL CLR types and Report Viewer control checks as they are packed with app
 
@@ -95,7 +113,7 @@ if ($rViewer_sw_found -eq $null)
 #*******************************************************************************************************
 #install RML Utilities
 Write-Host "Checking for 'RML Utilities' installation"
-
+[int]$RML_version = 103
 $RMLsw_found64bit = Get-ItemProperty HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\* |
                      Select-Object DisplayVersion , DisplayName | 
                      Where {($_.DisplayName -Match 'RMLUtilities for SQL Server') -or ($_.DisplayName -Match 'RML Utilities for SQL Server')}
@@ -108,14 +126,8 @@ if ($RMLsw_found64bit)
 
 if ($RMLsw_found64bit -eq $null) #if not there, install it
 {
-	$rml_utils_installation_file = "$env:temp\RMLSetup_AMD64.msi"
-	Write-Host "  Downloading RML Utilities from the Web..." -BackgroundColor DarkYellow
-	DownloadNexusPrereqFile -url "https://download.microsoft.com/download/a/a/d/aad67239-30df-403b-a7f1-976a4ac46403/RMLSetup.msi" -destination_file $rml_utils_installation_file
-	Start-Sleep -Seconds 1
-	Write-Host "  Launching RML Utilities installation" -BackgroundColor DarkYellow
-	Start-Process -FilePath "msiexec" -ArgumentList "/i $rml_utils_installation_file /lv $env:temp\RMLSetup_AMD64_Install.log" -Wait
-	Write-Host "  Removing the downloaded RML Utilities installation file..." -BackgroundColor DarkYellow
-	Remove-Item -Path $rml_utils_installation_file
+	#call function to download RML and install it
+	DownloadInstallRMLUtils
 }
 
 #major version is older than 9.00.00
@@ -153,7 +165,7 @@ elseif( ($ver_array[0] -as [int]) -lt 9) #directly check first array member for 
 
 #minor version is older than 9.00.102
 elseif 
-( ($ver_array[2] -as [int]) -lt 102 -and    #just directly check last 2 digits for minor version 09.04.00102
+( ($ver_array[2] -as [int]) -lt $RML_version -and    #just directly check last 2 digits for minor version 09.04.00103
   ($ver_array[0] -as [int]) -ge 9
 )
 {
@@ -161,7 +173,7 @@ elseif
 
     Write-Host "  You don't have that latest version of 'RML Utilities' installed. Version found: " , $RMLsw_found64bit.DisplayVersion ". You must uninstall it before you can install the latest version " -BackGroundColor Red
     
-    Write-Host "  Would you like to uninstall the current, download and install the latest version of 'RML Utilities' 9.00.102?" -BackgroundColor DarkYellow
+    Write-Host "  Would you like to uninstall the current, download and install the latest version of 'RML Utilities' 9.00.$($RML_version.ToString())?" -BackgroundColor DarkYellow
 
 	while (-not(($confirm -eq "Y") -or ($confirm -eq "N") -or ($null -eq $confirm)))
 	{
@@ -172,7 +184,7 @@ elseif
 		if (-not(($confirm -eq "Y") -or ($confirm -eq "N") -or ($null -eq $confirm)))
 		{
 			Write-Host ""
-			Write-Host "Please chose [Y] to download and install RML Utilities 9.00.102 ."
+			Write-Host "Please chose [Y] to download and install RML Utilities 9.00.$($RML_version.ToString())."
 			Write-Host "Please chose [N] to continue without installing RML Utilities."
 			Write-Host ""
 		}
@@ -195,15 +207,7 @@ elseif
                 start-process "msiexec.exe" -arg "/X $tmpUninstStr" -Wait
 
                 #now install RML Utils
-		        $rml_utils_installation_file = "$env:temp\RMLSetup_AMD64.msi"
-		        Write-Host "  Downloading RML Utilities from the Web..." -BackgroundColor DarkYellow
-		        DownloadNexusPrereqFile -url "https://download.microsoft.com/download/a/a/d/aad67239-30df-403b-a7f1-976a4ac46403/RMLSetup.msi" -destination_file $rml_utils_installation_file
-		        Start-Sleep -Seconds 1
-		        Write-Host "  Launching RML Utilities installation" -BackgroundColor DarkYellow
-		        Start-Process -FilePath "msiexec" -ArgumentList "/i $rml_utils_installation_file /lv $env:temp\RMLSetup_AMD64_Install.log" -Wait
-		        Write-Host "  Removing the downloaded RML Utilities installation file..." -BackgroundColor DarkYellow
-		        Remove-Item -Path $rml_utils_installation_file
-
+				DownloadInstallRMLUtils
             }
             else #result is 'No'
             {
