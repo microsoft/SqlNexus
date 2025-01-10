@@ -144,6 +144,7 @@ namespace sqlnexus
             // 
             // llOptions
             // 
+            this.llOptions.AccessibleName = "option Link collapsed ";
             this.llOptions.AutoSize = true;
             this.llOptions.Location = new System.Drawing.Point(9, 66);
             this.llOptions.Name = "llOptions";
@@ -163,6 +164,7 @@ namespace sqlnexus
             this.btPath.Name = "btPath";
             this.btPath.Size = new System.Drawing.Size(25, 21);
             this.btPath.TabIndex = 2;
+            this.btPath.AccessibleName = "Browse for folder";
             this.btPath.UseVisualStyleBackColor = true;
             this.btPath.Click += new System.EventHandler(this.tsbPath_Click);
             // 
