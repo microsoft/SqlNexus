@@ -4402,7 +4402,7 @@ VALUES
 ('4415F4B3-603F-4F41-978E-9EE32BF2B2E9', 'Server Performance', 'W', 'Warning', 'usp_Expensive_XEvts_Used',
  'Expensive, performance-impacting Extended events were identfied',
  'Multiple non default trace events  were detected running on the server.  This can negatively impact server performance',
- '' , '', '  ', 1, 100, 0, ' ');
+ '' , 'https://learn.microsoft.com/en-us/troubleshoot/sql/database-engine/performance/troubleshoot-high-cpu-usage-issues#step-7-disable-heavy-tracing', '  ', 1, 100, 0, ' ');
 INSERT INTO dbo.tbl_AnalysisSummary
 (
     SolutionSourceId,
@@ -6753,8 +6753,8 @@ BEGIN
         SELECT DISTINCT TOP 5
                session_name + '::' + event_name
         FROM dbo.tbl_XEvents
-        WHERE expensive_event = 1;
-
+        WHERE expensive_event = 1        
+		AND session_name NOT IN ( 'sp_server_diagnostics session', 'hkenginexesession', 'system_health','alwayson_health','telemetry_xevents','xevent_SQLLogScout');
 
         OPEN expensive_xevents;
         FETCH NEXT FROM expensive_xevents
