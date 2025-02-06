@@ -4530,6 +4530,12 @@
       <Column name="last_mod_user" type="RowsetImportEngine.VarCharColumn" length="128" />
     </KnownColumns>
   </Rowset>
+  <Rowset name="tbl_dotnet_versions" enabled="true" identifier="-- dot_net_versions --" type="RowsetImportEngine.TextRowset">
+    <KnownColumns>
+      <Column name="Framework" type="RowsetImportEngine.VarCharColumn" length="64" />
+      <Column name="Version" type="RowsetImportEngine.VarCharColumn" length="64" />
+    </KnownColumns>
+  </Rowset>
 </TextImport>
 
 
