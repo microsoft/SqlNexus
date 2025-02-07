@@ -4341,7 +4341,7 @@
     </Rowset>
 	  
     <Rowset name="tbl_sysmail_log" enabled="true" identifier="-- sysmail_log --" type="RowsetImportEngine.TextRowset">
-	    <KnownColumns>
+      <KnownColumns>
         <Column name="log_id" type="RowsetImportEngine.BigIntColumn" />
         <Column name="event_type" type="RowsetImportEngine.VarCharColumn" length="11" />
         <Column name="log_date" type="RowsetImportEngine.DateTimeColumn" />
@@ -4363,7 +4363,6 @@
         <Column name="last_mod_user" type="RowsetImportEngine.VarCharColumn" />
       </KnownColumns>
     </Rowset>
-	  
     <Rowset name="tbl_sysmail_profileaccount" enabled="true" identifier="-- sysmail_profileaccount --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
         <Column name="profile_id" type="RowsetImportEngine.BigIntColumn" />
@@ -4373,7 +4372,6 @@
         <Column name="last_mod_user" type="RowsetImportEngine.VarCharColumn" />
       </KnownColumns>
     </Rowset>
-
     <Rowset name="tbl_environment_variables" enabled="true" identifier="-- environment variables --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
         <Column name="Name" type="RowsetImportEngine.VarCharColumn" length="300" />
@@ -4407,7 +4405,7 @@
         <Column name="SCSIPort" type="RowsetImportEngine.IntColumn" />
       </KnownColumns>
     </Rowset>
-	<Rowset name=" tbl_FullText_Catalog_Info_Properties" enabled="true" identifier="-- tbl_FullText_Catalog_Info_Properties --" type="RowsetImportEngine.TextRowset">
+    <Rowset name=" tbl_FullText_Catalog_Info_Properties" enabled="true" identifier="-- tbl_FullText_Catalog_Info_Properties --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
         <Column name="DatabaseName" type="RowsetImportEngine.VarCharColumn" length="128" />
         <Column name="CatalogName" type="RowsetImportEngine.VarCharColumn" length="128" />
@@ -4425,7 +4423,7 @@
         <Column name="CatalogRootPath" type="RowsetImportEngine.VarCharColumn" length="500" />
       </KnownColumns>
     </Rowset>
-	 <Rowset name="tbl_FullText_Index_Info_table" enabled="true" identifier="-- tbl_FullText_Index_Info_table --" type="RowsetImportEngine.TextRowset">
+    <Rowset name="tbl_FullText_Index_Info_table" enabled="true" identifier="-- tbl_FullText_Index_Info_table --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
         <Column name="DatabaseName" type="RowsetImportEngine.VarCharColumn" length="128" />
         <Column name="TableName" type="RowsetImportEngine.VarCharColumn" length="128" />
@@ -4440,14 +4438,14 @@
         <Column name="UniqueIndexName" type="RowsetImportEngine.VarCharColumn" length="128" />
       </KnownColumns>
     </Rowset>
-	<Rowset name="tbl_FullText_Column_Info" enabled="true" identifier="-- tbl_FullText_Column_Info --" type="RowsetImportEngine.TextRowset">
+    <Rowset name="tbl_FullText_Column_Info" enabled="true" identifier="-- tbl_FullText_Column_Info --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
         <Column name="DatabaseName" type="RowsetImportEngine.VarCharColumn" length="128" />
         <Column name="ColumnName" type="RowsetImportEngine.VarCharColumn" length="128" />
         <Column name="TableName" type="RowsetImportEngine.VarCharColumn" length="128" />
       </KnownColumns>
     </Rowset>
-	<Rowset name="tbl_FullText_WordBreaking_Language_Info" enabled="true" identifier="-- tbl_FullText_WordBreaking_Language_Info --" type="RowsetImportEngine.TextRowset">
+  	<Rowset name="tbl_FullText_WordBreaking_Language_Info" enabled="true" identifier="-- tbl_FullText_WordBreaking_Language_Info --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
         <Column name="DatabaseName" type="RowsetImportEngine.VarCharColumn" length="128" />
         <Column name="ObjectID" type="RowsetImportEngine.IntColumn" />
@@ -4457,7 +4455,7 @@
         <Column name="LCID" type="RowsetImportEngine.IntColumn" />
       </KnownColumns>
     </Rowset>
-	<Rowset name="tbl_FullText_IFilters" enabled="true" identifier="-- tbl_FullText_IFilters --" type="RowsetImportEngine.TextRowset">
+    <Rowset name="tbl_FullText_IFilters" enabled="true" identifier="-- tbl_FullText_IFilters --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
         <Column name="Extension" type="RowsetImportEngine.VarCharColumn" length="128" />
         <Column name="manufacturer" type="RowsetImportEngine.VarCharColumn" length="128" />
@@ -4466,7 +4464,7 @@
         <Column name="class_id" type="RowsetImportEngine.VarCharColumn" />
       </KnownColumns>
     </Rowset>
-	<Rowset name="tbl_FullText_NonMicrosoft_IFilters" enabled="true" identifier="-- tbl_FullText_NonMicrosoft_IFilters --" type="RowsetImportEngine.TextRowset">
+    <Rowset name="tbl_FullText_NonMicrosoft_IFilters" enabled="true" identifier="-- tbl_FullText_NonMicrosoft_IFilters --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
         <Column name="Extension" type="RowsetImportEngine.VarCharColumn" length="128" />
         <Column name="manufacturer" type="RowsetImportEngine.VarCharColumn" length="128" />
@@ -4475,7 +4473,7 @@
         <Column name="class_id" type="RowsetImportEngine.VarCharColumn" />
       </KnownColumns>
     </Rowset>
-	<Rowset name="tbl_FullText_StopLists" enabled="true" identifier="-- tbl_FullText_StopLists --" type="RowsetImportEngine.TextRowset">
+    <Rowset name="tbl_FullText_StopLists" enabled="true" identifier="-- tbl_FullText_StopLists --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
         <Column name="DatabaseName" type="RowsetImportEngine.VarCharColumn" length="128" />
         <Column name="stoplist_id" type="RowsetImportEngine.IntColumn" />
@@ -4485,7 +4483,7 @@
         <Column name="principal_id" type="RowsetImportEngine.IntColumn" />
       </KnownColumns>
     </Rowset>
-	<Rowset name="tbl_FullText_StopWords" enabled="true" identifier="-- tbl_FullText_StopWords --" type="RowsetImportEngine.TextRowset">
+    <Rowset name="tbl_FullText_StopWords" enabled="true" identifier="-- tbl_FullText_StopWords --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
         <Column name="DatabaseName" type="RowsetImportEngine.VarCharColumn" length="128" />
         <Column name="stoplist_id" type="RowsetImportEngine.IntColumn" />
@@ -4494,48 +4492,78 @@
         <Column name="language_id" type="RowsetImportEngine.IntColumn" />
       </KnownColumns>
     </Rowset>
+    <Rowset name="tbl_net_tcp_connections" enabled="true" identifier="-- net_tcp_connection --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="LocalAddress" type="RowsetImportEngine.VarCharColumn" length="29" />
+        <Column name="LocalPort" type="RowsetImportEngine.IntColumn" />
+        <Column name="RemoteAddress" type="RowsetImportEngine.VarCharColumn" length="15" />
+        <Column name="RemotePort" type="RowsetImportEngine.VarCharColumn" length="15" />
+        <Column name="State" type="RowsetImportEngine.VarCharColumn" length="6" />
+        <Column name="ProcessID" type="RowsetImportEngine.IntColumn" />
+        <Column name="ProcessName" type="RowsetImportEngine.NVarCharColumn" length="64" />
+      </KnownColumns>
+    </Rowset>
+    <Rowset name="tbl_net_udp_connections" enabled="true" identifier="-- net_udp_endpoint --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="LocalAddress" type="RowsetImportEngine.VarCharColumn" length="29" />
+        <Column name="LocalPort" type="RowsetImportEngine.IntColumn" />
+        <Column name="ProcessID" type="RowsetImportEngine.IntColumn" />
+        <Column name="ProcessName" type="RowsetImportEngine.NVarCharColumn" length="64" />
+      </KnownColumns>
+    </Rowset>
+    <Rowset name="tbl_sysmail_server" enabled="true" identifier="-- sysmail_server --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="account_id" type="RowsetImportEngine.IntColumn" />
+        <Column name="servertype" type="RowsetImportEngine.VarCharColumn" length="128" />
+        <Column name="servername" type="RowsetImportEngine.VarCharColumn" length="128" />
+        <Column name="port" type="RowsetImportEngine.IntColumn" />
+        <Column name="username" type="RowsetImportEngine.VarCharColumn" length="128" />
+        <Column name="credential_id" type="RowsetImportEngine.IntColumn" />
+        <Column name="use_default_credentials" type="RowsetImportEngine.VarCharColumn" />
+        <Column name="enable_ssl" type="RowsetImportEngine.VarCharColumn" />
+        <Column name="flags" type="RowsetImportEngine.IntColumn" />
+        <Column name="timeout" type="RowsetImportEngine.IntColumn" />
+        <Column name="last_mod_datetime" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="last_mod_user" type="RowsetImportEngine.VarCharColumn" length="128" />
+      </KnownColumns>
+    </Rowset>
+    <Rowset name="tbl_dotnet_versions" enabled="true" identifier="-- dot_net_versions --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="Framework" type="RowsetImportEngine.VarCharColumn" length="64" />
+        <Column name="Version" type="RowsetImportEngine.VarCharColumn" length="64" />
+      </KnownColumns>
+    </Rowset>
+    <Rowset name="tbl_sys_servers" enabled="true" identifier="-- sys.servers --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="server_id" type="RowsetImportEngine.IntColumn" />
+        <Column name="name" type="RowsetImportEngine.VarCharColumn" length="128" />
+        <Column name="product" type="RowsetImportEngine.VarCharColumn" length="128" />
+        <Column name="provider" type="RowsetImportEngine.VarCharColumn" length="128" />
+        <Column name="data_source" type="RowsetImportEngine.VarCharColumn" length="512" />
+        <Column name="location" type="RowsetImportEngine.VarCharColumn" length="512" />
+        <Column name="provider_string" type="RowsetImportEngine.VarCharColumn" length="512" />
+        <Column name="catalog" type="RowsetImportEngine.VarCharColumn" length="128" />
+        <Column name="connect_timeout" type="RowsetImportEngine.IntColumn" />
+        <Column name="query_timeout" type="RowsetImportEngine.IntColumn" />
+        <Column name="is_linked" type="RowsetImportEngine.VarCharColumn" />
+        <Column name="is_remote_login_enabled" type="RowsetImportEngine.VarCharColumn" />
+        <Column name="is_rpc_out_enabled" type="RowsetImportEngine.VarCharColumn" />
+        <Column name="is_data_access_enabled" type="RowsetImportEngine.VarCharColumn" />
+        <Column name="is_collation_compatible" type="RowsetImportEngine.VarCharColumn" />
+        <Column name="uses_remote_collation" type="RowsetImportEngine.VarCharColumn" />
+        <Column name="collation_name" type="RowsetImportEngine.VarCharColumn" length="128" />
+        <Column name="lazy_schema_validation" type="RowsetImportEngine.VarCharColumn" />
+        <Column name="is_system" type="RowsetImportEngine.VarCharColumn" />
+        <Column name="is_publisher" type="RowsetImportEngine.VarCharColumn" />
+        <Column name="is_subscriber" type="RowsetImportEngine.VarCharColumn" />
+        <Column name="is_distributor" type="RowsetImportEngine.VarCharColumn" />
+        <Column name="is_nonsql_subscriber" type="RowsetImportEngine.VarCharColumn" />
+        <Column name="is_remote_proc_transaction_promotion_enabled" type="RowsetImportEngine.VarCharColumn" />
+        <Column name="modify_date" type="RowsetImportEngine.DateTimeColumn" />
+      </KnownColumns>
+    </Rowset>
+
   </KnownRowsets>
-  <Rowset name="tbl_net_tcp_connections" enabled="true" identifier="-- net_tcp_connection --" type="RowsetImportEngine.TextRowset">
-    <KnownColumns>
-      <Column name="LocalAddress" type="RowsetImportEngine.VarCharColumn" length="29" />
-      <Column name="LocalPort" type="RowsetImportEngine.IntColumn" />
-      <Column name="RemoteAddress" type="RowsetImportEngine.VarCharColumn" length="15" />
-      <Column name="RemotePort" type="RowsetImportEngine.VarCharColumn" length="15" />
-      <Column name="State" type="RowsetImportEngine.VarCharColumn" length="6" />
-      <Column name="ProcessID" type="RowsetImportEngine.IntColumn" />
-      <Column name="ProcessName" type="RowsetImportEngine.NVarCharColumn" length="64" />
-    </KnownColumns>
-  </Rowset>
-  <Rowset name="tbl_net_udp_connections" enabled="true" identifier="-- net_udp_endpoint --" type="RowsetImportEngine.TextRowset">
-    <KnownColumns>
-      <Column name="LocalAddress" type="RowsetImportEngine.VarCharColumn" length="29" />
-      <Column name="LocalPort" type="RowsetImportEngine.IntColumn" />
-      <Column name="ProcessID" type="RowsetImportEngine.IntColumn" />
-      <Column name="ProcessName" type="RowsetImportEngine.NVarCharColumn" length="64" />
-    </KnownColumns>
-  </Rowset>
-  <Rowset name="tbl_sysmail_server" enabled="true" identifier="-- sysmail_server --" type="RowsetImportEngine.TextRowset">
-    <KnownColumns>
-      <Column name="account_id" type="RowsetImportEngine.IntColumn" />
-      <Column name="servertype" type="RowsetImportEngine.VarCharColumn" length="128" />
-      <Column name="servername" type="RowsetImportEngine.VarCharColumn" length="128" />
-      <Column name="port" type="RowsetImportEngine.IntColumn" />
-      <Column name="username" type="RowsetImportEngine.VarCharColumn" length="128" />
-      <Column name="credential_id" type="RowsetImportEngine.IntColumn" />
-      <Column name="use_default_credentials" type="RowsetImportEngine.VarCharColumn" />
-      <Column name="enable_ssl" type="RowsetImportEngine.VarCharColumn" />
-      <Column name="flags" type="RowsetImportEngine.IntColumn" />
-      <Column name="timeout" type="RowsetImportEngine.IntColumn" />
-      <Column name="last_mod_datetime" type="RowsetImportEngine.DateTimeColumn" />
-      <Column name="last_mod_user" type="RowsetImportEngine.VarCharColumn" length="128" />
-    </KnownColumns>
-  </Rowset>
-  <Rowset name="tbl_dotnet_versions" enabled="true" identifier="-- dot_net_versions --" type="RowsetImportEngine.TextRowset">
-    <KnownColumns>
-      <Column name="Framework" type="RowsetImportEngine.VarCharColumn" length="64" />
-      <Column name="Version" type="RowsetImportEngine.VarCharColumn" length="64" />
-    </KnownColumns>
-  </Rowset>
 </TextImport>
 
 
