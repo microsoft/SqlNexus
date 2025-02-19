@@ -4278,24 +4278,6 @@
       </KnownColumns>
     </Rowset>
 	  
-    <Rowset name="tbl_sysmail_event_log_sysmail_faileditems" enabled="true" identifier="-- sysmail_event_log_sysmail_faileditems --" type="RowsetImportEngine.TextRowset">
-	    <KnownColumns>
-		    <Column name="LogID" type="RowsetImportEngine.BigIntColumn" />
-		    <Column name="LogDate" type="RowsetImportEngine.DateTimeColumn" />
-		    <Column name="Description" type="RowsetImportEngine.NVarCharColumn" />
-		    <Column name="ProcessID" type="RowsetImportEngine.BigIntColumn" />
-		    <Column name="MailitemID" type="RowsetImportEngine.BigIntColumn" />
-		    <Column name="AccountID" type="RowsetImportEngine.BigIntColumn" />
-		    <Column name="LastModifiedDate" type="RowsetImportEngine.DateTimeColumn" />
-		    <Column name="LastModifiedUser" type="RowsetImportEngine.NVarCharColumn" />
-		    <Column name="send_request_user" type="RowsetImportEngine.NVarCharColumn" />
-		    <Column name="send_request_date" type="RowsetImportEngine.DateTimeColumn" />
-		    <Column name="recipients" type="RowsetImportEngine.NVarCharColumn" />
-		    <Column name="subject" type="RowsetImportEngine.NVarCharColumn" />
-		    <Column name="body" type="RowsetImportEngine.NVarCharColumn" />
-	    </KnownColumns>  
-    </Rowset>
-	  
     <Rowset name="tbl_sysmail_mailitems" enabled="true" identifier="-- sysmail_mailitems --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
         <Column name="mailitem_id" type="RowsetImportEngine.BigIntColumn" />
@@ -4336,20 +4318,6 @@
         <Column name="paramvalue" type="RowsetImportEngine.VarCharColumn" />
         <Column name="description" type="RowsetImportEngine.VarCharColumn" />
         <Column name="last_mod_datetime" type="RowsetImportEngine.DateTimeColumn" />
-        <Column name="last_mod_user" type="RowsetImportEngine.VarCharColumn" />
-      </KnownColumns>
-    </Rowset>
-	  
-    <Rowset name="tbl_sysmail_log" enabled="true" identifier="-- sysmail_log --" type="RowsetImportEngine.TextRowset">
-      <KnownColumns>
-        <Column name="log_id" type="RowsetImportEngine.BigIntColumn" />
-        <Column name="event_type" type="RowsetImportEngine.VarCharColumn" length="11" />
-        <Column name="log_date" type="RowsetImportEngine.DateTimeColumn" />
-        <Column name="description" type="RowsetImportEngine.NVarcharColumn" />
-        <Column name="process_id" type="RowsetImportEngine.BigIntColumn" />
-        <Column name="mailitem_id" type="RowsetImportEngine.BigIntColumn" />
-        <Column name="account_id" type="RowsetImportEngine.BigIntColumn" />
-        <Column name="last_mod_date" type="RowsetImportEngine.DateTimeColumn" />
         <Column name="last_mod_user" type="RowsetImportEngine.VarCharColumn" />
       </KnownColumns>
     </Rowset>
