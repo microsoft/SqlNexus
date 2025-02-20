@@ -4278,7 +4278,7 @@
       </KnownColumns>
     </Rowset>
 	  
-    <Rowset name="tbl_sysmail_event_log_sysmail_faileditems" enabled="true" identifier="-- sysmail_event_log_sysmail_faileditems --" type="RowsetImportEngine.TextRowset">
+    <Rowset name="tbl_sysmail_event_log_sysmail_faileditems" enabled="true" identifier="-- sysmail_event_log_REMOVE_sysmail_faileditems -- REM" type="RowsetImportEngine.TextRowset">
 	    <KnownColumns>
 		    <Column name="LogID" type="RowsetImportEngine.BigIntColumn" />
 		    <Column name="LogDate" type="RowsetImportEngine.DateTimeColumn" />
@@ -4340,7 +4340,7 @@
       </KnownColumns>
     </Rowset>
 	  
-    <Rowset name="tbl_sysmail_log" enabled="true" identifier="-- sysmail_log --" type="RowsetImportEngine.TextRowset">
+    <Rowset name="tbl_sysmail_log" enabled="true" identifier="-- sysmail_REMOVE_log -- REM" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
         <Column name="log_id" type="RowsetImportEngine.BigIntColumn" />
         <Column name="event_type" type="RowsetImportEngine.VarCharColumn" length="11" />
