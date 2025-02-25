@@ -3083,7 +3083,7 @@
       <KnownColumns>
         <Column name="Filter Name" type="RowsetImportEngine.NVarCharColumn"/>
         <Column name="Num Instances" type="RowsetImportEngine.IntColumn" />
-        <Column name="Altitude" type="RowsetImportEngine.IntColumn" />
+        <Column name="Altitude" type="RowsetImportEngine.NVarCharColumn" />
         <Column name="Frame" type="RowsetImportEngine.IntColumn" />
       </KnownColumns>
     </Rowset>  
@@ -3092,7 +3092,7 @@
       <KnownColumns>
         <Column name="Filter" type="RowsetImportEngine.NVarCharColumn"/>
         <Column name="Volume Name" type="RowsetImportEngine.NVarCharColumn"/>
-        <Column name="Altitude" type="RowsetImportEngine.IntColumn" />
+        <Column name="Altitude" type="RowsetImportEngine.NVarCharColumn" />
         <Column name="Instance Name" type="RowsetImportEngine.NVarCharColumn"/>
         <Column name="Frame" type="RowsetImportEngine.IntColumn" />
         <Column name="SprtFtrs" type="RowsetImportEngine.NVarCharColumn"/>

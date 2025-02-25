@@ -326,36 +326,6 @@ BEGIN
 END;
 GO
 
--- Compensate for missing sys.dm_os_sys_info in some very old perf stats script output. 
-IF OBJECT_ID('tbl_SYSINFO') IS NULL
-BEGIN
-    CREATE TABLE [dbo].[tbl_SYSINFO]
-    (
-        tableinfo VARCHAR(128),
-        cpu_ticks BIGINT,
-        ms_ticks BIGINT,
-        cpu_count INT,
-        cpu_ticks_in_ms BIGINT,
-        hyperthread_ratio INT,
-        physical_memory_in_bytes BIGINT,
-        virtual_memory_in_bytes BIGINT,
-        bpool_committed INT,
-        bpool_commit_target INT,
-        bpool_visible INT,
-        stack_size_in_bytes INT,
-        os_quantum BIGINT,
-        os_error_code INT,
-        os_priority_class INT,
-        max_workers_count INT,
-        schedulers_count SMALLINT,
-        scheduler_total_count INT,
-        deadlock_monitor_serial_number INT
-    );
-    EXEC ('INSERT INTO dbo.tbl_SYSINFO (tableinfo, cpu_count) 
-    VALUES (''This table was created by PerfStatsAnalysis.sql due to missing Perf Stats Script data.'', 2)');
-END;
-GO
-
 -- Compensate for missing tbl_SQL_CPU_HEALTH bug in some perf stats script output
 IF OBJECT_ID('tbl_SQL_CPU_HEALTH') IS NULL
 BEGIN
@@ -1193,7 +1163,7 @@ ORDER BY (w_end.wait_time_ms - CASE
 DECLARE @avail_cpu_time_sec INT;
 SELECT @avail_cpu_time_sec =
 (
-    SELECT TOP 1 cpu_count FROM dbo.tbl_SYSINFO
+    SELECT TOP 1 [PropertyValue] FROM [dbo].[tbl_ServerProperties] WHERE PropertyName = 'cpu_count'
 ) * DATEDIFF(s, @StartTime, @EndTime);
 
 -- Get average % CPU utilization (this is the % of all CPUs on the box, ignoring affinity mask)
@@ -1357,7 +1327,7 @@ ORDER BY (w_end.wait_time_ms - CASE
 DECLARE @avail_cpu_time_sec INT;
 SELECT @avail_cpu_time_sec =
 (
-    SELECT TOP 1 cpu_count FROM tbl_SYSINFO
+    SELECT TOP 1 [PropertyValue] FROM [dbo].[tbl_ServerProperties] WHERE PropertyName = 'cpu_count'
 ) * DATEDIFF(s, @StartTime, @EndTime);
 
 -- Get average % CPU utilization (this is the % of all CPUs on the box, ignoring affinity mask)
@@ -4402,7 +4372,7 @@ VALUES
 ('4415F4B3-603F-4F41-978E-9EE32BF2B2E9', 'Server Performance', 'W', 'Warning', 'usp_Expensive_XEvts_Used',
  'Expensive, performance-impacting Extended events were identfied',
  'Multiple non default trace events  were detected running on the server.  This can negatively impact server performance',
- '' , '', '  ', 1, 100, 0, ' ');
+ '' , 'https://learn.microsoft.com/en-us/troubleshoot/sql/database-engine/performance/troubleshoot-high-cpu-usage-issues#step-7-disable-heavy-tracing', '  ', 1, 100, 0, ' ');
 INSERT INTO dbo.tbl_AnalysisSummary
 (
     SolutionSourceId,
@@ -6753,8 +6723,8 @@ BEGIN
         SELECT DISTINCT TOP 5
                session_name + '::' + event_name
         FROM dbo.tbl_XEvents
-        WHERE expensive_event = 1;
-
+        WHERE expensive_event = 1        
+		AND session_name NOT IN ( 'sp_server_diagnostics session', 'hkenginexesession', 'system_health','alwayson_health','telemetry_xevents','xevent_SQLLogScout');
 
         OPEN expensive_xevents;
         FETCH NEXT FROM expensive_xevents
