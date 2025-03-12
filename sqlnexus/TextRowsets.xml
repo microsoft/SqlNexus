@@ -1665,6 +1665,7 @@
         <Column name="database_transaction_begin_lsn" type="RowsetImportEngine.DecimalColumn" />
         <Column name="database_transaction_last_lsn" type="RowsetImportEngine.DecimalColumn" />
         <Column name="database_transaction_begin_time" type="RowsetImportEngine.DateTimeColumn" />
+		<Column name="elapsed_time_seconds" type="RowsetImportEngine.BigIntColumn" />
         <Column name="database_transaction_log_bytes_used" type="RowsetImportEngine.BigIntColumn" />
         <Column name="database_transaction_log_bytes_reserved" type="RowsetImportEngine.BigIntColumn" />
         <Column name="database_transaction_log_bytes_reserved_system" type="RowsetImportEngine.IntColumn" />
