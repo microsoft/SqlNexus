@@ -4600,23 +4600,6 @@
       </KnownColumns>
     </Rowset>
     
-    <Rowset name="tbl_sysmail_server" enabled="true" identifier="-- sysmail_server --" type="RowsetImportEngine.TextRowset">
-      <KnownColumns>
-        <Column name="account_id" type="RowsetImportEngine.IntColumn" />
-        <Column name="servertype" type="RowsetImportEngine.VarCharColumn" length="128" />
-        <Column name="servername" type="RowsetImportEngine.VarCharColumn" length="128" />
-        <Column name="port" type="RowsetImportEngine.IntColumn" />
-        <Column name="username" type="RowsetImportEngine.VarCharColumn" length="128" />
-        <Column name="credential_id" type="RowsetImportEngine.IntColumn" />
-        <Column name="use_default_credentials" type="RowsetImportEngine.VarCharColumn" />
-        <Column name="enable_ssl" type="RowsetImportEngine.VarCharColumn" />
-        <Column name="flags" type="RowsetImportEngine.IntColumn" />
-        <Column name="timeout" type="RowsetImportEngine.IntColumn" />
-        <Column name="last_mod_datetime" type="RowsetImportEngine.DateTimeColumn" />
-        <Column name="last_mod_user" type="RowsetImportEngine.VarCharColumn" length="128" />
-      </KnownColumns>
-    </Rowset>
-    
     <Rowset name="tbl_sqlagent_jobs" enabled="true" identifier="-- sql_agent_jobs_information --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
         <Column name="JobName" type="RowsetImportEngine.VarCharColumn" length="128" />
@@ -4665,16 +4648,60 @@
       </KnownColumns>
     </Rowset>
     
-    <Rowset name="tbl_assembly_modules" enabled="true" identifier="-- sys.assembly_modules --" type="RowsetImportEngine.TextRowset">
+    <Rowset name="tbl_sys_assemblies" enabled="true" identifier="-- sys.assemblies --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
+        <Column name="database_name" type="RowsetImportEngine.VarCharColumn" length="128" />
+        <Column name="name" type="RowsetImportEngine.VarCharColumn" length="128" />
+        <Column name="assembly_id" type="RowsetImportEngine.IntColumn" />
+        <Column name="principal_id" type="RowsetImportEngine.IntColumn" />
+        <Column name="clr_name" type="RowsetImportEngine.VarCharColumn" length="512" />
+        <Column name="permission_set" type="RowsetImportEngine.IntColumn" />
+        <Column name="permission_set_desc" type="RowsetImportEngine.VarCharColumn" length="128" />
+        <Column name="is_visible" type="RowsetImportEngine.VarCharColumn" />
+        <Column name="create_date" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="modify_date" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="is_user_defined" type="RowsetImportEngine.VarCharColumn" />
+      </KnownColumns>
+    </Rowset>
+
+    <Rowset name="tbl_sys_assembly_modules" enabled="true" identifier="-- sys.assembly_modules --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="database_name" type="RowsetImportEngine.VarCharColumn" length="128" />
         <Column name="object_id" type="RowsetImportEngine.IntColumn" />
         <Column name="assembly_id" type="RowsetImportEngine.IntColumn" />
-        <Column name="assembly_class" type="RowsetImportEngine.VarCharColumn" length="128" />
-        <Column name="assembly_method" type="RowsetImportEngine.VarCharColumn" length="128" />
+        <Column name="assembly_class" type="RowsetImportEngine.VarCharColumn" length="256" />
+        <Column name="assembly_method" type="RowsetImportEngine.VarCharColumn" length="256" />
         <Column name="null_on_null_input" type="RowsetImportEngine.VarCharColumn" />
         <Column name="execute_as_principal_id" type="RowsetImportEngine.IntColumn" />
       </KnownColumns>
     </Rowset>
-  
+
+    <Rowset name="tbl_sys_assembly_types" enabled="true" identifier="-- sys.assembly_types --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="database_name" type="RowsetImportEngine.VarCharColumn" length="128" />
+        <Column name="name" type="RowsetImportEngine.VarCharColumn" length="128" />
+        <Column name="system_type_id" type="RowsetImportEngine.IntColumn" />
+        <Column name="user_type_id" type="RowsetImportEngine.IntColumn" />
+        <Column name="schema_id" type="RowsetImportEngine.IntColumn" />
+        <Column name="principal_id" type="RowsetImportEngine.IntColumn" />
+        <Column name="max_length" type="RowsetImportEngine.IntColumn" />
+        <Column name="precision" type="RowsetImportEngine.IntColumn" />
+        <Column name="scale" type="RowsetImportEngine.IntColumn" />
+        <Column name="collation_name" type="RowsetImportEngine.VarCharColumn" length="128" />
+        <Column name="is_nullable" type="RowsetImportEngine.VarCharColumn" />
+        <Column name="is_user_defined" type="RowsetImportEngine.VarCharColumn" />
+        <Column name="is_assembly_type" type="RowsetImportEngine.VarCharColumn" />
+        <Column name="default_object_id" type="RowsetImportEngine.IntColumn" />
+        <Column name="rule_object_id" type="RowsetImportEngine.IntColumn" />
+        <Column name="assembly_id" type="RowsetImportEngine.IntColumn" />
+        <Column name="assembly_class" type="RowsetImportEngine.VarCharColumn" length="256" />
+        <Column name="is_binary_ordered" type="RowsetImportEngine.VarCharColumn" />
+        <Column name="is_fixed_length" type="RowsetImportEngine.VarCharColumn" />
+        <Column name="prog_id" type="RowsetImportEngine.VarCharColumn" length="80" />
+        <Column name="assembly_qualified_name" type="RowsetImportEngine.VarCharColumn" length="512" />
+        <Column name="is_table_type" type="RowsetImportEngine.VarCharColumn" />
+      </KnownColumns>
+    </Rowset>
+    
   </KnownRowsets>
 </TextImport>
