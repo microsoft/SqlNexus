@@ -322,6 +322,7 @@
       <Column name="waiter_count"  type="RowsetImportEngine.IntColumn" />
       <Column name="timeout_error_count"  type="RowsetImportEngine.IntColumn" />
       <Column name="forced_grant_count"  type="RowsetImportEngine.IntColumn" />
+      <Column name="Object_Name"   type="RowsetImportEngine.VarCharColumn" length="128" />
     </Rowset>
 
 
