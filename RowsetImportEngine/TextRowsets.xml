@@ -1666,6 +1666,7 @@
         <Column name="database_transaction_begin_lsn" type="RowsetImportEngine.DecimalColumn" />
         <Column name="database_transaction_last_lsn" type="RowsetImportEngine.DecimalColumn" />
         <Column name="database_transaction_begin_time" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="elapsed_time_seconds" type="RowsetImportEngine.BigIntColumn" />
         <Column name="database_transaction_log_bytes_used" type="RowsetImportEngine.BigIntColumn" />
         <Column name="database_transaction_log_bytes_reserved" type="RowsetImportEngine.BigIntColumn" />
         <Column name="database_transaction_log_bytes_reserved_system" type="RowsetImportEngine.IntColumn" />
@@ -3084,7 +3085,7 @@
       <KnownColumns>
         <Column name="Filter Name" type="RowsetImportEngine.NVarCharColumn"/>
         <Column name="Num Instances" type="RowsetImportEngine.IntColumn" />
-        <Column name="Altitude" type="RowsetImportEngine.IntColumn" />
+        <Column name="Altitude" type="RowsetImportEngine.NVarCharColumn" />
         <Column name="Frame" type="RowsetImportEngine.IntColumn" />
       </KnownColumns>
     </Rowset>  
@@ -3093,7 +3094,7 @@
       <KnownColumns>
         <Column name="Filter" type="RowsetImportEngine.NVarCharColumn"/>
         <Column name="Volume Name" type="RowsetImportEngine.NVarCharColumn"/>
-        <Column name="Altitude" type="RowsetImportEngine.IntColumn" />
+        <Column name="Altitude" type="RowsetImportEngine.NVarCharColumn" />
         <Column name="Instance Name" type="RowsetImportEngine.NVarCharColumn"/>
         <Column name="Frame" type="RowsetImportEngine.IntColumn" />
         <Column name="SprtFtrs" type="RowsetImportEngine.NVarCharColumn"/>
