@@ -130,12 +130,8 @@ FROM dbo.tbl_profiler_trace_event_details AS det
                'Yes'
        END AS Expensive_event,
        CASE
-           WHEN session_name IN ( 'sp_server_diagnostics session', 'hkenginexesession', 'system_health',
-                                  'alwayson_health'
-                                ) THEN
-               1
-           ELSE
-               0
+           WHEN session_name IN ( 'sp_server_diagnostics session', 'hkenginexesession', 'system_health','alwayson_health','telemetry_xevents') THEN         1
+           ELSE 0
        END AS 'Is_Microsoft_Session'
 FROM dbo.tbl_XEvents;</CommandText>
       </Query>
@@ -232,6 +228,9 @@ FROM dbo.tbl_XEvents;</CommandText>
                 <TablixColumn>
                   <Width>3.98749in</Width>
                 </TablixColumn>
+                <TablixColumn>
+                  <Width>1.18541in</Width>
+                </TablixColumn>
               </TablixColumns>
               <TablixRows>
                 <TablixRow>
@@ -254,6 +253,36 @@ FROM dbo.tbl_XEvents;</CommandText>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox32</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox2">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>expensive event</Value>
+                                  <Style />
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox2</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -303,12 +332,43 @@ FROM dbo.tbl_XEvents;</CommandText>
                         </Textbox>
                       </CellContents>
                     </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="expensive_event2">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!expensive_event.Value</Value>
+                                  <Style />
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>expensive_event2</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
                   </TablixCells>
                 </TablixRow>
               </TablixRows>
             </TablixBody>
             <TablixColumnHierarchy>
               <TablixMembers>
+                <TablixMember />
                 <TablixMember />
               </TablixMembers>
             </TablixColumnHierarchy>
@@ -422,7 +482,7 @@ FROM dbo.tbl_XEvents;</CommandText>
             <Top>0.93625in</Top>
             <Left>0.91542in</Left>
             <Height>0.5in</Height>
-            <Width>9.82082in</Width>
+            <Width>11.00623in</Width>
             <ZIndex>2</ZIndex>
             <Visibility>
               <Hidden>true</Hidden>
@@ -768,9 +828,6 @@ FROM dbo.tbl_XEvents;</CommandText>
                 <TablixColumn>
                   <Width>3.95415in</Width>
                 </TablixColumn>
-                <TablixColumn>
-                  <Width>1.21875in</Width>
-                </TablixColumn>
               </TablixColumns>
               <TablixRows>
                 <TablixRow>
@@ -793,36 +850,6 @@ FROM dbo.tbl_XEvents;</CommandText>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox98</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                            </Border>
-                            <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
-                            <PaddingTop>2pt</PaddingTop>
-                            <PaddingBottom>2pt</PaddingBottom>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="Textbox5">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>expensive event</Value>
-                                  <Style />
-                                </TextRun>
-                              </TextRuns>
-                              <Style />
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>Textbox5</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -871,43 +898,12 @@ FROM dbo.tbl_XEvents;</CommandText>
                         </Textbox>
                       </CellContents>
                     </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="expensive_event1">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Fields!expensive_event.Value</Value>
-                                  <Style />
-                                </TextRun>
-                              </TextRuns>
-                              <Style />
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>expensive_event1</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
-                            </Border>
-                            <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
-                            <PaddingTop>2pt</PaddingTop>
-                            <PaddingBottom>2pt</PaddingBottom>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
                   </TablixCells>
                 </TablixRow>
               </TablixRows>
             </TablixBody>
             <TablixColumnHierarchy>
               <TablixMembers>
-                <TablixMember />
                 <TablixMember />
               </TablixMembers>
             </TablixColumnHierarchy>
@@ -1021,7 +1017,7 @@ FROM dbo.tbl_XEvents;</CommandText>
             <Top>3.32167in</Top>
             <Left>0.97792in</Left>
             <Height>0.5in</Height>
-            <Width>10.94373in</Width>
+            <Width>9.72498in</Width>
             <ZIndex>6</ZIndex>
             <Visibility>
               <Hidden>true</Hidden>
