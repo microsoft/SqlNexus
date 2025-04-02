@@ -4704,6 +4704,15 @@
         <Column name="is_table_type" type="RowsetImportEngine.VarCharColumn" />
       </KnownColumns>
     </Rowset>
-    
+
+    <Rowset name="tbl_installed_programs" enabled="true" identifier="-- InstalledPrograms --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="Name" type="RowsetImportEngine.VarCharColumn" length="128" />
+        <Column name="Version" type="RowsetImportEngine.VarCharColumn" length="24" />
+        <Column name="Publisher" type="RowsetImportEngine.VarCharColumn" length="64" />
+        <Column name="Windows_Installer_Product_Code" type="RowsetImportEngine.VarCharColumn" length="40" />
+      </KnownColumns>
+    </Rowset>
+
   </KnownRowsets>
 </TextImport>
