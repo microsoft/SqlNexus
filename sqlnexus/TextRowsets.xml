@@ -925,7 +925,7 @@
         <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
         <Column name="index_group_handle"       type="RowsetImportEngine.VarCharColumn" />
         <Column name="index_handle"    type="RowsetImportEngine.VarCharColumn" />
-        <Column name="improvement_measure"  type="RowsetImportEngine.IntColumn" />
+        <Column name="improvement_measure"  type="RowsetImportEngine.BigIntColumn" />
         <Column name="create_index_statement"  type="RowsetImportEngine.VarCharColumn" />
         <Column name="group_handle" type="RowsetImportEngine.VarCharColumn" />
         <Column name="unique_compiles" type="RowsetImportEngine.BigIntColumn" />
