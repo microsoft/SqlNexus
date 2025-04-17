@@ -21,7 +21,7 @@ BEGIN
 	DECLARE @max_dt DATETIME
 	SELECT @max_dt = MAX(runtime) FROM dbo.tbl_MissingIndexes
 
-	SELECT TOP 20 create_index_statement, CONVERT(DECIMAL(12,1), improvement_measure) AS improvement_measure, user_seeks, user_scans, runtime, object_id 
+	SELECT TOP 20 create_index_statement, improvement_measure, user_seeks, user_scans, runtime, object_id 
 	FROM dbo.tbl_MissingIndexes
 	WHERE runtime = @max_dt
 	ORDER BY improvement_measure DESC
@@ -66,7 +66,7 @@ BEGIN
 		SELECT @max_dt = MAX(runtime), @min_dt = MIN(runtime) FROM dbo.tbl_MissingIndexes
 
 		SELECT  TOP 20 sd.create_index_statement, 
-				CONVERT(DECIMAL(12,1),sd.improvement_measure - su.improvement_measure) AS delta_improvement_measure,
+				(sd.improvement_measure - su.improvement_measure) AS delta_improvement_measure,
 				sd.user_seeks - su.user_seeks AS delta_user_seeks,
 				sd.user_scans - su.user_scans AS delta_user_scans,
 				sd.object_id
@@ -81,7 +81,7 @@ BEGIN
 			WHERE runtime = @min_dt) as su
 
 		ON sd.index_handle = su.index_handle
-		WHERE CONVERT(DECIMAL(12,1),sd.improvement_measure - su.improvement_measure) &gt; 0
+		WHERE (sd.improvement_measure - su.improvement_measure) &gt; 0
 		ORDER BY delta_improvement_measure DESC
 
 	END

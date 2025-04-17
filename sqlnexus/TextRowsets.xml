@@ -925,7 +925,7 @@
         <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
         <Column name="index_group_handle"       type="RowsetImportEngine.VarCharColumn" />
         <Column name="index_handle"    type="RowsetImportEngine.VarCharColumn" />
-        <Column name="improvement_measure"  type="RowsetImportEngine.FloatColumn" />
+        <Column name="improvement_measure"  type="RowsetImportEngine.BigIntColumn" />
         <Column name="create_index_statement"  type="RowsetImportEngine.VarCharColumn" />
         <Column name="group_handle" type="RowsetImportEngine.VarCharColumn" />
         <Column name="unique_compiles" type="RowsetImportEngine.BigIntColumn" />
@@ -2032,11 +2032,11 @@
       <Column name="stats_id" type="RowsetImportEngine.IntColumn" />
       <Column name="statistics_name" type="RowsetImportEngine.NVarCharColumn" />
       <Column name="last_updated" type="RowsetImportEngine.DateTimeColumn" />
-      <Column name="rows" type="RowsetImportEngine.IntColumn" />
-      <Column name="rows_sampled" type="RowsetImportEngine.IntColumn" />
+      <Column name="rows" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="rows_sampled" type="RowsetImportEngine.BigIntColumn" />
       <Column name="steps" type="RowsetImportEngine.IntColumn" />
-      <Column name="unfiltered_rows" type="RowsetImportEngine.IntColumn" />
-      <Column name="modification_counter" type="RowsetImportEngine.IntColumn" />
+      <Column name="unfiltered_rows" type="RowsetImportEngine.BigIntColumn" />
+      <Column name="modification_counter" type="RowsetImportEngine.BigIntColumn" />
       <Column name="persisted_sample_percent" type="RowsetImportEngine.FloatColumn" />
     </Rowset>
     
