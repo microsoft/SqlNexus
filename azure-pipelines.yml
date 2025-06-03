@@ -15,26 +15,27 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- task: NuGetToolInstaller@1
+#- task: NuGetToolInstaller@1
 
-- task: NuGetCommand@2
-  inputs:
-    restoreSolution: '$(solution)'
+#- task: NuGetCommand@2
+#  inputs:
+#    restoreSolution: '$(solution)'
+
 
 - task: CmdLine@2
   inputs:
-    script: '
-    echo Downloading .NET Framework 4.8...
-    curl.exe -L --output .\DotNet48\NDP48-x86-x64-AllOS-ENU.exe --create-dirs --url https://go.microsoft.com/fwlink/?linkid=2088631
-    
-    echo:
-    cd DotNet48
-    dir
+    script: |
+      echo Downloading .NET Framework 4.8...
+      
+      curl.exe -L --output .\DotNet48\NDP48-x86-x64-AllOS-ENU.exe --create-dirs --url https://go.microsoft.com/fwlink/?linkid=2088631
 
-    echo start installation:
-    NDP48-x86-x64-AllOS-ENU.exe /q /norestart
-
-    '
+      echo list downloaded file
+      cd DotNet48
+      dir
+      
+      echo Start Installation
+      
+      NDP48-x86-x64-AllOS-ENU.exe /q /norestart
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
