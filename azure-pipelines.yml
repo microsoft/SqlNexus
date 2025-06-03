@@ -21,13 +21,38 @@ steps:
 #  inputs:
 #    restoreSolution: '$(solution)'
 
-
+- task: PowerShell@2
+  inputs:
+    targetType: 'inline'
+    script: |
+      Write-Host "Checking .NET version"
+      
+      $release = (Get-ItemProperty "HKLM:\SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full").Release
+      switch ($release) {
+          { $_ -ge 533325 } { "Installed: .NET Framework 4.8.1 or later"; break }
+          { $_ -ge 528040 } { "Installed: .NET Framework 4.8"; break }
+          default { "Installed: Version earlier than 4.8 or not installed" }
+      }
+    
+- task: CmdLine@2
+  inputs:
+    script: |
+      echo Write your commands here
+      
+      echo Downloading MS Report Projects for Visual Studio 2022
+      
+      curl -L --output MicrosoftReportProjectsforVisualStudio2022.vsix --create-dirs --url https://marketplace.visualstudio.com/_apis/public/gallery/publishers/ProBITools/vsextensions/MicrosoftReportProjectsforVisualStudio2022/latest/vspackage
+      
+      echo Install the VSIX extension
+      
+      "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\VSIXInstaller.exe" /quiet MicrosoftReportProjectsforVisualStudio2022.vsix 
+      
 - task: CmdLine@2
   inputs:
     script: |
       echo Downloading .NET Framework 4.8...
       
-      curl.exe -L --output .\DotNet48\NDP48-x86-x64-AllOS-ENU.exe --create-dirs --url https://go.microsoft.com/fwlink/?linkid=2088631
+      curl.exe -L --output .\DotNet48\NDP48-x86-x64-AllOS-ENU.exe https://go.microsoft.com/fwlink/?linkid=2088631
 
       echo list downloaded file
       cd DotNet48
