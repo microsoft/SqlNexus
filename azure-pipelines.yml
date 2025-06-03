@@ -36,6 +36,19 @@ steps:
       echo Start Installation
       
       NDP48-x86-x64-AllOS-ENU.exe /q /norestart
+
+- task: PowerShell@2
+  inputs:
+    targetType: 'inline'
+    script: |
+      Write-Host "Checking .NET version"
+      
+      $release = (Get-ItemProperty "HKLM:\SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full").Release
+      switch ($release) {
+          { $_ -ge 533325 } { "Installed: .NET Framework 4.8.1 or later"; break }
+          { $_ -ge 528040 } { "Installed: .NET Framework 4.8"; break }
+          default { "Installed: Version earlier than 4.8 or not installed" }
+      }
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
