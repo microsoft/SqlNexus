@@ -21,6 +21,13 @@ steps:
   inputs:
     restoreSolution: '$(solution)'
 
+- task: CmdLine@2
+  inputs:
+    script: '
+    echo Downloading .NET Framework 4.8...
+    curl.exe -L --output .\DotNet48\NDP48-x86-x64-AllOS-ENU.exe --create-dirs --url https://go.microsoft.com/fwlink/?linkid=2088631
+    
+    '
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
