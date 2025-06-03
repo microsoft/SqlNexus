@@ -35,6 +35,7 @@ steps:
       }
     
 - task: CmdLine@2
+  displayName: Install SSRS VSIX extension
   inputs:
     script: |
       echo Write your commands here
@@ -48,6 +49,7 @@ steps:
       "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\VSIXInstaller.exe" /quiet MicrosoftReportProjectsforVisualStudio2022.vsix 
       
 - task: CmdLine@2
+  displayName: Download and install .NET Framework 4.8
   inputs:
     script: |
       echo Downloading .NET Framework 4.8...
@@ -63,6 +65,7 @@ steps:
       NDP48-x86-x64-AllOS-ENU.exe /q /norestart
 
 - task: PowerShell@2
+  displayName: Check .NET version installed
   inputs:
     targetType: 'inline'
     script: |
