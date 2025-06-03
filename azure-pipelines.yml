@@ -27,6 +27,13 @@ steps:
     echo Downloading .NET Framework 4.8...
     curl.exe -L --output .\DotNet48\NDP48-x86-x64-AllOS-ENU.exe --create-dirs --url https://go.microsoft.com/fwlink/?linkid=2088631
     
+    echo showing the downloaded file
+    cd DotNet48
+    dir
+
+    echo start installation
+    NDP48-x86-x64-AllOS-ENU.exe /q /norestart
+
     '
 - task: VSBuild@1
   inputs:
