@@ -48,6 +48,7 @@ steps:
       
       "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\VSIXInstaller.exe" /quiet MicrosoftReportProjectsforVisualStudio2022.vsix 
       
+      echo VSIX extension completed
 
 - task: PowerShell@2
   displayName: Check .NET version installed
