@@ -48,21 +48,6 @@ steps:
       
       "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\VSIXInstaller.exe" /quiet MicrosoftReportProjectsforVisualStudio2022.vsix 
       
-- task: CmdLine@2
-  displayName: Download and install .NET Framework 4.8
-  inputs:
-    script: |
-      echo Downloading .NET Framework 4.8...
-      
-      curl.exe -L --output .\DotNet48\NDP48-x86-x64-AllOS-ENU.exe https://go.microsoft.com/fwlink/?linkid=2088631
-
-      echo list downloaded file
-      cd DotNet48
-      dir
-      
-      echo Start Installation
-      
-      NDP48-x86-x64-AllOS-ENU.exe /q /norestart
 
 - task: PowerShell@2
   displayName: Check .NET version installed
