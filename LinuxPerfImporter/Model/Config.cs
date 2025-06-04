@@ -140,13 +140,13 @@ namespace LinuxPerfImporter.Model
 
         private void GetMachineName()
         {
-            string[] splitChars = new string[] { "_machineconfig.info" };
+            string[] splitChars = new string[] { "_os_machine_config.info" };
 
             LinuxPerfImortGlobals.log.WriteLog("Getting machine name ", "SetConfigVariables", "[Config]");
 
-            string machineName = Directory.GetFiles(".\\", "*_machineconfig.info")[0];
+            string machineName = Directory.GetFiles(".\\", "*_os_machine_config.info")[0];
 
-            ConfigValues.MachineName = machineName.Substring(2, (machineName.Length - 21));
+            ConfigValues.MachineName = machineName.Substring(2, (machineName.Length - 25));
             
             LinuxPerfImortGlobals.log.WriteLog(ConfigValues.MachineName, "MachineName:GetMachineName", "[Config]");
         }
