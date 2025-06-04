@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using NexusInterfaces;
 namespace sqlnexus
 {

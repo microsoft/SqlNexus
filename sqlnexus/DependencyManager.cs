@@ -11,7 +11,7 @@ using System.Threading;
 public class DependencyManager
 {
 
-    public static void CheckReportViewer()  //JOTODO: Should we revive this code?? see https://github.com/microsoft/SqlNexus/issues/93
+    public static void CheckReportViewer_NotUsed()  //JOTODO: Should we revive this code?? see https://github.com/microsoft/SqlNexus/issues/93
     {
 
         // not checking on report viewer given that 10.0 or 11 report reviewer controls are common nowadays
@@ -29,7 +29,7 @@ public class DependencyManager
     }
 
     // Assembly reportViewerAssem= Assembly.Load            ("Microsoft.ReportViewer.Common, Version=9.0.30729.1, Culture=neutral, PublicKeyToken=B03F5F7F11D50A3A");
-    public bool AssemblyInstalled(String AssemblyName, String ExactVersion, String Token)
+    public bool AssemblyInstalled_NotUsed(String AssemblyName, String ExactVersion, String Token)
     {
         String[] VersionArray = ExactVersion.Split(new Char[] { '.' });
         if (VersionArray.Length != 4)

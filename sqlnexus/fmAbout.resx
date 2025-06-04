@@ -132,10 +132,14 @@
     <value>Bell MT, 56.25pt, style=Bold</value>
   </data>
   <data name="laTitle.Location" type="System.Drawing.Point, System.Drawing">
-    <value>84, 158</value>
+    <value>112, 194</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="laTitle.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
   </data>
   <data name="laTitle.Size" type="System.Drawing.Size, System.Drawing">
-    <value>409, 87</value>
+    <value>509, 106</value>
   </data>
   <data name="laTitle.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -153,7 +157,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;laTitle.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="laVersion.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -162,10 +166,13 @@
     <value>Bell MT, 15.75pt, style=Bold</value>
   </data>
   <data name="laVersion.Location" type="System.Drawing.Point, System.Drawing">
-    <value>182, 257</value>
+    <value>243, 316</value>
+  </data>
+  <data name="laVersion.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
   </data>
   <data name="laVersion.Size" type="System.Drawing.Size, System.Drawing">
-    <value>116, 25</value>
+    <value>147, 31</value>
   </data>
   <data name="laVersion.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -183,7 +190,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;laVersion.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="llSupport.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -192,10 +199,13 @@
     <value>Microsoft Sans Serif, 8.25pt</value>
   </data>
   <data name="llSupport.Location" type="System.Drawing.Point, System.Drawing">
-    <value>266, 443</value>
+    <value>355, 545</value>
+  </data>
+  <data name="llSupport.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
   </data>
   <data name="llSupport.Size" type="System.Drawing.Size, System.Drawing">
-    <value>44, 13</value>
+    <value>58, 17</value>
   </data>
   <data name="llSupport.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -213,7 +223,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;llSupport.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <metadata name="tiDissolve.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>193, 17</value>
@@ -222,10 +232,13 @@
     <value>Bell MT, 12pt, style=Bold</value>
   </data>
   <data name="laCopyright.Location" type="System.Drawing.Point, System.Drawing">
-    <value>57, 344</value>
+    <value>76, 423</value>
+  </data>
+  <data name="laCopyright.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
   </data>
   <data name="laCopyright.Size" type="System.Drawing.Size, System.Drawing">
-    <value>463, 23</value>
+    <value>617, 28</value>
   </data>
   <data name="laCopyright.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -246,17 +259,19 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;laCopyright.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="btClose.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
     <value>Popup</value>
   </data>
   <data name="btClose.Location" type="System.Drawing.Point, System.Drawing">
-    <value>258, 370</value>
+    <value>344, 455</value>
+  </data>
+  <data name="btClose.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="btClose.Size" type="System.Drawing.Size, System.Drawing">
-    <value>61, 61</value>
+    <value>81, 75</value>
   </data>
   <data name="btClose.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -274,13 +289,49 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;btClose.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="laRVVersion.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="laRVVersion.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Bell MT, 15.75pt, style=Bold</value>
+  </data>
+  <data name="laRVVersion.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="laRVVersion.Location" type="System.Drawing.Point, System.Drawing">
+    <value>243, 376</value>
+  </data>
+  <data name="laRVVersion.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
+  </data>
+  <data name="laRVVersion.Size" type="System.Drawing.Size, System.Drawing">
+    <value>147, 31</value>
+  </data>
+  <data name="laRVVersion.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="laRVVersion.Text" xml:space="preserve">
+    <value>Version 2.0</value>
+  </data>
+  <data name="&gt;&gt;laRVVersion.Name" xml:space="preserve">
+    <value>laRVVersion</value>
+  </data>
+  <data name="&gt;&gt;laRVVersion.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;laRVVersion.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;laRVVersion.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>6, 13</value>
+    <value>8, 16</value>
   </data>
   <data name="$this.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -699,7 +750,10 @@
 </value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>576, 561</value>
+    <value>768, 690</value>
+  </data>
+  <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
     <value>CenterParent</value>

@@ -326,36 +326,6 @@ BEGIN
 END;
 GO
 
--- Compensate for missing sys.dm_os_sys_info in some very old perf stats script output. 
-IF OBJECT_ID('tbl_SYSINFO') IS NULL
-BEGIN
-    CREATE TABLE [dbo].[tbl_SYSINFO]
-    (
-        tableinfo VARCHAR(128),
-        cpu_ticks BIGINT,
-        ms_ticks BIGINT,
-        cpu_count INT,
-        cpu_ticks_in_ms BIGINT,
-        hyperthread_ratio INT,
-        physical_memory_in_bytes BIGINT,
-        virtual_memory_in_bytes BIGINT,
-        bpool_committed INT,
-        bpool_commit_target INT,
-        bpool_visible INT,
-        stack_size_in_bytes INT,
-        os_quantum BIGINT,
-        os_error_code INT,
-        os_priority_class INT,
-        max_workers_count INT,
-        schedulers_count SMALLINT,
-        scheduler_total_count INT,
-        deadlock_monitor_serial_number INT
-    );
-    EXEC ('INSERT INTO dbo.tbl_SYSINFO (tableinfo, cpu_count) 
-    VALUES (''This table was created by PerfStatsAnalysis.sql due to missing Perf Stats Script data.'', 2)');
-END;
-GO
-
 -- Compensate for missing tbl_SQL_CPU_HEALTH bug in some perf stats script output
 IF OBJECT_ID('tbl_SQL_CPU_HEALTH') IS NULL
 BEGIN
@@ -1193,7 +1163,7 @@ ORDER BY (w_end.wait_time_ms - CASE
 DECLARE @avail_cpu_time_sec INT;
 SELECT @avail_cpu_time_sec =
 (
-    SELECT TOP 1 cpu_count FROM dbo.tbl_SYSINFO
+    SELECT TOP 1 [PropertyValue] FROM [dbo].[tbl_ServerProperties] WHERE PropertyName = 'cpu_count'
 ) * DATEDIFF(s, @StartTime, @EndTime);
 
 -- Get average % CPU utilization (this is the % of all CPUs on the box, ignoring affinity mask)
@@ -1357,7 +1327,7 @@ ORDER BY (w_end.wait_time_ms - CASE
 DECLARE @avail_cpu_time_sec INT;
 SELECT @avail_cpu_time_sec =
 (
-    SELECT TOP 1 cpu_count FROM tbl_SYSINFO
+    SELECT TOP 1 [PropertyValue] FROM [dbo].[tbl_ServerProperties] WHERE PropertyName = 'cpu_count'
 ) * DATEDIFF(s, @StartTime, @EndTime);
 
 -- Get average % CPU utilization (this is the % of all CPUs on the box, ignoring affinity mask)
@@ -4402,7 +4372,7 @@ VALUES
 ('4415F4B3-603F-4F41-978E-9EE32BF2B2E9', 'Server Performance', 'W', 'Warning', 'usp_Expensive_XEvts_Used',
  'Expensive, performance-impacting Extended events were identfied',
  'Multiple non default trace events  were detected running on the server.  This can negatively impact server performance',
- '' , '', '  ', 1, 100, 0, ' ');
+ '' , 'https://learn.microsoft.com/en-us/troubleshoot/sql/database-engine/performance/troubleshoot-high-cpu-usage-issues#step-7-disable-heavy-tracing', '  ', 1, 100, 0, ' ');
 INSERT INTO dbo.tbl_AnalysisSummary
 (
     SolutionSourceId,
@@ -4559,6 +4529,28 @@ VALUES
  'Common Criteria Compliance Enabled', 'Enabling this can cause performance issues', '',
  'https://learn.microsoft.com/en-us/sql/database-engine/configure-windows/common-criteria-compliance-enabled-server-configuration-option?view=sql-server-ver16',
  '  ', 1, 100, 0, 'Server Configuration');
+INSERT INTO dbo.tbl_AnalysisSummary
+(
+    SolutionSourceId,
+    Category,
+    Type,
+    TypeDesc,
+    Name,
+    FriendlyName,
+    Description,
+    InternalUrl,
+    ExternalUrl,
+    Author,
+    Priority,
+    SeqNum,
+    Status,
+    Report
+)
+VALUES
+('E57F6CE6-EFCC-48B0-B82A-373ED6DF3434', 'Setup', 'W', 'Warning', 'usp_MissingMSI_MSP',
+ 'Missing installation MSI/MSPs on the system', 'These can cause various CU/SP upgrade error messages or unexpected behaviors', '',
+ 'https://learn.microsoft.com/en-us/troubleshoot/sql/database-engine/install/windows/restore-missing-windows-installer-cache-files',
+ '  ', 1, 100, 0, 'Missing MSI or MSPs');
 
 
 
@@ -5551,7 +5543,7 @@ BEGIN
 END;
 GO
 
-CREATE PROCEDURE usp_DBMEndPointState
+CREATE PROCEDURE dbo.usp_DBMEndPointState
 AS
 BEGIN
     DECLARE @hadr_endpoint VARCHAR(128),
@@ -5583,7 +5575,7 @@ BEGIN
 END;
 GO
 
-CREATE PROCEDURE usp_HugeGrant
+CREATE PROCEDURE dbo.usp_HugeGrant
 AS
 BEGIN
     DECLARE @cnt INT,
@@ -5620,7 +5612,7 @@ END;
 
 GO
 
-CREATE PROCEDURE Optimizer_Memory_Leak
+CREATE PROCEDURE dbo.Optimizer_Memory_Leak
 AS
 BEGIN
     DECLARE @SQLVersion VARCHAR(100);
@@ -6731,8 +6723,8 @@ BEGIN
         SELECT DISTINCT TOP 5
                session_name + '::' + event_name
         FROM dbo.tbl_XEvents
-        WHERE expensive_event = 1;
-
+        WHERE expensive_event = 1        
+		AND session_name NOT IN ( 'sp_server_diagnostics session', 'hkenginexesession', 'system_health','alwayson_health','telemetry_xevents','xevent_SQLLogScout');
 
         OPEN expensive_xevents;
         FETCH NEXT FROM expensive_xevents
@@ -7117,7 +7109,42 @@ BEGIN
         BEGIN
             UPDATE dbo.tbl_AnalysisSummary
             SET [Status] = 1
-            WHERE Name = 'usp_CCC_Enabled';
+            WHERE [Name] = OBJECT_NAME(@@PROCID);
+        END;
+    END;
+END;
+GO
+
+CREATE PROCEDURE [dbo].[usp_MissingMSI_MSP]
+AS
+BEGIN
+    IF (
+           OBJECT_ID('tbl_setup_missing_msi_msp_packages') IS NOT NULL
+           AND (OBJECT_ID('tbl_AnalysisSummary') IS NOT NULL)
+       )
+    BEGIN
+        IF (
+           (
+               SELECT COUNT(*)
+               FROM [dbo].[tbl_setup_missing_msi_msp_packages]
+           ) > 0
+           )
+        BEGIN
+            
+            DECLARE @InstCacheFiles VARCHAR(8000), @InstCacheCorruptFiles VARCHAR(8000)  
+            SELECT @InstCacheFiles  = COALESCE(@InstCacheFiles + CHAR(13) + CHAR(10) , '') + ISNULL([ExpectedInstallerCacheFile], ''), 
+                   @InstCacheCorruptFiles = COALESCE(@InstCacheCorruptFiles + CHAR(13) + CHAR(10) , '') + ISNULL([FileIsPresentInCacheButPossiblyCorrupt], '') 
+            FROM dbo.tbl_setup_missing_msi_msp_packages
+            
+
+            UPDATE dbo.tbl_AnalysisSummary
+            SET [Status] = 1,
+            [Description] = 'The following SQL Server MSI/MSPs are missing from the system. These can cause various CU or SP upgrade issues or unexpected behaviors: '
+                            + CHAR(13) + CHAR(10) + @InstCacheFiles  + CHAR(13) + CHAR(10) +
+                            'And the following SQL Server MSI/MSPs are possibly corrupt: '
+                             + @InstCacheCorruptFiles
+                            + CHAR(13) + CHAR(10) + 'Be sure to use the linked article to resolve the missing MSI/MSP issues.'
+            WHERE [Name] = OBJECT_NAME(@@PROCID);
         END;
     END;
 END;
@@ -7129,89 +7156,91 @@ GO
 firing rules
 ********************************************************/
 
-EXEC usp_AttendtionCausedBlocking;
+EXEC dbo.usp_AttendtionCausedBlocking;
 GO
-EXEC usp_PerfScriptsRunningLong;
+EXEC dbo.usp_PerfScriptsRunningLong;
 GO
-EXEC usp_LongAutoUpdateStats;
+EXEC dbo.usp_LongAutoUpdateStats;
 GO
-EXEC usp_HighStmtCount;
+EXEC dbo.usp_HighStmtCount;
 GO
-EXEC usp_RG_Idle;
+EXEC dbo.usp_RG_Idle;
 GO
-EXEC usp_HighCompile;
+EXEC dbo.usp_HighCompile;
 GO
-EXEC usp_HighCacheCount;
+EXEC dbo.usp_HighCacheCount;
 GO
-EXEC proc_PowerPlan;
+EXEC dbo.proc_PowerPlan;
 GO
-EXEC proc_CheckTraceFlags;
+EXEC dbo.proc_CheckTraceFlags;
 GO
-EXEC proc_AutoStats;
+EXEC dbo.proc_AutoStats;
 GO
-EXEC proc_ConfigAlert;
+EXEC dbo.proc_ConfigAlert;
 GO
-EXEC usp_ExcessiveLockXevent;
+EXEC dbo.usp_ExcessiveLockXevent;
 GO
-EXEC usp_McAFee_Intrusion;
+EXEC dbo.usp_McAFee_Intrusion;
 GO
-EXEC usp_BatchSort;
+EXEC dbo.usp_BatchSort;
 GO
 EXEC dbo.usp_OptimizerTimeout;
 GO
-EXEC usp_SmallSampledStats;
+EXEC dbo.usp_SmallSampledStats;
 GO
-EXEC usp_DisabledIndex;
+EXEC dbo.usp_DisabledIndex;
 GO
-EXEC usp_AccessCheck;
+EXEC dbo.usp_AccessCheck;
 GO
-EXEC usp_RedoThreadBlocked;
+EXEC dbo.usp_RedoThreadBlocked;
 GO
-EXEC usp_VirtualBytesLeak;
+EXEC dbo.usp_VirtualBytesLeak;
 GO
-EXEC usp_ChangeTableCauseHighCPU;
+EXEC dbo.usp_ChangeTableCauseHighCPU;
 GO
 EXEC dbo.usp_DeadlockTraceFlag;
 GO
-EXEC usp_Expensive_TraceEvts_Used;
+EXEC dbo.usp_Expensive_TraceEvts_Used;
 GO
 EXEC usp_Expensive_XEvts_Used;
 GO
-EXEC usp_ExcessiveTrace_Warning;
+EXEC dbo.usp_ExcessiveTrace_Warning;
 GO
-EXEC OracleLinkedServerIssue;
+EXEC dbo.OracleLinkedServerIssue;
 GO
-EXEC XEventcrash;
+EXEC dbo.XEventcrash;
 GO
-EXEC usp_Non_SQL_CPU_consumption;
+EXEC dbo.usp_Non_SQL_CPU_consumption;
 GO
-EXEC usp_KernelHighCPUconsumption;
+EXEC dbo.usp_KernelHighCPUconsumption;
 GO
-EXEC usp_SQLHighCPUconsumption;
+EXEC dbo.usp_SQLHighCPUconsumption;
 GO
-EXEC StaleStatswarning2008;
+EXEC dbo.StaleStatswarning2008;
 GO
 EXEC dbo.usp_IOAnalysis;
 GO
-EXEC usp_WarnmissingIndex;
+EXEC dbo.usp_WarnmissingIndex;
 GO
-EXEC Optimizer_Memory_Leak;
+EXEC dbo.Optimizer_Memory_Leak;
 GO
 EXEC dbo.usp_HugeGrant;
 GO
-EXEC usp_HighRecompiles;
+EXEC dbo.usp_HighRecompiles;
 GO
-EXEC usp_oldce;
+EXEC dbo.usp_oldce;
 GO
-EXEC usp_CalvsCore;
+EXEC dbo.usp_CalvsCore;
 GO
-EXEC usp_Spinlock_HighCPU;
+EXEC dbo.usp_Spinlock_HighCPU;
 GO
-EXEC usp_NonMS_LoadedModules;
+EXEC dbo.usp_NonMS_LoadedModules;
 GO
-EXEC usp_DBMEndPointState;
+EXEC dbo.usp_DBMEndPointState;
 GO
-EXEC usp_AGHealthState;
+EXEC dbo.usp_AGHealthState;
 GO
-EXEC usp_CCC_Enabled;
+EXEC dbo.usp_CCC_Enabled;
+GO
+EXEC dbo.usp_MissingMSI_MSP
 /******END of script***/

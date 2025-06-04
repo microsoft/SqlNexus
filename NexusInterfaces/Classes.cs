@@ -8,9 +8,8 @@ using Microsoft.Win32;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
-using System.Globalization;
 
-[assembly: System.Security.Permissions.PermissionSet(System.Security.Permissions.SecurityAction.RequestMinimum, Name = "FullTrust")]
+//[assembly: System.Security.Permissions.PermissionSet(System.Security.Permissions.SecurityAction.RequestMinimum, Name = "FullTrust")]
 namespace NexusInterfaces
 {
     

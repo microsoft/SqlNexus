@@ -156,7 +156,7 @@ CREATE TABLE dbo.filter_driver_altitudes
 (
     FilterType NVARCHAR(48),
     Minifilter NVARCHAR(64),
-    Altitude BIGINT,
+    Altitude NVARCHAR(48),
     Company NVARCHAR(128)
 );
 GO
@@ -164,5923 +164,2087 @@ GO
 BEGIN TRAN;
 INSERT INTO dbo.filter_driver_altitudes
 VALUES
-('Kernel', 'ntoskrnl.exe', 425500, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Kernel', 'ntoskrnl.exe', 425000, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Top', 'wcnfs.sys', 409900, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Top', 'bindflt.sys', 409800, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Top', 'cldflt.sys', 409500, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Top', 'iorate.sys', 409010, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Top', 'ioqos.sys', 409000, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Top', 'fsdepends.sys', 407000, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Top', 'sftredir.sys', 406000, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Top', 'dfs.sys', 405000, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Top', 'IntelEgDriver.sys', 404950.5, 'Intel Corp');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Top', 'VeeamFCT.sys', 404920, 'Veeam Software');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Top', 'sek.sys', 404915.5, 'Sentry Corporation');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Top', 'tracker.sys', 404910, 'Acronis');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Top', 'csvnsflt.sys', 404900, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Top', 'csvflt.sys', 404800, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Top', 'Microsoft.Uev.AgentDriver.sys', 404710, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Top', 'AppvVfs.sys', 404700, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Top', 'CCFFilter.sys', 404600, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Top', 'FwDI.sys', 402130.5, 'First Watch Limited');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Top', '360AntiSteal.sys', 402120.5, '360 Software (Beijing)');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Top', 'uberAgentDrv.sys', 402110, 'vast limits GmbH');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Top', 'mrigflt.sys', 402100, 'Paramount Software Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Top', 'darkscope-drv.sys', 402030.5, 'Zhuhai YiZhiSec co');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Top', 'XCOAmon.sys', 402025.5, 'TRIART INC');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Top', 'RevoNetDriver.sys', 402020, 'J''s Communication Co.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Top', 'dciogrd.sys', 402010, 'Datacloak Tech');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Top', 'Dewdrv.sys', 402000, 'Dell Technologies');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Top', 'zsusbstorfilt.sys', 401910, 'Zshield Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Top', 'eaw.sys', 401900, 'Raytheon Cyber Solutions');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Top', 'TVFsfilter.sys', 401800, 'TrustView');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Top', 'KKDiskProtecter.sys', 401700, 'Goldmsg');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Top', 'AgentComm.sys', 401600, 'Trustwave Holding Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Top', 'rvsavd.sys', 401500, 'CJSC Returnil Software');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Top', 'DGMinFlt.sys', 401410, 'Digital Guardian Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Top', 'dgdmk.sys', 401400, 'Verdasys Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Top', 'stadrv6x64.sys', 401350.5, 'Netskope Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Top', 'stadrv6x32.sys', 401350.5, 'Netskope Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Top', 'tusbstorfilt.sys', 401300, 'SimplyCore LLC');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Top', 'pcgenfam.sys', 401200, 'Soluto');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Top', 'atrsdfw.sys', 401100, 'Altiris');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Top', 'tpfilter.sys', 401000, 'RedPhone Security');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Top', 'MBIG2Prot.sys', 400920, 'Malwarebytes Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Top', 'mbamwatchdog.sys', 400900, 'Malwarebytes Corporation');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Top', 'DSESafeCtrlDrv.sys', 400803, 'Shanghai Eff-Soft IT');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Top', 'edevmonm.sys', 400800.3, 'ESET spol. s r.o.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Top', 'edevmon.sys', 400800, 'ESET spol. s r.o.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Top', 'vmwprotect.sys', 400700.5, 'VMware, Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Top', 'vmwcdrfilter.sys', 400700.3, 'VMware, Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Top', 'vmwflstor.sys', 400700, 'VMware, Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Top', 'TsQBDrv.sys', 400600, 'Tencent Technology');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Top', 'PolyPortFlt.sys', 400490, 'PolyPort Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Top', 'Dscdriver.sys', 400300, 'Dell Technologies Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'zd_mon.sys', 389520.50, 'Zecurion');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'icrlmonitor.sys', 389518.50, 'Delta Electronics Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'klboot.sys', 389510.00, 'Kaspersky Lab');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'klfdefsf.sys', 389500.00, 'Kaspersky Lab');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'JKMCPF.sys', 389492.70, 'JiranData Co. Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'JDEDRPF.sys', 389492.50, 'JiranData Co. Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'JDPPWF.sys', 389492.00, 'JiranData Co. Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'JDPPSF.sys', 389490.00, 'JiranData Co. Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'FFDriver.sys', 389470.00, 'ColorTokens');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'evaccin.sys', 389455.50, 'databps.com');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'SeRdr.sys', 389450.00, 'rhipe Australia Pty');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'bw_fssec.sys', 389430.50, 'Wuhan Buwei Software Technology Co.,Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'SecurityPro.sys', 389430.30, 'Wuhan Buwei Software Technology Co.,Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'defragger.sys', 389420.00, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'storagedrv.sys', 389400.00, 'SMTechnology Co.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'NetPeeker.sys', 389330.00, 'eMingSoftware Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'path8flt.sys', 389320.00, 'Telefónica Digital');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'DLPDriverNfn.sys', 389310.50, 'Acronis');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'NgScan.sys', 389310.00, 'Acronis');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'icrlmonitor.sys', 389300.00, 'Industrial Technology');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'gibepcore.sys', 389290.00, 'Group-IB LTD');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'cpflt.sys', 389285.50, 'Cloudplan GmbH');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'enmon.sys', 389280.00, 'OpenText Corp');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'wsafefilter.sys', 389272.00, 'WidgetNuri Corp');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'RansomDetect.sys', 389270.00, 'WidgetNuri Corp');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'PPLPMFilter.sys', 389265.50, 'PolicyPak Software');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'cbfsfilter2017.sys', 389260.00, 'Mobile Content Mgmt');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'cbfilter20.sys', 389251.00, 'SecureLink Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'CBFSFilter2017.sys', 389250.00, 'SecureLink Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'GmBase.sys', 389248.00, 'NanJing Geomarking');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'MagicProtect.sys', 389247.00, 'NanJing Geomarking');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'cbfsfilter2017.sys', 389245.00, 'NanJing Geomarking');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'cbfsfilter2020.sys', 389245.00, 'NanJing Geomarking');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'DTDSel.sys', 389242.00, 'DELL Technologies');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'NWEDriver.sys', 389240.00, 'Dell Technologies');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'cytmon.sys', 389230.00, 'Cytrence Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'SophosED.sys', 389220.00, 'Sophos');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'MonsterK.sys', 389210.00, 'Somma Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'IFS64.sys', 389200.00, 'Ashampoo Development');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'TSTFsReDir.sys', 389192.00, 'ThinScale Tech');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'TSTRegReDir.sys', 389191.00, 'ThinScale Tech');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'TSTFilter.sys', 389190.00, 'ThinScale Tech');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'VrnsFilter.sys', 389180.00, 'Varonis Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'slb_guard.sys', 389175.00, 'Lenovo Beijing');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'lrtp.sys', 389170.00, 'Lenovo Beijing');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'ipcomfltr.sys', 389160.00, 'Bluzen Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'SvCBT.sys', 389150.00, 'Spharsoft Technologies');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'mbamshuriken.sys', 389140.00, 'Malwarebytes');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'FGFLT.sys', 389135.50, 'WinAbility Software');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'ContainerMonitor.sys', 389130.00, 'Aqua Security');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'cmflt.sys', 389125.00, 'Certero');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'SaMFlt.sys', 389120.00, 'DreamCrafts');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'RuiMinispy.sys', 389117.00, 'RuiGuard Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'RuiFileAccess.sys', 389115.00, 'RuiGuard Ltd');
-COMMIT TRAN;
+ (N'Kernel', N'ntoskrnl.exe', N'425500', N'Microsoft')
+,(N'Kernel', N'ntoskrnl.exe', N'425000', N'Microsoft')
 GO
-BEGIN TRAN;
 INSERT INTO dbo.filter_driver_altitudes
 VALUES
-('Activity Monitor', 'RuiEye.sys', 389113.00, 'RuiGuard Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'RuiMachine.sys', 389111.00, 'RuiGuard Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'windd.sys', 389110.00, 'Comae Tech');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'cbfsfilter2017.sys', 389105.00, 'Basein Networks');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'taobserveflt.sys', 389100.00, 'ThinAir Labs Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'fsrvlock.sys', 389098.00, 'Man Technology Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'bsrfsflt.sys', 389096.00, 'Man Technology Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'fsrfilter.sys', 389094.00, 'Man Technology Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'vollock.sys', 389092.00, 'Man Technology Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'drbdlock.sys', 389090.00, 'Man Technology Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'dcfsgrd.sys', 389085.00, 'Datacloak Tech');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'hsmltmon.sys', 389080.00, 'Hitachi Solutions');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'AternityRegistryHook.sys', 389070.00, 'Aternity Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'MozyNextFilter.sys', 389068.00, 'Carbonite Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'MozyCorpFilter.sys', 389067.00, 'Carbonite Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'MozyEntFilter.sys', 389066.00, 'Carbonite Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'MozyOEMFilter.sys', 389065.00, 'Carbonite Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'MozyEnterpriseFilter.sys', 389064.00, 'Carbonite Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'MozyProFilter.sys', 389063.00, 'Carbonite Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'MozyHomeFilter.sys', 389062.00, 'Carbonite Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'BDSFilter.sys', 389061.00, 'Carbonite Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'CSBFilter.sys', 389060.00, 'Carbonite Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'f_pmf.sys', 389055.50, 'Fasoo Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'ChemometecFilter.sys', 389050.00, 'ChemoMetec');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'bcloudsafe.sys', 389045.50, 'AISHU Technology Corp');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'SentinelMonitor.sys', 389040.00, 'SentinelOne');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'DhWatchdog.sys', 389030.00, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'edrsensor.sys', 389025.00, 'Bitdefender SRL');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'bdprivmon.sys', 389022.00, 'Bitdefender SRL');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'NpEtw.sys', 389020.00, 'Koby Kahane');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'OczMiniFilter.sys', 389010.00, 'OCZ Storage');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'ielcp.sys', 389004.00, 'Intel Corporation');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'IESlp.sys', 389002.00, 'Intel Corporation');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'IntelCAS.sys', 389000.00, 'Intel Corporation');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'boxifier.sys', 388990.00, 'Kenubi');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'SamsungRapidFSFltr.sys', 388980.00, 'NVELO Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'drsfile.sys', 388970.00, 'MRY Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'CbFltFs4.sys', 388966.00, 'Simopro Technology');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'CrUnCopy.sys', 388964.00, 'Shenzhen CloudRiver');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'aictracedrv_am.sys', 388960.00, 'AI Consulting');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'fiopolicyfilter.sys', 388954.00, 'SanDisk Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'sodatpfl.sys', 388951.00, 'SODATSW spol. s r.o.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'sodatpfl.sys', 388950.20, 'SODATSW');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'fcontrol.sys', 388950.00, 'SODATSW spol. s r.o.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'qfilter.sys', 388940.00, 'Quorum Labs');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'Redlight.sys', 388930.00, 'Trustware Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'ClumioChangeBlockMf.sys', 388925.00, 'Clumio Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'eps.sys', 388920.00, 'Lumension');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'VHDTrack.sys', 388915.00, 'Intronis Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'VHDDelta.sys', 388912.00, 'Niriva LLC');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'FSTrace.sys', 388910.00, 'Niriva LLC');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'YahooStorage.sys', 388900.00, 'Yahoo Japan Corporation');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'KeWF.sys', 388890.00, 'KEBA AG');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'epregflt.sys', 388888.00, 'Check Point Software');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'epklib.sys', 388886.00, 'Check Point Software');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'zsfprt.sys', 388880.00, 'k4solution Co., Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'dsflt.sys', 388876.00, 'cEncrypt');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'bfaccess.sys', 388872.00, 'bitFence Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'xcpl.sys', 388870.00, 'X-Cloud Systems');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'DRMFilter.sys', 388867.50, 'ManageEngine Zoho');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'DFMFilter.sys', 388867.00, 'ManageEngine Zoho');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'DCFAFilter.sys', 388866.00, 'ManageEngine Zoho');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'RMPHVMonitor.sys', 388865.00, 'ManageEngine Zoho');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'FAPMonitor.sys', 388864.00, 'ManageEngine Zoho');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'FACEDrv.sys', 388863.50, 'ManageEngine Zoho');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'MEARWFltDriver.sys', 388863.00, 'ManageEngine Zoho');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'SerMonDriver.sys', 388862.50, 'ManageEngine Zoho');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'EaseFlt.sys', 388860.00, 'EaseVault Technologies Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'rpwatcher.sys', 388855.00, 'Best Security');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'sieflt.sys', 388852.00, 'Quick Heal Technologies Pvt. Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'cssdlp.sys', 388851.00, 'Quick Heal Technologies Pvt. Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'cssdlp.sys', 388850.00, 'CoSoSys');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'INISBDrv64.sys', 388840.00, 'Initech Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'kconv.sys', 388832.00, 'Fitsec Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'trace.sys', 388831.00, 'Fitsec Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'SandDriver.sys', 388830.00, 'Fitsec Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'dskmn.sys', 388820.00, 'Honeycomb Technologies');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'offsm.sys', 388811.00, 'Jiransoft Co., Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'xkfsfd.sys', 388810.00, 'Jiransoft Co., Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'JKPPOB.sys', 388808.00, 'Jiransoft Co., Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'JKPPXK.sys', 388807.00, 'Jiransoft Co., Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'JKPPPF.sys', 388806.00, 'Jiransoft Co., Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'JKPPOK.sys', 388805.00, 'Jiransoft Co., Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'pcpifd.sys', 388800.00, 'Jiransoft Co., Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'NNTInfo.sys', 388790.00, 'New Net Technologies Limited');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'NmpFilter.sys', 388781.00, 'IBM');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'FsMonitor.sys', 388780.00, 'IBM');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'CVCBT.sys', 388770.00, 'CommVault Systems, Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'AwareCore.sys', 388760.00, 'TaaSera Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'laFS.sys', 388750.00, 'NetworkProfi Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'fsnk.sys', 388740.00, 'SoftPerfect Research');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'RGNT.sys', 388730.00, 'HFN Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'fltRs329.sys', 388720.00, 'Secured Globe Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'ospmon.sys', 388710.00, 'SC ODEKIN SOLUTIONS SRL');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'edsigk.sys', 388700.00, 'Enterprise Data Solutions, Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'fiometer.sys', 388692.00, 'Fusion-io');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'dcSnapRestore.sys', 388690.00, 'Fusion-io');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'SytSelfProtect.sys', 388688.50, 'Sunyata Electronic Tech');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'fam.sys', 388680.00, 'Quick Heal Technologies Pvt. Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'vidderfs.sys', 388675.00, 'Vidder Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'Tritiumfltr.sys', 388670.00, 'Tritium Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'HexisFSMonitor.sys', 388660.00, 'Hexis Cyber Solutions');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'BlackbirdFSA.sys', 388650.00, 'BeyondTrust Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'TMUMS.sys', 388642.00, 'Trend Micro Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'hfileflt.sys', 388640.00, 'Trend Micro Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'TMUMH.sys', 388630.00, 'Trend Micro Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'AcDriver.sys', 388620.00, 'Trend Micro, Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'SakFile.sys', 388610.00, 'Trend Micro, Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'SakMFile.sys', 388600.00, 'Trend Micro, Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'rsfdrv.sys', 388580.00, 'Clonix Co');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'alcapture.sys', 388570.00, 'Airlock Digital Pty Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'kmNWCH.sys', 388560.00, 'IGLOO SECURITY, Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'ISIRMFmon.sys', 388550.00, 'ALPS SYSTEM INTERGRATION CO., LTD');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'EsProbe.sys', 388542.00, 'Stormshield');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'heimdall.sys', 388540.00, 'Arkoon Network Security');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'thetta.sys', 388532.00, 'Syncopate');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'thetta.sys', 388531.00, 'Syncopate');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'thetta.sys', 388530.00, 'Syncopate');
-COMMIT TRAN;
+ (N'Top', N'wcnfs.sys', N'409900', N'Microsoft')
+,(N'Top', N'bindflt.sys', N'409800', N'Microsoft')
+,(N'Top', N'cldflt.sys', N'409500', N'Microsoft')
+,(N'Top', N'iorate.sys', N'409010', N'Microsoft')
+,(N'Top', N'ioqos.sys', N'409000', N'Microsoft')
+,(N'Top', N'fsdepends.sys', N'407000', N'Microsoft')
+,(N'Top', N'sftredir.sys', N'406000', N'Microsoft')
+,(N'Top', N'dfs.sys', N'405000', N'Microsoft')
+,(N'Top', N'WorkplaceContainerDriver.sys', N'404960.5', N'Venn Technology Corporation')
+,(N'Top', N'IntelEgDriver.sys', N'404950.5', N'Intel Corp')
+,(N'Top', N'VeeamFCT.sys', N'404920', N'Veeam Software')
+,(N'Top', N'sek.sys', N'404915.5', N'Sentry Corporation')
+,(N'Top', N'tracker.sys', N'404910', N'Acronis')
+,(N'Top', N'csvnsflt.sys', N'404900', N'Microsoft')
+,(N'Top', N'csvflt.sys', N'404800', N'Microsoft')
+,(N'Top', N'Microsoft.Uev.AgentDriver.sys', N'404710', N'Microsoft')
+,(N'Top', N'AppvVfs.sys', N'404700', N'Microsoft')
+,(N'Top', N'CCFFilter.sys', N'404600', N'Microsoft')
+,(N'Top', N'cr.sys', N'403900.5', N'Xryus Technologies Ltd.')
+,(N'Top', N'BGMinFlt.sys', N'403100.5', N'Virtual Bodyguard BV')
+,(N'Top', N'FwDI.sys', N'402130.5', N'First Watch Limited')
+,(N'Top', N'360AntiSteal.sys', N'402120.5', N'360 Software (Beijing)')
+,(N'Top', N'uberAgentDrv.sys', N'402110', N'vast limits GmbH')
+,(N'Top', N'mrigflt.sys', N'402100', N'Paramount Software Ltd')
+,(N'Top', N'darkscope-drv.sys', N'402030.5', N'Zhuhai YiZhiSec co')
+,(N'Top', N'XCOAmon.sys', N'402025.5', N'TRIART INC')
+,(N'Top', N'RevoNetDriver.sys', N'402020', N'J''s Communication Co.')
+,(N'Top', N'dciogrd.sys', N'402010', N'Datacloak Tech')
+,(N'Top', N'Dewdrv.sys', N'402000', N'Dell Technologies')
+,(N'Top', N'zsusbstorfilt.sys', N'401910', N'Zshield Inc')
+,(N'Top', N'eaw.sys', N'401900', N'Raytheon Cyber Solutions')
+,(N'Top', N'TVFsfilter.sys', N'401800', N'TrustView')
+,(N'Top', N'KKDiskProtecter.sys', N'401700', N'Goldmsg')
+,(N'Top', N'AgentComm.sys', N'401600', N'Trustwave Holding Inc')
+,(N'Top', N'rvsavd.sys', N'401500', N'CJSC Returnil Software')
+,(N'Top', N'DGMinFlt.sys', N'401410', N'Digital Guardian Inc.')
+,(N'Top', N'dgdmk.sys', N'401400', N'Verdasys Inc.')
+,(N'Top', N'stadrv6x64.sys', N'401350.5', N'Netskope Inc.')
+,(N'Top', N'stadrv6x32.sys', N'401350.5', N'Netskope Inc.')
+,(N'Top', N'tusbstorfilt.sys', N'401300', N'SimplyCore LLC')
+,(N'Top', N'pcgenfam.sys', N'401200', N'Soluto')
+,(N'Top', N'atrsdfw.sys', N'401100', N'Altiris')
+,(N'Top', N'tpfilter.sys', N'401000', N'RedPhone Security')
+,(N'Top', N'MBIG2Prot.sys', N'400920', N'Malwarebytes Inc')
+,(N'Top', N'mbamwatchdog.sys', N'400900', N'Malwarebytes Corporation')
+,(N'Top', N'DSESafeCtrlDrv.sys', N'400803', N'Shanghai Eff-Soft IT')
+,(N'Top', N'edevmonm.sys', N'400800.3', N'ESET spol. s r.o.')
+,(N'Top', N'edevmon.sys', N'400800', N'ESET spol. s r.o.')
+,(N'Top', N'vmwprotect.sys', N'400700.5', N'VMware, Inc.')
+,(N'Top', N'vmwcdrfilter.sys', N'400700.3', N'VMware, Inc.')
+,(N'Top', N'vmwflstor.sys', N'400700', N'VMware, Inc.')
+,(N'Top', N'TsQBDrv.sys', N'400600', N'Tencent Technology')
+,(N'Top', N'PolyPortFlt.sys', N'400490', N'PolyPort Inc')
+,(N'Top', N'Dscdriver.sys', N'400300', N'Dell Technologies Inc.')
 GO
-BEGIN TRAN;
 INSERT INTO dbo.filter_driver_altitudes
 VALUES
-('Activity Monitor', 'DTPL.sys', 388520.00, 'CONNECT SHIFT LTD');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'CyOptics.sys', 388514.00, 'Cylance Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'CyProtectDrv32.sys', 388510.00, 'Cylance Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'CyProtectDrv64.sys', 388510.00, 'Cylance Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'tbfsfilt.sys', 388500.00, 'Third Brigade');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'IvAppMon.sys', 388491.00, 'Ivanti');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'LDSecDrv.sys', 388490.00, 'LANDESK Software');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'SGResFlt.sys', 388480.00, 'Samsung SDS Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'CwMem2k64.sys', 388470.00, 'ApSoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'axfltdrv.sys', 388460.00, 'Axact Pvt Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'RMDiskMon.sys', 388450.00, 'Qingdao Ruanmei Network Technology Co., Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'diskactmon.sys', 388440.00, 'Qingdao Ruanmei Network Technology Co., Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'BlackCat.sys', 388435.00, 'NEXON KOREA');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'Codex.sys', 388430.00, 'GameHi Co., Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'CatMF.sys', 388420.00, 'Logichron Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'RW7FsFlt.sys', 388410.00, 'PJSC KP VTI');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'aswSP.sys', 388401.00, 'Avast Software');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'aswFsBlk.sys', 388400.00, 'ALWIL Software');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'AbrPmon.sys', 388390.00, 'FastTrack Software ApS');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'ThreatStackFIM.sys', 388380.00, 'Threat Stack');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'BOsCmFlt.sys', 388370.00, 'Barkly Protects Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'BOsFsFltr.sys', 388370.00, 'Barkly Protects Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'Asgard.sys', 388365.00, 'SPEKNET EOOD');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'FeKern.sys', 388360.00, 'FireEye Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'fhfs.sys', 388355.50, 'SecureCircle');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'libwaacd.sys', 388350.20, 'OPSWAT Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'libwamf.sys', 388350.00, 'OPSWAT Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'SZEDRDrv.sys', 388346.00, 'SaferZone Co.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'szardrv.sys', 388345.00, 'SaferZone Co.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'szpcmdrv.sys', 388341.00, 'SaferZone Co.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'szdfmdrv.sys', 388340.00, 'SaferZone Co.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'szdfmdrv_usb.sys', 388331.00, 'SaferZone Co.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'sprtdrv.sys', 388330.00, 'SaferZone Co.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'SWFsFltrv2.sys', 388321.00, 'Solarwinds LLC');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'SWFsFltr.sys', 388320.00, 'Solarwinds LLC');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'flashaccelfs.sys', 388310.00, 'Network Appliance');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'changelog.sys', 388300.00, 'Network Appliance');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'stcvsm.sys', 388250.00, 'StorageCraft Tech');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'aUpDrv.sys', 388240.00, 'ITSTATION Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'fshs.sys', 388222.00, 'F-Secure');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'fshs.sys', 388221.00, 'F-Secure');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'fsatp.sys', 388220.00, 'F-Secure');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'SecdoDriver.sys', 388210.00, 'Secdo');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'TGFSMF.sys', 388200.00, 'Tetraglyph Technologies');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'napfflti.sys', 388150.50, 'NETAND Co Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'OwlyshieldRansomFilter.sys', 388110.50, 'SitinCloud SAS');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'evscase.sys', 388100.00, 'March Hare Software Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'VSScanner.sys', 388050.00, 'VoodooSoft, LLC');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'HDRansomOffDrv.sys', 388044.00, 'Heilig Defense LLC');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'HDCorrelateFDrv.sys', 388042.00, 'Heilig Defense LLC');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'HDFileMon.sys', 388040.00, 'Heilig Defense LLC');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'tsifilemon.sys', 388012.00, 'Intercom Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'MarSpy.sys', 388010.00, 'Intercom Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'AGSysLock.sys', 388002.00, 'AppGuard LLC');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'AGSecLock.sys', 388001.00, 'AppGuard LLC');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'BrnFileLock.sys', 388000.00, 'Blue Ridge Networks');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'BrnSecLock.sys', 387990.00, 'Blue Ridge Networks');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'LCmPrintMon.sys', 387978.00, 'YATEM Co. Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'LCgAdMon.sys', 387977.00, 'YATEM Co. Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'LCmAdMon.sys', 387976.00, 'YATEM Co. Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'LCgFileMon.sys', 387975.00, 'YATEM Co. Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'LCmFile.sys', 387974.00, 'YATEM Co. Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'LCgFile.sys', 387972.00, 'YATEM Co. Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'LCmFileMon.sys', 387970.00, 'YATEM Co. Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'IridiumSwitch.sys', 387960.00, 'Confio');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'axfsysmon.sys', 387951.00, 'AppiXoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'scensemon.sys', 387950.00, 'AppiXoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'ruaff.sys', 387940.00, 'RUNEXY');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'bbfilter.sys', 387930.00, 'derivo GmbH');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'Bfmon.sys', 387920.00, 'Baidu (Hong Kong) Limited');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'bdsysmon.sys', 387912.00, 'Baidu Online Network');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'BdRdFolder.sys', 387910.00, 'Baidu (beijing)');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'mlsaff.sys', 387901.00, 'RUNEXY');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'pscff.sys', 387900.00, 'Weing Co.,Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'fcnotify.sys', 387880.00, 'TCXA Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'aaf.sys', 387860.00, 'Actifio Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'gddcv.sys', 387840.00, 'G Data Software AG');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'wgfile.sys', 387820.00, 'ORANGE WERKS Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'zesfsmf.sys', 387800.00, 'Novell');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'BWAnticheat.sys', 387750.00, 'Binklac Workstation');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'uamflt.sys', 387700.00, 'Sevtechnotrans');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'ehdrv.sys', 387600.00, 'ESET, spol. s r.o.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'DattoFSF.sys', 387560.00, 'Datto Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'RubrikFileAudit.sys', 387552.00, 'Rubrik Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'FileSystemCBT.sys', 387550.00, 'Rubrik Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'Snilog.sys', 387500.00, 'Systemneeds, Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'tss.sys', 387400.00, 'Tiversa Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'LmDriver.sys', 387390.00, 'in-soft Kft.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'WDCFilter.sys', 387330.00, 'Interset Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'altcbt.sys', 387320.00, 'Altaro Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'bapfecpt.sys', 387310.00, 'BitArmor Systems, Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'bamfltr.sys', 387300.00, 'BitArmor Systems, Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'TrustedEdgeFfd.sys', 387200.00, 'FileTek, Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'MRxGoogle.sys', 387100.00, 'Google, Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'YFSDR.SYS', 387010.00, 'Yokogawa R&L Corp');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'YFSD.SYS', 387000.00, 'Yokogawa R&L Corp');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'YFSRD.sys', 386990.00, 'Yokogawa R&L Corp');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'psgfoctrl.sys', 386990.00, 'Yokogawa R&L Corp');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'psgdflt.sys', 386980.00, 'Yokogawa R&L Corp');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'USBPDH.SYS', 386901.00, 'Centre for Development of Advanced Computing');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'pecfilter.sys', 386900.00, 'C-DAC Hyderabad');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'GKPFCB64.sys', 386810.00, 'INCA Internet Co.,Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'TkPcFtCb.sys on 32bit', 386800.00, 'INCA Internet Co.,Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'TkPcFtCb64.sys on 64bit', 386800.00, 'INCA Internet Co.,Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'bmregdrv.sys', 386731.00, 'Yandex LLC');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'bmfsdrv.sys', 386730.00, 'Yandex LLC');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'CarbonBlackK.sys', 386720.00, 'Bit9 Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'ScAuthFSFlt2.sys', 386711.00, 'Security Code LLC');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'ScAuthFSFlt.sys', 386710.00, 'Security Code LLC');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'ScAuthIoDrv.sys', 386700.00, 'Security Code LLC');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'mfeaskm.sys', 386610.00, 'McAfee Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'mfencfilter.sys', 386600.00, 'McAfee');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'WinFLAHdrv.sys', 386540.00, 'NewSoftwares.net,Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'WinFLAdrv.sys', 386530.00, 'NewSoftwares.net,Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'WinDBdrv.sys', 386520.00, 'NewSoftwares.net,Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'WinFLdrv.sys', 386510.00, 'NewSoftwares.net,Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'WinFPdrv.sys', 386500.00, 'NewSoftwares.net,Inc.');
-COMMIT TRAN;
+ (N'Activity Monitor', N'csfsflt.sys', N'389550.5', N'Darktrace Holdings Ltd.')
+,(N'Activity Monitor', N'tactical.sys', N'389540.5', N'Tactical Defense')
+,(N'Activity Monitor', N'EDRMiniFilter.sys', N'389526.5', N'Venustech')
+,(N'Activity Monitor', N'zd_mon.sys', N'389520.5', N'Zecurion')
+,(N'Activity Monitor', N'icrlmonitor.sys', N'389518.5', N'Delta Electronics Inc')
+,(N'Activity Monitor', N'klboot.sys', N'389510', N'Kaspersky Lab')
+,(N'Activity Monitor', N'klfdefsf.sys', N'389500', N'Kaspersky Lab')
+,(N'Activity Monitor', N'JKMCPF.sys', N'389492.7', N'JiranData Co. Ltd')
+,(N'Activity Monitor', N'JDEDRPF.sys', N'389492.5', N'JiranData Co. Ltd')
+,(N'Activity Monitor', N'JDPPWF.sys', N'389492', N'JiranData Co. Ltd')
+,(N'Activity Monitor', N'JDPPSF.sys', N'389490', N'JiranData Co. Ltd')
+,(N'Activity Monitor', N'FFDriver.sys', N'389470', N'ColorTokens')
+,(N'Activity Monitor', N'evaccin.sys', N'389455.5', N'databps.com')
+,(N'Activity Monitor', N'SeRdr.sys', N'389450', N'rhipe Australia Pty')
+,(N'Activity Monitor', N'edrmpdrv.sys', N'389440.5', N'ZandCrafters LLC')
+,(N'Activity Monitor', N'edrmpsec.sys', N'389440.4', N'ZandCrafters LLC')
+,(N'Activity Monitor', N'edrmprv.sys', N'389440.3', N'ZandCrafters LLC')
+,(N'Activity Monitor', N'bw_fssec.sys', N'389430.5', N'Wuhan Buwei Software Technology Co.,Ltd')
+,(N'Activity Monitor', N'SecurityPro.sys', N'389430.3', N'Wuhan Buwei Software Technology Co.,Ltd')
+,(N'Activity Monitor', N'defragger.sys', N'389420', N'Microsoft')
+,(N'Activity Monitor', N'qstfltmon.sys', N'389410.5', N'Qohash Inc')
+,(N'Activity Monitor', N'storagedrv.sys', N'389400', N'SMTechnology Co.')
+,(N'Activity Monitor', N'CULockerFsfd.sys', N'389385.5', N'CUBOX Co., Ltd')
+,(N'Activity Monitor', N'kixprotect.sys', N'389370.5', N'SBS Software')
+,(N'Activity Monitor', N'cydanix_amon.sys', N'389350.5', N'Cydanix LLC')
+,(N'Activity Monitor', N'nargflti.sys on 32bit', N'389340.6', N'NETAND Co.,Ltd')
+,(N'Activity Monitor', N'nargflta.sys on 64bit', N'389340.6', N'NETAND Co.,Ltd')
+,(N'Activity Monitor', N'naspflti.sys on 32bit', N'389340.5', N'NETAND Co.,Ltd')
+,(N'Activity Monitor', N'naspflta.sys on 64bit', N'389340.5', N'NETAND Co.,Ltd')
+,(N'Activity Monitor', N'NetPeeker.sys', N'389330', N'eMingSoftware Inc')
+,(N'Activity Monitor', N'path8flt.sys', N'389320', N'Telefonica Digital')
+,(N'Activity Monitor', N'DLPDriverNfn.sys', N'389310.5', N'Acronis')
+,(N'Activity Monitor', N'NgScan.sys', N'389310', N'Acronis')
+,(N'Activity Monitor', N'icrlmonitor.sys', N'389300', N'Industrial Technology')
+,(N'Activity Monitor', N'gibepcore.sys', N'389290', N'Group-IB LTD')
+,(N'Activity Monitor', N'cpflt.sys', N'389285.5', N'Cloudplan GmbH')
+,(N'Activity Monitor', N'enmon.sys', N'389280', N'OpenText Corp')
+,(N'Activity Monitor', N'bfdrv.sys', N'389275.5', N'KForensic')
+,(N'Activity Monitor', N'wsafefilter.sys', N'389272', N'WidgetNuri Corp')
+,(N'Activity Monitor', N'RansomDetect.sys', N'389270', N'WidgetNuri Corp')
+,(N'Activity Monitor', N'PPLPMFilter.sys', N'389265.5', N'PolicyPak Software')
+,(N'Activity Monitor', N'cbfsfilter2017.sys', N'389260', N'Mobile Content Mgmt')
+,(N'Activity Monitor', N'cbfilter20.sys', N'389251', N'SecureLink Inc.')
+,(N'Activity Monitor', N'CBFSFilter2017.sys', N'389250', N'SecureLink Inc.')
+,(N'Activity Monitor', N'GmBase.sys', N'389248', N'NanJing Geomarking')
+,(N'Activity Monitor', N'MagicProtect.sys', N'389247', N'NanJing Geomarking')
+,(N'Activity Monitor', N'cbfsfilter2017.sys', N'389245', N'NanJing Geomarking')
+,(N'Activity Monitor', N'cbfsfilter2020.sys', N'389245', N'NanJing Geomarking')
+,(N'Activity Monitor', N'DTDSel.sys', N'389242', N'DELL Technologies')
+,(N'Activity Monitor', N'NWEDriver.sys', N'389240', N'Dell Technologies')
+,(N'Activity Monitor', N'cytmon.sys', N'389230', N'Cytrence Inc')
+,(N'Activity Monitor', N'ZtacFltr.sys', N'389225.5', N'Blackpoint Cyber')
+,(N'Activity Monitor', N'SophosED.sys', N'389220', N'Sophos')
+,(N'Activity Monitor', N'MonsterK.sys', N'389210', N'Somma Inc')
+,(N'Activity Monitor', N'MSSITDIF.SYS', N'389205.8', N'ISNET Corp')
+,(N'Activity Monitor', N'MSSIDRVF.SYS', N'389205.6', N'ISNET Corp')
+,(N'Activity Monitor', N'BMFWTDIF.SYS', N'389205.4', N'ISNET Corp')
+,(N'Activity Monitor', N'STORVXFT.SYS', N'389205.2', N'ISNET Corp')
+,(N'Activity Monitor', N'STORV1FT.SYS', N'389205.1', N'ISNET Corp')
+,(N'Activity Monitor', N'IFS64.sys', N'389200', N'Ashampoo Development')
+,(N'Activity Monitor', N'TSTFsReDir.sys', N'389192', N'ThinScale Tech')
+,(N'Activity Monitor', N'TSTRegReDir.sys', N'389191', N'ThinScale Tech')
+,(N'Activity Monitor', N'TSTFilter.sys', N'389190', N'ThinScale Tech')
+,(N'Activity Monitor', N'VrnsFilter.sys', N'389180', N'Varonis Ltd')
+,(N'Activity Monitor', N'slb_guard.sys', N'389175', N'Lenovo Beijing')
+,(N'Activity Monitor', N'lrtp.sys', N'389170', N'Lenovo Beijing')
+,(N'Activity Monitor', N'ipcomfltr.sys', N'389160', N'Bluzen Inc')
+,(N'Activity Monitor', N'oneagent.sys', N'389155.5', N'BluSapphire Cyber Systems Pvt Ltd')
+,(N'Activity Monitor', N'SvCBT.sys', N'389150', N'Spharsoft Technologies')
+,(N'Activity Monitor', N'mbamshuriken.sys', N'389140', N'Malwarebytes')
+,(N'Activity Monitor', N'FGFLT.sys', N'389135.5', N'WinAbility Software')
+,(N'Activity Monitor', N'ContainerMonitor.sys', N'389130', N'Aqua Security')
+,(N'Activity Monitor', N'cmflt.sys', N'389125', N'Certero')
+,(N'Activity Monitor', N'SaMFlt.sys', N'389120', N'DreamCrafts')
+,(N'Activity Monitor', N'RuiMinispy.sys', N'389117', N'RuiGuard Ltd')
+,(N'Activity Monitor', N'RuiFileAccess.sys', N'389115', N'RuiGuard Ltd')
+,(N'Activity Monitor', N'RuiEye.sys', N'389113', N'RuiGuard Ltd')
+,(N'Activity Monitor', N'RuiMachine.sys', N'389111', N'RuiGuard Ltd')
+,(N'Activity Monitor', N'windd.sys', N'389110', N'Comae Tech')
+,(N'Activity Monitor', N'cbfsfilter2017.sys', N'389105', N'Basein Networks')
+,(N'Activity Monitor', N'taobserveflt.sys', N'389100', N'ThinAir Labs Inc')
+,(N'Activity Monitor', N'fsrvlock.sys', N'389098', N'Man Technology Inc')
+,(N'Activity Monitor', N'bsrfsflt.sys', N'389096', N'Man Technology Inc')
+,(N'Activity Monitor', N'fsrfilter.sys', N'389094', N'Man Technology Inc')
+,(N'Activity Monitor', N'vollock.sys', N'389092', N'Man Technology Inc')
+,(N'Activity Monitor', N'drbdlock.sys', N'389090', N'Man Technology Inc')
+,(N'Activity Monitor', N'dcfsgrd.sys', N'389085', N'Datacloak Tech')
+,(N'Activity Monitor', N'hsmltmon.sys', N'389080', N'Hitachi Solutions')
+,(N'Activity Monitor', N'AternityRegistryHook.sys', N'389070', N'Aternity Ltd')
+,(N'Activity Monitor', N'MozyNextFilter.sys', N'389068', N'Carbonite Inc')
+,(N'Activity Monitor', N'MozyCorpFilter.sys', N'389067', N'Carbonite Inc')
+,(N'Activity Monitor', N'MozyEntFilter.sys', N'389066', N'Carbonite Inc')
+,(N'Activity Monitor', N'MozyOEMFilter.sys', N'389065', N'Carbonite Inc')
+,(N'Activity Monitor', N'MozyEnterpriseFilter.sys', N'389064', N'Carbonite Inc')
+,(N'Activity Monitor', N'MozyProFilter.sys', N'389063', N'Carbonite Inc')
+,(N'Activity Monitor', N'MozyHomeFilter.sys', N'389062', N'Carbonite Inc')
+,(N'Activity Monitor', N'BDSFilter.sys', N'389061', N'Carbonite Inc')
+,(N'Activity Monitor', N'CSBFilter.sys', N'389060', N'Carbonite Inc')
+,(N'Activity Monitor', N'f_pmf.sys', N'389055.5', N'Fasoo Inc.')
+,(N'Activity Monitor', N'ChemometecFilter.sys', N'389050', N'ChemoMetec')
+,(N'Activity Monitor', N'bcloudsafe.sys', N'389045.5', N'AISHU Technology Corp')
+,(N'Activity Monitor', N'SentinelMonitor.sys(retired - new altitude allocated)', N'389040', N'SentinelOne')
+,(N'Activity Monitor', N'DhWatchdog.sys', N'389030', N'Microsoft')
+,(N'Activity Monitor', N'edrsensor.sys', N'389025', N'Bitdefender SRL')
+,(N'Activity Monitor', N'bdprivmon.sys', N'389022', N'Bitdefender SRL')
+,(N'Activity Monitor', N'NpEtw.sys', N'389020', N'Koby Kahane')
+,(N'Activity Monitor', N'OczMiniFilter.sys', N'389010', N'OCZ Storage')
+,(N'Activity Monitor', N'ielcp.sys', N'389004', N'Intel Corporation')
+,(N'Activity Monitor', N'IESlp.sys', N'389002', N'Intel Corporation')
+,(N'Activity Monitor', N'IntelCAS.sys', N'389000', N'Intel Corporation')
+,(N'Activity Monitor', N'neucloak.sys', N'388995.5', N'NeuShield, Inc.')
+,(N'Activity Monitor', N'boxifier.sys', N'388990', N'Kenubi')
+,(N'Activity Monitor', N'SamsungRapidFSFltr.sys', N'388980', N'NVELO Inc.')
+,(N'Activity Monitor', N'drsfile.sys', N'388970', N'MRY Inc.')
+,(N'Activity Monitor', N'CbFltFs4.sys', N'388966', N'Simopro Technology')
+,(N'Activity Monitor', N'CrUnCopy.sys', N'388964', N'Shenzhen CloudRiver')
+,(N'Activity Monitor', N'aictracedrv_am.sys', N'388960', N'AI Consulting')
+,(N'Activity Monitor', N'fiopolicyfilter.sys', N'388954', N'SanDisk Inc.')
+,(N'Activity Monitor', N'sodatpfl.sys', N'388951', N'SODATSW spol. s r.o.')
+,(N'Activity Monitor', N'sodatpfl.sys', N'388950.2', N'SODATSW')
+,(N'Activity Monitor', N'fcontrol.sys', N'388950', N'SODATSW spol. s r.o.')
+,(N'Activity Monitor', N'qfilter.sys', N'388940', N'Quorum Labs')
+,(N'Activity Monitor', N'Redlight.sys', N'388930', N'Trustware Ltd')
+,(N'Activity Monitor', N'ClumioChangeBlockMf.sys', N'388925', N'Clumio Inc')
+,(N'Activity Monitor', N'eps.sys', N'388920', N'Lumension')
+,(N'Activity Monitor', N'VHDTrack.sys', N'388915', N'Intronis Inc')
+,(N'Activity Monitor', N'VHDDelta.sys', N'388912', N'Niriva LLC')
+,(N'Activity Monitor', N'FSTrace.sys', N'388910', N'Niriva LLC')
+,(N'Activity Monitor', N'spidermon.sys', N'388905.5', N'Guangzhou Shizhen Information Technology Co.,Ltd')
+,(N'Activity Monitor', N'YahooStorage.sys', N'388900', N'Yahoo Japan Corporation')
+,(N'Activity Monitor', N'KeWF.sys', N'388890', N'KEBA AG')
+,(N'Activity Monitor', N'epregflt.sys', N'388888', N'Check Point Software')
+,(N'Activity Monitor', N'epklib.sys', N'388886', N'Check Point Software')
+,(N'Activity Monitor', N'zsfprt.sys', N'388880', N'k4solution Co., Ltd.')
+,(N'Activity Monitor', N'dsflt.sys', N'388876', N'cEncrypt')
+,(N'Activity Monitor', N'bfaccess.sys', N'388872', N'bitFence Inc.')
+,(N'Activity Monitor', N'xcpl.sys', N'388870', N'X-Cloud Systems')
+,(N'Activity Monitor', N'DRMFilter.sys', N'388867.5', N'ManageEngine Zoho')
+,(N'Activity Monitor', N'DFMFilter.sys', N'388867', N'ManageEngine Zoho')
+,(N'Activity Monitor', N'DCFAFilter.sys', N'388866', N'ManageEngine Zoho')
+,(N'Activity Monitor', N'RMPHVMonitor.sys', N'388865', N'ManageEngine Zoho')
+,(N'Activity Monitor', N'FAPMonitor.sys', N'388864', N'ManageEngine Zoho')
+,(N'Activity Monitor', N'FACEDrv.sys', N'388863.5', N'ManageEngine Zoho')
+,(N'Activity Monitor', N'MEARWFltDriver.sys', N'388863', N'ManageEngine Zoho')
+,(N'Activity Monitor', N'SerMonDriver.sys', N'388862.5', N'ManageEngine Zoho')
+,(N'Activity Monitor', N'EaseFlt.sys', N'388860', N'EaseVault Technologies Inc.')
+,(N'Activity Monitor', N'rpwatcher.sys', N'388855', N'Best Security')
+,(N'Activity Monitor', N'sieflt.sys', N'388852', N'Quick Heal Technologies Pvt. Ltd.')
+,(N'Activity Monitor', N'cssdlp.sys', N'388851', N'Quick Heal Technologies Pvt. Ltd.')
+,(N'Activity Monitor', N'cssdlp.sys', N'388850', N'CoSoSys')
+,(N'Activity Monitor', N'INISBDrv64.sys', N'388840', N'Initech Inc.')
+,(N'Activity Monitor', N'kconv.sys', N'388832', N'Fitsec Ltd')
+,(N'Activity Monitor', N'trace.sys', N'388831', N'Fitsec Ltd')
+,(N'Activity Monitor', N'SandDriver.sys', N'388830', N'Fitsec Ltd')
+,(N'Activity Monitor', N'dskmn.sys', N'388820', N'Honeycomb Technologies')
+,(N'Activity Monitor', N'offsm.sys', N'388811', N'Jiransoft Co., Ltd')
+,(N'Activity Monitor', N'xkfsfd.sys', N'388810', N'Jiransoft Co., Ltd')
+,(N'Activity Monitor', N'JKPPOB.sys', N'388808', N'Jiransoft Co., Ltd')
+,(N'Activity Monitor', N'JKPPXK.sys', N'388807', N'Jiransoft Co., Ltd')
+,(N'Activity Monitor', N'JKPPPF.sys', N'388806', N'Jiransoft Co., Ltd')
+,(N'Activity Monitor', N'JKPPOK.sys', N'388805', N'Jiransoft Co., Ltd')
+,(N'Activity Monitor', N'JRPPOK.sys', N'388800.1', N'Jiransoft Co., Ltd')
+,(N'Activity Monitor', N'pcpifd.sys', N'388800', N'Jiransoft Co., Ltd')
+,(N'Activity Monitor', N'NNTInfo.sys', N'388790', N'New Net Technologies Limited')
+,(N'Activity Monitor', N'NmpFilter.sys', N'388781', N'IBM')
+,(N'Activity Monitor', N'FsMonitor.sys', N'388780', N'IBM')
+,(N'Activity Monitor', N'PRFFilter.sys', N'388770.5', N'CommVault Systems, Inc.')
+,(N'Activity Monitor', N'CVCBT.sys', N'388770', N'CommVault Systems, Inc.')
+,(N'Activity Monitor', N'AwareCore.sys', N'388760', N'TaaSera Inc.')
+,(N'Activity Monitor', N'laFS.sys', N'388750', N'NetworkProfi Ltd')
+,(N'Activity Monitor', N'fsnk.sys', N'388740', N'SoftPerfect Research')
+,(N'Activity Monitor', N'RGNT.sys', N'388730', N'HFN Inc.')
+,(N'Activity Monitor', N'fltRs329.sys', N'388720', N'Secured Globe Inc.')
+,(N'Activity Monitor', N'ospmon.sys', N'388710', N'SC ODEKIN SOLUTIONS SRL')
+,(N'Activity Monitor', N'edsigk.sys', N'388700', N'Enterprise Data Solutions, Inc.')
+,(N'Activity Monitor', N'fiometer.sys', N'388692', N'Fusion-io')
+,(N'Activity Monitor', N'dcSnapRestore.sys', N'388690', N'Fusion-io')
+,(N'Activity Monitor', N'SytSelfProtect.sys', N'388688.5', N'Sunyata Electronic Tech')
+,(N'Activity Monitor', N'fam.sys', N'388680', N'Quick Heal Technologies Pvt. Ltd.')
+,(N'Activity Monitor', N'vidderfs.sys', N'388675', N'Vidder Inc.')
+,(N'Activity Monitor', N'Tritiumfltr.sys', N'388670', N'Tritium Inc.')
+,(N'Activity Monitor', N'HexisFSMonitor.sys', N'388660', N'Hexis Cyber Solutions')
+,(N'Activity Monitor', N'BlackbirdFSA.sys', N'388650', N'BeyondTrust Inc.')
+,(N'Activity Monitor', N'TMUMS.sys', N'388642', N'Trend Micro Inc.')
+,(N'Activity Monitor', N'hfileflt.sys', N'388640', N'Trend Micro Inc.')
+,(N'Activity Monitor', N'TMUMH.sys', N'388630', N'Trend Micro Inc.')
+,(N'Activity Monitor', N'AcDriver.sys', N'388620', N'Trend Micro, Inc.')
+,(N'Activity Monitor', N'SakFile.sys', N'388610', N'Trend Micro, Inc.')
+,(N'Activity Monitor', N'SakMFile.sys', N'388600', N'Trend Micro, Inc.')
+,(N'Activity Monitor', N'rsfdrv.sys', N'388580', N'Clonix Co')
+,(N'Activity Monitor', N'alcapture.sys', N'388570', N'Airlock Digital Pty Ltd')
+,(N'Activity Monitor', N'kmNWCH.sys', N'388560', N'IGLOO SECURITY, Inc.')
+,(N'Activity Monitor', N'ISIRMFmon.sys', N'388550', N'ALPS SYSTEM INTERGRATION CO., LTD')
+,(N'Activity Monitor', N'EsProbe.sys', N'388542', N'Stormshield')
+,(N'Activity Monitor', N'heimdall.sys', N'388540', N'Arkoon Network Security')
+,(N'Activity Monitor', N'thetta.sys', N'388532', N'Syncopate')
+,(N'Activity Monitor', N'thetta.sys', N'388531', N'Syncopate')
+,(N'Activity Monitor', N'thetta.sys', N'388530', N'Syncopate')
+,(N'Activity Monitor', N'DTPL.sys', N'388520', N'CONNECT SHIFT LTD')
+,(N'Activity Monitor', N'CyOptics.sys', N'388514', N'Cylance Inc.')
+,(N'Activity Monitor', N'CyProtectDrv32.sys', N'388510', N'Cylance Inc.')
+,(N'Activity Monitor', N'CyProtectDrv64.sys', N'388510', N'Cylance Inc.')
+,(N'Activity Monitor', N'tbfsfilt.sys', N'388500', N'Third Brigade')
+,(N'Activity Monitor', N'IvAppMon.sys', N'388491', N'Ivanti')
+,(N'Activity Monitor', N'LDSecDrv.sys', N'388490', N'LANDESK Software')
+,(N'Activity Monitor', N'SGResFlt.sys', N'388480', N'Samsung SDS Ltd')
+,(N'Activity Monitor', N'CwMem2k64.sys', N'388470', N'ApSoft')
+,(N'Activity Monitor', N'axfltdrv.sys', N'388460', N'Axact Pvt Ltd')
+,(N'Activity Monitor', N'RMDiskMon.sys', N'388450', N'Qingdao Ruanmei Network Technology Co., Ltd.')
+,(N'Activity Monitor', N'diskactmon.sys', N'388440', N'Qingdao Ruanmei Network Technology Co., Ltd.')
+,(N'Activity Monitor', N'BlackCat.sys', N'388435.5', N'NEXON KOREA')
+,(N'Activity Monitor', N'Codex.sys', N'388430', N'GameHi Co., Ltd.')
+,(N'Activity Monitor', N'CatMF.sys', N'388420', N'Logichron Inc')
+,(N'Activity Monitor', N'RW7FsFlt.sys', N'388410', N'PJSC KP VTI')
+,(N'Activity Monitor', N'aswSP.sys', N'388401', N'Avast Software')
+,(N'Activity Monitor', N'aswFsBlk.sys', N'388400', N'ALWIL Software')
+,(N'Activity Monitor', N'AbrPmon.sys', N'388390', N'FastTrack Software ApS')
+,(N'Activity Monitor', N'ThreatStackFIM.sys', N'388380', N'Threat Stack')
+,(N'Activity Monitor', N'BOsCmFlt.sys', N'388370', N'Barkly Protects Inc.')
+,(N'Activity Monitor', N'BOsFsFltr.sys', N'388370', N'Barkly Protects Inc.')
+,(N'Activity Monitor', N'Asgard.sys', N'388365', N'SPEKNET EOOD')
+,(N'Activity Monitor', N'FeKern.sys', N'388360', N'FireEye Inc.')
+,(N'Activity Monitor', N'fhfs.sys', N'388355.5', N'SecureCircle')
+,(N'Activity Monitor', N'libwaacd.sys', N'388350.2', N'OPSWAT Inc.')
+,(N'Activity Monitor', N'libwamf.sys', N'388350', N'OPSWAT Inc.')
+,(N'Activity Monitor', N'SZEDRDrv.sys', N'388346', N'SaferZone Co.')
+,(N'Activity Monitor', N'szardrv.sys', N'388345', N'SaferZone Co.')
+,(N'Activity Monitor', N'szpcmdrv.sys', N'388341', N'SaferZone Co.')
+,(N'Activity Monitor', N'szdfmdrv.sys', N'388340', N'SaferZone Co.')
+,(N'Activity Monitor', N'szdfmdrv_usb.sys', N'388331', N'SaferZone Co.')
+,(N'Activity Monitor', N'sprtdrv.sys', N'388330', N'SaferZone Co.')
+,(N'Activity Monitor', N'SWFsFltrv2.sys', N'388321', N'Solarwinds LLC')
+,(N'Activity Monitor', N'SWFsFltr.sys', N'388320', N'Solarwinds LLC')
+,(N'Activity Monitor', N'flashaccelfs.sys', N'388310', N'Network Appliance')
+,(N'Activity Monitor', N'changelog.sys', N'388300', N'Network Appliance')
+,(N'Activity Monitor', N'stcvsm.sys', N'388250', N'StorageCraft Tech')
+,(N'Activity Monitor', N'aUpDrv.sys', N'388240', N'ITSTATION Inc')
+,(N'Activity Monitor', N'fshs.sys', N'388222', N'F-Secure')
+,(N'Activity Monitor', N'fshs.sys', N'388221', N'F-Secure')
+,(N'Activity Monitor', N'fsatp.sys', N'388220', N'F-Secure')
+,(N'Activity Monitor', N'SecdoDriver.sys', N'388210', N'Secdo')
+,(N'Activity Monitor', N'TGFSMF.sys', N'388200', N'Tetraglyph Technologies')
+,(N'Activity Monitor', N'napfflti.sys', N'388150.5', N'NETAND Co Ltd')
+,(N'Activity Monitor', N'OwlyshieldRansomFilter.sys', N'388110.5', N'SitinCloud SAS')
+,(N'Activity Monitor', N'evscase.sys', N'388100', N'March Hare Software Ltd')
+,(N'Activity Monitor', N'VSScanner.sys', N'388050', N'VoodooSoft, LLC')
+,(N'Activity Monitor', N'HDRansomOffDrv.sys', N'388044', N'Heilig Defense LLC')
+,(N'Activity Monitor', N'HDCorrelateFDrv.sys', N'388042', N'Heilig Defense LLC')
+,(N'Activity Monitor', N'HDFileMon.sys', N'388040', N'Heilig Defense LLC')
+,(N'Activity Monitor', N'tsifilemon.sys', N'388012', N'Intercom Inc.')
+,(N'Activity Monitor', N'MarSpy.sys', N'388010', N'Intercom Inc.')
+,(N'Activity Monitor', N'AGSysLock.sys', N'388002', N'AppGuard LLC')
+,(N'Activity Monitor', N'AGSecLock.sys', N'388001', N'AppGuard LLC')
+,(N'Activity Monitor', N'BrnFileLock.sys', N'388000', N'Blue Ridge Networks')
+,(N'Activity Monitor', N'BrnSecLock.sys', N'387990', N'Blue Ridge Networks')
+,(N'Activity Monitor', N'LCmPrintMon.sys', N'387978', N'YATEM Co. Ltd.')
+,(N'Activity Monitor', N'LCgAdMon.sys', N'387977', N'YATEM Co. Ltd.')
+,(N'Activity Monitor', N'LCmAdMon.sys', N'387976', N'YATEM Co. Ltd.')
+,(N'Activity Monitor', N'LCgFileMon.sys', N'387975', N'YATEM Co. Ltd.')
+,(N'Activity Monitor', N'LCmFile.sys', N'387974', N'YATEM Co. Ltd.')
+,(N'Activity Monitor', N'LCgFile.sys', N'387972', N'YATEM Co. Ltd.')
+,(N'Activity Monitor', N'LCmFileMon.sys', N'387970', N'YATEM Co. Ltd.')
+,(N'Activity Monitor', N'IridiumSwitch.sys', N'387960', N'Confio')
+,(N'Activity Monitor', N'axfsysmon.sys', N'387951', N'AppiXoft')
+,(N'Activity Monitor', N'scensemon.sys', N'387950', N'AppiXoft')
+,(N'Activity Monitor', N'ruaff.sys', N'387940', N'RUNEXY')
+,(N'Activity Monitor', N'bbfilter.sys', N'387930', N'derivo GmbH')
+,(N'Activity Monitor', N'Bfmon.sys', N'387920', N'Baidu (Hong Kong) Limited')
+,(N'Activity Monitor', N'bdsysmon.sys', N'387912', N'Baidu Online Network')
+,(N'Activity Monitor', N'BdRdFolder.sys', N'387910', N'Baidu (beijing)')
+,(N'Activity Monitor', N'mlsaff.sys', N'387901', N'RUNEXY')
+,(N'Activity Monitor', N'pscff.sys', N'387900', N'Weing Co.,Ltd.')
+,(N'Activity Monitor', N'fcnotify.sys', N'387880', N'TCXA Ltd.')
+,(N'Activity Monitor', N'aaf.sys', N'387860', N'Actifio Inc')
+,(N'Activity Monitor', N'gddcv.sys', N'387840', N'G Data Software AG')
+,(N'Activity Monitor', N'wgfile.sys', N'387820', N'ORANGE WERKS Inc')
+,(N'Activity Monitor', N'zesfsmf.sys', N'387800', N'Novell')
+,(N'Activity Monitor', N'BWAnticheat.sys', N'387750', N'Binklac Workstation')
+,(N'Activity Monitor', N'uamflt.sys', N'387700', N'Sevtechnotrans')
+,(N'Activity Monitor', N'ehdrv.sys', N'387600', N'ESET, spol. s r.o.')
+,(N'Activity Monitor', N'DattoFSF.sys', N'387560', N'Datto Inc')
+,(N'Activity Monitor', N'RubrikFileAudit.sys', N'387552', N'Rubrik Inc')
+,(N'Activity Monitor', N'FileSystemCBT.sys', N'387550', N'Rubrik Inc')
+,(N'Activity Monitor', N'Snilog.sys', N'387500', N'Systemneeds, Inc')
+,(N'Activity Monitor', N'tss.sys', N'387400', N'Tiversa Inc')
+,(N'Activity Monitor', N'LmDriver.sys', N'387390', N'in-soft Kft.')
+,(N'Activity Monitor', N'WDCFilter.sys', N'387330', N'Interset Inc.')
+,(N'Activity Monitor', N'altcbt.sys', N'387320', N'Altaro Ltd.')
+,(N'Activity Monitor', N'bapfecpt.sys', N'387310', N'BitArmor Systems, Inc')
+,(N'Activity Monitor', N'bamfltr.sys', N'387300', N'BitArmor Systems, Inc')
+,(N'Activity Monitor', N'TrustedEdgeFfd.sys', N'387200', N'FileTek, Inc.')
+,(N'Activity Monitor', N'MRxGoogle.sys', N'387100', N'Google, Inc.')
+,(N'Activity Monitor', N'YFSDR.SYS', N'387010', N'Yokogawa R&L Corp')
+,(N'Activity Monitor', N'YFSD.SYS', N'387000', N'Yokogawa R&L Corp')
+,(N'Activity Monitor', N'YFSRD.sys', N'386990', N'Yokogawa R&L Corp')
+,(N'Activity Monitor', N'psgfoctrl.sys', N'386990', N'Yokogawa R&L Corp')
+,(N'Activity Monitor', N'psgdflt.sys', N'386980', N'Yokogawa R&L Corp')
+,(N'Activity Monitor', N'USBPDH.SYS', N'386901', N'Centre for Development of Advanced Computing')
+,(N'Activity Monitor', N'pecfilter.sys', N'386900', N'C-DAC Hyderabad')
+,(N'Activity Monitor', N'GKPFCB64.sys', N'386810', N'INCA Internet Co.,Ltd.')
+,(N'Activity Monitor', N'TkPcFtCb.sys on 32bit', N'386800', N'INCA Internet Co.,Ltd.')
+,(N'Activity Monitor', N'TkPcFtCb64.sys on 64bit', N'386800', N'INCA Internet Co.,Ltd.')
+,(N'Activity Monitor', N'bmregdrv.sys', N'386731', N'Yandex LLC')
+,(N'Activity Monitor', N'bmfsdrv.sys', N'386730', N'Yandex LLC')
+,(N'Activity Monitor', N'CarbonBlackK.sys', N'386720', N'Bit9 Inc.')
+,(N'Activity Monitor', N'ScAuthFSFlt2.sys', N'386711', N'Security Code LLC')
+,(N'Activity Monitor', N'ScAuthFSFlt.sys', N'386710', N'Security Code LLC')
+,(N'Activity Monitor', N'ScAuthIoDrv.sys', N'386700', N'Security Code LLC')
+,(N'Activity Monitor', N'mfeaskm.sys', N'386610', N'McAfee Inc.')
+,(N'Activity Monitor', N'mfencfilter.sys', N'386600', N'McAfee')
+,(N'Activity Monitor', N'WinFLAHdrv.sys', N'386540', N'NewSoftwares.net,Inc.')
+,(N'Activity Monitor', N'WinFLAdrv.sys', N'386530', N'NewSoftwares.net,Inc.')
+,(N'Activity Monitor', N'WinDBdrv.sys', N'386520', N'NewSoftwares.net,Inc.')
+,(N'Activity Monitor', N'WinFLdrv.sys', N'386510', N'NewSoftwares.net,Inc.')
+,(N'Activity Monitor', N'WinFPdrv.sys', N'386500', N'NewSoftwares.net,Inc.')
+,(N'Activity Monitor', N'varpffmon.sys', N'386486', N'Varlook Ltd.')
+,(N'Activity Monitor', N'SkyWPDrv.sys', N'386435', N'Sky Co.,Ltd.')
+,(N'Activity Monitor', N'SkyRGDrv.sys', N'386431', N'Sky Co., LTD.')
+,(N'Activity Monitor', N'SkyAMDrv.sys', N'386430', N'Sky Co., LTD.')
+,(N'Activity Monitor', N'SheedSelfProtection.sys', N'386421', N'SheedSoft Ltd')
+,(N'Activity Monitor', N'arta.sys', N'386420', N'SheedSoft Ltd.')
+,(N'Activity Monitor', N'ApexSqlFilterDriver.sys', N'386410', N'ApexSQL LLC')
+,(N'Activity Monitor', N'stflt.sys', N'386400', N'Xacti')
+,(N'Activity Monitor', N'tbrdrv.sys', N'386390', N'Crawler Group')
+,(N'Activity Monitor', N'WinTeonMiniFilter.sys', N'386320', N'Dmitry Stefankov')
+,(N'Activity Monitor', N'wiper.sys', N'386310', N'Dmitry Stefankov')
+,(N'Activity Monitor', N'DevMonMiniFilter.sys', N'386300', N'Dmitry Stefankov')
+,(N'Activity Monitor', N'VMWVvpfsd.sys', N'386200', N'VMware, Inc.')
+,(N'Activity Monitor', N'RTOLogon.sys (Renamed)', N'386200', N'VMware, Inc.')
+,(N'Activity Monitor', N'Code42Filter.sys', N'386190', N'Code42')
+,(N'Activity Monitor', N'AATFilter.sys', N'386189.5', N'Code42')
+,(N'Activity Monitor', N'ConduantFSFltr.sys', N'386180', N'Conduant Corporation')
+,(N'Activity Monitor', N'KtFSFilter.sys', N'386170', N'Keysight Technologies')
+,(N'Activity Monitor', N'FileGuard.sys', N'386140', N'RES Software')
+,(N'Activity Monitor', N'NetGuard.sys', N'386130', N'RES Software')
+,(N'Activity Monitor', N'RegGuard.sys', N'386120', N'RES Software')
+,(N'Activity Monitor', N'ImgGuard.sys', N'386110', N'RES Software')
+,(N'Activity Monitor', N'AppGuard.sys', N'386100', N'RES Software')
+,(N'Activity Monitor', N'RuiDiskFs.sys', N'386030', N'RuiGuard Ltd')
+,(N'Activity Monitor', N'minitrc.sys', N'386020', N'Protected Networks')
+,(N'Activity Monitor', N'cpepmon.sys', N'386010', N'Checkpoint Software')
+,(N'Activity Monitor', N'CGWMF.sys', N'386000', N'NetIQ')
+,(N'Activity Monitor', N'ISRegFlt.sys', N'385990', N'Flexera Software Inc.')
+,(N'Activity Monitor', N'ISRegFlt64.sys', N'385990', N'Flexera Software Inc.')
+,(N'Activity Monitor', N'shdlpSf.sys', N'385970', N'Comtrue Technology')
+,(N'Activity Monitor', N'ctrPAMon.sys', N'385960', N'Comtrue Technology')
+,(N'Activity Monitor', N'shdlpMedia.sys', N'385950', N'Comtrue Technology')
+,(N'Activity Monitor', N'SealProtect.sys', N'385920.7', N'Beijing Bytedance')
+,(N'Activity Monitor', N'FLProtect.sys', N'385920.5', N'Beijing Volcano Engine')
+,(N'Activity Monitor', N'immflex.sys', N'385910', N'Immidio B.V.')
+,(N'Activity Monitor', N'StegoProtect.sys', N'385900', N'Stegosystems Inc')
+,(N'Activity Monitor', N'brfilter.sys', N'385890', N'Bromium Inc')
+,(N'Activity Monitor', N'BrCow_x_x_x_x.sys', N'385889', N'Bromium Inc')
+,(N'Activity Monitor', N'BemK.sys', N'385888', N'Bromium Inc')
+,(N'Activity Monitor', N'secRMM.sys', N'385880', N'Squadra Technologies, LLC.')
+,(N'Activity Monitor', N'dgfilter.sys', N'385870', N'DataGravity Inc.')
+,(N'Activity Monitor', N'WFP_MRT.sys', N'385860', N'FireEye Inc')
+,(N'Activity Monitor', N'EsArtemis.sys', N'385855.5', N'Elpha Secure Technology Inc.')
+,(N'Activity Monitor', N'klrsps.sys', N'385815', N'Kaspersky Lab')
+,(N'Activity Monitor', N'klsnsr.sys', N'385810', N'Kaspersky Lab')
+,(N'Activity Monitor', N'TaniumRecorderDrv.sys', N'385800', N'Tanium')
+,(N'Activity Monitor', N'bdsmonsys.sys', N'385750', N'Binary Defense Systems')
+,(N'Activity Monitor', N'UptCtlDrv.sys', N'385725.5', N'Uptycs Inc.')
+,(N'Activity Monitor', N'CdsgFsFilter.sys', N'385700', N'CRU Data Security Group')
+,(N'Activity Monitor', N'mssecflt.sys', N'385600', N'Microsoft')
+,(N'Activity Monitor', N'Backupreader.sys', N'385500', N'Microsoft')
+,(N'Activity Monitor', N'MsixPackagingToolMonitor.sys', N'385410', N'Microsoft')
+,(N'Activity Monitor', N'AppVMon.sys', N'385400', N'Microsoft')
+,(N'Activity Monitor', N'DpmFilter.sys', N'385300', N'Microsoft')
+,(N'Activity Monitor', N'UCPD.sys', N'385250.5', N'Microsoft')
+,(N'Activity Monitor', N'ahflt.sys', N'385250.3', N'Microsoft')
+,(N'Activity Monitor', N'SystemInformer.sys', N'385210.5', N'Winsider Seminars & Solutions, Inc.')
+,(N'Activity Monitor', N'Procmon11.sys', N'385200', N'Microsoft')
+,(N'Activity Monitor', N'wtd.sys', N'385110', N'Microsoft')
+,(N'Activity Monitor', N'uberAgentFilter.sys', N'385105.5', N'vast limits GmbH')
+,(N'Activity Monitor', N'minispy.sys - Top', N'385100', N'Microsoft')
+,(N'Activity Monitor', N'fdrtrace.sys', N'385001', N'Microsoft')
+,(N'Activity Monitor', N'filetrace.sys', N'385000', N'Microsoft')
+,(N'Activity Monitor', N'uwfreg.sys', N'384910', N'Microsoft')
+,(N'Activity Monitor', N'uwfs.sys', N'384900', N'Microsoft')
+,(N'Activity Monitor', N'locksmith.sys', N'384800', N'Microsoft')
+,(N'Activity Monitor', N'winload.sys', N'384700', N'Microsoft')
+,(N'Activity Monitor', N'SFPMonitor.sys - Top', N'383350', N'SonicWall Inc')
+,(N'Activity Monitor', N'FilrDriver.sys', N'383340', N'Micro Focus')
+,(N'Activity Monitor', N'rwchangedrv.sys', N'383330', N'Rackware')
+,(N'Activity Monitor', N'airship-filter.sys', N'383320', N'AIRWare Technology Ltd')
+,(N'Activity Monitor', N'AeFilter.sys', N'383310', N'Faronics Corporation')
+,(N'Activity Monitor', N'QQProtect.sys', N'383300', N'Tencent (Shenzhen)')
+,(N'Activity Monitor', N'QQProtectX64.sys', N'383300', N'Tencent (Shenzhen)')
+,(N'Activity Monitor', N'KernelAgent32.sys', N'383260', N'ZoneFox')
+,(N'Activity Monitor', N'WRDWIZFILEPROT.SYS', N'383251', N'WardWiz')
+,(N'Activity Monitor', N'WRDWIZREGPROT.SYS', N'383250', N'WardWiz')
+,(N'Activity Monitor', N'groundling32.sys', N'383200', N'Dell Secureworks')
+,(N'Activity Monitor', N'groundling64.sys', N'383200', N'Dell Secureworks')
+,(N'Activity Monitor', N'avgtpx86.sys', N'383190', N'AVG Technologies CZ, s.r.o')
+,(N'Activity Monitor', N'avgtpx64.sys', N'383190', N'AVG Technologies CZ, s.r.o')
+,(N'Activity Monitor', N'DataNow_Driver.sys', N'383182', N'AppSense Ltd')
+,(N'Activity Monitor', N'UcaFltDriver.sys', N'383180', N'AppSense Ltd')
+,(N'Activity Monitor', N'YFSD2.sys', N'383170', N'Yokogawa Corpration')
+,(N'Activity Monitor', N'Kisknl.sys', N'383160', N'kingsoft')
+,(N'Activity Monitor', N'MWatcher.sys', N'383150', N'Neowiz Corporation')
+,(N'Activity Monitor', N'tsifilemon.sys', N'383140', N'Intercom Inc.')
+,(N'Activity Monitor', N'FIM.sys', N'383130', N'eIQnetworks Inc.')
+,(N'Activity Monitor', N'cFSfdrv', N'383120', N'Chaewool')
+,(N'Activity Monitor', N'ajfsprot.sys', N'383110', N'Analytik Jena AG')
+,(N'Activity Monitor', N'isafermon', N'383100', N'(c)SMS')
+,(N'Activity Monitor', N'kfac.sys', N'383000', N'Beijing CA-JinChen Software Co., Ltd')
+,(N'Activity Monitor', N'GUMHFilter.sys', N'382910', N'Glarysoft Ltd.')
+,(N'Activity Monitor', N'PsAcFileAccessFilter.sys', N'382902', N'FUJITSU SOFTWARE')
+,(N'Activity Monitor', N'FJGSDis2.sys', N'382900', N'FUJITSU LIMITED')
+,(N'Activity Monitor', N'secure_os.sys', N'382890', N'FUJITSU LIMITED')
+,(N'Activity Monitor', N'ibr2fsk.sys', N'382880', N'FUJITSU ENGINEERING')
+,(N'Activity Monitor', N'FJSeparettiFilterRedirect.sys', N'382860', N'FUJITSU LIMITED')
+,(N'Activity Monitor', N'Fsw31rj1.sys', N'382855', N'FUJITSU LIMITED')
+,(N'Activity Monitor', N'da_ctl.sys', N'382850', N'FUJITSU LIMITED')
+,(N'Activity Monitor', N'zqFilter.sys', N'382800', N'magrasoft Ltd')
+,(N'Activity Monitor', N'ntps_fa.sys', N'382700', N'DefendX Software')
+,(N'Activity Monitor', N'ancfunc.sys', N'382650', N'Aunaki')
+,(N'Activity Monitor', N'sConnect.sys', N'382600', N'I-O DATA DEVICE, INC')
+,(N'Activity Monitor', N'AdaptivaClientCache32.sys', N'382500', N'Adaptiva')
+,(N'Activity Monitor', N'AdaptivaclientCache64.sys', N'382500', N'Adaptiva')
+,(N'Activity Monitor', N'phantomd.sys', N'382440', N'Veramine Inc')
+,(N'Activity Monitor', N'GoFSMF.sys', N'382430', N'Gorizonty Rosta Ltd')
+,(N'Activity Monitor', N'SWCommFltr.sys', N'382420', N'SnoopWall LLC')
+,(N'Activity Monitor', N'atflt.sys', N'382410', N'Atlansys Software, LLC')
+,(N'Activity Monitor', N'amfd.sys', N'382400', N'Atlansys Software, LLC')
+,(N'Activity Monitor', N'iSafeKrnl.sys', N'382390', N'Elex Tech Inc')
+,(N'Activity Monitor', N'iSafeKrnlMon.sys', N'382380', N'Elex Tech Inc')
+,(N'Activity Monitor', N'EdrDriver.sys', N'382350.5', N'Huawei Technologies Co. Ltd.')
+,(N'Activity Monitor', N'AtdrAgent.sys', N'382325', N'360 Software (Beijing)')
+,(N'Activity Monitor', N'AtdrAgent64.sys', N'382325', N'360 Software (Beijing)')
+,(N'Activity Monitor', N'Qutmdrv.sys', N'382320', N'360 Software (Beijing)')
+,(N'Activity Monitor', N'360box.sys', N'382310', N'Qihoo 360')
+,(N'Activity Monitor', N'360fsflt.sys', N'382300', N'Beijing Qihoo Technology Co., Ltd.')
+,(N'Activity Monitor', N'PSFSF.sys', N'382250.5', N'Peer Software Inc')
+,(N'Activity Monitor', N'scred.sys', N'382210', N'SoftCamp Co., Ltd.')
+,(N'Activity Monitor', N'PDGenFam.sys', N'382200', N'Soluto LTD')
+,(N'Activity Monitor', N'MCFileMon64.sys (x64 systems)', N'382100', N'Sumitomo Electric Ltd.')
+,(N'Activity Monitor', N'MCFileMon32.sys (x32 systems)', N'382100', N'Sumitomo Electric Ltd.')
+,(N'Activity Monitor', N'RyGuard.sys', N'382050', N'SHENZHEN UNNOO Information Techco., Ltd')
+,(N'Activity Monitor', N'FileShareMon.sys', N'382040', N'SHENZHEN UNNOO Information Techco., Ltd')
+,(N'Activity Monitor', N'ryfilter.sys', N'382030', N'SHENZHEN UNNOO Information Techco., Ltd')
+,(N'Activity Monitor', N'secufile.sys', N'382020', N'Shenzhen Unnoo LTD')
+,(N'Activity Monitor', N'XiaobaiFs.sys', N'382010', N'Shenzhen Unnoo LTD')
+,(N'Activity Monitor', N'XiaobaiFsR.sys', N'382000', N'Shenzhen Unnoo LTD')
+,(N'Activity Monitor', N'TWBDCFilter.sys', N'381910', N'Trustwave')
+,(N'Activity Monitor', N'VPDrvNt.sys', N'381900', N'AhnLab, Inc.')
+,(N'Activity Monitor', N'eetd32.sys', N'381800', N'Entrust Inc.')
+,(N'Activity Monitor', N'eetd64.sys', N'381800', N'Entrust Inc.')
+,(N'Activity Monitor', N'dnaFSMonitor.sys', N'381700', N'Dtex Systems')
+,(N'Activity Monitor', N'iwhlp2.sys on 2000', N'381610', N'InfoWatch')
+,(N'Activity Monitor', N'iwhlpxp.sys on XP', N'381610', N'InfoWatch')
+,(N'Activity Monitor', N'iwhlp.sys on Vista', N'381610', N'InfoWatch')
+,(N'Activity Monitor', N'iwdmfs.sys', N'381600', N'InfoWatch')
+,(N'Activity Monitor', N'IronGateFD.sys', N'381500', N'rubysoft')
+,(N'Activity Monitor', N'MagicBackupMonitor.sys', N'381400', N'Magic Softworks, Inc.')
+,(N'Activity Monitor', N'Sonar.sys', N'381337', N'IKARUS Security')
+,(N'Activity Monitor', N'IPFilter.sys', N'381310', N'Jinfengshuntai')
+,(N'Activity Monitor', N'MSpy.sys', N'381300', N'Ladislav Zezula')
+,(N'Activity Monitor', N'inuse.sys', N'381200', N'March Hare Software Ltd')
+,(N'Activity Monitor', N'qfmon.sys', N'381190', N'Quality Corporation')
+,(N'Activity Monitor', N'FMSRVCIO.sys', N'381165', N'NEC Solution Innovators')
+,(N'Activity Monitor', N'flyfs.sys', N'381160', N'NEC Soft, Ltd.')
+,(N'Activity Monitor', N'serfs.sys', N'381150', N'NEC Soft, Ltd.')
+,(N'Activity Monitor', N'hdrfs.sys', N'381140', N'NEC Soft, Ltd.')
+,(N'Activity Monitor', N'UVMCIFSF.sys', N'381130', N'NEC Corporation')
+,(N'Activity Monitor', N'ICFClientFlt.sys', N'381120', N'NEC System Technologies,Ltd.')
+,(N'Activity Monitor', N'IccFileIoAd.sys', N'381110', N'NEC System Technologies,Ltd.')
+,(N'Activity Monitor', N'IccFilterAudit.sys', N'381100', N'NEC System Technologies')
+,(N'Activity Monitor', N'IccFilterSc.sys', N'381090', N'InfoCage')
+,(N'Activity Monitor', N'Sefo.sys - Top', N'381010', N'Solusseum Inc')
+,(N'Activity Monitor', N'mtsvcdf.sys', N'381000', N'CristaLink')
+,(N'Activity Monitor', N'SDDrvLdr.sys', N'380970', N'Aliaksander Lebiadzevich')
+,(N'Activity Monitor', N'fscbtflt.sys', N'380930.5', N'Cohesity Inc')
+,(N'Activity Monitor', N'SQLsafeFilterDriver.sys', N'380901', N'Idera Software')
+,(N'Activity Monitor', N'IderaFilterDriver.sys', N'380900', N'Idera')
+,(N'Activity Monitor', N'sie-filemon.sys', N'380852.5', N'SN Systems Ltd')
+,(N'Activity Monitor', N'cbfilter20.sys', N'380852', N'SN Systems Ltd')
+,(N'Activity Monitor', N'cbfsfilter2017.sys', N'380850', N'SN Systems Ltd')
+,(N'Activity Monitor', N'xhunter1.sys', N'380800', N'Wellbia.com')
+,(N'Activity Monitor', N'iGuard.sys', N'380720', N'i-Guard SAS')
+,(N'Activity Monitor', N'cbfltfs4.sys', N'380715', N'Nomadesk')
+,(N'Activity Monitor', N'cbfltfs4.sys', N'380710', N'Backup Systems Ltd')
+,(N'Activity Monitor', N'PkgFilter.sys', N'380700', N'Scalable Software Inc.')
+,(N'Activity Monitor', N'Itff.sys', N'380670.5', N'Light Star Information')
+,(N'Activity Monitor', N'minifswatcher.sys', N'380650', N'BITCORP S.R.L.')
+,(N'Activity Monitor', N'snimg.sys', N'380600', N'Softnext Technologies')
+,(N'Activity Monitor', N'cbfilter20.sys', N'380530', N'Brainloop AG')
+,(N'Activity Monitor', N'SK.sys', N'380520', N'HEAT Software')
+,(N'Activity Monitor', N'cbfsfilter2017.sys', N'380515', N'Kits Ltd.')
+,(N'Activity Monitor', N'mpxmon.sys', N'380510', N'Positive Technologies')
+,(N'Activity Monitor', N'filenamevalidator.sys', N'380502', N'Infotecs')
+,(N'Activity Monitor', N'SWAgent.sys', N'380500.5', N'Stairwell Inc')
+,(N'Activity Monitor', N'KC3.sys', N'380500', N'Infotecs')
+,(N'Activity Monitor', N'PLPOffDrv.sys', N'380492', N'SK Infosec Co')
+,(N'Activity Monitor', N'ISFPDrv.sys', N'380491', N'SK Infosec Co')
+,(N'Activity Monitor', N'ionmonwdrv.sys', N'380490', N'SK Infosec Co')
+,(N'Activity Monitor', N'Sefo.sys - Middle', N'380480', N'Solusseum Inc')
+,(N'Activity Monitor', N'sagntflt.sys', N'380470', N'ShinNihonSystec Co')
+,(N'Activity Monitor', N'VrVBRFsFilter.sys', N'380461', N'Hauri Inc')
+,(N'Activity Monitor', N'VrExpDrv.sys', N'380460', N'Hauri Inc')
+,(N'Activity Monitor', N'srminifilterdrv.sys', N'380450', N'Citrix Systems')
+,(N'Activity Monitor', N'zzpensys.sys', N'380440', N'Zhuan Zhuan Jing Shen')
+,(N'Activity Monitor', N'tedrdrv.sys', N'380430', N'Palo Alto Networks')
+,(N'Activity Monitor', N'fangcloud_autolock_driver.sys', N'380420', N'Hangzhou Yifangyun')
+,(N'Activity Monitor', N'FASDriver', N'380410', N'Tech Research')
+,(N'Activity Monitor', N'asbm.sys', N'380405.5', N'AsiaInfo Technologies (Chengdu), Inc.')
+,(N'Activity Monitor', N'kFileFlt.sys', N'380405', N'AsiaInfo Technologies')
+,(N'Activity Monitor', N'cpfd10.sys', N'380400', N'CYEBIZ co Ltd')
+,(N'Activity Monitor', N'ZeroneAODVirtualDisk.sys', N'380390.5', N'Zero One Technology Co')
+,(N'Activity Monitor', N'ZeroneAODVirtualDisk64.sys', N'380390.5', N'Zero One Technology Co')
+,(N'Activity Monitor', N'edrmon.sys', N'380050.5', N'CELALETTIN ER')
+,(N'Activity Monitor', N'edrsec.sys', N'380050.5', N'CELALETTIN ER')
+,(N'Activity Monitor', N'edrfrm.sys', N'380050.5', N'CELALETTIN ER')
+,(N'Activity Monitor', N'edrprt.sys', N'380050.5', N'CELALETTIN ER')
+,(N'Activity Monitor', N'edrhips.sys', N'380050.5', N'CELALETTIN ER')
+,(N'Activity Monitor', N'CbSampleDrv.sys', N'380020', N'Microsoft')
+,(N'Activity Monitor', N'CbSampleDrv.sys', N'380010', N'Microsoft')
+,(N'Activity Monitor', N'CbSampleDrv.sys', N'380000', N'Microsoft')
+,(N'Activity Monitor', N'SlrRegFlt.sys', N'375000.8', N'AST Cyber Lab LLP')
+,(N'Activity Monitor', N'SlrFsFlt.sys', N'375000.5', N'AST Cyber Lab LLP')
+,(N'Activity Monitor', N'EdsAppRep.sys', N'372000.5', N'Alibaba Cloud Computing Ltd.')
+,(N'Activity Monitor', N'simrep.sys', N'371100', N'Microsoft')
+,(N'Activity Monitor', N'change.sys', N'370160', N'Microsoft')
+,(N'Activity Monitor', N'delete_flt.sys', N'370150', N'Microsoft')
+,(N'Activity Monitor', N'SmbResilFilter.sys', N'370140', N'Microsoft')
+,(N'Activity Monitor', N'usbtest.sys', N'370130', N'Microsoft')
+,(N'Activity Monitor', N'NameChanger.sys', N'370120', N'Microsoft')
+,(N'Activity Monitor', N'failMount.sys', N'370110', N'Microsoft')
+,(N'Activity Monitor', N'failAttach.sys', N'370100', N'Microsoft')
+,(N'Activity Monitor', N'stest.sys', N'370090', N'Microsoft')
+,(N'Activity Monitor', N'cdo.sys', N'370080', N'Microsoft')
+,(N'Activity Monitor', N'ctx.sys', N'370070', N'Microsoft')
+,(N'Activity Monitor', N'fmm.sys', N'370060', N'Microsoft')
+,(N'Activity Monitor', N'cancelSafe.sys', N'370050', N'Microsoft')
+,(N'Activity Monitor', N'message.sys', N'370040', N'Microsoft')
+,(N'Activity Monitor', N'passThrough.sys', N'370030', N'Microsoft')
+,(N'Activity Monitor', N'nullFilter.sys', N'370020', N'Microsoft')
+,(N'Activity Monitor', N'ntest.sys', N'370010', N'Microsoft')
+,(N'Activity Monitor', N'minispy.sys - Middle', N'370000', N'Microsoft')
+,(N'Activity Monitor', N'VersaTamperProtectionDriver.sys', N'369650.5', N'Versa Networks Inc.')
+,(N'Activity Monitor', N'KenestoDriveAC.sys', N'369620.5', N'Kenesto Corp')
+,(N'Activity Monitor', N'ZdProtect.sys', N'369600.5', N'Chongqing Intelligent Information Tech Co.,Ltd')
+,(N'Activity Monitor', N'MEDrv.sys', N'369565.5', N'mistiny.com')
+,(N'Activity Monitor', N'cbfilter20.sys', N'369560.5', N'Blondell-Hart Inc.')
+,(N'Activity Monitor', N'CyberhavenSystemMonitor.sys', N'368550.5', N'Cyberhaven Inc')
+,(N'Activity Monitor', N'AvaPsFD.sys', N'368540', N'Avanite Limited')
+,(N'Activity Monitor', N'isecureflt.sys', N'368530', N'iSecure Ltd.')
+,(N'Activity Monitor', N'SFPMonitor.sys - Middle', N'368520', N'SonicWall Inc')
+,(N'Activity Monitor', N'wats_se.sys', N'368510', N'Fujian Shen Kong')
+,(N'Activity Monitor', N'secure_os_mf.sys', N'368500', N'HAURI')
+,(N'Activity Monitor', N'FileMonitor.sys', N'368470', N'Cygna Labs')
+,(N'Activity Monitor', N'asiofms.sys', N'368460', N'Encourage Technologies')
+,(N'Activity Monitor', N'AbtFileSystemBlocker.sys', N'368452', N'Absolute Software')
+,(N'Activity Monitor', N'cbfsfilter2017.sys', N'368450', N'Absolute Software')
+,(N'Activity Monitor', N'FileHubAgent.sys', N'368440', N'SmartFile LLC')
+,(N'Activity Monitor', N'pfracdrv.sys', N'368430', N'NURILAB')
+,(N'Activity Monitor', N'nrcomgrdki.sys', N'368420', N'NURILAB')
+,(N'Activity Monitor', N'nrcomgrdka.sys', N'368420', N'NURILAB')
+,(N'Activity Monitor', N'nrpmonki.sys', N'368410', N'NURILAB')
+,(N'Activity Monitor', N'nrpmonka.sys', N'368410', N'NURILAB')
+,(N'Activity Monitor', N'nravwka.sys', N'368400', N'NURILAB')
+,(N'Activity Monitor', N'bhkavki.sys', N'368390', N'NURILAB')
+,(N'Activity Monitor', N'bhkavka.sys', N'368390', N'NURILAB')
+,(N'Activity Monitor', N'docvmonk.sys', N'368380', N'NURILAB')
+,(N'Activity Monitor', N'docvmonk64.sys', N'368380', N'NURILAB')
+,(N'Activity Monitor', N'InvProtectDrv.sys', N'368370', N'Invincea')
+,(N'Activity Monitor', N'InvProtectDrv64.sys', N'368370', N'Invincea')
+,(N'Activity Monitor', N'browserMon.sys', N'368360', N'Adtrustmedia')
+,(N'Activity Monitor', N'SfdFilter.sys', N'368350', N'Sandoll Communication')
+,(N'Activity Monitor', N'phdcbtdrv.sys', N'368340', N'PHD Virtual Tech Inc.')
+,(N'Activity Monitor', N'sysdiag.sys', N'368330', N'HeroBravo Technology')
+,(N'Activity Monitor', N'wlminisecmod.sys', N'368329', N'Winicssec Ltd')
+,(N'Activity Monitor', N'WntGPDrv.sys', N'368327', N'Winicssec Ltd')
+,(N'Activity Monitor', N'edrdrv.sys', N'368325', N'Nurd Yazilim A.S.')
+,(N'Activity Monitor', N'CmdCwagt.sys', N'368322', N'Comodo Security Solutions Inc.')
+,(N'Activity Monitor', N'cfrmd.sys', N'368320', N'Comodo Security Solutions Inc.')
+,(N'Activity Monitor', N'repdrv.sys', N'368310', N'Vision Solutions')
+,(N'Activity Monitor', N'repmon.sys', N'368300', N'Vision Solutions')
+,(N'Activity Monitor', N'cvofflineFlt32.sys', N'368200', N'Quantum Corporation.')
+,(N'Activity Monitor', N'cvofflineFlt64.sys', N'368200', N'Quantum Corporation.')
+,(N'Activity Monitor', N'K7SysMon.sys', N'368150.5', N'K7 Computing Private Ltd')
+,(N'Activity Monitor', N'DsDriver.sys', N'368100', N'Warp Disk Software')
+,(N'Activity Monitor', N'xdrmon.sys', N'368050.5', N'LLC Breakthrough Technologies')
+,(N'Activity Monitor', N'nlcbhelpx86.sys', N'368000', N'NetLib')
+,(N'Activity Monitor', N'nlcbhelpx64.sys', N'368000', N'NetLib')
+,(N'Activity Monitor', N'nlcbhelpi64.sys', N'368000', N'NetLib')
+,(N'Activity Monitor', N'wbfilter.sys', N'367950', N'Whitebox Security')
+,(N'Activity Monitor', N'LRAgentMF.sys', N'367900', N'LogRhythm Inc.')
+,(N'Activity Monitor', N'Drwebfwflt.sys', N'367810', N'Doctor Web')
+,(N'Activity Monitor', N'EventMon.sys', N'367800', N'Doctor Web')
+,(N'Activity Monitor', N'dsfltfs.sys', N'367760', N'Digitalsense Co')
+,(N'Activity Monitor', N'soidriver.sys', N'367750', N'Sophos Plc')
+,(N'Activity Monitor', N'drvhookcsmf.sys', N'367700', N'GrammaTech, Inc.')
+,(N'Activity Monitor', N'drvhookcsmf_amd64.sys', N'367700', N'GrammaTech, Inc.')
+,(N'Activity Monitor', N'RevoNetDriver.sys', N'367650', N'J''s Communication Co.')
+,(N'Activity Monitor', N'avipbb.sys', N'367600', N'Avira GmbH')
+,(N'Activity Monitor', N'FileSightMF.sys', N'367500', N'PA File Sight')
+,(N'Activity Monitor', N'csaam.sys', N'367400', N'Cisco Systems')
+,(N'Activity Monitor', N'FSMon.sys', N'367300', N'1mill')
+,(N'Activity Monitor', N'AccessValidator.sys', N'367200', N'Shanghai YiCun Network Tech Co. Ltd')
+,(N'Activity Monitor', N'filefilter.sys', N'367100', N'Beijing Zhong Hang Jiaxin Computer Technology Co.,Ltd.')
+,(N'Activity Monitor', N'iiscache.sys', N'367000', N'Microsoft')
+,(N'Activity Monitor', N'nowonmf.sys', N'366993', N'Diskeeper Corporation')
+,(N'Activity Monitor', N'dktlfsmf.sys', N'366992', N'Diskeeper Corporation')
+,(N'Activity Monitor', N'DKDrv.sys', N'366991', N'Diskeeper Corporation')
+,(N'Activity Monitor', N'DKRtWrt.sys - temp fix for XPSP3', N'366990', N'Diskeeper Corporation')
+,(N'Activity Monitor', N'HBFSFltr.sys', N'366980', N'Diskeeper Corporation')
+,(N'Activity Monitor', N'xoiv8x64.sys', N'366940', N'Arcserve')
+,(N'Activity Monitor', N'xomfcbt8x64.sys', N'366930', N'CA')
+,(N'Activity Monitor', N'KmxAgent.sys', N'366920', N'CA')
+,(N'Activity Monitor', N'KmxFile.sys', N'366910', N'CA')
+,(N'Activity Monitor', N'KmxSbx.sys', N'366900', N'CA')
+,(N'Activity Monitor', N'PointGuardVistaR32.sys', N'366810', N'Futuresoft')
+,(N'Activity Monitor', N'PointGuardVistaR64.sys', N'366810', N'Futuresoft')
+,(N'Activity Monitor', N'PointGuardVistaF.sys', N'366800', N'Futuresoft')
+,(N'Activity Monitor', N'PointGuardVista64F.sys', N'366800', N'Futuresoft')
+,(N'Activity Monitor', N'vintmfs.sys', N'366789', N'CondusivTechnologies')
+,(N'Activity Monitor', N'hiofs.sys', N'366782', N'Condusiv Technologies')
+,(N'Activity Monitor', N'intmfs.sys', N'366781', N'CondusivTechnologies')
+,(N'Activity Monitor', N'excfs.sys', N'366780', N'CondusivTechnologies')
+,(N'Activity Monitor', N'zampit_ml.sys', N'366700', N'Zampit')
+,(N'Activity Monitor', N'CGProtect.sys', N'366669.9', N'Tencent Technology')
+,(N'Activity Monitor', N'ProximaGameAntiCheat.sys', N'366669.8', N'PROXIMA BETA PTE')
+,(N'Activity Monitor', N'ProximaGameAntiCheat.sys', N'366669.7', N'PROXIMA BETA PTE')
+,(N'Activity Monitor', N'ACE-BASE.sys', N'366669.6', N'Tencent Technology')
+,(N'Activity Monitor', N'ACE-GAME.sys', N'366669.5', N'Tencent Technology')
+,(N'Activity Monitor', N'TenRSafe2.sys', N'366669', N'Tencent Technology')
+,(N'Activity Monitor', N'tesxporter.sys', N'366667', N'Tencent Technology')
+,(N'Activity Monitor', N'tesxnginx.sys', N'366666', N'Tencent Technology')
+,(N'Activity Monitor', N'detector.sys', N'366620.5', N'MemCrypt Limited')
+,(N'Activity Monitor', N'rflog.sys', N'366600', N'AppStream, Inc.')
+,(N'Activity Monitor', N'csmon.sys', N'366582', N'CyberSight Inc')
+,(N'Activity Monitor', N'mumdi.sys', N'366540', N'ZenmuTech Inc.')
+,(N'Activity Monitor', N'LivedriveFilter.sys', N'366500', N'Livedrive Internet Ltd')
+,(N'Activity Monitor', N'regmonex.sys', N'366410', N'Tranxition Corp')
+,(N'Activity Monitor', N'TXRegMon.sys', N'366400', N'Tranxition Corp')
+,(N'Activity Monitor', N'SDVFilter.sys', N'366300', N'Soliton Systems K.K.')
+,(N'Activity Monitor', N'eLock2FSCTLDriver.sys', N'366210', N'Egis Technology Inc.')
+,(N'Activity Monitor', N'msiodrv4.sys', N'366200', N'Centennial Software Ltd')
+,(N'Activity Monitor', N'mmPsy32.sys', N'366110', N'Resplendence Software Projects')
+,(N'Activity Monitor', N'mmPsy64.sys', N'366110', N'Resplendence Software Projects')
+,(N'Activity Monitor', N'rrMon32.sys', N'366100', N'Resplendence Software Projects')
+,(N'Activity Monitor', N'rrMon64.sys', N'366100', N'Resplendence Software Projects')
+,(N'Activity Monitor', N'cvsflt.sys', N'366000', N'March Hare Software Ltd')
+,(N'Activity Monitor', N'ktsyncfsflt.sys', N'365920', N'KnowledgeTree Inc.')
+,(N'Activity Monitor', N'nvmon.sys', N'365900', N'NetVision, Inc.')
+,(N'Activity Monitor', N'SnDacs.sys', N'365810', N'Informzaschita')
+,(N'Activity Monitor', N'SnExequota.sys', N'365800', N'Informzaschita')
+,(N'Activity Monitor', N'llfilter.sys', N'365700', N'SecureAxis Software')
+,(N'Activity Monitor', N'hafsnk.sys', N'365660', N'HA Unix Pt')
+,(N'Activity Monitor', N'DgeDriver.sys', N'365655', N'Dell Software Inc.')
+,(N'Activity Monitor', N'BWFSDrv.sys', N'365650', N'Quest Software Inc.')
+,(N'Activity Monitor', N'CAADFlt.sys', N'365601', N'Quest Software Inc.')
+,(N'Activity Monitor', N'QFAPFlt.sys', N'365600', N'Quest Software')
+,(N'Activity Monitor', N'XendowFLT.sys', N'365570', N'Credant Technologies')
+,(N'Activity Monitor', N'fmdrive.sys', N'365500', N'Cigital, Inc.')
+,(N'Activity Monitor', N'EGMinFlt.sys', N'365400', N'WhiteCell Software Inc.')
+,(N'Activity Monitor', N'ddapm.sys', N'365355.5', N'Datadog')
+,(N'Activity Monitor', N'it2reg.sys', N'365315', N'Soliton Systems')
+,(N'Activity Monitor', N'it2drv.sys', N'365310', N'Soliton Systems')
+,(N'Activity Monitor', N'solitkm.sys', N'365300', N'Soliton Systems')
+,(N'Activity Monitor', N'pgpwdefs.sys', N'365270', N'Symantec')
+,(N'Activity Monitor', N'GEProtection.sys', N'365260', N'Symantec')
+,(N'Activity Monitor', N'diflt.sys', N'365260', N'Symantec Corp.')
+,(N'Activity Monitor', N'sysMon.sys', N'365250', N'Symantec')
+,(N'Activity Monitor', N'ssrfsf.sys', N'365210', N'Symantec')
+,(N'Activity Monitor', N'emxdrv2.sys', N'365200', N'Symantec')
+,(N'Activity Monitor', N'reghook.sys', N'365150', N'Symantec')
+,(N'Activity Monitor', N'spbbcdrv.sys', N'365100', N'Symantec')
+,(N'Activity Monitor', N'bhdrvx86.sys', N'365100', N'Symantec')
+,(N'Activity Monitor', N'bhdrvx64.sys', N'365100', N'Symantec')
+,(N'Activity Monitor', N'symevnt.sys', N'365090', N'Broadcom')
+,(N'Activity Monitor', N'symevnt32.sys', N'365090', N'Broadcom')
+,(N'Activity Monitor', N'SISIPSFileFilter', N'365010', N'Symantec')
+,(N'Activity Monitor', N'symevent.sys', N'365000', N'Symantec')
+,(N'Activity Monitor', N'BHDrvx64.sys', N'364970', N'NortonLifeLock Inc')
+,(N'Activity Monitor', N'BHDrvx86.sys', N'364970', N'NortonLifeLock Inc')
+,(N'Activity Monitor', N'symevnt.sys', N'364960', N'NortonLifeLock Inc')
+,(N'Activity Monitor', N'symevnt32.sys', N'364960', N'NortonLifeLock Inc')
+,(N'Activity Monitor', N'SymEvent.sys', N'364950', N'NortonLifeLock Inc')
+,(N'Activity Monitor', N'wrpfv.sys', N'364900', N'Microsoft')
+,(N'Activity Monitor', N'UpGuardRealTime.sys', N'364810', N'UpGuard')
+,(N'Activity Monitor', N'usbl_ifsfltr.sys', N'364800', N'SecureAxis')
+,(N'Activity Monitor', N'ntfsf.sys', N'364700', N'Sun&Moon Rise')
+,(N'Activity Monitor', N'BssAudit.sys', N'364600', N'ByStorm')
+,(N'Activity Monitor', N'GPMiniFIlter.sys', N'364500', N'Kalpataru')
+,(N'Activity Monitor', N'AlfaFF.sys', N'364400', N'Alfa')
+,(N'Activity Monitor', N'360disproc.sys', N'364310.5', N'360 Software (Beijing)')
+,(N'Activity Monitor', N'FSAFilter.sys', N'364300', N'ScriptLogic')
+,(N'Activity Monitor', N'GcfFilter.sys', N'364200', N'GemacmbH')
+,(N'Activity Monitor', N'FFCFILT.SYS', N'364100', N'FFC Limited')
+,(N'Activity Monitor', N'msnfsflt.sys', N'364000', N'Microsoft')
+,(N'Activity Monitor', N'mblmon.sys', N'363900', N'Packeteer')
+,(N'Activity Monitor', N'amsfilter.sys', N'363800', N'Axur Information Sec.')
+,(N'Activity Monitor', N'rswctrl.sys', N'363713', N'Douzone Bizon Co')
+,(N'Activity Monitor', N'mcstrg.sys', N'363712', N'Douzone Bizon Co')
+,(N'Activity Monitor', N'fmkkc.sys', N'363711', N'Douzone Bizon Co')
+,(N'Activity Monitor', N'nmlhssrv01.sys', N'363710', N'Douzone Bizon Co')
+,(N'Activity Monitor', N'equ8_helper.sys', N'363705', N'Int3 Software AB')
+,(N'Activity Monitor', N'strapvista.sys (retired)', N'363700', N'AvSoft Technologies')
+,(N'Activity Monitor', N'SAFE-Agent.sys', N'363636', N'SAFE-Cyberdefense')
+,(N'Activity Monitor', N'EstPrmon.sys', N'363610', N'ESTsoft corp.')
+,(N'Activity Monitor', N'Estprp.sys - 64bit', N'363610', N'ESTsoft corp.')
+,(N'Activity Monitor', N'EstRegmon.sys', N'363600', N'ESTsoft corp.')
+,(N'Activity Monitor', N'EstRegp.sys - 64bit', N'363600', N'ESTsoft corp.')
+,(N'Activity Monitor', N'EMAC-Driver-x64.sys', N'363570', N'EMAC LAB')
+,(N'Activity Monitor', N'HuntMon.sys', N'363558.5', N'Huntress Labs Inc')
+,(N'Activity Monitor', N'agfsmon.sys', N'363530', N'TechnoKom Ltd.')
+,(N'Activity Monitor', N'NlxFF.sys', N'363520', N'OnGuard Systems LLC')
+,(N'Activity Monitor', N'Sahara.sys', N'363511', N'Safend')
+,(N'Activity Monitor', N'Santa.sys', N'363510', N'Safend')
+,(N'Activity Monitor', N'vfdrv.sys', N'363500', N'Viewfinity')
+,(N'Activity Monitor', N'topdogfsfilt.sys', N'363450', N'ManTech')
+,(N'Activity Monitor', N'mamflt.sys', N'363430', N'Mirekusoft LLC')
+,(N'Activity Monitor', N'sfac.sys', N'363420', N'SoulFrost')
+,(N'Activity Monitor', N'xhunter64.sys', N'363400', N'Wellbia.com')
+,(N'Activity Monitor', N'uncheater.sys', N'363390', N'Wellbia.com')
+,(N'Activity Monitor', N'AuditFlt.sys', N'363313', N'Ionx Solutions LLP')
+,(N'Activity Monitor', N'SPIMiniFilter.sys', N'363300', N'Software Pursuits Inc.')
+,(N'Activity Monitor', N'EAAntiCheat.sys', N'363250', N'Electronic Arts')
+,(N'Activity Monitor', N'RevBitsESMF.sys', N'363240.5', N'RevBits LLC')
+,(N'Activity Monitor', N'mracdrv.sys', N'363230', N'Mail.Ru')
+,(N'Activity Monitor', N'BEDaisy.sys', N'363220', N'BattlEye Innovations')
+,(N'Activity Monitor', N'MPKernel.sys', N'363210', N'Lovelace Network Tech')
+,(N'Activity Monitor', N'NetAccCtrl.sys', N'363200', N'LINK co., ltd')
+,(N'Activity Monitor', N'NetAccCtrl64.sys', N'363200', N'LINK co., ltd')
+,(N'Activity Monitor', N'bzsenedrsysdrv.sys', N'363143', N'BiZone LLC')
+,(N'Activity Monitor', N'bzsenyaradrv.sys', N'363142', N'BiZone LLC')
+,(N'Activity Monitor', N'bzsenspdrv.sys', N'363141', N'BiZone LLC')
+,(N'Activity Monitor', N'bzsenth.sys', N'363140', N'BiZone LLC')
+,(N'Activity Monitor', N'hpreg.sys', N'363130', N'HP')
+,(N'Activity Monitor', N'QMON.sys', N'363122', N'Qualys Inc.')
+,(N'Activity Monitor', N'qfimdvr.sys', N'363120', N'Qualys Inc.')
+,(N'Activity Monitor', N'QDocumentREF.sys', N'363110', N'BicDroid Inc.')
+,(N'Activity Monitor', N'dsfemon.sys', N'363100', N'Topology Ltd')
+,(N'Activity Monitor', N'zdpinfrastructure.sys', N'363040.5', N'Zscaler Inc.')
+,(N'Activity Monitor', N'AmznMon.sys', N'363030', N'Amazon Web Services Inc')
+,(N'Activity Monitor', N'iothorfs.sys', N'363020', N'ioScience')
+,(N'Activity Monitor', N'ctamflt.sys', N'363010', N'ComTrade')
+,(N'Activity Monitor', N'psisolator.sys', N'363000', N'SharpCrafters')
+,(N'Activity Monitor', N'QmInspec.sys', N'362990', N'Beijing QiAnXin Tech.')
+,(N'Activity Monitor', N'HVLMinifilter.sys', N'362980', N'HAVELSAN A.Åž')
+,(N'Activity Monitor', N'GagSecurity.sys', N'362970', N'Beijing Shu Yan Science')
+,(N'Activity Monitor', N'vfpd.sys', N'362962', N'CyberArk Software')
+,(N'Activity Monitor', N'CybKernelTracker.sys', N'362960', N'CyberArk Software')
+,(N'Activity Monitor', N'filemon.sys', N'362950', N'Temasoft S.R.L.')
+,(N'Activity Monitor', N'SCAegis.sys', N'362940', N'Sogou Ltd.')
+,(N'Activity Monitor', N'fpepflt.sys', N'362930', N'ForcePoint LLC.')
+,(N'Activity Monitor', N'GTVService.sys', N'362920', N'GTV VIETNAM TECHNOLOGY')
+,(N'Activity Monitor', N'RWLog1.sys', N'362910.5', N'ROMWin Co. Ltd')
+,(N'Activity Monitor', N'klifks.sys', N'362902', N'Kaspersky Lab')
+,(N'Activity Monitor', N'klifaa.sys', N'362901', N'Kaspersky Lab')
+,(N'Activity Monitor', N'Klifsm.sys', N'362900', N'Kaspersky Lab')
+,(N'Activity Monitor', N'lwdcs.sys', N'362880.5', N'Lacework Inc')
+,(N'Activity Monitor', N'Spotlight.sys', N'362870', N'Cigent Technology Inc')
+,(N'Activity Monitor', N'nxrmflt.sys', N'362860', N'NextLabs, Inc.')
+,(N'Activity Monitor', N'vast.sys', N'362850', N'ReliaQuest')
+,(N'Activity Monitor', N'AALProtect.sys', N'362840', N'AlphaAntiLeak')
+,(N'Activity Monitor', N'egnfsflt.sys', N'362830', N'Egnyte Inc')
+,(N'Activity Monitor', N'RsFlt.sys', N'362820', N'Redstor Limited')
+,(N'Activity Monitor', N'CentrifyFSF.sys', N'362810', N'Centrify Corp')
+,(N'Activity Monitor', N'Sefo.sys - Bottom', N'362800', N'Solusseum Inc')
+,(N'Activity Monitor', N'proggerdriver.sys', N'362790', N'WaikatoLink Ltd')
+,(N'Activity Monitor', N'imfilter.sys', N'362780', N'ITsMine')
+,(N'Activity Monitor', N'webargus.sys', N'362775.5', N'Digital Information Technologies')
+,(N'Activity Monitor', N'DSHSM.sys', N'362770.5', N'DeepSpace Storage Systems')
+,(N'Activity Monitor', N'GraphiteSecureDriver.sys', N'362750.5', N'Towers Watson Software')
+,(N'Activity Monitor', N'IndigoSecureDriver.sys', N'362750', N'Towers Watson Software')
+,(N'Activity Monitor', N'SFPMonitor.sys - Bottom', N'362700', N'SonicWall Inc')
+,(N'Activity Monitor', N'ceecava.sys', N'361010.5', N'Dell Technologies Inc.')
+,(N'Activity Monitor', N'minispy.sys - Bottom', N'361000', N'Microsoft')
 GO
-BEGIN TRAN;
 INSERT INTO dbo.filter_driver_altitudes
 VALUES
-('Activity Monitor', 'varpffmon.sys', 386486.00, 'Varlook Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'SkyWPDrv.sys', 386435.00, 'Sky Co.,Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'SkyRGDrv.sys', 386431.00, 'Sky Co., LTD.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'SkyAMDrv.sys', 386430.00, 'Sky Co., LTD.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'SheedSelfProtection.sys', 386421.00, 'SheedSoft Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'arta.sys', 386420.00, 'SheedSoft Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'ApexSqlFilterDriver.sys', 386410.00, 'ApexSQL LLC');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'stflt.sys', 386400.00, 'Xacti');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'tbrdrv.sys', 386390.00, 'Crawler Group');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'WinTeonMiniFilter.sys', 386320.00, 'Dmitry Stefankov');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'wiper.sys', 386310.00, 'Dmitry Stefankov');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'DevMonMiniFilter.sys', 386300.00, 'Dmitry Stefankov');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'VMWVvpfsd.sys', 386200.00, 'VMware, Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'RTOLogon.sys (Renamed)', 386200.00, 'VMware, Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'Code42Filter.sys', 386190.00, 'Code42');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'AATFilter.sys', 386189.50, 'Code42');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'ConduantFSFltr.sys', 386180.00, 'Conduant Corporation');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'KtFSFilter.sys', 386170.00, 'Keysight Technologies');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'FileGuard.sys', 386140.00, 'RES Software');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'NetGuard.sys', 386130.00, 'RES Software');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'RegGuard.sys', 386120.00, 'RES Software');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'ImgGuard.sys', 386110.00, 'RES Software');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'AppGuard.sys', 386100.00, 'RES Software');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'RuiDiskFs.sys', 386030.00, 'RuiGuard Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'minitrc.sys', 386020.00, 'Protected Networks');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'cpepmon.sys', 386010.00, 'Checkpoint Software');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'CGWMF.sys', 386000.00, 'NetIQ');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'ISRegFlt.sys', 385990.00, 'Flexera Software Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'ISRegFlt64.sys', 385990.00, 'Flexera Software Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'shdlpSf.sys', 385970.00, 'Comtrue Technology');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'ctrPAMon.sys', 385960.00, 'Comtrue Technology');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'shdlpMedia.sys', 385950.00, 'Comtrue Technology');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'SealProtect.sys', 385920.70, 'Beijing Bytedance');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'FLProtect.sys', 385920.50, 'Beijing Volcano Engine');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'immflex.sys', 385910.00, 'Immidio B.V.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'StegoProtect.sys', 385900.00, 'Stegosystems Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'brfilter.sys', 385890.00, 'Bromium Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'BrCow_x_x_x_x.sys', 385889.00, 'Bromium Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'BemK.sys', 385888.00, 'Bromium Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'secRMM.sys', 385880.00, 'Squadra Technologies, LLC.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'dgfilter.sys', 385870.00, 'DataGravity Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'WFP_MRT.sys', 385860.00, 'FireEye Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'klrsps.sys', 385815.00, 'Kaspersky Lab');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'klsnsr.sys', 385810.00, 'Kaspersky Lab');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'TaniumRecorderDrv.sys', 385800.00, 'Tanium');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'bdsmonsys.sys', 385750.00, 'Binary Defense Systems');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'CdsgFsFilter.sys', 385700.00, 'CRU Data Security Group');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'mssecflt.sys', 385600.00, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'Backupreader.sys', 385500.00, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'MsixPackagingToolMonitor.sys', 385410.00, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'AppVMon.sys', 385400.00, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'DpmFilter.sys', 385300.00, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'Procmon11.sys', 385200.00, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'wtd.sys', 385110.00, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'minispy.sys - Top', 385100.00, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'fdrtrace.sys', 385001.00, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'filetrace.sys', 385000.00, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'uwfreg.sys', 384910.00, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'uwfs.sys', 384900.00, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'locksmith.sys', 384800.00, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'winload.sys', 384700.00, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'SFPMonitor.sys - Top', 383350.00, 'SonicWall Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'FilrDriver.sys', 383340.00, 'Micro Focus');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'rwchangedrv.sys', 383330.00, 'Rackware');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'airship-filter.sys', 383320.00, 'AIRWare Technology Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'AeFilter.sys', 383310.00, 'Faronics Corporation');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'QQProtect.sys', 383300.00, 'Tencent (Shenzhen)');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'QQProtectX64.sys', 383300.00, 'Tencent (Shenzhen)');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'KernelAgent32.sys', 383260.00, 'ZoneFox');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'WRDWIZFILEPROT.SYS', 383251.00, 'WardWiz');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'WRDWIZREGPROT.SYS', 383250.00, 'WardWiz');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'groundling32.sys', 383200.00, 'Dell Secureworks');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'groundling64.sys', 383200.00, 'Dell Secureworks');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'avgtpx86.sys', 383190.00, 'AVG Technologies CZ, s.r.o');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'avgtpx64.sys', 383190.00, 'AVG Technologies CZ, s.r.o');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'DataNow_Driver.sys', 383182.00, 'AppSense Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'UcaFltDriver.sys', 383180.00, 'AppSense Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'YFSD2.sys', 383170.00, 'Yokogawa Corpration');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'Kisknl.sys', 383160.00, 'kingsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'MWatcher.sys', 383150.00, 'Neowiz Corporation');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'tsifilemon.sys', 383140.00, 'Intercom Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'FIM.sys', 383130.00, 'eIQnetworks Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'cFSfdrv', 383120.00, 'Chaewool');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'ajfsprot.sys', 383110.00, 'Analytik Jena AG');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'isafermon', 383100.00, '(c)SMS');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'kfac.sys', 383000.00, 'Beijing CA-JinChen Software Co., Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'GUMHFilter.sys', 382910.00, 'Glarysoft Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'PsAcFileAccessFilter.sys', 382902.00, 'FUJITSU SOFTWARE');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'FJGSDis2.sys', 382900.00, 'FUJITSU LIMITED');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'secure_os.sys', 382890.00, 'FUJITSU SOCIAL SCIENCE');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'ibr2fsk.sys', 382880.00, 'FUJITSU ENGINEERING');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'FJSeparettiFilterRedirect.sys', 382860.00, 'FUJITSU LIMITED');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'Fsw31rj1.sys', 382855.00, 'FUJITSU LIMITED');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'da_ctl.sys', 382850.00, 'FUJITSU LIMITED');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'zqFilter.sys', 382800.00, 'magrasoft Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'ntps_fa.sys', 382700.00, 'DefendX Software');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'ancfunc.sys', 382650.00, 'Aunaki');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'sConnect.sys', 382600.00, 'I-O DATA DEVICE, INC>');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'AdaptivaClientCache32.sys', 382500.00, 'Adaptiva');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'AdaptivaclientCache64.sys', 382500.00, 'Adaptiva');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'phantomd.sys', 382440.00, 'Veramine Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'GoFSMF.sys', 382430.00, 'Gorizonty Rosta Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'SWCommFltr.sys', 382420.00, 'SnoopWall LLC');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'atflt.sys', 382410.00, 'Atlansys Software, LLC');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'amfd.sys', 382400.00, 'Atlansys Software, LLC');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'iSafeKrnl.sys', 382390.00, 'Elex Tech Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'iSafeKrnlMon.sys', 382380.00, 'Elex Tech Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'AtdrAgent.sys', 382325.00, '360 Software (Beijing)');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'AtdrAgent64.sys', 382325.00, '360 Software (Beijing)');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'Qutmdrv.sys', 382320.00, '360 Software (Beijing)');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', '360box.sys', 382310.00, 'Qihoo 360');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', '360fsflt.sys', 382300.00, 'Beijing Qihoo Technology Co., Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'PSFSF.sys', 382250.50, 'Peer Software Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'scred.sys', 382210.00, 'SoftCamp Co., Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'PDGenFam.sys', 382200.00, 'Soluto LTD');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'MCFileMon64.sys (x64 systems)', 382100.00, 'Sumitomo Electric Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'MCFileMon32.sys (x32 systems)', 382100.00, 'Sumitomo Electric Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'RyGuard.sys', 382050.00, 'SHENZHEN UNNOO Information Techco., Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'FileShareMon.sys', 382040.00, 'SHENZHEN UNNOO Information Techco., Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'ryfilter.sys', 382030.00, 'SHENZHEN UNNOO Information Techco., Ltd');
-COMMIT TRAN;
+ (N'Undelete', N'LookoutAccessProtection.sys', N'347000.5', N'Lookout')
+,(N'Undelete', N'BSSFlt.sys', N'346000', N'Blue Shoe Software LLC')
+,(N'Undelete', N'ThinIO.sys', N'345900', N'ThinScale Technology')
+,(N'Undelete', N'hmpalert.sys', N'345800', N'SurfRight')
+,(N'Undelete', N'nsffkmd64.sys', N'345700', N'NetSTAR Inc.')
+,(N'Undelete', N'nsffkmd32.sys', N'345700', N'NetSTAR Inc.')
+,(N'Undelete', N'xbprocfilter.sys', N'345600', N'Zrxb')
+,(N'Undelete', N'ifileguard.sys', N'345500', N'I-O DATA DEVICE, INC.')
+,(N'Undelete', N'undelex32.sys', N'345400', N'Resplendence Software Projects')
+,(N'Undelete', N'undelex64.sys', N'345400', N'Resplendence Software Projects')
+,(N'Undelete', N'starmon.sys', N'345300', N'Kantowitz Engineering, Inc.')
+,(N'Undelete', N'mxRCycle.sys', N'345200', N'Avanquest')
+,(N'Undelete', N'UdFilter.sys', N'345100', N'Diskeeper Corporation')
+,(N'Undelete', N'it2prtc.sys', N'345040', N'Soliton Systems K.K.')
+,(N'Undelete', N'SolRegFilter.sys', N'345030', N'Soliton Systems K.K.')
+,(N'Undelete', N'SolSecBr.sys', N'345020', N'Soliton Systems K.K.')
+,(N'Undelete', N'SolFCLLi.sys', N'345010', N'Soliton Systems K.K.')
+,(N'Undelete', N'WinSetupMon.sys', N'345102', N'Microsoft')
+,(N'Undelete', N'SolFCL.sys', N'345000', N'Soliton Smart Sec')
+,(N'Undelete', N'DCVPr.sys', N'340700', N'SecurStar GmbH')
+,(N'Anti-Virus', N'brynhildr.sys', N'329400', N'Activision Blizzard, Inc.')
+,(N'Anti-Virus', N'IstroDrv.sys', N'329380.5', N'IstroSec s.r.o.')
+,(N'Anti-Virus', N'XRFilter.sys', N'329375', N'XRITDX')
+,(N'Anti-Virus', N'tbmninifilter.sys', N'329370', N'Confluera Inc')
+,(N'Anti-Virus', N'CovAgent.sys', N'329365', N'Field Effect Software')
+,(N'Anti-Virus', N'trfsfilter.sys', N'329360', N'NetSecurity Corp')
+,(N'Anti-Virus', N'SentinelMonitor.sys', N'329355.5', N'SentinelOne, Inc.')
+,(N'Anti-Virus', N'ReveFltMgr.sys', N'329350', N'REVE Antivirus')
+,(N'Anti-Virus', N'MagicArmorDrv.sys', N'329345.5', N'Beijing VEDA Information Technology Co. Ltd')
+,(N'Anti-Virus', N'ReveProcProtection.sys', N'329340', N'REVE Antivirus')
+,(N'Anti-Virus', N'zwPxeSvr.sys', N'329330', N'SecureLink Inc.')
+,(N'Anti-Virus', N'zwASatom.sys', N'329320', N'SecureLink Inc.')
+,(N'Anti-Virus', N'wscm.sys', N'329310', N'FUJITSU LIMITED')
+,(N'Anti-Virus', N'IMFFilter.sys', N'329300', N'IObit Information Tech')
+,(N'Anti-Virus', N'CSFlt.sys', N'329290', N'ConeSecurity Inc')
+,(N'Anti-Virus', N'cfcdrv_unloadable.sys', N'329270.5', N'eSentire Inc')
+,(N'Anti-Virus', N'rswCatcher.sys', N'329260.5', N'Beijing Mike Technology Co., Ltd.')
+,(N'Anti-Virus', N'PWProtect.sys', N'329250', N'PerfectWorld Ltd')
+,(N'Anti-Virus', N'Osiris.sys', N'329240', N'Binary Defense Systems')
+,(N'Anti-Virus', N'ospfile_mini.sys', N'329230', N'OKUMA Corp')
+,(N'Anti-Virus', N'SoftFilterxxx.sys', N'329222', N'WidgetNuri Corp')
+,(N'Anti-Virus', N'RansomDefenseCert.sys', N'329220.5', N'WidgetNuri Corp')
+,(N'Anti-Virus', N'RansomDefensexxx.sys', N'329220', N'WidgetNuri Corp')
+,(N'Anti-Virus', N'RanPodFS.sys', N'329210', N'Pooyan System')
+,(N'Anti-Virus', N'ksfsflt.sys', N'329200', N'Beijing Kingsoft')
+,(N'Anti-Virus', N'DeepInsFS.sys', N'329190', N'Deep Instinct')
+,(N'Anti-Virus', N'AppCheckD.sys', N'329180', N'CheckMAL Inc')
+,(N'Anti-Virus', N'spellmon.sys', N'329170', N'SpellSecurity')
+,(N'Anti-Virus', N'WhiteShield.sys', N'329160', N'Meidensha Corp')
+,(N'Anti-Virus', N'reaqtor.sys', N'329150', N'ReaQta Ltd.')
+,(N'Anti-Virus', N'SE46Filter.sys', N'329140', N'Technology Nexus AB')
+,(N'Anti-Virus', N'FileScan.sys', N'329130', N'NPcore Ltd')
+,(N'Anti-Virus', N'ECATDriver.sys', N'329120', N'EMC')
+,(N'Anti-Virus', N'pfkrnl.sys', N'329110', N'FXSEC LTD')
+,(N'Anti-Virus', N'epicFilter.sys', N'329100', N'Hidden Reflex')
+,(N'Anti-Virus', N'EdnemFsFilter.sys', N'329090', N'Dakota State University')
+,(N'Anti-Virus', N'b9kernel.sys', N'329050', N'Bit9 Inc')
+,(N'Anti-Virus', N'AGR.sys', N'329040.5', N'Agger Labs Ltd.')
+,(N'Anti-Virus', N'WdDevFlt.sys', N'329030', N'Microsoft')
+,(N'Anti-Virus', N'eeCtrl.sys', N'329010', N'symantec')
+,(N'Anti-Virus', N'eraser.sys (Retired)', N'329010', N'symantec')
+,(N'Anti-Virus', N'SRTSP.sys', N'329000', N'symantec')
+,(N'Anti-Virus', N'SRTSPIT.sys - ia64 systems', N'329000', N'symantec')
+,(N'Anti-Virus', N'SRTSP64.SYS - x64 systems', N'329000', N'symantec')
+,(N'Anti-Virus', N'eeCtrl.sys', N'328960', N'NortonLifeLock Inc')
+,(N'Anti-Virus', N'SRTSP.sys', N'328950', N'NortonLifeLock Inc')
+,(N'Anti-Virus', N'SRTSP64.sys', N'328950', N'NortonLifeLock Inc')
+,(N'Anti-Virus', N'a2ertpx86.sys', N'328920', N'Emsi Software GmbH')
+,(N'Anti-Virus', N'a2ertpx64.sys', N'328920', N'Emsi Software GmbH')
+,(N'Anti-Virus', N'a2gffx86.sys - x86', N'328910', N'Emsi Software GmbH')
+,(N'Anti-Virus', N'a2gffx64.sys - x64', N'328910', N'Emsi Software GmbH')
+,(N'Anti-Virus', N'a2gffi64.sys - IA64', N'328910', N'Emsi Software GmbH')
+,(N'Anti-Virus', N'a2acc.sys', N'328900', N'Emsi Software GmbH')
+,(N'Anti-Virus', N'a2acc64.sys on x64 systems', N'328900', N'Emsi Software GmbH')
+,(N'Anti-Virus', N'eppfilebackup.sys', N'328890.5', N'Emsisoft Ltd.')
+,(N'Anti-Virus', N'FlightRecorder.sys', N'328850', N'Malwarebytes Corp.')
+,(N'Anti-Virus', N'upfilt.sys', N'328820.5', N'Upsight Security')
+,(N'Anti-Virus', N'si32_file.sys', N'328810', N'Scargo Inc')
+,(N'Anti-Virus', N'si64_file.sys', N'328810', N'Scargo Inc')
+,(N'Anti-Virus', N'mbam.sys', N'328800', N'Malwarebytes Corp.')
+,(N'Anti-Virus', N'lnvscenter.sys', N'328780', N'Lenovo')
+,(N'Anti-Virus', N'EnigmaFileMonDriver.sys', N'328770', N'EnigmaSoft')
+,(N'Anti-Virus', N'KUBWKSP.sys', N'328750', N'Netlor SAS')
+,(N'Anti-Virus', N'hcp_kernel_acq.sys', N'328740', N'refractionPOINT')
+,(N'Anti-Virus', N'SegiraFlt.sys', N'328730', N'Segira LLC')
+,(N'Anti-Virus', N'wdocsafe.sys', N'328722', N'Cheetah Mobile Inc.')
+,(N'Anti-Virus', N'lbprotect.sys', N'328720', N'Cheetah Mobile Inc.')
+,(N'Anti-Virus', N'eamonm.sys', N'328700', N'ESET, spol. s r.o.')
+,(N'Anti-Virus', N'snpavdrv.sys', N'328660', N'Security Code LLC')
+,(N'Anti-Virus', N'klam.sys', N'328650', N'Kaspersky Lab')
+,(N'Anti-Virus', N'MaxProc64.sys', N'328620', N'Max Secure Software')
+,(N'Anti-Virus', N'MaxProtector.sys', N'328610', N'Max Secure Software')
+,(N'Anti-Virus', N'maxcryptmon.sys', N'328601', N'Max Secure Software')
+,(N'Anti-Virus', N'SDActMon.sys', N'328600', N'Max Secure Software')
+,(N'Anti-Virus', N'TmKmSnsr.sys', N'328550', N'Trend Micro Inc.')
+,(N'Anti-Virus', N'fileflt.sys', N'328540', N'Trend Micro Inc.')
+,(N'Anti-Virus', N'TmEsFlt.sys', N'328530', N'Trend Micro Inc.')
+,(N'Anti-Virus', N'TmEyes.sys', N'328520', N'Trend Micro Inc.')
+,(N'Anti-Virus', N'tmevtmgr.sys', N'328510', N'Trend Micro Inc.')
+,(N'Anti-Virus', N'tmpreflt.sys', N'328500', N'Trend')
+,(N'Anti-Virus', N'vcMFilter.sys', N'328400', N'SGRI Co., LTD.')
+,(N'Anti-Virus', N'SAFsFilter.sys', N'328300', N'Lightspeed Systems Inc.')
+,(N'Anti-Virus', N'vsepflt.sys', N'328200', N'VMware, Inc.')
+,(N'Anti-Virus', N'VFileFilter.sys(renamed)', N'328200', N'VMware, Inc.')
+,(N'Anti-Virus', N'sfavflt.sys', N'328130', N'Sangfor Technologies')
+,(N'Anti-Virus', N'sfavflt.sys', N'328120', N'Sangfor Technologies')
+,(N'Anti-Virus', N'drivesentryfilterdriver2lite.sys', N'328100', N'DriveSentry Inc')
+,(N'Anti-Virus', N'WdFilter.sys', N'328010', N'Microsoft')
+,(N'Anti-Virus', N'mpFilter.sys', N'328000', N'Microsoft')
+,(N'Anti-Virus', N'vrSDetri.sys', N'327801', N'ETRI')
+,(N'Anti-Virus', N'vrSDetrix.sys', N'327800', N'ETRI')
+,(N'Anti-Virus', N'AhkSvPro.sys', N'327720', N'Ahkun Co., Ltd.')
+,(N'Anti-Virus', N'AhkUsbFW.sys', N'327710', N'Ahkun Co., Ltd.')
+,(N'Anti-Virus', N'AhkAMFlt.sys', N'327700', N'Ahkun Co., Ltd.')
+,(N'Anti-Virus', N'majoradvapi.sys', N'327680', N'Beijing Majorsec')
+,(N'Anti-Virus', N'PSINPROC.SYS', N'327620', N'Panda Security')
+,(N'Anti-Virus', N'PSINFILE.SYS', N'327610', N'Panda Security')
+,(N'Anti-Virus', N'amfsm.sys - Windows XP/2003 x64', N'327600', N'Panda Security')
+,(N'Anti-Virus', N'amm8660.sys - Windows Vista x86', N'327600', N'Panda Security')
+,(N'Anti-Virus', N'amm6460.sys - Windows Vista x64', N'327600', N'Panda Security')
+,(N'Anti-Virus', N'PerfectWorldAntiCheatSys.sys', N'327560', N'Perfect World Co. Ltd')
+,(N'Anti-Virus', N'ADSpiderDoc.sys', N'327550', N'Digitalonnet')
+,(N'Anti-Virus', N'BkavAutoFlt.sys', N'327542', N'Bkav Corporation')
+,(N'Anti-Virus', N'BkavSdFlt.sys', N'327540', N'Bkav Corporation')
+,(N'Anti-Virus', N'easyanticheat.sys', N'327530', N'EasyAntiCheat Solutions')
+,(N'Anti-Virus', N'5nine.cbt.sys', N'327520', N'5nine Software Inc.')
+,(N'Anti-Virus', N'caavFltr.sys', N'327510', N'Computer Assoc')
+,(N'Anti-Virus', N'ino_fltr.sys', N'327500', N'Computer Assoc')
+,(N'Anti-Virus', N'SECOne_USB.sys', N'327426', N'GRGBanking Equipment')
+,(N'Anti-Virus', N'SECOne_Proc10.sys', N'327424', N'GRGBanking Equipment')
+,(N'Anti-Virus', N'SECOne_REG10.sys', N'327422', N'GRGBanking Equipment')
+,(N'Anti-Virus', N'SECOne_FileMon10.sys', N'327420', N'GRGBanking Equipment')
+,(N'Anti-Virus', N'WCSDriver.sys', N'327410', N'White Cloud Security')
+,(N'Anti-Virus', N'360qpesv.sys', N'327404', N'360 Software (Beijing)')
+,(N'Anti-Virus', N'dsark.sys', N'327402', N'Qihoo 360')
+,(N'Anti-Virus', N'360avflt.sys', N'327400', N'Qihoo 360')
+,(N'Anti-Virus', N'sciptflt.sys', N'327334', N'SECUI Corporation')
+,(N'Anti-Virus', N'scifsflt.sys', N'327333', N'SECUI Corporation')
+,(N'Anti-Virus', N'ANVfsm.sys', N'327310', N'Arcdo')
+,(N'Anti-Virus', N'CDrRSFlt.sys', N'327300', N'Arcdo')
+,(N'Anti-Virus', N'mfdriver.sys', N'327250', N'Imperva Inc.')
+,(N'Anti-Virus', N'EPSMn.sys', N'327200', N'SGA')
+,(N'Anti-Virus', N'TxFileFilter.sys', N'327160', N'Beijing Venus')
+,(N'Anti-Virus', N'VTSysFlt.sys', N'327150', N'Beijing Venus')
+,(N'Anti-Virus', N'TesMon.sys', N'327130', N'Tencent')
+,(N'Anti-Virus', N'QQSysMonX64.sys', N'327125', N'Tencent')
+,(N'Anti-Virus', N'QQSysMon.sys', N'327120', N'Tencent')
+,(N'Anti-Virus', N'TSysCare.sys', N'327110', N'Shenzhen Tencent Computer Systems Company Limited')
+,(N'Anti-Virus', N'TFsFlt.sys', N'327100', N'Shenzhen Tencent Computer Systems Company Limited')
+,(N'Anti-Virus', N'avmf.sys', N'327000', N'Authentium')
+,(N'Anti-Virus', N'BDFileDefend.sys', N'326916', N'Baidu (beijing)')
+,(N'Anti-Virus', N'BDsdKit.sys', N'326914', N'Baidu online network technology (beijing)Co., Ltd')
+,(N'Anti-Virus', N'bd0003.sys', N'326912', N'Baidu online network technology (beijing)Co., Ltd')
+,(N'Anti-Virus', N'Bfilter.sys', N'326910', N'Baidu (Hong Kong) Limited')
+,(N'Anti-Virus', N'NeoKerbyFilter', N'326900', N'NeoAutus')
+,(N'Anti-Virus', N'egnfsflt.sys', N'326830', N'Egnyte Inc')
+,(N'Anti-Virus', N'RsFlt.sys', N'326820', N'Redstor Limited')
+,(N'Anti-Virus', N'trpmnflt.sys', N'326810', N'TRAPMINE A.S.')
+,(N'Anti-Virus', N'PLGFltr.sys', N'326800', N'Paretologic')
+,(N'Anti-Virus', N'WrdWizSecure64.sys', N'326730', N'WardWiz')
+,(N'Anti-Virus', N'wrdwizscanner.sys', N'326720', N'WardWiz')
+,(N'Anti-Virus', N'AshAvScan.sys', N'326700', N'Ashampoo GmbH & Co. KG')
+,(N'Anti-Virus', N'Zyfm.sys', N'326666', N'ZhengYong InfoTech LTD.')
+,(N'Anti-Virus', N'csaav.sys', N'326600', N'Cisco Systems')
+,(N'Anti-Virus', N'oavfm.sys', N'326550', N'HSM IT-Services Gmbh')
+,(N'Anti-Virus', N'SegMD.sys', N'326520', N'Segurmatica')
+,(N'Anti-Virus', N'SegMP.sys', N'326510', N'Segurmatica')
+,(N'Anti-Virus', N'SegF.sys', N'326500', N'Segurmatica')
+,(N'Anti-Virus', N'eeyehv.sys', N'326400', N'eEye Digital Security')
+,(N'Anti-Virus', N'eeyehv64.sys', N'326400', N'eEye Digital Security')
+,(N'Anti-Virus', N'CpAvFilter.sys', N'326311', N'CodeProof Technologies Inc')
+,(N'Anti-Virus', N'CpAvKernel.sys', N'326310', N'CodeProof Technologies Inc')
+,(N'Anti-Virus', N'NovaShield.sys', N'326300', N'Securitas Technologies,Inc.')
+,(N'Anti-Virus', N'SheedAntivirusFilterDriver.sys', N'326290', N'SheedSoft Ltd')
+,(N'Anti-Virus', N'bSyirmf.sys', N'326260', N'BLACKFORT SECURITY')
+,(N'Anti-Virus', N'bSysp.sys', N'326250', N'BLACKFORT SECURITY')
+,(N'Anti-Virus', N'bSydf.sys', N'326240', N'BLACKFORT SECURITY')
+,(N'Anti-Virus', N'bSywl.sys', N'326235', N'BLACKFORT SECURITY')
+,(N'Anti-Virus', N'bSyrtm.sys', N'326230', N'BLACKFORT SECURITY')
+,(N'Anti-Virus', N'bSyaed.sys', N'326220', N'BLACKFORT SECURITY')
+,(N'Anti-Virus', N'bSyar.sys', N'326210', N'BLACKFORT SECURITY')
+,(N'Anti-Virus', N'BdFileSpy.sys', N'326200', N'BullGuard')
+,(N'Anti-Virus', N'npxgd.sys', N'326160', N'INCA Internet Co., Ltd')
+,(N'Anti-Virus', N'npxgd64.sys', N'326160', N'INCA Internet Co., Ltd')
+,(N'Anti-Virus', N'tkpl2k.sys', N'326150', N'INCA Internet Co., Ltd')
+,(N'Anti-Virus', N'tkpl2k64.sys', N'326150', N'INCA Internet Co., Ltd')
+,(N'Anti-Virus', N'GKFF.sys', N'326140', N'INCA Internet Co., Ltd')
+,(N'Anti-Virus', N'GKFF64.sys', N'326140', N'INCA Internet Co., Ltd')
+,(N'Anti-Virus', N'tkdac2k.sys', N'326130', N'INCA Internet Co., Ltd')
+,(N'Anti-Virus', N'tkdacxp.sys', N'326130', N'INCA Internet Co., Ltd')
+,(N'Anti-Virus', N'tkdacxp64.sys', N'326130', N'INCA Internet Co., Ltd')
+,(N'Anti-Virus', N'tksp2k.sys', N'326120', N'INCA Internet Co., Ltd')
+,(N'Anti-Virus', N'tkspxp.sys', N'326120', N'INCA Internet Co., Ltd')
+,(N'Anti-Virus', N'tkspxp64.sys', N'326120', N'INCA Internet Co., Ltd')
+,(N'Anti-Virus', N'tkfsft.sys', N'326110', N'INCA Internet Co., Ltd')
+,(N'Anti-Virus', N'tkfsft64.sys - 64bit', N'326110', N'INCA Internet Co., Ltd')
+,(N'Anti-Virus', N'tkfsavxp.sys - 32bit', N'326100', N'INCA Internet Co., Ltd')
+,(N'Anti-Virus', N'tkfsavxp64.sys - 64bit', N'326100', N'INCA Internet Co., Ltd')
+,(N'Anti-Virus', N'SMDrvNt.sys', N'326040', N'AhnLab, Inc.')
+,(N'Anti-Virus', N'ATamptNt.sys', N'326030', N'AhnLab, Inc.')
+,(N'Anti-Virus', N'V3Flt2k.sys', N'326020', N'AhnLab, Inc.')
+,(N'Anti-Virus', N'V3MifiNt.sys', N'326010', N'Ahnlab')
+,(N'Anti-Virus', N'V3Ift2k.sys', N'326000', N'Ahnlab')
+,(N'Anti-Virus', N'V3IftmNt.sys (Old name)', N'326000', N'Ahnlab')
+,(N'Anti-Virus', N'ArfMonNt.sys', N'325990', N'Ahnlab')
+,(N'Anti-Virus', N'AhnRghLh.sys', N'325980', N'Ahnlab')
+,(N'Anti-Virus', N'AszFltNt.sys', N'325970', N'Ahnlab')
+,(N'Anti-Virus', N'OMFltLh.sys', N'325960', N'Ahnlab')
+,(N'Anti-Virus', N'V3Flu2k.sys', N'325950', N'Ahnlab')
+,(N'Anti-Virus', N'TfFregNt.sys', N'325940', N'AhnLab Inc.')
+,(N'Anti-Virus', N'AdcVcsNT.sys', N'325930', N'Ahnlab')
+,(N'Anti-Virus', N'vcdriv.sys', N'325820', N'Greatsoft Corp.Ltd')
+,(N'Anti-Virus', N'vcreg.sys', N'325810', N'Greatsoft Corp.Ltd')
+,(N'Anti-Virus', N'vchle.sys', N'325800', N'Greatsoft Corp.Ltd')
+,(N'Anti-Virus', N'NxFsMon.sys', N'325700', N'Novatix Corporation')
+,(N'Anti-Virus', N'LiveGuardAntiCheat.sys', N'325650', N'LiveGuard Software Ltd.')
+,(N'Anti-Virus', N'AntiLeakFilter.sys', N'325600', N'Individual developer (Soft3304)')
+,(N'Anti-Virus', N'NanoAVMF.sys', N'325510', N'Panda Software')
+,(N'Anti-Virus', N'shldflt.sys', N'325500', N'Panda Software')
+,(N'Anti-Virus', N'nprosec.sys', N'325410', N'Norman ASA')
+,(N'Anti-Virus', N'nregsec.sys', N'325400', N'Norman ASA')
+,(N'Anti-Virus', N'issregistry.sys', N'325300', N'IBM')
+,(N'Anti-Virus', N'THFilter.sys', N'325200', N'Sybonic Systems Inc')
+,(N'Anti-Virus', N'pervac.sys', N'325100', N'PerSystems SA')
+,(N'Anti-Virus', N'avgmfx86.sys', N'325000', N'AVG Grisoft')
+,(N'Anti-Virus', N'avgmfx64.sys', N'325000', N'AVG Grisoft')
+,(N'Anti-Virus', N'avgmfi64.sys', N'325000', N'AVG Grisoft')
+,(N'Anti-Virus', N'avgmfrs.sys (retired)', N'325000', N'AVG Grisoft')
+,(N'Anti-Virus', N'FortiAptFilter.sys', N'324930', N'Fortinet Inc.')
+,(N'Anti-Virus', N'fortimon2.sys', N'324920', N'Fortinet Inc.')
+,(N'Anti-Virus', N'fortirmon.sys', N'324910', N'Fortinet Inc.')
+,(N'Anti-Virus', N'fortishield.sys', N'324900', N'Fortinet Inc.')
+,(N'Anti-Virus', N'mscan-rt.sys', N'324800', N'SecureBrain Corporation')
+,(N'Anti-Virus', N'sysdiag.sys', N'324600', N'Huorong Security')
+,(N'Anti-Virus', N'agentrtm64.sys', N'324510', N'WINS CO. LTD')
+,(N'Anti-Virus', N'rswmon.sys', N'324500', N'WINS CO. LTD')
+,(N'Anti-Virus', N'mwfsmfltr.sys', N'324420', N'MicroWorld Software Services Pvt. Ltd.')
+,(N'Anti-Virus', N'gtkdrv.sys', N'324410', N'GridinSoft LLC')
+,(N'Anti-Virus', N'GbpKm.sys', N'324400', N'GAS Tecnologia')
+,(N'Anti-Virus', N'crnsysm.sys', N'324310', N'Coranti Inc.')
+,(N'Anti-Virus', N'crncache32.sys', N'324300', N'Coranti Inc.')
+,(N'Anti-Virus', N'crncache64.sys', N'324300', N'Coranti Inc.')
+,(N'Anti-Virus', N'egambit.sys', N'324242', N'TEHTRI-Security')
+,(N'Anti-Virus', N'drwebfwft.sys', N'324210', N'Doctor Web')
+,(N'Anti-Virus', N'DwShield.sys', N'324200', N'Doctor Web')
+,(N'Anti-Virus', N'DwShield64.sys', N'324200', N'Doctor Web')
+,(N'Anti-Virus', N'IProtect.sys', N'324150', N'EveryZone Inc.')
+,(N'Anti-Virus', N'TvFiltr.sys', N'324140', N'EveryZone INC.')
+,(N'Anti-Virus', N'TvDriver.sys', N'324130', N'EveryZone INC.')
+,(N'Anti-Virus', N'TvSPFltr.sys', N'324120', N'EveryZone INC.')
+,(N'Anti-Virus', N'TvPtFile.sys', N'324110', N'EveryZone INC.')
+,(N'Anti-Virus', N'TvStFltr.sys', N'324101', N'EveryZone INC.')
+,(N'Anti-Virus', N'TvMFltr.sys', N'324100', N'Everyzone')
+,(N'Anti-Virus', N'SophosED.sys', N'324050', N'Sophos')
+,(N'Anti-Virus', N'SAVOnAccess.sys', N'324010', N'Sophos')
+,(N'Anti-Virus', N'savonaccess.sys', N'324000', N'Sophos')
+,(N'Anti-Virus', N'sld.sys', N'323990', N'Sophos')
+,(N'Anti-Virus', N'OADevice.sys', N'323900', N'Tall Emu')
+,(N'Anti-Virus', N'pwipf6.sys', N'323800', N'PWI, Inc.')
+,(N'Anti-Virus', N'EstRkmon.sys', N'323700', N'ESTsoft corp.')
+,(N'Anti-Virus', N'EstRkr.sys - 64bit', N'323700', N'ESTsoft corp.')
+,(N'Anti-Virus', N'dwprot.sys', N'323610', N'Doctor Web')
+,(N'Anti-Virus', N'Spiderg3.sys', N'323600', N'Doctor Web Ltd.')
+,(N'Anti-Virus', N'STKrnl64.sys', N'323500', N'Verdasys Inc')
+,(N'Anti-Virus', N'UFDFilter.sys', N'323400', N'Yoggie')
+,(N'Anti-Virus', N'SCFltr.sys', N'323300', N'SecurityCoverage, Inc.')
+,(N'Anti-Virus', N'fildds.sys', N'323200', N'Filseclab')
+,(N'Anti-Virus', N'fsfilter.sys', N'323100', N'MastedCode Ltd')
+,(N'Anti-Virus', N'fpav_rtp.sys', N'323000', N'f-protect')
+,(N'Anti-Virus', N'cwdriver.sys', N'322900', N'Leith Bade')
+,(N'Anti-Virus', N'AYFilter.sys', N'322810', N'ESTsoft')
+,(N'Anti-Virus', N'Rtw.sys', N'322800', N'ESTsoft')
+,(N'Anti-Virus', N'EscFilter.sys', N'322790.5', N'ESTsecurity Corp')
+,(N'Anti-Virus', N'RSRtw.sys', N'322790', N'ESTsecurity Corp')
+,(N'Anti-Virus', N'RSPCRtw.sys', N'322780', N'ESTsecurity Corp')
+,(N'Anti-Virus', N'HookSys.sys', N'322700', N'Beijing Rising Information Technology Corporation Limited')
+,(N'Anti-Virus', N'snscore.sys', N'322600', N'S.N.Safe&Software')
+,(N'Anti-Virus', N'ssvhook.sys', N'322500', N'SecuLution GmbH')
+,(N'Anti-Virus', N'strapvista.sys', N'322400', N'AvSoft Technologies')
+,(N'Anti-Virus', N'strapvista64.sys', N'322400', N'AvSoft Technologies')
+,(N'Anti-Virus', N'sascan.sys', N'322300', N'SecureAge Technology')
+,(N'Anti-Virus', N'savant.sys', N'322200', N'Savant Protection, Inc.')
+,(N'Anti-Virus', N'VrARnFlt.sys', N'322161', N'HAURI')
+,(N'Anti-Virus', N'VrBBDFlt.sys', N'322160', N'HAURI')
+,(N'Anti-Virus', N'vrSDfmx.sys', N'322153', N'HAURI')
+,(N'Anti-Virus', N'vrSDfmx.sys', N'322152', N'HAURI')
+,(N'Anti-Virus', N'vrSDam.sys', N'322151', N'HAURI')
+,(N'Anti-Virus', N'vrSDam.sys', N'322150', N'HAURI')
+,(N'Anti-Virus', N'VRAPTFLT.sys', N'322140', N'HAURI Inc.')
+,(N'Anti-Virus', N'VrAptDef.sys', N'322130', N'HAURI')
+,(N'Anti-Virus', N'VrSdCore.sys', N'322120', N'HAURI')
+,(N'Anti-Virus', N'VrFsFtM.sys', N'322110', N'HAURI')
+,(N'Anti-Virus', N'VrFsFtMX.sys(AMD64)', N'322110', N'HAURI')
+,(N'Anti-Virus', N'vradfil2.sys', N'322100', N'HAURI')
+,(N'Anti-Virus', N'zgflt.sys', N'322050', N'ZeroGuard Ltd')
+,(N'Anti-Virus', N'fsgk.sys', N'322000', N'f-secure')
+,(N'Anti-Virus', N'bouncer.sys', N'321950', N'CoreTrace Corporation')
+,(N'Anti-Virus', N'PCTCore64.sys', N'321910', N'PC Tools Pty. Ltd.')
+,(N'Anti-Virus', N'PCTCore.sys (Old name)', N'321910', N'PC Tools Pty. Ltd.')
+,(N'Anti-Virus', N'ikfilesec.sys', N'321900', N'PC Tools Pty. Ltd.')
+,(N'Anti-Virus', N'ZxFsFilt.sys', N'321800', N'Australian Projects')
+,(N'Anti-Virus', N'antispyfilter.sys', N'321700', N'C-NetMedia Inc')
+,(N'Anti-Virus', N'dfndr_am.sys', N'321654', N'PSafe Ltd.')
+,(N'Anti-Virus', N'hlprotect.sys', N'321650', N'HarfangLab')
+,(N'Anti-Virus', N'PZDrvXP.sys', N'321600', N'VisionPower Co.,Ltd.')
+,(N'Anti-Virus', N'haggc.sys', N'321510.1', N'Quick Heal Technologies Pvt. Ltd.')
+,(N'Anti-Virus', N'ggc.sys', N'321510', N'Quick Heal TechnologiesPvt. Ltd.')
+,(N'Anti-Virus', N'catflt.sys', N'321500', N'Quick Heal TechnologiesPvt. Ltd.')
+,(N'Anti-Virus', N'snsrflt.sys(retired)', N'321495', N'Quick Heal Technologiesvt. Ltd.')
+,(N'Anti-Virus', N'ztflt.sys', N'321490.1', N'Quick Heal Technologies Pvt. Ltd')
+,(N'Anti-Virus', N'bdsflt.sys', N'321490', N'Quick Heal Technologies Pvt. Ltd.')
+,(N'Anti-Virus', N'dartflt.sys', N'321485', N'Quick Heal Technologies Pvt. Ltd.')
+,(N'Anti-Virus', N'arwflt.sys', N'321480', N'Quick Heal Technologies Pvt. Ltd.')
+,(N'Anti-Virus', N'csagent.sys', N'321410', N'CrowdStrike Ltd.')
+,(N'Anti-Virus', N'kmkuflt.sys', N'321400', N'Komoku Inc.')
+,(N'Anti-Virus', N'ntguard.sys', N'321337', N'IKARUS Security')
+,(N'Anti-Virus', N'epdrv.sys', N'321320', N'McAfee Inc.')
+,(N'Anti-Virus', N'mfencoas.sys', N'321310', N'McAfee Inc.')
+,(N'Anti-Virus', N'mfehidk.sys', N'321300', N'McAfee Inc.')
+,(N'Anti-Virus', N'swin.sys', N'321250', N'McAfee Inc.')
+,(N'Anti-Virus', N'CyvrFsfd.sys', N'321234', N'Palo Alto Networks')
+,(N'Anti-Virus', N'cmdccav.sys', N'321210', N'Comodo Group Inc.')
+,(N'Anti-Virus', N'cmdguard.sys', N'321200', N'Comodo Group Inc.')
+,(N'Anti-Virus', N'mfesec.sys', N'321150.5', N'McAfee, LLC')
+,(N'Anti-Virus', N'cbfilter20.sys', N'321120.5', N'CMC Cyber Security')
+,(N'Anti-Virus', N'cbprocess20.sys', N'321120', N'CMC Cyber Security')
+,(N'Anti-Virus', N'cbregistry20.sys', N'321120', N'CMC Cyber Security')
+,(N'Anti-Virus', N'nycu_filter.sys', N'321110.5', N'NYCU')
+,(N'Anti-Virus', N'K7Sentry.sys', N'321100', N'K7 Computing Private Ltd.')
+,(N'Anti-Virus', N'nsminflt.sys', N'321050', N'NHN')
+,(N'Anti-Virus', N'nsminflt64.sys', N'321050', N'NHN')
+,(N'Anti-Virus', N'nvcmflt.sys', N'321000', N'Norman')
+,(N'Anti-Virus', N'dgsafe.sys', N'320950', N'KINGSOFT')
+,(N'Anti-Virus', N'issfltr.sys', N'320900', N'ISS')
+,(N'Anti-Virus', N'hbflt.sys', N'320840', N'BitDefender SRL')
+,(N'Anti-Virus', N'vlflt.sys', N'320832', N'BitDefender SRL')
+,(N'Anti-Virus', N'bdsvm.sys', N'320830', N'Bitdefender')
+,(N'Anti-Virus', N'gzflt.sys', N'320820', N'BitDefender SRL')
+,(N'Anti-Virus', N'bddevflt.sys', N'320812', N'BitDefender SRL')
+,(N'Anti-Virus', N'ignis.sys', N'320811', N'BitDefender SRL')
+,(N'Anti-Virus', N'AVCKF.SYS', N'320810', N'BitDefender SRL')
+,(N'Anti-Virus', N'bdfsfltr.sys', N'320800', N'Softwin')
+,(N'Anti-Virus', N'bdfm.sys', N'320790', N'Softwin')
+,(N'Anti-Virus', N'gemma.sys', N'320782', N'BitDefender SRL')
+,(N'Anti-Virus', N'Atc.sys', N'320781', N'BitDefender SRL')
+,(N'Anti-Virus', N'AVC3.SYS', N'320780', N'BitDefender SRL')
+,(N'Anti-Virus', N'TRUFOS.SYS', N'320770', N'BitDefender SRL')
+,(N'Anti-Virus', N'aswmonflt.sys', N'320700', N'Alwil')
+,(N'Anti-Virus', N'kavnsi.sys', N'320650', N'AVNOS')
+,(N'Anti-Virus', N'TaegisKM.x64.sys', N'320640.5', N'Secureworks Inc.')
+,(N'Anti-Virus', N'TaegisKM.x86.sys', N'320640.5', N'Secureworks Inc.')
+,(N'Anti-Virus', N'CiscoSAM.sys', N'320618', N'Cisco Systems')
+,(N'Anti-Virus', N'immunetselfprotect.sys', N'320616', N'Cisco Systems')
+,(N'Anti-Virus', N'immunetprotect.sys', N'320614', N'Cisco Systems')
+,(N'Anti-Virus', N'CiscoAMPCEFWDriver.sys', N'320612', N'Cisco Systems')
+,(N'Anti-Virus', N'CiscoAMPHeurDriver.sys', N'320610', N'Cisco Systems')
+,(N'Anti-Virus', N'HookCentre.sys', N'320602', N'G Data')
+,(N'Anti-Virus', N'PktIcpt.sys', N'320601', N'G Data')
+,(N'Anti-Virus', N'MiniIcpt.sys', N'320600', N'G Data')
+,(N'Anti-Virus', N'acdrv.sys', N'320520', N'OnMoon Company LLC')
+,(N'Anti-Virus', N'tmfsdrv2.sys', N'320510', N'Teramind')
+,(N'Anti-Virus', N'avgntflt.sys', N'320500', N'Avira GmbH')
+,(N'Anti-Virus', N'klam.sys', N'320450', N'Kaspersky Lab')
+,(N'Anti-Virus', N'klbg.sys', N'320440', N'Kaspersky')
+,(N'Anti-Virus', N'kldback.sys', N'320430', N'Kaspersky')
+,(N'Anti-Virus', N'kldlinf.sys', N'320420', N'Kaspersky')
+,(N'Anti-Virus', N'kldtool.sys', N'320410', N'Kaspersky')
+,(N'Anti-Virus', N'klif.sys', N'320401', N'Kaspersky Lab')
+,(N'Anti-Virus', N'klif.sys', N'320400', N'Kaspersky')
+,(N'Anti-Virus', N'klam.sys', N'320350', N'Kaspersky Lab')
+,(N'Anti-Virus', N'hsmltwhl.sys', N'320340', N'Hitachi Solutions')
+,(N'Anti-Virus', N'hssfwhl.sys', N'320330', N'Hitachi Solutions')
+,(N'Anti-Virus', N'DeepInsFS.sys', N'320323', N'Deep Instinct Ltd.')
+,(N'Anti-Virus', N'DeepInsFS.sys', N'320322', N'Deep Instinct Ltd.')
+,(N'Anti-Virus', N'DeepInsFS.sys', N'320321', N'Deep Instinct Ltd.')
+,(N'Anti-Virus', N'DeepInsFS.sys', N'320320', N'Deep Instinct Ltd.')
+,(N'Anti-Virus', N'avfsmn.sys', N'320310', N'Anvisoft')
+,(N'Anti-Virus', N'lbd.sys', N'320300', N'Lavasoft AB')
+,(N'Anti-Virus', N'oavnflt.sys', N'320250', N'OpenAVN Inc')
+,(N'Anti-Virus', N'pavdrv.sys', N'320210', N'Panzor Cybersecurity')
+,(N'Anti-Virus', N'rvsmon.sys', N'320200', N'CJSC Returnil Software')
+,(N'Anti-Virus', N'KawachFsMinifilter.sys', N'320160', N'Sequretek IT')
+,(N'Anti-Virus', N'securoFSD_x64.sys', N'320150', N'knowwheresoft Ltd')
+,(N'Anti-Virus', N'securoFS.sys', N'320149', N'knowwheresoft Ltd')
+,(N'Anti-Virus', N'WRAEKernel.sys', N'320112', N'Webroot Inc.')
+,(N'Anti-Virus', N'WRKrn.sys', N'320111', N'Webroot Inc.')
+,(N'Anti-Virus', N'WRCore.x64.sys', N'320110.99', N'Webroot Inc.')
+,(N'Anti-Virus', N'WRCore.x86.sys', N'320110.99', N'Webroot Inc.')
+,(N'Anti-Virus', N'ARCore.x64.sys', N'320110.98', N'Webroot Inc.')
+,(N'Anti-Virus', N'ARCore.x86.sys', N'320110.98', N'Webroot Inc.')
+,(N'Anti-Virus', N'WRCore.sys', N'320110', N'Webroot Inc.')
+,(N'Anti-Virus', N'ssfmonm.sys', N'320100', N'Webroot Software, Inc.')
+,(N'Anti-Virus', N'euimgprt.sys', N'320085.5', N'EaseUS')
+,(N'Anti-Virus', N'ODFsFimFilter.sys', N'320070', N'Odyssey Cyber Security')
+,(N'Anti-Virus', N'ODFsTokenFilter.sys', N'320061', N'Odyssey Cyber Security')
+,(N'Anti-Virus', N'ODFsFilter.sys', N'320060', N'Odyssey Cyber Security')
+,(N'Anti-Virus', N'vk_fsf.sys', N'320050', N'AxBx')
+,(N'Anti-Virus', N'VirtualAgent.sys', N'320005', N'Symantec')
 GO
-BEGIN TRAN;
 INSERT INTO dbo.filter_driver_altitudes
 VALUES
-('Activity Monitor', 'secufile.sys', 382020.00, 'Shenzhen Unnoo LTD');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'XiaobaiFs.sys', 382010.00, 'Shenzhen Unnoo LTD');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'XiaobaiFsR.sys', 382000.00, 'Shenzhen Unnoo LTD');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'TWBDCFilter.sys', 381910.00, 'Trustwave');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'VPDrvNt.sys', 381900.00, 'AhnLab, Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'eetd32.sys', 381800.00, 'Entrust Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'eetd64.sys', 381800.00, 'Entrust Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'dnaFSMonitor.sys', 381700.00, 'Dtex Systems');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'iwhlp2.sys on 2000', 381610.00, 'InfoWatch');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'iwhlpxp.sys on XP', 381610.00, 'InfoWatch');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'iwhlp.sys on Vista', 381610.00, 'InfoWatch');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'iwdmfs.sys', 381600.00, 'InfoWatch');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'IronGateFD.sys', 381500.00, 'rubysoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'MagicBackupMonitor.sys', 381400.00, 'Magic Softworks, Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'Sonar.sys', 381337.00, 'IKARUS Security');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'IPFilter.sys', 381310.00, 'Jinfengshuntai');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'MSpy.sys', 381300.00, 'Ladislav Zezula');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'inuse.sys', 381200.00, 'March Hare Software Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'qfmon.sys', 381190.00, 'Quality Corporation');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'FMSRVCIO.sys', 381165.00, 'NEC Solution Innovators');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'flyfs.sys', 381160.00, 'NEC Soft, Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'serfs.sys', 381150.00, 'NEC Soft, Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'hdrfs.sys', 381140.00, 'NEC Soft, Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'UVMCIFSF.sys', 381130.00, 'NEC Corporation');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'ICFClientFlt.sys', 381120.00, 'NEC System Technologies,Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'IccFileIoAd.sys', 381110.00, 'NEC System Technologies,Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'IccFilterAudit.sys', 381100.00, 'NEC System Technologies');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'IccFilterSc.sys', 381090.00, 'InfoCage');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'Sefo.sys - Top', 381010.00, 'Solusseum Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'mtsvcdf.sys', 381000.00, 'CristaLink');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'SDDrvLdr.sys', 380970.00, 'Aliaksander Lebiadzevich');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'fscbtflt.sys', 380930.50, 'Cohesity Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'SQLsafeFilterDriver.sys', 380901.00, 'Idera Software');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'IderaFilterDriver.sys', 380900.00, 'Idera');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'sie-filemon.sys', 380852.50, 'SN Systems Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'cbfilter20.sys', 380852.00, 'SN Systems Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'cbfsfilter2017.sys', 380850.00, 'SN Systems Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'xhunter1.sys', 380800.00, 'Wellbia.com');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'iGuard.sys', 380720.00, 'i-Guard SAS');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'cbfltfs4.sys', 380715.00, 'Nomadesk');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'cbfltfs4.sys', 380710.00, 'Backup Systems Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'PkgFilter.sys', 380700.00, 'Scalable Software Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'minifswatcher.sys', 380650.00, 'BITCORP S.R.L.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'snimg.sys', 380600.00, 'Softnext Technologies');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'cbfilter20.sys', 380530.00, 'Brainloop AG');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'SK.sys', 380520.00, 'HEAT Software');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'cbfsfilter2017.sys', 380515.00, 'Kits Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'mpxmon.sys', 380510.00, 'Positive Technologies');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'filenamevalidator.sys', 380502.00, 'Infotecs');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'SWAgent.sys', 380500.50, 'Stairwell Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'KC3.sys', 380500.00, 'Infotecs');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'PLPOffDrv.sys', 380492.00, 'SK Infosec Co');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'ISFPDrv.sys', 380491.00, 'SK Infosec Co');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'ionmonwdrv.sys', 380490.00, 'SK Infosec Co');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'Sefo.sys - Middle', 380480.00, 'Solusseum Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'sagntflt.sys', 380470.00, 'ShinNihonSystec Co');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'VrVBRFsFilter.sys', 380461.00, 'Hauri Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'VrExpDrv.sys', 380460.00, 'Hauri Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'srminifilterdrv.sys', 380450.00, 'Citrix Systems');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'zzpensys.sys', 380440.00, 'Zhuan Zhuan Jing Shen');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'tedrdrv.sys', 380430.00, 'Palo Alto Networks');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'fangcloud_autolock_driver.sys', 380420.00, 'Hangzhou Yifangyun');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'FASDriver', 380410.00, 'Tech Research');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'kFileFlt.sys', 380405.00, 'AsiaInfo Technologies');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'cpfd10.sys', 380400.00, 'CYEBIZ co Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'ZeroneAODVirtualDisk.sys', 380390.50, 'Zero One Technology Co');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'ZeroneAODVirtualDisk64.sys', 380390.50, 'Zero One Technology Co');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'CbSampleDrv.sys', 380020.00, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'CbSampleDrv.sys', 380010.00, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'CbSampleDrv.sys', 380000.00, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'EdsAppRep.sys', 372000.50, 'Alibaba Cloud Computing Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'simrep.sys', 371100.00, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'change.sys', 370160.00, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'delete_flt.sys', 370150.00, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'SmbResilFilter.sys', 370140.00, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'usbtest.sys', 370130.00, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'NameChanger.sys', 370120.00, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'failMount.sys', 370110.00, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'failAttach.sys', 370100.00, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'stest.sys', 370090.00, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'cdo.sys', 370080.00, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'ctx.sys', 370070.00, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'fmm.sys', 370060.00, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'cancelSafe.sys', 370050.00, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'message.sys', 370040.00, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'passThrough.sys', 370030.00, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'nullFilter.sys', 370020.00, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'ntest.sys', 370010.00, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'minispy.sys - Middle', 370000.00, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'KenestoDriveAC.sys', 369620.50, 'Kenesto Corp');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'ZdProtect.sys', 369600.50, 'Chongqing Intelligent Information Tech Co.,Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'cbfilter20.sys', 369560.50, 'Blondell-Hart Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'CyberhavenSystemMonitor.sys', 368550.50, 'Cyberhaven Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'AvaPsFD.sys', 368540.00, 'Avanite Limited');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'isecureflt.sys', 368530.00, 'iSecure Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'SFPMonitor.sys - Middle', 368520.00, 'SonicWall Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'wats_se.sys', 368510.00, 'Fujian Shen Kong');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'secure_os_mf.sys', 368500.00, 'HAURI');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'FileMonitor.sys', 368470.00, 'Cygna Labs');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'asiofms.sys', 368460.00, 'Encourage Technologies');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'AbtFileSystemBlocker.sys', 368452.00, 'Absolute Software');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'cbfsfilter2017.sys', 368450.00, 'Absolute Software');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'FileHubAgent.sys', 368440.00, 'SmartFile LLC');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'pfracdrv.sys', 368430.00, 'NURILAB');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'nrcomgrdki.sys', 368420.00, 'NURILAB');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'nrcomgrdka.sys', 368420.00, 'NURILAB');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'nrpmonki.sys', 368410.00, 'NURILAB');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'nrpmonka.sys', 368410.00, 'NURILAB');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'nravwka.sys', 368400.00, 'NURILAB');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'bhkavki.sys', 368390.00, 'NURILAB');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'bhkavka.sys', 368390.00, 'NURILAB');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'docvmonk.sys', 368380.00, 'NURILAB');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'docvmonk64.sys', 368380.00, 'NURILAB');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'InvProtectDrv.sys', 368370.00, 'Invincea');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'InvProtectDrv64.sys', 368370.00, 'Invincea');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'browserMon.sys', 368360.00, 'Adtrustmedia');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'SfdFilter.sys', 368350.00, 'Sandoll Communication');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'phdcbtdrv.sys', 368340.00, 'PHD Virtual Tech Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'sysdiag.sys', 368330.00, 'HeroBravo Technology');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'wlminisecmod.sys', 368329.00, 'Winicssec Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'WntGPDrv.sys', 368327.00, 'Winicssec Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'edrdrv.sys', 368325.00, 'Nurd Yazilim A.S.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'CmdCwagt.sys', 368322.00, 'Comodo Security Solutions Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'cfrmd.sys', 368320.00, 'Comodo Security Solutions Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'repdrv.sys', 368310.00, 'Vision Solutions');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'repmon.sys', 368300.00, 'Vision Solutions');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'cvofflineFlt32.sys', 368200.00, 'Quantum Corporation.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'cvofflineFlt64.sys', 368200.00, 'Quantum Corporation.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'DsDriver.sys', 368100.00, 'Warp Disk Software');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'xdrmon.sys', 368050.50, 'LLC Breakthrough Technologies');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'nlcbhelpx86.sys', 368000.00, 'NetLib');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'nlcbhelpx64.sys', 368000.00, 'NetLib');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'nlcbhelpi64.sys', 368000.00, 'NetLib');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'wbfilter.sys', 367950.00, 'Whitebox Security');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'LRAgentMF.sys', 367900.00, 'LogRhythm Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'Drwebfwflt.sys', 367810.00, 'Doctor Web');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'EventMon.sys', 367800.00, 'Doctor Web');
-COMMIT TRAN;
+ (N'Replication', N'IntelCAS.sys', N'309100', N'Intel Corporation')
+,(N'Replication', N'mvfs.sys', N'309000', N'IBM Corporation')
+,(N'Replication', N'ExtVol.sys', N'307900.5', N'I-O DATA DEVICE, INC.')
+,(N'Replication', N'frxccd.sys', N'306000', N'FSLogix Inc.')
+,(N'Replication', N'dvfilter.sys', N'305002', N'Microsoft')
+,(N'Replication', N'fsrecord.sys', N'305000', N'Microsoft')
+,(N'Replication', N'esff.sys', N'304500', N'Beijing Cloudock Techn Co')
+,(N'Replication', N'InstMon.sys', N'304201', N'Numecent Inc.')
+,(N'Replication', N'StreamingFSD.sys', N'304200', N'Numecent Inc.')
+,(N'Replication', N'ubcminifilterdriver.sys', N'304100', N'Ullmore Ltd.')
+,(N'Replication', N'replistor.sys', N'304000', N'Legato')
+,(N'Replication', N'stfsd.sys', N'303900', N'Endeavors Technologies')
+,(N'Replication', N'xomf.sys', N'303800', N'CA (XOSOFT)')
+,(N'Replication', N'nfid.sys', N'303700', N'Neverfail Group Ltd')
+,(N'Replication', N'sybfilter.sys', N'303600', N'Sybase, Inc.')
+,(N'Replication', N'rfsfilter.sys', N'303500', N'Evidian')
+,(N'Replication', N'cvmfsj.sys', N'303400', N'CommVault Systems, Inc.')
+,(N'Replication', N'iOraFilter.sys', N'303300', N'Infonic plc')
+,(N'Replication', N'bkbmfd32.sys (x86)', N'303200', N'BakBone Software, Inc')
+,(N'Replication', N'bkbmfd64.sys (x64)', N'303200', N'BakBone Software, Inc')
+,(N'Replication', N'mblvn.sys', N'303100', N'Packeteer')
+,(N'Replication', N'AV12NFNT.sys', N'303000', N'AhnLab')
+,(N'Replication', N'mDP_win_mini.sys', N'302900', N'Macro Impact')
+,(N'Replication', N'ctxubs.sys', N'302800', N'Citrix Systems Inc.')
+,(N'Replication', N'rrepfsf.sys', N'302700', N'Rose Datasystems Inc')
+,(N'Replication', N'zrbd.sys', N'302110.3', N'Shanghai Fangye Network')
+,(N'Replication', N'zrbdlock.sys', N'302110.2', N'Shanghai Fangye Network')
+,(N'Replication', N'wsyncd.sys', N'302100', N'WANFast LLC')
+,(N'Replication', N'cbfsfilter2017.sys', N'301900', N'Super Flexible Software')
+,(N'Replication', N'AxFilter.sys', N'301800', N'Axcient Inc.')
+,(N'Replication', N'vxfsrep.sys', N'301700', N'Symantec')
+,(N'Replication', N'dellcapfd.sys', N'301600', N'Dell Inc.')
+,(N'Replication', N'Sptres.sys', N'301500', N'Safend')
+,(N'Replication', N'OfficeBackup.sys', N'301400', N'Ushus Technologies')
+,(N'Replication', N'LxFileMirror.sys', N'301350', N'Techit GmbH')
+,(N'Replication', N'pcvnfilt.sys', N'301300', N'Blue Coat')
+,(N'Replication', N'repdac.sys', N'301200', N'NSI')
+,(N'Replication', N'repkap.sys', N'301100', N'NSI')
+,(N'Replication', N'repdrv.sys', N'301000', N'NSI')
+,(N'Continuous Backup', N'SyncODFA.sys', N'289010', N'Sync.com Inc')
+,(N'Continuous Backup', N'File_monitor.sys', N'289000', N'Acronis')
+,(N'Continuous Backup', N'Klcdp.sys', N'288900', N'Kaspersky Lab')
+,(N'Continuous Backup', N'splitinfmon.sys', N'288800', N'Split Infinity')
+,(N'Continuous Backup', N'versamatic.sys', N'288700', N'Acertant Tech')
+,(N'Continuous Backup', N'Yfilemon.sys', N'288690', N'Yarisoft')
+,(N'Continuous Backup', N'ibac.sys', N'288600', N'Idealstor, LLC.')
+,(N'Continuous Backup', N'fkdriver.sys', N'288500', N'Filekeeper')
+,(N'Continuous Backup', N'AAFileFilter.sys', N'288300', N'Dell Inc.')
+,(N'Continuous Backup', N'cbfilter20.sys', N'288290.5', N'Mobile Content mgmt')
+,(N'Continuous Backup', N'hyperoo.sys', N'288400', N'Hyperoo Ltd')
+,(N'Continuous Backup', N'EioHelium.sys', N'287777.5', N'Elastio Software Inc')
+,(N'Continuous Backup', N'HyperBacCA.sys', N'285000', N'Red Gate Software Ltd')
+,(N'Continuous Backup', N'ZMSFsFltr.sys', N'284400', N'Zenith InfoTech')
+,(N'Continuous Backup', N'AlfaSC.sys', N'284300', N'Alfa Corporation')
+,(N'Continuous Backup', N'hie_ifs.sys', N'284200', N'Hie Electronics, Inc.')
+,(N'Continuous Backup', N'cbfilter20.sys', N'284150.5', N'Datto Inc')
+,(N'Continuous Backup', N'AAFs.sys', N'284100', N'AppAssure Software')
+,(N'Continuous Backup', N'defilter.sys (old)', N'284000', N'Microsoft')
+,(N'Continuous Backup', N'aFsvDrv.sys', N'283100', N'ITSTATION Inc')
+,(N'Continuous Backup', N'tilana.sys', N'283000', N'Tilana Sys')
+,(N'Continuous Backup', N'VmDPFilter.sys', N'282900', N'Macro Impact')
+,(N'Continuous Backup', N'LbFilter.sys', N'281700', N'Linkverse S.r.l.')
+,(N'Continuous Backup', N'fbsfd.sys', N'281600', N'Ferro Software')
+,(N'Continuous Backup', N'dupleemf.sys', N'281500', N'Duplee SPI, S.L.')
+,(N'Continuous Backup', N'file_tracker.sys', N'281420', N'Acronis Inc.')
+,(N'Continuous Backup', N'exbackup.sys', N'281410', N'Acronis Inc.')
+,(N'Continuous Backup', N'afcdp.sys', N'281400', N'Acronis Inc.')
+,(N'Continuous Backup', N'dcefltr.sys', N'281300', N'Cofio Software Ltd')
+,(N'Continuous Backup', N'ipmrsync_mfilter.sys', N'281200', N'OpenMars Enterprises')
+,(N'Continuous Backup', N'cascade.sys', N'281100', N'JP Software')
+,(N'Continuous Backup', N'filearchive.sys', N'281000', N'Code Mortem')
+,(N'Continuous Backup', N'syscdp.sys', N'280900', N'System OK AB')
+,(N'Continuous Backup', N'dpnedriver.sys   (x86)', N'280850', N'HP')
+,(N'Continuous Backup', N'dpnedriver64.sys (x64)', N'280850', N'HP')
+,(N'Continuous Backup', N'hpchgflt.sys', N'280800', N'HP')
+,(N'Continuous Backup', N'VirtFile.sys', N'280700', N'Veritas')
+,(N'Continuous Backup', N'DeqoCPS.sys', N'280600', N'Deqo')
+,(N'Continuous Backup', N'LV_Tracker.sys', N'280500', N'LiveVault')
+,(N'Continuous Backup', N'cpbak.sys', N'280410', N'Checkpoint Software')
+,(N'Continuous Backup', N'tdmonxp.sys', N'280400', N'TimeData')
+,(N'Continuous Backup', N'nvfr_cpd', N'280310', N'Bakbone Software Inc.')
+,(N'Continuous Backup', N'nvfr_fdd', N'280300', N'Bakbone Software Inc.')
+,(N'Continuous Backup', N'Sptbkp.sys', N'280290', N'Safend')
+,(N'Continuous Backup', N'accessmonitor.sys', N'280280', N'Briljant Ekonomisystem')
+,(N'Content Screener', N'QDocumentDPI.sys', N'268600.5', N'Bicdroid Inc')
+,(N'Content Screener', N'anrfsdrv.sys', N'268500', N'ANR Co. LTD.')
+,(N'Content Screener', N'wzProcCut.sys', N'268350.875', N'ITSTATION Inc.')
+,(N'Content Screener', N'taResource.sys', N'268350.75', N'ITSTATION Inc.')
+,(N'Content Screener', N'wzPrtProc.sys', N'268350.5', N'ITSTATION Inc.')
+,(N'Content Screener', N'taExeScanner.sys', N'268350', N'ITSTATION Inc.')
+,(N'Content Screener', N'GuardFSFlt.sys', N'268340', N'ProShield')
+,(N'Content Screener', N'usbguard.sys', N'268330', N'HangZhou Tease Tech')
+,(N'Content Screener', N'gibepdevflt.sys', N'268320', N'Group-IB LTD')
+,(N'Content Screener', N'EffeDriver.sys', N'268310', N'DROVA')
+,(N'Content Screener', N'Klshadow.sys', N'268300', N'Kaspersky Lab')
+,(N'Content Screener', N'TN28.sys', N'268290', N'ID Authentication Tech')
+,(N'Content Screener', N'PGDriver.sys', N'268280', N'Avecto Ltd')
+,(N'Content Screener', N'itseczvdb.sys', N'268270', N'Innotium Inc')
+,(N'Content Screener', N'unimon.sys', N'268265.5', N'Unify Technologies')
+,(N'Content Screener', N'isarsd.sys', N'268260', N'ISARS')
+,(N'Content Screener', N'zeoscanner.sys', N'268255', N'PCKeeper')
+,(N'Content Screener', N'fileHiders.sys', N'268250', N'PCKeeper')
+,(N'Content Screener', N'cbfltfs4-ObserveIT.sys', N'268240', N'ObserveIT')
+,(N'Content Screener', N'hipara.sys', N'268230', N'Allsum LLC')
+,(N'Content Screener', N'AliFileMonitorDriver.sys', N'268220', N'Alibaba')
+,(N'Content Screener', N'writeGuard.sys', N'268210', N'TCXA Ltd.')
+,(N'Content Screener', N'KKUDKProtectKer.sys', N'268200', N'Goldmessage technology co., Ltd.')
+,(N'Content Screener', N'HAWKFIMInt.sys', N'268190', N'HAWK Network Defense')
+,(N'Content Screener', N'esaccctl.sys', N'268180', N'EgoSecure GmbH')
+,(N'Content Screener', N'WSguard.sys', N'268170', N'Wiper Software UAB')
+,(N'Content Screener', N'Atomizer.sys', N'268160', N'DragonFlyCodeWorks')
+,(N'Content Screener', N'farwflt.sys', N'268150', N'Malwarebytes')
+,(N'Content Screener', N'ADSpiderEx2.sys', N'268140', N'Digitalonnet')
+,(N'Content Screener', N'sdfilter.sys', N'268130', N'Igor Zorkov')
+,(N'Content Screener', N'Safe.sys', N'268120', N'')
+,(N'Content Screener', N'mydlpdelete-scanner.sys', N'268110', N'Medra Teknoloji')
+,(N'Content Screener', N'mydlpscanner.sys', N'268100', N'Medra Teknoloji')
+,(N'Content Screener', N'VrMacFlt.sys', N'268080', N'Hauri Inc')
+,(N'Content Screener', N'hnpro.sys', N'268040', N'Solupia')
+,(N'Content Screener', N'DLDriverNetMini.sys', N'268030', N'DeviceLock Inc')
+,(N'Content Screener', N'ENFFLTDRV.sys', N'268020', N'Enforcive Systems')
+,(N'Content Screener', N'imagentpg.sys', N'268012', N'Infomaximum')
+,(N'Content Screener', N'crocopg.sys', N'268010', N'Infomaximum')
+,(N'Content Screener', N'sbapifs.sys', N'268000', N'Sunbelt Software')
+,(N'Content Screener', N'H6kernNT.sys', N'267920', N'H6N Technologies LLC')
+,(N'Content Screener', N'SGKD32.SYS', N'267910', N'NetSection Security')
+,(N'Content Screener', N'IccFilter.sys', N'267900', N'NEC System Technologies')
+,(N'Content Screener', N'tflbc.sys', N'267800', N'Tani Electronics Corporation')
+,(N'Content Screener', N'ArmFlt.sys', N'267000', N'Armor Antivirus')
+,(N'Content Screener', N'WBDrv.sys', N'266700', N'Axiana LLC')
+,(N'Content Screener', N'DMSamFilter.sys', N'266600', N'Digimarc Corp.')
+,(N'Content Screener', N'mumbl.sys', N'266540', N'ZenmuTech Inc.')
+,(N'Content Screener', N'DLPDriverSmb.sys', N'266400.5', N'Acronis')
+,(N'Content Screener', N'spiderfilter.sys', N'266250.5', N'Guangzhou Shizhen Information Technology Co.,Ltd')
+,(N'Content Screener', N'5nine.cbt.sys', N'266100', N'5nine Software Inc.')
+,(N'Content Screener', N'bsfs.sys', N'266000', N'Quick Heal TechnologiesPvt. Ltd.')
+,(N'Content Screener', N'XXRegSFilter.sys', N'265910', N'Zhe Jiang Xinxin Software Tech.')
+,(N'Content Screener', N'XXSFilter.sys', N'265900', N'Zhe Jiang Xinxin Software Tech.')
+,(N'Content Screener', N'AloahaUSBBlocker.sys', N'265800', N'Wrocklage Intermedia')
+,(N'Content Screener', N'frxdrv.sys', N'265700', N'FSLogix Inc.')
+,(N'Content Screener', N'upmAction.sys', N'265650.5', N'Citrix Systems')
+,(N'Content Screener', N'FolderSecure.sys', N'265600', N'Max Secure Software')
+,(N'Content Screener', N'XendowFLTC.sys', N'265570', N'Credant Technologies')
+,(N'Content Screener', N'RepDac', N'265500', N'Vision Solutions')
+,(N'Content Screener', N'tbbdriver.sys', N'265400', N'Tedesi')
+,(N'Content Screener', N'spcgrd.sys', N'265300', N'FUJITSU BROAD SOLUTION')
+,(N'Content Screener', N'fdtlock.sys', N'265250', N'FUJITSU BROAD SOLUTION & CONSULTING Inc.')
+,(N'Content Screener', N'ssfFSC.sys', N'265200', N'SECUWARE S.L.')
+,(N'Content Screener', N'GagSecurity.sys', N'265120', N'Beijing Shu Yan Science')
+,(N'Content Screener', N'PrintDriver.sys', N'265110', N'Beijing Shu Yan Science')
+,(N'Content Screener', N'activ.sys', N'265100', N'Rapidware Pty Ltd')
+,(N'Content Screener', N'CysecaFlt.sys', N'265050.5', N'Cyseca Solutions Sdn Bhd')
+,(N'Content Screener', N'avscan.sys', N'265010', N'Microsoft')
+,(N'Content Screener', N'scanner.sys', N'265000', N'Microsoft')
+,(N'Content Screener', N'DI_fs.sys', N'264910', N'Soft-SB')
+,(N'Content Screener', N'wgnpos.sys', N'264900', N'Orchestria')
+,(N'Content Screener', N'odfltr.sys', N'264810', N'NetClean Technologies')
+,(N'Content Screener', N'ncpafltr.sys', N'264800', N'NetClean Technologies')
+,(N'Content Screener', N'ct.sys', N'264700', N'Haute Secure')
+,(N'Content Screener', N'fvefsmf.sys', N'264600', N'Fortisphere, Inc.')
+,(N'Content Screener', N'block.sys', N'264500', N'Autonomy Systems Limited')
+,(N'Content Screener', N'csascr.sys', N'264400', N'Cisco Systems')
+,(N'Content Screener', N'SymAFR.sys', N'264300', N'Symantec Corporation')
+,(N'Content Screener', N'cwnep.sys', N'264200', N'Websense Inc.')
+,(N'Content Screener', N'spywareremover.sys', N'264150', N'C-Netmedia')
+,(N'Content Screener', N'malwarebot.sys', N'264140', N'C-Netmedia')
+,(N'Content Screener', N'antispywarebot.sys', N'264130', N'2Squared Inc.')
+,(N'Content Screener', N'adwarebot.sys', N'264120', N'AntiSpyware LLC')
+,(N'Content Screener', N'antispyware.sys', N'264110', N'AntiSpyware LLC')
+,(N'Content Screener', N'spywarebot.sys', N'264100', N'C-Netmedia')
+,(N'Content Screener', N'nomp3.sys', N'264000', N'Hamish Speirs (private developer)')
+,(N'Content Screener', N'dlfilter.sys', N'263900', N'Starfield Software')
+,(N'Content Screener', N'sifsp.sys', N'263800', N'Secure Islands Technologies LTD')
+,(N'Content Screener', N'DLFsFlt.sys', N'263700', N'CenterTools Software GmbH')
+,(N'Content Screener', N'SamKeng.sys', N'263600', N'Syvik Co, Ltd.')
+,(N'Content Screener', N'rml.sys', N'263500', N'Logis IT Service Gmbh')
+,(N'Content Screener', N'vfsmfd.sys', N'263410', N'Vontu Inc.')
+,(N'Content Screener', N'vfsmfd.sys', N'263400', N'Vontu Inc.')
+,(N'Content Screener', N'acfilter.sys', N'263300', N'Avalere, Inc.')
+,(N'Content Screener', N'psecfilter.sys', N'263200', N'MDI Laboratory, Inc.')
+,(N'Content Screener', N'SolRedirect.sys', N'263110', N'Soliton Systems')
+,(N'Content Screener', N'solitkm.sys', N'263100', N'Soliton Systems')
+,(N'Content Screener', N'ipcfs.sys', N'263000', N'NetVeda')
+,(N'Content Screener', N'netgateav_access.sys', N'262910', N'NETGATE Tech. s.r.o.')
+,(N'Content Screener', N'spyemrg_access.sys', N'262900', N'NETGATE Tech. s.r.o.')
+,(N'Content Screener', N'pxrmcet.sys', N'262800', N'Proxure Inc.')
+,(N'Content Screener', N'EgisTecFF.sys', N'262700', N'Egis Technology Inc.')
+,(N'Content Screener', N'fgcpac.sys', N'262600', N'Fortres Grand Corp.')
+,(N'Content Screener', N'saappctl.sys', N'262510', N'SecureAge Technology')
+,(N'Content Screener', N'sadlp.sys', N'262500', N'SecureAge Technology')
+,(N'Content Screener', N'MtUsbBlockerFlt.sys', N'261420.5', N'Matisoft Cyber Security')
+,(N'Content Screener', N'CRExecPrev.sys', N'262410', N'Cybereason')
+,(N'Content Screener', N'PEG2.sys', N'262400', N'PE GUARD')
+,(N'Content Screener', N'AdminRunFlt.sys', N'262300', N'Simon Jarvis')
+,(N'Content Screener', N'wvscr.sys', N'262200', N'Chengdu Wei Tech Inc.')
+,(N'Content Screener', N'psepfilter.sys', N'262100', N'Absolute Software')
+,(N'Content Screener', N'SAMDriver.sys', N'262000', N'Summit IT')
+,(N'Content Screener', N'emrcore.sys', N'261920', N'Ivanti Inc')
+,(N'Content Screener', N'wire_fsfilter.sys', N'261910', N'ThreatSpike Labs')
+,(N'Content Screener', N'AMFileSystemFilter.sys', N'261900', N'AppSense Ltd')
+,(N'Content Screener', N'mtflt.sys', N'261880', N'mTalos Inc.')
+,(N'Content Screener', N'nxrmflt.sys', N'261680', N'NextLabs, Inc.')
+,(N'Content Screener', N'RsFltScanner.sys', N'261400.5', N'SecuritySnares')
+,(N'Content Screener', N'oc_fsfilter.sys', N'261300', N'Raiffeisen Bank Aval')
+,(N'Content Screener', N'IslandDrv.sys', N'261250.5', N'Island Technology Inc.')
+,(N'Content Screener', N'hdlpflt.sys', N'261200', N'McAfee Inc.')
+,(N'Content Screener', N'CCFFilter.sys', N'261160', N'Microsoft')
+,(N'Content Screener', N'cbafilt.sys', N'261150', N'Microsoft')
+,(N'Content Screener', N'SmbBandwidthLimitFilter.sys', N'261110', N'Microsoft')
+,(N'Content Screener', N'DfsrRo.sys', N'261100', N'Microsoft')
+,(N'Content Screener', N'DataScrn.sys', N'261000', N'Microsoft')
+,(N'Content Screener', N'ussdrv.sys', N'260950.5', N'Censornet Ltd')
+,(N'Content Screener', N'ldusbro.sys', N'260900', N'LANDesk Inc.')
+,(N'Content Screener', N'FileScreenFilter.sys', N'260800', N'Veritas')
+,(N'Content Screener', N'cpAcOnPnP.sys', N'260720', N'conpal GmbH')
+,(N'Content Screener', N'cpsgfsmf.sys', N'260710', N'conpal GmbH')
+,(N'Content Screener', N'psmmfilter.sys', N'260700', N'PolyServe')
+,(N'Content Screener', N'pctefa.sys', N'260650', N'PC Tools Pty. Ltd.')
+,(N'Content Screener', N'pctefa64.sys', N'260650', N'PC Tools Pty. Ltd.')
+,(N'Content Screener', N'SymEFASI64.sys', N'260620', N'NortonLifeLock Inc.')
+,(N'Content Screener', N'SymEFASI.sys', N'260620', N'NortonLifeLock Inc.')
+,(N'Content Screener', N'symefasi.sys', N'260610', N'Symantec Corporation')
+,(N'Content Screener', N'symefa.sys', N'260600', N'Symantec')
+,(N'Content Screener', N'symefa64.sys', N'260600', N'Symantec')
+,(N'Content Screener', N'apdFSF.sys', N'260550', N'Cyberbit Ltd')
+,(N'Content Screener', N'aictracedrv_cs.sys', N'260500', N'AI Consulting')
+,(N'Content Screener', N'DWFIxxxx.sys', N'260410', N'SciencePark Corporation')
+,(N'Content Screener', N'DWFIxxxx.sys', N'260400', N'SciencePark Corporation')
+,(N'Content Screener', N'ElasticEndpoint.sys', N'260350.5', N'Elastic')
+,(N'Content Screener', N'dlpflt.sys', N'260340', N'Digital Endpoint')
+,(N'Content Screener', N'DSDriver.sys', N'260330', N'ManageEngine Zoho Corp')
+,(N'Content Screener', N'mcfltlab.sys', N'260320', N'Beijing MicroColor')
+,(N'Content Screener', N'FDriver.sys', N'260310', N'Fox-IT')
+,(N'Content Screener', N'iqpk.sys', N'260300', N'Secure Islands Technologies LTD')
+,(N'Content Screener', N'ZTkrnlOpRg.sys', N'260264', N'Trustsoft')
+,(N'Content Screener', N'ZTkrnlNt.sys', N'260262', N'Trustsoft')
+,(N'Content Screener', N'ZTkrnl.sys', N'260260', N'Trustsoft')
+,(N'Content Screener', N'VHDFlt.sys', N'260240', N'Dell')
+,(N'Content Screener', N'VHDFlt.sys', N'260230', N'Dell')
+,(N'Content Screener', N'VHDFlt.sys', N'260220', N'Dell')
+,(N'Content Screener', N'VHDFlt.sys', N'260210', N'Dell')
+,(N'Quota Management', N'dfx-qfs-fltr.sys', N'245100', N'DefendX Software')
+,(N'Quota Management', N'ntps_qfs.sys', N'245100', N'DefendX Software')
+,(N'Quota Management', N'PSSFsFilter.sys', N'245000', N'PSS Systems')
+,(N'Quota Management', N'Sptqmg.sys', N'245300', N'Safend')
+,(N'Quota Management', N'storqosflt.sys', N'244000', N'Microsoft')
+,(N'System Recovery', N'file_protector.sys', N'227000', N'Acronis')
+,(N'System Recovery', N'fbwf.sys', N'226000', N'Microsoft')
+,(N'System Recovery', N'Ranger.sys', N'221800.5', N'ByteJams B.V.')
+,(N'System Recovery', N'BoldendDrvr.sys', N'221700.5', N'Boldend, Inc.')
+,(N'System Recovery', N'hmpalert.sys', N'221600', N'SurfRight')
+,(N'System Recovery', N'Klsysrec.sys', N'221500', N'Kaspersky Lab')
+,(N'System Recovery', N'SFDRV.SYS', N'221400', N'Utixo LLC')
+,(N'System Recovery', N'sp_prot.sys', N'221300', N'Xacti Corporation')
+,(N'System Recovery', N'nsfilep.sys', N'221200', N'Netsupport Limited')
+,(N'System Recovery', N'syscow.sys', N'221100', N'System OK AB')
+,(N'System Recovery', N'fsredir.sys', N'221000', N'Microsoft')
+,(N'Cluster File System', N'CVCBT.sys', N'203400', N'CommVault Systems, Inc.')
+,(N'Cluster File System', N'ResumeKeyFilter.sys', N'202000', N'Microsoft')
+,(N'Cluster File System', N'VeeamFCT.sys', N'201900', N'Veeam Software')
+,(N'Cluster File System', N'ShadowVirtualStorage.sys', N'201800', N'Blade SAS')
+,(N'HSM', N'wcifs.sys', N'189900', N'Microsoft')
+,(N'HSM', N'prjflt.sys', N'189800', N'Microsoft')
+,(N'HSM', N'p4vfsflt.sys', N'189700.5', N'Microsoft')
+,(N'HSM', N'gameflt.sys', N'189750', N'Microsoft')
+,(N'HSM', N'nvmsqrd.sys', N'188900', N'NVIDIA Corporation')
+,(N'HSM', N'Ghost_file.sys', N'188800', N'Acronis')
+,(N'HSM', N'PeerTier.sys', N'187900.5', N'Peer Software Inc.')
+,(N'HSM', N'RsFlt.sys', N'187000', N'Redstor Limited')
+,(N'HSM', N'CloudTier.sys', N'186900.5', N'EaseFilter Technologies')
+,(N'HSM', N'mnefs.sys', N'186800', N'Nippon Techno Lab')
+,(N'HSM', N'Svfsf.sys', N'186700', N'Spharsoft Technologies')
+,(N'HSM', N'uVaultFlt.sys', N'186650', N'DOR')
+,(N'HSM', N'syncmf.sys', N'186620', N'Oxygen Cloud')
+,(N'HSM', N'gwmemory.sys', N'186600', N'Macrotec LLC')
+,(N'HSM', N'cteraflt.sys', N'186550', N'CTERA Networks Ltd.')
+,(N'HSM', N'dbx.sys', N'186500', N'Dropbox Inc.')
+,(N'HSM', N'iMDrvFlt.sys', N'186450', N'iManage LLC')
+,(N'HSM', N'quaddrasi.sys', N'186400', N'Quaddra Software')
+,(N'HSM', N'gdrive.sys', N'186300', N'Google')
+,(N'HSM', N'CoreSyncFilter.sys', N'186250', N'Adobe Systems Inc.')
+,(N'HSM', N'EaseTag.sys', N'186200', N'EaseVault Technologies Inc.')
+,(N'HSM', N'HSFilter.sys', N'186150', N'HubStor Inc.')
+,(N'HSM', N'hcminifilter.sys', N'186100', N'Happy Cloud Inc.')
+,(N'HSM', N'PDFsFilter.sys', N'186000', N'Raxco Sfotware Inc.')
+,(N'HSM', N'camino.sys', N'185900', N'CaminoSoft Corp')
+,(N'HSM', N'C2C_AF1R.SYS', N'185810', N'C2C Systems')
+,(N'HSM', N'DFdriver.sys', N'185800', N'DataFirst Corporation')
+,(N'HSM', N'amfadrv.sys', N'185700', N'Quest Software Inc.')
+,(N'HSM', N'HSMdriver.sys', N'185600', N'Wim Vervoorn')
+,(N'HSM', N'kdfilter.sys', N'185555', N'Komprise Inc.')
+,(N'HSM', N'htdafd.sys', N'185500', N'Bridgehead Soft')
+,(N'HSM', N'odphflt.sys', N'180455', N'Microsoft')
+,(N'HSM', N'cldflt.sys', N'180451', N'Microsoft')
+,(N'HSM', N'SymHsm.sys', N'185400', N'Symantec')
+,(N'HSM', N'evmf.sys', N'185100', N'Symantec')
+,(N'HSM', N'otfilter.sys', N'185000', N'Overtone Soft')
+,(N'HSM', N'ithsmdrv.sys', N'184900', N'IBM')
+,(N'HSM', N'MfaFilter.sys', N'184800', N'Waterford Technologies')
+,(N'HSM', N'SonyHsmMinifilter.sys', N'184700', N'Sony Corporation')
+,(N'HSM', N'acahsm.sys', N'184600', N'Autonomy Corporation')
+,(N'HSM', N'zlhsm.sys', N'184500', N'ZL Technologies')
+,(N'HSM', N'CFileProtect.sys', N'184100', N'Zhejiang Security Tech')
+,(N'HSM', N'stc_restore_filter.sys', N'184000', N'StorageCraft Technology')
+,(N'HSM', N'dvfilter.sys', N'183003', N'Microsoft')
+,(N'HSM', N'Accesstracker.sys', N'183002', N'Microsoft')
+,(N'HSM', N'Changetracker.sys', N'183001', N'Microsoft')
+,(N'HSM', N'Fstier.sys', N'183000', N'Microsoft')
+,(N'HSM', N'hsmcdpflt.sys', N'182700', N'Metalogix')
+,(N'HSM', N'archivmgr.sys', N'182690', N'Metalogix')
+,(N'HSM', N'ntps_oddm.sys', N'182600', N'DefendX Software')
+,(N'HSM', N'XDFileSys.sys', N'182500', N'XenData Limited')
+,(N'HSM', N'upmjit.sys', N'182400', N'Citrix Systems')
+,(N'HSM', N'AtmosFS.sys', N'182310', N'EMC Corporation')
+,(N'HSM', N'DxSpy.sys', N'182300', N'EMC Software Inc.')
+,(N'HSM', N'car_hsmflt.sys', N'182200', N'Caringo, Inc.')
+,(N'HSM', N'BRDriver.sys', N'182100', N'BitRaider')
+,(N'HSM', N'BRDriver64.sys', N'182100', N'BitRaider')
+,(N'HSM', N'autnhsm.sys', N'182000', N'Autonomy Corporation')
+,(N'HSM', N'cthsmflt.sys', N'181970', N'ComTrade')
+,(N'HSM', N'NxMini.sys', N'181900', N'NEXSAN')
+,(N'HSM', N'neuflt.sys', N'181818', N'NeuShield')
+,(N'HSM', N'npfdaflt.sys', N'181800', N'Mimosa Systems Inc')
+,(N'HSM', N'AppStream.sys', N'181700', N'AppStream, Inc.')
+,(N'HSM', N'HPEDpHsmX64.sys', N'181620', N'Hewlett-Packard, Co.')
+,(N'HSM', N'HPArcHsmX64.sys', N'181610', N'Hewlett-Packard, Co.')
+,(N'HSM', N'hphsmflt.sys', N'181600', N'Hewlett-Packard, Co.')
+,(N'HSM', N'cparchsm.sys', N'181610', N'Micro Focus')
+,(N'HSM', N'RepHsm.sys', N'181500', N'Double-Take Software, Inc.')
+,(N'HSM', N'RepSIS.sys', N'181490', N'Double-Take Software')
+,(N'HSM', N'SquashCompressionFsFilter.sys', N'181410', N'Squash Compression')
+,(N'HSM', N'GXHSM.sys', N'181400', N'Commvault Systems, Inc')
+,(N'HSM', N'EdsiHsm.sys', N'181300', N'Enterprise Data Solutions, Inc.')
+,(N'HSM', N'BkfMap.sys', N'181200', N'Data Storage Group')
+,(N'HSM', N'hsmfilter.sys', N'181100', N'GRAU Data Storage AG')
+,(N'HSM', N'mwilcflt.sys', N'181020', N'Moonwalk Universal P/L')
+,(N'HSM', N'mwildflt.sys', N'181015', N'Moonwalk Universal P/L')
+,(N'HSM', N'mwilsflt.sys', N'181010', N'Moonwalk Universal P/L')
+,(N'HSM', N'mwidmflt.sys', N'181000', N'Moonwalk Universal P/L')
+,(N'HSM', N'HcpAwfs.sys', N'181960', N'Hitachi Data Systems')
+,(N'HSM', N'sdrefltr.sys', N'180950', N'Hitachi Data Systems')
+,(N'HSM', N'fltasm.sys', N'180900', N'Global 360')
+,(N'HSM', N'cnet_hsm.sys', N'180850', N'Carroll-Net Inc.')
+,(N'HSM', N'pntvolflt.sys', N'180800', N'PoINT Software&Systems')
+,(N'HSM', N'appxstrm.sys', N'180710', N'Microsoft')
+,(N'HSM', N'wimmount.sys', N'180700', N'Microsoft')
+,(N'HSM', N'hsmflt.sys', N'180600', N'Microsoft')
+,(N'HSM', N'dfsrflt.sys', N'180500', N'Microsoft')
+,(N'HSM', N'StorageSyncGuard.sys', N'180465', N'Microsoft')
+,(N'HSM', N'StorageSync.sys', N'180460', N'Microsoft')
+,(N'HSM', N'dedup.sys', N'180450', N'Microsoft')
+,(N'HSM', N'dfmflt.sys', N'180410', N'Microsoft')
+,(N'HSM', N'sis.sys', N'180400', N'Microsoft')
+,(N'HSM', N'rbt_wfd.sys', N'180300', N'Riverbed Technology,Inc')
 GO
-BEGIN TRAN;
 INSERT INTO dbo.filter_driver_altitudes
 VALUES
-('Activity Monitor', 'dsfltfs.sys', 367760.00, 'Digitalsense Co');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'soidriver.sys', 367750.00, 'Sophos Plc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'drvhookcsmf.sys', 367700.00, 'GrammaTech, Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'drvhookcsmf_amd64.sys', 367700.00, 'GrammaTech, Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'RevoNetDriver.sys', 367650.00, 'J''s Communication Co.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'avipbb.sys', 367600.00, 'Avira GmbH');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'FileSightMF.sys', 367500.00, 'PA File Sight');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'csaam.sys', 367400.00, 'Cisco Systems');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'FSMon.sys', 367300.00, '1mill');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'AccessValidator.sys', 367200.00, 'Shanghai YiCun Network Tech Co. Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'filefilter.sys', 367100.00, 'Beijing Zhong Hang Jiaxin Computer Technology Co.,Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'iiscache.sys', 367000.00, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'nowonmf.sys', 366993.00, 'Diskeeper Corporation');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'dktlfsmf.sys', 366992.00, 'Diskeeper Corporation');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'DKDrv.sys', 366991.00, 'Diskeeper Corporation');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'DKRtWrt.sys - temp fix for XPSP3', 366990.00, 'Diskeeper Corporation');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'HBFSFltr.sys', 366980.00, 'Diskeeper Corporation');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'xoiv8x64.sys', 366940.00, 'Arcserve');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'xomfcbt8x64.sys', 366930.00, 'CA');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'KmxAgent.sys', 366920.00, 'CA');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'KmxFile.sys', 366910.00, 'CA');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'KmxSbx.sys', 366900.00, 'CA');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'PointGuardVistaR32.sys', 366810.00, 'Futuresoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'PointGuardVistaR64.sys', 366810.00, 'Futuresoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'PointGuardVistaF.sys', 366800.00, 'Futuresoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'PointGuardVista64F.sys', 366800.00, 'Futuresoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'vintmfs.sys', 366789.00, 'CondusivTechnologies');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'hiofs.sys', 366782.00, 'Condusiv Technologies');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'intmfs.sys', 366781.00, 'CondusivTechnologies');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'excfs.sys', 366780.00, 'CondusivTechnologies');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'zampit_ml.sys', 366700.00, 'Zampit');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'ACE-BASE.sys', 366669.60, 'Tencent Technology');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'ACE-GAME.sys', 366669.50, 'Tencent Technology');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'TenRSafe2.sys', 366669.00, 'Tencent Technology');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'tesxporter.sys', 366667.00, 'Tencent Technology');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'tesxnginx.sys', 366666.00, 'Tencent Technology');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'detector.sys', 366620.50, 'MemCrypt Limited');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'rflog.sys', 366600.00, 'AppStream, Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'csmon.sys', 366582.00, 'CyberSight Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'mumdi.sys', 366540, 'ZenmuTech Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'LivedriveFilter.sys', 366500, 'Livedrive Internet Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'regmonex.sys', 366410, 'Tranxition Corp');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'TXRegMon.sys', 366400, 'Tranxition Corp');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'SDVFilter.sys', 366300, 'Soliton Systems K.K.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'eLock2FSCTLDriver.sys', 366210, 'Egis Technology Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'msiodrv4.sys', 366200, 'Centennial Software Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'mmPsy32.sys', 366110, 'Resplendence Software Projects');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'mmPsy64.sys', 366110, 'Resplendence Software Projects');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'rrMon32.sys', 366100, 'Resplendence Software Projects');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'rrMon64.sys', 366100, 'Resplendence Software Projects');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'cvsflt.sys', 366000, 'March Hare Software Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'ktsyncfsflt.sys', 365920, 'KnowledgeTree Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'nvmon.sys', 365900, 'NetVision, Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'SnDacs.sys', 365810, 'Informzaschita');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'SnExequota.sys', 365800, 'Informzaschita');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'llfilter.sys', 365700, 'SecureAxis Software');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'hafsnk.sys', 365660, 'HA Unix Pt');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'DgeDriver.sys', 365655, 'Dell Software Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'BWFSDrv.sys', 365650, 'Quest Software Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'CAADFlt.sys', 365601, 'Quest Software Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'QFAPFlt.sys', 365600, 'Quest Software');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'XendowFLT.sys', 365570, 'Credant Technologies');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'fmdrive.sys', 365500, 'Cigital, Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'EGMinFlt.sys', 365400, 'WhiteCell Software Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'it2reg.sys', 365315, 'Soliton Systems');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'it2drv.sys', 365310, 'Soliton Systems');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'solitkm.sys', 365300, 'Soliton Systems');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'pgpwdefs.sys', 365270, 'Symantec');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'GEProtection.sys', 365260, 'Symantec');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'diflt.sys', 365260, 'Symantec Corp.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'sysMon.sys', 365250, 'Symantec');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'ssrfsf.sys', 365210, 'Symantec');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'emxdrv2.sys', 365200, 'Symantec');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'reghook.sys', 365150, 'Symantec');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'spbbcdrv.sys', 365100, 'Symantec');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'bhdrvx86.sys', 365100, 'Symantec');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'bhdrvx64.sys', 365100, 'Symantec');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'symevnt.sys', 365090, 'Broadcom');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'symevnt32.sys', 365090, 'Broadcom');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'SISIPSFileFilter', 365010, 'Symantec');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'symevent.sys', 365000, 'Symantec');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'BHDrvx64.sys', 364970, 'NortonLifeLock Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'BHDrvx86.sys', 364970, 'NortonLifeLock Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'symevnt.sys', 364960, 'NortonLifeLock Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'symevnt32.sys', 364960, 'NortonLifeLock Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'SymEvent.sys', 364950, 'NortonLifeLock Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'wrpfv.sys', 364900, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'UpGuardRealTime.sys', 364810, 'UpGuard');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'usbl_ifsfltr.sys', 364800, 'SecureAxis');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'ntfsf.sys', 364700, 'Sun&Moon Rise');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'BssAudit.sys', 364600, 'ByStorm');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'GPMiniFIlter.sys', 364500, 'Kalpataru');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'AlfaFF.sys', 364400, 'Alfa');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', '360disproc.sys', 364310.5, '360 Software (Beijing)');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'FSAFilter.sys', 364300, 'ScriptLogic');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'GcfFilter.sys', 364200, 'GemacmbH');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'FFCFILT.SYS', 364100, 'FFC Limited');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'msnfsflt.sys', 364000, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'mblmon.sys', 363900, 'Packeteer');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'amsfilter.sys', 363800, 'Axur Information Sec.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'rswctrl.sys', 363713, 'Douzone Bizon Co');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'mcstrg.sys', 363712, 'Douzone Bizon Co');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'fmkkc.sys', 363711, 'Douzone Bizon Co');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'nmlhssrv01.sys', 363710, 'Douzone Bizon Co');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'equ8_helper.sys', 363705, 'Int3 Software AB');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'strapvista.sys (retired)', 363700, 'AvSoft Technologies');
-COMMIT TRAN;
+ (N'Imaging (ex: .ZIP)', N'pfmfs_???.sys', N'172100', N'Pismo Technic Inc')
+,(N'Imaging (ex: .ZIP)', N'virtual_file.sys', N'172000', N'Acronis')
+,(N'Imaging (ex: .ZIP)', N'wimFltr.sys', N'170500', N'Microsoft')
+,(N'Compression', N'CmgFFC.sys', N'166000', N'Credant Technologies')
+,(N'Compression', N'compress.sys', N'165000', N'Microsoft')
+,(N'Compression', N'cmpflt.sys', N'162000', N'Microsoft')
+,(N'Compression', N'IridiumIO.sys', N'161700', N'Confio')
+,(N'Compression', N'zzenc.sys', N'161650.5', N'Imdtech LLC')
+,(N'Compression', N'logcompressor.sys', N'161600', N'VelociSQL Inc.')
+,(N'Compression', N'GcfFilter.sys', N'161500', N'GemacmbH')
+,(N'Compression', N'ssddoubler.sys', N'161400', N'Sinan Karaca')
+,(N'Compression', N'Sptcmp.sys', N'161300', N'Safend')
+,(N'Compression', N'wimfsf.sys', N'161000', N'Microsoft')
+,(N'Compression', N'GEFCMP.sys', N'160100', N'Symantec')
+,(N'Encryption', N'SCEfd.sys', N'149500.5', N'SOFTCAMP Co.LTD')
+,(N'Encryption', N'AAFS.sys', N'149110', N'ViGero')
+,(N'Encryption', N'FJSeparettiFilterRamMon.sys', N'149100', N'FUJITSU LIMITED')
+,(N'Encryption', N'VSCCryptor.sys', N'149065.5', N'Guangzhou Junkai Electronic Technology Co')
+,(N'Encryption', N'trsxefs.sys', N'149060', N'TransientX Inc.')
+,(N'Encryption', N'psatfilter.sys', N'149050', N'ProYuga')
+,(N'Encryption', N'RdFilter.sys', N'149040', N'CyberEye Research Labs')
+,(N'Encryption', N'gisfile_decryption.sys', N'149030', N'Communication U China')
+,(N'Encryption', N'TIFSFilter.sys', N'149020', N'SG Corporation')
+,(N'Encryption', N'OsrDt2.sys', N'149010', N'Information Security Corp')
+,(N'Encryption', N'EasyKryptMF.sys', N'149000', N'SoftKrypt LLC')
+,(N'Encryption', N'padlock.sys', N'148910', N'IntSoft Inc.')
+,(N'Encryption', N'ffecore.sys', N'148900', N'Winmagic')
+,(N'Encryption', N'bkfs.sys', N'148880', N'Hangzhou JoyBlock Ltd')
+,(N'Encryption', N'fangcloud.sys', N'148860', N'Hangzhou Yifangyun')
+,(N'Encryption', N'FileGuard.sys', N'148820.5', N'EaseFilter Technologies')
+,(N'Encryption', N'klvfs.sys', N'148810', N'Kaspersky Lab')
+,(N'Encryption', N'Klfle.sys', N'148800', N'Kaspersky Lab')
+,(N'Encryption', N'ISFP.sys', N'148701', N'ALPS SYSTEM INTEGRATIO')
+,(N'Encryption', N'ISIRM.sys', N'148700', N'ALPS SYSTEM INTERGRATION CO., LTD')
+,(N'Encryption', N'fhfs.sys', N'148670.5', N'SecureCircle')
+,(N'Encryption', N'ASUSSecDrive.sys', N'148650', N'ASUS')
+,(N'Encryption', N'ABFilterDriver.sys', N'148640', N'AlertBoot')
+,(N'Encryption', N'QDocumentFSF.sys', N'148630', N'BicDroid Inc.')
+,(N'Encryption', N'bfusbenc.sys', N'148620', N'bitFence Inc.')
+,(N'Encryption', N'sztgbfsf.sys', N'148610', N'SaferZone Co.')
+,(N'Encryption', N'mwIPSDFilter.sys', N'148600', N'Egis Technology Inc.')
+,(N'Encryption', N'csccvdrv.sys', N'148500', N'Computer Sciences Corporation')
+,(N'Encryption', N'aefs.sys', N'148400', N'Angelltech Corporation Xi''an')
+,(N'Encryption', N'VTEFsFlt.sys', N'148374', N'EsComputer Corp')
+,(N'Encryption', N'IWCSEFlt.sys', N'148300', N'InfoWatch')
+,(N'Encryption', N'GDDmk.sys', N'148250', N'G Data Software AG')
+,(N'Encryption', N'clcxcore.sys', N'148210', N'AFORE Solutions Inc.')
+,(N'Encryption', N'OrisLPDrv.sys', N'148200', N'CGS Publishing Tech')
+,(N'Encryption', N'nlemsys.sys', N'148100', N'NETLIB')
+,(N'Encryption', N'prvflder.sys', N'148000', N'Microsoft')
+,(N'Encryption', N'ssefs.sys', N'147900', N'SecuLution GmbH')
+,(N'Encryption', N'SePSed.sys', N'147800', N'Humming Heads, Inc.')
+,(N'Encryption', N'dlmfencx.sys', N'147700', N'Data Encryption Ltd')
+,(N'Encryption', N'SkyDEnc.sys', N'147620', N'Sky Co Ltd')
+,(N'Encryption', N'psgcrypt.sys', N'147610', N'Yokogawa R&L Corp')
+,(N'Encryption', N'bbfsflt.sys', N'147600', N'Bloombase')
+,(N'Encryption', N'qx10efs.sys', N'147500', N'Quixxant')
+,(N'Encryption', N'MEfefs.sys', N'147400', N'Eruces Inc.')
+,(N'Encryption', N'medlpflt.sys', N'147310', N'Check Point Software Technologies Ltd')
+,(N'Encryption', N'dsfa.sys', N'147308', N'Check Point Software Technologies Ltd')
+,(N'Encryption', N'Snicrpt.sys', N'147300', N'Systemneeds, Inc')
+,(N'Encryption', N'iCrypt.sys', N'147200', N'I-O DATA DEVICE, INC.')
+,(N'Encryption', N'xdrmflt.sys', N'147100', N'bluefinsystems')
+,(N'Encryption', N'dyFsFilter.sys', N'147000', N'Scrypto Media')
+,(N'Encryption', N'thinairwin.sys', N'146960', N'Thin Air Inc')
+,(N'Encryption', N'UcaDataMgr.sys', N'146950', N'AppSense Ltd')
+,(N'Encryption', N'zesocc.sys', N'146900', N'Novell')
+,(N'Encryption', N'CegisDlpFsFilter.sys', N'146868.5', N'Cegis Cyber Inc')
+,(N'Encryption', N'mfprom.sys', N'146800', N'McAfee Inc')
+,(N'Encryption', N'MfeEEFF.sys', N'146790', N'McAfee Inc.')
+,(N'Encryption', N'intefs.sys', N'146700', N'TianYu Software')
+,(N'Encryption', N'ADTDEAgent.sys', N'146680.5', N'Shanghai Andang Technology')
+,(N'Encryption', N'leofs.sys', N'146600', N'Leotech')
+,(N'Encryption', N'autocryptater.sys', N'146500', N'Richard Hagen')
+,(N'Encryption', N'WavxDMgr.sys', N'146400', N'Scott Cochrane')
+,(N'Encryption', N'eedmkxp32.sys', N'146300', N'Entrust')
+,(N'Encryption', N'SbCe.sys', N'146200', N'SafeBoot')
+,(N'Encryption', N'iSharedFsFilter', N'146100', N'Packeteer Inc')
+,(N'Encryption', N'AHSentry.sys', N'146050.5', N'AutnHive Inc.')
+,(N'Encryption', N'dlrmenc.sys', N'146010', N'DESlock')
+,(N'Encryption', N'dlmfenc.sys', N'146000', N'DESlock')
+,(N'Encryption', N'aksdf.sys', N'145900', N'Aladdin Knowledge Systems')
+,(N'Encryption', N'DDSFilter.sys', N'145800', N'WuHan Forworld Software')
+,(N'Encryption', N'SecureShield.sys', N'145700', N'HMI')
+,(N'Encryption', N'AifaFE.sys', N'145600', N'Alfa')
+,(N'Encryption', N'HiCrypt.sys', N'145566', N'digitronic computersysteme GmbH')
+,(N'Encryption', N'GBFsMf.sys', N'145500', N'GreenBorder')
+,(N'Encryption', N'jmefs.sys', N'145400', N'ShangHai Elec')
+,(N'Encryption', N'emugufs.sys', N'145333', N'Emugu Secure FS')
+,(N'Encryption', N'VFDriver.sys', N'145300', N'R Systems')
+,(N'Encryption', N'IntelDG.sys', N'145250', N'Intel Corporation')
+,(N'Encryption', N'DPMEncrypt.sys', N'145240', N'Randtronics Pty')
+,(N'Encryption', N'EVSDecrypt64.sys', N'145230', N'Fortium Technologies Ltd')
+,(N'Encryption', N'skycryptorencfs.sys', N'145220', N'Onecryptor CJSC.')
+,(N'Encryption', N'AisLeg.sys', N'145210', N'Assured Information Security')
+,(N'Encryption', N'windtalk.sys', N'145200', N'Hyland Software')
+,(N'Encryption', N'TeamCryptor.sys', N'145190', N'iTwin Pte. Ltd.')
+,(N'Encryption', N'CVDLP.sys', N'145180', N'CommVault Systems, Inc.')
+,(N'Encryption', N'5nine.encryptor.sys', N'145170', N'5nine Software Inc.')
+,(N'Encryption', N'ctpfile.sys', N'145160', N'Beijing Wondersoft Technology Co., Ltd')
+,(N'Encryption', N'DPDrv.sys', N'145150', N'IBM Japan, Ltd.')
+,(N'Encryption', N'tsdlp.sys', N'145140', N'Forware')
+,(N'Encryption', N'KCDriver.sys', N'145130', N'Tallegra Ltd')
+,(N'Encryption', N'CmgFFE.sys', N'145120', N'Credant Technologies')
+,(N'Encryption', N'fgcenc.sys', N'145110', N'Fortres Grand Corp.')
+,(N'Encryption', N'sview.sys', N'145100', N'Cinea')
+,(N'Encryption', N'ntzldrv.sys', N'145070.5', N'Appflare LLC')
+,(N'Encryption', N'TalkeyFilterDriver.sys', N'145040', N'myTALKEY s.r.o.')
+,(N'Encryption', N'MtUsbFlt19.sys', N'145020.5', N'Matisoft Cyber Security')
+,(N'Encryption', N'FedsFilterDriver.sys', N'145010', N'Physical Optics Corp')
+,(N'Encryption', N'stocc.sys', N'145000', N'Senforce Technologies')
+,(N'Encryption', N'SnEfs.sys', N'144900', N'Informzaschita')
+,(N'Encryption', N'ewSecureDox', N'144800', N'Echoworx Corporation')
+,(N'Encryption', N'osrdmk.sys', N'144700', N'OSR Open Systems Resources, Inc.')
+,(N'Encryption', N'uldcr.sys', N'144600', N'NCR Financial Solutions')
+,(N'Encryption', N'Tkefsxp.sys - 32bit', N'144500', N'INCA Internet Co., Ltd')
+,(N'Encryption', N'Tkefsxp64.sys - 64bit', N'144500', N'INCA Internet Co., Ltd')
+,(N'Encryption', N'NmlAccf.sys', N'144400', N'NEC System Technologies, Ltd.')
+,(N'Encryption', N'SolCrypt.sys', N'144300', N'Soliton Systems K.K.')
+,(N'Encryption', N'IngDmk.sys', N'144200', N'Ingrian Networks, Inc.')
+,(N'Encryption', N'llenc.sys', N'144100', N'SecureAxis Software')
+,(N'Encryption', N'SecureData.sys', N'144030', N'SecureAge Technology')
+,(N'Encryption', N'lockcube.sys', N'144020', N'SecureAge Technology Pte Ltd')
+,(N'Encryption', N'sdmedia.sys', N'144010', N'SecureAge Technology')
+,(N'Encryption', N'mysdrive.sys', N'144000', N'SecureAge Technology')
+,(N'Encryption', N'FileArmor.sys', N'143900', N'Mobile Armor')
+,(N'Encryption', N'VSTXEncr.sys', N'143800', N'VIA Technologies, Inc.')
+,(N'Encryption', N'dgdmk.sys', N'143700', N'Verdasys Inc.')
+,(N'Encryption', N'shandy.sys', N'143600', N'Safend Ltd.')
+,(N'Encryption', N'C2knet.sys', N'143520', N'Secuware')
+,(N'Encryption', N'C2kdef.sys', N'143510', N'Secuware')
+,(N'Encryption', N'ssfFS.sys', N'143500', N'SECUWARE S.L.')
+,(N'Encryption', N'PISRFE.sys', N'143400', N'Jilin University IT Co.')
+,(N'Encryption', N'bapfecre.sys', N'143300', N'BitArmor Systems, Inc')
+,(N'Encryption', N'KPSD.sys', N'143200', N'cihosoft')
+,(N'Encryption', N'Fcfileio.sys', N'143100', N'Brainzsquare, Co. Ltd.')
+,(N'Encryption', N'MonsterDrive.FsFilter.sys', N'143050.5', N'itMonster Ltd.')
+,(N'Encryption', N'cpdrm.sys', N'143000', N'Pikewerks')
+,(N'Encryption', N'vmsecfiltr.sys', N'142900.5', N'Thales CPL(previously Vormetric Inc)')
+,(N'Encryption', N'vmfiltr.sys', N'142900', N'Vormetric Inc')
+,(N'Encryption', N'Sfntpffd.sys', N'142890', N'Thales CPL')
+,(N'Encryption', N'VFSEnc.sys', N'142811', N'Symantec')
+,(N'Encryption', N'pgpfs.sys', N'142810', N'Symantec')
+,(N'Encryption', N'fencry.sys', N'142800', N'Symantec')
+,(N'Encryption', N'TmFileEncDmk.sys', N'142700', N'Trend Micro Inc')
+,(N'Encryption', N'cpefs.sys', N'142600', N'Crypto-Pro')
+,(N'Encryption', N'dekfs.sys', N'142500', N'KasherLab co.,ltd')
+,(N'Encryption', N'qlockfilter.sys', N'142400', N'Binqsoft Inc.')
+,(N'Encryption', N'RRFilterDriverStack_d3.sys', N'142300', N'Rational Retention')
+,(N'Encryption', N'cve.sys', N'142200', N'Absolute Software Corp.')
+,(N'Encryption', N'spcflt.sys', N'142100', N'FUJITSU BSC Inc.')
+,(N'Encryption', N'ldsecusb.sys', N'142000', N'LANDesk Inc.')
+,(N'Encryption', N'fencr.sys', N'141900', N'SODATSW spol. s.r.o.')
+,(N'Encryption', N'bw_fshide.sys', N'141850.7', N'Wuhan Buwei Software Technology Co.,Ltd')
+,(N'Encryption', N'bw_fssec.sys', N'141850.5', N'Wuhan Buwei Software Technology Co.,Ltd')
+,(N'Encryption', N'RubiFlt.sys', N'141800', N'Hitachi, Ltd.')
+,(N'Encryption', N'Ctxsdt2.sys', N'141750.5', N'Citrix, Cloud Software Group, Inc.')
+,(N'Encryption', N'NCrypt.sys', N'141700', N'Nimshi Corp')
+,(N'Encryption', N'pske.sys', N'141661', N'Penta Security Systems')
+,(N'Encryption', N'mfild.sys', N'141660', N'Penta Security Systems')
+,(N'Encryption', N'cbfsfilter2017.sys', N'141635', N'Automaton Inc')
+,(N'Encryption', N'cbfsfilter2017.sys', N'141634', N'Automaton Inc')
+,(N'Encryption', N'cbfsfilter2017.sys', N'141633', N'Automaton Inc')
+,(N'Encryption', N'cbfsfilter2017.sys', N'141632', N'Automaton Inc')
+,(N'Encryption', N'cbfsfilter2017.sys', N'141631', N'Automaton Inc')
+,(N'Encryption', N'cbfsfilter2017.sys', N'141630', N'Automaton Inc')
+,(N'Encryption', N'TypeSquare.sys', N'141620', N'Morisawa inc.')
+,(N'Encryption', N'xbdocfilter.sys', N'141610', N'Zrxb')
+,(N'Encryption', N'EVSDecrypt32.sys', N'141600', N'Fortium Technologies Ltd')
+,(N'Encryption', N'EVSDecrypt64.sys', N'141600', N'Fortium Technologies Ltd')
+,(N'Encryption', N'EVSDecryptia64.sys', N'141600', N'Fortium Technologies Ltd')
+,(N'Encryption', N'T-e.sys', N'141550.5', N'hdu')
+,(N'Encryption', N'SophosDt2.sys', N'141510', N'Sophos Plc')
+,(N'Encryption', N'afdriver.sys', N'141500', N'ATUS Technology LLC')
+,(N'Encryption', N'TrivalentFSFltr.sys', N'141430', N'Cyber Reliant')
+,(N'Encryption', N'CmdMnEfs.sys', N'141420', N'Comodo Security')
+,(N'Encryption', N'DWENxxxx.sys', N'141410', N'SciencePark Corporation')
+,(N'Encryption', N'DWENxxxx.sys', N'141400', N'SciencePark Corporation')
+,(N'Encryption', N'westlight.sys', N'141350', N'Westlight AI')
+,(N'Encryption', N'hdFileSentryDrv32.sys', N'141300', N'Heilig Defense')
+,(N'Encryption', N'hdFileSentryDrv64.sys', N'141300', N'Heilig Defense')
+,(N'Encryption', N'SDSCloudDrv.sys', N'141255', N'Stormshield')
+,(N'Encryption', N'pnpfs.sys', N'141250', N'PNP SECURE INC')
+,(N'Encryption', N'SmartCipherFilter.sys', N'141240', N'Micro Focus')
+,(N'Encryption', N'cplcdt2.sys', N'141230', N'conpal GmbH')
+,(N'Encryption', N'asCryptoFilter.sys', N'141220', N'Applied Security GmbH')
+,(N'Encryption', N'NetCryptKR.sys', N'141210', N'NetCrypt Pty Ltd')
+,(N'Encryption', N'SGFS.sys', N'141205', N'Levyco Development,LLC')
+,(N'Encryption', N'BHFilter.sys', N'141200', N'Beachhead Solutions')
+,(N'Encryption', N'Filecrypt.sys', N'141100', N'Microsoft')
+,(N'Encryption', N'encrypt.sys', N'141010', N'Microsoft')
+,(N'Encryption', N'swapBuffers.sys', N'141000', N'Microsoft')
+,(N'Virtualization', N'SkyBLI.sys', N'139000.5', N'Sky Co.Ltd.')
+,(N'Virtualization', N'Klvirt.sys', N'138100', N'Kaspersky Lab')
+,(N'Virtualization', N'eseadriver3z.sys', N'138080', N'ESEA')
+,(N'Virtualization', N'thsmmf.sys', N'138060', N'Talon Storage Solutions')
+,(N'Virtualization', N'VMagic.sys', N'138050', N'AI Consulting')
+,(N'Virtualization', N'GetSAS.sys', N'138040', N'SAS Institute Inc')
+,(N'Virtualization', N'rqtNos.sys', N'138030', N'ReaQta Ltd.')
+,(N'Virtualization', N'HIPS64.sys', N'138020', N'Recrypt LLC')
+,(N'Virtualization', N'frxdrv.sys', N'138010', N'FSLogix Inc.')
+,(N'Virtualization', N'vzdrv.sys', N'138000', N'Altiris')
+,(N'Virtualization', N'sffsg.sys', N'137990', N'Starfish Storage Corp')
+,(N'Virtualization', N'AppStream.sys', N'137920', N'Symantec Corporation')
+,(N'Virtualization', N'Rasm.sys', N'137915', N'OpDesk Inc')
+,(N'Virtualization', N'boxifier.sys', N'137910', N'Kenubi')
+,(N'Virtualization', N'xorw.sys', N'137900', N'CA (XOsoft)')
+,(N'Virtualization', N'ctlua.sys', N'137800', N'SurfRight B.V.')
+,(N'Virtualization', N'fgccow.sys', N'137700', N'Fortres Grand Corp.')
+,(N'Virtualization', N'aswSnx.sys', N'137600', N'ALWIL Software')
+,(N'Virtualization', N'AppIsoFltr.sys', N'137500', N'Kernel Drivers')
+,(N'Virtualization', N'ptcvfsd.sys', N'137400', N'PTC')
+,(N'Virtualization', N'CloudFile.sys', N'137350.5', N'EaseFilter Technologies')
+,(N'Virtualization', N'BDSandBox.sys', N'137300', N'BitDefender SRL')
+,(N'Virtualization', N'sxfpss-virt.sys', N'137200', N'Skanix AS')
+,(N'Virtualization', N'DKRtWrt.sys', N'137100', N'Diskeeper Corporation')
+,(N'Virtualization', N'ivm.sys', N'137000', N'RingCube Technologies')
+,(N'Virtualization', N'ivm.sys', N'136990', N'Citrix Systems')
+,(N'Virtualization', N'dtiof.sys', N'136900', N'Instavia Software Inc.')
+,(N'Virtualization', N'NxTopCP.sys', N'136800', N'Virtual Ccomputer Inc.')
+,(N'Virtualization', N'svdriver.sys', N'136700', N'VMware, Inc.')
+,(N'Virtualization', N'AwsEucAppRedirectionDriver.sys', N'136680.5', N'Amazon Web Services Inc')
+,(N'Virtualization', N'vdpfilefilter.sys', N'136660.5', N'H3C Ltd.')
+,(N'Virtualization', N'PPnP-LocalBoost2.sys', N'136650.5', N'Edgeless Opensource Group')
+,(N'Virtualization', N'unifltr.sys', N'136600', N'Unidesk')
+,(N'Virtualization', N'unidrive.sys (Renamed)', N'136600', N'Unidesk')
+,(N'Virtualization', N'unirsd.sys', N'136600', N'Unidesk')
+,(N'Virtualization', N'ive.sys', N'136500', N'TrendMicro Inc.')
+,(N'Virtualization', N'odamf.sys', N'136450', N'Sony Corporation')
+,(N'Virtualization', N'SrMxfMf.sys', N'136440', N'Sony Corporation')
+,(N'Virtualization', N'pszmf.sys', N'136430', N'Sony Corporation')
+,(N'Virtualization', N'sxsudfmf.sys', N'136410', N'Sony Corporation')
+,(N'Virtualization', N'vfammf.sys', N'136400', N'Sony Corporation')
+,(N'Virtualization', N'lwfsflt.sys', N'136300', N'Liquidware Labs')
+,(N'Virtualization', N'VHDFlt.sys', N'136240', N'Dell')
+,(N'Virtualization', N'VHDFlt.sys', N'136230', N'Dell')
+,(N'Virtualization', N'VHDFlt.sys', N'136220', N'Dell')
+,(N'Virtualization', N'VHDFlt.sys', N'136210', N'Dell')
+,(N'Virtualization', N'ncfsfltr.sys', N'136200', N'NComputing Inc.')
+,(N'Virtualization', N'cmdguard.sys', N'136100', N'COMODO Security Solutions Inc')
+,(N'Virtualization', N'hpfsredir.sys', N'136000', N'HP')
+,(N'Virtualization', N'ntzlsb.sys', N'135500.5', N'Appflare LLC')
+,(N'Virtualization', N'svhdxflt.sys', N'135100', N'Microsoft')
+,(N'Virtualization', N'luafv.sys', N'135000', N'Microsoft')
+,(N'Virtualization', N'ivm.sys', N'134000', N'RingCube Technologies')
+,(N'Virtualization', N'ivm.sys', N'133990', N'Citrix Systems')
+,(N'Virtualization', N'RevBitsEPSMF.sys', N'132730.5', N'RevBits LLC')
+,(N'Virtualization', N'RasRdpFs.sys', N'132720', N'Parallels International')
+,(N'Virtualization', N'frxdrvvt.sys', N'132700', N'FSLogix Inc.')
+,(N'Virtualization', N'pfmfs_???.sys', N'132600', N'Pismo Technic Inc.')
+,(N'Virtualization', N'Stcvhdmf.sys', N'132600', N'StorageCraft Tech Corp')
+,(N'Virtualization', N'appdrv01.sys', N'132500', N'Protection Technology')
+,(N'Virtualization', N'virtual_file.sys', N'132400', N'Acronis')
+,(N'Virtualization', N'pdiFsFilter.sys', N'132300', N'Proximal Data Inc.')
+,(N'Virtualization', N'avgvtx86.sys', N'132200', N'AVG Technologies CZ, s.r.o.')
+,(N'Virtualization', N'avgvtx64.sys', N'132200', N'AVG Technologies CZ, s.r.o.')
+,(N'Virtualization', N'DataNet_Driver.sys', N'132100', N'AppSense Ltd')
+,(N'Virtualization', N'EgenPage.sys', N'132000', N'Egenera, Inc.')
+,(N'Virtualization', N'unidrive.sys-old', N'131900', N'Unidesk')
+,(N'Virtualization', N'ivm.sys.old', N'131800', N'RingCube Technologies')
+,(N'Virtualization', N'XiaobaiFsR.sys', N'131710', N'SHENZHEN UNNOO LTD')
+,(N'Virtualization', N'XiaobaiFs.sys', N'131700', N'SHENZHEN UNNOO LTD')
+,(N'Virtualization', N'iotfsflt.sys', N'131600', N'IO Turbine Inc')
+,(N'Virtualization', N'mhpvfs.sys', N'131500', N'Wunix Limited')
+,(N'Virtualization', N'svdriver.sys', N'131400', N'SnapVolumes Inc.')
+,(N'Virtualization', N'Sptvrt.sys', N'131300', N'Safend')
+,(N'Virtualization', N'antirswf.sys', N'131210', N'Panzor Cybersecurity')
+,(N'Virtualization', N'aicvirt.sys', N'131200', N'AI Consulting')
+,(N'Virtualization', N'MEMEPMAgent.sys', N'130852', N'Microsoft')
+,(N'Virtualization', N'sfo.sys', N'130100', N'Microsoft')
+,(N'Virtualization', N'DeVolume.sys', N'130000', N'Microsoft')
+,(N'Physical Quota management', N'quota.sys', N'125000', N'Microsoft')
+,(N'Physical Quota management', N'qafilter.sys', N'124000', N'Veritas')
+,(N'Physical Quota management', N'DroboFlt.sys', N'123900', N'Data Robotics')
+,(N'Open File', N'insyncmf.sys', N'105000', N'InSync')
+,(N'Open File', N'cbfilter20.sys', N'101010', N'Bentley Systems Inc')
+,(N'Open File', N'SPILock8.sys', N'100900', N'Software Pursuits Inc.')
+,(N'Open File', N'Klbackupflt.sys', N'100800', N'Kaspersky')
+,(N'Open File', N'repkap', N'100700', N'Vision Solutions')
+,(N'Open File', N'symrg.sys', N'100600', N'Symantec')
+,(N'Open File', N'adsfilter.sys', N'100500', N'PolyServ')
+,(N'Open File', N'FMonitor.sys', N'100490', N'Safetica')
+,(N'Open File', N'BFS.sys', N'100010', N'Microsoft')
+,(N'Security Enhancer', N'TCIJDrv.sys', N'88400.5', N'Teradyne INC')
+,(N'Security Enhancer', N'fileWORM.sys', N'88350.5', N'Fuddata Limited')
+,(N'Security Enhancer', N'cbfilter20.sys', N'88320.5', N'MD Anderson Cancer Center')
+,(N'Security Enhancer', N'KpHrd.sys', N'88300', N'Ivanti')
+,(N'Security Enhancer', N'cbfilter20.sys', N'88250', N'Division-M')
+,(N'Security Enhancer', N'flflt.sys', N'88240.5', N'PNP SECURE INC')
+,(N'Security Enhancer', N'pfcflt.sys', N'88240', N'PNP SECURE INC')
+,(N'Security Enhancer', N'arm_minifilter.sys', N'88232', N'Assured Info Security')
+,(N'Security Enhancer', N'pegasus.sys', N'88230', N'Assured Info Security')
+,(N'Security Enhancer', N'RSBDrv.sys', N'88220', N'SMTechnology Co.')
+,(N'Security Enhancer', N'psprotf.sys', N'88210', N'Panzor Cybersecurity')
+,(N'Security Enhancer', N'DhtDriver64.sys', N'88180.5', N'DNP HyperTech Co., Ltd.')
+,(N'Security Enhancer', N'DhtDriver32.sys', N'88180.5', N'DNP HyperTech Co., Ltd.')
+,(N'Security Enhancer', N'ufsf.sys', N'88110.5', N'media-press.tv S.A.')
+,(N'Security Enhancer', N'DPMACL.sys', N'88100', N'Randtronics Pty')
+,(N'Security Enhancer', N'dsbwnck.sys', N'88000', N'Easy Solution Inc.')
+,(N'Security Enhancer', N'cbfilter20.sys', N'87911', N'Automaton Inc')
+,(N'Security Enhancer', N'cbfsfilter2017.sys', N'87910', N'Automaton Inc')
+,(N'Security Enhancer', N'cbfsfilter2017.sys', N'87909', N'Automaton Inc')
+,(N'Security Enhancer', N'cbfsfilter2017.sys', N'87908', N'Automaton Inc')
+,(N'Security Enhancer', N'cbfsfilter2017.sys', N'87907', N'Automaton Inc')
+,(N'Security Enhancer', N'cbfsfilter2017.sys', N'87906', N'Automaton Inc')
+,(N'Security Enhancer', N'cbfsfilter2017.sys', N'87905', N'Automaton Inc')
+,(N'Security Enhancer', N'cbfsfilter2017.sys', N'87904', N'Automaton Inc')
+,(N'Security Enhancer', N'cbfsfilter2017.sys', N'87903', N'Automaton Inc')
+,(N'Security Enhancer', N'cbfsfilter2017.sys', N'87902', N'Automaton Inc')
+,(N'Security Enhancer', N'cbfsfilter2017.sys', N'87901', N'Automaton Inc')
+,(N'Security Enhancer', N'cbfsfilter2017.sys', N'87900', N'Automaton Inc')
+,(N'Security Enhancer', N'RansomStopDriver.sys', N'87810', N'Maddrix LLC')
+,(N'Security Enhancer', N'rsbfsfilter.sys', N'87800', N'Corel Corporation')
+,(N'Security Enhancer', N'hsmltflt.sys', N'87720', N'Hitachi Solutions')
+,(N'Security Enhancer', N'hssfflt.sys', N'87710', N'Hitachi Solutions')
+,(N'Security Enhancer', N'acmnflt.sys', N'87708', N'Hitachi Solutions')
+,(N'Security Enhancer', N'ACSKFFD.sys', N'87700', N'Hitachi Solutions')
+,(N'Security Enhancer', N'MyDLPMF.sys', N'87600', N'Comodo Group Inc.')
+,(N'Security Enhancer', N'asioeg.sys', N'87550.5', N'Encourage Technologies')
+,(N'Security Enhancer', N'ScuaRaw.sys', N'87500', N'SCUA Segurança da Informação')
+,(N'Security Enhancer', N'HDSFilter.sys', N'87400', N'NeoAutus Automation System')
+,(N'Security Enhancer', N'ikfsmflt.sys', N'87300', N'IronKey Inc.')
+,(N'Security Enhancer', N'Klsec.sys', N'87200', N'Kaspersky Lab')
+,(N'Security Enhancer', N'XtimUSBFsFilterDrv.sys', N'87190', N'Dalian CP-SDT Ltd')
+,(N'Security Enhancer', N'RGFLT_FM.sys', N'87180', N'Hauri.inc')
+,(N'Security Enhancer', N'flockflt.sys', N'87170', N'Ahranta Inc.')
+,(N'Security Enhancer', N'ZdCore.sys', N'87160', N'Zends Technological Solutions')
+,(N'Security Enhancer', N'dcrypt.sys', N'87150', N'ReactOS Foundation')
+,(N'Security Enhancer', N'hpradeo.sys', N'87140', N'Pradeo')
+,(N'Security Enhancer', N'SDFSAGDRV.SYS', N'87130', N'ALPS SYSTEM INTERGRATION CO., LTD.')
+,(N'Security Enhancer', N'SDFSDEVFDRV.SYS', N'87120', N'ALPS SYSTEM INTERGRATION CO., LTD.')
+,(N'Security Enhancer', N'SDIFSFDRV.SYS', N'87110', N'ALPS SYSTEM INTERGRATION CO., LTD.')
+,(N'Security Enhancer', N'SDFSFDRV.SYS', N'87100', N'ALPS SYSTEM INTERGRATION CO., LTD.')
+,(N'Security Enhancer', N'CModule.sys', N'87070', N'Zhejiang Security Tech')
+,(N'Security Enhancer', N'HHRRPH.sys', N'87010', N'H+H Software GmbH')
+,(N'Security Enhancer', N'HHVolFltr.sys', N'87000', N'H+H Software GmbH')
+,(N'Security Enhancer', N'CCRRSecMon.sys', N'86960', N'Cyber Crucible Inc.')
+,(N'Security Enhancer', N'RevoNetDriver.sys', N'86940.5', N'J''s Communication Co.')
+,(N'Security Enhancer', N'SbieDrv.sys', N'86900', N'Sandboxie L.T.D')
+,(N'Security Enhancer', N'assetpro.sys', N'86800', N'pyaprotect.com')
+,(N'Security Enhancer', N'dlp.sys', N'86700', N'Tellus Software AS')
+,(N'Security Enhancer', N'eps.sys', N'86600', N'Lumension Security')
+,(N'Security Enhancer', N'RapportPG64.sys', N'86500', N'Trusteer')
+,(N'Security Enhancer', N'amminifilter.sys', N'86400', N'AppSense')
+,(N'Security Enhancer', N'Sniflt.sys', N'86300', N'Systemneeds, Inc')
+,(N'Security Enhancer', N'SecFile.sys', N'86200', N'Secure By Design Inc.')
+,(N'Security Enhancer', N'philly.sys', N'86110', N'triCerat Inc.')
+,(N'Security Enhancer', N'reggy.sys', N'86100', N'triCerat Inc.')
+,(N'Security Enhancer', N'cygfilt.sys', N'86000', N'Livegrid Incorporated')
+,(N'Security Enhancer', N'prelaunch.sys', N'85900', N'D3L')
+,(N'Security Enhancer', N'csareg.sys', N'85810', N'Cisco Systems')
+,(N'Security Enhancer', N'csaenh.sys', N'85800', N'Cisco Systems')
+,(N'Security Enhancer', N'asi_ns_drv.sys', N'85750.5', N'ASHINI Co. Ltd.')
+,(N'Security Enhancer', N'asEpsDrv.sys', N'85750', N'ASHINI Co. Ltd.')
+,(N'Security Enhancer', N'CIDACL.sys', N'85700', N'GE Aviation (Digital Systems Germantown)')
+,(N'Security Enhancer', N'CVDLP.sys', N'85610', N'CommVault Systems, Inc.')
+,(N'Security Enhancer', N'QGPEFlt.sys', N'85600', N'Quest Software')
+,(N'Security Enhancer', N'Drveng.sys', N'85500', N'CA')
+,(N'Security Enhancer', N'PPDMFilter_x64.sys', N'85550.5', N'PolicyPak Software Inc')
+,(N'Security Enhancer', N'PPDMFilter_x86.sys', N'85550.5', N'PolicyPak Software Inc')
+,(N'Security Enhancer', N'vracfil2.sys', N'85400', N'HAURI')
+,(N'Security Enhancer', N'TFsDisk.sys', N'85300', N'Teruten')
+,(N'Security Enhancer', N'rcMiniDrv.sys', N'85200', N'REDGATE CO.,LTD.')
+,(N'Security Enhancer', N'SnMc5xx.sys', N'85100', N'Informzaschita')
+,(N'Security Enhancer', N'FSPFltd.sys', N'85010', N'Alfa')
+,(N'Security Enhancer', N'AifaFFP.sys', N'85000', N'Alfa')
+,(N'Security Enhancer', N'EsAccCtlFE.sys', N'84901', N'EgoSecure GmbH')
+,(N'Security Enhancer', N'DpAccCtl.sys', N'84900', N'Softbroker GmbH')
+,(N'Security Enhancer', N'privman.sys', N'84800', N'BeyondTrust')
+,(N'Security Enhancer', N'eumntvol.sys', N'84700', N'Eugrid Inc')
+,(N'Security Enhancer', N'SoloEncFilter.sys', N'84600', N'Soliton Systems')
+,(N'Security Enhancer', N'sbfilter.sys', N'84500', N'UC4 Sofware')
+,(N'Security Enhancer', N'cposfw.sys', N'84450', N'Check Point Software Technologies Ltd')
+,(N'Security Enhancer', N'vsdatant.sys', N'84400', N'Zone Labs LLC')
+,(N'Security Enhancer', N'SePnet.sys', N'84350', N'Humming Heads, Inc.')
+,(N'Security Enhancer', N'SePuld.sys', N'84340', N'Humming Heads, Inc.')
+,(N'Security Enhancer', N'SePpld.sys', N'84330', N'Humming Heads, Inc.')
+,(N'Security Enhancer', N'SePfsd.sys', N'84320', N'Humming Heads, Inc.')
+,(N'Security Enhancer', N'SePwld.sys', N'84310', N'Humming Heads, Inc.')
+,(N'Security Enhancer', N'SePprd.sys', N'84300', N'Humming Heads, Inc.')
+,(N'Security Enhancer', N'InPFlter.sys', N'84200', N'Humming Heads, Inc.')
+,(N'Security Enhancer', N'CProCtrl.sys', N'84100', N'Crypto-Pro')
+,(N'Security Enhancer', N'spyshelter.sys', N'84000', N'Datpol')
+,(N'Security Enhancer', N'clpinspprot.sys', N'83900', N'Information Technology Company Ltd.')
+,(N'Security Enhancer', N'AbrEpm.sys', N'83800', N'FastTrack Software ApS')
+,(N'Security Enhancer', N'uvmfsflt.sys', N'83376', N'NEC Corporation')
+,(N'Security Enhancer', N'ipm.sys', N'82870.5', N'Virsec Systems Inc.')
+,(N'Security Enhancer', N'ProtectIt.sys', N'82373', N'TeraByte Inc.')
+,(N'Security Enhancer', N'dguard.sys', N'82300', N'Dmitry Varshavsky')
+,(N'Security Enhancer', N'NSUSBStorageFilter.sys', N'82200', N'NetSupport Ltd')
+,(N'Security Enhancer', N'RMSEFFMV.SYS', N'82100', N'CJSC Returnil Software')
+,(N'Security Enhancer', N'BoksFLAC.sys', N'82000', N'Fox Technologies')
+,(N'Security Enhancer', N'cpAcOnPnP.sys', N'81910', N'conpal GmbH')
+,(N'Security Enhancer', N'cpsgfsmf.sys', N'81900', N'conpal GmbH')
+,(N'Security Enhancer', N'ndevsec.sys', N'81800', N'Norman ASA')
+,(N'Security Enhancer', N'ViewIntus_RTDG.sys', N'81700', N'Pentego Technologies Ltd')
+,(N'Security Enhancer', N'BKSandFS.sys', N'81640', N'Binklac Workstation')
+,(N'Security Enhancer', N'BWAnticheat.sys', N'81638', N'Binklac Workstation')
+,(N'Security Enhancer', N'airlock.sys', N'81630', N'Airlock Digital Pty Ltd')
+,(N'Security Enhancer', N'zam.sys', N'81620', N'')
+,(N'Security Enhancer', N'ANXfsm.sys', N'81610', N'Arcdo')
+,(N'Security Enhancer', N'CDrSDFlt.sys', N'81600', N'Arcdo')
+,(N'Security Enhancer', N'crnselfdefence32.sys', N'81500', N'Coranti Inc.')
+,(N'Security Enhancer', N'crnselfdefence64.sys', N'81500', N'Coranti Inc.')
+,(N'Security Enhancer', N'zlock_drv.sys', N'81400', N'SecurIT')
+,(N'Security Enhancer', N'f101fs.sys', N'81300', N'Fortres Grand Corp.')
+,(N'Security Enhancer', N'sysgar.sys', N'81200', N'Nucleus Data Recover')
+,(N'Security Enhancer', N'EmbargoM.sys', N'81100', N'ScriptLogic')
+,(N'Security Enhancer', N'KSkyMonitor.sys', N'81080', N'Sky Monitor')
+,(N'Security Enhancer', N'ngssdef.sys', N'81050', N'Wontok Inc')
+,(N'Security Enhancer', N'ssb.sys', N'81041', N'Wontok Inc')
+,(N'Security Enhancer', N'regflt.sys', N'81040', N'Wontok Inc')
+,(N'Security Enhancer', N'fsds2a.sys', N'81000', N'Splitstreem Ltd')
+,(N'Security Enhancer', N'HeimdalInsights.sys', N'80950.5', N'Heimdal Security A/S')
+,(N'Security Enhancer', N'csacentr.sys', N'80900', N'Cisco Systems')
+,(N'Security Enhancer', N'ScvFLT50.sys', N'80850', N'Secuve Ltd')
+,(N'Security Enhancer', N'paritydriver.sys', N'80800', N'Bit9, Inc.')
+,(N'Security Enhancer', N'nkfsprot.sys', N'80710', N'Konneka')
+,(N'Security Enhancer', N'nkprot.sys', N'80700', N'KONNEKA Information Technologies')
+,(N'Security Enhancer', N'acpadlock.sys', N'80691', N'IntSoft Co., Ltd')
+,(N'Security Enhancer', N'ksmf.sys', N'80690', N'IntSoft Co., Ltd')
+,(N'Security Enhancer', N'amsdk.sys', N'80682.5', N'WatchDogDevelopment.com, LLC')
+,(N'Security Enhancer', N'im.sys', N'80680', N'CrowdStrike')
+,(N'Security Enhancer', N'SophosED.sys', N'80670', N'Sophos')
+,(N'Security Enhancer', N'jazzfile.sys', N'80660', N'Jazz Networks')
+,(N'Security Enhancer', N'SMXFs.sys', N'80500', N'OSR')
+,(N'Copy Protection', N'plypFsMon.sys', N'67100', N'PolyPort Inc.')
+,(N'Copy Protection', N'd3clock.sys', N'67000', N'D3CRYPT3D LLC')
+,(N'Copy Protection', N'cbfltfs4.sys', N'66500', N'I3D Technology Inc')
+,(N'Copy Protection', N'CkProcess.sys', N'66100', N'KASHU SYSTEM DESIGN INC.')
+,(N'Copy Protection', N'dlmfprot.sys', N'66000', N'Data Encrypt Sys')
+,(N'Copy Protection', N'baprtsef.sys', N'65700', N'BitArmor Systems, Inc')
+,(N'Copy Protection', N'sxfpss.sys', N'65600', N'Skanix AS')
+,(N'Copy Protection', N'rgasdev.sys', N'65500', N'Macrovision')
+,(N'Copy Protection', N'SkyFPDrv.sys', N'65410', N'Sky Co. Ltd.')
+,(N'Copy Protection', N'SkyLWP.sys', N'65400', N'Sky Co. Ltd.')
+,(N'Copy Protection', N'SkySDVRF.sys', N'65390', N'Sky Co. Ltd.')
+,(N'Copy Protection', N'SnEraser.sys', N'65300', N'Informzaschita')
+,(N'Copy Protection', N'vfilter.sys', N'65200', N'RSJ Software GmbH')
+,(N'Copy Protection', N'COGOFlt32.sys', N'65100', N'Fortium Technologies Ltd')
+,(N'Copy Protection', N'COGOFlt64.sys', N'65100', N'Fortium Technologies Ltd')
+,(N'Copy Protection', N'COGOFLTia64.sys', N'65100', N'Fortium Technologies Ltd')
+,(N'Copy Protection', N'scrubber.sys', N'65000', N'Microsoft')
+,(N'Copy Protection', N'SmDLP.sys', N'64100', N'SmTools')
+,(N'Copy Protection', N'BRDriver.sys', N'64000', N'BitRaider LLC')
+,(N'Copy Protection', N'BRDriver64.sys', N'64000', N'BitRaider LLC')
+,(N'Copy Protection', N'X7Ex.sys', N'62500', N'Exent Technologies Ltd')
+,(N'Copy Protection', N'LibertyFSF.sys', N'62300', N'Bayalink Solutions Co')
+,(N'Copy Protection', N'axfsdrv2.sys', N'62100', N'Axence Software Inc.')
+,(N'Copy Protection', N'sds.sys', N'62000', N'Egress Software')
+,(N'Copy Protection', N'zzenc.sys', N'61650.5', N'Imdtech LLC')
+,(N'Copy Protection', N'TotalSystemAuditor.sys', N'61600', N'ANRC LLC')
+,(N'Copy Protection', N'MBAMApiary.sys', N'61500', N'Malwarebytes Corp.')
+,(N'Copy Protection', N'WA_FSW.sys', N'61400', N'Programas Administración y Mejoramiento')
+,(N'Copy Protection', N'ViewIntus_RTAS', N'61300', N'Pentego Technologies')
+,(N'Copy Protection', N'tffac.sys', N'61200', N'Toshiba Corporation')
+,(N'Copy Protection', N'tccp.sys', N'61100', N'TrusCont Ltd')
+,(N'Copy Protection', N'KomFS.sys', N'61000', N'KOM Networks')
+,(N'Bottom', N'RMPFileMounter.sys', N'48000', N'ManageEngine Zoho')
+,(N'Bottom', N'MFPAMCtrl.sys', N'47500', N'Micro Focus')
+,(N'Bottom', N'cbfsfilter2017.sys', N'47400', N'12d Synergy')
+,(N'Bottom', N'pfmfs_???.sys', N'47300', N'Pismo Technic Inc.')
+,(N'Bottom', N'AlfaVS.sys', N'47290.5', N'AlfaSP.com')
+,(N'Bottom', N'DLDriverMiniFlt.sys', N'47200', N'Acronis')
+,(N'Bottom', N'DLPDriverProt.sys', N'47199.5', N'Acronis')
+,(N'Bottom', N'hsmltlib.sys', N'47110', N'Hitachi Solutions')
+,(N'Bottom', N'hskdlib.sys', N'47100', N'Hitachi Solutions')
+,(N'Bottom', N'acmnlib.sys', N'47090', N'Hitachi Solutions')
+,(N'Bottom', N'dxfm.sys', N'47050.5', N'DACS Laboratories GmbH')
+,(N'Bottom', N'aictracedrv_b.sys', N'47000', N'AI Consulting')
+,(N'Bottom', N'SBox.sys', N'46950', N'ASF Labs 2019 LTD')
+,(N'Bottom', N'hhdcfltr.sys', N'46900', N'Seagate Technology')
+,(N'Bottom', N'AmdFSMini.sys', N'46890.5', N'Advanced Micro Devices')
+,(N'Bottom', N'Npsvctrig.sys', N'46000', N'Microsoft')
+,(N'Bottom', N'klvfs.sys', N'44900', N'Kaspersky Lab')
+,(N'Bottom', N'klbackupflt.sys', N'44890', N'Kaspersky Lab')
+,(N'Bottom', N'rsfxdrv.sys', N'41000', N'Microsoft')
+,(N'Bottom', N'defilter.sys', N'40900', N'Microsoft')
+,(N'Bottom', N'AppVVemgr.sys', N'40800', N'Microsoft')
+,(N'Bottom', N'wofadk.sys', N'40730', N'Microsoft')
+,(N'Bottom', N'wof.sys', N'40700', N'Microsoft')
+,(N'Bottom', N'fileinfo', N'40500', N'Microsoft')
+,(N'Bottom', N'WinSetupBoot.sys', N'40400', N'Microsoft')
+,(N'Bottom', N'WinSetupMon.sys', N'40300', N'Microsoft')
+,(N'Anti-Virus', N'shhflt.sys', N'321495', N'Quick Heal Technologies Pvt. Ltd.')
 GO
-BEGIN TRAN;
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'SAFE-Agent.sys', 363636, 'SAFE-Cyberdefense');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'EstPrmon.sys', 363610, 'ESTsoft corp.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'Estprp.sys - 64bit', 363610, 'ESTsoft corp.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'EstRegmon.sys', 363600, 'ESTsoft corp.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'EstRegp.sys - 64bit', 363600, 'ESTsoft corp.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'EMAC-Driver-x64.sys', 363570, 'EMAC LAB');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'HuntMon.sys', 363558.5, 'Huntress Labs Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'agfsmon.sys', 363530, 'TechnoKom Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'NlxFF.sys', 363520, 'OnGuard Systems LLC');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'Sahara.sys', 363511, 'Safend');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'Santa.sys', 363510, 'Safend');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'vfdrv.sys', 363500, 'Viewfinity');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'topdogfsfilt.sys', 363450, 'ManTech');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'mamflt.sys', 363430, 'Mirekusoft LLC');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'sfac.sys', 363420, 'SoulFrost');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'xhunter64.sys', 363400, 'Wellbia.com');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'uncheater.sys', 363390, 'Wellbia.com');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'AuditFlt.sys', 363313, 'Ionx Solutions LLP');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'SPIMiniFilter.sys', 363300, 'Software Pursuits Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'EAAntiCheat.sys', 363250, 'Electronic Arts');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'RevBitsESMF.sys', 363240.5, 'RevBits LLC');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'mracdrv.sys', 363230, 'Mail․Ru');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'BEDaisy.sys', 363220, 'BattlEye Innovations');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'MPKernel.sys', 363210, 'Lovelace Network Tech');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'NetAccCtrl.sys', 363200, 'LINK co., ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'NetAccCtrl64.sys', 363200, 'LINK co., ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'bzsenedrsysdrv.sys', 363143, 'BiZone LLC');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'bzsenyaradrv.sys', 363142, 'BiZone LLC');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'bzsenspdrv.sys', 363141, 'BiZone LLC');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'bzsenth.sys', 363140, 'BiZone LLC');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'hpreg.sys', 363130, 'HP');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'QMON.sys', 363122, 'Qualys Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'qfimdvr.sys', 363120, 'Qualys Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'QDocumentREF.sys', 363110, 'BicDroid Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'dsfemon.sys', 363100, 'Topology Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'AmznMon.sys', 363030, 'Amazon Web Services Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'iothorfs.sys', 363020, 'ioScience');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'ctamflt.sys', 363010, 'ComTrade');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'psisolator.sys', 363000, 'SharpCrafters');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'QmInspec.sys', 362990, 'Beijing QiAnXin Tech.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'HVLMinifilter.sys', 362980, 'HAVELSAN A.Ş');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'GagSecurity.sys', 362970, 'Beijing Shu Yan Science');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'vfpd.sys', 362962, 'CyberArk Software');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'CybKernelTracker.sys', 362960, 'CyberArk Software');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'filemon.sys', 362950, 'Temasoft S.R.L.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'SCAegis.sys', 362940, 'Sogou Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'fpepflt.sys', 362930, 'ForcePoint LLC.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'GTVService.sys', 362920, 'GTV VIETNAM TECHNOLOGY');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'RWLog1.sys', 362910.5, 'ROMWin Co. Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'klifks.sys', 362902, 'Kaspersky Lab');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'klifaa.sys', 362901, 'Kaspersky Lab');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'Klifsm.sys', 362900, 'Kaspersky Lab');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'lwdcs.sys', 362880.5, 'Lacework Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'Spotlight.sys', 362870, 'Cigent Technology Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'nxrmflt.sys', 362860, 'NextLabs, Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'vast.sys', 362850, 'EclecticIQ BV');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'AALProtect.sys', 362840, 'AlphaAntiLeak');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'egnfsflt.sys', 362830, 'Egnyte Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'RsFlt.sys', 362820, 'Redstor Limited');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'CentrifyFSF.sys', 362810, 'Centrify Corp');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'Sefo.sys - Bottom', 362800, 'Solusseum Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'proggerdriver.sys', 362790, 'WaikatoLink Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'imfilter.sys', 362780, 'ITsMine');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'webargus.sys', 362775.5, 'Digital Information Technologies');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'DSHSM.sys', 362770.5, 'DeepSpace Storage Systems');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'GraphiteSecureDriver.sys', 362750.5, 'Towers Watson Software');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'IndigoSecureDriver.sys', 362750, 'Towers Watson Software');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'SFPMonitor.sys - Bottom', 362700, 'SonicWall Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Activity Monitor', 'minispy.sys - Bottom', 361000, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Undelete', 'BSSFlt.sys', 346000, 'Blue Shoe Software LLC');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Undelete', 'ThinIO.sys', 345900, 'ThinScale Technology');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Undelete', 'hmpalert.sys', 345800, 'SurfRight');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Undelete', 'nsffkmd64.sys', 345700, 'NetSTAR Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Undelete', 'nsffkmd32.sys', 345700, 'NetSTAR Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Undelete', 'xbprocfilter.sys', 345600, 'Zrxb');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Undelete', 'ifileguard.sys', 345500, 'I-O DATA DEVICE, INC.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Undelete', 'undelex32.sys', 345400, 'Resplendence Software Projects');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Undelete', 'undelex64.sys', 345400, 'Resplendence Software Projects');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Undelete', 'starmon.sys', 345300, 'Kantowitz Engineering, Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Undelete', 'mxRCycle.sys', 345200, 'Avanquest');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Undelete', 'UdFilter.sys', 345100, 'Diskeeper Corporation');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Undelete', 'it2prtc.sys', 345040, 'Soliton Systems K.K.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Undelete', 'SolRegFilter.sys', 345030, 'Soliton Systems K.K.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Undelete', 'SolSecBr.sys', 345020, 'Soliton Systems K.K.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Undelete', 'SolFCLLi.sys', 345010, 'Soliton Systems K.K.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Undelete', 'WinSetupMon.sys', 345102, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Undelete', 'SolFCL.sys', 345000, 'Soliton Smart Sec');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Undelete', 'DCVPr.sys', 340700, 'SecurStar GmbH');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'brynhildr.sys', 329400, 'Activision Blizzard, Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'IstroDrv.sys', 329380.5, 'IstroSec s.r.o.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'XRFilter.sys', 329375, 'XRITDX');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'tbmninifilter.sys', 329370, 'Confluera Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'CovAgent.sys', 329365, 'Field Effect Software');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'trfsfilter.sys', 329360, 'NetSecurity Corp');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'ReveFltMgr.sys', 329350, 'REVE Antivirus');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'ReveProcProtection.sys', 329340, 'REVE Antivirus');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'zwPxeSvr.sys', 329330, 'SecureLink Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'zwASatom.sys', 329320, 'SecureLink Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'wscm.sys', 329310, 'Fujitsu Social Science');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'IMFFilter.sys', 329300, 'IObit Information Tech');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'CSFlt.sys', 329290, 'ConeSecurity Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'PWProtect.sys', 329250, 'PerfectWorld Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'Osiris.sys', 329240, 'Binary Defense Systems');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'ospfile_mini.sys', 329230, 'OKUMA Corp');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'SoftFilterxxx.sys', 329222, 'WidgetNuri Corp');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'RansomDefensexxx.sys', 329220, 'WidgetNuri Corp');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'RanPodFS.sys', 329210, 'Pooyan System');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'ksfsflt.sys', 329200, 'Beijing Kingsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'DeepInsFS.sys', 329190, 'Deep Instinct');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'AppCheckD.sys', 329180, 'CheckMAL Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'spellmon.sys', 329170, 'SpellSecurity');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'WhiteShield.sys', 329160, 'Meidensha Corp');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'reaqtor.sys', 329150, 'ReaQta Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'SE46Filter.sys', 329140, 'Technology Nexus AB');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'FileScan.sys', 329130, 'NPcore Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'ECATDriver.sys', 329120, 'EMC');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'pfkrnl.sys', 329110, 'FXSEC LTD');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'epicFilter.sys', 329100, 'Hidden Reflex');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'EdnemFsFilter.sys', 329090, 'Dakota State University');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'b9kernel.sys', 329050, 'Bit9 Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'eeCtrl.sys', 329010, 'symantec');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'eraser.sys (Retired)', 329010, 'symantec');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'SRTSP.sys', 329000, 'symantec');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'SRTSPIT.sys - ia64 systems', 329000, 'symantec');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'SRTSP64.SYS - x64 systems', 329000, 'symantec');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'eeCtrl.sys', 328960, 'NortonLifeLock Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'SRTSP.sys', 328950, 'NortonLifeLock Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'SRTSP64.sys', 328950, 'NortonLifeLock Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'a2ertpx86.sys', 328920, 'Emsi Software GmbH');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'a2ertpx64.sys', 328920, 'Emsi Software GmbH');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'a2gffx86.sys - x86', 328910, 'Emsi Software GmbH');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'a2gffx64.sys - x64', 328910, 'Emsi Software GmbH');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'a2gffi64.sys - IA64', 328910, 'Emsi Software GmbH');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'a2acc.sys', 328900, 'Emsi Software GmbH');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'a2acc64.sys on x64 systems', 328900, 'Emsi Software GmbH');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'FlightRecorder.sys', 328850, 'Malwarebytes Corp.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'upfilt.sys', 328820.5, 'Upsight Security');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'si32_file.sys', 328810, 'Scargo Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'si64_file.sys', 328810, 'Scargo Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'mbam.sys', 328800, 'Malwarebytes Corp.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'lnvscenter.sys', 328780, 'Lenovo');
-COMMIT TRAN;
-GO
-BEGIN TRAN;
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'EnigmaFileMonDriver.sys', 328770, 'EnigmaSoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'KUBWKSP.sys', 328750, 'Netlor SAS');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'hcp_kernel_acq.sys', 328740, 'refractionPOINT');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'SegiraFlt.sys', 328730, 'Segira LLC');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'wdocsafe.sys', 328722, 'Cheetah Mobile Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'lbprotect.sys', 328720, 'Cheetah Mobile Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'eamonm.sys', 328700, 'ESET, spol. s r.o.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'snpavdrv.sys', 328660, 'Security Code LLC');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'klam.sys', 328650, 'Kaspersky Lab');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'MaxProc64.sys', 328620, 'Max Secure Software');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'MaxProtector.sys', 328610, 'Max Secure Software');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'maxcryptmon.sys', 328601, 'Max Secure Software');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'SDActMon.sys', 328600, 'Max Secure Software');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'TmKmSnsr.sys', 328550, 'Trend Micro Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'fileflt.sys', 328540, 'Trend Micro Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'TmEsFlt.sys', 328530, 'Trend Micro Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'TmEyes.sys', 328520, 'Trend Micro Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'tmevtmgr.sys', 328510, 'Trend Micro Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'tmpreflt.sys', 328500, 'Trend');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'vcMFilter.sys', 328400, 'SGRI Co., LTD.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'SAFsFilter.sys', 328300, 'Lightspeed Systems Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'vsepflt.sys', 328200, 'VMware, Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'VFileFilter.sys(renamed)', 328200, 'VMware, Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'sfavflt.sys', 328130, 'Sangfor Technologies');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'sfavflt.sys', 328120, 'Sangfor Technologies');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'drivesentryfilterdriver2lite.sys', 328100, 'DriveSentry Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'WdFilter.sys', 328010, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'mpFilter.sys', 328000, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'vrSDetri.sys', 327801, 'ETRI');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'vrSDetrix.sys', 327800, 'ETRI');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'AhkSvPro.sys', 327720, 'Ahkun Co., Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'AhkUsbFW.sys', 327710, 'Ahkun Co., Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'AhkAMFlt.sys', 327700, 'Ahkun Co., Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'majoradvapi.sys', 327680, 'Beijing Majorsec');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'PSINPROC.SYS', 327620, 'Panda Security');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'PSINFILE.SYS', 327610, 'Panda Security');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'amfsm.sys - Windows XP/2003 x64', 327600, 'Panda Security');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'amm8660.sys - Windows Vista x86', 327600, 'Panda Security');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'amm6460.sys - Windows Vista x64', 327600, 'Panda Security');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'PerfectWorldAntiCheatSys.sys', 327560, 'Perfect World Co. Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'ADSpiderDoc.sys', 327550, 'Digitalonnet');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'BkavAutoFlt.sys', 327542, 'Bkav Corporation');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'BkavSdFlt.sys', 327540, 'Bkav Corporation');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'easyanticheat.sys', 327530, 'EasyAntiCheat Solutions');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', '5nine.cbt.sys', 327520, '5nine Software Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'caavFltr.sys', 327510, 'Computer Assoc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'ino_fltr.sys', 327500, 'Computer Assoc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'SECOne_USB.sys', 327426, 'GRGBanking Equipment');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'SECOne_Proc10.sys', 327424, 'GRGBanking Equipment');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'SECOne_REG10.sys', 327422, 'GRGBanking Equipment');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'SECOne_FileMon10.sys', 327420, 'GRGBanking Equipment');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'WCSDriver.sys', 327410, 'White Cloud Security');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', '360qpesv.sys', 327404, '360 Software (Beijing)');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'dsark.sys', 327402, 'Qihoo 360');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', '360avflt.sys', 327400, 'Qihoo 360');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'sciptflt.sys', 327334, 'SECUI Corporation');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'scifsflt.sys', 327333, 'SECUI Corporation');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'ANVfsm.sys', 327310, 'Arcdo');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'CDrRSFlt.sys', 327300, 'Arcdo');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'mfdriver.sys', 327250, 'Imperva Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'EPSMn.sys', 327200, 'SGA');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'TxFileFilter.sys', 327160, 'Beijing Venus');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'VTSysFlt.sys', 327150, 'Beijing Venus');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'TesMon.sys', 327130, 'Tencent');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'QQSysMonX64.sys', 327125, 'Tencent');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'QQSysMon.sys', 327120, 'Tencent');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'TSysCare.sys', 327110, 'Shenzhen Tencent Computer Systems Company Limited');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'TFsFlt.sys', 327100, 'Shenzhen Tencent Computer Systems Company Limited');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'avmf.sys', 327000, 'Authentium');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'BDFileDefend.sys', 326916, 'Baidu (beijing)');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'BDsdKit.sys', 326914, 'Baidu online network technology (beijing)Co., Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'bd0003.sys', 326912, 'Baidu online network technology (beijing)Co., Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'Bfilter.sys', 326910, 'Baidu (Hong Kong) Limited');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'NeoKerbyFilter', 326900, 'NeoAutus');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'egnfsflt.sys', 326830, 'Egnyte Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'RsFlt.sys', 326820, 'Redstor Limited');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'trpmnflt.sys', 326810, 'TRAPMINE A.S.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'PLGFltr.sys', 326800, 'Paretologic');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'WrdWizSecure64.sys', 326730, 'WardWiz');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'wrdwizscanner.sys', 326720, 'WardWiz');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'AshAvScan.sys', 326700, 'Ashampoo GmbH & Co. KG');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'Zyfm.sys', 326666, 'ZhengYong InfoTech LTD.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'csaav.sys', 326600, 'Cisco Systems');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'oavfm.sys', 326550, 'HSM IT-Services Gmbh');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'SegMD.sys', 326520, 'Segurmatica');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'SegMP.sys', 326510, 'Segurmatica');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'SegF.sys', 326500, 'Segurmatica');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'eeyehv.sys', 326400, 'eEye Digital Security');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'eeyehv64.sys', 326400, 'eEye Digital Security');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'CpAvFilter.sys', 326311, 'CodeProof Technologies Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'CpAvKernel.sys', 326310, 'CodeProof Technologies Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'NovaShield.sys', 326300, 'Securitas Technologies,Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'SheedAntivirusFilterDriver.sys', 326290, 'SheedSoft Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'bSyirmf.sys', 326260, 'BLACKFORT SECURITY');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'bSysp.sys', 326250, 'BLACKFORT SECURITY');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'bSydf.sys', 326240, 'BLACKFORT SECURITY');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'bSywl.sys', 326235, 'BLACKFORT SECURITY');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'bSyrtm.sys', 326230, 'BLACKFORT SECURITY');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'bSyaed.sys', 326220, 'BLACKFORT SECURITY');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'bSyar.sys', 326210, 'BLACKFORT SECURITY');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'BdFileSpy.sys', 326200, 'BullGuard');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'npxgd.sys', 326160, 'INCA Internet Co., Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'npxgd64.sys', 326160, 'INCA Internet Co., Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'tkpl2k.sys', 326150, 'INCA Internet Co., Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'tkpl2k64.sys', 326150, 'INCA Internet Co., Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'GKFF.sys', 326140, 'INCA Internet Co., Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'GKFF64.sys', 326140, 'INCA Internet Co., Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'tkdac2k.sys', 326130, 'INCA Internet Co., Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'tkdacxp.sys', 326130, 'INCA Internet Co., Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'tkdacxp64.sys', 326130, 'INCA Internet Co., Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'tksp2k.sys', 326120, 'INCA Internet Co., Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'tkspxp.sys', 326120, 'INCA Internet Co., Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'tkspxp64.sys', 326120, 'INCA Internet Co., Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'tkfsft.sys', 326110, 'INCA Internet Co., Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'tkfsft64.sys - 64bit', 326110, 'INCA Internet Co., Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'tkfsavxp.sys - 32bit', 326100, 'INCA Internet Co., Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'tkfsavxp64.sys - 64bit', 326100, 'INCA Internet Co., Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'SMDrvNt.sys', 326040, 'AhnLab, Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'ATamptNt.sys', 326030, 'AhnLab, Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'V3Flt2k.sys', 326020, 'AhnLab, Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'V3MifiNt.sys', 326010, 'Ahnlab');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'V3Ift2k.sys', 326000, 'Ahnlab');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'V3IftmNt.sys (Old name)', 326000, 'Ahnlab');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'ArfMonNt.sys', 325990, 'Ahnlab');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'AhnRghLh.sys', 325980, 'Ahnlab');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'AszFltNt.sys', 325970, 'Ahnlab');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'OMFltLh.sys', 325960, 'Ahnlab');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'V3Flu2k.sys', 325950, 'Ahnlab');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'TfFregNt.sys', 325940, 'AhnLab Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'AdcVcsNT.sys', 325930, 'Ahnlab');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'vcdriv.sys', 325820, 'Greatsoft Corp.Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'vcreg.sys', 325810, 'Greatsoft Corp.Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'vchle.sys', 325800, 'Greatsoft Corp.Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'NxFsMon.sys', 325700, 'Novatix Corporation');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'LiveGuardAntiCheat.sys', 325650, 'LiveGuard Software Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'AntiLeakFilter.sys', 325600, 'Individual developer (Soft3304)');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'NanoAVMF.sys', 325510, 'Panda Software');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'shldflt.sys', 325500, 'Panda Software');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'nprosec.sys', 325410, 'Norman ASA');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'nregsec.sys', 325400, 'Norman ASA');
-COMMIT TRAN;
-GO
-BEGIN TRAN;
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'issregistry.sys', 325300, 'IBM');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'THFilter.sys', 325200, 'Sybonic Systems Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'pervac.sys', 325100, 'PerSystems SA');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'avgmfx86.sys', 325000, 'AVG Grisoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'avgmfx64.sys', 325000, 'AVG Grisoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'avgmfi64.sys', 325000, 'AVG Grisoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'avgmfrs.sys (retired)', 325000, 'AVG Grisoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'FortiAptFilter.sys', 324930, 'Fortinet Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'fortimon2.sys', 324920, 'Fortinet Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'fortirmon.sys', 324910, 'Fortinet Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'fortishield.sys', 324900, 'Fortinet Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'mscan-rt.sys', 324800, 'SecureBrain Corporation');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'sysdiag.sys', 324600, 'Huorong Security');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'agentrtm64.sys', 324510, 'WINS CO. LTD');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'rswmon.sys', 324500, 'WINS CO. LTD');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'mwfsmfltr.sys', 324420, 'MicroWorld Software Services Pvt. Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'gtkdrv.sys', 324410, 'GridinSoft LLC');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'GbpKm.sys', 324400, 'GAS Tecnologia');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'crnsysm.sys', 324310, 'Coranti Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'crncache32.sys', 324300, 'Coranti Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'crncache64.sys', 324300, 'Coranti Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'egambit.sys', 324242, 'TEHTRI-Security');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'drwebfwft.sys', 324210, 'Doctor Web');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'DwShield.sys', 324200, 'Doctor Web');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'DwShield64.sys', 324200, 'Doctor Web');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'IProtect.sys', 324150, 'EveryZone Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'TvFiltr.sys', 324140, 'EveryZone INC.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'TvDriver.sys', 324130, 'EveryZone INC.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'TvSPFltr.sys', 324120, 'EveryZone INC.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'TvPtFile.sys', 324110, 'EveryZone INC.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'TvStFltr.sys', 324101, 'EveryZone INC.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'TvMFltr.sys', 324100, 'Everyzone');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'SophosED.sys', 324050, 'Sophos');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'SAVOnAccess.sys', 324010, 'Sophos');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'savonaccess.sys', 324000, 'Sophos');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'sld.sys', 323990, 'Sophos');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'OADevice.sys', 323900, 'Tall Emu');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'pwipf6.sys', 323800, 'PWI, Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'EstRkmon.sys', 323700, 'ESTsoft corp.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'EstRkr.sys - 64bit', 323700, 'ESTsoft corp.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'dwprot.sys', 323610, 'Doctor Web');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'Spiderg3.sys', 323600, 'Doctor Web Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'STKrnl64.sys', 323500, 'Verdasys Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'UFDFilter.sys', 323400, 'Yoggie');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'SCFltr.sys', 323300, 'SecurityCoverage, Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'fildds.sys', 323200, 'Filseclab');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'fsfilter.sys', 323100, 'MastedCode Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'fpav_rtp.sys', 323000, 'f-protect');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'cwdriver.sys', 322900, 'Leith Bade');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'AYFilter.sys', 322810, 'ESTsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'Rtw.sys', 322800, 'ESTsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'EscFilter.sys', 322790.5, 'ESTsecurity Corp');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'RSRtw.sys', 322790, 'ESTsecurity Corp');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'RSPCRtw.sys', 322780, 'ESTsecurity Corp');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'HookSys.sys', 322700, 'Beijing Rising Information Technology Corporation Limited');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'snscore.sys', 322600, 'S.N.Safe&Software');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'ssvhook.sys', 322500, 'SecuLution GmbH');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'strapvista.sys', 322400, 'AvSoft Technologies');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'strapvista64.sys', 322400, 'AvSoft Technologies');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'sascan.sys', 322300, 'SecureAge Technology');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'savant.sys', 322200, 'Savant Protection, Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'VrARnFlt.sys', 322161, 'HAURI');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'VrBBDFlt.sys', 322160, 'HAURI');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'vrSDfmx.sys', 322153, 'HAURI');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'vrSDfmx.sys', 322152, 'HAURI');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'vrSDam.sys', 322151, 'HAURI');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'vrSDam.sys', 322150, 'HAURI');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'VRAPTFLT.sys', 322140, 'HAURI Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'VrAptDef.sys', 322130, 'HAURI');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'VrSdCore.sys', 322120, 'HAURI');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'VrFsFtM.sys', 322110, 'HAURI');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'VrFsFtMX.sys(AMD64)', 322110, 'HAURI');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'vradfil2.sys', 322100, 'HAURI');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'zgflt.sys', 322050, 'ZeroGuard Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'fsgk.sys', 322000, 'f-secure');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'bouncer.sys', 321950, 'CoreTrace Corporation');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'PCTCore64.sys', 321910, 'PC Tools Pty. Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'PCTCore.sys (Old name)', 321910, 'PC Tools Pty. Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'ikfilesec.sys', 321900, 'PC Tools Pty. Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'ZxFsFilt.sys', 321800, 'Australian Projects');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'antispyfilter.sys', 321700, 'C-NetMedia Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'dfndr_am.sys', 321654, 'PSafe Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'hlprotect.sys', 321650, 'HarfangLab');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'PZDrvXP.sys', 321600, 'VisionPower Co.,Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'haggc.sys', 321510.1, 'Quick Heal Technologies Pvt. Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'ggc.sys', 321510, 'Quick Heal TechnologiesPvt. Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'catflt.sys', 321500, 'Quick Heal TechnologiesPvt. Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'snsrflt.sys', 321495, 'Quick Heal Technologies Pvt. Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'ztflt.sys', 321490.1, 'Quick Heal Technologies Pvt. Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'bdsflt.sys', 321490, 'Quick Heal Technologies Pvt. Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'dartflt.sys', 321485, 'Quick Heal Technologies Pvt. Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'arwflt.sys', 321480, 'Quick Heal Technologies Pvt. Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'csagent.sys', 321410, 'CrowdStrike Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'kmkuflt.sys', 321400, 'Komoku Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'ntguard.sys', 321337, 'IKARUS Security');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'epdrv.sys', 321320, 'McAfee Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'mfencoas.sys', 321310, 'McAfee Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'mfehidk.sys', 321300, 'McAfee Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'swin.sys', 321250, 'McAfee Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'CyvrFsfd.sys', 321234, 'Palo Alto Networks');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'cmdccav.sys', 321210, 'Comodo Group Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'cmdguard.sys', 321200, 'Comodo Group Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'mfesec.sys', 321150.5, 'McAfee, LLC');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'cbfilter20.sys', 321120.5, 'CMC Cyber Security');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'cbprocess20.sys', 321120, 'CMC Cyber Security');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'cbregistry20.sys', 321120, 'CMC Cyber Security');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'nycu_filter.sys', 321110.5, 'NYCU');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'K7Sentry.sys', 321100, 'K7 Computing Private Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'nsminflt.sys', 321050, 'NHN');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'nsminflt64.sys', 321050, 'NHN');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'nvcmflt.sys', 321000, 'Norman');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'dgsafe.sys', 320950, 'KINGSOFT');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'issfltr.sys', 320900, 'ISS');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'hbflt.sys', 320840, 'BitDefender SRL');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'vlflt.sys', 320832, 'BitDefender SRL');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'bdsvm.sys', 320830, 'Bitdefender');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'gzflt.sys', 320820, 'BitDefender SRL');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'bddevflt.sys', 320812, 'BitDefender SRL');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'ignis.sys', 320811, 'BitDefender SRL');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'AVCKF.SYS', 320810, 'BitDefender SRL');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'bdfsfltr.sys', 320800, 'Softwin');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'bdfm.sys', 320790, 'Softwin');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'gemma.sys', 320782, 'BitDefender SRL');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'Atc.sys', 320781, 'BitDefender SRL');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'AVC3.SYS', 320780, 'BitDefender SRL');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'TRUFOS.SYS', 320770, 'BitDefender SRL');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'aswmonflt.sys', 320700, 'Alwil');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'kavnsi.sys', 320650, 'AVNOS');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'TaegisKM.x64.sys', 320640.5, 'Secureworks Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'TaegisKM.x86.sys', 320640.5, 'Secureworks Inc.');
-COMMIT TRAN;
-GO
-BEGIN TRAN;
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'CiscoSAM.sys', 320618, 'Cisco Systems');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'immunetselfprotect.sys', 320616, 'Cisco Systems');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'immunetprotect.sys', 320614, 'Cisco Systems');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'CiscoAMPCEFWDriver.sys', 320612, 'Cisco Systems');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'CiscoAMPHeurDriver.sys', 320610, 'Cisco Systems');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'HookCentre.sys', 320602, 'G Data');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'PktIcpt.sys', 320601, 'G Data');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'MiniIcpt.sys', 320600, 'G Data');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'acdrv.sys', 320520, 'OnMoon Company LLC');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'tmfsdrv2.sys', 320510, 'Teramind');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'avgntflt.sys', 320500, 'Avira GmbH');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'klam.sys', 320450, 'Kaspersky Lab');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'klbg.sys', 320440, 'Kaspersky');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'kldback.sys', 320430, 'Kaspersky');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'kldlinf.sys', 320420, 'Kaspersky');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'kldtool.sys', 320410, 'Kaspersky');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'klif.sys', 320401, 'Kaspersky Lab');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'klif.sys', 320400, 'Kaspersky');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'klam.sys', 320350, 'Kaspersky Lab');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'hsmltwhl.sys', 320340, 'Hitachi Solutions');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'hssfwhl.sys', 320330, 'Hitachi Solutions');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'DeepInsFS.sys', 320323, 'Deep Instinct Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'DeepInsFS.sys', 320322, 'Deep Instinct Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'DeepInsFS.sys', 320321, 'Deep Instinct Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'DeepInsFS.sys', 320320, 'Deep Instinct Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'avfsmn.sys', 320310, 'Anvisoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'lbd.sys', 320300, 'Lavasoft AB');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'oavnflt.sys', 320250, 'OpenAVN Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'pavdrv.sys', 320210, 'Panzor Cybersecurity');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'rvsmon.sys', 320200, 'CJSC Returnil Software');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'KawachFsMinifilter.sys', 320160, 'Sequretek IT');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'securoFSD_x64.sys', 320150, 'knowwheresoft Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'securoFS.sys', 320149, 'knowwheresoft Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'WRAEKernel.sys', 320112, 'Webroot Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'WRKrn.sys', 320111, 'Webroot Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'WRCore.sys', 320110, 'Webroot Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'ssfmonm.sys', 320100, 'Webroot Software, Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'ODFsFimFilter.sys', 320070, 'Odyssey Cyber Security');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'ODFsTokenFilter.sys', 320061, 'Odyssey Cyber Security');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'ODFsFilter.sys', 320060, 'Odyssey Cyber Security');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'vk_fsf.sys', 320050, 'AxBx');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Anti-Virus', 'VirtualAgent.sys', 320005, 'Symantec');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Replication', 'IntelCAS.sys', 309100, 'Intel Corporation');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Replication', 'mvfs.sys', 309000, 'IBM Corporation');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Replication', 'frxccd.sys', 306000, 'FSLogix Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Replication', 'dvfilter.sys', 305002, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Replication', 'fsrecord.sys', 305000, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Replication', 'esff.sys', 304500, 'Beijing Cloudock Techn Co');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Replication', 'InstMon.sys', 304201, 'Numecent Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Replication', 'StreamingFSD.sys', 304200, 'Numecent Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Replication', 'ubcminifilterdriver.sys', 304100, 'Ullmore Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Replication', 'replistor.sys', 304000, 'Legato');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Replication', 'stfsd.sys', 303900, 'Endeavors Technologies');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Replication', 'xomf.sys', 303800, 'CA (XOSOFT)');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Replication', 'nfid.sys', 303700, 'Neverfail Group Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Replication', 'sybfilter.sys', 303600, 'Sybase, Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Replication', 'rfsfilter.sys', 303500, 'Evidian');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Replication', 'cvmfsj.sys', 303400, 'CommVault Systems, Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Replication', 'iOraFilter.sys', 303300, 'Infonic plc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Replication', 'bkbmfd32.sys (x86)', 303200, 'BakBone Software, Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Replication', 'bkbmfd64.sys (x64)', 303200, 'BakBone Software, Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Replication', 'mblvn.sys', 303100, 'Packeteer');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Replication', 'AV12NFNT.sys', 303000, 'AhnLab');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Replication', 'mDP_win_mini.sys', 302900, 'Macro Impact');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Replication', 'ctxubs.sys', 302800, 'Citrix Systems Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Replication', 'rrepfsf.sys', 302700, 'Rose Datasystems Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Replication', 'zrbd.sys', 302110.3, 'Shanghai Fangye Network');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Replication', 'zrbdlock.sys', 302110.2, 'Shanghai Fangye Network');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Replication', 'wsyncd.sys', 302100, 'WANFast LLC');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Replication', 'cbfsfilter2017.sys', 301900, 'Super Flexible Software');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Replication', 'AxFilter.sys', 301800, 'Axcient Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Replication', 'vxfsrep.sys', 301700, 'Symantec');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Replication', 'dellcapfd.sys', 301600, 'Dell Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Replication', 'Sptres.sys', 301500, 'Safend');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Replication', 'OfficeBackup.sys', 301400, 'Ushus Technologies');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Replication', 'LxFileMirror.sys', 301350, 'Techit GmbH');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Replication', 'pcvnfilt.sys', 301300, 'Blue Coat');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Replication', 'repdac.sys', 301200, 'NSI');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Replication', 'repkap.sys', 301100, 'NSI');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Replication', 'repdrv.sys', 301000, 'NSI');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Continuous Backup', 'SyncODFA.sys', 289010, 'Sync.com Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Continuous Backup', 'File_monitor.sys', 289000, 'Acronis');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Continuous Backup', 'Klcdp.sys', 288900, 'Kaspersky Lab');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Continuous Backup', 'splitinfmon.sys', 288800, 'Split Infinity');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Continuous Backup', 'versamatic.sys', 288700, 'Acertant Tech');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Continuous Backup', 'Yfilemon.sys', 288690, 'Yarisoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Continuous Backup', 'ibac.sys', 288600, 'Idealstor, LLC.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Continuous Backup', 'fkdriver.sys', 288500, 'Filekeeper');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Continuous Backup', 'AAFileFilter.sys', 288300, 'Dell Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Continuous Backup', 'cbfilter20.sys', 288290.5, 'Mobile Content mgmt');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Continuous Backup', 'hyperoo.sys', 288400, 'Hyperoo Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Continuous Backup', 'HyperBacCA.sys', 285000, 'Red Gate Software Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Continuous Backup', 'ZMSFsFltr.sys', 284400, 'Zenith InfoTech');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Continuous Backup', 'AlfaSC.sys', 284300, 'Alfa Corporation');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Continuous Backup', 'hie_ifs.sys', 284200, 'Hie Electronics, Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Continuous Backup', 'AAFs.sys', 284100, 'AppAssure Software');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Continuous Backup', 'defilter.sys (old)', 284000, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Continuous Backup', 'aFsvDrv.sys', 283100, 'ITSTATION Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Continuous Backup', 'tilana.sys', 283000, 'Tilana Sys');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Continuous Backup', 'VmDPFilter.sys', 282900, 'Macro Impact');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Continuous Backup', 'LbFilter.sys', 281700, 'Linkverse S.r.l.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Continuous Backup', 'fbsfd.sys', 281600, 'Ferro Software');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Continuous Backup', 'dupleemf.sys', 281500, 'Duplee SPI, S.L.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Continuous Backup', 'file_tracker.sys', 281420, 'Acronis Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Continuous Backup', 'exbackup.sys', 281410, 'Acronis Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Continuous Backup', 'afcdp.sys', 281400, 'Acronis Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Continuous Backup', 'dcefltr.sys', 281300, 'Cofio Software Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Continuous Backup', 'ipmrsync_mfilter.sys', 281200, 'OpenMars Enterprises');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Continuous Backup', 'cascade.sys', 281100, 'JP Software');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Continuous Backup', 'filearchive.sys', 281000, 'Code Mortem');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Continuous Backup', 'syscdp.sys', 280900, 'System OK AB');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Continuous Backup', 'dpnedriver.sys (x86)', 280850, 'HP');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Continuous Backup', 'dpnedriver64.sys (x64)', 280850, 'HP');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Continuous Backup', 'hpchgflt.sys', 280800, 'HP');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Continuous Backup', 'VirtFile.sys', 280700, 'Veritas');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Continuous Backup', 'DeqoCPS.sys', 280600, 'Deqo');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Continuous Backup', 'LV_Tracker.sys', 280500, 'LiveVault');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Continuous Backup', 'cpbak.sys', 280410, 'Checkpoint Software');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Continuous Backup', 'tdmonxp.sys', 280400, 'TimeData');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Continuous Backup', 'nvfr_cpd', 280310, 'Bakbone Software Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Continuous Backup', 'nvfr_fdd', 280300, 'Bakbone Software Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Continuous Backup', 'Sptbkp.sys', 280290, 'Safend');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Continuous Backup', 'accessmonitor.sys', 280280, 'Briljant Ekonomisystem');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'anrfsdrv.sys', 268500, 'ANR Co. LTD.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'wzPrtProc.sys', 268350.5, 'ITSTATION Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'taExeScanner.sys', 268350, 'ITSTATION Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'GuardFSFlt.sys', 268340, 'ProShield');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'usbguard.sys', 268330, 'HangZhou Tease Tech');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'gibepdevflt.sys', 268320, 'Group-IB LTD');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'EffeDriver.sys', 268310, 'DROVA');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'Klshadow.sys', 268300, 'Kaspersky Lab');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'TN28.sys', 268290, 'ID Authentication Tech');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'PGDriver.sys', 268280, 'Avecto Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'itseczvdb.sys', 268270, 'Innotium Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'unimon.sys', 268265.5, 'Unify Technologies');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'isarsd.sys', 268260, 'ISARS');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'zeoscanner.sys', 268255, 'PCKeeper');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'fileHiders.sys', 268250, 'PCKeeper');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'cbfltfs4-ObserveIT.sys', 268240, 'ObserveIT');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'hipara.sys', 268230, 'Allsum LLC');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'AliFileMonitorDriver.sys', 268220, 'Alibaba');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'writeGuard.sys', 268210, 'TCXA Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'KKUDKProtectKer.sys', 268200, 'Goldmessage technology co., Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'HAWKFIMInt.sys', 268190, 'HAWK Network Defense');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'esaccctl.sys', 268180, 'EgoSecure GmbH');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'WSguard.sys', 268170, 'Wiper Software UAB');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'Atomizer.sys', 268160, 'DragonFlyCodeWorks');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'farwflt.sys', 268150, 'Malwarebytes');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'ADSpiderEx2.sys', 268140, 'Digitalonnet');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'sdfilter.sys', 268130, 'Igor Zorkov');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'Safe.sys', 268120, ' ');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'mydlpdelete-scanner.sys', 268110, 'Medra Teknoloji');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'mydlpscanner.sys', 268100, 'Medra Teknoloji');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'VrMacFlt.sys', 268080, 'Hauri Inc');
-COMMIT TRAN;
-GO
-BEGIN TRAN;
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'hnpro.sys', 268040, 'Solupia');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'DLDriverNetMini.sys', 268030, 'DeviceLock Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'ENFFLTDRV.sys', 268020, 'Enforcive Systems');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'imagentpg.sys', 268012, 'Infomaximum');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'crocopg.sys', 268010, 'Infomaximum');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'sbapifs.sys', 268000, 'Sunbelt Software');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'H6kernNT.sys', 267920, 'H6N Technologies LLC');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'SGKD32.SYS', 267910, 'NetSection Security');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'IccFilter.sys', 267900, 'NEC System Technologies');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'tflbc.sys', 267800, 'Tani Electronics Corporation');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'ArmFlt.sys', 267000, 'Armor Antivirus');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'WBDrv.sys', 266700, 'Axiana LLC');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'DMSamFilter.sys', 266600, 'Digimarc Corp.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'mumbl.sys', 266540, 'ZenmuTech Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'DLPDriverSmb.sys', 266400.5, 'Acronis');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', '5nine.cbt.sys', 266100, '5nine Software Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'bsfs.sys', 266000, 'Quick Heal TechnologiesPvt. Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'XXRegSFilter.sys', 265910, 'Zhe Jiang Xinxin Software Tech.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'XXSFilter.sys', 265900, 'Zhe Jiang Xinxin Software Tech.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'AloahaUSBBlocker.sys', 265800, 'Wrocklage Intermedia');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'frxdrv.sys', 265700, 'FSLogix Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'upmAction.sys', 265650.5, 'Citrix Systems');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'FolderSecure.sys', 265600, 'Max Secure Software');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'XendowFLTC.sys', 265570, 'Credant Technologies');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'RepDac', 265500, 'Vision Solutions');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'tbbdriver.sys', 265400, 'Tedesi');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'spcgrd.sys', 265300, 'FUJITSU BROAD SOLUTION');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'fdtlock.sys', 265250, 'FUJITSU BROAD SOLUTION & CONSULTING Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'ssfFSC.sys', 265200, 'SECUWARE S.L.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'GagSecurity.sys', 265120, 'Beijing Shu Yan Science');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'PrintDriver.sys', 265110, 'Beijing Shu Yan Science');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'activ.sys', 265100, 'Rapidware Pty Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'avscan.sys', 265010, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'scanner.sys', 265000, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'DI_fs.sys', 264910, 'Soft-SB');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'wgnpos.sys', 264900, 'Orchestria');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'odfltr.sys', 264810, 'NetClean Technologies');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'ncpafltr.sys', 264800, 'NetClean Technologies');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'ct.sys', 264700, 'Haute Secure');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'fvefsmf.sys', 264600, 'Fortisphere, Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'block.sys', 264500, 'Autonomy Systems Limited');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'csascr.sys', 264400, 'Cisco Systems');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'SymAFR.sys', 264300, 'Symantec Corporation');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'cwnep.sys', 264200, 'Websense Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'spywareremover.sys', 264150, 'C-Netmedia');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'malwarebot.sys', 264140, 'C-Netmedia');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'antispywarebot.sys', 264130, '2Squared Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'adwarebot.sys', 264120, 'AntiSpyware LLC');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'antispyware.sys', 264110, 'AntiSpyware LLC');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'spywarebot.sys', 264100, 'C-Netmedia');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'nomp3.sys', 264000, 'Hamish Speirs (private developer)');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'dlfilter.sys', 263900, 'Starfield Software');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'sifsp.sys', 263800, 'Secure Islands Technologies LTD');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'DLFsFlt.sys', 263700, 'CenterTools Software GmbH');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'SamKeng.sys', 263600, 'Syvik Co, Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'rml.sys', 263500, 'Logis IT Service Gmbh');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'vfsmfd.sys', 263410, 'Vontu Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'vfsmfd.sys', 263400, 'Vontu Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'acfilter.sys', 263300, 'Avalere, Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'psecfilter.sys', 263200, 'MDI Laboratory, Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'SolRedirect.sys', 263110, 'Soliton Systems');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'solitkm.sys', 263100, 'Soliton Systems');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'ipcfs.sys', 263000, 'NetVeda');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'netgateav_access.sys', 262910, 'NETGATE Tech. s.r.o.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'spyemrg_access.sys', 262900, 'NETGATE Tech. s.r.o.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'pxrmcet.sys', 262800, 'Proxure Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'EgisTecFF.sys', 262700, 'Egis Technology Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'fgcpac.sys', 262600, 'Fortres Grand Corp.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'saappctl.sys', 262510, 'SecureAge Technology');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'sadlp.sys', 262500, 'SecureAge Technology');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'MtUsbBlockerFlt.sys', 261420.5, 'Matisoft Cyber Security');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'CRExecPrev.sys', 262410, 'Cybereason');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'PEG2.sys', 262400, 'PE GUARD');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'AdminRunFlt.sys', 262300, 'Simon Jarvis');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'wvscr.sys', 262200, 'Chengdu Wei Tech Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'psepfilter.sys', 262100, 'Absolute Software');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'SAMDriver.sys', 262000, 'Summit IT');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'emrcore.sys', 261920, 'Ivanti Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'wire_fsfilter.sys', 261910, 'ThreatSpike Labs');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'AMFileSystemFilter.sys', 261900, 'AppSense Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'mtflt.sys', 261880, 'mTalos Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'nxrmflt.sys', 261680, 'NextLabs, Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'oc_fsfilter.sys', 261300, 'Raiffeisen Bank Aval');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'hdlpflt.sys', 261200, 'McAfee Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'CCFFilter.sys', 261160, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'cbafilt.sys', 261150, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'SmbBandwidthLimitFilter.sys', 261110, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'DfsrRo.sys', 261100, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'DataScrn.sys', 261000, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'ldusbro.sys', 260900, 'LANDesk Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'FileScreenFilter.sys', 260800, 'Veritas');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'cpAcOnPnP.sys', 260720, 'conpal GmbH');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'cpsgfsmf.sys', 260710, 'conpal GmbH');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'psmmfilter.sys', 260700, 'PolyServe');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'pctefa.sys', 260650, 'PC Tools Pty. Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'pctefa64.sys', 260650, 'PC Tools Pty. Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'SymEFASI64.sys', 260620, 'NortonLifeLock Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'SymEFASI.sys', 260620, 'NortonLifeLock Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'symefasi.sys', 260610, 'Symantec Corporation');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'symefa.sys', 260600, 'Symantec');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'symefa64.sys', 260600, 'Symantec');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'apdFSF.sys', 260550, 'Cyberbit Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'aictracedrv_cs.sys', 260500, 'AI Consulting');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'DWFIxxxx.sys', 260410, 'SciencePark Corporation');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'DWFIxxxx.sys', 260400, 'SciencePark Corporation');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'ElasticEndpoint.sys', 260350.5, 'Elastic');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'dlpflt.sys', 260340, 'Digital Endpoint');
-COMMIT TRAN;
-GO
-BEGIN TRAN;
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'DSDriver.sys', 260330, 'ManageEngine Zoho Corp');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'mcfltlab.sys', 260320, 'Beijing MicroColor');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'FDriver.sys', 260310, 'Fox-IT');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'iqpk.sys', 260300, 'Secure Islands Technologies LTD');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'ZTkrnlOpRg.sys', 260264, 'Trustsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'ZTkrnlNt.sys', 260262, 'Trustsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'ZTkrnl.sys', 260260, 'Trustsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'VHDFlt.sys', 260240, 'Dell');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'VHDFlt.sys', 260230, 'Dell');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'VHDFlt.sys', 260220, 'Dell');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Content Screener', 'VHDFlt.sys', 260210, 'Dell');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Quota Management', 'dfx-qfs-fltr.sys', 245100, 'DefendX Software');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Quota Management', 'ntps_qfs.sys', 245100, 'DefendX Software');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Quota Management', 'PSSFsFilter.sys', 245000, 'PSS Systems');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Quota Management', 'Sptqmg.sys', 245300, 'Safend');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Quota Management', 'storqosflt.sys', 244000, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('System Recovery', 'file_protector.sys', 227000, 'Acronis');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('System Recovery', 'fbwf.sys', 226000, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('System Recovery', 'BoldendDrvr.sys', 221700.5, 'Boldend, Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('System Recovery', 'hmpalert.sys', 221600, 'SurfRight');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('System Recovery', 'Klsysrec.sys', 221500, 'Kaspersky Lab');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('System Recovery', 'SFDRV.SYS', 221400, 'Utixo LLC');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('System Recovery', 'sp_prot.sys', 221300, 'Xacti Corporation');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('System Recovery', 'nsfilep.sys', 221200, 'Netsupport Limited');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('System Recovery', 'syscow.sys', 221100, 'System OK AB');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('System Recovery', 'fsredir.sys', 221000, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Cluster File System', 'CVCBT.sys', 203400, 'CommVault Systems, Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Cluster File System', 'ResumeKeyFilter.sys', 202000, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Cluster File System', 'VeeamFCT.sys', 201900, 'Veeam Software');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Cluster File System', 'ShadowVirtualStorage.sys', 201800, 'Blade SAS');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'wcifs.sys', 189900, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'prjflt.sys', 189800, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'gameflt.sys', 189750, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'nvmsqrd.sys', 188900, 'NVIDIA Corporation');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'Ghost_file.sys', 188800, 'Acronis');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'RsFlt.sys', 187000, 'Redstor Limited');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'CloudTier.sys', 186900.5, 'EaseFilter Technologies');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'mnefs.sys', 186800, 'Nippon Techno Lab');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'Svfsf.sys', 186700, 'Spharsoft Technologies');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'uVaultFlt.sys', 186650, 'DOR');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'syncmf.sys', 186620, 'Oxygen Cloud');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'gwmemory.sys', 186600, 'Macrotec LLC');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'cteraflt.sys', 186550, 'CTERA Networks Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'dbx.sys', 186500, 'Dropbox Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'iMDrvFlt.sys', 186450, 'iManage LLC');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'quaddrasi.sys', 186400, 'Quaddra Software');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'gdrive.sys', 186300, 'Google');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'CoreSyncFilter.sys', 186250, 'Adobe Systems Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'EaseTag.sys', 186200, 'EaseVault Technologies Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'HSFilter.sys', 186150, 'HubStor Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'hcminifilter.sys', 186100, 'Happy Cloud Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'PDFsFilter.sys', 186000, 'Raxco Sfotware Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'camino.sys', 185900, 'CaminoSoft Corp');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'C2C_AF1R.SYS', 185810, 'C2C Systems');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'DFdriver.sys', 185800, 'DataFirst Corporation');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'amfadrv.sys', 185700, 'Quest Software Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'HSMdriver.sys', 185600, 'Wim Vervoorn');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'kdfilter.sys', 185555, 'Komprise Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'htdafd.sys', 185500, 'Bridgehead Soft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'odphflt.sys', 180455, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'cldflt.sys', 180451, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'SymHsm.sys', 185400, 'Symantec');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'evmf.sys', 185100, 'Symantec');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'otfilter.sys', 185000, 'Overtone Soft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'ithsmdrv.sys', 184900, 'IBM');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'MfaFilter.sys', 184800, 'Waterford Technologies');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'SonyHsmMinifilter.sys', 184700, 'Sony Corporation');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'acahsm.sys', 184600, 'Autonomy Corporation');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'zlhsm.sys', 184500, 'ZL Technologies');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'CFileProtect.sys', 184100, 'Zhejiang Security Tech');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'stc_restore_filter.sys', 184000, 'StorageCraft Technology');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'dvfilter.sys', 183003, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'Accesstracker.sys', 183002, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'Changetracker.sys', 183001, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'Fstier.sys', 183000, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'hsmcdpflt.sys', 182700, 'Metalogix');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'archivmgr.sys', 182690, 'Metalogix');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'ntps_oddm.sys', 182600, 'DefendX Software');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'XDFileSys.sys', 182500, 'XenData Limited');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'upmjit.sys', 182400, 'Citrix Systems');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'AtmosFS.sys', 182310, 'EMC Corporation');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'DxSpy.sys', 182300, 'EMC Software Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'car_hsmflt.sys', 182200, 'Caringo, Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'BRDriver.sys', 182100, 'BitRaider');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'BRDriver64.sys', 182100, 'BitRaider');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'autnhsm.sys', 182000, 'Autonomy Corporation');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'cthsmflt.sys', 181970, 'ComTrade');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'NxMini.sys', 181900, 'NEXSAN');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'neuflt.sys', 181818, 'NeuShield');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'npfdaflt.sys', 181800, 'Mimosa Systems Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'AppStream.sys', 181700, 'AppStream, Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'HPEDpHsmX64.sys', 181620, 'Hewlett-Packard, Co.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'HPArcHsmX64.sys', 181610, 'Hewlett-Packard, Co.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'hphsmflt.sys', 181600, 'Hewlett-Packard, Co.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'cparchsm.sys', 181610, 'Micro Focus');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'RepHsm.sys', 181500, 'Double-Take Software, Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'RepSIS.sys', 181490, 'Double-Take Software');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'SquashCompressionFsFilter.sys', 181410, 'Squash Compression');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'GXHSM.sys', 181400, 'Commvault Systems, Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'EdsiHsm.sys', 181300, 'Enterprise Data Solutions, Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'BkfMap.sys', 181200, 'Data Storage Group');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'hsmfilter.sys', 181100, 'GRAU Data Storage AG');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'mwilcflt.sys', 181020, 'Moonwalk Universal P/L');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'mwildflt.sys', 181015, 'Moonwalk Universal P/L');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'mwilsflt.sys', 181010, 'Moonwalk Universal P/L');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'mwidmflt.sys', 181000, 'Moonwalk Universal P/L');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'HcpAwfs.sys', 181960, 'Hitachi Data Systems');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'sdrefltr.sys', 180950, 'Hitachi Data Systems');
-COMMIT TRAN;
-GO
-BEGIN TRAN;
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'fltasm.sys', 180900, 'Global 360');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'cnet_hsm.sys', 180850, 'Carroll-Net Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'pntvolflt.sys', 180800, 'PoINT Software&Systems');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'appxstrm.sys', 180710, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'wimmount.sys', 180700, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'hsmflt.sys', 180600, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'dfsrflt.sys', 180500, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'StorageSyncGuard.sys', 180465, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'StorageSync.sys', 180460, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'dedup.sys', 180450, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'dfmflt.sys', 180410, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'sis.sys', 180400, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('HSM', 'rbt_wfd.sys', 180300, 'Riverbed Technology,Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Imaging (ex: .ZIP)', 'pfmfs_???.sys', 172100, 'Pismo Technic Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Imaging (ex: .ZIP)', 'virtual_file.sys', 172000, 'Acronis');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Imaging (ex: .ZIP)', 'wimFltr.sys', 170500, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Compression', 'CmgFFC.sys', 166000, 'Credant Technologies');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Compression', 'compress.sys', 165000, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Compression', 'cmpflt.sys', 162000, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Compression', 'IridiumIO.sys', 161700, 'Confio');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Compression', 'zzenc.sys', 161650.5, 'Imdtech LLC');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Compression', 'logcompressor.sys', 161600, 'VelociSQL Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Compression', 'GcfFilter.sys', 161500, 'GemacmbH');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Compression', 'ssddoubler.sys', 161400, 'Sinan Karaca');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Compression', 'Sptcmp.sys', 161300, 'Safend');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Compression', 'wimfsf.sys', 161000, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Compression', 'GEFCMP.sys', 160100, 'Symantec');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'AAFS.sys', 149110, 'ViGero');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'FJSeparettiFilterRamMon.sys', 149100, 'FUJITSU LIMITED');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'trsxefs.sys', 149060, 'TransientX Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'psatfilter.sys', 149050, 'ProYuga');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'RdFilter.sys', 149040, 'CyberEye Research Labs');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'gisfile_decryption.sys', 149030, 'Communication U China');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'TIFSFilter.sys', 149020, 'SG Corporation');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'OsrDt2.sys', 149010, 'Information Security Corp');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'EasyKryptMF.sys', 149000, 'SoftKrypt LLC');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'padlock.sys', 148910, 'IntSoft Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'ffecore.sys', 148900, 'Winmagic');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'bkfs.sys', 148880, 'Hangzhou JoyBlock Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'fangcloud.sys', 148860, 'Hangzhou Yifangyun');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'FileGuard.sys', 148820.5, 'EaseFilter Technologies');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'klvfs.sys', 148810, 'Kaspersky Lab');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'Klfle.sys', 148800, 'Kaspersky Lab');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'ISFP.sys', 148701, 'ALPS SYSTEM INTEGRATIO');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'ISIRM.sys', 148700, 'ALPS SYSTEM INTERGRATION CO., LTD');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'fhfs.sys', 148670.5, 'SecureCircle');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'ASUSSecDrive.sys', 148650, 'ASUS');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'ABFilterDriver.sys', 148640, 'AlertBoot');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'QDocumentFSF.sys', 148630, 'BicDroid Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'bfusbenc.sys', 148620, 'bitFence Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'sztgbfsf.sys', 148610, 'SaferZone Co.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'mwIPSDFilter.sys', 148600, 'Egis Technology Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'csccvdrv.sys', 148500, 'Computer Sciences Corporation');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'aefs.sys', 148400, 'Angelltech Corporation Xi''an');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'VTEFsFlt.sys', 148374, 'EsComputer Corp');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'IWCSEFlt.sys', 148300, 'InfoWatch');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'GDDmk.sys', 148250, 'G Data Software AG');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'clcxcore.sys', 148210, 'AFORE Solutions Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'OrisLPDrv.sys', 148200, 'CGS Publishing Tech');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'nlemsys.sys', 148100, 'NETLIB');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'prvflder.sys', 148000, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'ssefs.sys', 147900, 'SecuLution GmbH');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'SePSed.sys', 147800, 'Humming Heads, Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'dlmfencx.sys', 147700, 'Data Encryption Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'SkyDEnc.sys', 147620, 'Sky Co Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'psgcrypt.sys', 147610, 'Yokogawa R&L Corp');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'bbfsflt.sys', 147600, 'Bloombase');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'qx10efs.sys', 147500, 'Quixxant');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'MEfefs.sys', 147400, 'Eruces Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'medlpflt.sys', 147310, 'Check Point Software Technologies Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'dsfa.sys', 147308, 'Check Point Software Technologies Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'Snicrpt.sys', 147300, 'Systemneeds, Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'iCrypt.sys', 147200, 'I-O DATA DEVICE, INC.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'xdrmflt.sys', 147100, 'bluefinsystems');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'dyFsFilter.sys', 147000, 'Scrypto Media');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'thinairwin.sys', 146960, 'Thin Air Inc"');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'UcaDataMgr.sys', 146950, 'AppSense Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'zesocc.sys', 146900, 'Novell');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'mfprom.sys', 146800, 'McAfee Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'MfeEEFF.sys', 146790, 'McAfee Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'intefs.sys', 146700, 'TianYu Software');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'leofs.sys', 146600, 'Leotech');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'autocryptater.sys', 146500, 'Richard Hagen');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'WavxDMgr.sys', 146400, 'Scott Cochrane');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'eedmkxp32.sys', 146300, 'Entrust');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'SbCe.sys', 146200, 'SafeBoot');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'iSharedFsFilter', 146100, 'Packeteer Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'dlrmenc.sys', 146010, 'DESlock');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'dlmfenc.sys', 146000, 'DESlock');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'aksdf.sys', 145900, 'Aladdin Knowledge Systems');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'DDSFilter.sys', 145800, 'WuHan Forworld Software');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'SecureShield.sys', 145700, 'HMI');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'AifaFE.sys', 145600, 'Alfa');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'HiCrypt.sys', 145566, 'digitronic computersysteme GmbH');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'GBFsMf.sys', 145500, 'GreenBorder');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'jmefs.sys', 145400, 'ShangHai Elec');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'emugufs.sys', 145333, 'Emugu Secure FS');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'VFDriver.sys', 145300, 'R Systems');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'IntelDG.sys', 145250, 'Intel Corporation');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'DPMEncrypt.sys', 145240, 'Randtronics Pty');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'EVSDecrypt64.sys', 145230, 'Fortium Technologies Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'skycryptorencfs.sys', 145220, 'Onecryptor CJSC.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'AisLeg.sys', 145210, 'Assured Information Security');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'windtalk.sys', 145200, 'Hyland Software');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'TeamCryptor.sys', 145190, 'iTwin Pte. Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'CVDLP.sys', 145180, 'CommVault Systems, Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', '5nine.encryptor.sys', 145170, '5nine Software Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'ctpfile.sys', 145160, 'Beijing Wondersoft Technology Co., Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'DPDrv.sys', 145150, 'IBM Japan, Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'tsdlp.sys', 145140, 'Forware');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'KCDriver.sys', 145130, 'Tallegra Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'CmgFFE.sys', 145120, 'Credant Technologies');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'fgcenc.sys', 145110, 'Fortres Grand Corp.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'sview.sys', 145100, 'Cinea');
-COMMIT TRAN;
-GO
-BEGIN TRAN;
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'TalkeyFilterDriver.sys', 145040, 'myTALKEY s.r.o.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'MtUsbFlt19.sys', 145020.5, 'Matisoft Cyber Security');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'FedsFilterDriver.sys', 145010, 'Physical Optics Corp');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'stocc.sys', 145000, 'Senforce Technologies');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'SnEfs.sys', 144900, 'Informzaschita');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'ewSecureDox', 144800, 'Echoworx Corporation');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'osrdmk.sys', 144700, 'OSR Open Systems Resources, Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'uldcr.sys', 144600, 'NCR Financial Solutions');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'Tkefsxp.sys - 32bit', 144500, 'INCA Internet Co., Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'Tkefsxp64.sys - 64bit', 144500, 'INCA Internet Co., Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'NmlAccf.sys', 144400, 'NEC System Technologies, Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'SolCrypt.sys', 144300, 'Soliton Systems K.K.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'IngDmk.sys', 144200, 'Ingrian Networks, Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'llenc.sys', 144100, 'SecureAxis Software');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'SecureData.sys', 144030, 'SecureAge Technology');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'lockcube.sys', 144020, 'SecureAge Technology Pte Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'sdmedia.sys', 144010, 'SecureAge Technology');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'mysdrive.sys', 144000, 'SecureAge Technology');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'FileArmor.sys', 143900, 'Mobile Armor');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'VSTXEncr.sys', 143800, 'VIA Technologies, Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'dgdmk.sys', 143700, 'Verdasys Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'shandy.sys', 143600, 'Safend Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'C2knet.sys', 143520, 'Secuware');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'C2kdef.sys', 143510, 'Secuware');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'ssfFS.sys', 143500, 'SECUWARE S.L.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'PISRFE.sys', 143400, 'Jilin University IT Co.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'bapfecre.sys', 143300, 'BitArmor Systems, Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'KPSD.sys', 143200, 'cihosoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'Fcfileio.sys', 143100, 'Brainzsquare, Co. Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'cpdrm.sys', 143000, 'Pikewerks');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'vmfiltr.sys', 142900, 'Vormetric Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'Sfntpffd.sys', 142890, 'Thales CPL');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'VFSEnc.sys', 142811, 'Symantec');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'pgpfs.sys', 142810, 'Symantec');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'fencry.sys', 142800, 'Symantec');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'TmFileEncDmk.sys', 142700, 'Trend Micro Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'cpefs.sys', 142600, 'Crypto-Pro');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'dekfs.sys', 142500, 'KasherLab co.,ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'qlockfilter.sys', 142400, 'Binqsoft Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'RRFilterDriverStack_d3.sys', 142300, 'Rational Retention');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'cve.sys', 142200, 'Absolute Software Corp.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'spcflt.sys', 142100, 'FUJITSU BSC Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'ldsecusb.sys', 142000, 'LANDesk Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'fencr.sys', 141900, 'SODATSW spol. s.r.o.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'bw_fssec.sys', 141850.5, 'Wuhan Buwei Software Technology Co.,Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'RubiFlt.sys', 141800, 'Hitachi, Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'NCrypt.sys', 141700, 'Nimshi Corp');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'pske.sys', 141661, 'Penta Security Systems');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'mfild.sys', 141660, 'Penta Security Systems');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'cbfsfilter2017.sys', 141635, 'Automaton Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'cbfsfilter2017.sys', 141634, 'Automaton Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'cbfsfilter2017.sys', 141633, 'Automaton Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'cbfsfilter2017.sys', 141632, 'Automaton Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'cbfsfilter2017.sys', 141631, 'Automaton Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'cbfsfilter2017.sys', 141630, 'Automaton Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'TypeSquare.sys', 141620, 'Morisawa inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'xbdocfilter.sys', 141610, 'Zrxb');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'EVSDecrypt32.sys', 141600, 'Fortium Technologies Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'EVSDecrypt64.sys', 141600, 'Fortium Technologies Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'EVSDecryptia64.sys', 141600, 'Fortium Technologies Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'SophosDt2.sys', 141510, 'Sophos Plc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'afdriver.sys', 141500, 'ATUS Technology LLC');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'TrivalentFSFltr.sys', 141430, 'Cyber Reliant');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'CmdMnEfs.sys', 141420, 'Comodo Security');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'DWENxxxx.sys', 141410, 'SciencePark Corporation');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'DWENxxxx.sys', 141400, 'SciencePark Corporation');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'westlight.sys', 141350, 'Westlight AI');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'hdFileSentryDrv32.sys', 141300, 'Heilig Defense');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'hdFileSentryDrv64.sys', 141300, 'Heilig Defense');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'SDSCloudDrv.sys', 141255, 'Stormshield');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'pnpfs.sys', 141250, 'PNP SECURE INC');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'SmartCipherFilter.sys', 141240, 'Micro Focus');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'cplcdt2.sys', 141230, 'conpal GmbH');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'asCryptoFilter.sys', 141220, 'Applied Security GmbH');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'NetCryptKR.sys', 141210, 'NetCrypt Pty Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'SGFS.sys', 141205, 'Levyco Development,LLC');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'BHFilter.sys', 141200, 'Beachhead Solutions');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'Filecrypt.sys', 141100, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'encrypt.sys', 141010, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Encryption', 'swapBuffers.sys', 141000, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'Klvirt.sys', 138100, 'Kaspersky Lab');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'eseadriver3z.sys', 138080, 'ESEA');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'thsmmf.sys', 138060, 'Talon Storage Solutions');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'VMagic.sys', 138050, 'AI Consulting');
-COMMIT TRAN;
-GO
-BEGIN TRAN;
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'GetSAS.sys', 138040, 'SAS Institute Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'rqtNos.sys', 138030, 'ReaQta Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'HIPS64.sys', 138020, 'Recrypt LLC');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'frxdrv.sys', 138010, 'FSLogix Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'vzdrv.sys', 138000, 'Altiris');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'sffsg.sys', 137990, 'Starfish Storage Corp');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'AppStream.sys', 137920, 'Symantec Corporation');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'Rasm.sys', 137915, 'OpDesk Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'boxifier.sys', 137910, 'Kenubi');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'xorw.sys', 137900, 'CA (XOsoft)');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'ctlua.sys', 137800, 'SurfRight B.V.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'fgccow.sys', 137700, 'Fortres Grand Corp.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'aswSnx.sys', 137600, 'ALWIL Software');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'AppIsoFltr.sys', 137500, 'Kernel Drivers');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'ptcvfsd.sys', 137400, 'PTC');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'CloudFile.sys', 137350.5, 'EaseFilter Technologies');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'BDSandBox.sys', 137300, 'BitDefender SRL');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'sxfpss-virt.sys', 137200, 'Skanix AS');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'DKRtWrt.sys', 137100, 'Diskeeper Corporation');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'ivm.sys', 137000, 'RingCube Technologies');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'ivm.sys', 136990, 'Citrix Systems');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'dtiof.sys', 136900, 'Instavia Software Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'NxTopCP.sys', 136800, 'Virtual Ccomputer Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'svdriver.sys', 136700, 'VMware, Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'PPnP-LocalBoost2.sys', 136650.5, 'Edgeless Opensource Group');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'unifltr.sys', 136600, 'Unidesk');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'unidrive.sys (Renamed)', 136600, 'Unidesk');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'unirsd.sys', 136600, 'Unidesk');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'ive.sys', 136500, 'TrendMicro Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'odamf.sys', 136450, 'Sony Corporation');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'SrMxfMf.sys', 136440, 'Sony Corporation');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'pszmf.sys', 136430, 'Sony Corporation');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'sxsudfmf.sys', 136410, 'Sony Corporation');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'vfammf.sys', 136400, 'Sony Corporation');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'lwfsflt.sys', 136300, 'Liquidware Labs');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'VHDFlt.sys', 136240, 'Dell');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'VHDFlt.sys', 136230, 'Dell');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'VHDFlt.sys', 136220, 'Dell');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'VHDFlt.sys', 136210, 'Dell');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'ncfsfltr.sys', 136200, 'NComputing Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'cmdguard.sys', 136100, 'COMODO Security Solutions Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'hpfsredir.sys', 136000, 'HP');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'svhdxflt.sys', 135100, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'luafv.sys', 135000, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'ivm.sys', 134000, 'RingCube Technologies');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'ivm.sys', 133990, 'Citrix Systems');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'RevBitsEPSMF.sys', 132730.5, 'RevBits LLC');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'RasRdpFs.sys', 132720, 'Parallels International');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'frxdrvvt.sys', 132700, 'FSLogix Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'pfmfs_???.sys', 132600, 'Pismo Technic Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'Stcvhdmf.sys', 132600, 'StorageCraft Tech Corp');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'appdrv01.sys', 132500, 'Protection Technology');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'virtual_file.sys', 132400, 'Acronis');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'pdiFsFilter.sys', 132300, 'Proximal Data Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'avgvtx86.sys', 132200, 'AVG Technologies CZ, s.r.o.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'avgvtx64.sys', 132200, 'AVG Technologies CZ, s.r.o.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'DataNet_Driver.sys', 132100, 'AppSense Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'EgenPage.sys', 132000, 'Egenera, Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'unidrive.sys-old', 131900, 'Unidesk');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'ivm.sys.old', 131800, 'RingCube Technologies');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'XiaobaiFsR.sys', 131710, 'SHENZHEN UNNOO LTD');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'XiaobaiFs.sys', 131700, 'SHENZHEN UNNOO LTD');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'iotfsflt.sys', 131600, 'IO Turbine Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'mhpvfs.sys', 131500, 'Wunix Limited');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'svdriver.sys', 131400, 'SnapVolumes Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'Sptvrt.sys', 131300, 'Safend');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'antirswf.sys', 131210, 'Panzor Cybersecurity');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'aicvirt.sys', 131200, 'AI Consulting');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'MEMEPMAgent.sys', 130852, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'sfo.sys', 130100, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Virtualization', 'DeVolume.sys', 130000, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Physical Quota management', 'quota.sys', 125000, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Physical Quota management', 'qafilter.sys', 124000, 'Veritas');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Physical Quota management', 'DroboFlt.sys', 123900, 'Data Robotics');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Open File', 'insyncmf.sys', 105000, 'InSync');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Open File', 'cbfilter20.sys', 101010, 'Bentley Systems Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Open File', 'SPILock8.sys', 100900, 'Software Pursuits Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Open File', 'Klbackupflt.sys', 100800, 'Kaspersky');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Open File', 'repkap', 100700, 'Vision Solutions');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Open File', 'symrg.sys', 100600, 'Symantec');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Open File', 'adsfilter.sys', 100500, 'PolyServ');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Open File', 'FMonitor.sys', 100490, 'Safetica');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'KpHrd.sys', 88300, 'Ivanti');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'cbfilter20.sys', 88250, 'Division-M');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'flflt.sys', 88240.5, 'PNP SECURE INC');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'pfcflt.sys', 88240, 'PNP SECURE INC');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'arm_minifilter.sys', 88232, 'Assured Info Security');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'pegasus.sys', 88230, 'Assured Info Security');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'RSBDrv.sys', 88220, 'SMTechnology Co.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'psprotf.sys', 88210, 'Panzor Cybersecurity');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'DPMACL.sys', 88100, 'Randtronics Pty');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'dsbwnck.sys', 88000, 'Easy Solution Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'cbfilter20.sys', 87911, 'Automaton Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'cbfsfilter2017.sys', 87910, 'Automaton Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'cbfsfilter2017.sys', 87909, 'Automaton Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'cbfsfilter2017.sys', 87908, 'Automaton Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'cbfsfilter2017.sys', 87907, 'Automaton Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'cbfsfilter2017.sys', 87906, 'Automaton Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'cbfsfilter2017.sys', 87905, 'Automaton Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'cbfsfilter2017.sys', 87904, 'Automaton Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'cbfsfilter2017.sys', 87903, 'Automaton Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'cbfsfilter2017.sys', 87902, 'Automaton Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'cbfsfilter2017.sys', 87901, 'Automaton Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'cbfsfilter2017.sys', 87900, 'Automaton Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'RansomStopDriver.sys', 87810, 'Maddrix LLC');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'rsbfsfilter.sys', 87800, 'Corel Corporation');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'hsmltflt.sys', 87720, 'Hitachi Solutions');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'hssfflt.sys', 87710, 'Hitachi Solutions');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'acmnflt.sys', 87708, 'Hitachi Solutions');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'ACSKFFD.sys', 87700, 'Hitachi Solutions');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'MyDLPMF.sys', 87600, 'Comodo Group Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'asioeg.sys', 87550.5, 'Encourage Technologies');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'ScuaRaw.sys', 87500, 'SCUA Segurança da Informação');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'HDSFilter.sys', 87400, 'NeoAutus Automation System');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'ikfsmflt.sys', 87300, 'IronKey Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'Klsec.sys', 87200, 'Kaspersky Lab');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'XtimUSBFsFilterDrv.sys', 87190, 'Dalian CP-SDT Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'RGFLT_FM.sys', 87180, 'Hauri.inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'flockflt.sys', 87170, 'Ahranta Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'ZdCore.sys', 87160, 'Zends Technological Solutions');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'dcrypt.sys', 87150, 'ReactOS Foundation');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'hpradeo.sys', 87140, 'Pradeo');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'SDFSAGDRV.SYS', 87130, 'ALPS SYSTEM INTERGRATION CO., LTD.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'SDFSDEVFDRV.SYS', 87120, 'ALPS SYSTEM INTERGRATION CO., LTD.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'SDIFSFDRV.SYS', 87110, 'ALPS SYSTEM INTERGRATION CO., LTD.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'SDFSFDRV.SYS', 87100, 'ALPS SYSTEM INTERGRATION CO., LTD.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'CModule.sys', 87070, 'Zhejiang Security Tech');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'HHRRPH.sys', 87010, 'H+H Software GmbH');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'HHVolFltr.sys', 87000, 'H+H Software GmbH');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'CCRRSecMon.sys', 86960, 'Cyber Crucible Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'RevoNetDriver.sys', 86940.5, 'J''s Communication Co.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'SbieDrv.sys', 86900, 'Sandboxie L.T.D');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'assetpro.sys', 86800, 'pyaprotect․com');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'dlp.sys', 86700, 'Tellus Software AS');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'eps.sys', 86600, 'Lumension Security');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'RapportPG64.sys', 86500, 'Trusteer');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'amminifilter.sys', 86400, 'AppSense');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'Sniflt.sys', 86300, 'Systemneeds, Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'SecFile.sys', 86200, 'Secure By Design Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'philly.sys', 86110, 'triCerat Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'reggy.sys', 86100, 'triCerat Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'cygfilt.sys', 86000, 'Livegrid Incorporated');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'prelaunch.sys', 85900, 'D3L');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'csareg.sys', 85810, 'Cisco Systems');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'csaenh.sys', 85800, 'Cisco Systems');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'asi_ns_drv.sys', 85750.5, 'ASHINI Co. Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'asEpsDrv.sys', 85750, 'ASHINI Co. Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'CIDACL.sys', 85700, 'GE Aviation (Digital Systems Germantown)');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'CVDLP.sys', 85610, 'CommVault Systems, Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'QGPEFlt.sys', 85600, 'Quest Software');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'Drveng.sys', 85500, 'CA');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'PPDMFilter_x64.sys', 85550.5, 'PolicyPak Software Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'PPDMFilter_x86.sys', 85550.5, 'PolicyPak Software Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'vracfil2.sys', 85400, 'HAURI');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'TFsDisk.sys', 85300, 'Teruten');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'rcMiniDrv.sys', 85200, 'REDGATE CO.,LTD.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'SnMc5xx.sys', 85100, 'Informzaschita');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'FSPFltd.sys', 85010, 'Alfa');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'AifaFFP.sys', 85000, 'Alfa');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'EsAccCtlFE.sys', 84901, 'EgoSecure GmbH');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'DpAccCtl.sys', 84900, 'Softbroker GmbH');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'privman.sys', 84800, 'BeyondTrust');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'eumntvol.sys', 84700, 'Eugrid Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'SoloEncFilter.sys', 84600, 'Soliton Systems');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'sbfilter.sys', 84500, 'UC4 Sofware');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'cposfw.sys', 84450, 'Check Point Software Technologies Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'vsdatant.sys', 84400, 'Zone Labs LLC');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'SePnet.sys', 84350, 'Humming Heads, Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'SePuld.sys', 84340, 'Humming Heads, Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'SePpld.sys', 84330, 'Humming Heads, Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'SePfsd.sys', 84320, 'Humming Heads, Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'SePwld.sys', 84310, 'Humming Heads, Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'SePprd.sys', 84300, 'Humming Heads, Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'InPFlter.sys', 84200, 'Humming Heads, Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'CProCtrl.sys', 84100, 'Crypto-Pro');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'spyshelter.sys', 84000, 'Datpol');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'clpinspprot.sys', 83900, 'Information Technology Company Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'AbrEpm.sys', 83800, 'FastTrack Software ApS');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'uvmfsflt.sys', 83376, 'NEC Corporation');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'ProtectIt.sys', 82373, 'TeraByte Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'dguard.sys', 82300, 'Dmitry Varshavsky');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'NSUSBStorageFilter.sys', 82200, 'NetSupport Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'RMSEFFMV.SYS', 82100, 'CJSC Returnil Software');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'BoksFLAC.sys', 82000, 'Fox Technologies');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'cpAcOnPnP.sys', 81910, 'conpal GmbH');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'cpsgfsmf.sys', 81900, 'conpal GmbH');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'ndevsec.sys', 81800, 'Norman ASA');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'ViewIntus_RTDG.sys', 81700, 'Pentego Technologies Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'BKSandFS.sys', 81640, 'Binklac Workstation');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'BWAnticheat.sys', 81638, 'Binklac Workstation');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'airlock.sys', 81630, 'Airlock Digital Pty Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'zam.sys', 81620, ' ');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'ANXfsm.sys', 81610, 'Arcdo');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'CDrSDFlt.sys', 81600, 'Arcdo');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'crnselfdefence32.sys', 81500, 'Coranti Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'crnselfdefence64.sys', 81500, 'Coranti Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'zlock_drv.sys', 81400, 'SecurIT');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'f101fs.sys', 81300, 'Fortres Grand Corp.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'sysgar.sys', 81200, 'Nucleus Data Recover');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'EmbargoM.sys', 81100, 'ScriptLogic');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'KSkyMonitor.sys', 81080, 'Sky Monitor');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'ngssdef.sys', 81050, 'Wontok Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'ssb.sys', 81041, 'Wontok Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'regflt.sys', 81040, 'Wontok Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'fsds2a.sys', 81000, 'Splitstreem Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'HeimdalInsights.sys', 80950.5, 'Heimdal Security A/S');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'csacentr.sys', 80900, 'Cisco Systems');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'ScvFLT50.sys', 80850, 'Secuve Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'paritydriver.sys', 80800, 'Bit9, Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'nkfsprot.sys', 80710, 'Konneka');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'nkprot.sys', 80700, 'KONNEKA Information Technologies');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'acpadlock.sys', 80691, 'IntSoft Co., Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'ksmf.sys', 80690, 'IntSoft Co., Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'amsdk.sys', 80682.5, 'WatchDogDevelopment.com, LLC');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'im.sys', 80680, 'CrowdStrike');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'SophosED.sys', 80670, 'Sophos');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'jazzfile.sys', 80660, 'Jazz Networks');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Security Enhancer', 'SMXFs.sys', 80500, 'OSR');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Copy Protection', 'plypFsMon.sys', 67100, 'PolyPort Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Copy Protection', 'd3clock.sys', 67000, 'D3CRYPT3D LLC');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Copy Protection', 'cbfltfs4.sys', 66500, 'I3D Technology Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Copy Protection', 'CkProcess.sys', 66100, 'KASHU SYSTEM DESIGN INC.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Copy Protection', 'dlmfprot.sys', 66000, 'Data Encrypt Sys');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Copy Protection', 'baprtsef.sys', 65700, 'BitArmor Systems, Inc');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Copy Protection', 'sxfpss.sys', 65600, 'Skanix AS');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Copy Protection', 'rgasdev.sys', 65500, 'Macrovision');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Copy Protection', 'SkyFPDrv.sys', 65410, 'Sky Co. Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Copy Protection', 'SkyLWP.sys', 65400, 'Sky Co. Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Copy Protection', 'SkySDVRF.sys', 65390, 'Sky Co. Ltd.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Copy Protection', 'SnEraser.sys', 65300, 'Informzaschita');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Copy Protection', 'vfilter.sys', 65200, 'RSJ Software GmbH');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Copy Protection', 'COGOFlt32.sys', 65100, 'Fortium Technologies Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Copy Protection', 'COGOFlt64.sys', 65100, 'Fortium Technologies Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Copy Protection', 'COGOFLTia64.sys', 65100, 'Fortium Technologies Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Copy Protection', 'scrubber.sys', 65000, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Copy Protection', 'SmDLP.sys', 64100, 'SmTools');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Copy Protection', 'BRDriver.sys', 64000, 'BitRaider LLC');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Copy Protection', 'BRDriver64.sys', 64000, 'BitRaider LLC');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Copy Protection', 'X7Ex.sys', 62500, 'Exent Technologies Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Copy Protection', 'LibertyFSF.sys', 62300, 'Bayalink Solutions Co');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Copy Protection', 'axfsdrv2.sys', 62100, 'Axence Software Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Copy Protection', 'sds.sys', 62000, 'Egress Software');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Copy Protection', 'zzenc.sys', 61650.5, 'Imdtech LLC');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Copy Protection', 'TotalSystemAuditor.sys', 61600, 'ANRC LLC');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Copy Protection', 'MBAMApiary.sys', 61500, 'Malwarebytes Corp.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Copy Protection', 'WA_FSW.sys', 61400, 'Programas Administración y Mejoramiento');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Copy Protection', 'ViewIntus_RTAS', 61300, 'Pentego Technologies');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Copy Protection', 'tffac.sys', 61200, 'Toshiba Corporation');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Copy Protection', 'tccp.sys', 61100, 'TrusCont Ltd');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Copy Protection', 'KomFS.sys', 61000, 'KOM Networks');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Bottom', 'RMPFileMounter.sys', 48000, 'ManageEngine Zoho');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Bottom', 'MFPAMCtrl.sys', 47500, 'Micro Focus');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Bottom', 'cbfsfilter2017.sys', 47400, '12d Synergy');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Bottom', 'pfmfs_???.sys', 47300, 'Pismo Technic Inc.');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Bottom', 'AlfaVS.sys', 47290.5, 'AlfaSP.com');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Bottom', 'DLDriverMiniFlt.sys', 47200, 'Acronis');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Bottom', 'DLPDriverProt.sys', 47199.5, 'Acronis');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Bottom', 'hsmltlib.sys', 47110, 'Hitachi Solutions');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Bottom', 'hskdlib.sys', 47100, 'Hitachi Solutions');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Bottom', 'acmnlib.sys', 47090, 'Hitachi Solutions');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Bottom', 'aictracedrv_b.sys', 47000, 'AI Consulting');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Bottom', 'SBox.sys', 46950, 'ASF Labs 2019 LTD');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Bottom', 'hhdcfltr.sys', 46900, 'Seagate Technology');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Bottom', 'AmdFSMini.sys', 46890.5, 'Advanced Micro Devices');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Bottom', 'Npsvctrig.sys', 46000, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Bottom', 'klvfs.sys', 44900, 'Kaspersky Lab');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Bottom', 'klbackupflt.sys', 44890, 'Kaspersky Lab');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Bottom', 'rsfxdrv.sys', 41000, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Bottom', 'defilter.sys', 40900, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Bottom', 'AppVVemgr.sys', 40800, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Bottom', 'wofadk.sys', 40730, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Bottom', 'wof.sys', 40700, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Bottom', 'fileinfo', 40500, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Bottom', 'WinSetupBoot.sys', 40400, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('Bottom', 'WinSetupMon.sys', 40300, 'Microsoft');
-INSERT INTO dbo.filter_driver_altitudes
-VALUES
-('brokering FS', 'bfs.sys', 150000, 'Microsoft');
 COMMIT TRAN;
 
 
@@ -6095,6 +2259,7 @@ DECLARE @query2 NVARCHAR(MAX);
 IF (OBJECT_ID('tbl_fltmc_filters') IS NOT NULL)
 BEGIN
 
+   
     ALTER TABLE dbo.tbl_fltmc_filters ADD FilterType NVARCHAR(96) NULL;
     ALTER TABLE dbo.tbl_fltmc_filters ADD Minifilter NVARCHAR(128) NULL;
     ALTER TABLE dbo.tbl_fltmc_filters ADD Company NVARCHAR(256) NULL;
@@ -6108,11 +2273,21 @@ BEGIN
                      INNER JOIN dbo.filter_driver_altitudes f2
                        ON (f1.Altitude = f2.Altitude);';
     EXEC SP_EXECUTESQL @query;
-END;
 
+     SET @query
+        = N'UPDATE dbo.tbl_fltmc_filters
+                 SET FilterType = f2.FilterType,
+                     Minifilter = f2.Minifilter,
+                     Company = f2.Company
+                 FROM dbo.tbl_fltmc_filters f1
+                     INNER JOIN dbo.filter_driver_altitudes f2
+                       ON (FLOOR(CAST(F1.Altitude AS float))= f2.Altitude)
+					   AND f1.Company IS NULL;';
+    EXEC SP_EXECUTESQL @query;
+    --second update for null values ,using only integer part, just in case  if we are missing anything because of decimal numbers
 
 --tbl_fltmc_instances
-
+END
 IF (OBJECT_ID('tbl_fltmc_instances') IS NOT NULL)
 BEGIN
 
@@ -6129,5 +2304,17 @@ BEGIN
                       INNER JOIN dbo.filter_driver_altitudes f2
                         ON (f1.Altitude = f2.Altitude);';
     EXEC SP_EXECUTESQL @query2;
+
+     SET @query2
+        = N'UPDATE dbo.tbl_fltmc_instances
+                  SET FilterType = f2.FilterType,
+                      Minifilter = f2.Minifilter,
+                      Company = f2.Company
+                  FROM dbo.tbl_fltmc_instances f1
+                      INNER JOIN dbo.filter_driver_altitudes f2
+                        ON (FLOOR(CAST(F1.Altitude AS float)) = f2.Altitude)
+						AND f1.Company IS NULL;';
+    EXEC SP_EXECUTESQL @query2;
+    --second update for null values ,using only integer part, just in case  if we are missing anything because of decimal numbers
 END;
 

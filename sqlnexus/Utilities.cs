@@ -7,8 +7,8 @@ using System.IO;
 using System.Security;
 using System.Security.Principal;
 using System.Security.AccessControl;
-using System.Data.SqlClient;
-using System.Data;
+using Microsoft.Data.SqlClient;
+using Microsoft.Data;
 using System.Text.RegularExpressions;
 using Microsoft.Win32;
 

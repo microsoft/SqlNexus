@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Security;
 using System.Runtime.InteropServices;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 namespace sqlnexus
 {
     public class SecureStringEx
@@ -54,7 +54,18 @@ namespace sqlnexus
         private bool m_WindowsAuthentication;
         private String m_SQLServer;
         private String m_DefaultDatabase;
-
+        private Boolean m_TrustCertificate;
+        private Boolean m_EncryptConnection;
+        public Boolean EncryptConnection
+        {
+            get { return m_EncryptConnection; }
+            set { m_EncryptConnection = value; }
+        }
+        public Boolean TrustServerCertificate
+        {
+            get { return m_TrustCertificate;  }
+            set { m_TrustCertificate = value; }
+        }
         public String User
         {
             get { return UserName; }
@@ -77,20 +88,23 @@ namespace sqlnexus
         }
         public CredentialManager()
         {
-            Init(".", null, null, "sqlnexus", true);
+            Init(".", null, null, "sqlnexus", true, true, true);
         }
-        public CredentialManager(String server, String username, String password, String defaultdb, bool windowsauthentication)
+        public CredentialManager(String server, String username, String password, String defaultdb, bool windowsauthentication, bool trustCertificate, bool encryptConnection)
         {
-            Init(server, username, password, defaultdb, windowsauthentication);
+            Init(server, username, password, defaultdb, windowsauthentication, trustCertificate, encryptConnection);
 
         }
-        private void Init(String server, String username, String password, String defaultdb, bool windowsauthentication)
+        private void Init(String server, String username, String password, String defaultdb, bool windowsauthentication, bool trustCertificate, bool encryptConnection)
         {
             Server = server;
             UserName = username;
             Password = password;
             WindowsAuthentication = windowsauthentication;
             DefaultDatabase = defaultdb;
+            TrustServerCertificate = trustCertificate;
+            EncryptConnection = encryptConnection;
+
             if (!WindowsAuthentication && (String.IsNullOrEmpty(UserName) || String.IsNullOrEmpty(Password)))
             {
                 throw new ArgumentException("You need to provide User Name and Password when using SQL Server authentication. Either user name or password, or both have null or empty values");
@@ -115,6 +129,8 @@ namespace sqlnexus
                 csb.ApplicationName = "SqlNexus";
                 //disable connection pooling because alter database cause transport level error
                 csb.Pooling = false;
+                csb.TrustServerCertificate = TrustServerCertificate;
+                csb.Encrypt = EncryptConnection;
 
                 return csb.ConnectionString;
 
@@ -128,6 +144,7 @@ namespace sqlnexus
                 DefaultDatabase = csb.InitialCatalog;
                 UserName = csb.UserID;
                 Password = csb.Password;
+                TrustServerCertificate = csb.TrustServerCertificate;
             }
         }
         public string Password

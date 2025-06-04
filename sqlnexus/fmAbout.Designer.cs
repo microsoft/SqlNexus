@@ -38,6 +38,7 @@ namespace sqlnexus
             this.tiDissolve = new System.Windows.Forms.Timer(this.components);
             this.laCopyright = new System.Windows.Forms.Label();
             this.btClose = new System.Windows.Forms.Button();
+            this.laRVVersion = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // tiStarter
@@ -97,11 +98,20 @@ namespace sqlnexus
             this.btClose.Click += new System.EventHandler(this.btClose_Click);
             this.btClose.Paint += new System.Windows.Forms.PaintEventHandler(this.btClose_Paint);
             // 
+            // laRVVersion
+            // 
+            resources.ApplyResources(this.laRVVersion, "laRVVersion");
+            this.laRVVersion.BackColor = System.Drawing.Color.Transparent;
+            this.laRVVersion.ForeColor = System.Drawing.Color.Plum;
+            this.laRVVersion.Name = "laRVVersion";
+            this.laRVVersion.Click += new System.EventHandler(this.laRVVersion_Click);
+            // 
             // fmAbout
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ControlBox = false;
+            this.Controls.Add(this.laRVVersion);
             this.Controls.Add(this.btClose);
             this.Controls.Add(this.laCopyright);
             this.Controls.Add(this.llSupport);
@@ -134,6 +144,6 @@ namespace sqlnexus
         private System.Windows.Forms.Timer tiDissolve;
         private System.Windows.Forms.Label laCopyright;
         private System.Windows.Forms.Button btClose;
-
+        private System.Windows.Forms.Label laRVVersion;
     }
 }

@@ -328,7 +328,7 @@ namespace RowsetEditor
                     xCol.SetAttribute("type", String.Concat("RowsetImportEngine.",(String)row["Type"]));
 
                     String length = row["Length"].ToString();
-                    if (!length.IsNullOrEmpty())
+                    if (!String.IsNullOrEmpty(length))
                     {
                         xCol.SetAttribute("length", length);
                     }
