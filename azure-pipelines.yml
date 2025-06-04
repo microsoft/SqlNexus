@@ -33,19 +33,25 @@ steps:
           { $_ -ge 528040 } { "Installed: .NET Framework 4.8"; break }
           default { "Installed: Version earlier than 4.8 or not installed" }
       }
-    
+- task: CmdLine@2
+  displayName: 'Download SSDT Installer'
+  inputs:
+    script: |
+      curl -L -o SSDT-Setup-ENU.exe https://go.microsoft.com/fwlink/?linkid=874716
+      echo: Install SSDT Unattended
+      SSDT-Setup-ENU.exe /quiet /norestart
+      echo: SSDT installation complete
+
+
 - task: CmdLine@2
   displayName: Install SSRS VSIX extension
   inputs:
     script: |
-      echo Write your commands here
       
       echo Downloading MS Report Projects for Visual Studio 2022
-      
       curl -L --output MicrosoftReportProjectsforVisualStudio2022.vsix --create-dirs --url https://marketplace.visualstudio.com/_apis/public/gallery/publishers/ProBITools/vsextensions/MicrosoftReportProjectsforVisualStudio2022/latest/vspackage
       
       echo Install the VSIX extension
-      
       "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\VSIXInstaller.exe" /quiet MicrosoftReportProjectsforVisualStudio2022.vsix 
       
       echo VSIX extension completed
