@@ -42,7 +42,23 @@ extends:
         - script: echo Start Pipeline!
           displayName: 'Run a one-line script'
 
-            
+        - task: NuGetToolInstaller@1
+          inputs:
+            versionSpec: 
+
+        - task: NuGetCommand@2
+          inputs:
+            command: 'restore'
+            restoreSolution: '**/*.sln'
+            feedsToUse: 'select'
+
+        - task: VSBuild@1
+          inputs:
+            solution: '$(solution)'
+            platform: '$(buildPlatform)'
+            configuration: '$(buildConfiguration)'
+            msbuildArgs: '/target:BulkLoadEx;NexusInterfaces;RowsetImportEngine'
+
         - task: ManifestGeneratorTask@0
           inputs:
             BuildDropPath: '$(Build.ArtifactStagingDirectory)'
