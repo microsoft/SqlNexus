@@ -9,7 +9,7 @@
       <am:Name>SSDTRS</am:Name>
       <am:Version>17.14.36301.6</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2025-07-10T14:56:38.3670521Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2025-07-14T15:21:10.7834379Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
@@ -582,7 +582,6 @@ BEGIN
         SET @sql
             = 'SELECT database_id, dbname, configuration_id, name, value, value_for_secondary, NULL AS is_value_default
                           FROM dbo.tbl_database_scoped_configurations
-                         WHERE input_file_name like ''%Shutdown.out''
                          ORDER BY dbname, configuration_id';
     END;
     ELSE
@@ -590,7 +589,6 @@ BEGIN
         SET @sql
             = 'SELECT database_id, dbname, configuration_id, name, value, value_for_secondary, is_value_default
                            FROM dbo.tbl_database_scoped_configurations
-                          WHERE input_file_name like ''%Shutdown.out''
                          ORDER BY dbname, configuration_id';
     END;
 
@@ -2420,7 +2418,6 @@ END;</CommandText>
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
-                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                     <TablixCell>
