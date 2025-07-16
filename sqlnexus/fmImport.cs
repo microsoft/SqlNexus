@@ -833,7 +833,7 @@ namespace sqlnexus
 
             //add individual rows for each of these so they show up as progress bars in the summary window listview
             string customXELImprtStr = "CustomXELImporter";
-            AddFileRow((tlpFiles.RowCount - 1), "Customer XEL import", null, customXELImprtStr);
+            AddFileRow((tlpFiles.RowCount - 1), "Custom XEL import (SQLDiag, AlwaysOnHealth, System Health)", null, customXELImprtStr);
 
             string rawFileImprtStr = "RawFileImport";
             AddFileRow((tlpFiles.RowCount - 1), "Raw file import", null, rawFileImprtStr);
@@ -991,7 +991,7 @@ namespace sqlnexus
                         currBar.Value = 20;
 
                         currLabel = (Label)tlpFiles.Controls[i + 2];
-                        currLabel.Text = "Please wait for raw file import to complete...";
+                        currLabel.Text = "Please wait for XEL file imports to complete...";
 
 
                         //raw file importer
