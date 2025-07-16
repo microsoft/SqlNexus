@@ -46,7 +46,7 @@ namespace sqlnexus
 
 
         }
-        string[] SQLBASE = { "SQL_Base_SQLDIAGXEL_Startup", "AlwaysOn_Basic_Info_AlwaysOnHealth_XEL_Startup", "SQL_Base_SystemHealthXEL_Startup_system_health" };
+        string[] SQLBASE = { "SQL_Base_SQLDIAGXEL_Startup", "AlwaysOn_Basic_Info_AlwaysOnHealth_XEL_Startup", "system_health" };
         SqlConnection cnn;
 
         // We can implement following methods more efficiently by combining them into just one method
@@ -135,7 +135,7 @@ namespace sqlnexus
         }
         public void loadSystemHealthFiles()
         {
-            string[] XEFiles = Directory.GetFiles(srcPath, "*SQL_Base_SystemHealthXEL_Startup_system_health*.xel");
+            string[] XEFiles = Directory.GetFiles(srcPath, "*system_health*.xel");
             cnn = new SqlConnection(connStr);
             cnn.Open();
             try
@@ -144,7 +144,7 @@ namespace sqlnexus
                 {
                     string XEFile = XEFiles[0];
 
-                    int index = XEFile.IndexOf("Startup_system_health");
+                    int index = XEFile.IndexOf("system_health");
                     if (index > 0)
                         XEFile = XEFile.Substring(0, index);
                     string sqlstatment = @" IF OBJECT_ID(N'tbl_SQL_Base_SystemHealthXEL_Startup', N'U') IS NOT NULL

@@ -582,13 +582,14 @@ namespace sqlnexus
             tlpFiles.Visible = false;
             Application.DoEvents();
 
-
-            string[] XEFiles = Directory.GetFiles(cbPath.Text.Trim().Replace("\"", ""), "*pssdiag*.xel");
+            // count the files from pssdiag or logscout 
+            string[] XEFilesPssdiag = Directory.GetFiles(cbPath.Text.Trim().Replace("\"", ""), "*pssdiag*.xel");
+            string[] XEFilesLogScout = Directory.GetFiles(cbPath.Text.Trim().Replace("\"", ""), "*xevent_LogScout*.xel");
             string[] trcFiles = Directory.GetFiles(cbPath.Text.Trim().Replace("\"", ""), "*sp_trace*.trc");
 
-            if (XEFiles.Length > 0 && trcFiles.Length > 0)
+            if ((XEFilesPssdiag.Length > 0 || XEFilesLogScout.Length > 0) && trcFiles.Length > 0)
             {
-                Util.Logger.LogMessage("You have captured both trace and xeven files. import will fail! Please remove one of them before importing", MessageOptions.All);
+                Util.Logger.LogMessage("You have captured both trace and xeven files. import will fail! Please remove or move one of the sets before importing", MessageOptions.All);
             }
 
 
@@ -831,6 +832,9 @@ namespace sqlnexus
             EnumFiles();
 
             //add individual rows for each of these so they show up as progress bars in the summary window listview
+            string customXELImprtStr = "CustomXELImporter";
+            AddFileRow((tlpFiles.RowCount - 1), "Customer XEL import", null, customXELImprtStr);
+
             string rawFileImprtStr = "RawFileImport";
             AddFileRow((tlpFiles.RowCount - 1), "Raw file import", null, rawFileImprtStr);
 
