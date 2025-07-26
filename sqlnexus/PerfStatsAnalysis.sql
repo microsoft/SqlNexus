@@ -4552,6 +4552,29 @@ VALUES
  'https://learn.microsoft.com/en-us/troubleshoot/sql/database-engine/install/windows/restore-missing-windows-installer-cache-files',
  '  ', 1, 100, 0, 'Missing MSI or MSPs');
 
+ INSERT INTO dbo.tbl_AnalysisSummary
+(
+    SolutionSourceId,
+    Category,
+    Type,
+    TypeDesc,
+    Name,
+    FriendlyName,
+    Description,
+    InternalUrl,
+    ExternalUrl,
+    Author,
+    Priority,
+    SeqNum,
+    Status,
+    Report
+)
+VALUES
+('4747268D-DD3C-4A0C-84E1-93684B98084D', 'Server Configuration', 'W', 'Warning', 'usp_AssessmentAPI_Rules',
+ 'Summary of Medium and High SQL Assessment API rules', 'These should be examined and acted upon, based on recommendations', '',
+ 'https://learn.microsoft.com/sql/tools/sql-assessment-api/sql-assessment-api-overview',
+ '  ', 1, 100, 0, '');
+
 
 
 
@@ -7150,6 +7173,59 @@ BEGIN
 END;
 GO
 
+CREATE PROCEDURE [dbo].[usp_AssessmentAPI_Rules]
+AS
+BEGIN
+    IF (
+           OBJECT_ID('tbl_assessment_api') IS NOT NULL
+           AND (OBJECT_ID('tbl_AnalysisSummary') IS NOT NULL)
+       )
+    BEGIN
+        IF (
+           (
+               SELECT COUNT(*)
+               FROM [dbo].[tbl_assessment_api]
+               WHERE Severity in ('High','Medium')
+           ) > 0
+           )
+        BEGIN
+            
+            DECLARE @CombinedChecks NVARCHAR(MAX) = '';
+            DECLARE @CurrentCheck NVARCHAR(MAX);
+
+            DECLARE CheckCursor CURSOR FOR
+            SELECT [Check]
+            FROM tbl_assessment_api
+            WHERE Severity IN ('High', 'Medium');
+
+
+            OPEN CheckCursor;
+            FETCH NEXT FROM CheckCursor INTO @CurrentCheck;
+
+            WHILE @@FETCH_STATUS = 0
+            BEGIN
+                SET @CombinedChecks = 
+                    CASE 
+                        WHEN @CombinedChecks = '' THEN '- ' + @CurrentCheck
+                        ELSE @CombinedChecks + CHAR(13) + CHAR(10) + '- ' + @CurrentCheck
+                    END;
+
+                FETCH NEXT FROM CheckCursor INTO @CurrentCheck;
+            END
+
+            CLOSE CheckCursor;
+            DEALLOCATE CheckCursor;
+
+            UPDATE dbo.tbl_AnalysisSummary
+            SET [Status] = 1,
+            [Description] = 'The following SQL Assessment API checks of Medium or High severity were found on this system: '
+                            + CHAR(13) + CHAR(10) + @CombinedChecks
+            WHERE [Name] = OBJECT_NAME(@@PROCID);
+        END;
+    END;
+END;
+GO
+
 
 
 /********************************************************
@@ -7243,4 +7319,6 @@ GO
 EXEC dbo.usp_CCC_Enabled;
 GO
 EXEC dbo.usp_MissingMSI_MSP
+GO
+EXEC dbo.usp_AssessmentAPI_Rules;
 /******END of script***/
