@@ -4714,5 +4714,13 @@
       </KnownColumns>
     </Rowset>
 
+    <Rowset name="tbl_assessment_api" enabled="true" identifier="-- assessment_api --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="Check" type="RowsetImportEngine.VarCharColumn" length="80" />
+		  <Column name="Severity" type="RowsetImportEngine.VarCharColumn" length="15" />
+		  <Column name="Message" type="RowsetImportEngine.VarCharColumn" length="1100" />
+		  <Column name="HelpURL" type="RowsetImportEngine.VarCharColumn" length="200" />
+		</KnownColumns>
+	</Rowset>
   </KnownRowsets>
 </TextImport>
