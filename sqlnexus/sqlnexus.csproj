@@ -594,6 +594,9 @@
     <Content Include="Reports\Missing_MSIs_or_MSPs_C.rdlC">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Reports\SQLAssessmentAPI_C.rdlC">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="SqlNexus.snk" />
   </ItemGroup>
   <ItemGroup>
@@ -1321,6 +1324,16 @@
       <FileType>File</FileType>
     </PublishFile>
     <PublishFile Include="Reports\SQL Perf Main.rdl">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>File</FileType>
+    </PublishFile>
+    <PublishFile Include="Reports\SQLAssessmentAPI.rdl">
       <Visible>False</Visible>
       <Group>
       </Group>

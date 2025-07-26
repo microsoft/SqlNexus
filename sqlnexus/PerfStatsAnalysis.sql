@@ -4570,10 +4570,10 @@ VALUES
     Report
 )
 VALUES
-('4747268D-DD3C-4A0C-84E1-93684B98084D', 'Server Configuration', 'W', 'Warning', 'usp_AssessmentAPI_Rules',
+('4747268D-DD3C-4A0C-84E1-93684B98084D', 'Server Performance', 'W', 'Warning', 'usp_AssessmentAPI_Rules',
  'Summary of Medium and High SQL Assessment API rules', 'These should be examined and acted upon, based on recommendations', '',
  'https://learn.microsoft.com/sql/tools/sql-assessment-api/sql-assessment-api-overview',
- '  ', 1, 100, 0, '');
+ '  ', 1, 100, 0, 'SQL Assessment API');
 
 
 
