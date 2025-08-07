@@ -1,5 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:am="http://schemas.microsoft.com/sqlserver/reporting/authoringmetadata">
+  <am:AuthoringMetadata>
+    <am:CreatedBy>
+      <am:Name>SSDTRS</am:Name>
+      <am:Version>17.14.36301.6</am:Version>
+    </am:CreatedBy>
+    <am:UpdatedBy>
+      <am:Name>SSDTRS</am:Name>
+      <am:Version>17.14.36301.6</am:Version>
+    </am:UpdatedBy>
+    <am:LastModifiedTimestamp>2025-07-26T18:54:46.2966403Z</am:LastModifiedTimestamp>
+  </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
     <DataSource Name="DataSource_Private">
@@ -881,6 +892,7 @@ INSERT INTO @tbl_reports
 VALUES
 ('AlwaysOn_AGBasics_C', 'Always On Configuration Report', 'Always On Configuration Report', 1 | 2 | 4 | 8, 'Always On',
  'dbo.tbl_hadr_ag_listeners', 3000, 'AG Diag Collector', 1, 3000);
+
 INSERT INTO @tbl_reports
 (
     ReportName,
@@ -933,6 +945,24 @@ INSERT INTO @tbl_reports
 VALUES
 ('Missing_MSIs_or_MSPs_C', 'Missing MSI or MSPs', 'Shows missing MSI/MSP package', 1 | 2 | 4 | 8, 'Setup',
  'dbo.tbl_setup_missing_msi_msp_packages', 2000, 'Setup', 1, 2022);
+
+
+INSERT INTO @tbl_reports
+(
+    ReportName,
+    ReportDisplayName,
+    ReportDescription,
+    VersionApplied,
+    Category,
+    ValidationObject,
+    SeqNo,
+    DataCollection,
+    Manditory,
+    CategorySeq
+)
+VALUES
+('SQLAssessmentAPI_C', 'SQL Assessment API Rules', 'Shows what SQL Assessment API rules have filed and their output', 1 | 2 | 4 | 8,
+ 'Common', 'dbo.tbl_assessment_api', 400, 'SQL Base Collector', 1, 2023);
 
 
 
@@ -1004,6 +1034,7 @@ INSERT INTO @tbl_reports
 VALUES
 ('WASD_SloStats_C', 'SLO change history', 'Shows the changes in service level objective for databases', 1 | 2 | 4 | 8,
  'Azure', 'dbo.tbl_SLO_HISTORY', 400, 'Azure Perf Stats Collector', 1, 1000);
+
 
 --final Select to calc available reports
 SELECT CategorySeq,
