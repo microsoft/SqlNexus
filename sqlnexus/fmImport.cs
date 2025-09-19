@@ -739,7 +739,7 @@ namespace sqlnexus
                 builder.InitialCatalog = "master";
                 SqlConnection conn = new SqlConnection(builder.ConnectionString);
                 SqlCommand cmd = conn.CreateCommand();
-                cmd.CommandText = String.Format(Properties.Resources.CreateDropDB, Globals.credentialMgr.Database);
+                cmd.CommandText = String.Format(Properties.Resources.CreateDropDB, Globals.credentialMgr.Database); // CodeQL [SM03934] database name is validated before use now in parameter setter but also previously a "[]" brackets were added around the name
                 try
                 {
                     conn.Open();
