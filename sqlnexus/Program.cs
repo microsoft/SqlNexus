@@ -166,19 +166,12 @@ namespace sqlnexus
                             string dbName = arg.Substring(2);
                             Console.WriteLine(@"Command Line Arg (/D): Database=" + dbName);
 
-                            // Validate length
-                            if (dbName.Length > 128)
+                            if (!System.Text.RegularExpressions.Regex.IsMatch(dbName, @"^(?!(master|tempdb|msdb|model)$)[#$A-Za-z0-9_-]{1,128}$", System.Text.RegularExpressions.RegexOptions.IgnoreCase))
                             {
-                                Console.WriteLine("Error: Database name must not exceed 128 characters.");
+                                Console.WriteLine("Error: Database name must contain only letters, numbers, underscores, hyphens, #, $, and cannot be 'master', 'tempdb', 'model', or 'msdb'. Length must be 1-128 characters.");
                                 return false;
                             }
-
-                            // Validate allowed characters
-                            if (!System.Text.RegularExpressions.Regex.IsMatch(dbName, @"^[A-Za-z0-9_-]+$"))
-                            {
-                                Console.WriteLine("Error: Database name must only contain letters, numbers, underscores, and hyphens.");
-                                return false;
-                            }
+                         
 
                             Globals.credentialMgr.Database = dbName;
                             break;
