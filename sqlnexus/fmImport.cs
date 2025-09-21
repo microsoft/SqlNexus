@@ -898,6 +898,7 @@ namespace sqlnexus
                                 PostScripts.Add(ri.GetType().Name, ri.PostScripts);
                                 foreach (string s in ri.PreScripts)
                                 {
+                                    MainForm.LogMessage("Executing pre-script: " + s);
                                     RunScript(s);
                                 }
                             }
@@ -1249,7 +1250,6 @@ namespace sqlnexus
         private void RunPostScripts()
         {
             MainForm.LogMessage("Executing post-mortem analysis scripts...");
-            //RunScript(Application.StartupPath + @"\PerfStatsAnalysis.sql");
             //RunScript(Application.StartupPath + @"\TraceAnalysis.sql");
 
             //nothing to run
@@ -1264,6 +1264,8 @@ namespace sqlnexus
                 {
                     if (string.IsNullOrEmpty(script))
                         continue; //nothign to run
+
+                    MainForm.LogMessage("Executing post-script: " + script);
                     RunScript(script);
                 }
             }
@@ -1276,6 +1278,13 @@ namespace sqlnexus
             //if nothing to run, return
             if (string.IsNullOrEmpty(scriptname))
                 return;
+
+            if (!ScriptIntegrityChecker.VerifyScript(scriptname))
+            {
+                MainForm.LogMessage("Script is not allowed or has been tampered with: '" + scriptname + "'", MessageOptions.All, TraceEventType.Error, "Script integrity");
+                return;
+            }
+
 
             Cursor saveCur = this.Cursor;
             string FullScriptName;
