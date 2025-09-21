@@ -1,6 +1,6 @@
 # GenerateSqlHashes.ps1
 $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
-$sqlFiles = Get-ChildItem "$scriptDir\*.sql" -File
+$sqlFiles = Get-ChildItem "$scriptDir\*.sql", "$scriptDir\*.cmd" -File
 Write-Output "Paste the following into ScriptIntegrity.cs:"
 Write-Output "`tprivate static readonly Dictionary<string, string> ScriptHashes = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) {"
 foreach ($file in $sqlFiles) {

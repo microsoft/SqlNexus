@@ -1156,9 +1156,16 @@ namespace sqlnexus
             psi.RedirectStandardOutput = true;
             psi.RedirectStandardError = true;
             psi.UseShellExecute = false;
-            psi.Arguments = string.Format("{0} {1} \"{2}\"", Globals.credentialMgr.Server, Globals.credentialMgr.Database, sourcePath);
+            psi.Arguments = string.Format("\"{0}\" \"{1}\" \"{2}\"", Globals.credentialMgr.Server, Globals.credentialMgr.Database, sourcePath);
             MainForm.LogMessage("Executing: PostProcess.cmd " + psi.Arguments);
             psi.FileName = "PostProcess.cmd";
+
+            // do a script validation before executing
+            if (!ScriptIntegrityChecker.VerifyScript(psi.FileName))
+            {
+                MainForm.LogMessage("Script is not allowed or has been tampered with: '" + psi.FileName + "'. Exiting...", MessageOptions.All, TraceEventType.Error, "Script integrity");
+                return;
+            }
 
             Process process = new Process();
             process.StartInfo = psi;
@@ -1182,6 +1189,7 @@ namespace sqlnexus
                 }
             );
 
+            MainForm.LogMessage("Start PostProcess execution", MessageOptions.All, TraceEventType.Information, "Start postprocess");
             process.Start();
             process.BeginOutputReadLine();
             process.WaitForExit();
