@@ -582,13 +582,14 @@ namespace sqlnexus
             tlpFiles.Visible = false;
             Application.DoEvents();
 
-
-            string[] XEFiles = Directory.GetFiles(cbPath.Text.Trim().Replace("\"", ""), "*pssdiag*.xel");
+            // count the files from pssdiag or logscout 
+            string[] XEFilesPssdiag = Directory.GetFiles(cbPath.Text.Trim().Replace("\"", ""), "*pssdiag*.xel");
+            string[] XEFilesLogScout = Directory.GetFiles(cbPath.Text.Trim().Replace("\"", ""), "*xevent_LogScout*.xel");
             string[] trcFiles = Directory.GetFiles(cbPath.Text.Trim().Replace("\"", ""), "*sp_trace*.trc");
 
-            if (XEFiles.Length > 0 && trcFiles.Length > 0)
+            if ((XEFilesPssdiag.Length > 0 || XEFilesLogScout.Length > 0) && trcFiles.Length > 0)
             {
-                Util.Logger.LogMessage("You have captured both trace and xeven files. import will fail! Please remove one of them before importing", MessageOptions.All);
+                Util.Logger.LogMessage("You have captured both trace and xeven files. import will fail! Please remove or move one of the sets before importing", MessageOptions.All);
             }
 
 
@@ -831,6 +832,9 @@ namespace sqlnexus
             EnumFiles();
 
             //add individual rows for each of these so they show up as progress bars in the summary window listview
+            string customXELImprtStr = "CustomXELImporter";
+            AddFileRow((tlpFiles.RowCount - 1), "Custom XEL import (SQLDiag, AlwaysOnHealth, System Health)", null, customXELImprtStr);
+
             string rawFileImprtStr = "RawFileImport";
             AddFileRow((tlpFiles.RowCount - 1), "Raw file import", null, rawFileImprtStr);
 
@@ -851,12 +855,7 @@ namespace sqlnexus
             bool RunScripts = true;
             bool Success = false;
 
-            CustomXELImporter CI = new CustomXELImporter();
-            CI.SQLBaseImport(Globals.credentialMgr.ConnectionString, Globals.credentialMgr.Server,
-                                                    Globals.credentialMgr.WindowsAuth,
-                                                    Globals.credentialMgr.User,
-                                                    Globals.credentialMgr.Password,
-                                                    Globals.credentialMgr.Database, srcPath);
+
 
 
 
@@ -984,6 +983,38 @@ namespace sqlnexus
                         j++;
 
                     } //end of if (Name == "FileNameLabel")
+                    else if (tlpFiles.Controls[i].Name == customXELImprtStr)
+                    {
+                        int customXELImportStartTicks = Environment.TickCount;
+
+                        currBar = (ProgressBar)tlpFiles.Controls[i + 1];
+                        currBar.Value = 20;
+
+                        currLabel = (Label)tlpFiles.Controls[i + 2];
+                        currLabel.Text = "Please wait for XEL file imports to complete...";
+
+
+                        //raw file importer
+                        MainForm.LogMessage("Custom XEL Importer starting");
+                        Application.DoEvents();
+
+
+                        // do the custom XEL import - system health, Always ON, etc.
+                        CustomXELImporter CI = new CustomXELImporter();
+                        string XelImprtStatusStr = CI.SQLBaseImport(Globals.credentialMgr.ConnectionString, Globals.credentialMgr.Server,
+                                                                Globals.credentialMgr.WindowsAuth,
+                                                                Globals.credentialMgr.User,
+                                                                Globals.credentialMgr.Password,
+                                                                Globals.credentialMgr.Database, srcPath);
+                        
+
+                        currBar.Value = 100;
+                        MainForm.LogMessage("Custom XEL Importer completed");
+
+                        string rawfileMsg = "(Importer:" + customXELImprtStr + ") " + "Done. (" + (Environment.TickCount - customXELImportStartTicks) / 1000 + " sec), " + XelImprtStatusStr + ".";
+                        currLabel.Text = rawfileMsg;
+                        Application.DoEvents();
+                    }
 
                     else if (tlpFiles.Controls[i].Name == rawFileImprtStr)
                     {
@@ -1032,7 +1063,7 @@ namespace sqlnexus
                         RunPostProcessing(srcPath);
 
                         currBar.Value = 100;
-                        currLabel.Text = "(Post-import Processing) Done. ("  + (Environment.TickCount - postProcessStartTicks) / 1000 + " sec) " ;
+                        currLabel.Text = "(Post-import Processing) Done. (" + (Environment.TickCount - postProcessStartTicks) / 1000 + " sec) ";
                         MainForm.LogMessage("End of Post-Import processing");
 
                         Application.DoEvents();
@@ -1068,7 +1099,7 @@ namespace sqlnexus
                         Application.DoEvents();
 
                         int runtimeStartTicks = Environment.TickCount;
-                        
+
                         //run Perfstats Analysis script just once
                         currBar = (ProgressBar)tlpFiles.Controls[i + 1];
                         currBar.Value = 20;
