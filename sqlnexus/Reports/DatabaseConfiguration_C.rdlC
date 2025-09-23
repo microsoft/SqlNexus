@@ -1,5 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:am="http://schemas.microsoft.com/sqlserver/reporting/authoringmetadata">
+  <am:AuthoringMetadata>
+    <am:CreatedBy>
+      <am:Name>SSDTRS</am:Name>
+      <am:Version>17.14.36301.6</am:Version>
+    </am:CreatedBy>
+    <am:UpdatedBy>
+      <am:Name>SSDTRS</am:Name>
+      <am:Version>17.14.36301.6</am:Version>
+    </am:UpdatedBy>
+    <am:LastModifiedTimestamp>2025-07-14T15:21:10.7834379Z</am:LastModifiedTimestamp>
+  </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
     <DataSource Name="DataSource_SqlNexus_Private">
@@ -571,7 +582,6 @@ BEGIN
         SET @sql
             = 'SELECT database_id, dbname, configuration_id, name, value, value_for_secondary, NULL AS is_value_default
                           FROM dbo.tbl_database_scoped_configurations
-                         WHERE input_file_name like ''%Shutdown.out''
                          ORDER BY dbname, configuration_id';
     END;
     ELSE
@@ -579,7 +589,6 @@ BEGIN
         SET @sql
             = 'SELECT database_id, dbname, configuration_id, name, value, value_for_secondary, is_value_default
                            FROM dbo.tbl_database_scoped_configurations
-                          WHERE input_file_name like ''%Shutdown.out''
                          ORDER BY dbname, configuration_id';
     END;
 
@@ -2402,6 +2411,7 @@ END;</CommandText>
                               <Color>LightGrey</Color>
                               <Style>Solid</Style>
                             </Border>
+                            <BackgroundColor>=IIf(Fields!is_value_default.Value=0, "Yellow", "No Color")</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
