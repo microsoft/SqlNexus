@@ -838,12 +838,38 @@ namespace sqlnexus
             doc.Load(FullXmlDoc);
             XmlNode node = doc.SelectSingleNode("report/validate");
             String scriptName = node.Attributes["script"].Value.ToString();
-            StreamReader sr = File.OpenText(FullReportPath + scriptName);
-            CSql mySql = new CSql(Globals.credentialMgr.ConnectionString);
-            mySql.ExecuteSqlScript (            sr.ReadToEnd());
-            
-            return mySql.IsSuccess;
-            
+
+            this.LogMessage("Validating report " + ReportName + " using script " + scriptName, MessageOptions.Silent);
+
+
+            //this code is rarely used and is only for report code validation. This is just a extra validation of script content. Probably overkill but it is a safety measure.
+            if (!String.IsNullOrEmpty(scriptName))
+            {
+                string scriptPath = FullReportPath + scriptName;
+                string scriptText = File.ReadAllText(scriptPath);
+
+                // List of forbidden SQL keywords (case-insensitive)
+                string[] forbiddenKeywords = { "DROP", "DELETE", "ALTER", "TRUNCATE", "UPDATE", "INSERT", "EXEC(", "XP_", "SP_", "GRANT", "REVOKE" };
+
+                foreach (var keyword in forbiddenKeywords)
+                {
+                    if (scriptText.IndexOf(keyword, StringComparison.OrdinalIgnoreCase) >= 0)
+                    {
+                        LogMessage($"Validation script '{scriptName}' contains forbidden SQL keyword: {keyword}. Execution blocked.", MessageOptions.All, TraceEventType.Error, "Script Validation");
+                        return false;
+                    }
+                }
+
+                CSql mySql = new CSql(Globals.credentialMgr.ConnectionString);
+                mySql.ExecuteSqlScript(scriptText);
+                return mySql.IsSuccess;
+            }
+            else
+            {
+                return false;
+            }
+
+
 
         }
         private void tvReports_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
