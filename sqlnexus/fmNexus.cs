@@ -804,7 +804,11 @@ namespace sqlnexus
 
         private void tvReports_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            
+            if ((e == null) || (e.Node == null) || (e.Node.Text == null))
+            {
+                return;
+            }
+
             if (!CanRunReport(e.Node.Text + ".rdl"))
             {
             //    this.LogMessage("The database doesn't have necessary data to run this report", MessageOptions.All);
@@ -817,59 +821,82 @@ namespace sqlnexus
             String FullReportName;
             String FullReportPath;
             String FullXmlDoc;
-            ReportName = Path.GetFileName(ReportName);
-            if (File.Exists(Application.StartupPath + @"\Reports\" + ReportName))
+
+
+            try
             {
-                FullReportName = Application.StartupPath + @"\Reports\" + ReportName;
-                FullReportPath = Application.StartupPath + @"\Reports\";
-
-            }
-            else if (File.Exists(Globals.AppDataPath + @"\Reports\" + ReportName))
-            {
-                FullReportPath = Globals.AppDataPath + @"\Reports\";
-                FullReportName = Globals.AppDataPath + @"\Reports\" + ReportName;
-            }
-            else
-                return true; //assuming you don't want to validate
-            FullXmlDoc = FullReportName + ".xml";
-            if (!File.Exists(FullXmlDoc))
-                return true; //assuming you don't want to validate
-            XmlDocument doc = new XmlDocument();
-            doc.Load(FullXmlDoc);
-            XmlNode node = doc.SelectSingleNode("report/validate");
-            String scriptName = node.Attributes["script"].Value.ToString();
-
-            this.LogMessage("Validating report " + ReportName + " using script " + scriptName, MessageOptions.Silent);
-
-
-            //this code is rarely used and is only for report code validation. This is just a extra validation of script content. Probably overkill but it is a safety measure.
-            if (!String.IsNullOrEmpty(scriptName))
-            {
-                string scriptPath = FullReportPath + scriptName;
-                string scriptText = File.ReadAllText(scriptPath);
-
-                // List of forbidden SQL keywords (case-insensitive)
-                string[] forbiddenKeywords = { "DROP", "DELETE", "ALTER", "TRUNCATE", "UPDATE", "INSERT", "EXEC(", "XP_", "SP_", "GRANT", "REVOKE" };
-
-                foreach (var keyword in forbiddenKeywords)
+                if (null == Globals.credentialMgr || null == Globals.credentialMgr.ConnectionString || "" == Globals.credentialMgr.ConnectionString)
                 {
-                    if (scriptText.IndexOf(keyword, StringComparison.OrdinalIgnoreCase) >= 0)
-                    {
-                        LogMessage($"Validation script '{scriptName}' contains forbidden SQL keyword: {keyword}. Execution blocked.", MessageOptions.All, TraceEventType.Error, "Script Validation");
-                        return false;
-                    }
+                    this.LogMessage("No database connection. Please connect to a database first", MessageOptions.All);
+                    return false;
                 }
 
-                CSql mySql = new CSql(Globals.credentialMgr.ConnectionString);
-                mySql.ExecuteSqlScript(scriptText);
-                return mySql.IsSuccess;
+
+                ReportName = Path.GetFileName(ReportName);
+
+                if (File.Exists(Application.StartupPath + @"\Reports\" + ReportName))
+                {
+                    FullReportName = Application.StartupPath + @"\Reports\" + ReportName;
+                    FullReportPath = Application.StartupPath + @"\Reports\";
+
+                }
+                else if (File.Exists(Globals.AppDataPath + @"\Reports\" + ReportName))
+                {
+                    FullReportPath = Globals.AppDataPath + @"\Reports\";
+                    FullReportName = Globals.AppDataPath + @"\Reports\" + ReportName;
+                }
+                else
+                    return true; //assuming you don't want to validate
+                FullXmlDoc = FullReportName + ".xml";
+                if (!File.Exists(FullXmlDoc))
+                    return true; //assuming you don't want to validate
+                XmlDocument doc = new XmlDocument();
+                doc.Load(FullXmlDoc);
+                XmlNode node = doc.SelectSingleNode("report/validate");
+
+                if (node == null)
+                {
+                    return true; //assuming you don't want to validate
+                }
+
+                String scriptName = node.Attributes["script"].Value.ToString();
+
+                this.LogMessage("Validating report " + ReportName + " using script " + scriptName, MessageOptions.Silent);
+
+
+                //this code is rarely used and is only for report code validation. This is just a extra validation of script content. Probably overkill but it is a safety measure.
+                if (!String.IsNullOrEmpty(scriptName))
+                {
+                    string scriptPath = FullReportPath + scriptName;
+                    string scriptText = File.ReadAllText(scriptPath);
+
+                    // List of forbidden SQL keywords (case-insensitive)
+                    string[] forbiddenKeywords = { "DROP", "DELETE", "ALTER", "TRUNCATE", "UPDATE", "INSERT", "EXEC(", "XP_", "SP_", "GRANT", "REVOKE" };
+
+                    foreach (var keyword in forbiddenKeywords)
+                    {
+                        if (scriptText.IndexOf(keyword, StringComparison.OrdinalIgnoreCase) >= 0)
+                        {
+                            LogMessage($"Validation script '{scriptName}' contains forbidden SQL keyword: {keyword}. Execution blocked.", MessageOptions.All, TraceEventType.Error, "Script Validation");
+                            return false;
+                        }
+                    }
+
+                    CSql mySql = new CSql(Globals.credentialMgr.ConnectionString);
+                    mySql.ExecuteSqlScript(scriptText);
+                    return mySql.IsSuccess;
+                }
+                else
+                {
+                    return false;
+                }
+
             }
-            else
+            catch (Exception ex)
             {
+                Globals.HandleException(ex, this, this);
                 return false;
             }
-
-
 
         }
         private void tvReports_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
