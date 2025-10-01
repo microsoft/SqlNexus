@@ -39,11 +39,18 @@ namespace sqlnexus
 
         private static string ComputeFileHash(string filePath)
         {
-            using (var stream = File.OpenRead(filePath))
-            using (var sha = SHA256.Create())
+            try
             {
-                byte[] hash = sha.ComputeHash(stream);
-                return BitConverter.ToString(hash).Replace("-", "");
+                using (var stream = File.OpenRead(filePath))
+                using (var sha = SHA256.Create())
+                {
+                    byte[] hash = sha.ComputeHash(stream);
+                    return BitConverter.ToString(hash).Replace("-", "");
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
             }
         }
     }
