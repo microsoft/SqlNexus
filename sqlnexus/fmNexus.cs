@@ -3305,17 +3305,20 @@ namespace sqlnexus
             }
         }
         
-        private bool CreateDB(String dbName)
+bool CreateDB(String dbName)
         {
-            
-            Regex re = new Regex(@"((;|\[|\]|\s)+)|(^master$|^tempdb$|^msdb$|^model$)+");
-            if (re.IsMatch(dbName))
+            // Regex pattern: database name must not be 'master', 'tempdb', 'msdb', or 'model', and must be 1-128 chars, allowed chars: #, $, A-Za-z0-9, _, -
+            System.Text.RegularExpressions.Regex re =
+                new System.Text.RegularExpressions.Regex(@"^(?!(master|tempdb|msdb|model)$)[#$A-Za-z0-9_-]{1,128}$", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+
+            // If the name does not match, it's invalid
+            if (!re.IsMatch(dbName))
             {
-                LogMessage (String.Format("invalid database name {0} entered. try again",dbName), MessageOptions.All);
+                LogMessage($"Error: Database name must contain only letters, numbers, underscores, hyphens, #, $, and cannot be 'master', 'tempdb', 'model', or 'msdb'. Length must be 1-128 characters. Invalid database name: {dbName}. Try again", MessageOptions.All);
                 return false;
             }
             Globals.credentialMgr.Database = "master";
-            
+
             SqlConnection conn = new SqlConnection(Globals.credentialMgr.ConnectionString);
             SqlCommand cmd = conn.CreateCommand();
             bool success = true;
@@ -3338,7 +3341,6 @@ namespace sqlnexus
                 {
                     LogMessage(String.Format(Properties.Resources.Error_Nexus_CreateDBFailure, dbName, Globals.credentialMgr.Server, sqlEx.Message), MessageOptions.All, TraceEventType.Error, dlgTitle);
                 }
-
             }
             finally
             {
@@ -3363,9 +3365,8 @@ namespace sqlnexus
                 PopulateDatabaseList("tempdb");
             }
 
-            //alwasy return true because we want to use tempdb instead
-            return true; 
-
+            // always return true because we want to use tempdb instead
+            return true;
         }
 
         private void tscCurrentDatabase_TextChanged(object sender, EventArgs e)

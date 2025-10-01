@@ -6,6 +6,15 @@
 trigger:
 - master
 
+
+schedules:
+- cron: "3 3 * * 1"  # Runs every Monday at 03:03 UTC
+  displayName: Weekly Monday Trigger
+  branches:
+    include:
+    - master
+  always: true
+
 # The `resources` specify the location and version of the 1ES PT.
 resources:
   repositories:
