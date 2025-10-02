@@ -1221,7 +1221,6 @@ namespace sqlnexus
                 }
             );
 
-            MainForm.LogMessage("Start PostProcess execution", MessageOptions.All, TraceEventType.Information, "Start postprocess");
             process.Start();
             process.BeginOutputReadLine();
             process.WaitForExit();
