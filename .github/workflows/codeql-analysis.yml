@@ -33,10 +33,15 @@ jobs:
         languages: ${{ matrix.language }}
         config-file: .github/codeql-config.yml
 
-    - name: Build .NET Framework solution
+    - name: NuGet packages
       run: |
         nuget restore sqlnexus.sln
-        msbuild sqlnexus.sln /p:Configuration=Release
+        
+    - name: Build .NET Framework solution
+      shell: pwsh
+      run: |
+        $msbuild = & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -latest -products * -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe
+        & $msbuild sqlnexus.sln /p:Configuration=Release        
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v3
