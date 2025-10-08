@@ -2,9 +2,9 @@ name: "CodeQL Analysis"
 
 on:
   push:
-    branches: [master]
+    branches: [master,CodeQL-CustomBuild-pijocoder-100825]
   pull_request:
-    branches: [master]
+    branches: [master,CodeQL-CustomBuild-pijocoder-100825]
   schedule:
     - cron: '0 0 * * 0'  # Weekly scan
 
