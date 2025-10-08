@@ -55,8 +55,7 @@ extends:
           inputs:
             command: restore
             restoreSolution: '$(Build.SourcesDirectory)/sqlnexus.sln'
-            feedsToUse: config
-            nugetConfigPath: '$(Build.SourcesDirectory)/nuget.config'
+            feedsToUse: select
 
         # Build the solution
         - task: VSBuild@1
