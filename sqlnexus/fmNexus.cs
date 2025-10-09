@@ -804,7 +804,11 @@ namespace sqlnexus
 
         private void tvReports_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            
+            if ((e == null) || (e.Node == null) || (e.Node.Text == null))
+            {
+                return;
+            }
+
             if (!CanRunReport(e.Node.Text + ".rdl"))
             {
             //    this.LogMessage("The database doesn't have necessary data to run this report", MessageOptions.All);
@@ -813,38 +817,9 @@ namespace sqlnexus
             SelectLoadReport(e.Node.Text, true, null);
         }
         private bool CanRunReport(string ReportName)
-        { 
-            String FullReportName;
-            String FullReportPath;
-            String FullXmlDoc;
-            ReportName = Path.GetFileName(ReportName);
-            if (File.Exists(Application.StartupPath + @"\Reports\" + ReportName))
-            {
-                FullReportName = Application.StartupPath + @"\Reports\" + ReportName;
-                FullReportPath = Application.StartupPath + @"\Reports\";
-
-            }
-            else if (File.Exists(Globals.AppDataPath + @"\Reports\" + ReportName))
-            {
-                FullReportPath = Globals.AppDataPath + @"\Reports\";
-                FullReportName = Globals.AppDataPath + @"\Reports\" + ReportName;
-            }
-            else
-                return true; //assuming you don't want to validate
-            FullXmlDoc = FullReportName + ".xml";
-            if (!File.Exists(FullXmlDoc))
-                return true; //assuming you don't want to validate
-            XmlDocument doc = new XmlDocument();
-            doc.Load(FullXmlDoc);
-            XmlNode node = doc.SelectSingleNode("report/validate");
-            String scriptName = node.Attributes["script"].Value.ToString();
-            StreamReader sr = File.OpenText(FullReportPath + scriptName);
-            CSql mySql = new CSql(Globals.credentialMgr.ConnectionString);
-            mySql.ExecuteSqlScript (            sr.ReadToEnd());
-            
-            return mySql.IsSuccess;
-            
-
+        {
+            //we can add some logic in the future. for now removing older and unused code
+            return true;
         }
         private void tvReports_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
