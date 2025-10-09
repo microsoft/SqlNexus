@@ -538,6 +538,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="ReportFileManager.cs" />
+    <Compile Include="ScriptIntegrity.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Spinner.cs">
       <SubType>Component</SubType>
@@ -650,9 +651,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="TraceAnalysis.sql">
+    <None Include="TraceAnalysis.sql.retired">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    </None>
     <None Include="PreBuild.cmd" />
     <None Include="Resources\pinkbutton.gif" />
     <None Include="Resources\RecordHS.png" />
@@ -1513,7 +1514,9 @@
   </Target>
   -->
   <PropertyGroup>
-    <PreBuildEvent>"$(ProjectDir)PreBuild.cmd" "$(ProjectDir)" "$(TargetDir)" &gt; "$(ProjectDir)PreBuild.log" 2&gt;&amp;1</PreBuildEvent>
+    <PreBuildEvent>powershell -ExecutionPolicy Bypass -File "$(ProjectDir)GenerateSqlHashes.ps1"
+"$(ProjectDir)PreBuild.cmd" "$(ProjectDir)" "$(TargetDir)" &gt; "$(ProjectDir)PreBuild.log" 2&gt;&amp;1
+</PreBuildEvent>
     <PostBuildEvent>"$(ProjectDir)PostBuild.cmd"  "$(SolutionName)"  "$(SolutionDir)\Dependencies"  "$(SolutionDir)\RowsetImportEngine\bin\$(ConfigurationName)"  "$(TargetDir)"  &gt; "$(ProjectDir)PostBuild.log" 2&gt;&amp;1</PostBuildEvent>
   </PropertyGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
