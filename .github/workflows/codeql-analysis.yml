@@ -1,0 +1,47 @@
+name: "CodeQL Analysis"
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+  schedule:
+    - cron: '0 0 * * 0'  # Weekly scan
+
+jobs:
+  analyze:
+    name: Analyze
+    runs-on: windows-latest
+
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [csharp]
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v3
+      with:
+        languages: ${{ matrix.language }}
+        config-file: .github/codeql-config.yml
+
+    - name: NuGet packages
+      run: |
+        nuget restore sqlnexus.sln
+        
+    - name: Build .NET Framework solution
+      shell: pwsh
+      run: |
+        $msbuild = & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -latest -products * -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe
+        & $msbuild sqlnexus.sln /p:Configuration=Release        
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v3

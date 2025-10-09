@@ -244,6 +244,10 @@
     <None Include="SqlNexus.snk" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BulkLoadEx\BulkLoadEx.csproj">
+      <Project>{f9069c48-39a6-4fb9-b4b8-d8d0034709a3}</Project>
+      <Name>BulkLoadEx</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NexusInterfaces\NexusInterfaces.csproj">
       <Project>{2217e9ca-442e-46c5-ab6c-7a46ae41a22c}</Project>
       <Name>NexusInterfaces</Name>
@@ -251,6 +255,14 @@
     <ProjectReference Include="..\PerfmonImporter\PerfmonImporter.csproj">
       <Project>{0EFB7F6E-11F8-48C4-B4F4-EC526952CA38}</Project>
       <Name>PerfmonImporter</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ReadTraceNexusImporter\ReadTraceNexusImporter.csproj">
+      <Project>{06414177-d179-413b-bc5a-5709e79d6eb2}</Project>
+      <Name>ReadTraceNexusImporter</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RowsetImportEngine\RowsetImportEngine.csproj">
+      <Project>{8db02d0c-68f3-4762-9bc9-aa3df2b91f4b}</Project>
+      <Name>RowsetImportEngine</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
