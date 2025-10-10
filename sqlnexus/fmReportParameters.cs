@@ -159,7 +159,8 @@ namespace sqlnexus
                         
                         String DisplayMember = (labelFieldNode==null ? vfnode.InnerText.ToString() : labelFieldNode.InnerText.ToString());
                         String ValueMember = vfnode.InnerText.ToString();
-                        
+                        dt.DefaultView.Sort = dt.Columns[ValueMember].ColumnName;
+
                         ((ComboBox)ctl).DataSource = dt;
                         ((ComboBox)ctl).DisplayMember = dt.Columns[DisplayMember].ColumnName;
                         ((ComboBox)ctl).ValueMember = dt.Columns[ValueMember].ColumnName;
