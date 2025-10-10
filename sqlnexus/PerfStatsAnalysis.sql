@@ -5290,7 +5290,7 @@ IF (
        AND (OBJECT_ID('tbl_AnalysisSummary') IS NOT NULL)
    )
 BEGIN
-    SELECT *
+    SELECT DISTINCT name,value_in_use
     INTO #sp_configure_alerts
     FROM dbo.tbl_Sys_Configurations conf
     WHERE (
@@ -7124,7 +7124,7 @@ BEGIN
     BEGIN
         IF (
            (
-               SELECT [value_in_use]
+               SELECT TOP 1 [value_in_use]
                FROM [dbo].[tbl_Sys_Configurations]
                WHERE name = 'common criteria compliance enabled'
            ) > 0

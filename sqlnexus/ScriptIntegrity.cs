@@ -10,7 +10,7 @@ namespace sqlnexus
         // Store expected hashes for each allowed script
 
         private static readonly Dictionary<string, string> ScriptHashes = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) {
-          { "PerfStatsAnalysis.sql", "D513C773301C9443834A1817852449857FFA6F31A8EB57B5C2B6F10483B4B636" },
+          { "PerfStatsAnalysis.sql", "37111E6F2052A2A7B15E26329475738B4E543FE66AFB7BA426639C062D9E81A1" },
           { "SQLNexus_PostProcessing.sql", "D6B0081152C262BFF6CBD0F04FC01B990E619DDD10FEDB8470438D0514E815FA" },
           { "SQLNexus_PreProcessing.sql", "81465871D11C26E93329C5F60CBACED1311E97205B29CD8E5526273018168FF6" },
           { "PostBuild.cmd", "741ABE8E8750EE4F010268B29C08B645EAB3EAE4E805D46CD5CA100926E00A48" },
