@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 
+
 namespace RowsetImportEngine.Helpers
 {
     public static class ConvertHelper
@@ -16,7 +17,8 @@ namespace RowsetImportEngine.Helpers
 
                 if (converter != null && converter.IsValid(columndata))
                 {
-                    data = (T)converter.ConvertFrom(columndata);
+                    try { data = (T)converter.ConvertFrom(columndata); }
+                    catch { data = (T)converter.ConvertFromInvariantString(columndata.ToString()); }// try invariant if direct fails ,happens on decimals on non-US locales                
                 }
                 else if (converter != null && columndata != null)
                 {
@@ -24,17 +26,16 @@ namespace RowsetImportEngine.Helpers
                     {
                         data = (T)converter.ConvertFrom(columndata.ToString());
                     }
-                    
                 }
-
                 return data;
             }
             catch
             {
                 // Some unknown exception.
-                // Set to null otherwise. 
+                // Set to null otherwise.                
                 data = null;
                 return null;
+
             }
         }
     }
