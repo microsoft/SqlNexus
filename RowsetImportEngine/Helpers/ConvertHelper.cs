@@ -18,7 +18,12 @@ namespace RowsetImportEngine.Helpers
                 if (converter != null && converter.IsValid(columndata))
                 {
                     try { data = (T)converter.ConvertFrom(columndata); }
-                    catch { data = (T)converter.ConvertFromInvariantString(columndata.ToString()); }// try invariant if direct fails ,happens on decimals on non-US locales                
+                    catch {
+                        if (columndata != null)
+                            data = (T)converter.ConvertFromInvariantString(columndata.ToString());
+                        else
+                            data = null;
+                    }// try invariant if direct fails ,happens on decimals on non-US locales                
                 }
                 else if (converter != null && columndata != null)
                 {
