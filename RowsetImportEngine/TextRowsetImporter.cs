@@ -487,41 +487,65 @@ namespace RowsetImportEngine
 			return;
 		}
 
-		private void DropObject (string ObjectName, string ObjectType)
+        private static readonly HashSet<string> AllowedObjectTypes = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
         {
-            SqlConnection conn = new SqlConnection(this.connStr);
-            try
+            "TABLE", "PROCEDURE", "FUNCTION", "VIEW"
+        };
+
+        private bool IsSafeSqlIdentifier(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name) || name.Length > 128)
+                return false;
+            // Disallow closing bracket, semicolon, double dash, or control chars
+            if (name.Contains("]") || name.Contains(";") || name.Contains("--"))
+                return false;
+            foreach (char c in name)
             {
-                // Create the DROP TABLE command. 
-                SqlCommand cmd = new SqlCommand();
-                string SqlStmt = String.Format("IF OBJECT_ID ('{1}') IS NOT NULL DROP {0} [{1}]", ObjectType, ObjectName);
-                // Use the SqlCommand to run the CREATE TABLE. 
-
-
-                cmd.Connection = conn;
-                conn.Open();
-                cmd.CommandText = SqlStmt;
-                cmd.ExecuteNonQuery();
-
+                if (char.IsControl(c))
+                    return false;
             }
-            catch (Exception e)
+            return true;
+        }
+
+        private void DropObject(string ObjectName, string ObjectType)
+        {
+            if (!AllowedObjectTypes.Contains(ObjectType))
             {
-                ErrorDialog ed = new ErrorDialog(e, true, this.logger);
-
-                ed.Handle();
+                logger.LogMessage($"DropObject: Invalid object type '{ObjectType}'", MessageOptions.Silent);
+                throw new ArgumentException("Invalid object type.");
             }
-            finally
+            if (!IsSafeSqlIdentifier(ObjectName))
             {
-                conn.Close();
+                logger.LogMessage($"DropObject: Unsafe object name '{ObjectName}'", MessageOptions.Silent);
+                throw new ArgumentException("Unsafe object name.");
             }
-		}
+
+            using (SqlConnection conn = new SqlConnection(this.connStr))
+            {
+                try
+                {
+                    // Bracket-quote the object name
+                    string SqlStmt = $"IF OBJECT_ID(N'{ObjectName}', N'{ObjectType}') IS NOT NULL DROP {ObjectType} [{ObjectName}]";
+                    using (SqlCommand cmd = new SqlCommand(SqlStmt, conn))
+                    {
+                        conn.Open();
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                catch (Exception e)
+                {
+                    ErrorDialog ed = new ErrorDialog(e, true, this.logger);
+                    ed.Handle();
+                }
+            }
+        }
 
 
-		/// <summary>
+        /// <summary>
         /// Read through each line of the input file, recognize any rowsets in the file, parse and insert the 
         /// rows from these rowsets. 
-		/// </summary>
-		private void ProcessFile () 
+        /// </summary>
+        private void ProcessFile () 
 		{
 			bool	InRowset = false;
 			string	line = "";			// current line
