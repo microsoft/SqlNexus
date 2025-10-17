@@ -352,22 +352,39 @@ namespace RowsetImportEngine
 		/// <summary>
         /// Based on column metadata in the current rowset, format and execute CREATE TABLE command. 
 		/// </summary>
-		private void CreateTable ()
+		private void CreateTable()
 		{
 			string SqlStmt = string.Empty;
 			SqlCommand cmd;
 			int len;
             SqlConnection conn = new SqlConnection(this.connStr);
+
+            // Validate table name
+            if (!IsSafeSqlIdentifier(CurrentRowset.Name))
+            {
+                logger.LogMessage($"CreateTable: Unsafe table name '{CurrentRowset.Name}'", MessageOptions.Silent);
+                throw new ArgumentException("Unsafe table name.");
+            }
+
             try
             {
                 // Create the CREATE TABLE command. 
                 cmd = new SqlCommand();
-                SqlStmt = "IF OBJECT_ID ('" + CurrentRowset.Name + "') IS NULL CREATE TABLE [" + CurrentRowset.Name + "] (";
+                SqlStmt = $"IF OBJECT_ID(N'{CurrentRowset.Name}') IS NULL CREATE TABLE [{CurrentRowset.Name}] (";
+
                 foreach (RowsetImportEngine.Column c in CurrentRowset.Columns)
                 {
                     len = c.SqlColumnLength;
                     string ColumnName = c.Name.Trim();
-                    SqlStmt += "[" + ColumnName + "] " + c.DataType.ToString();
+
+                    // Validate column name
+                    if (!IsSafeSqlIdentifier(ColumnName))
+                    {
+                        logger.LogMessage($"CreateTable: Unsafe column name '{ColumnName}'", MessageOptions.Silent);
+                        throw new ArgumentException("Unsafe column name.");
+                    }
+
+                    SqlStmt += $"[{ColumnName}] {c.DataType}";
 
                     // Add column length to those datatypes that need it
                     switch (c.DataType)
@@ -381,32 +398,27 @@ namespace RowsetImportEngine
                         case SqlDbType.VarChar:
                         case SqlDbType.VarBinary:
                             if (len > 0 && len <= 8000)
-                                SqlStmt += "(" + len + ")";
+                                SqlStmt += $"({len})";
                             else if (len == Column.SQL_MAX_LENGTH || len > 8000)
                                 SqlStmt += "(max)";
                             else
-                                SqlStmt += "(" + DEFAULT_NONTAB_COLUMN_LEN + ")";
+                                SqlStmt += $"({DEFAULT_NONTAB_COLUMN_LEN})";
                             break;
                         case SqlDbType.NVarChar:
                             if (len > 0 && len <= 4000)
-                                SqlStmt += "(" + len + ")";
+                                SqlStmt += $"({len})";
                             else if (len == Column.SQL_MAX_LENGTH || len > 4000)
                                 SqlStmt += "(max)";
                             else
-                                SqlStmt += "(" + DEFAULT_NONTAB_COLUMN_LEN + ")";
+                                SqlStmt += $"({DEFAULT_NONTAB_COLUMN_LEN})";
                             break;
                     }
                     SqlStmt += " NULL, ";	// Make all columns NULLable
                 }
                 // Remove the last comma.
                 SqlStmt = SqlStmt.TrimEnd(',', ' ') + ") \n";
-                /*
-                // No clustered index -- slows things down.
-                SqlStmt += "CREATE INDEX cidx ON [" + CurrentRowset.Name + "] "
-                    + "([" + (CurrentRowset.Columns[0] as Column).Name + "])";
-                */
+                
                 // Use the SqlCommand to run the CREATE TABLE. 
-
 
                 conn.Open();
                 cmd.Connection = conn;
@@ -496,14 +508,10 @@ namespace RowsetImportEngine
         {
             if (string.IsNullOrWhiteSpace(name) || name.Length > 128)
                 return false;
-            // Disallow closing bracket, semicolon, double dash, or control chars
-            if (name.Contains("]") || name.Contains(";") || name.Contains("--"))
+            // Must start with a letter or underscore, followed by letters, numbers, spaces, underscores, hyphens, %, #, or $
+            // ^[A-Za-z_][A-Za-z0-9 _\-#\%\$]*$
+            if (!Regex.IsMatch(name, @"^[A-Za-z_][A-Za-z0-9 _\-#\%\$]*$"))
                 return false;
-            foreach (char c in name)
-            {
-                if (char.IsControl(c))
-                    return false;
-            }
             return true;
         }
 
