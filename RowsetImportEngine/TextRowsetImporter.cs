@@ -540,6 +540,7 @@ namespace RowsetImportEngine
                         conn.Open();
                         cmd.ExecuteNonQuery();
                     }
+                }
                 catch (SqlException e)
                 {
                     ErrorDialog ed = new ErrorDialog(e, true, this.logger);
@@ -550,7 +551,7 @@ namespace RowsetImportEngine
                     ErrorDialog ed = new ErrorDialog(e, true, this.logger);
                     ed.Handle();
                 }
-                }
+
                 catch (Exception e)
                 {
                     ErrorDialog ed = new ErrorDialog(e, true, this.logger);
