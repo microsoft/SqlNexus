@@ -370,7 +370,8 @@ namespace RowsetImportEngine
             {
                 // Create the CREATE TABLE command. 
                 cmd = new SqlCommand();
-                SqlStmt = $"IF OBJECT_ID(N'{CurrentRowset.Name}') IS NULL CREATE TABLE [{CurrentRowset.Name}] (";
+                var sb = new StringBuilder();
+                sb.Append($"IF OBJECT_ID(N'{CurrentRowset.Name}') IS NULL CREATE TABLE [{CurrentRowset.Name}] (");
 
                 foreach (RowsetImportEngine.Column c in CurrentRowset.Columns)
                 {
@@ -384,39 +385,39 @@ namespace RowsetImportEngine
                         throw new ArgumentException("Unsafe column name.");
                     }
 
-                    SqlStmt += $"[{ColumnName}] {c.DataType}";
+                    sb.Append($"[{ColumnName}] {c.DataType}");
 
                     // Add column length to those datatypes that need it
                     switch (c.DataType)
                     {
                         case SqlDbType.Decimal:
-                            SqlStmt += "(38, 10)";	// we can't know the necessary prec/scale in advance -- use (38,10) as a compromise
+                            sb.Append("(38, 10)");	// we can't know the necessary prec/scale in advance -- use (38,10) as a compromise
                             break;
                         case SqlDbType.Float:
-                            SqlStmt += "(53)";		// always use max float
+                            sb.Append("(53)");		// always use max float
                             break;
                         case SqlDbType.VarChar:
                         case SqlDbType.VarBinary:
                             if (len > 0 && len <= 8000)
-                                SqlStmt += $"({len})";
+                                sb.Append($"({len})");
                             else if (len == Column.SQL_MAX_LENGTH || len > 8000)
-                                SqlStmt += "(max)";
+                                sb.Append("(max)");
                             else
-                                SqlStmt += $"({DEFAULT_NONTAB_COLUMN_LEN})";
+                                sb.Append($"({DEFAULT_NONTAB_COLUMN_LEN})");
                             break;
                         case SqlDbType.NVarChar:
                             if (len > 0 && len <= 4000)
-                                SqlStmt += $"({len})";
+                                sb.Append($"({len})");
                             else if (len == Column.SQL_MAX_LENGTH || len > 4000)
-                                SqlStmt += "(max)";
+                                sb.Append("(max)");
                             else
-                                SqlStmt += $"({DEFAULT_NONTAB_COLUMN_LEN})";
+                                sb.Append($"({DEFAULT_NONTAB_COLUMN_LEN})");
                             break;
                     }
-                    SqlStmt += " NULL, ";	// Make all columns NULLable
+                    sb.Append(" NULL, ");	// Make all columns NULLable
                 }
                 // Remove the last comma.
-                SqlStmt = SqlStmt.TrimEnd(',', ' ') + ") \n";
+                SqlStmt = sb.ToString().TrimEnd(',', ' ') + ") \n";
                 
                 // Use the SqlCommand to run the CREATE TABLE. 
 
