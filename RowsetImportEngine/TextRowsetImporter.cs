@@ -555,7 +555,6 @@ namespace RowsetImportEngine
                 catch (Exception e)
                 {
                     ErrorDialog ed = new ErrorDialog(e, true, this.logger);
-                    throw; // Rethrow unexpected exceptions to avoid suppressing critical errors
                     ed.Handle();
                 }
             }
@@ -566,7 +565,7 @@ namespace RowsetImportEngine
         /// Read through each line of the input file, recognize any rowsets in the file, parse and insert the 
         /// rows from these rowsets. 
         /// </summary>
-        private void ProcessFile () 
+        private void ProcessFile()
 		{
 			bool	InRowset = false;
 			string	line = "";			// current line
