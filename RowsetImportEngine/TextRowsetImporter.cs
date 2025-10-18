@@ -540,10 +540,21 @@ namespace RowsetImportEngine
                         conn.Open();
                         cmd.ExecuteNonQuery();
                     }
+                catch (SqlException e)
+                {
+                    ErrorDialog ed = new ErrorDialog(e, true, this.logger);
+                    ed.Handle();
+                }
+                catch (InvalidOperationException e)
+                {
+                    ErrorDialog ed = new ErrorDialog(e, true, this.logger);
+                    ed.Handle();
+                }
                 }
                 catch (Exception e)
                 {
                     ErrorDialog ed = new ErrorDialog(e, true, this.logger);
+                    throw; // Rethrow unexpected exceptions to avoid suppressing critical errors
                     ed.Handle();
                 }
             }
