@@ -501,7 +501,10 @@ namespace ReadTrace
                 {
                     obscuredLogin = this.sqlLogin[0] + new string('*', this.sqlLogin.Length - 2) + this.sqlLogin[this.sqlLogin.Length - 1];
                 }
-                argsOut = argsOut.Replace("\"" + this.sqlPassword + "\"", "\"******************\"");
+                if (!string.IsNullOrEmpty(this.sqlPassword))
+                {
+                    argsOut = argsOut.Replace("\"" + this.sqlPassword + "\"", "\"******************\"");
+                }
                 argsOut = argsOut.Replace("\"" + this.sqlLogin + "\"", "\"" + obscuredLogin + "\"");
             }
 
