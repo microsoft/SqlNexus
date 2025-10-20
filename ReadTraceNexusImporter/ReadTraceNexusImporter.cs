@@ -488,24 +488,26 @@ namespace ReadTrace
             if (false == this.useWindowsAuth)
             {
                 // Obscure sqlLogin: show first and last character, rest as '*'
-                string obscuredLogin;
-                if (string.IsNullOrEmpty(this.sqlLogin))
-                {
-                    obscuredLogin = ""; // Use empty string if null or empty
-                }
-                else if (this.sqlLogin.Length < 3)
-                {
-                    obscuredLogin = this.sqlLogin; // Show as-is if too short
-                }
-                else
-                {
-                    obscuredLogin = this.sqlLogin[0] + new string('*', this.sqlLogin.Length - 2) + this.sqlLogin[this.sqlLogin.Length - 1];
-                }
+                string obscuredLogin = (string.IsNullOrEmpty(this.sqlLogin) || this.sqlLogin.Length < 3)
+                   ? this.sqlLogin // Show as-is if too short
+                   : this.sqlLogin[0] + new string('*', this.sqlLogin.Length - 2) + this.sqlLogin[this.sqlLogin.Length - 1];
+
+
+                argsOut = System.Text.RegularExpressions.Regex.Replace(
+                    args,
+                    @"-U""[^""]*""",
+                    $@"-U""{obscuredLogin}""");
+
                 if (!string.IsNullOrEmpty(this.sqlPassword))
                 {
-                    argsOut = argsOut.Replace("\"" + this.sqlPassword + "\"", "\"******************\"");
+                    // Obscure password completely
+                    string obscuredPwd = "******************";
+
+                    argsOut = System.Text.RegularExpressions.Regex.Replace(
+                    argsOut,
+                    @"-P""[^""]*""",
+                    $@"-P""{obscuredPwd}""");
                 }
-                argsOut = argsOut.Replace("\"" + this.sqlLogin + "\"", "\"" + obscuredLogin + "\"");
             }
 
 
