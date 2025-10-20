@@ -483,15 +483,25 @@ namespace ReadTrace
             Util.Logger.LogMessage("ReadTraceNexusImporter: Temp Path: " + Path.GetTempPath());
 
 
-            //Don't log clear text password 
+            //Don't log clear text password and obscure login name
             string argsOut = args;
             if (false == this.useWindowsAuth)
             {
-                argsOut = args.Replace("\"" + this.sqlPassword + "\"", "\"********\"");
+                // Obscure sqlLogin: show first and last character, rest as '*'
+                string obscuredLogin;
+                if (string.IsNullOrEmpty(this.sqlLogin) || this.sqlLogin.Length < 3)
+                {
+                    obscuredLogin = this.sqlLogin; // Show as-is if too short
+                }
+                else
+                {
+                    obscuredLogin = this.sqlLogin[0] + new string('*', this.sqlLogin.Length - 2) + this.sqlLogin[this.sqlLogin.Length - 1];
+                }
+                argsOut = argsOut.Replace("\"" + this.sqlPassword + "\"", "\"******************\"");
+                argsOut = argsOut.Replace("\"" + this.sqlLogin + "\"", "\"" + obscuredLogin + "\"");
             }
-#if DEBUG
-            Util.Logger.LogMessage("ReadTraceNexusImporter (DEBUG ONLY BEFORE): Cmd Line: " + this.readTracePath + " " + argsOut);
-#endif
+
+
             Util.Logger.LogMessage("ReadTraceNexusImporter: Cmd Line: " + this.readTracePath + " " + argsOut);
 
             // configure the arguments and window properties
