@@ -489,7 +489,11 @@ namespace ReadTrace
             {
                 // Obscure sqlLogin: show first and last character, rest as '*'
                 string obscuredLogin;
-                if (string.IsNullOrEmpty(this.sqlLogin) || this.sqlLogin.Length < 3)
+                if (string.IsNullOrEmpty(this.sqlLogin))
+                {
+                    obscuredLogin = ""; // Use empty string if null or empty
+                }
+                else if (this.sqlLogin.Length < 3)
                 {
                     obscuredLogin = this.sqlLogin; // Show as-is if too short
                 }
