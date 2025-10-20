@@ -482,9 +482,6 @@ namespace ReadTrace
             Util.Logger.LogMessage("ReadTraceNexusImporter: Loading " + firstTrcFile);
             Util.Logger.LogMessage("ReadTraceNexusImporter: Temp Path: " + Path.GetTempPath());
 
-#if DEBUG
-            Util.Logger.LogMessage("ReadTraceNexusImporter (DEBUG ONLY BEFORE): Cmd Line: " + this.readTracePath + " " + args);
-#endif
 
             //Don't log clear text password 
             string argsOut = args;
@@ -492,7 +489,9 @@ namespace ReadTrace
             {
                 argsOut = args.Replace("\"" + this.sqlPassword + "\"", "\"********\"");
             }
-
+#if DEBUG
+            Util.Logger.LogMessage("ReadTraceNexusImporter (DEBUG ONLY BEFORE): Cmd Line: " + this.readTracePath + " " + argsOut);
+#endif
             Util.Logger.LogMessage("ReadTraceNexusImporter: Cmd Line: " + this.readTracePath + " " + argsOut);
 
             // configure the arguments and window properties
