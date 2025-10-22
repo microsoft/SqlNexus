@@ -4791,5 +4791,22 @@
 		  <Column name="HelpURL" type="RowsetImportEngine.VarCharColumn" length="200" />
 		</KnownColumns>
 	</Rowset>
+
+	<Rowset name="tbl_disk_volume_information" enabled="true" identifier="-- Volume_Information --" type="RowsetImportEngine.TextRowset">
+		<KnownColumns>
+			<Column name="Volume_Name" type="RowsetImportEngine.NVarCharColumn" length="50" />
+			<Column name="Volume_Label" type="RowsetImportEngine.NVarCharColumn" length="16" />
+			<Column name="Device_ID" type="RowsetImportEngine.NVarCharColumn" length="50"/>
+			<Column name="File_System" type="RowsetImportEngine.VarCharColumn" length="12" />
+			<Column name="Block_Size" type="RowsetImportEngine.IntColumn"/>
+			<Column name="Boot_Volume" type="RowsetImportEngine.VarCharColumn" length="12" />
+			<Column name="System_Volume" type="RowsetImportEngine.VarCharColumn" length="14" />
+			<Column name="Disk_Quotas" type="RowsetImportEngine.VarCharColumn" length="12" />
+			<Column name="Compression" type="RowsetImportEngine.VarCharColumn" length="12" />
+			<Column name="Capacity_GB" type="RowsetImportEngine.DecimalColumn" />
+			<Column name="FreeSpace_GB" type="RowsetImportEngine.DecimalColumn" />
+		</KnownColumns>
+	</Rowset>
+	  
   </KnownRowsets>
 </TextImport>
