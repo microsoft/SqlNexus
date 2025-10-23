@@ -482,16 +482,34 @@ namespace ReadTrace
             Util.Logger.LogMessage("ReadTraceNexusImporter: Loading " + firstTrcFile);
             Util.Logger.LogMessage("ReadTraceNexusImporter: Temp Path: " + Path.GetTempPath());
 
-#if DEBUG
-            Util.Logger.LogMessage("ReadTraceNexusImporter (DEBUG ONLY BEFORE): Cmd Line: " + this.readTracePath + " " + args);
-#endif
 
-            //Don't log clear text password 
+            //Don't log clear text password and obscure login name
             string argsOut = args;
             if (false == this.useWindowsAuth)
             {
-                argsOut = args.Replace("\"" + this.sqlPassword + "\"", "\"********\"");
+                // Obscure sqlLogin: show first and last character, rest as '*'
+                string obscuredLogin = (string.IsNullOrEmpty(this.sqlLogin) || this.sqlLogin.Length < 3)
+                   ? this.sqlLogin // Show as-is if too short
+                   : this.sqlLogin[0] + new string('*', this.sqlLogin.Length - 2) + this.sqlLogin[this.sqlLogin.Length - 1];
+
+
+                argsOut = System.Text.RegularExpressions.Regex.Replace(
+                    args,
+                    @"-U""[^""]*""",
+                    $@"-U""{obscuredLogin}""");
+
+                if (!string.IsNullOrEmpty(this.sqlPassword))
+                {
+                    // Obscure password completely
+                    string obscuredPwd = "******************";
+
+                    argsOut = System.Text.RegularExpressions.Regex.Replace(
+                    argsOut,
+                    @"-P""[^""]*""",
+                    $@"-P""{obscuredPwd}""");
+                }
             }
+
 
             Util.Logger.LogMessage("ReadTraceNexusImporter: Cmd Line: " + this.readTracePath + " " + argsOut);
 
