@@ -3898,7 +3898,7 @@
         <Column name="subject" type="RowsetImportEngine.NVarCharColumn" length="512"/>
         <Column name="expiry_date" type="RowsetImportEngine.DateTimeColumn"/>
         <Column name="start_date" type="RowsetImportEngine.DateTimeColumn"/>
-        <Column name="thumbprint" type="RowsetImportEngine.VarBinaryColumn" length="64"/>
+        <Column name="thumbprint" type="RowsetImportEngine.VarCharColumn" length="64"/>
         <Column name="attested_by" type="RowsetImportEngine.NVarCharColumn" length="256"/>
         <Column name="pvt_key_last_backup_date" type="RowsetImportEngine.DateTimeColumn"/>
         <Column name="key_length" type="RowsetImportEngine.IntColumn"/>

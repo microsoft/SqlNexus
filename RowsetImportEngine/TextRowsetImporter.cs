@@ -352,61 +352,74 @@ namespace RowsetImportEngine
 		/// <summary>
         /// Based on column metadata in the current rowset, format and execute CREATE TABLE command. 
 		/// </summary>
-		private void CreateTable ()
+		private void CreateTable()
 		{
 			string SqlStmt = string.Empty;
 			SqlCommand cmd;
 			int len;
             SqlConnection conn = new SqlConnection(this.connStr);
+
+            // Validate table name
+            if (!IsSafeSqlIdentifier(CurrentRowset.Name))
+            {
+                logger.LogMessage($"CreateTable: Unsafe table name '{CurrentRowset.Name}'", MessageOptions.Silent);
+                throw new ArgumentException("Unsafe table name.");
+            }
+
             try
             {
                 // Create the CREATE TABLE command. 
                 cmd = new SqlCommand();
-                SqlStmt = "IF OBJECT_ID ('" + CurrentRowset.Name + "') IS NULL CREATE TABLE [" + CurrentRowset.Name + "] (";
+                var sb = new StringBuilder();
+                sb.Append($"IF OBJECT_ID(N'{CurrentRowset.Name}') IS NULL CREATE TABLE [{CurrentRowset.Name}] (");
+
                 foreach (RowsetImportEngine.Column c in CurrentRowset.Columns)
                 {
                     len = c.SqlColumnLength;
                     string ColumnName = c.Name.Trim();
-                    SqlStmt += "[" + ColumnName + "] " + c.DataType.ToString();
+
+                    // Validate column name
+                    if (!IsSafeSqlIdentifier(ColumnName))
+                    {
+                        logger.LogMessage($"CreateTable: Unsafe column name '{ColumnName}'", MessageOptions.Silent);
+                        throw new ArgumentException("Unsafe column name.");
+                    }
+
+                    sb.Append($"[{ColumnName}] {c.DataType}");
 
                     // Add column length to those datatypes that need it
                     switch (c.DataType)
                     {
                         case SqlDbType.Decimal:
-                            SqlStmt += "(38, 10)";	// we can't know the necessary prec/scale in advance -- use (38,10) as a compromise
+                            sb.Append("(38, 10)");	// we can't know the necessary prec/scale in advance -- use (38,10) as a compromise
                             break;
                         case SqlDbType.Float:
-                            SqlStmt += "(53)";		// always use max float
+                            sb.Append("(53)");		// always use max float
                             break;
                         case SqlDbType.VarChar:
                         case SqlDbType.VarBinary:
                             if (len > 0 && len <= 8000)
-                                SqlStmt += "(" + len + ")";
+                                sb.Append($"({len})");
                             else if (len == Column.SQL_MAX_LENGTH || len > 8000)
-                                SqlStmt += "(max)";
+                                sb.Append("(max)");
                             else
-                                SqlStmt += "(" + DEFAULT_NONTAB_COLUMN_LEN + ")";
+                                sb.Append($"({DEFAULT_NONTAB_COLUMN_LEN})");
                             break;
                         case SqlDbType.NVarChar:
                             if (len > 0 && len <= 4000)
-                                SqlStmt += "(" + len + ")";
+                                sb.Append($"({len})");
                             else if (len == Column.SQL_MAX_LENGTH || len > 4000)
-                                SqlStmt += "(max)";
+                                sb.Append("(max)");
                             else
-                                SqlStmt += "(" + DEFAULT_NONTAB_COLUMN_LEN + ")";
+                                sb.Append($"({DEFAULT_NONTAB_COLUMN_LEN})");
                             break;
                     }
-                    SqlStmt += " NULL, ";	// Make all columns NULLable
+                    sb.Append(" NULL, ");	// Make all columns NULLable
                 }
                 // Remove the last comma.
-                SqlStmt = SqlStmt.TrimEnd(',', ' ') + ") \n";
-                /*
-                // No clustered index -- slows things down.
-                SqlStmt += "CREATE INDEX cidx ON [" + CurrentRowset.Name + "] "
-                    + "([" + (CurrentRowset.Columns[0] as Column).Name + "])";
-                */
+                SqlStmt = sb.ToString().TrimEnd(',', ' ') + ") \n";
+                
                 // Use the SqlCommand to run the CREATE TABLE. 
-
 
                 conn.Open();
                 cmd.Connection = conn;
@@ -487,41 +500,72 @@ namespace RowsetImportEngine
 			return;
 		}
 
-		private void DropObject (string ObjectName, string ObjectType)
+        private static readonly HashSet<string> AllowedObjectTypes = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
         {
-            SqlConnection conn = new SqlConnection(this.connStr);
-            try
+            "TABLE", "PROCEDURE", "FUNCTION", "VIEW"
+        };
+
+        private bool IsSafeSqlIdentifier(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name) || name.Length > 128)
+                return false;
+            // Must start with a letter or underscore, followed by letters, numbers, spaces, underscores, hyphens, %, #, or $
+            // ^[A-Za-z_][A-Za-z0-9 _\-#\%\$]*$
+            if (!Regex.IsMatch(name, @"^[A-Za-z_][A-Za-z0-9 _\-#\%\$]*$"))
+                return false;
+            return true;
+        }
+
+        private void DropObject(string ObjectName, string ObjectType)
+        {
+            if (!AllowedObjectTypes.Contains(ObjectType))
             {
-                // Create the DROP TABLE command. 
-                SqlCommand cmd = new SqlCommand();
-                string SqlStmt = String.Format("IF OBJECT_ID ('{1}') IS NOT NULL DROP {0} [{1}]", ObjectType, ObjectName);
-                // Use the SqlCommand to run the CREATE TABLE. 
-
-
-                cmd.Connection = conn;
-                conn.Open();
-                cmd.CommandText = SqlStmt;
-                cmd.ExecuteNonQuery();
-
+                logger.LogMessage($"DropObject: Invalid object type '{ObjectType}'", MessageOptions.Silent);
+                throw new ArgumentException("Invalid object type.");
             }
-            catch (Exception e)
+            if (!IsSafeSqlIdentifier(ObjectName))
             {
-                ErrorDialog ed = new ErrorDialog(e, true, this.logger);
-
-                ed.Handle();
+                logger.LogMessage($"DropObject: Unsafe object name '{ObjectName}'", MessageOptions.Silent);
+                throw new ArgumentException("Unsafe object name.");
             }
-            finally
+
+            using (SqlConnection conn = new SqlConnection(this.connStr))
             {
-                conn.Close();
+                try
+                {
+                    // Bracket-quote the object name
+                    string SqlStmt = $"IF OBJECT_ID(N'{ObjectName}', N'{ObjectType}') IS NOT NULL DROP {ObjectType} [{ObjectName}]";
+                    using (SqlCommand cmd = new SqlCommand(SqlStmt, conn))
+                    {
+                        conn.Open();
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                catch (SqlException e)
+                {
+                    ErrorDialog ed = new ErrorDialog(e, true, this.logger);
+                    ed.Handle();
+                }
+                catch (InvalidOperationException e)
+                {
+                    ErrorDialog ed = new ErrorDialog(e, true, this.logger);
+                    ed.Handle();
+                }
+
+                catch (Exception e)
+                {
+                    ErrorDialog ed = new ErrorDialog(e, true, this.logger);
+                    ed.Handle();
+                }
             }
-		}
+        }
 
 
-		/// <summary>
+        /// <summary>
         /// Read through each line of the input file, recognize any rowsets in the file, parse and insert the 
         /// rows from these rowsets. 
-		/// </summary>
-		private void ProcessFile () 
+        /// </summary>
+        private void ProcessFile()
 		{
 			bool	InRowset = false;
 			string	line = "";			// current line

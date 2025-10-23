@@ -1,10 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
-using Microsoft.Data.SqlClient;
+﻿using Microsoft.Data.SqlClient;
 using NexusInterfaces;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Security.AccessControl;
+using System.Text;
+using System.Text.RegularExpressions;
 namespace sqlnexus
 {
     public class RawFileImporter
@@ -27,6 +29,17 @@ namespace sqlnexus
             m_Csql = new CSql(ConnString);
         
             
+        }
+
+        private bool IsSafeSqlIdentifier(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name) || name.Length > 128)
+                return false;
+            // Must start with a letter or underscore, followed by letters, numbers, spaces, underscores, hyphens, %, #, or $
+            // ^[A-Za-z_][A-Za-z0-9 _\-#\%\$]*$
+            if (!Regex.IsMatch(name, @"^[A-Za-z_][A-Za-z0-9 _\-#\%\$]*$"))
+                return false;
+            return true;
         }
 
         public string DoImport()
@@ -64,14 +77,22 @@ namespace sqlnexus
 
         public void CreateTable(string tableName)
         {
-            string tsqlStr = @"if OBJECT_ID ('{0}', 'U') is null
-                                begin
-	                                create table [{0}] (id int identity primary key, FileName nvarchar(max), FileContent nvarchar(max))
-                                end";
-            //string strSql = string.Format("create table [{0}] (id int identity primary key, FileName nvarchar(max), FileContent nvarchar(max))", tableName);
+
+            if (!IsSafeSqlIdentifier(tableName))
+            {
+                Util.Logger.LogMessage($"DropObject: Unsafe object name '{tableName}'", MessageOptions.Silent);
+                throw new ArgumentException("Unsafe object name.");
+            }
+
+
+            string tsqlStr = @"IF OBJECT_ID ('{0}', 'U') IS NULL
+                                BEGIN
+	                                CREATE TABLE [{0}] (id INT IDENTITY PRIMARY KEY, FileName NVARCHAR(MAX), FileContent NVARCHAR(MAX))
+                                END";
+
             string strSql = string.Format(tsqlStr, tableName);
 
-            Util.Logger.LogMessage(string.Format("creating table [{0}]", tableName));
+            Util.Logger.LogMessage(string.Format("Creating table [{0}]", tableName));
             m_Csql.ExecuteSqlScript(strSql);
 
 
