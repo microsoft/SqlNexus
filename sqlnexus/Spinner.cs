@@ -320,7 +320,7 @@ namespace sqlnexus
         /// <returns>PointF object</returns>
         private PointF GetControlCenterPoint(Control _objControl)
         {
-            return new PointF(_objControl.Width / 2, _objControl.Height / 2);
+            return new PointF(_objControl.Width / 2f, _objControl.Height / 2f);
         }
 
         /// <summary>
