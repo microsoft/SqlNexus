@@ -375,7 +375,7 @@ namespace sqlnexus
         private double[] GetSpokesAngles(int _shtNumberSpoke)
         {
             double[] Angles = new double[_shtNumberSpoke];
-            double dblAngle = NUMBER_OF_DEGREES_CIRCLE / _shtNumberSpoke;
+            double dblAngle = (double)NUMBER_OF_DEGREES_CIRCLE / _shtNumberSpoke;
 
             for (int shtCounter = 0; shtCounter < _shtNumberSpoke; shtCounter++)
                 Angles[shtCounter] = (shtCounter == 0 ? dblAngle : Angles[shtCounter - 1] + dblAngle);
