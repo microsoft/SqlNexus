@@ -241,13 +241,15 @@ namespace RowsetImportEngine
         /// col width for non-tabular columns without explicitly specified width
         /// </summary>
 		public const int DEFAULT_NONTAB_COLUMN_LEN = 256;
+        /// <summary>
+        /// SQL Server uses -1 to represent MAX for variable-length types 
+        /// </summary>
+        private const int SQL_MAX_LENGTH = -1;
 
-        
-		
         /// <summary>
         /// Used to read the input file
         /// </summary>
-		private StreamReader sr;
+        private StreamReader sr;
         /// <summary>
         /// Connection to SQL
         /// </summary>
@@ -392,13 +394,13 @@ namespace RowsetImportEngine
                     // Append column definition safely by validation type and adding appropriate length/precision. Make all columns NULLable.
                     sb.Append($"{QUOTENAME(ColumnName)} {GetSafeSqlType(c.DataType, c.SqlColumnLength)} NULL, ");
 
-
-                    // Remove trailing comma and close parenthesis
-                    SqlStmt = sb.ToString().TrimEnd(',', ' ') + ")";
                 }
 
-                // Use the SqlCommand to run the CREATE TABLE. 
 
+                // Remove trailing comma and close parenthesis
+                SqlStmt = sb.ToString().TrimEnd(',', ' ') + ")";
+                
+                // Use the SqlCommand to run the CREATE TABLE. 
                 conn.Open();
                 cmd.Connection = conn;
                 cmd.CommandText = SqlStmt;  // CodeQL [SM03934] multiple levels of object and column name validation performed above
@@ -542,12 +544,13 @@ namespace RowsetImportEngine
 
         private string GetLength(int len, int maxAllowed)
         {
-            if (len > 0 && len <= maxAllowed)
+            if (len == SQL_MAX_LENGTH)
+                return "MAX";
+            else if (len > 0 && len <= maxAllowed)
                 return len.ToString();
             else
-                return "MAX";
+                return DEFAULT_NONTAB_COLUMN_LEN.ToString();
         }
-
 
         private void DropObject(string ObjectName, string ObjectType)
         {
