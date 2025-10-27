@@ -401,7 +401,7 @@ namespace RowsetImportEngine
 
                 conn.Open();
                 cmd.Connection = conn;
-                cmd.CommandText = SqlStmt;
+                cmd.CommandText = SqlStmt;  // CodeQL [SM03934] multiple levels of object and column name validation performed above
                 cmd.ExecuteNonQuery();
                 conn.Close();
 
@@ -572,7 +572,7 @@ namespace RowsetImportEngine
                     using (SqlCommand cmd = new SqlCommand(SqlStmt, conn))
                     {
                         conn.Open();
-                        cmd.ExecuteNonQuery();
+                        cmd.ExecuteNonQuery();  // CodeQL [SM03934] multiple levels of object validation performed prior to this call
                     }
                 }
                 catch (SqlException e)

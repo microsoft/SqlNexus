@@ -100,7 +100,7 @@ namespace NexusInterfaces
 
                         using (SqlCommand cmd = new SqlCommand())
                         {
-                            cmd.CommandText = bat;
+                            cmd.CommandText = bat; // CodeQL [SM03934] we have a ScriptIntegrityChecker.VerifyScript method elsewhere to only allow predefined hashed scripts before use
                             cmd.Connection = conn;
                             cmd.CommandTimeout = 0;
 
