@@ -374,7 +374,7 @@ namespace RowsetImportEngine
 
 
                 // Use QUOTENAME for table name to ensure it's properly escaped and validated
-                sb.Append($"IF OBJECT_ID(N'{CurrentRowset.Name}', 'U') IS NULL CREATE TABLE {QUOTENAME(CurrentRowset.Name)} (");
+                sb.Append($"IF OBJECT_ID(N'{QUOTENAME(CurrentRowset.Name)}', 'U') IS NULL CREATE TABLE {QUOTENAME(CurrentRowset.Name)} (");
 
 
                 foreach (RowsetImportEngine.Column c in CurrentRowset.Columns)
