@@ -698,6 +698,10 @@ namespace sqlnexus
 
         private void DoImport()
         {
+            //AddLabel();
+            bool RunScripts = true;
+            bool Success = false;
+
             if (CheckAndStop())
                 return;
             if (!tlpFiles.Visible)
@@ -849,14 +853,6 @@ namespace sqlnexus
 
             string enumReportsStr = "EnumReports";
             AddFileRow((tlpFiles.RowCount - 1), "Enumerating reports", null, enumReportsStr);
-
-
-            //AddLabel();
-            bool RunScripts = true;
-            bool Success = false;
-
-
-
 
 
             try
@@ -1070,7 +1066,7 @@ namespace sqlnexus
                         Application.DoEvents();
                     }
 
-                    else if (tlpFiles.Controls[i].Name == perfStatsAnalysisStr)
+                    else if ((tlpFiles.Controls[i].Name == perfStatsAnalysisStr) && (RunScripts == true))
                     {
                         int perfAnalysisStartTicks = Environment.TickCount;
 

@@ -72,7 +72,7 @@ namespace NexusInterfaces
                 m_Success = false;
                 m_ErrorMessages.AppendFormat("{0} \r\n", ex.ToString());
                 Util.Logger.LogMessage (m_ErrorMessages.ToString(), MessageOptions.Silent, (m_Success == true? TraceEventType.Information: TraceEventType.Error), dlgTitle);
-                throw ex;
+                throw;
             }
             
             return dt;
@@ -149,7 +149,7 @@ namespace NexusInterfaces
                     {
                         m_Success = false;
                         m_ErrorMessages.AppendFormat("{0} \r\n", ex.ToString());
-                        throw ex;
+                        throw;
                     }
 
 
