@@ -979,7 +979,7 @@ namespace RowsetImportEngine
                     }
                     catch (SqlTypeException ex)
                     {
-                        logger.LogMessage("Flushing rowset failed for " + r.Name + ex.ToString());
+                        logger.LogMessage("Flushing rowset failed for " + r.Name + ex);
 
                     }
                     
