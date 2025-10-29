@@ -48,7 +48,7 @@ namespace sqlnexus
                     return BitConverter.ToString(hash).Replace("-", "");
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return null;
             }

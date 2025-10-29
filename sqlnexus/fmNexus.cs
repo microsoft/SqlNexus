@@ -2982,11 +2982,9 @@ namespace sqlnexus
 
             foreach (MethodInfo m in methods)
             {
-                Object obj = null;
-
                 try
                 {
-                    obj = TryMethodCall(type, m, args[2], newArgs);
+                    object obj = TryMethodCall(type, m, args[2], newArgs);
                 }
                 catch (Exception e)
                 {
