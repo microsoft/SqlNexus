@@ -540,7 +540,6 @@ namespace sqlnexus
                 XmlNode vfnode = node.SelectSingleNode("rds:DefaultValue/rds:DataSetReference/rds:ValueField", nsmgr);
                 System.Diagnostics.Debug.Assert(null != vfnode);
 
-                DataTable dt = new DataTable();
                 using (SqlConnection conn = new SqlConnection(Globals.credentialMgr.ConnectionString))
                 {
                     
