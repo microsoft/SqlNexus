@@ -1204,7 +1204,7 @@ namespace sqlnexus
             foreach (XmlNode n in arrayXmlNodes)
             {
                 XmlNode qparamval = n.SelectSingleNode("rds:Value", nsmgr);
-                string paramname, qpname;
+                string paramname;
                 if ((null != qparamval) && (0 == qparamval.InnerText.IndexOf(PARAM_TOKEN, StringComparison.InvariantCultureIgnoreCase)))
                 {
                     string[] parts = qparamval.InnerText.Substring(PARAM_TOKEN.Length).Split('.');
@@ -1217,7 +1217,7 @@ namespace sqlnexus
                         paramname = paramname.Substring(1); // "Filter3"
                 }
 
-                qpname = n.Attributes["Name"].Value;    // e.g. "@Filter3"
+                string qpname = n.Attributes["Name"].Value;    // e.g. "@Filter3"
 
                 // If the query parameter should take on the value of a report parameter, we need to find the 
                 // report parameter's current value.  
@@ -1274,26 +1274,7 @@ namespace sqlnexus
 
                 qrytext = qrytext.Replace("@" + paramname, paramstr);
 
-                //if (-1 != qrytext.IndexOf(qpname + ',', StringComparison.InvariantCultureIgnoreCase))
-                //{   
-                //    qrytext = qrytext.Replace(qpname + ',', paramstr);
-                //}
-                //else if (-1 != qrytext.IndexOf("@" + paramname, StringComparison.InvariantCultureIgnoreCase))
-                //{
-                //    qrytext = qrytext.Replace("@" + paramname, paramstr);
-                //}
-                //else if (-1 != qrytext.IndexOf(paramname, StringComparison.InvariantCultureIgnoreCase))
-                //{
-                //    qrytext = qrytext.Replace(paramname, paramstr);
-                //}
-                //else  //No param token in query text
-                //{
-                //    qrytext += " " + paramstr + ",";
-                //}
             }
-            ////Trim off trailing comma if there is one
-            //if (',' == qrytext[qrytext.Length - 1])
-            //    qrytext = qrytext.Substring(0, qrytext.Length - 1);
             return qrytext;
         }
 
@@ -2850,6 +2831,7 @@ namespace sqlnexus
         #region Report event syncs
 
         int InDrillthrough = 0;
+        private static string qpname;
 
         private void rvTemplate_Drillthrough(object sender, DrillthroughEventArgs e)
         {

@@ -1419,7 +1419,6 @@ namespace sqlnexus
             ToolStripMenuItem tsi = (sender as ToolStripMenuItem);
             ImportOptions.Set("SaveImportOptions", tsi.Checked);
 
-            StringBuilder sb = new StringBuilder();
 
             if (tsi.Checked)
             {
@@ -1473,7 +1472,6 @@ namespace sqlnexus
 
         private void tsiUseDefaultOptions_Click(object sender, EventArgs e)
         {
-            ToolStripMenuItem tsi = (ToolStripMenuItem)sender;
             ImportOptions.Clear();
             tsiDropDBBeforeImporting.Checked = false;
             tsiSaveOptions.Checked = false;
