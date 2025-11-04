@@ -1225,12 +1225,12 @@ namespace sqlnexus
             process.BeginOutputReadLine();
             process.WaitForExit();
 
-            if ((error_stream != null) & (error_stream.Length != 0 ))
+            if ((error_stream != null) && (error_stream.Length != 0 ))
             {
                 MainForm.LogMessage("PostProcess error output: " + error_stream.ToString());
             }
 
-            if ((output_stream != null) & (output_stream.Length != 0 ))
+            if ((output_stream != null) && (output_stream.Length != 0 ))
             {
                 MainForm.LogMessage("PostProcess console output: " + output_stream.ToString().Replace("+++", "\r\n\t"));
             }
