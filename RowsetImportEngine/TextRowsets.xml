@@ -4713,100 +4713,113 @@
       </KnownColumns>
     </Rowset>
 	
-	<Rowset name="tbl_dm_db_xtp_checkpoint_files" enabled="true" identifier="-- sys.dm_db_xtp_checkpoint_files --" type="RowsetImportEngine.TextRowset">
+    <Rowset name="tbl_dm_db_xtp_checkpoint_files" enabled="true" identifier="-- sys.dm_db_xtp_checkpoint_files --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
         <Column name="runtime" type="RowsetImportEngine.DateTimeColumn"/>
         <Column name="dbname" type="RowsetImportEngine.NVarCharColumn" length="128" />
         <Column name="container_id" type="RowsetImportEngine.IntColumn" />
-		<Column name="container_guid" type="RowsetImportEngine.NVarCharColumn" />
-		<Column name="checkpoint_file_id" type="RowsetImportEngine.NVarCharColumn" />
+        <Column name="container_guid" type="RowsetImportEngine.NVarCharColumn" />
+        <Column name="checkpoint_file_id" type="RowsetImportEngine.NVarCharColumn" />
         <Column name="relative_file_path" type="RowsetImportEngine.NVarCharColumn" />
         <Column name="file_type" type="RowsetImportEngine.IntColumn" />
-		<Column name="file_type_desc" type="RowsetImportEngine.NVarCharColumn" length="120" />
+        <Column name="file_type_desc" type="RowsetImportEngine.NVarCharColumn" length="120" />
         <Column name="internal_storage_slot" type="RowsetImportEngine.IntColumn" />
-		<Column name="checkpoint_pair_file_id" type="RowsetImportEngine.NVarCharColumn" />	
-		<Column name="file_size_in_bytes" type="RowsetImportEngine.BigIntColumn" />
-		<Column name="file_size_used_in_bytes" type="RowsetImportEngine.BigIntColumn" />
-		<Column name="logical_row_count" type="RowsetImportEngine.BigIntColumn" /> 
-		<Column name="inserted_row_count" type="RowsetImportEngine.BigIntColumn" /> 
-		<Column name="deleted_row_count" type="RowsetImportEngine.BigIntColumn" /> 
-		<Column name="drop_table_deleted_row_count" type="RowsetImportEngine.BigIntColumn" /> 
-		<Column name="state" type="RowsetImportEngine.IntColumn" />		
-		<Column name="state_desc" type="RowsetImportEngine.NVarCharColumn" length="120" />
-		<Column name="lower_bound_tsn" type="RowsetImportEngine.BigIntColumn" /> 		
-		<Column name="upper_bound_tsn" type="RowsetImportEngine.BigIntColumn" />
-		<Column name="begin_checkpoint_id" type="RowsetImportEngine.BigIntColumn" />
-		<Column name="end_checkpoint_id" type="RowsetImportEngine.BigIntColumn" />
-		<Column name="last_updated_checkpoint_id" type="RowsetImportEngine.BigIntColumn" />
-		<Column name="encryption_status" type="RowsetImportEngine.IntColumn" />		
-		<Column name="encryption_status_desc" type="RowsetImportEngine.NVarCharColumn" length="120" />
-		<Column name="last_backup_page_count" type="RowsetImportEngine.IntColumn" />	
-		<Column name="delta_watermark_tsn" type="RowsetImportEngine.BigIntColumn" />
-		<Column name="last_checkpoint_recovery_lsn" type="RowsetImportEngine.DecimalColumn" />
-		<Column name="tombstone_operation_lsn" type="RowsetImportEngine.DecimalColumn" />
-		<Column name="logical_deletion_log_block_id" type="RowsetImportEngine.BigIntColumn" />      
+        <Column name="checkpoint_pair_file_id" type="RowsetImportEngine.NVarCharColumn" />	
+        <Column name="file_size_in_bytes" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="file_size_used_in_bytes" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="logical_row_count" type="RowsetImportEngine.BigIntColumn" /> 
+        <Column name="inserted_row_count" type="RowsetImportEngine.BigIntColumn" /> 
+        <Column name="deleted_row_count" type="RowsetImportEngine.BigIntColumn" /> 
+        <Column name="drop_table_deleted_row_count" type="RowsetImportEngine.BigIntColumn" /> 
+        <Column name="state" type="RowsetImportEngine.IntColumn" />		
+        <Column name="state_desc" type="RowsetImportEngine.NVarCharColumn" length="120" />
+        <Column name="lower_bound_tsn" type="RowsetImportEngine.BigIntColumn" /> 		
+        <Column name="upper_bound_tsn" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="begin_checkpoint_id" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="end_checkpoint_id" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="last_updated_checkpoint_id" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="encryption_status" type="RowsetImportEngine.IntColumn" />		
+        <Column name="encryption_status_desc" type="RowsetImportEngine.NVarCharColumn" length="120" />
+        <Column name="last_backup_page_count" type="RowsetImportEngine.IntColumn" />	
+        <Column name="delta_watermark_tsn" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="last_checkpoint_recovery_lsn" type="RowsetImportEngine.DecimalColumn" />
+        <Column name="tombstone_operation_lsn" type="RowsetImportEngine.DecimalColumn" />
+        <Column name="logical_deletion_log_block_id" type="RowsetImportEngine.BigIntColumn" />      
       </KnownColumns>
     </Rowset>
 	
-	<Rowset name="tbl_dm_db_xtp_checkpoint_files" enabled="true" identifier="-- sys.dm_db_xtp_checkpoint_files --" type="RowsetImportEngine.TextRowset">
+    <Rowset name="tbl_dm_db_xtp_checkpoint_files" enabled="true" identifier="-- sys.dm_db_xtp_checkpoint_files --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
         <Column name="runtime" type="RowsetImportEngine.DateTimeColumn"/>
         <Column name="dbname" type="RowsetImportEngine.NVarCharColumn" length="128" />
         <Column name="container_id" type="RowsetImportEngine.IntColumn" />
-		<Column name="container_guid" type="RowsetImportEngine.NVarCharColumn" />
-		<Column name="checkpoint_file_id" type="RowsetImportEngine.NVarCharColumn" />
+        <Column name="container_guid" type="RowsetImportEngine.NVarCharColumn" />
+        <Column name="checkpoint_file_id" type="RowsetImportEngine.NVarCharColumn" />
         <Column name="relative_file_path" type="RowsetImportEngine.NVarCharColumn" />
         <Column name="file_type" type="RowsetImportEngine.IntColumn" />
-		<Column name="file_type_desc" type="RowsetImportEngine.NVarCharColumn" length="120" />
+        <Column name="file_type_desc" type="RowsetImportEngine.NVarCharColumn" length="120" />
         <Column name="internal_storage_slot" type="RowsetImportEngine.IntColumn" />
-		<Column name="checkpoint_pair_file_id" type="RowsetImportEngine.NVarCharColumn" />	
-		<Column name="file_size_in_bytes" type="RowsetImportEngine.BigIntColumn" />
-		<Column name="file_size_used_in_bytes" type="RowsetImportEngine.BigIntColumn" />
-		<Column name="logical_row_count" type="RowsetImportEngine.BigIntColumn" /> 
-		<Column name="inserted_row_count" type="RowsetImportEngine.BigIntColumn" /> 
-		<Column name="deleted_row_count" type="RowsetImportEngine.BigIntColumn" /> 
-		<Column name="drop_table_deleted_row_count" type="RowsetImportEngine.BigIntColumn" /> 
-		<Column name="state" type="RowsetImportEngine.IntColumn" />		
-		<Column name="state_desc" type="RowsetImportEngine.NVarCharColumn" length="120" />
-		<Column name="lower_bound_tsn" type="RowsetImportEngine.BigIntColumn" /> 		
-		<Column name="upper_bound_tsn" type="RowsetImportEngine.BigIntColumn" />
-		<Column name="begin_checkpoint_id" type="RowsetImportEngine.BigIntColumn" />
-		<Column name="end_checkpoint_id" type="RowsetImportEngine.BigIntColumn" />
-		<Column name="last_updated_checkpoint_id" type="RowsetImportEngine.BigIntColumn" />
-		<Column name="encryption_status" type="RowsetImportEngine.IntColumn" />		
-		<Column name="encryption_status_desc" type="RowsetImportEngine.NVarCharColumn" length="120" />
-		<Column name="last_backup_page_count" type="RowsetImportEngine.IntColumn" />	
-		<Column name="delta_watermark_tsn" type="RowsetImportEngine.BigIntColumn" />
-		<Column name="last_checkpoint_recovery_lsn" type="RowsetImportEngine.DecimalColumn" />
-		<Column name="tombstone_operation_lsn" type="RowsetImportEngine.DecimalColumn" />
-		<Column name="logical_deletion_log_block_id" type="RowsetImportEngine.BigIntColumn" />      
+        <Column name="checkpoint_pair_file_id" type="RowsetImportEngine.NVarCharColumn" />	
+        <Column name="file_size_in_bytes" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="file_size_used_in_bytes" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="logical_row_count" type="RowsetImportEngine.BigIntColumn" /> 
+        <Column name="inserted_row_count" type="RowsetImportEngine.BigIntColumn" /> 
+        <Column name="deleted_row_count" type="RowsetImportEngine.BigIntColumn" /> 
+        <Column name="drop_table_deleted_row_count" type="RowsetImportEngine.BigIntColumn" /> 
+        <Column name="state" type="RowsetImportEngine.IntColumn" />		
+        <Column name="state_desc" type="RowsetImportEngine.NVarCharColumn" length="120" />
+        <Column name="lower_bound_tsn" type="RowsetImportEngine.BigIntColumn" /> 		
+        <Column name="upper_bound_tsn" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="begin_checkpoint_id" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="end_checkpoint_id" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="last_updated_checkpoint_id" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="encryption_status" type="RowsetImportEngine.IntColumn" />		
+        <Column name="encryption_status_desc" type="RowsetImportEngine.NVarCharColumn" length="120" />
+        <Column name="last_backup_page_count" type="RowsetImportEngine.IntColumn" />	
+        <Column name="delta_watermark_tsn" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="last_checkpoint_recovery_lsn" type="RowsetImportEngine.DecimalColumn" />
+        <Column name="tombstone_operation_lsn" type="RowsetImportEngine.DecimalColumn" />
+        <Column name="logical_deletion_log_block_id" type="RowsetImportEngine.BigIntColumn" />      
       </KnownColumns>
     </Rowset>
 
     <Rowset name="tbl_assessment_api" enabled="true" identifier="-- assessment_api --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
         <Column name="Check" type="RowsetImportEngine.VarCharColumn" length="80" />
-		  <Column name="Severity" type="RowsetImportEngine.VarCharColumn" length="15" />
-		  <Column name="Message" type="RowsetImportEngine.VarCharColumn" length="1100" />
-		  <Column name="HelpURL" type="RowsetImportEngine.VarCharColumn" length="200" />
-		</KnownColumns>
-	</Rowset>
+        <Column name="Severity" type="RowsetImportEngine.VarCharColumn" length="15" />
+        <Column name="Message" type="RowsetImportEngine.VarCharColumn" length="1100" />
+        <Column name="HelpURL" type="RowsetImportEngine.VarCharColumn" length="200" />
+      </KnownColumns>
+    </Rowset>
 
-	<Rowset name="tbl_disk_volume_information" enabled="true" identifier="-- Volume_Information --" type="RowsetImportEngine.TextRowset">
-		<KnownColumns>
-			<Column name="Volume_Name" type="RowsetImportEngine.NVarCharColumn" length="50" />
-			<Column name="Volume_Label" type="RowsetImportEngine.NVarCharColumn" length="16" />
-			<Column name="Device_ID" type="RowsetImportEngine.NVarCharColumn" length="50"/>
-			<Column name="File_System" type="RowsetImportEngine.VarCharColumn" length="12" />
-			<Column name="Block_Size" type="RowsetImportEngine.IntColumn"/>
-			<Column name="Boot_Volume" type="RowsetImportEngine.VarCharColumn" length="12" />
-			<Column name="System_Volume" type="RowsetImportEngine.VarCharColumn" length="14" />
-			<Column name="Disk_Quotas" type="RowsetImportEngine.VarCharColumn" length="12" />
-			<Column name="Compression" type="RowsetImportEngine.VarCharColumn" length="12" />
-			<Column name="Capacity_GB" type="RowsetImportEngine.DecimalColumn" />
-			<Column name="FreeSpace_GB" type="RowsetImportEngine.DecimalColumn" />
-		</KnownColumns>
-	</Rowset>
-	  
+    <Rowset name="tbl_disk_volume_information" enabled="true" identifier="-- Volume_Information --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="Volume_Name" type="RowsetImportEngine.NVarCharColumn" length="50" />
+        <Column name="Volume_Label" type="RowsetImportEngine.NVarCharColumn" length="16" />
+        <Column name="Device_ID" type="RowsetImportEngine.NVarCharColumn" length="50"/>
+        <Column name="File_System" type="RowsetImportEngine.VarCharColumn" length="12" />
+        <Column name="Block_Size" type="RowsetImportEngine.IntColumn"/>
+        <Column name="Boot_Volume" type="RowsetImportEngine.VarCharColumn" length="12" />
+        <Column name="System_Volume" type="RowsetImportEngine.VarCharColumn" length="14" />
+        <Column name="Disk_Quotas" type="RowsetImportEngine.VarCharColumn" length="12" />
+        <Column name="Compression" type="RowsetImportEngine.VarCharColumn" length="12" />
+        <Column name="Capacity_GB" type="RowsetImportEngine.DecimalColumn" />
+        <Column name="FreeSpace_GB" type="RowsetImportEngine.DecimalColumn" />
+      </KnownColumns>
+    </Rowset>
+
+    <Rowset name="tbl_running_drivers" enabled="true" identifier="-- running_drivers --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="ID" type="RowsetImportEngine.IntColumn" length="50" />
+        <Column name="File_Name" type="RowsetImportEngine.VarCharColumn" length="120" />
+        <Column name="Company_Name" type="RowsetImportEngine.VarCharColumn" length="50"/>
+        <Column name="File_Description" type="RowsetImportEngine.VarCharColumn" length="50" />
+        <Column name="Product_Version" type="RowsetImportEngine.VarCharColumn" length="20" />
+        <Column name="File_Version" type="RowsetImportEngine.VarCharColumn" length="25" />
+        <Column name="File_Size_MB" type="RowsetImportEngine.DecimalColumn"/>
+        <Column name="Last_Write_Time" type="RowsetImportEngine.DateTimeColumn"/>
+      </KnownColumns>
+    </Rowset>
+
   </KnownRowsets>
 </TextImport>
