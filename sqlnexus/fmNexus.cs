@@ -1217,7 +1217,6 @@ namespace sqlnexus
                         paramname = paramname.Substring(1); // "Filter3"
                 }
 
-                string qpname = n.Attributes["Name"].Value;    // e.g. "@Filter3"
 
                 // If the query parameter should take on the value of a report parameter, we need to find the 
                 // report parameter's current value.  
@@ -2831,7 +2830,6 @@ namespace sqlnexus
         #region Report event syncs
 
         int InDrillthrough = 0;
-        private static string qpname;
 
         private void rvTemplate_Drillthrough(object sender, DrillthroughEventArgs e)
         {
@@ -2967,6 +2965,7 @@ namespace sqlnexus
                 try
                 {
                     object obj = TryMethodCall(type, m, args[2], newArgs);
+                    obj.ToString(); //Suppress warning
                 }
                 catch (Exception e)
                 {
