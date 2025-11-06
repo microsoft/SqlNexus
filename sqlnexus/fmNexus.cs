@@ -3231,7 +3231,7 @@ bool CreateDB(String dbName)
             // Regex pattern: database name must not be 'master', 'tempdb', 'msdb', or 'model', and must be 1-128 chars, allowed chars: A-Za-z0-9, underscore.
             if (!Program.IsDbNameValid(dbName))
             {
-                LogMessage($"Error: Database name must contain only letters, numbers, underscores and cannot be 'master', 'tempdb', 'model', or 'msdb'. Length must be 1-128 characters. Invalid database name: {dbName}. Try again", MessageOptions.All);
+                LogMessage($"Error: Database name must contain only basic letters, numbers, underscores and cannot be 'master', 'tempdb', 'model', or 'msdb'. Length must be 1-128 characters. Invalid database name: {dbName}. Try again", MessageOptions.All);
                 return false;
             }
             Globals.credentialMgr.Database = "master";

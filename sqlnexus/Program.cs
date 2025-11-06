@@ -173,7 +173,7 @@ namespace sqlnexus
 
                             if (!IsDbNameValid(dbName))
                             {
-                                Console.WriteLine($"Error: Database name must contain only letters, numbers, underscores, and cannot be 'master', 'tempdb', 'model', or 'msdb'. Length must be 1-128 characters. Invalid database name: '{dbName}'. Try again");
+                                Console.WriteLine($"Error: Database name must contain only basic letters, numbers, underscores, and cannot be 'master', 'tempdb', 'model', or 'msdb'. Length must be 1-128 characters. Invalid database name: '{dbName}'. Try again");
                                 return false;
                             }
                          
