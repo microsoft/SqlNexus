@@ -138,7 +138,7 @@
             this.linkSystemXE.Size = new System.Drawing.Size(146, 17);
             this.linkSystemXE.TabIndex = 4;
             this.linkSystemXE.TabStop = true;
-            this.linkSystemXE.Text = "System Helath Report";
+            this.linkSystemXE.Text = "System Health Report";
             this.linkSystemXE.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
             // fmPBReports
