@@ -9,7 +9,7 @@
       <am:Name>SSDTRS</am:Name>
       <am:Version>17.14.36705.20</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2025-11-11T20:51:05.8052088Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2025-11-13T16:03:08.2292665Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
@@ -85,10 +85,10 @@ ORDER BY [Image Name],PID</CommandText>
                   <Width>1.8618in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1in</Width>
+                  <Width>1.14583in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.16857in</Width>
+                  <Width>1.52274in</Width>
                 </TablixColumn>
                 <TablixColumn>
                   <Width>1.75in</Width>
@@ -100,7 +100,7 @@ ORDER BY [Image Name],PID</CommandText>
                   <Width>1.6875in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1in</Width>
+                  <Width>1.23004in</Width>
                 </TablixColumn>
                 <TablixColumn>
                   <Width>1.86805in</Width>
@@ -157,6 +157,9 @@ ORDER BY [Image Name],PID</CommandText>
                       <CellContents>
                         <Textbox Name="Textbox1">
                           <CanGrow>true</CanGrow>
+                          <UserSort>
+                            <SortExpression>=Fields!PID.Value</SortExpression>
+                          </UserSort>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
@@ -193,6 +196,9 @@ ORDER BY [Image Name],PID</CommandText>
                       <CellContents>
                         <Textbox Name="Textbox4">
                           <CanGrow>true</CanGrow>
+                          <UserSort>
+                            <SortExpression>=Fields!Session_Name.Value</SortExpression>
+                          </UserSort>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
@@ -229,6 +235,9 @@ ORDER BY [Image Name],PID</CommandText>
                       <CellContents>
                         <Textbox Name="Textbox7">
                           <CanGrow>true</CanGrow>
+                          <UserSort>
+                            <SortExpression>=Fields!Mem_Usage.Value</SortExpression>
+                          </UserSort>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
@@ -265,6 +274,9 @@ ORDER BY [Image Name],PID</CommandText>
                       <CellContents>
                         <Textbox Name="Textbox10">
                           <CanGrow>true</CanGrow>
+                          <UserSort>
+                            <SortExpression>=Fields!Status.Value</SortExpression>
+                          </UserSort>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
@@ -301,6 +313,9 @@ ORDER BY [Image Name],PID</CommandText>
                       <CellContents>
                         <Textbox Name="Textbox12">
                           <CanGrow>true</CanGrow>
+                          <UserSort>
+                            <SortExpression>=Fields!User_Name.Value</SortExpression>
+                          </UserSort>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
@@ -415,6 +430,9 @@ ORDER BY [Image Name],PID</CommandText>
                       <CellContents>
                         <Textbox Name="Textbox19">
                           <CanGrow>true</CanGrow>
+                          <UserSort>
+                            <SortExpression>=Fields!Window_Title.Value</SortExpression>
+                          </UserSort>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
@@ -797,7 +815,7 @@ ORDER BY [Image Name],PID</CommandText>
             <Top>0.70486in</Top>
             <Left>0.35417in</Left>
             <Height>0.66667in</Height>
-            <Width>14.31597in</Width>
+            <Width>15.04601in</Width>
             <Style>
               <Border>
                 <Color>Indigo</Color>
@@ -829,7 +847,7 @@ ORDER BY [Image Name],PID</CommandText>
             <Top>0.20708in</Top>
             <Left>0.36459in</Left>
             <Height>0.35889in</Height>
-            <Width>14.30555in</Width>
+            <Width>15.03559in</Width>
             <ZIndex>1</ZIndex>
             <Style>
               <Border>
@@ -930,7 +948,7 @@ ORDER BY [Image Name],PID</CommandText>
           <BackgroundColor>White</BackgroundColor>
         </Style>
       </Body>
-      <Width>15.0382in</Width>
+      <Width>15.86545in</Width>
       <Page>
         <LeftMargin>1in</LeftMargin>
         <RightMargin>1in</RightMargin>
