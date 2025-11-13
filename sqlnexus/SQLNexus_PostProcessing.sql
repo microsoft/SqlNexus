@@ -117,8 +117,9 @@ IF (OBJECT_ID('tbl_ActiveProcesses_OS') IS NOT NULL)
 BEGIN
     BEGIN TRY
         UPDATE dbo.tbl_ActiveProcesses_OS
-        SET MemUsage_MB = CONVERT(DECIMAL(20, 1),
-        CONVERT(DECIMAL(20, 6),REPLACE(REPLACE([Mem Usage], ' K', ''), ',', '')) / 1024)
+        SET MemUsage_MB = CASE WHEN TRY_CONVERT(DECIMAL(20,6), NULLIF(REPLACE(REPLACE([Mem Usage], ' K', ''), ',', ''), '')) IS NULL THEN NULL
+                               ELSE CONVERT(DECIMAL(20,1), TRY_CONVERT(DECIMAL(20,6), NULLIF(REPLACE(REPLACE([Mem Usage], ' K', ''), ',', ''), '')) / 1024.0)
+                               END
     END TRY
     BEGIN CATCH
         SELECT ERROR_NUMBER() AS ErrorNumber,
