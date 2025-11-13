@@ -25,7 +25,7 @@ BEGIN
 
 	SET NOCOUNT ON
 	--waitfor delay '23:00:00'		--		Easy way to test query timeout
-	SELECT DB_NAME AS [Database]
+	SELECT DB_NAME() AS [Database]
 END
 GO
 
@@ -44,9 +44,9 @@ BEGIN
 	UNION ALL
 	SELECT 'Current Date', CAST(GETDATE() AS NVARCHAR)
 	UNION ALL
-	SELECT 'Database', DB_NAME
+	SELECT 'Database', DB_NAME()
 	UNION ALL
-	SELECT 'Database Sort Order', CAST(DATABASEPROPERTYEX(DB_NAME, 'SQLSortOrder') AS NVARCHAR)
+	SELECT 'Database Sort Order', CAST(DATABASEPROPERTYEX(DB_NAME(), 'SQLSortOrder') AS NVARCHAR)
 	UNION ALL
 	SELECT 'Timing Base',
 		CASE 
