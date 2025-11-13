@@ -109,7 +109,8 @@ GO
 
 IF (OBJECT_ID('tbl_ActiveProcesses_OS') IS NOT NULL)
 BEGIN
-    ALTER TABLE dbo.tbl_ActiveProcesses_OS ADD MemUsage_MB DECIMAL(10, 1);
+    ALTER TABLE dbo.tbl_ActiveProcesses_OS ADD MemUsage_MB DECIMAL(20, 3);
+    ALTER TABLE dbo.tbl_ActiveProcesses_OS ADD MemUsage_KB DECIMAL(20, 3);
 END;
 GO
 
@@ -118,7 +119,11 @@ BEGIN
     BEGIN TRY
         UPDATE dbo.tbl_ActiveProcesses_OS
         SET MemUsage_MB = CASE WHEN TRY_CONVERT(DECIMAL(20,6), NULLIF(REPLACE(REPLACE([Mem Usage], ' K', ''), ',', ''), '')) IS NULL THEN NULL
-                               ELSE CONVERT(DECIMAL(20,1), TRY_CONVERT(DECIMAL(20,6), NULLIF(REPLACE(REPLACE([Mem Usage], ' K', ''), ',', ''), '')) / 1024.0)
+                               ELSE CONVERT(DECIMAL(20,3), TRY_CONVERT(DECIMAL(20,6), NULLIF(REPLACE(REPLACE([Mem Usage], ' K', ''), ',', ''), '')) / 1024.0)
+                               END,
+        
+             MemUsage_KB = CASE WHEN TRY_CONVERT(DECIMAL(20,6), NULLIF(REPLACE(REPLACE([Mem Usage], ' K', ''), ',', ''), '')) IS NULL THEN NULL
+                               ELSE CONVERT(DECIMAL(20,3), TRY_CONVERT(DECIMAL(20,6), NULLIF(REPLACE(REPLACE([Mem Usage], ' K', ''), ',', ''), '')) )
                                END
     END TRY
     BEGIN CATCH
