@@ -109,7 +109,7 @@ GO
 
 IF (OBJECT_ID('tbl_ActiveProcesses_OS') IS NOT NULL)
 BEGIN
-    ALTER TABLE dbo.tbl_ActiveProcesses_OS ADD MemUsage_MB DECIMAL(10, 3);
+    ALTER TABLE dbo.tbl_ActiveProcesses_OS ADD MemUsage_MB DECIMAL(10, 1);
 END;
 GO
 
@@ -117,7 +117,8 @@ IF (OBJECT_ID('tbl_ActiveProcesses_OS') IS NOT NULL)
 BEGIN
     BEGIN TRY
         UPDATE dbo.tbl_ActiveProcesses_OS
-        SET MemUsage_MB = CONVERT(DECIMAL(20, 6),REPLACE(REPLACE([Mem Usage], ' K', ''), ',', '')) / 1024
+        SET MemUsage_MB = CONVERT(DECIMAL(20, 1),
+        CONVERT(DECIMAL(20, 6),REPLACE(REPLACE([Mem Usage], ' K', ''), ',', '')) / 1024)
     END TRY
     BEGIN CATCH
         SELECT ERROR_NUMBER() AS ErrorNumber,
