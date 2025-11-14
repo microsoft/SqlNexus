@@ -888,13 +888,13 @@ namespace sqlnexus
                                                     MainForm);
 
                             //Run pre-scripts and cache post scripts for later use
-                            if (!PostScripts.ContainsKey(ri.GetType().Name))
+                            if (!PostScripts.ContainsKey(ri.Name))
                             {
-                                PostScripts.Add(ri.GetType().Name, ri.PostScripts);
-                                foreach (string s in ri.PreScripts)
+                                PostScripts.Add(ri.Name, ri.PostScripts);
+                                foreach (string pre_script in ri.PreScripts)
                                 {
-                                    MainForm.LogMessage("Executing pre-script: " + s);
-                                    RunScript(s);
+                                    MainForm.LogMessage("Executing pre-script: " + pre_script);
+                                    RunScript(pre_script);
                                 }
                             }
 
@@ -908,10 +908,8 @@ namespace sqlnexus
 
 
 
-                            if (ri.Name.ToLower().Contains("rowset"))
-                            {
-                                RunPostScripts();
-                            }
+                            RunPostScripts(ri.Name);
+                        
                             Globals.IsNexusCoreImporterSuccessful = true;
                             //ll.LinkBehavior = LinkBehavior.HoverUnderline;
                         }
@@ -1282,30 +1280,53 @@ namespace sqlnexus
             return retString;
         }
 
-        private void RunPostScripts()
+        private void RunPostScripts(string importerName)
         {
-            MainForm.LogMessage("Executing post-mortem analysis scripts...");
-            //RunScript(Application.StartupPath + @"\TraceAnalysis.sql");
-
-            //nothing to run
-            if (null == PostScripts || PostScripts.Count <= 0)
+            if (string.IsNullOrEmpty(importerName))
                 return;
 
-            foreach (string[] scripts in PostScripts.Values)
-            {
-                if (scripts == null || scripts.Length <= 0)
-                    continue;
-                foreach (string script in scripts)
-                {
-                    if (string.IsNullOrEmpty(script))
-                        continue; //nothign to run
+            // Only execute ReadTracePostProcessing.sql when the current importer is the ReadTrace importer.
+            bool isReadTraceImporter = importerName.Equals("ReadTrace (SQL XEL/TRC files)", StringComparison.OrdinalIgnoreCase);
 
-                    MainForm.LogMessage("Executing post-script: " + script);
-                    RunScript(script);
+            // If nothing to run, skip executing the post scripts.
+            if (!PostScripts.TryGetValue(importerName, out var scripts) || scripts == null || scripts.Length == 0)
+                return;
+
+            MainForm.LogMessage($"Executing post-mortem analysis scripts for importer '{importerName}'...");
+
+            //RunScript(Application.StartupPath + @"\TraceAnalysis.sql");
+
+            // Execute each post script from the list.
+            foreach (string script in scripts)
+            {
+                if (string.IsNullOrWhiteSpace(script))
+                    continue;
+
+                // run ReadTracePostProcessing.sql only for the ReadTrace importer
+                if (script.Equals("ReadTracePostProcessing.sql", StringComparison.OrdinalIgnoreCase))
+                {
+                    if (!isReadTraceImporter)
+                    {
+                        MainForm.LogMessage($"Skipping '{script}' (only runs for ReadTrace importer).", MessageOptions.Silent);
+                        continue;
+                    }
                 }
+                
+                // in the future we can add more special cases here for other importers if needed (else if ...)
+                //else if (script.Equals("AnotherPostProcessing.sql", StringComparison.OrdinalIgnoreCase))
+                //{
+                //    if (!isAnotherImporter)
+                //    {
+                //        MainForm.LogMessage($"Skipping '{script}' (only runs for Another importer).", MessageOptions.Silent);
+                //        continue;
+                //    }
+                //}
+
+                MainForm.LogMessage("Executing post-script: " + script);
+                RunScript(script);
             }
 
-            MainForm.LogMessage("Execution of post-mortem analysis scripts complete.");
+            MainForm.LogMessage($"Execution of post-mortem analysis scripts complete for importer '{importerName}'.");
         }
 
         private void RunScript(string scriptname)
