@@ -1307,7 +1307,7 @@ namespace sqlnexus
                 {
                     if (!isReadTraceImporter)
                     {
-                        MainForm.LogMessage($"Skipping '{script}' (only runs for ReadTrace importer).", MessageOptions.Silent);
+                        // Skip this script if the current importer is not ReadTrace.
                         continue;
                     }
                 }
