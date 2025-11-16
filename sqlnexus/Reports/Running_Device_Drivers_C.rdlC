@@ -7,9 +7,9 @@
     </am:CreatedBy>
     <am:UpdatedBy>
       <am:Name>SSDTRS</am:Name>
-      <am:Version>17.14.36616.10</am:Version>
+      <am:Version>17.14.36705.20</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2025-11-07T19:31:19.8937985Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2025-11-14T15:01:37.8768469Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <df:DefaultFontFamily>Segoe UI</df:DefaultFontFamily>
   <AutoRefresh>0</AutoRefresh>
@@ -98,9 +98,13 @@ FROM tbl_running_drivers</CommandText>
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>textbox1</rd:DefaultName>
-            <Height>0.43in</Height>
-            <Width>8in</Width>
+            <Height>0.50292in</Height>
+            <Width>16.5625in</Width>
             <Style>
+              <Border>
+                <Color>Indigo</Color>
+                <Style>Solid</Style>
+              </Border>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
               <PaddingTop>2pt</PaddingTop>
@@ -153,6 +157,7 @@ FROM tbl_running_drivers</CommandText>
                                     <FontFamily />
                                     <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Color>White</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -183,7 +188,7 @@ FROM tbl_running_drivers</CommandText>
                               <Color>Black</Color>
                               <Style>Solid</Style>
                             </RightBorder>
-                            <BackgroundColor>Gainsboro</BackgroundColor>
+                            <BackgroundColor>Indigo</BackgroundColor>
                             <FontFamily />
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
@@ -210,6 +215,7 @@ FROM tbl_running_drivers</CommandText>
                                     <FontFamily />
                                     <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Color>White</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -237,7 +243,7 @@ FROM tbl_running_drivers</CommandText>
                               <Color>Black</Color>
                               <Style>Solid</Style>
                             </RightBorder>
-                            <BackgroundColor>Gainsboro</BackgroundColor>
+                            <BackgroundColor>Indigo</BackgroundColor>
                             <FontFamily />
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
@@ -264,6 +270,7 @@ FROM tbl_running_drivers</CommandText>
                                     <FontFamily />
                                     <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Color>White</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -291,7 +298,7 @@ FROM tbl_running_drivers</CommandText>
                               <Color>Black</Color>
                               <Style>Solid</Style>
                             </RightBorder>
-                            <BackgroundColor>Gainsboro</BackgroundColor>
+                            <BackgroundColor>Indigo</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -317,6 +324,7 @@ FROM tbl_running_drivers</CommandText>
                                     <FontFamily />
                                     <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Color>White</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -344,7 +352,7 @@ FROM tbl_running_drivers</CommandText>
                               <Color>Black</Color>
                               <Style>Solid</Style>
                             </RightBorder>
-                            <BackgroundColor>Gainsboro</BackgroundColor>
+                            <BackgroundColor>Indigo</BackgroundColor>
                             <FontFamily />
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
@@ -371,6 +379,7 @@ FROM tbl_running_drivers</CommandText>
                                     <FontFamily />
                                     <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Color>White</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -398,7 +407,7 @@ FROM tbl_running_drivers</CommandText>
                               <Color>Black</Color>
                               <Style>Solid</Style>
                             </RightBorder>
-                            <BackgroundColor>Gainsboro</BackgroundColor>
+                            <BackgroundColor>Indigo</BackgroundColor>
                             <FontFamily />
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
@@ -425,6 +434,7 @@ FROM tbl_running_drivers</CommandText>
                                     <FontFamily />
                                     <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Color>White</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -455,7 +465,7 @@ FROM tbl_running_drivers</CommandText>
                               <Color>Black</Color>
                               <Style>Solid</Style>
                             </RightBorder>
-                            <BackgroundColor>Gainsboro</BackgroundColor>
+                            <BackgroundColor>Indigo</BackgroundColor>
                             <FontFamily />
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
@@ -482,6 +492,7 @@ FROM tbl_running_drivers</CommandText>
                                     <FontFamily />
                                     <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Color>White</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -509,7 +520,7 @@ FROM tbl_running_drivers</CommandText>
                               <Color>Black</Color>
                               <Style>Solid</Style>
                             </RightBorder>
-                            <BackgroundColor>Gainsboro</BackgroundColor>
+                            <BackgroundColor>Indigo</BackgroundColor>
                             <FontFamily />
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
@@ -535,9 +546,8 @@ FROM tbl_running_drivers</CommandText>
                                 <TextRun>
                                   <Value>=Fields!ID.Value</Value>
                                   <Style>
-                                    <FontFamily />
+                                    <FontFamily>Tahoma</FontFamily>
                                     <FontSize>9pt</FontSize>
-                                    <Color>#333333</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -562,6 +572,7 @@ FROM tbl_running_drivers</CommandText>
                             <RightBorder>
                               <Style>Solid</Style>
                             </RightBorder>
+                            <BackgroundColor>=IIF(ROWNUMBER(NOTHING) MOD 2, "White", "Gainsboro")</BackgroundColor>
                             <FontFamily />
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
@@ -582,9 +593,8 @@ FROM tbl_running_drivers</CommandText>
                                 <TextRun>
                                   <Value>=Fields!File_Name.Value</Value>
                                   <Style>
-                                    <FontFamily />
+                                    <FontFamily>Tahoma</FontFamily>
                                     <FontSize>9pt</FontSize>
-                                    <Color>#333333</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -609,6 +619,7 @@ FROM tbl_running_drivers</CommandText>
                             <RightBorder>
                               <Style>Solid</Style>
                             </RightBorder>
+                            <BackgroundColor>=IIF(ROWNUMBER(NOTHING) MOD 2, "White", "Gainsboro")</BackgroundColor>
                             <FontFamily />
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
@@ -629,9 +640,8 @@ FROM tbl_running_drivers</CommandText>
                                 <TextRun>
                                   <Value>=Fields!File_Description.Value</Value>
                                   <Style>
-                                    <FontFamily />
+                                    <FontFamily>Tahoma</FontFamily>
                                     <FontSize>9pt</FontSize>
-                                    <Color>#333333</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -656,6 +666,7 @@ FROM tbl_running_drivers</CommandText>
                             <RightBorder>
                               <Style>Solid</Style>
                             </RightBorder>
+                            <BackgroundColor>=IIF(ROWNUMBER(NOTHING) MOD 2, "White", "Gainsboro")</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -675,9 +686,8 @@ FROM tbl_running_drivers</CommandText>
                                 <TextRun>
                                   <Value>=Fields!Company_Name.Value</Value>
                                   <Style>
-                                    <FontFamily />
+                                    <FontFamily>Tahoma</FontFamily>
                                     <FontSize>9pt</FontSize>
-                                    <Color>#333333</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -702,6 +712,7 @@ FROM tbl_running_drivers</CommandText>
                             <RightBorder>
                               <Style>Solid</Style>
                             </RightBorder>
+                            <BackgroundColor>=IIF(ROWNUMBER(NOTHING) MOD 2, "White", "Gainsboro")</BackgroundColor>
                             <FontFamily />
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
@@ -722,9 +733,8 @@ FROM tbl_running_drivers</CommandText>
                                 <TextRun>
                                   <Value>=Fields!Product_Version.Value</Value>
                                   <Style>
-                                    <FontFamily />
+                                    <FontFamily>Tahoma</FontFamily>
                                     <FontSize>9pt</FontSize>
-                                    <Color>#333333</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -749,6 +759,7 @@ FROM tbl_running_drivers</CommandText>
                             <RightBorder>
                               <Style>Solid</Style>
                             </RightBorder>
+                            <BackgroundColor>=IIF(ROWNUMBER(NOTHING) MOD 2, "White", "Gainsboro")</BackgroundColor>
                             <FontFamily />
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
@@ -769,10 +780,9 @@ FROM tbl_running_drivers</CommandText>
                                 <TextRun>
                                   <Value>=Fields!File_Size_MB.Value</Value>
                                   <Style>
-                                    <FontFamily />
+                                    <FontFamily>Tahoma</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <Format>0.000;(0.000)</Format>
-                                    <Color>#333333</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -797,6 +807,7 @@ FROM tbl_running_drivers</CommandText>
                             <RightBorder>
                               <Style>Solid</Style>
                             </RightBorder>
+                            <BackgroundColor>=IIF(ROWNUMBER(NOTHING) MOD 2, "White", "Gainsboro")</BackgroundColor>
                             <FontFamily />
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
@@ -817,10 +828,9 @@ FROM tbl_running_drivers</CommandText>
                                 <TextRun>
                                   <Value>=Fields!Last_Write_Time.Value</Value>
                                   <Style>
-                                    <FontFamily />
+                                    <FontFamily>Tahoma</FontFamily>
                                     <FontSize>9pt</FontSize>
                                     <Format>f</Format>
-                                    <Color>#333333</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -833,6 +843,7 @@ FROM tbl_running_drivers</CommandText>
                               <Color>LightGrey</Color>
                               <Style>Solid</Style>
                             </Border>
+                            <BackgroundColor>=IIF(ROWNUMBER(NOTHING) MOD 2, "White", "Gainsboro")</BackgroundColor>
                             <FontFamily />
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
@@ -902,7 +913,12 @@ FROM tbl_running_drivers</CommandText>
         <RightMargin>1in</RightMargin>
         <TopMargin>1in</TopMargin>
         <BottomMargin>1in</BottomMargin>
-        <Style />
+        <Style>
+          <Border>
+            <Color>Indigo</Color>
+            <Style>None</Style>
+          </Border>
+        </Style>
       </Page>
     </ReportSection>
   </ReportSections>
