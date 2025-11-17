@@ -381,8 +381,8 @@ BEGIN
 	ORDER BY a.TimeInterval ASC
 	OPTION (RECOMPILE)
 
-end
-go
+END
+GO
 
 
 ----------------------------------------------------------------------------------------------
@@ -590,7 +590,7 @@ BEGIN
 		         ELSE @strFilterString 
 	END AS 'FilterString'
 END
-go
+GO
 
 
 /*
@@ -735,6 +735,7 @@ BEGIN
 		OPTION (RECOMPILE)
 END
 GO
+
 ----------------------------------------------------------------------------------------------
 IF OBJECTPROPERTY(OBJECT_ID('ReadTrace.spReporter_TopN'), 'IsProcedure') = 1
 	DROP PROCEDURE ReadTrace.spReporter_TopN
@@ -778,6 +779,7 @@ BEGIN
 	SELECT 'Executes'
 END
 GO
+
 ----------------------------------------------------------------------------------------------
 IF OBJECTPROPERTY(OBJECT_ID('ReadTrace.spReporter_ResourceUsageDuringInterval'), 'IsProcedure') = 1
 	DROP PROCEDURE ReadTrace.spReporter_ResourceUsageDuringInterval
@@ -850,6 +852,7 @@ BEGIN
 	END
 END
 GO
+
 ----------------------------------------------------------------------------------------------
 IF OBJECTPROPERTY(OBJECT_ID('ReadTrace.spReporter_ExampleBatchDetails'), 'IsProcedure') = 1
 	DROP PROCEDURE ReadTrace.spReporter_ExampleBatchDetails
@@ -1209,6 +1212,7 @@ exit_now:
 		CAST(NULL AS NVARCHAR(max)) AS StmtText
 END
 GO
+
 ----------------------------------------------------------------------------------------------
 IF OBJECTPROPERTY(OBJECT_ID('ReadTrace.spReporter_BatchDetailsScaleFactor'), 'IsProcedure') = 1
 	DROP PROCEDURE ReadTrace.spReporter_BatchDetailsScaleFactor
@@ -1296,6 +1300,7 @@ BEGIN
 		 FROM #BatchDetails) AS a	
 END
 GO
+
 ----------------------------------------------------------------------------------------------
 IF OBJECTPROPERTY(OBJECT_ID('ReadTrace.spReporter_BatchDetailsMinMaxAvg'), 'IsProcedure') = 1
 	DROP PROCEDURE ReadTrace.spReporter_BatchDetailsMinMaxAvg
@@ -1377,6 +1382,7 @@ BEGIN
 	FROM ReadTrace.tblWarnings
 END
 GO
+
 ----------------------------------------------------------------------------------------------
 IF OBJECTPROPERTY(OBJECT_ID('ReadTrace.spReporter_PartialAggs_GroupBy'), 'IsProcedure') = 1
 	DROP PROCEDURE ReadTrace.spReporter_PartialAggs_GroupBy
@@ -1394,6 +1400,7 @@ BEGIN
 	ORDER BY 1	
 END
 GO
+
 ----------------------------------------------------------------------------------------------
 IF OBJECTPROPERTY(OBJECT_ID('ReadTrace.spReporter_PartialAggs_OrderBy'), 'IsProcedure') = 1
 	DROP PROCEDURE ReadTrace.spReporter_PartialAggs_OrderBy
@@ -1441,6 +1448,7 @@ BEGIN
 	ORDER BY 1	
 END
 GO
+
 ----------------------------------------------------------------------------------------------
 IF OBJECTPROPERTY(OBJECT_ID('ReadTrace.spReporter_GetUnitsForDuration'), 'IsProcedure') = 1
 	DROP PROCEDURE ReadTrace.spReporter_GetUnitsForDuration
@@ -1457,6 +1465,7 @@ BEGIN
 	WHERE Attribute = 'EventVersion'		
 END
 GO
+
 ----------------------------------------------------------------------------------------------
 IF OBJECTPROPERTY(OBJECT_ID('ReadTrace.spReporter_BatchAggregatesGrouped'), 'IsProcedure') = 1
 	DROP PROCEDURE ReadTrace.spReporter_BatchAggregatesGrouped
@@ -2309,7 +2318,7 @@ GO
 ----------------------------------------------------------------------------------------------
 IF OBJECTPROPERTY(OBJECT_ID('ReadTrace.spReporter_StmtTopN'), 'IsProcedure') = 1
 	DROP PROCEDURE ReadTrace.spReporter_StmtTopN
-Go
+GO
 
 CREATE PROCEDURE ReadTrace.spReporter_StmtTopN
 	@StartTimeInterval	INT = NULL,
@@ -2486,6 +2495,7 @@ BEGIN
 		@iLoginNameID
 END
 GO
+
 ----------------------------------------------------------------------------------------------
 IF OBJECTPROPERTY(OBJECT_ID('ReadTrace.spReporter_DTASample'), 'IsProcedure') = 1
 	DROP PROCEDURE ReadTrace.spReporter_DTASample
@@ -2530,6 +2540,7 @@ BEGIN
 	WHERE HashID = @HashID AND TextData IS NOT NULL	
 END
 GO
+
 ----------------------------------------------------------------------------------------------
 IF OBJECTPROPERTY(OBJECT_ID('ReadTrace.spReporter_BatchISQL'), 'IsProcedure') = 1
 	DROP PROCEDURE ReadTrace.spReporter_BatchISQL
@@ -2544,10 +2555,12 @@ BEGIN
 	WHERE HashID = @HashID
 END
 GO
+
 ----------------------------------------------------------------------------------------------
 IF OBJECTPROPERTY(OBJECT_ID('ReadTrace.spReporter_StatementISQL'), 'IsProcedure') = 1
 	DROP PROCEDURE ReadTrace.spReporter_StatementISQL
 GO
+
 
 CREATE PROCEDURE ReadTrace.spReporter_StatementISQL
 	@HashID BIGINT
@@ -2558,6 +2571,7 @@ BEGIN
 	WHERE HashID = @HashID
 END
 GO
+
 ----------------------------------------------------------------------------------------------
 IF OBJECTPROPERTY(OBJECT_ID('ReadTrace.spReporter_Compare_Overview_BatchUniqueHashInfo'), 'IsProcedure') = 1
 	DROP PROCEDURE ReadTrace.spReporter_Compare_Overview_BatchUniqueHashInfo
@@ -2587,6 +2601,7 @@ RIGHT OUTER JOIN ReadTraceCompare.tblUniqueBatches c ON b.HashID = c.HashID
 	ORDER BY [Desc]
 END
 GO
+
 ----------------------------------------------------------------------------------------------
 IF OBJECTPROPERTY(OBJECT_ID('ReadTrace.spReporter_Overview_Counts'), 'IsProcedure') = 1
 	DROP PROCEDURE ReadTrace.spReporter_Overview_Counts
@@ -2652,7 +2667,7 @@ CREATE PROCEDURE ReadTrace.spReporter_Compare_TopN
 	@strDBSchema SYSNAME,
 	@TopN INT = NULL								-- limit result set to this number of queries per tree-level in the hierarchy
 AS
-BEGIn
+BEGIN
 	SET NOCOUNT ON
 
 	DECLARE @strCmd		NVARCHAR(MAX)
@@ -2719,6 +2734,7 @@ BEGIn
 
 END
 GO
+
 ----------------------------------------------------------------------------------------------
 --	The Diff is calculated as TotalActual - (projected total)
 --	so the ones we want are when the value is positive where
@@ -2726,6 +2742,7 @@ GO
 IF OBJECTPROPERTY(OBJECT_ID('ReadTrace.spReporter_Overview_TopN'), 'IsProcedure') = 1
 	DROP PROCEDURE ReadTrace.spReporter_Overview_TopN
 GO
+
 
 -- ReadTrace.spReporter_Overview_TopN  
 CREATE PROCEDURE ReadTrace.spReporter_Overview_TopN
@@ -2787,4 +2804,3 @@ INNER JOIN ReadTrace.tblUniqueBatches u ON u.HashID = Outcome.HashID
 		OR	EventDesc  <= @TopN		
 		ORDER BY QueryNumber	--	Default ordering
 END
-GO
