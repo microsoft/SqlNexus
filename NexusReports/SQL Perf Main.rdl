@@ -7,9 +7,9 @@
     </am:CreatedBy>
     <am:UpdatedBy>
       <am:Name>SSDTRS</am:Name>
-      <am:Version>17.14.36301.6</am:Version>
+      <am:Version>17.14.36705.20</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2025-07-26T18:54:46.2966403Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2025-11-11T20:21:58.4783022Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
@@ -1034,6 +1034,25 @@ INSERT INTO @tbl_reports
 VALUES
 ('WASD_SloStats_C', 'SLO change history', 'Shows the changes in service level objective for databases', 1 | 2 | 4 | 8,
  'Azure', 'dbo.tbl_SLO_HISTORY', 400, 'Azure Perf Stats Collector', 1, 1000);
+
+ 
+INSERT INTO @tbl_reports
+(
+    ReportName,
+    ReportDisplayName,
+    ReportDescription,
+    VersionApplied,
+    Category,
+    ValidationObject,
+    SeqNo,
+    DataCollection,
+    Manditory,
+    CategorySeq
+)
+VALUES
+('ActiveProcesses_C', 'Active Processes Report', 'Shows the active processes and their memory usage', 1 | 2 | 4 | 8,
+ 'Common', 'dbo.tbl_ActiveProcesses_OS', 4000, 'SQL Base Collector', 1, 3000);
+
 
 
 --final Select to calc available reports

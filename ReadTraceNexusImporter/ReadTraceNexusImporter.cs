@@ -34,7 +34,7 @@ namespace ReadTrace
         const string OPTION_ENABLE_MARS = "Enable -T35 to support MARs";
         const string OPTION_USE_LOCAL_SERVER_TIME = "Import events using local server time (not UTC)";
 
-        
+
         //      Due to the batch flush levels for the BCP from ReadTrace these are often 
         //      going to be 0 until you exceed 1 million loaded.  The progress for ReadTrace 
         //      has been updated some to help this display 
@@ -108,7 +108,7 @@ namespace ReadTrace
 
 
 
-               
+
                 if (readTracePath != null)
                 {
                     //Util.Logger.LogMessage("readtrace path " + FileVersionInfo.GetVersionInfo(readTracePath).ToString(), MessageOptions.Dialog);
@@ -134,7 +134,7 @@ namespace ReadTrace
                     extractedOK = ExtractReadTraceReports();
                 }
 
-                
+
             }
 
             catch (Exception e)
@@ -190,43 +190,8 @@ namespace ReadTrace
                     File.Delete(f);
 
                 }
+                HasPostScript = true;
 
-
-
-
-                Util.Logger.LogMessage("Report path " + reportPath);
-                MethodInfo GetSetupSQLScript = type.GetMethod("GetSetupSQLScript");
-                MethodInfo GetValidateSQLScript = type.GetMethod("GetValidateSQLScript");
-                if (GetSetupSQLScript != null)
-                {
-                    String setupscript = (string) GetSetupSQLScript.Invoke(null, null);
-                    String postScriptFile = reportPath + "ReadTracePostProcessing.sql";
-                    if (File.Exists (postScriptFile))
-                        File.Delete(postScriptFile);
-
-                    StreamWriter sr = File.CreateText(postScriptFile);
-                    sr.Write(setupscript);
-                    sr.Flush();
-                    sr.Close();
-                    HasPostScript = true;
-
-                }
-                bool HasValidateScript = false;
-                string ValidateScriptName = "ReadTraceReportValidate.sql";
-                if (GetValidateSQLScript != null)
-                {
-                    HasValidateScript = true;
-                    String validateScriptString = (string) GetValidateSQLScript.Invoke(null, null);
-                    String validateScriptFile = reportPath + ValidateScriptName;
-                    if (File.Exists(validateScriptFile))
-                        File.Delete(validateScriptFile);
-                    StreamWriter sr = File.CreateText(validateScriptFile);
-                    sr.Write(validateScriptString);
-                    sr.Flush();
-                    sr.Close();
-
-                }
-          
                 foreach (string key in dict.Keys)
                 {
                     XmlDocument doc = new XmlDocument();
@@ -236,20 +201,11 @@ namespace ReadTrace
                     bool isChildReport = bool.Parse(n.Attributes["ischild"].Value);
                     String reportDefinition = dict[key];
 
-
                     XmlDocument reportDoc = new XmlDocument();
                     reportDoc.LoadXml(reportDefinition);
                     String reportExt = ".RDLC"; //(isChildReport ? ".RDLC" : ".RDL");
                     String reportFullFileName = reportPath + reportName + reportExt;
                     reportDoc.Save(reportFullFileName);
-                    if (HasValidateScript == true)
-                    {
-                        String validateXml = "<report><validate script=\"" + ValidateScriptName + "\"/></report>";
-                        XmlDocument validateDoc = new XmlDocument();
-                        validateDoc.LoadXml(validateXml);
-                        validateDoc.Save(reportFullFileName + ".xml");
-                    }
-
 
                 }
             }
@@ -259,8 +215,6 @@ namespace ReadTrace
                 Util.Logger.LogMessage("Extract readtrace report failed with error " + ex.ToString());
 
             }
-
-
 
             return ret;
         }
@@ -331,10 +285,10 @@ namespace ReadTrace
 
 
         private bool SkipFile(string FullFileName)
-        { 
+        {
             bool ret = false;
-            if (FullFileName.ToLower().EndsWith ("_blk.trc"))
-                ret= true;
+            if (FullFileName.ToLower().EndsWith("_blk.trc"))
+                ret = true;
 
             return ret;
 
@@ -345,7 +299,7 @@ namespace ReadTrace
         /// used instead of "ABC_sp_trace_15.trc").</remarks>
         private string FindFirstTraceFile(string[] files)
         {
-            if (this.traceFileSpec.ToUpper().Contains("XEL")) 
+            if (this.traceFileSpec.ToUpper().Contains("XEL"))
             {
                 return FileFirstXelFile(files);
             }
@@ -388,7 +342,7 @@ namespace ReadTrace
             {
                 logger.LogMessage("Looking at file " + file);
                 FileInfo fs = new FileInfo(file);
-                DateTime CurrentFileCreateTime =  fs.CreationTime;
+                DateTime CurrentFileCreateTime = fs.CreationTime;
                 if (CurrentFileCreateTime < LastFileCreateTime)
                 {
                     FirstFile = file;
@@ -472,12 +426,12 @@ namespace ReadTrace
                 Path.GetTempPath() + "RML",     // -o{7}  Temp output path (%TEMP%\RML)
                 ((bool)this.options[OPTION_IGNORE_PSSDIAG_HOST] ? "-H\"!PSSDIAG\"" : ""),   //  {8}   Using 9.00.009 ReadTrace ignore events with HOST=PSSDIAG 
                 ((bool)this.options[OPTION_DISABLE_EVENT_REQUIREMENTS] ? "-T28 -T29 " : ""),       //  {9} tell ReadTrace to override event requirement checks 
-                ((bool)this.options[OPTION_ENABLE_MARS] ? "-T35":""),  //  {10} tell ReadTrace that there's MARS sessions 
-                ((bool)this.options[OPTION_USE_LOCAL_SERVER_TIME] ? "-B"+timeAdjForLocalTimeMinutes : "") //{11} Optional: -B### Time bias: Adjusts the start and end times, as read by (+-)### minutes. 
+                ((bool)this.options[OPTION_ENABLE_MARS] ? "-T35" : ""),  //  {10} tell ReadTrace that there's MARS sessions 
+                ((bool)this.options[OPTION_USE_LOCAL_SERVER_TIME] ? "-B" + timeAdjForLocalTimeMinutes : "") //{11} Optional: -B### Time bias: Adjusts the start and end times, as read by (+-)### minutes. 
             );
 
             Util.Env["RMLLogDir"] = Path.GetTempPath() + "RML";
-            
+
             Util.Env.ReadTraceLogFile = Path.GetTempPath() + @"RML\readtrace.log";
             Util.Logger.LogMessage("ReadTraceNexusImporter: Loading " + firstTrcFile);
             Util.Logger.LogMessage("ReadTraceNexusImporter: Temp Path: " + Path.GetTempPath());
@@ -627,12 +581,13 @@ namespace ReadTrace
         /// <remarks>Scripts must be present in the host .exe's directory</remarks>
         public string[] PostScripts
         {   // No scripts needed by this importer
-            get { 
+            get
+            {
                 if (HasPostScript == true)
                     return new string[] { POST_LOAD_SQL_SCRIPT };
                 else
                     return new string[0];
-                
+
             }
         }
 
