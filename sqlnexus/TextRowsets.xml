@@ -4821,5 +4821,36 @@
       </KnownColumns>
     </Rowset>
 
+    <Rowset name="tbl_disk_volume_information" enabled="true" identifier="-- Volume_Information --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="Volume_Name" type="RowsetImportEngine.NVarCharColumn" length="50" />
+        <Column name="Volume_Label" type="RowsetImportEngine.NVarCharColumn" length="16" />
+        <Column name="Device_ID" type="RowsetImportEngine.NVarCharColumn" length="50"/>
+        <Column name="File_System" type="RowsetImportEngine.VarCharColumn" length="12" />
+        <Column name="Block_Size" type="RowsetImportEngine.IntColumn"/>
+        <Column name="Boot_Volume" type="RowsetImportEngine.VarCharColumn" length="12" />
+        <Column name="System_Volume" type="RowsetImportEngine.VarCharColumn" length="14" />
+        <Column name="Disk_Quotas" type="RowsetImportEngine.VarCharColumn" length="12" />
+        <Column name="Compression" type="RowsetImportEngine.VarCharColumn" length="12" />
+        <Column name="Capacity_GB" type="RowsetImportEngine.DecimalColumn" />
+        <Column name="FreeSpace_GB" type="RowsetImportEngine.DecimalColumn" />
+      </KnownColumns>
+    </Rowset>
+
+    <Rowset name="tbl_dm_os_memory_health_history" enabled="true" identifier="-- sys.dm_os_memory_health_history --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="snapshot_time" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="severity_level" type="RowsetImportEngine.IntColumn" />
+        <Column name="severity_level_desc" type="RowsetImportEngine.NVarCharColumn" length="60" />
+        <Column name="allocation_potential_memory_mb" type="RowsetImportEngine.IntColumn" />
+        <Column name="reclaimable_cache_memory_mb" type="RowsetImportEngine.IntColumn" />
+        <Column name="clerk_type" type="RowsetImportEngine.NVarCharColumn" length="60" />
+        <Column name="pages_allocated_kb" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="out_of_memory_event_count" type="RowsetImportEngine.IntColumn" />
+        <Column name="memgrant_timeout_count" type="RowsetImportEngine.IntColumn" />
+        <Column name="memgrant_waiter_count" type="RowsetImportEngine.IntColumn" />
+      </KnownColumns>
+    </Rowset>  
+    
   </KnownRowsets>
 </TextImport>

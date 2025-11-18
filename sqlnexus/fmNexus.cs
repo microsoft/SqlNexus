@@ -1204,7 +1204,7 @@ namespace sqlnexus
             foreach (XmlNode n in arrayXmlNodes)
             {
                 XmlNode qparamval = n.SelectSingleNode("rds:Value", nsmgr);
-                string paramname, qpname;
+                string paramname;
                 if ((null != qparamval) && (0 == qparamval.InnerText.IndexOf(PARAM_TOKEN, StringComparison.InvariantCultureIgnoreCase)))
                 {
                     string[] parts = qparamval.InnerText.Substring(PARAM_TOKEN.Length).Split('.');
@@ -1217,7 +1217,6 @@ namespace sqlnexus
                         paramname = paramname.Substring(1); // "Filter3"
                 }
 
-                qpname = n.Attributes["Name"].Value;    // e.g. "@Filter3"
 
                 // If the query parameter should take on the value of a report parameter, we need to find the 
                 // report parameter's current value.  
@@ -1274,26 +1273,7 @@ namespace sqlnexus
 
                 qrytext = qrytext.Replace("@" + paramname, paramstr);
 
-                //if (-1 != qrytext.IndexOf(qpname + ',', StringComparison.InvariantCultureIgnoreCase))
-                //{   
-                //    qrytext = qrytext.Replace(qpname + ',', paramstr);
-                //}
-                //else if (-1 != qrytext.IndexOf("@" + paramname, StringComparison.InvariantCultureIgnoreCase))
-                //{
-                //    qrytext = qrytext.Replace("@" + paramname, paramstr);
-                //}
-                //else if (-1 != qrytext.IndexOf(paramname, StringComparison.InvariantCultureIgnoreCase))
-                //{
-                //    qrytext = qrytext.Replace(paramname, paramstr);
-                //}
-                //else  //No param token in query text
-                //{
-                //    qrytext += " " + paramstr + ",";
-                //}
             }
-            ////Trim off trailing comma if there is one
-            //if (',' == qrytext[qrytext.Length - 1])
-            //    qrytext = qrytext.Substring(0, qrytext.Length - 1);
             return qrytext;
         }
 
@@ -2982,11 +2962,10 @@ namespace sqlnexus
 
             foreach (MethodInfo m in methods)
             {
-                Object obj = null;
-
                 try
                 {
-                    obj = TryMethodCall(type, m, args[2], newArgs);
+                    object obj = TryMethodCall(type, m, args[2], newArgs);
+                    obj.ToString(); //Suppress warning
                 }
                 catch (Exception e)
                 {
@@ -3227,14 +3206,11 @@ namespace sqlnexus
         
 bool CreateDB(String dbName)
         {
-            // Regex pattern: database name must not be 'master', 'tempdb', 'msdb', or 'model', and must be 1-128 chars, allowed chars: #, $, A-Za-z0-9, _, -
-            System.Text.RegularExpressions.Regex re =
-                new System.Text.RegularExpressions.Regex(@"^(?!(master|tempdb|msdb|model)$)[#$A-Za-z0-9_-]{1,128}$", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
 
-            // If the name does not match, it's invalid
-            if (!re.IsMatch(dbName))
+            // Regex pattern: database name must not be 'master', 'tempdb', 'msdb', or 'model', and must be 1-128 chars, allowed chars: A-Za-z0-9, underscore.
+            if (!Program.IsDbNameValid(dbName))
             {
-                LogMessage($"Error: Database name must contain only letters, numbers, underscores, hyphens, #, $, and cannot be 'master', 'tempdb', 'model', or 'msdb'. Length must be 1-128 characters. Invalid database name: {dbName}. Try again", MessageOptions.All);
+                LogMessage($"Error: Database name must contain only basic letters, numbers, underscores and cannot be 'master', 'tempdb', 'model', or 'msdb'. Length must be 1-128 characters. Invalid database name: {dbName}. Try again", MessageOptions.All);
                 return false;
             }
             Globals.credentialMgr.Database = "master";
