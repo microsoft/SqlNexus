@@ -1066,7 +1066,7 @@ namespace sqlnexus
                         Application.DoEvents();
                     }
 
-                    else if ((tlpFiles.Controls[i].Name == perfStatsAnalysisStr) && (RunScripts == true))
+                    else if ((tlpFiles.Controls[i].Name == perfStatsAnalysisStr))
                     {
                         int perfAnalysisStartTicks = Environment.TickCount;
 
