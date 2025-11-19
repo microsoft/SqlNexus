@@ -10,10 +10,12 @@ using NexusInterfaces;
 namespace sqlnexus
 {
     public partial class fmLoginEx : Form
-    {      
+    {
         public fmLoginEx()
         {
             InitializeComponent();
+            cmbTheme.SelectedItem = Properties.Settings.Default.Theme;
+            g_theme.fRec_setControlColors(this);
             chkTrustServerCertificate.Checked = Properties.Settings.Default.TrustCertificate;
             chkEncryptConnection.Checked = Properties.Settings.Default.EncryptConnection;
             btnCancel.FlatStyle = FlatStyle.Flat;
@@ -75,16 +77,19 @@ namespace sqlnexus
                 txtPassword.Text = "";//since this object is cached, erase the password
             }
 
-            //Saving trustcertificate and encrypt connection for the user.
+            //Saving trustcertificate & encrypt connection & theme for the user.
             Properties.Settings.Default.EncryptConnection = chkEncryptConnection.Checked;
             Properties.Settings.Default.TrustCertificate = chkTrustServerCertificate.Checked;
+            Properties.Settings.Default.Theme = cmbTheme.SelectedItem.ToString();
 
             //this.Dispose();
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
-
+            g_theme.setThemeColors(Properties.Settings.Default.Theme);
+            g_theme.fRec_setControlColors(this);
+            g_theme.fRec_setControlColors(fmNexus.singleton);
         }
 
         private void fmLoginEx_Load(object sender, EventArgs e)
@@ -102,11 +107,11 @@ namespace sqlnexus
         }
 
         private void btnCancel_Enter(object sender, EventArgs e)
-        {           
+        {
             btnCancel.FlatStyle = FlatStyle.Flat;
             btnCancel.FlatAppearance.BorderColor = ColorTranslator.FromHtml("#0078D7");
             btnCancel.BackColor = ColorTranslator.FromHtml("#E5F1FB");
-        }     
+        }
         private void btnCancel_Leave(object sender, EventArgs e)
         {
             btnCancel.FlatStyle = FlatStyle.Flat;
@@ -138,6 +143,20 @@ namespace sqlnexus
             btnConnect.FlatAppearance.BorderColor = ColorTranslator.FromHtml("#0078D7");
             btnConnect.BackColor = ColorTranslator.FromHtml("#E5F1FB");
 
+        }
+
+        private void cmbTheme_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            g_theme.setThemeColors(cmbTheme.Text);
+            g_theme.fRec_setControlColors(this);
+            g_theme.fRec_setControlColors(fmNexus.singleton);
+        }
+
+        private void fmLoginEx_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            g_theme.setThemeColors(Properties.Settings.Default.Theme);
+            g_theme.fRec_setControlColors(this);
+            g_theme.fRec_setControlColors(fmNexus.singleton);
         }
     }
 }

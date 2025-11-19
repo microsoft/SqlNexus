@@ -63,7 +63,64 @@ namespace sqlnexus
             return MessageBox.Show(errorMsg, "Application Error", MessageBoxButtons.AbortRetryIgnore, MessageBoxIcon.Stop);
         }
     }
+    public static class g_theme
+    {
+        public static string name;
+        public static System.Drawing.Color ForeColor;
+        public static System.Drawing.Color BackColor;
+        public static System.Drawing.Color otherColor;
 
+        public static void fRec_setControlColors(Control control)
+        {
+            control.ForeColor = g_theme.ForeColor;
+            control.BackColor = g_theme.BackColor;
+
+            //adding special checks for control types as some properties are control specific
+            if (control.GetType() == typeof(System.Windows.Forms.LinkLabel))
+            {
+                ((LinkLabel)control).LinkColor = ForeColor;
+                ((LinkLabel)control).ActiveLinkColor = ForeColor;
+                ((LinkLabel)control).DisabledLinkColor = ForeColor;
+            }
+            //this was not there on the original design but the differentiation was background colors , using this as border line to separate different panels
+            if (control.GetType() == typeof(System.Windows.Forms.Panel))
+            {
+                ((Panel)control).BorderStyle = BorderStyle.FixedSingle;
+            }
+            if (control.HasChildren)
+            {
+                foreach (Control childControl in control.Controls)
+                {
+                    fRec_setControlColors(childControl);
+                }
+            }
+        }
+
+        public static void setThemeColors(String theme)
+        {
+            switch (theme)
+            {
+                case "Aquatic":
+                    g_theme.ForeColor = System.Drawing.ColorTranslator.FromHtml("#FFFFFF");
+                    g_theme.BackColor = System.Drawing.ColorTranslator.FromHtml("#202020");
+                    g_theme.otherColor = System.Drawing.ColorTranslator.FromHtml("#75E9FC");
+                    g_theme.name = "Aquatic";
+                    break;
+                case "Desert":
+                    g_theme.ForeColor = System.Drawing.ColorTranslator.FromHtml("#3D3D3D");
+                    g_theme.BackColor = System.Drawing.ColorTranslator.FromHtml("#FFFAEF");
+                    g_theme.otherColor = System.Drawing.ColorTranslator.FromHtml("#1C5E75");
+                    g_theme.name = "Desert";
+                    break;
+                default:
+                    g_theme.ForeColor = System.Drawing.Color.Black;
+                    g_theme.BackColor = Form.DefaultBackColor;
+                    g_theme.otherColor = System.Drawing.ColorTranslator.FromHtml("#75E9FC");
+                    g_theme.name = "None";
+                    break;
+            }
+        }
+    }
     enum ProgramExitCodes
     {
         UserCancel = -1,

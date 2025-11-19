@@ -192,7 +192,7 @@ namespace sqlnexus
             ((System.ComponentModel.ISupportInitialize)(this.pbEditCustRowset)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbCopy)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbExport)).BeginInit();
-            this.paTasksHeader.SuspendLayout();          
+            this.paTasksHeader.SuspendLayout();
             this.paData.SuspendLayout();
             this.paDataHeader.SuspendLayout();
             this.paLogBody.SuspendLayout();
@@ -201,10 +201,10 @@ namespace sqlnexus
             this.paReports.SuspendLayout();
             this.paReportsBody.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bpPowerBIrpt)).BeginInit();
-            this.paReportsHeader.SuspendLayout();                
-this.menuBarMain.SuspendLayout();
+            this.paReportsHeader.SuspendLayout();
+            this.menuBarMain.SuspendLayout();
             this.toolbarService.SuspendLayout();
-            this.toolbarReport.SuspendLayout();        
+            this.toolbarReport.SuspendLayout();
             this.toolbarMain.SuspendLayout();
             this.cmReport.SuspendLayout();
             this.SuspendLayout();
@@ -227,10 +227,10 @@ this.menuBarMain.SuspendLayout();
             // 
             // toolStripContainer1.TopToolStripPanel
             // 
-            this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.menuBarMain);
+            this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.toolbarReport);
             this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.toolbarService);
-            this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.toolbarReport);           
             this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.toolbarMain);
+            this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.menuBarMain);
             // 
             // ssStatus
             // 
@@ -421,9 +421,8 @@ this.menuBarMain.SuspendLayout();
             this.linkLabelImport.LinkColor = System.Drawing.Color.DarkBlue;
             this.linkLabelImport.Name = "linkLabelImport";
             this.linkLabelImport.TabStop = true;
-            this.linkLabelImport.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelImport_LinkClicked);
-            this.linkLabelImport.LocationChanged += new System.EventHandler(this.linkLabelImport_LocationChanged);
             this.linkLabelImport.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.importToolStripMenuItem_Click);
+            this.linkLabelImport.LocationChanged += new System.EventHandler(this.linkLabelImport_LocationChanged);
             // 
             // paTasksHeader
             // 
@@ -591,7 +590,7 @@ this.menuBarMain.SuspendLayout();
             // 
             // tvReports
             // 
-            this.tvReports.BackColor = System.Drawing.Color.AliceBlue;
+            this.tvReports.BackColor = g_theme.BackColor;
             this.tvReports.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.tvReports.Cursor = System.Windows.Forms.Cursors.Hand;
             resources.ApplyResources(this.tvReports, "tvReports");
@@ -602,6 +601,8 @@ this.menuBarMain.SuspendLayout();
             this.tvReports.ShowRootLines = false;
             this.tvReports.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvReports_AfterSelect);
             this.tvReports.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvReports_NodeMouseClick);
+            this.tvReports.DrawMode = System.Windows.Forms.TreeViewDrawMode.OwnerDrawText;
+            this.tvReports.DrawNode += tvReports_DrawMode;
             // 
             // imGlyphs
             // 
@@ -661,7 +662,8 @@ this.menuBarMain.SuspendLayout();
             // rvTemplate
             // 
             resources.ApplyResources(this.rvTemplate, "rvTemplate");
-            this.rvTemplate.Name = "rvTemplate";          
+            this.rvTemplate.Name = "rvTemplate";
+            this.rvTemplate.ServerReport.BearerToken = null;
             // 
             // tcReports
             // 
@@ -677,6 +679,7 @@ this.menuBarMain.SuspendLayout();
             // 
             this.menuBarMain.DataBindings.Add(new System.Windows.Forms.Binding("Visible", global::sqlnexus.Properties.Settings.Default, "ShowMainMenu", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             resources.ApplyResources(this.menuBarMain, "menuBarMain");
+            this.menuBarMain.GripMargin = new System.Windows.Forms.Padding(2, 2, 0, 2);
             this.menuBarMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Visible;
             this.menuBarMain.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuBarMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -1272,8 +1275,8 @@ this.menuBarMain.SuspendLayout();
             // 
             // tstbFind
             // 
-            resources.ApplyResources(this.tstbFind, "tstbFind");
             this.tstbFind.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            resources.ApplyResources(this.tstbFind, "tstbFind");
             this.tstbFind.Margin = new System.Windows.Forms.Padding(10, 0, 1, 0);
             this.tstbFind.Name = "tstbFind";
             this.tstbFind.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tstbFind_KeyPress);
@@ -1315,7 +1318,7 @@ this.menuBarMain.SuspendLayout();
             this.tscCurrentDatabase.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tscCurrentDatabase_KeyUp);
             this.tscCurrentDatabase.Click += new System.EventHandler(this.tscCurrentDatabase_Click);
             this.tscCurrentDatabase.TextChanged += new System.EventHandler(this.tscCurrentDatabase_TextChanged);
-            //             
+            // 
             // toolbarMain
             // 
             this.toolbarMain.DataBindings.Add(new System.Windows.Forms.Binding("Visible", global::sqlnexus.Properties.Settings.Default, "ShowStandardToolbar", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
@@ -1391,7 +1394,7 @@ this.menuBarMain.SuspendLayout();
             resources.ApplyResources(this.tspHelp, "tspHelp");
             this.tspHelp.Name = "tspHelp";
             this.tspHelp.Click += new System.EventHandler(this.indexToolStripMenuItem_Click);
-            //            
+            // 
             // cmReport
             // 
             this.cmReport.ImageScalingSize = new System.Drawing.Size(20, 20);
@@ -1503,8 +1506,6 @@ this.menuBarMain.SuspendLayout();
             this.paReportsBody.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bpPowerBIrpt)).EndInit();
             this.paReportsHeader.ResumeLayout(false);
-            this.paReportsHeader.ResumeLayout(false);
-            this.paReportsHeader.PerformLayout();                        
             this.menuBarMain.ResumeLayout(false);
             this.menuBarMain.PerformLayout();
             this.toolbarService.ResumeLayout(false);

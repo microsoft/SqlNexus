@@ -28,7 +28,8 @@ namespace sqlnexus
 			// Required for Windows Form Designer support
 			//
 			InitializeComponent();
-		}
+            g_theme.fRec_setControlColors(this);
+        }
 
 		public frmImportSummary(INexusImporter ri)
 		{
@@ -79,10 +80,11 @@ namespace sqlnexus
             this.columnHeaderRowcount});
             this.listImportSummary.FullRowSelect = true;
             this.listImportSummary.GridLines = true;
+            this.listImportSummary.HideSelection = false;
             this.listImportSummary.LabelWrap = false;
-            this.listImportSummary.Location = new System.Drawing.Point(10, 9);
+            this.listImportSummary.Location = new System.Drawing.Point(13, 11);
             this.listImportSummary.Name = "listImportSummary";
-            this.listImportSummary.Size = new System.Drawing.Size(397, 208);
+            this.listImportSummary.Size = new System.Drawing.Size(391, 193);
             this.listImportSummary.Sorting = System.Windows.Forms.SortOrder.Descending;
             this.listImportSummary.TabIndex = 1;
             this.listImportSummary.UseCompatibleStateImageBehavior = false;
@@ -102,9 +104,9 @@ namespace sqlnexus
             // 
             this.cmdOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.cmdOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.cmdOK.Location = new System.Drawing.Point(326, 226);
+            this.cmdOK.Location = new System.Drawing.Point(296, 215);
             this.cmdOK.Name = "cmdOK";
-            this.cmdOK.Size = new System.Drawing.Size(81, 26);
+            this.cmdOK.Size = new System.Drawing.Size(108, 33);
             this.cmdOK.TabIndex = 0;
             this.cmdOK.Text = "&OK";
             this.cmdOK.Click += new System.EventHandler(this.cmdOK_Click);
@@ -112,7 +114,7 @@ namespace sqlnexus
             // frmImportSummary
             // 
             this.AcceptButton = this.cmdOK;
-            this.AutoScaleBaseSize = new System.Drawing.Size(6, 15);
+            this.AutoScaleBaseSize = new System.Drawing.Size(8, 19);
             this.CancelButton = this.cmdOK;
             this.ClientSize = new System.Drawing.Size(416, 266);
             this.Controls.Add(this.cmdOK);

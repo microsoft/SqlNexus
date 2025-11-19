@@ -13,6 +13,7 @@ namespace sqlnexus
         public fmSelectInstance()
         {
             InitializeComponent();
+            g_theme.fRec_setControlColors(this);
         }
 
         private void fmSelectInstance_Load(object sender, EventArgs e)
