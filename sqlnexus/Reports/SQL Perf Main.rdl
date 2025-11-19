@@ -39,7 +39,7 @@
     SeqNo INT,
     DataCollection NVARCHAR(128),
     Importer NVARCHAR(128),
-    Manditory BIT,
+    Mandatory BIT,
     CategorySeq INT
 );
 
@@ -55,7 +55,7 @@ INSERT INTO @tbl_reports
     ValidationObject,
     SeqNo,
     DataCollection,
-    Manditory,
+    Mandatory,
     CategorySeq
 )
 VALUES
@@ -72,7 +72,7 @@ INSERT INTO @tbl_reports
     ValidationObject,
     SeqNo,
     DataCollection,
-    Manditory,
+    Mandatory,
     CategorySeq
 )
 VALUES
@@ -89,7 +89,7 @@ INSERT INTO @tbl_reports
     ValidationObject,
     SeqNo,
     DataCollection,
-    Manditory,
+    Mandatory,
     CategorySeq
 )
 VALUES
@@ -107,7 +107,7 @@ INSERT INTO @tbl_reports
     ValidationObject,
     SeqNo,
     DataCollection,
-    Manditory,
+    Mandatory,
     CategorySeq
 )
 VALUES
@@ -125,7 +125,7 @@ INSERT INTO @tbl_reports
     ValidationObject,
     SeqNo,
     DataCollection,
-    Manditory,
+    Mandatory,
     CategorySeq
 )
 VALUES
@@ -142,7 +142,7 @@ INSERT INTO @tbl_reports
     ValidationObject,
     SeqNo,
     DataCollection,
-    Manditory,
+    Mandatory,
     CategorySeq
 )
 VALUES
@@ -159,7 +159,7 @@ INSERT INTO @tbl_reports
     ValidationObject,
     SeqNo,
     DataCollection,
-    Manditory,
+    Mandatory,
     CategorySeq
 )
 VALUES
@@ -175,7 +175,7 @@ INSERT INTO @tbl_reports
     ValidationObject,
     SeqNo,
     DataCollection,
-    Manditory,
+    Mandatory,
     CategorySeq
 )
 VALUES
@@ -191,7 +191,7 @@ INSERT INTO @tbl_reports
     ValidationObject,
     SeqNo,
     DataCollection,
-    Manditory,
+    Mandatory,
     CategorySeq
 )
 VALUES
@@ -207,7 +207,7 @@ INSERT INTO @tbl_reports
     ValidationObject,
     SeqNo,
     DataCollection,
-    Manditory,
+    Mandatory,
     CategorySeq
 )
 VALUES
@@ -223,7 +223,7 @@ INSERT INTO @tbl_reports
     ValidationObject,
     SeqNo,
     DataCollection,
-    Manditory,
+    Mandatory,
     CategorySeq
 )
 VALUES
@@ -240,7 +240,7 @@ INSERT INTO @tbl_reports
     ValidationObject,
     SeqNo,
     DataCollection,
-    Manditory,
+    Mandatory,
     CategorySeq
 )
 VALUES
@@ -257,7 +257,7 @@ INSERT INTO @tbl_reports
     ValidationObject,
     SeqNo,
     DataCollection,
-    Manditory,
+    Mandatory,
     CategorySeq
 )
 VALUES
@@ -274,7 +274,7 @@ INSERT INTO @tbl_reports
     ValidationObject,
     SeqNo,
     DataCollection,
-    Manditory,
+    Mandatory,
     CategorySeq
 )
 VALUES
@@ -291,7 +291,7 @@ INSERT INTO @tbl_reports
     ValidationObject,
     SeqNo,
     DataCollection,
-    Manditory,
+    Mandatory,
     CategorySeq
 )
 VALUES
@@ -307,7 +307,7 @@ INSERT INTO @tbl_reports
     ValidationObject,
     SeqNo,
     DataCollection,
-    Manditory,
+    Mandatory,
     CategorySeq
 )
 VALUES
@@ -323,7 +323,7 @@ INSERT INTO @tbl_reports
     ValidationObject,
     SeqNo,
     DataCollection,
-    Manditory,
+    Mandatory,
     CategorySeq
 )
 VALUES
@@ -340,7 +340,7 @@ INSERT INTO @tbl_reports
     ValidationObject,
     SeqNo,
     DataCollection,
-    Manditory,
+    Mandatory,
     CategorySeq
 )
 VALUES
@@ -357,7 +357,7 @@ INSERT INTO @tbl_reports
     ValidationObject,
     SeqNo,
     DataCollection,
-    Manditory,
+    Mandatory,
     CategorySeq
 )
 VALUES
@@ -374,7 +374,7 @@ INSERT INTO @tbl_reports
     ValidationObject,
     SeqNo,
     DataCollection,
-    Manditory,
+    Mandatory,
     CategorySeq
 )
 VALUES
@@ -390,7 +390,7 @@ INSERT INTO @tbl_reports
     ValidationObject,
     SeqNo,
     DataCollection,
-    Manditory,
+    Mandatory,
     CategorySeq
 )
 VALUES
@@ -407,7 +407,7 @@ INSERT INTO @tbl_reports
     ValidationObject,
     SeqNo,
     DataCollection,
-    Manditory,
+    Mandatory,
     CategorySeq
 )
 VALUES
@@ -424,7 +424,7 @@ INSERT INTO @tbl_reports
     ValidationObject,
     SeqNo,
     DataCollection,
-    Manditory,
+    Mandatory,
     CategorySeq
 )
 VALUES
@@ -440,7 +440,7 @@ INSERT INTO @tbl_reports
     ValidationObject,
     SeqNo,
     DataCollection,
-    Manditory,
+    Mandatory,
     CategorySeq
 )
 VALUES
@@ -457,7 +457,7 @@ INSERT INTO @tbl_reports
     ValidationObject,
     SeqNo,
     DataCollection,
-    Manditory,
+    Mandatory,
     CategorySeq
 )
 VALUES
@@ -474,7 +474,7 @@ INSERT INTO @tbl_reports
     ValidationObject,
     SeqNo,
     DataCollection,
-    Manditory,
+    Mandatory,
     CategorySeq
 )
 VALUES
@@ -491,7 +491,7 @@ INSERT INTO @tbl_reports
     ValidationObject,
     SeqNo,
     DataCollection,
-    Manditory,
+    Mandatory,
     CategorySeq
 )
 VALUES
@@ -508,7 +508,7 @@ INSERT INTO @tbl_reports
     ValidationObject,
     SeqNo,
     DataCollection,
-    Manditory,
+    Mandatory,
     CategorySeq
 )
 VALUES
@@ -525,7 +525,7 @@ INSERT INTO @tbl_reports
     ValidationObject,
     SeqNo,
     DataCollection,
-    Manditory,
+    Mandatory,
     CategorySeq
 )
 VALUES
@@ -541,7 +541,7 @@ INSERT INTO @tbl_reports
     ValidationObject,
     SeqNo,
     DataCollection,
-    Manditory,
+    Mandatory,
     CategorySeq
 )
 VALUES
@@ -558,7 +558,7 @@ INSERT INTO @tbl_reports
     ValidationObject,
     SeqNo,
     DataCollection,
-    Manditory,
+    Mandatory,
     CategorySeq
 )
 VALUES
@@ -574,7 +574,7 @@ INSERT INTO @tbl_reports
     ValidationObject,
     SeqNo,
     DataCollection,
-    Manditory,
+    Mandatory,
     CategorySeq
 )
 VALUES
@@ -590,7 +590,7 @@ INSERT INTO @tbl_reports
     ValidationObject,
     SeqNo,
     DataCollection,
-    Manditory,
+    Mandatory,
     CategorySeq
 )
 VALUES
@@ -606,7 +606,7 @@ INSERT INTO @tbl_reports
     ValidationObject,
     SeqNo,
     DataCollection,
-    Manditory,
+    Mandatory,
     CategorySeq
 )
 VALUES
@@ -622,7 +622,7 @@ INSERT INTO @tbl_reports
     ValidationObject,
     SeqNo,
     DataCollection,
-    Manditory,
+    Mandatory,
     CategorySeq
 )
 VALUES
@@ -639,7 +639,7 @@ INSERT INTO @tbl_reports
     ValidationObject,
     SeqNo,
     DataCollection,
-    Manditory,
+    Mandatory,
     CategorySeq
 )
 VALUES
@@ -655,7 +655,7 @@ INSERT INTO @tbl_reports
     ValidationObject,
     SeqNo,
     DataCollection,
-    Manditory,
+    Mandatory,
     CategorySeq
 )
 VALUES
@@ -672,7 +672,7 @@ INSERT INTO @tbl_reports
     ValidationObject,
     SeqNo,
     DataCollection,
-    Manditory,
+    Mandatory,
     CategorySeq
 )
 VALUES
@@ -689,7 +689,7 @@ INSERT INTO @tbl_reports
     ValidationObject,
     SeqNo,
     DataCollection,
-    Manditory,
+    Mandatory,
     CategorySeq
 )
 VALUES
@@ -705,7 +705,7 @@ INSERT INTO @tbl_reports
     ValidationObject,
     SeqNo,
     DataCollection,
-    Manditory,
+    Mandatory,
     CategorySeq
 )
 VALUES
@@ -721,7 +721,7 @@ INSERT INTO @tbl_reports
     ValidationObject,
     SeqNo,
     DataCollection,
-    Manditory,
+    Mandatory,
     CategorySeq
 )
 VALUES
@@ -738,7 +738,7 @@ INSERT INTO @tbl_reports
     ValidationObject,
     SeqNo,
     DataCollection,
-    Manditory,
+    Mandatory,
     CategorySeq
 )
 VALUES
@@ -754,7 +754,7 @@ INSERT INTO @tbl_reports
     ValidationObject,
     SeqNo,
     DataCollection,
-    Manditory,
+    Mandatory,
     CategorySeq
 )
 VALUES
@@ -770,7 +770,7 @@ INSERT INTO @tbl_reports
     ValidationObject,
     SeqNo,
     DataCollection,
-    Manditory,
+    Mandatory,
     CategorySeq
 )
 VALUES
@@ -788,7 +788,7 @@ INSERT INTO @tbl_reports
     ValidationObject,
     SeqNo,
     DataCollection,
-    Manditory,
+    Mandatory,
     CategorySeq
 )
 VALUES
@@ -804,7 +804,7 @@ INSERT INTO @tbl_reports
     ValidationObject,
     SeqNo,
     DataCollection,
-    Manditory,
+    Mandatory,
     CategorySeq
 )
 VALUES
@@ -820,7 +820,7 @@ INSERT INTO @tbl_reports
     ValidationObject,
     SeqNo,
     DataCollection,
-    Manditory,
+    Mandatory,
     CategorySeq
 )
 VALUES
@@ -836,7 +836,7 @@ INSERT INTO @tbl_reports
     ValidationObject,
     SeqNo,
     DataCollection,
-    Manditory,
+    Mandatory,
     CategorySeq
 )
 VALUES
@@ -852,7 +852,7 @@ INSERT INTO @tbl_reports
     ValidationObject,
     SeqNo,
     DataCollection,
-    Manditory,
+    Mandatory,
     CategorySeq
 )
 VALUES
@@ -870,7 +870,7 @@ INSERT INTO @tbl_reports
     ValidationObject,
     SeqNo,
     DataCollection,
-    Manditory,
+    Mandatory,
     CategorySeq
 )
 VALUES
@@ -886,7 +886,7 @@ INSERT INTO @tbl_reports
     ValidationObject,
     SeqNo,
     DataCollection,
-    Manditory,
+    Mandatory,
     CategorySeq
 )
 VALUES
@@ -903,7 +903,7 @@ INSERT INTO @tbl_reports
     ValidationObject,
     SeqNo,
     DataCollection,
-    Manditory,
+    Mandatory,
     CategorySeq
 )
 VALUES
@@ -921,7 +921,7 @@ INSERT INTO @tbl_reports
     ValidationObject,
     SeqNo,
     DataCollection,
-    Manditory,
+    Mandatory,
     CategorySeq
 )
 VALUES
@@ -939,7 +939,7 @@ INSERT INTO @tbl_reports
     ValidationObject,
     SeqNo,
     DataCollection,
-    Manditory,
+    Mandatory,
     CategorySeq
 )
 VALUES
@@ -957,13 +957,30 @@ INSERT INTO @tbl_reports
     ValidationObject,
     SeqNo,
     DataCollection,
-    Manditory,
+    Mandatory,
     CategorySeq
 )
 VALUES
 ('SQLAssessmentAPI_C', 'SQL Assessment API Rules', 'Shows what SQL Assessment API rules have filed and their output', 1 | 2 | 4 | 8,
  'Common', 'dbo.tbl_assessment_api', 400, 'SQL Base Collector', 1, 2023);
 
+-- Filter drivers
+INSERT INTO @tbl_reports
+(
+    ReportName,
+    ReportDisplayName,
+    ReportDescription,
+    VersionApplied,
+    Category,
+    ValidationObject,
+    SeqNo,
+    DataCollection,
+    Mandatory,
+    CategorySeq
+)
+VALUES
+('Running_Device_Drivers_C', 'Running Drivers Report', 'Device Drivers Report', 1 | 2 | 4 | 8, 'Common',
+ 'dbo.tbl_running_drivers', 407, 'SQL Base Collector', 1, 2025);
 
 
 --Azure
@@ -977,7 +994,7 @@ INSERT INTO @tbl_reports
     ValidationObject,
     SeqNo,
     DataCollection,
-    Manditory,
+    Mandatory,
     CategorySeq
 )
 VALUES
@@ -994,7 +1011,7 @@ INSERT INTO @tbl_reports
     ValidationObject,
     SeqNo,
     DataCollection,
-    Manditory,
+    Mandatory,
     CategorySeq
 )
 VALUES
@@ -1011,7 +1028,7 @@ INSERT INTO @tbl_reports
     ValidationObject,
     SeqNo,
     DataCollection,
-    Manditory,
+    Mandatory,
     CategorySeq
 )
 VALUES
@@ -1028,7 +1045,7 @@ INSERT INTO @tbl_reports
     ValidationObject,
     SeqNo,
     DataCollection,
-    Manditory,
+    Mandatory,
     CategorySeq
 )
 VALUES
@@ -1046,7 +1063,7 @@ INSERT INTO @tbl_reports
     ValidationObject,
     SeqNo,
     DataCollection,
-    Manditory,
+    Mandatory,
     CategorySeq
 )
 VALUES
