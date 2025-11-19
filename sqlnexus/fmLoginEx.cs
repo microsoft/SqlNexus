@@ -15,7 +15,7 @@ namespace sqlnexus
         {
             InitializeComponent();
             cmbTheme.SelectedItem = Properties.Settings.Default.Theme;
-            g_theme.fRec_setControlColors(this);
+            ThemeManager.ApplyTheme(this);
             chkTrustServerCertificate.Checked = Properties.Settings.Default.TrustCertificate;
             chkEncryptConnection.Checked = Properties.Settings.Default.EncryptConnection;
             btnCancel.FlatStyle = FlatStyle.Flat;
@@ -87,9 +87,9 @@ namespace sqlnexus
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
-            g_theme.setThemeColors(Properties.Settings.Default.Theme);
-            g_theme.fRec_setControlColors(this);
-            g_theme.fRec_setControlColors(fmNexus.singleton);
+            ThemeManager.ChangeCurrentTheme(Properties.Settings.Default.Theme);
+            ThemeManager.ApplyTheme(this);
+            ThemeManager.ApplyTheme(fmNexus.singleton);
         }
 
         private void fmLoginEx_Load(object sender, EventArgs e)
@@ -147,16 +147,16 @@ namespace sqlnexus
 
         private void cmbTheme_SelectedIndexChanged(object sender, EventArgs e)
         {
-            g_theme.setThemeColors(cmbTheme.Text);
-            g_theme.fRec_setControlColors(this);
-            g_theme.fRec_setControlColors(fmNexus.singleton);
+            ThemeManager.ChangeCurrentTheme(cmbTheme.Text);
+            ThemeManager.ApplyTheme(this);
+            ThemeManager.ApplyTheme(fmNexus.singleton);
         }
 
         private void fmLoginEx_FormClosing(object sender, FormClosingEventArgs e)
         {
-            g_theme.setThemeColors(Properties.Settings.Default.Theme);
-            g_theme.fRec_setControlColors(this);
-            g_theme.fRec_setControlColors(fmNexus.singleton);
+            ThemeManager.ChangeCurrentTheme(Properties.Settings.Default.Theme);
+            ThemeManager.ApplyTheme(this);
+            ThemeManager.ApplyTheme(fmNexus.singleton);
         }
     }
 }

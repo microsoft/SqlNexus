@@ -1,11 +1,13 @@
+using Microsoft.Data.SqlClient;
+using NexusInterfaces;
 using System;
 using System.Collections.Generic;
-using System.Windows.Forms;
+using System.Drawing;
+using System.Globalization;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
-using System.Globalization;
-using NexusInterfaces;
-using Microsoft.Data.SqlClient;
+using System.Windows.Forms;
 //App can be run as a console or GUI app.  Passing parameters causes console mode.
 //Sample cmd line for running as a console app
 //  "/Cserver='.\ss2k5_rtm';Trusted_Connection=true;database='sqlnexus';Application Name=' ';Pooling=false;Packet Size=4096;multipleactiveresultsets=false" "/XD:\_data\src\Nexus\sqlnexus\sqlnexus\bin\Debug\Reports\Profiler Trace Analysis_M.rdlc"
@@ -37,7 +39,7 @@ namespace sqlnexus
                     try
                     {
                         if (ex.Message.Contains("Could not load file or assembly"))
-                        { 
+                        {
 
                         }
                         else
@@ -45,7 +47,7 @@ namespace sqlnexus
                     }
                     finally
                     {
-                        Application.Exit(); 
+                        Application.Exit();
                     }
                 }
             }
@@ -63,24 +65,66 @@ namespace sqlnexus
             return MessageBox.Show(errorMsg, "Application Error", MessageBoxButtons.AbortRetryIgnore, MessageBoxIcon.Stop);
         }
     }
-    public static class g_theme
-    {
-        public static string name;
-        public static System.Drawing.Color ForeColor;
-        public static System.Drawing.Color BackColor;
-        public static System.Drawing.Color otherColor;
 
-        public static void fRec_setControlColors(Control control)
+
+    public class Theme
+    {
+        public string Name { get; set; }
+        public Color BackColor { get; set; }
+        public Color ForeColor { get; set; }
+        public Color OtherColor { get; set; }
+
+        public override string ToString()
         {
-            control.ForeColor = g_theme.ForeColor;
-            control.BackColor = g_theme.BackColor;
+            return Name; //this is to show name in combobox
+        }
+    }
+
+    public static class ThemeManager
+    {
+        public static string CurrentThemeName;
+        public static System.Drawing.Color CurrentForeColor;
+        public static System.Drawing.Color CurrentBackColor;
+        public static System.Drawing.Color CurrentOtherColor;
+
+        #region Theme Definitions
+        public static List<Theme> Themes = new List<Theme>
+        {
+            //only place for theme colors, if we ever need to change colors ,change here
+            new Theme {
+                        Name = "Default",
+                        BackColor = Form.DefaultBackColor,
+                        ForeColor = System.Drawing.Color.Black,
+                        OtherColor = System.Drawing.ColorTranslator.FromHtml("#75E9FC"),
+                       },
+            new Theme {
+                        Name = "Aquatic",
+                        BackColor = System.Drawing.ColorTranslator.FromHtml("#202020"),
+                        ForeColor = System.Drawing.ColorTranslator.FromHtml("#FFFFFF"),
+                        OtherColor = System.Drawing.ColorTranslator.FromHtml("#75E9FC")
+                       },
+            new Theme {
+                        Name = "Desert",
+                        BackColor = System.Drawing.ColorTranslator.FromHtml("#FFFAEF"),
+                        ForeColor = System.Drawing.ColorTranslator.FromHtml("#3D3D3D"),
+                        OtherColor = System.Drawing.ColorTranslator.FromHtml("#1C5E75")
+                       }
+            //if we want to add more themes, add here with the preffered colors, this will automatically populate in the theme selection combobox
+        };
+        #endregion
+
+        //recursive function to apply theme to all controls, call this function from main control/form
+        public static void ApplyTheme(Control control)
+        {
+            control.ForeColor = ThemeManager.CurrentForeColor;
+            control.BackColor = ThemeManager.CurrentBackColor;
 
             //adding special checks for control types as some properties are control specific
             if (control.GetType() == typeof(System.Windows.Forms.LinkLabel))
             {
-                ((LinkLabel)control).LinkColor = ForeColor;
-                ((LinkLabel)control).ActiveLinkColor = ForeColor;
-                ((LinkLabel)control).DisabledLinkColor = ForeColor;
+                ((LinkLabel)control).LinkColor = CurrentForeColor;
+                ((LinkLabel)control).ActiveLinkColor = CurrentForeColor;
+                ((LinkLabel)control).DisabledLinkColor = CurrentForeColor;
             }
             //this was not there on the original design but the differentiation was background colors , using this as border line to separate different panels
             if (control.GetType() == typeof(System.Windows.Forms.Panel))
@@ -91,33 +135,30 @@ namespace sqlnexus
             {
                 foreach (Control childControl in control.Controls)
                 {
-                    fRec_setControlColors(childControl);
+                    ApplyTheme(childControl);
                 }
             }
         }
 
-        public static void setThemeColors(String theme)
+        //sets the current theme based on the theme name passed
+        public static void ChangeCurrentTheme(String theme)
         {
-            switch (theme)
+            var selectedTheme = Themes.FirstOrDefault(t => t.Name.Equals(theme));
+            if (selectedTheme != null)
             {
-                case "Aquatic":
-                    g_theme.ForeColor = System.Drawing.ColorTranslator.FromHtml("#FFFFFF");
-                    g_theme.BackColor = System.Drawing.ColorTranslator.FromHtml("#202020");
-                    g_theme.otherColor = System.Drawing.ColorTranslator.FromHtml("#75E9FC");
-                    g_theme.name = "Aquatic";
-                    break;
-                case "Desert":
-                    g_theme.ForeColor = System.Drawing.ColorTranslator.FromHtml("#3D3D3D");
-                    g_theme.BackColor = System.Drawing.ColorTranslator.FromHtml("#FFFAEF");
-                    g_theme.otherColor = System.Drawing.ColorTranslator.FromHtml("#1C5E75");
-                    g_theme.name = "Desert";
-                    break;
-                default:
-                    g_theme.ForeColor = System.Drawing.Color.Black;
-                    g_theme.BackColor = Form.DefaultBackColor;
-                    g_theme.otherColor = System.Drawing.ColorTranslator.FromHtml("#75E9FC");
-                    g_theme.name = "None";
-                    break;
+                CurrentForeColor = selectedTheme.ForeColor;
+                CurrentBackColor = selectedTheme.BackColor;
+                CurrentOtherColor = selectedTheme.OtherColor;
+                CurrentThemeName = selectedTheme.Name;
+            }
+            else
+            {
+                // Fallback to default theme if the theme name is wrong while calling this function // this should not happen normally as theme names are populated from the same list
+                var defaultTheme = Themes.First(t => t.Name == "Default");
+                CurrentForeColor = defaultTheme.ForeColor;
+                CurrentBackColor = defaultTheme.BackColor;
+                CurrentOtherColor = defaultTheme.OtherColor;
+                CurrentThemeName = defaultTheme.Name;
             }
         }
     }
@@ -172,14 +213,14 @@ namespace sqlnexus
             // TODO: print out command line params as they are processed
             // TODO: exit if -? passed
             //Special case usage info
-            if ((1 == args.Length) && (("/?" == args[0]) || ("-?" == args[0]) || ("--help" == args[0]) ))
+            if ((1 == args.Length) && (("/?" == args[0]) || ("-?" == args[0]) || ("--help" == args[0])))
             {
                 ShowUsage();
                 return false;
             }
 
             //logger.LogMessage(sqlnexus.Properties.Resources.Msg_ProcessParams);
-            Console.WriteLine (sqlnexus.Properties.Resources.Msg_ProcessParams);
+            Console.WriteLine(sqlnexus.Properties.Resources.Msg_ProcessParams);
             Console.WriteLine("");
 
             //Loop through the cmd line args
@@ -195,7 +236,7 @@ namespace sqlnexus
 
                 // Some switches require a string to immediately follow the switch
                 char switchChar = arg.ToUpper(CultureInfo.InvariantCulture)[1];
-                if (('C'==switchChar) || ('S'==switchChar) || ('U'==switchChar) || ('P'==switchChar) || ('R'==switchChar)
+                if (('C' == switchChar) || ('S' == switchChar) || ('U' == switchChar) || ('P' == switchChar) || ('R' == switchChar)
                     || ('O' == switchChar) || ('I' == switchChar) || ('V' == switchChar) || ('D' == switchChar))
                 {
                     if (arg.Length < 3)
@@ -206,11 +247,11 @@ namespace sqlnexus
                     }
                 }
 
-                string arg_slash_validation = arg.Replace("/","");
+                string arg_slash_validation = arg.Replace("/", "");
 
                 if (arg.Length - arg_slash_validation.Length > 1)
                 {
-                    Console.WriteLine(sqlnexus.Properties.Resources.Msg_InvalidSwitch + arg.Substring(0,2));
+                    Console.WriteLine(sqlnexus.Properties.Resources.Msg_InvalidSwitch + arg.Substring(0, 2));
                     Console.WriteLine("Possible reason: An extra backslash exists at the end of " + arg.Substring(0, 2) + " parameter in your command");
                     return false;
                 }
@@ -233,7 +274,7 @@ namespace sqlnexus
                                 Console.WriteLine($"Error: Database name must contain only basic letters, numbers, underscores, and cannot be 'master', 'tempdb', 'model', or 'msdb'. Length must be 1-128 characters. Invalid database name: '{dbName}'. Try again");
                                 return false;
                             }
-                         
+
 
                             Globals.credentialMgr.Database = dbName;
                             break;
@@ -284,7 +325,7 @@ namespace sqlnexus
                     case 'O':
                         {
                             Console.WriteLine(@"Command Line Arg (/O): OutputPath=" + arg.Substring(2));
-                            Globals.ReportExportPath = arg.Substring(2).Trim().Replace("\"","");
+                            Globals.ReportExportPath = arg.Substring(2).Trim().Replace("\"", "");
                             // Path is assumed to be terminated by a backslash
                             if (@"\" != Globals.ReportExportPath.Substring(Globals.ReportExportPath.Length - 1))
                                 Globals.ReportExportPath += @"\";
@@ -293,13 +334,13 @@ namespace sqlnexus
                     case 'I':
                         {
                             Console.WriteLine(@"Command Line Arg (/I): InputPath=" + arg.Substring(2));
-                            
+
                             String ipath = arg.Substring(2).Replace("\"", "").Trim();
                             if (ipath.EndsWith(@"\"))
-                                ipath =  ipath.Substring(0, ipath.Length-1);
+                                ipath = ipath.Substring(0, ipath.Length - 1);
 
                             Globals.PathsToImport.Enqueue(ipath);
-                            Globals.QuietNonInteractiveMode = true; 
+                            Globals.QuietNonInteractiveMode = true;
                             break;
                         }
                     case 'V':
@@ -307,7 +348,7 @@ namespace sqlnexus
                             Console.WriteLine(@"Command Line Arg (/V): Parameter " + arg.Substring(2));
                             string tmpStr = arg.Substring(2);
                             string param = tmpStr.Substring(0, tmpStr.IndexOf('='));
-                            string val = tmpStr.Substring(tmpStr.IndexOf('=')+1);
+                            string val = tmpStr.Substring(tmpStr.IndexOf('=') + 1);
                             Globals.UserSuppliedReportParameters.Add(param, val);
                             break;
                         }
@@ -324,7 +365,7 @@ namespace sqlnexus
                         }
                 }
 
-                
+
             }
             //create a database
 
@@ -356,9 +397,9 @@ namespace sqlnexus
         [STAThread]
         static int Main(string[] args)
         {
-           
+
             try
-            {   
+            {
 
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
@@ -367,8 +408,8 @@ namespace sqlnexus
 
                 //initialize the main form
                 fmNexus fmN = new fmNexus();
-            
-                
+
+
 
                 if (0 != args.Length)
                 {
@@ -384,7 +425,7 @@ namespace sqlnexus
                 }
                 Application.Run(fmN);
             }
-            
+
             catch (Exception ex)
             {
                 Console.WriteLine(string.Format("Exception encountered in Main(): [{0}]", ex.Message));

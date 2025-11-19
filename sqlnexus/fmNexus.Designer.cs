@@ -590,7 +590,7 @@ namespace sqlnexus
             // 
             // tvReports
             // 
-            this.tvReports.BackColor = g_theme.BackColor;
+            this.tvReports.BackColor = ThemeManager.CurrentBackColor;
             this.tvReports.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.tvReports.Cursor = System.Windows.Forms.Cursors.Hand;
             resources.ApplyResources(this.tvReports, "tvReports");

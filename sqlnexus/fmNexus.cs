@@ -258,8 +258,8 @@ namespace sqlnexus
         public fmNexus()
         {
             InitializeComponent();
-            g_theme.setThemeColors(Properties.Settings.Default.Theme);
-            g_theme.fRec_setControlColors(this);
+            ThemeManager.ChangeCurrentTheme(Properties.Settings.Default.Theme);
+            ThemeManager.ApplyTheme(this);
             singleton = this;
         }
         // treeview hottracking is forcing color as blue , overriding its drawing to stick our own color
@@ -269,12 +269,12 @@ namespace sqlnexus
             if (e.State == TreeNodeStates.Hot)
             {
                 Font font = new Font(e.Node.NodeFont ?? e.Node.TreeView.Font, FontStyle.Underline);
-                TextRenderer.DrawText(e.Graphics, e.Node.Text, font, e.Bounds, g_theme.ForeColor, g_theme.BackColor, TextFormatFlags.GlyphOverhangPadding);
+                TextRenderer.DrawText(e.Graphics, e.Node.Text, font, e.Bounds, ThemeManager.CurrentForeColor, ThemeManager.CurrentBackColor, TextFormatFlags.GlyphOverhangPadding);
             }
             else
             {
                 Font font = e.Node.NodeFont ?? e.Node.TreeView.Font;
-                TextRenderer.DrawText(e.Graphics, e.Node.Text, font, e.Bounds, g_theme.ForeColor, g_theme.BackColor, TextFormatFlags.GlyphOverhangPadding);
+                TextRenderer.DrawText(e.Graphics, e.Node.Text, font, e.Bounds, ThemeManager.CurrentForeColor, ThemeManager.CurrentBackColor, TextFormatFlags.GlyphOverhangPadding);
             }
 
         }

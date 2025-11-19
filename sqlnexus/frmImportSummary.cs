@@ -28,7 +28,7 @@ namespace sqlnexus
 			// Required for Windows Form Designer support
 			//
 			InitializeComponent();
-            g_theme.fRec_setControlColors(this);
+            ThemeManager.ApplyTheme(this);
         }
 
 		public frmImportSummary(INexusImporter ri)

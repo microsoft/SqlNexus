@@ -189,10 +189,7 @@ namespace sqlnexus
             // 
             this.cmbTheme.AccessibleDescription = "Pick your layout theme";
             this.cmbTheme.FormattingEnabled = true;
-            this.cmbTheme.Items.AddRange(new object[] {
-            "Default",
-            "Aquatic",
-            "Desert"});
+            this.cmbTheme.DataSource = ThemeManager.Themes;
             this.cmbTheme.Location = new System.Drawing.Point(260, 256);
             this.cmbTheme.Name = "cmbTheme";
             this.cmbTheme.Size = new System.Drawing.Size(247, 28);

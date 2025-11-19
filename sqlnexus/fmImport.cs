@@ -23,13 +23,13 @@ namespace sqlnexus
         private fmImport()
         {
             InitializeComponent();
-            g_theme.fRec_setControlColors(this);
+            ThemeManager.ApplyTheme(this);
         }
         private fmNexus MainForm;  //Cache an instance of this for logging to the log file and other stuff
         public fmImport(fmNexus mainform)
         {
             InitializeComponent();
-            g_theme.fRec_setControlColors(this);
+            ThemeManager.ApplyTheme(this);
             MainForm = mainform;
         }
         public static void ImportFiles(fmNexus mainform, string path)

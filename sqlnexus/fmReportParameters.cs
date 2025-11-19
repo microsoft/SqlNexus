@@ -18,7 +18,7 @@ namespace sqlnexus
         public fmReportParameters()
         {
             InitializeComponent();
-            g_theme.fRec_setControlColors(this);
+            ThemeManager.ApplyTheme(this);
         }
 
         /// <summary>
