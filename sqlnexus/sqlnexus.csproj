@@ -604,6 +604,9 @@
     <Content Include="Reports\SQLAssessmentAPI_C.rdlC">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Reports\Running_Device_Drivers_C.rdlC">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Reports\ActiveProcesses_C.rdlC">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -1303,6 +1306,16 @@
       <IncludeHash>True</IncludeHash>
       <FileType>File</FileType>
     </PublishFile>
+    <PublishFile Include="Reports\Running_Device_Drivers_C.rdlC">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>File</FileType>
+    </PublishFile>
     <PublishFile Include="Reports\ServerConfiguration_C.rdlC">
       <Visible>False</Visible>
       <Group>
@@ -1344,6 +1357,16 @@
       <FileType>File</FileType>
     </PublishFile>
     <PublishFile Include="Reports\SQLAssessmentAPI.rdl">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>File</FileType>
+    </PublishFile>
+    <PublishFile Include="Reports\SQLAssessmentAPI_C.rdlC">
       <Visible>False</Visible>
       <Group>
       </Group>
