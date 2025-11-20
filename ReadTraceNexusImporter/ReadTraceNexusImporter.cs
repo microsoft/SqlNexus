@@ -15,6 +15,7 @@ using NexusInterfaces;
 using System.Xml;
 using System.Reflection;
 using System.Windows.Forms;
+using System.Linq;
 
 
 namespace ReadTrace
@@ -284,14 +285,19 @@ namespace ReadTrace
 
 
 
-        private bool SkipFile(string FullFileName)
+        private bool SkipFile(string fullFileName)
         {
-            bool ret = false;
-            if (FullFileName.ToLower().EndsWith("_blk.trc"))
-                ret = true;
+            string name = Path.GetFileName(fullFileName);
+            if (name == null) 
+                return false;
 
-            return ret;
+            if (name.EndsWith("_blk.trc", StringComparison.OrdinalIgnoreCase))
+                return true;
 
+            if (System.Text.RegularExpressions.Regex.IsMatch(name, @"^log_\d+\.trc$", System.Text.RegularExpressions.RegexOptions.IgnoreCase))
+                return true;
+
+            return false;
         }
         /// <summary>Find the first trace file</summary>
         /// <remarks>If a trace file without a rollover number exists (e.g. "ABC_sp_trace.trc"), prefer it. 
@@ -310,8 +316,6 @@ namespace ReadTrace
             Array.Sort(files);
             foreach (string f in files)
             {
-                if (SkipFile(f))
-                    continue;
 
                 string trcFileNoExt = Path.GetFileNameWithoutExtension(f);
                 if ((trcFileNoExt.LastIndexOf('_') > -1)     // find the last underscore in the filename
@@ -394,15 +398,26 @@ namespace ReadTrace
             string timeAdjForLocalTimeMinutes = "";
             decimal UtcToLocalOffsetHours = 99;
             Util.Logger.LogMessage("ReadTraceNexusImporter - Starting import...");
-            string[] files = Directory.GetFiles(Path.GetDirectoryName(this.traceFileSpec), Path.GetFileName(this.traceFileSpec));
+
+            string[] allFiles = Directory.GetFiles(Path.GetDirectoryName(this.traceFileSpec), Path.GetFileName(this.traceFileSpec));
+            string[] filteredFiles = allFiles.Where(f => !SkipFile(f)).ToArray();
+            int excludedCount = allFiles.Length - filteredFiles.Length;
+
+            if (excludedCount > 0)
+                Util.Logger.LogMessage($"ReadTraceNexusImporter: Excluded {excludedCount} trace file(s) (log_NNN.trc / *_blk.trc).");
 
             if (null == this.readTracePath)
                 throw new Exception("Cannot locate ReadTrace.exe. This import requires ReadTrace version 9.0.9.0 or later.");
-            if (0 == files.Length)
+            
+            if (filteredFiles.Length == 0)
             {
+                Util.Logger.LogMessage("ReadTraceNexusImporter: No eligible trace files after exclusions.");
                 State = ImportState.NoFiles;
                 return false;
             }
+
+            // Use filtered array
+            string[] files = filteredFiles;
 
             State = ImportState.Importing;
 
