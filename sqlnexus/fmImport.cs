@@ -1219,7 +1219,10 @@ namespace sqlnexus
             psi.Arguments = string.Format("\"{0}\" \"{1}\" \"{2}\"", Globals.credentialMgr.Server, Globals.credentialMgr.Database, sourcePath);
 
             MainForm.LogMessage("Executing: PostProcess.cmd " + psi.Arguments);
-            psi.FileName = "PostProcess.cmd";
+            psi.FileName = Application.StartupPath + "\\PostProcess.cmd";
+
+            //print psi filename full path
+            MainForm.LogMessage("PostProcess.cmd full path: " + Path.GetFullPath(psi.FileName));
 
             // do a script validation before executing
             if (!ScriptIntegrityChecker.VerifyScript(psi.FileName))
@@ -1370,15 +1373,10 @@ namespace sqlnexus
             if (string.IsNullOrEmpty(scriptname))
                 return;
 
-            if (!ScriptIntegrityChecker.VerifyScript(scriptname))
-            {
-                MainForm.LogMessage("Script is not allowed or has been tampered with: '" + scriptname + "'", MessageOptions.All, TraceEventType.Error, "Script integrity");
-                return;
-            }
-
 
             Cursor saveCur = this.Cursor;
             string FullScriptName;
+
             try
             {
                 this.Cursor = Cursors.WaitCursor;
@@ -1394,6 +1392,7 @@ namespace sqlnexus
                 if (-1 == scriptname.IndexOf('\\'))
                 {
                     FullScriptName = Application.StartupPath + "\\" + scriptname;
+
                     if (!File.Exists(FullScriptName))
                     {
                         FullScriptName = Application.StartupPath + @"\Reports\" + scriptname;
@@ -1415,7 +1414,17 @@ namespace sqlnexus
                 {
                     MainForm.LogMessage("Script '" + FullScriptName + "' doesn't exist", MessageOptions.All);
                     return;
+                }
 
+                //print full path to the script
+                MainForm.LogMessage("Full path to script: " + Path.GetFullPath(FullScriptName));
+
+                // do a script validation before executing
+
+                if (!ScriptIntegrityChecker.VerifyScript(FullScriptName))
+                {
+                    MainForm.LogMessage("Script is not allowed or has been tampered with: '" + scriptname + "'", MessageOptions.All, TraceEventType.Error, "Script integrity");
+                    return;
                 }
 
                 //db.ExecuteNonQuery(File.ReadAllText(FullScriptName), Microsoft.SqlServer.Management.Common.ExecutionTypes.ContinueOnError);
