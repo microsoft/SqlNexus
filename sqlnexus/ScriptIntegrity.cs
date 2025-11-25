@@ -48,13 +48,14 @@ namespace sqlnexus
             
             Log($"Computing hash for file: {filePath}");
 
-            if (!ScriptHashes.ContainsKey(filePath))
+            // Check if file is in the allowed list and get expected hash
+            if (!ScriptHashes.TryGetValue(filePath, out string expectedHash))
             {
                 Log($"Script '{filePath}' not in the allowed list. Blocked.");
                 return false;
             }
 
-            string expectedHash = ScriptHashes[filePath];
+            // Compute actual hash
             string actualHash = ComputeFileHash(filePath);
 
 
