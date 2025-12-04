@@ -69,6 +69,9 @@ namespace ReadTrace
         private bool canceled = false;						// Will be set to true if the current import has been canceled
         private string readTracePath;
 
+        // Add backing field with default empty array (place near other private members)
+        private string[] _postScripts = new string[0];
+
         /// <summary>Default ctor</summary>
         /// <remarks>Define the options that we expose to host framework, and try to find ReadTrace.exe.</remarks>
         public ReadTraceNexusImporter()
@@ -490,6 +493,9 @@ namespace ReadTrace
             knownRowsets = new ArrayList();
             this.totalLinesProcessed = 0;
             this.totalRowsInserted = 0;
+
+            // Define post-processing scripts by adding to the postscripts array
+            this.PostScripts = new[] { "ReadTracePostProcessing.sql" };
             if (null == this.readTracePath)
                 FindReadTraceExe();
             Util.Logger.LogMessage(@"ReadTrace.exe Path: " + (null == this.readTracePath ? "(NOT FOUND)" : this.readTracePath));
@@ -522,14 +528,12 @@ namespace ReadTrace
         /// <summary>Post-import .SQL scripts</summary>
         /// <remarks>Scripts must be present in the host .exe's directory</remarks>
         public string[] PostScripts
-        {   // No scripts needed by this importer
-            get
+        {
+            get { return _postScripts; }
+            set
             {
-                if (HasPostScript == true)
-                    return new string[] { POST_LOAD_SQL_SCRIPT };
-                else
-                    return new string[0];
-
+                _postScripts = value ?? new string[0];
+                HasPostScript = _postScripts != null && _postScripts.Length > 0;
             }
         }
 
