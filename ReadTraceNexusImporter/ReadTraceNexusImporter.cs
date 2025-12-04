@@ -69,6 +69,9 @@ namespace ReadTrace
         private bool canceled = false;						// Will be set to true if the current import has been canceled
         private string readTracePath;
 
+        // Add backing field with default empty array (place near other private members)
+        private string[] _postScripts = new string[0];
+
         /// <summary>Default ctor</summary>
         /// <remarks>Define the options that we expose to host framework, and try to find ReadTrace.exe.</remarks>
         public ReadTraceNexusImporter()
@@ -99,7 +102,6 @@ namespace ReadTrace
         /// <returns></returns>
         private bool FindReadTraceExe()
         {
-            bool extractedOK = true;
 
             try
             {
@@ -131,8 +133,6 @@ namespace ReadTrace
 
                     }
 
-
-                    extractedOK = ExtractReadTraceReports();
                 }
 
 
@@ -145,80 +145,10 @@ namespace ReadTrace
                 //MessageBox.Show("There was a problem", "Title: Missing ReadTrace", MessageBoxButtons.OK,MessageBoxIcon.Exclamation);
             }
 
-            return (readTracePath != null) && extractedOK == true;
+            return (readTracePath != null);
 
         }
 
-        /// <summary>
-        /// Run ReadTrace with /RegServer to ask it to export its reports to .RDL files. 
-        /// </summary>
-        public bool ExtractReadTraceReports()
-        {
-            if (SkipExtractReports == true)
-            {
-                return true; //skip extracting
-            }
-            Util.Logger.LogMessage(@"ReadtraceNexusImporter: extracting reports");
-            bool ret = true;
-            try
-            {
-                Assembly assembly;
-                Type type;
-                assembly = Assembly.LoadFile(Util.GetReadTracePath() + @"\reporter.exe");
-                type = assembly.GetType("RMLReports.RDLCHelper.CNexusExchange", true);
-
-                MethodInfo method = type.GetMethod("GetReports");
-                Dictionary<string, string> dict = (Dictionary<string, string>)method.Invoke(null, null);
-                //String reportPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\sqlnexus\reports\";
-                String reportPath = Application.StartupPath + @"\Reports\";
-                if (!Directory.Exists(reportPath))
-                    Directory.CreateDirectory(reportPath);
-
-                String[] oldFiles = Directory.GetFiles(reportPath, "*readtrace*.*");
-                //delete old trace file
-                foreach (String f in oldFiles)
-                {
-                    Util.Logger.LogMessage("Enumerating  and deletting file from old directory " + f);
-                    File.Delete(f);
-
-                }
-
-                //this is to delete old fles in appdata which we no longer use
-                string[] oldFiles2 = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\sqlnexus\reports\", "*readtrace*.*");
-                foreach (String f in oldFiles2)
-                {
-                    Util.Logger.LogMessage("Enumerating  and deletting file from old directory " + f);
-                    File.Delete(f);
-
-                }
-                HasPostScript = true;
-
-                foreach (string key in dict.Keys)
-                {
-                    XmlDocument doc = new XmlDocument();
-                    doc.LoadXml(key);
-                    XmlNode n = doc["report"];
-                    String reportName = n.Attributes["name"].Value;
-                    bool isChildReport = bool.Parse(n.Attributes["ischild"].Value);
-                    String reportDefinition = dict[key];
-
-                    XmlDocument reportDoc = new XmlDocument();
-                    reportDoc.LoadXml(reportDefinition);
-                    String reportExt = ".RDLC"; //(isChildReport ? ".RDLC" : ".RDL");
-                    String reportFullFileName = reportPath + reportName + reportExt;
-                    reportDoc.Save(reportFullFileName);
-
-                }
-            }
-            catch (Exception ex)
-            {
-                ret = false;
-                Util.Logger.LogMessage("Extract readtrace report failed with error " + ex.ToString());
-
-            }
-
-            return ret;
-        }
 
 
         void LogMessage(string msg)
@@ -563,6 +493,9 @@ namespace ReadTrace
             knownRowsets = new ArrayList();
             this.totalLinesProcessed = 0;
             this.totalRowsInserted = 0;
+
+            // Define post-processing scripts by adding to the postscripts array
+            this.PostScripts = new[] { "ReadTracePostProcessing.sql" };
             if (null == this.readTracePath)
                 FindReadTraceExe();
             Util.Logger.LogMessage(@"ReadTrace.exe Path: " + (null == this.readTracePath ? "(NOT FOUND)" : this.readTracePath));
@@ -595,14 +528,12 @@ namespace ReadTrace
         /// <summary>Post-import .SQL scripts</summary>
         /// <remarks>Scripts must be present in the host .exe's directory</remarks>
         public string[] PostScripts
-        {   // No scripts needed by this importer
-            get
+        {
+            get { return _postScripts; }
+            set
             {
-                if (HasPostScript == true)
-                    return new string[] { POST_LOAD_SQL_SCRIPT };
-                else
-                    return new string[0];
-
+                _postScripts = value ?? new string[0];
+                HasPostScript = _postScripts != null && _postScripts.Length > 0;
             }
         }
 
