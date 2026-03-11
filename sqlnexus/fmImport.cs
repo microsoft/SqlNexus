@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
+using System.Linq;
 using System.Drawing;
 using System.Text;
 using System.IO;
@@ -97,25 +97,67 @@ namespace sqlnexus
             return ToBlock;
 
         }
+
+        //exclusion for trace files
+        private static bool IsExcludedTraceFile(string fullPath)
+        {
+            string name = Path.GetFileName(fullPath);
+            if (name == null) return false;
+
+            // Existing exclusion
+            if (name.EndsWith("_blk.trc", StringComparison.OrdinalIgnoreCase))
+                return true;
+
+            // New exclusion: log_NNN.trc pattern
+            if (System.Text.RegularExpressions.Regex.IsMatch(name, @"^log_\d+\.trc$", RegexOptions.IgnoreCase))
+                return true;
+
+            return false;
+        }
+
         private void AddFiles(string Mask, INexusImporter Importer)
         {
-            string[] files2 = Directory.GetFiles(cbPath.Text.Trim().Replace("\"", ""), Mask);
+            string basePath = cbPath.Text.Trim().Replace("\"", "");
+            string[] allMatches = Directory.GetFiles(basePath, Mask);
+
 
             //if no file found for this mask, just return
-            if (files2.Length <= 0)
-            {
+            if (allMatches.Length <= 0)
                 return;
+
+            // If this is a trace mask (*.trc) for ReadTrace, filter out excluded files
+            bool isReadTrace = Importer != null &&
+                               Importer.Name.IndexOf("ReadTrace", StringComparison.OrdinalIgnoreCase) >= 0 &&
+                               Mask.Equals("*.trc", StringComparison.OrdinalIgnoreCase);
+
+            //apply exclusion for trace files
+            string[] includedFiles = allMatches;
+            if (isReadTrace)
+            {
+                includedFiles = allMatches
+                    .Where(f => !IsExcludedTraceFile(f))
+                    .ToArray();
+
+                int excludedCount = allMatches.Length - includedFiles.Length;
+                if (excludedCount > 0)
+                {
+                    MainForm.LogMessage($"Excluded {excludedCount} trace file(s) from import based on exclusion criteria (log_NNN.trc / *_blk.trc).", MessageOptions.Silent);
+                }
             }
-            int i = tlpFiles.RowCount - 1;
+
+            // If after filtering there are NO included files, do NOT add any UI row.
+            if (includedFiles.Length == 0)
+                return;
+
+            int rowIndex = tlpFiles.RowCount - 1;
 
 
             if (Importer is INexusFileImporter)
             {
-                string[] files = Directory.GetFiles(cbPath.Text.Trim().Replace("\"", ""), Mask);
-                int blockedCounter = 0;
-                foreach (string f in files)
-                {
 
+                int blockedCounter = 0;
+                foreach (string f in includedFiles)
+                {
 
                     //handle multiple instances
                     //block all text files that are from excluded instances
@@ -125,40 +167,33 @@ namespace sqlnexus
                         continue;
                     }
 
-                    AddFileRow(i, Path.GetFileName(f), Importer, "");
-                    i++;
+                    AddFileRow(rowIndex, Path.GetFileName(f), Importer, "");
+                    rowIndex++;
 
                 }
                 MainForm.LogMessage("Number of files blocked for import (due to multiple instance or unrelated files such as sqldump*: " + blockedCounter, MessageOptions.Silent);
             }
             else
             {
-                if (0 != Directory.GetFiles(cbPath.Text.Trim().Replace("\"", ""), Mask).Length)  //Only add the mask if matching files are found
+                if (includedFiles.Length > 0)  //Only add the mask if matching files are found
                 {
                     //need special handling read trace for multiple instances
                     //when multiple instances files are caputred, only provide the one instnance selected.
-                    if (Importer.Name.ToUpper().IndexOf("READTRACE") >= 0 && instances.Count > 1)
+                    if (isReadTrace && instances.Count > 1)
                     {
                         if (Mask.ToUpper().Contains("XEL"))
-                        {
-                            AddFileRow(i, instances.SelectedXEventFileMask, Importer, "");
-                        }
+                            AddFileRow(rowIndex, instances.SelectedXEventFileMask, Importer, "");
                         else
-                        {
-                            AddFileRow(i, instances.SelectedTraceFileMask, Importer, "");
-                        }
-
-
-
+                            AddFileRow(rowIndex, instances.SelectedTraceFileMask, Importer, "");
                     }
                     else
                     {
-                        AddFileRow(i, Mask, Importer, "");
+                        AddFileRow(rowIndex, Mask, Importer, "");
                     }
 
                 }
             }
-        }
+        }//end of AddFiles
 
         private void AddFileRow(int row, string labelText, INexusImporter Importer, string RowType)
         {
@@ -890,13 +925,13 @@ namespace sqlnexus
                                                     MainForm);
 
                             //Run pre-scripts and cache post scripts for later use
-                            if (!PostScripts.ContainsKey(ri.GetType().Name))
+                            if (!PostScripts.ContainsKey(ri.Name))
                             {
-                                PostScripts.Add(ri.GetType().Name, ri.PostScripts);
-                                foreach (string s in ri.PreScripts)
+                                PostScripts.Add(ri.Name, ri.PostScripts);
+                                foreach (string pre_script in ri.PreScripts)
                                 {
-                                    MainForm.LogMessage("Executing pre-script: " + s);
-                                    RunScript(s);
+                                    MainForm.LogMessage("Executing pre-script: " + pre_script);
+                                    RunScript(pre_script);
                                 }
                             }
 
@@ -910,10 +945,8 @@ namespace sqlnexus
 
 
 
-                            if (ri.Name.ToLower().Contains("rowset"))
-                            {
-                                RunPostScripts();
-                            }
+                            RunPostScripts(ri.Name);
+                        
                             Globals.IsNexusCoreImporterSuccessful = true;
                             //ll.LinkBehavior = LinkBehavior.HoverUnderline;
                         }
@@ -1068,7 +1101,7 @@ namespace sqlnexus
                         Application.DoEvents();
                     }
 
-                    else if ((tlpFiles.Controls[i].Name == perfStatsAnalysisStr) && (RunScripts == true))
+                    else if ((tlpFiles.Controls[i].Name == perfStatsAnalysisStr))
                     {
                         int perfAnalysisStartTicks = Environment.TickCount;
 
@@ -1188,7 +1221,10 @@ namespace sqlnexus
             psi.Arguments = string.Format("\"{0}\" \"{1}\" \"{2}\"", Globals.credentialMgr.Server, Globals.credentialMgr.Database, sourcePath);
 
             MainForm.LogMessage("Executing: PostProcess.cmd " + psi.Arguments);
-            psi.FileName = "PostProcess.cmd";
+            psi.FileName = Application.StartupPath + "\\PostProcess.cmd";
+
+            //print psi filename full path
+            MainForm.LogMessage("PostProcess.cmd full path: " + Path.GetFullPath(psi.FileName));
 
             // do a script validation before executing
             if (!ScriptIntegrityChecker.VerifyScript(psi.FileName))
@@ -1284,30 +1320,53 @@ namespace sqlnexus
             return retString;
         }
 
-        private void RunPostScripts()
+        private void RunPostScripts(string importerName)
         {
-            MainForm.LogMessage("Executing post-mortem analysis scripts...");
-            //RunScript(Application.StartupPath + @"\TraceAnalysis.sql");
-
-            //nothing to run
-            if (null == PostScripts || PostScripts.Count <= 0)
+            if (string.IsNullOrEmpty(importerName))
                 return;
 
-            foreach (string[] scripts in PostScripts.Values)
-            {
-                if (scripts == null || scripts.Length <= 0)
-                    continue;
-                foreach (string script in scripts)
-                {
-                    if (string.IsNullOrEmpty(script))
-                        continue; //nothign to run
+            // Only execute ReadTracePostProcessing.sql when the current importer is the ReadTrace importer.
+            bool isReadTraceImporter = importerName.Equals("ReadTrace (SQL XEL/TRC files)", StringComparison.OrdinalIgnoreCase);
 
-                    MainForm.LogMessage("Executing post-script: " + script);
-                    RunScript(script);
+            // If nothing to run, skip executing the post scripts.
+            if (!PostScripts.TryGetValue(importerName, out var scripts) || scripts == null || scripts.Length == 0)
+                return;
+
+            MainForm.LogMessage($"Executing post-mortem analysis scripts for importer '{importerName}'...");
+
+            //RunScript(Application.StartupPath + @"\TraceAnalysis.sql");
+
+            // Execute each post script from the list.
+            foreach (string script in scripts)
+            {
+                if (string.IsNullOrWhiteSpace(script))
+                    continue;
+
+                // run ReadTracePostProcessing.sql only for the ReadTrace importer
+                if (script.Equals("ReadTracePostProcessing.sql", StringComparison.OrdinalIgnoreCase))
+                {
+                    if (!isReadTraceImporter)
+                    {
+                        // Skip this script if the current importer is not ReadTrace.
+                        continue;
+                    }
                 }
+                
+                // in the future we can add more special cases here for other importers if needed (else if ...)
+                //else if (script.Equals("AnotherPostProcessing.sql", StringComparison.OrdinalIgnoreCase))
+                //{
+                //    if (!isAnotherImporter)
+                //    {
+                //        MainForm.LogMessage($"Skipping '{script}' (only runs for Another importer).", MessageOptions.Silent);
+                //        continue;
+                //    }
+                //}
+
+                MainForm.LogMessage("Executing post-script: " + script);
+                RunScript(script);
             }
 
-            MainForm.LogMessage("Execution of post-mortem analysis scripts complete.");
+            MainForm.LogMessage($"Execution of post-mortem analysis scripts complete for importer '{importerName}'.");
         }
 
         private void RunScript(string scriptname)
@@ -1316,15 +1375,10 @@ namespace sqlnexus
             if (string.IsNullOrEmpty(scriptname))
                 return;
 
-            if (!ScriptIntegrityChecker.VerifyScript(scriptname))
-            {
-                MainForm.LogMessage("Script is not allowed or has been tampered with: '" + scriptname + "'", MessageOptions.All, TraceEventType.Error, "Script integrity");
-                return;
-            }
-
 
             Cursor saveCur = this.Cursor;
             string FullScriptName;
+
             try
             {
                 this.Cursor = Cursors.WaitCursor;
@@ -1340,6 +1394,7 @@ namespace sqlnexus
                 if (-1 == scriptname.IndexOf('\\'))
                 {
                     FullScriptName = Application.StartupPath + "\\" + scriptname;
+
                     if (!File.Exists(FullScriptName))
                     {
                         FullScriptName = Application.StartupPath + @"\Reports\" + scriptname;
@@ -1361,7 +1416,17 @@ namespace sqlnexus
                 {
                     MainForm.LogMessage("Script '" + FullScriptName + "' doesn't exist", MessageOptions.All);
                     return;
+                }
 
+                //print full path to the script
+                MainForm.LogMessage("Full path to script: " + Path.GetFullPath(FullScriptName));
+
+                // do a script validation before executing
+
+                if (!ScriptIntegrityChecker.VerifyScript(FullScriptName))
+                {
+                    MainForm.LogMessage("Script is not allowed or has been tampered with: '" + scriptname + "'", MessageOptions.All, TraceEventType.Error, "Script integrity");
+                    return;
                 }
 
                 //db.ExecuteNonQuery(File.ReadAllText(FullScriptName), Microsoft.SqlServer.Management.Common.ExecutionTypes.ContinueOnError);

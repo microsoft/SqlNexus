@@ -15,6 +15,7 @@ using NexusInterfaces;
 using System.Xml;
 using System.Reflection;
 using System.Windows.Forms;
+using System.Linq;
 
 
 namespace ReadTrace
@@ -34,7 +35,7 @@ namespace ReadTrace
         const string OPTION_ENABLE_MARS = "Enable -T35 to support MARs";
         const string OPTION_USE_LOCAL_SERVER_TIME = "Import events using local server time (not UTC)";
 
-        
+
         //      Due to the batch flush levels for the BCP from ReadTrace these are often 
         //      going to be 0 until you exceed 1 million loaded.  The progress for ReadTrace 
         //      has been updated some to help this display 
@@ -68,6 +69,9 @@ namespace ReadTrace
         private bool canceled = false;						// Will be set to true if the current import has been canceled
         private string readTracePath;
 
+        // Add backing field with default empty array (place near other private members)
+        private string[] _postScripts = new string[0];
+
         /// <summary>Default ctor</summary>
         /// <remarks>Define the options that we expose to host framework, and try to find ReadTrace.exe.</remarks>
         public ReadTraceNexusImporter()
@@ -98,7 +102,6 @@ namespace ReadTrace
         /// <returns></returns>
         private bool FindReadTraceExe()
         {
-            bool extractedOK = true;
 
             try
             {
@@ -108,7 +111,7 @@ namespace ReadTrace
 
 
 
-               
+
                 if (readTracePath != null)
                 {
                     //Util.Logger.LogMessage("readtrace path " + FileVersionInfo.GetVersionInfo(readTracePath).ToString(), MessageOptions.Dialog);
@@ -130,11 +133,9 @@ namespace ReadTrace
 
                     }
 
-
-                    extractedOK = ExtractReadTraceReports();
                 }
 
-                
+
             }
 
             catch (Exception e)
@@ -144,126 +145,10 @@ namespace ReadTrace
                 //MessageBox.Show("There was a problem", "Title: Missing ReadTrace", MessageBoxButtons.OK,MessageBoxIcon.Exclamation);
             }
 
-            return (readTracePath != null) && extractedOK == true;
+            return (readTracePath != null);
 
         }
 
-        /// <summary>
-        /// Run ReadTrace with /RegServer to ask it to export its reports to .RDL files. 
-        /// </summary>
-        public bool ExtractReadTraceReports()
-        {
-            if (SkipExtractReports == true)
-            {
-                return true; //skip extracting
-            }
-            Util.Logger.LogMessage(@"ReadtraceNexusImporter: extracting reports");
-            bool ret = true;
-            try
-            {
-                Assembly assembly;
-                Type type;
-                assembly = Assembly.LoadFile(Util.GetReadTracePath() + @"\reporter.exe");
-                type = assembly.GetType("RMLReports.RDLCHelper.CNexusExchange", true);
-
-                MethodInfo method = type.GetMethod("GetReports");
-                Dictionary<string, string> dict = (Dictionary<string, string>)method.Invoke(null, null);
-                //String reportPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\sqlnexus\reports\";
-                String reportPath = Application.StartupPath + @"\Reports\";
-                if (!Directory.Exists(reportPath))
-                    Directory.CreateDirectory(reportPath);
-
-                String[] oldFiles = Directory.GetFiles(reportPath, "*readtrace*.*");
-                //delete old trace file
-                foreach (String f in oldFiles)
-                {
-                    Util.Logger.LogMessage("Enumerating  and deletting file from old directory " + f);
-                    File.Delete(f);
-
-                }
-
-                //this is to delete old fles in appdata which we no longer use
-                string[] oldFiles2 = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\sqlnexus\reports\", "*readtrace*.*");
-                foreach (String f in oldFiles2)
-                {
-                    Util.Logger.LogMessage("Enumerating  and deletting file from old directory " + f);
-                    File.Delete(f);
-
-                }
-
-
-
-
-                Util.Logger.LogMessage("Report path " + reportPath);
-                MethodInfo GetSetupSQLScript = type.GetMethod("GetSetupSQLScript");
-                MethodInfo GetValidateSQLScript = type.GetMethod("GetValidateSQLScript");
-                if (GetSetupSQLScript != null)
-                {
-                    String setupscript = (string) GetSetupSQLScript.Invoke(null, null);
-                    String postScriptFile = reportPath + "ReadTracePostProcessing.sql";
-                    if (File.Exists (postScriptFile))
-                        File.Delete(postScriptFile);
-
-                    StreamWriter sr = File.CreateText(postScriptFile);
-                    sr.Write(setupscript);
-                    sr.Flush();
-                    sr.Close();
-                    HasPostScript = true;
-
-                }
-                bool HasValidateScript = false;
-                string ValidateScriptName = "ReadTraceReportValidate.sql";
-                if (GetValidateSQLScript != null)
-                {
-                    HasValidateScript = true;
-                    String validateScriptString = (string) GetValidateSQLScript.Invoke(null, null);
-                    String validateScriptFile = reportPath + ValidateScriptName;
-                    if (File.Exists(validateScriptFile))
-                        File.Delete(validateScriptFile);
-                    StreamWriter sr = File.CreateText(validateScriptFile);
-                    sr.Write(validateScriptString);
-                    sr.Flush();
-                    sr.Close();
-
-                }
-          
-                foreach (string key in dict.Keys)
-                {
-                    XmlDocument doc = new XmlDocument();
-                    doc.LoadXml(key);
-                    XmlNode n = doc["report"];
-                    String reportName = n.Attributes["name"].Value;
-                    bool isChildReport = bool.Parse(n.Attributes["ischild"].Value);
-                    String reportDefinition = dict[key];
-
-
-                    XmlDocument reportDoc = new XmlDocument();
-                    reportDoc.LoadXml(reportDefinition);
-                    String reportExt = ".RDLC"; //(isChildReport ? ".RDLC" : ".RDL");
-                    String reportFullFileName = reportPath + reportName + reportExt;
-                    reportDoc.Save(reportFullFileName);
-                    if (HasValidateScript == true)
-                    {
-                        String validateXml = "<report><validate script=\"" + ValidateScriptName + "\"/></report>";
-                        XmlDocument validateDoc = new XmlDocument();
-                        validateDoc.LoadXml(validateXml);
-                        validateDoc.Save(reportFullFileName + ".xml");
-                    }
-
-
-                }
-            }
-            catch (Exception ex)
-            {
-                ret = false;
-                Util.Logger.LogMessage("Extract readtrace report failed with error " + ex.ToString());
-
-            }
-
-
-
-            return ret;
-        }
 
 
         void LogMessage(string msg)
@@ -330,14 +215,19 @@ namespace ReadTrace
 
 
 
-        private bool SkipFile(string FullFileName)
-        { 
-            bool ret = false;
-            if (FullFileName.ToLower().EndsWith ("_blk.trc"))
-                ret= true;
+        private bool SkipFile(string fullFileName)
+        {
+            string name = Path.GetFileName(fullFileName);
+            if (name == null) 
+                return false;
 
-            return ret;
+            if (name.EndsWith("_blk.trc", StringComparison.OrdinalIgnoreCase))
+                return true;
 
+            if (System.Text.RegularExpressions.Regex.IsMatch(name, @"^log_\d+\.trc$", System.Text.RegularExpressions.RegexOptions.IgnoreCase))
+                return true;
+
+            return false;
         }
         /// <summary>Find the first trace file</summary>
         /// <remarks>If a trace file without a rollover number exists (e.g. "ABC_sp_trace.trc"), prefer it. 
@@ -345,7 +235,7 @@ namespace ReadTrace
         /// used instead of "ABC_sp_trace_15.trc").</remarks>
         private string FindFirstTraceFile(string[] files)
         {
-            if (this.traceFileSpec.ToUpper().Contains("XEL")) 
+            if (this.traceFileSpec.ToUpper().Contains("XEL"))
             {
                 return FileFirstXelFile(files);
             }
@@ -356,8 +246,6 @@ namespace ReadTrace
             Array.Sort(files);
             foreach (string f in files)
             {
-                if (SkipFile(f))
-                    continue;
 
                 string trcFileNoExt = Path.GetFileNameWithoutExtension(f);
                 if ((trcFileNoExt.LastIndexOf('_') > -1)     // find the last underscore in the filename
@@ -388,7 +276,7 @@ namespace ReadTrace
             {
                 logger.LogMessage("Looking at file " + file);
                 FileInfo fs = new FileInfo(file);
-                DateTime CurrentFileCreateTime =  fs.CreationTime;
+                DateTime CurrentFileCreateTime = fs.CreationTime;
                 if (CurrentFileCreateTime < LastFileCreateTime)
                 {
                     FirstFile = file;
@@ -440,15 +328,26 @@ namespace ReadTrace
             string timeAdjForLocalTimeMinutes = "";
             decimal UtcToLocalOffsetHours = 99;
             Util.Logger.LogMessage("ReadTraceNexusImporter - Starting import...");
-            string[] files = Directory.GetFiles(Path.GetDirectoryName(this.traceFileSpec), Path.GetFileName(this.traceFileSpec));
+
+            string[] allFiles = Directory.GetFiles(Path.GetDirectoryName(this.traceFileSpec), Path.GetFileName(this.traceFileSpec));
+            string[] filteredFiles = allFiles.Where(f => !SkipFile(f)).ToArray();
+            int excludedCount = allFiles.Length - filteredFiles.Length;
+
+            if (excludedCount > 0)
+                Util.Logger.LogMessage($"ReadTraceNexusImporter: Excluded {excludedCount} trace file(s) (log_NNN.trc / *_blk.trc).");
 
             if (null == this.readTracePath)
                 throw new Exception("Cannot locate ReadTrace.exe. This import requires ReadTrace version 9.0.9.0 or later.");
-            if (0 == files.Length)
+            
+            if (filteredFiles.Length == 0)
             {
+                Util.Logger.LogMessage("ReadTraceNexusImporter: No eligible trace files after exclusions.");
                 State = ImportState.NoFiles;
                 return false;
             }
+
+            // Use filtered array
+            string[] files = filteredFiles;
 
             State = ImportState.Importing;
 
@@ -472,12 +371,12 @@ namespace ReadTrace
                 Path.GetTempPath() + "RML",     // -o{7}  Temp output path (%TEMP%\RML)
                 ((bool)this.options[OPTION_IGNORE_PSSDIAG_HOST] ? "-H\"!PSSDIAG\"" : ""),   //  {8}   Using 9.00.009 ReadTrace ignore events with HOST=PSSDIAG 
                 ((bool)this.options[OPTION_DISABLE_EVENT_REQUIREMENTS] ? "-T28 -T29 " : ""),       //  {9} tell ReadTrace to override event requirement checks 
-                ((bool)this.options[OPTION_ENABLE_MARS] ? "-T35":""),  //  {10} tell ReadTrace that there's MARS sessions 
-                ((bool)this.options[OPTION_USE_LOCAL_SERVER_TIME] ? "-B"+timeAdjForLocalTimeMinutes : "") //{11} Optional: -B### Time bias: Adjusts the start and end times, as read by (+-)### minutes. 
+                ((bool)this.options[OPTION_ENABLE_MARS] ? "-T35" : ""),  //  {10} tell ReadTrace that there's MARS sessions 
+                ((bool)this.options[OPTION_USE_LOCAL_SERVER_TIME] ? "-B" + timeAdjForLocalTimeMinutes : "") //{11} Optional: -B### Time bias: Adjusts the start and end times, as read by (+-)### minutes. 
             );
 
             Util.Env["RMLLogDir"] = Path.GetTempPath() + "RML";
-            
+
             Util.Env.ReadTraceLogFile = Path.GetTempPath() + @"RML\readtrace.log";
             Util.Logger.LogMessage("ReadTraceNexusImporter: Loading " + firstTrcFile);
             Util.Logger.LogMessage("ReadTraceNexusImporter: Temp Path: " + Path.GetTempPath());
@@ -594,6 +493,9 @@ namespace ReadTrace
             knownRowsets = new ArrayList();
             this.totalLinesProcessed = 0;
             this.totalRowsInserted = 0;
+
+            // Define post-processing scripts by adding to the postscripts array
+            this.PostScripts = new[] { "ReadTracePostProcessing.sql" };
             if (null == this.readTracePath)
                 FindReadTraceExe();
             Util.Logger.LogMessage(@"ReadTrace.exe Path: " + (null == this.readTracePath ? "(NOT FOUND)" : this.readTracePath));
@@ -626,13 +528,12 @@ namespace ReadTrace
         /// <summary>Post-import .SQL scripts</summary>
         /// <remarks>Scripts must be present in the host .exe's directory</remarks>
         public string[] PostScripts
-        {   // No scripts needed by this importer
-            get { 
-                if (HasPostScript == true)
-                    return new string[] { POST_LOAD_SQL_SCRIPT };
-                else
-                    return new string[0];
-                
+        {
+            get { return _postScripts; }
+            set
+            {
+                _postScripts = value ?? new string[0];
+                HasPostScript = _postScripts != null && _postScripts.Length > 0;
             }
         }
 
@@ -665,7 +566,7 @@ namespace ReadTrace
         /// <summary>Filemask (e.g. "*.trc") used to advertise the set of files that a given importer knows how to process</summary>
         public string[] SupportedMasks
         {
-            get { return new string[] { "*.TRC", "*pssdiag*.xel", "*LogScout*.xel" }; }
+            get { return new string[] { "*.trc", "*pssdiag*.xel", "*LogScout*.xel"}; }
         }
 
         /// <summary>Number of rows/lines/events processed from source file.  Used to communicate progress back to host.</summary>

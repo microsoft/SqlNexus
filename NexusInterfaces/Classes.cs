@@ -98,10 +98,10 @@ namespace NexusInterfaces
             if (File.Exists (ReadTracePath + @"\reporter.exe"))
             {
                 info= FileVersionInfo.GetVersionInfo(ReadTracePath + @"\reporter.exe");
-                Util.Logger.LogMessage ("readtrace.exe file version " + info.FileVersion);
+                Util.Logger.LogMessage ("Reporter.exe file version " + info.FileVersion);
             }
             else
-                Util.Logger.LogMessage ("Warning: readtrace.exe doesn't exist in directory : " + ReadTracePath);
+                Util.Logger.LogMessage ("Warning: Reporter.exe doesn't exist in directory : " + ReadTracePath);
 
 
 
