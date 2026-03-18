@@ -77,6 +77,19 @@ namespace sqlnexus
             this.btncollapsReports = new System.Windows.Forms.Button();
             this.rvTemplate = new Microsoft.Reporting.WinForms.ReportViewer();
             this.tcReports = new System.Windows.Forms.TabControl();
+            this.toolbarMain = new System.Windows.Forms.ToolStrip();
+            this.tspUnpin = new System.Windows.Forms.ToolStripButton();
+            this.tstbConnect = new System.Windows.Forms.ToolStripButton();
+            this.tspPin = new System.Windows.Forms.ToolStripButton();
+            this.tstbOpen = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
+            this.tstbRunAll = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
+            this.tspHelp = new System.Windows.Forms.ToolStripButton();
+            this.toolbarService = new System.Windows.Forms.ToolStrip();
+            this.tsbStart = new System.Windows.Forms.ToolStripButton();
+            this.tsbStop = new System.Windows.Forms.ToolStripButton();
+            this.tscbAutoUpdate = new System.Windows.Forms.ToolStripComboBox();
             this.menuBarMain = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.connectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -110,10 +123,6 @@ namespace sqlnexus
             this.supportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contactUsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolbarService = new System.Windows.Forms.ToolStrip();
-            this.tsbStart = new System.Windows.Forms.ToolStripButton();
-            this.tsbStop = new System.Windows.Forms.ToolStripButton();
-            this.tscbAutoUpdate = new System.Windows.Forms.ToolStripComboBox();
             this.toolbarReport = new System.Windows.Forms.ToolStrip();
             this.tsbDocMap = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -155,15 +164,6 @@ namespace sqlnexus
             this.tsbFindNext = new System.Windows.Forms.ToolStripButton();
             this.tsLabelCurDB = new System.Windows.Forms.ToolStripLabel();
             this.tscCurrentDatabase = new System.Windows.Forms.ToolStripComboBox();
-            this.toolbarMain = new System.Windows.Forms.ToolStrip();
-            this.tspUnpin = new System.Windows.Forms.ToolStripButton();
-            this.tstbConnect = new System.Windows.Forms.ToolStripButton();
-            this.tspPin = new System.Windows.Forms.ToolStripButton();
-            this.tstbOpen = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
-            this.tstbRunAll = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
-            this.tspHelp = new System.Windows.Forms.ToolStripButton();
             this.cmReport = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.reportParametersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -202,10 +202,10 @@ namespace sqlnexus
             this.paReportsBody.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bpPowerBIrpt)).BeginInit();
             this.paReportsHeader.SuspendLayout();
-            this.menuBarMain.SuspendLayout();
-            this.toolbarService.SuspendLayout();
-            this.toolbarReport.SuspendLayout();
             this.toolbarMain.SuspendLayout();
+            this.toolbarService.SuspendLayout();
+            this.menuBarMain.SuspendLayout();
+            this.toolbarReport.SuspendLayout();
             this.cmReport.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -227,10 +227,10 @@ namespace sqlnexus
             // 
             // toolStripContainer1.TopToolStripPanel
             // 
-            this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.toolbarReport);
-            this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.toolbarService);
             this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.toolbarMain);
+            this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.toolbarService);
             this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.menuBarMain);
+            this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.toolbarReport);
             // 
             // ssStatus
             // 
@@ -375,8 +375,8 @@ namespace sqlnexus
             // 
             // linkLabel1
             // 
-            this.linkLabel1.ActiveLinkColor = System.Drawing.Color.LightSkyBlue;
             resources.ApplyResources(this.linkLabel1, "linkLabel1");
+            this.linkLabel1.ActiveLinkColor = System.Drawing.Color.LightSkyBlue;
             this.linkLabel1.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
             this.linkLabel1.LinkColor = System.Drawing.Color.DarkBlue;
             this.linkLabel1.Name = "linkLabel1";
@@ -590,19 +590,18 @@ namespace sqlnexus
             // 
             // tvReports
             // 
-            this.tvReports.BackColor = ThemeManager.CurrentBackColor;
             this.tvReports.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.tvReports.Cursor = System.Windows.Forms.Cursors.Hand;
             resources.ApplyResources(this.tvReports, "tvReports");
+            this.tvReports.DrawMode = System.Windows.Forms.TreeViewDrawMode.OwnerDrawText;
+            this.tvReports.DrawNode += new System.Windows.Forms.DrawTreeNodeEventHandler(this.tvReports_DrawMode);
             this.tvReports.HideSelection = false;
             this.tvReports.HotTracking = true;
             this.tvReports.ImageList = this.imGlyphs;
             this.tvReports.Name = "tvReports";
-            this.tvReports.ShowRootLines = false;
+            this.tvReports.ShowRootLines = false;            
             this.tvReports.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvReports_AfterSelect);
             this.tvReports.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvReports_NodeMouseClick);
-            this.tvReports.DrawMode = System.Windows.Forms.TreeViewDrawMode.OwnerDrawText;
-            this.tvReports.DrawNode += tvReports_DrawMode;
             // 
             // imGlyphs
             // 
@@ -674,6 +673,125 @@ namespace sqlnexus
             this.tcReports.SelectedIndex = 0;
             this.tcReports.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.tcReports.SelectedIndexChanged += new System.EventHandler(this.tcReports_SelectedIndexChanged_1);
+            // 
+            // toolbarMain
+            // 
+            this.toolbarMain.DataBindings.Add(new System.Windows.Forms.Binding("Visible", global::sqlnexus.Properties.Settings.Default, "ShowStandardToolbar", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            resources.ApplyResources(this.toolbarMain, "toolbarMain");
+            this.toolbarMain.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.toolbarMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tspUnpin,
+            this.tstbConnect,
+            this.tspPin,
+            this.tstbOpen,
+            this.toolStripSeparator8,
+            this.tstbRunAll,
+            this.toolStripSeparator9,
+            this.tspHelp});
+            this.toolbarMain.Name = "toolbarMain";
+            this.toolbarMain.Visible = global::sqlnexus.Properties.Settings.Default.ShowStandardToolbar;
+            this.toolbarMain.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.toolbarMain_ItemClicked);
+            // 
+            // tspUnpin
+            // 
+            this.tspUnpin.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tspUnpin.Image = global::sqlnexus.Properties.Resources.Collapse_large_left;
+            resources.ApplyResources(this.tspUnpin, "tspUnpin");
+            this.tspUnpin.Name = "tspUnpin";
+            this.tspUnpin.Click += new System.EventHandler(this.tspUnpin_Click);
+            // 
+            // tstbConnect
+            // 
+            this.tstbConnect.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tstbConnect.Image = global::sqlnexus.Properties.Resources.Webcontrol_Sqldatasrc;
+            resources.ApplyResources(this.tstbConnect, "tstbConnect");
+            this.tstbConnect.Name = "tstbConnect";
+            this.tstbConnect.Click += new System.EventHandler(this.tstbConnect_Click);
+            // 
+            // tspPin
+            // 
+            this.tspPin.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tspPin.Image = global::sqlnexus.Properties.Resources.Collapse_large_right;
+            resources.ApplyResources(this.tspPin, "tspPin");
+            this.tspPin.Name = "tspPin";
+            this.tspPin.Click += new System.EventHandler(this.tspPin_Click);
+            // 
+            // tstbOpen
+            // 
+            this.tstbOpen.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tstbOpen.Image = global::sqlnexus.Properties.Resources.openHS;
+            resources.ApplyResources(this.tstbOpen, "tstbOpen");
+            this.tstbOpen.Name = "tstbOpen";
+            this.tstbOpen.Click += new System.EventHandler(this.tstbOpen_Click);
+            // 
+            // toolStripSeparator8
+            // 
+            this.toolStripSeparator8.Name = "toolStripSeparator8";
+            resources.ApplyResources(this.toolStripSeparator8, "toolStripSeparator8");
+            // 
+            // tstbRunAll
+            // 
+            this.tstbRunAll.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tstbRunAll.Image = global::sqlnexus.Properties.Resources.Book_StackOfReportsHS;
+            resources.ApplyResources(this.tstbRunAll, "tstbRunAll");
+            this.tstbRunAll.Name = "tstbRunAll";
+            this.tstbRunAll.Click += new System.EventHandler(this.tstbRunAll_Click);
+            // 
+            // toolStripSeparator9
+            // 
+            this.toolStripSeparator9.Name = "toolStripSeparator9";
+            resources.ApplyResources(this.toolStripSeparator9, "toolStripSeparator9");
+            // 
+            // tspHelp
+            // 
+            this.tspHelp.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tspHelp.Image = global::sqlnexus.Properties.Resources.Help;
+            resources.ApplyResources(this.tspHelp, "tspHelp");
+            this.tspHelp.Name = "tspHelp";
+            this.tspHelp.Click += new System.EventHandler(this.indexToolStripMenuItem_Click);
+            // 
+            // toolbarService
+            // 
+            resources.ApplyResources(this.toolbarService, "toolbarService");
+            this.toolbarService.DataBindings.Add(new System.Windows.Forms.Binding("Visible", global::sqlnexus.Properties.Settings.Default, "ShowDataCollectionToolbar", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.toolbarService.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.toolbarService.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsbStart,
+            this.tsbStop,
+            this.tscbAutoUpdate});
+            this.toolbarService.Name = "toolbarService";
+            this.toolbarService.Visible = global::sqlnexus.Properties.Settings.Default.ShowDataCollectionToolbar;
+            // 
+            // tsbStart
+            // 
+            this.tsbStart.AutoToolTip = false;
+            resources.ApplyResources(this.tsbStart, "tsbStart");
+            this.tsbStart.Image = global::sqlnexus.Properties.Resources.Run;
+            this.tsbStart.Name = "tsbStart";
+            this.tsbStart.Click += new System.EventHandler(this.tsbStart_Click);
+            // 
+            // tsbStop
+            // 
+            this.tsbStop.AutoToolTip = false;
+            resources.ApplyResources(this.tsbStop, "tsbStop");
+            this.tsbStop.Image = global::sqlnexus.Properties.Resources.Stop;
+            this.tsbStop.Name = "tsbStop";
+            this.tsbStop.Click += new System.EventHandler(this.tsbStop_Click);
+            // 
+            // tscbAutoUpdate
+            // 
+            resources.ApplyResources(this.tscbAutoUpdate, "tscbAutoUpdate");
+            this.tscbAutoUpdate.Items.AddRange(new object[] {
+            resources.GetString("tscbAutoUpdate.Items"),
+            resources.GetString("tscbAutoUpdate.Items1"),
+            resources.GetString("tscbAutoUpdate.Items2"),
+            resources.GetString("tscbAutoUpdate.Items3"),
+            resources.GetString("tscbAutoUpdate.Items4"),
+            resources.GetString("tscbAutoUpdate.Items5"),
+            resources.GetString("tscbAutoUpdate.Items6"),
+            resources.GetString("tscbAutoUpdate.Items7")});
+            this.tscbAutoUpdate.Name = "tscbAutoUpdate";
+            this.tscbAutoUpdate.SelectedIndexChanged += new System.EventHandler(this.toolStripComboBox1_SelectedIndexChanged);
             // 
             // menuBarMain
             // 
@@ -932,49 +1050,6 @@ namespace sqlnexus
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
             resources.ApplyResources(this.aboutToolStripMenuItem, "aboutToolStripMenuItem");
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
-            // 
-            // toolbarService
-            // 
-            resources.ApplyResources(this.toolbarService, "toolbarService");
-            this.toolbarService.DataBindings.Add(new System.Windows.Forms.Binding("Visible", global::sqlnexus.Properties.Settings.Default, "ShowDataCollectionToolbar", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.toolbarService.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.toolbarService.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsbStart,
-            this.tsbStop,
-            this.tscbAutoUpdate});
-            this.toolbarService.Name = "toolbarService";
-            this.toolbarService.Visible = global::sqlnexus.Properties.Settings.Default.ShowDataCollectionToolbar;
-            // 
-            // tsbStart
-            // 
-            this.tsbStart.AutoToolTip = false;
-            resources.ApplyResources(this.tsbStart, "tsbStart");
-            this.tsbStart.Image = global::sqlnexus.Properties.Resources.Run;
-            this.tsbStart.Name = "tsbStart";
-            this.tsbStart.Click += new System.EventHandler(this.tsbStart_Click);
-            // 
-            // tsbStop
-            // 
-            this.tsbStop.AutoToolTip = false;
-            resources.ApplyResources(this.tsbStop, "tsbStop");
-            this.tsbStop.Image = global::sqlnexus.Properties.Resources.Stop;
-            this.tsbStop.Name = "tsbStop";
-            this.tsbStop.Click += new System.EventHandler(this.tsbStop_Click);
-            // 
-            // tscbAutoUpdate
-            // 
-            resources.ApplyResources(this.tscbAutoUpdate, "tscbAutoUpdate");
-            this.tscbAutoUpdate.Items.AddRange(new object[] {
-            resources.GetString("tscbAutoUpdate.Items"),
-            resources.GetString("tscbAutoUpdate.Items1"),
-            resources.GetString("tscbAutoUpdate.Items2"),
-            resources.GetString("tscbAutoUpdate.Items3"),
-            resources.GetString("tscbAutoUpdate.Items4"),
-            resources.GetString("tscbAutoUpdate.Items5"),
-            resources.GetString("tscbAutoUpdate.Items6"),
-            resources.GetString("tscbAutoUpdate.Items7")});
-            this.tscbAutoUpdate.Name = "tscbAutoUpdate";
-            this.tscbAutoUpdate.SelectedIndexChanged += new System.EventHandler(this.toolStripComboBox1_SelectedIndexChanged);
             // 
             // toolbarReport
             // 
@@ -1319,82 +1394,6 @@ namespace sqlnexus
             this.tscCurrentDatabase.Click += new System.EventHandler(this.tscCurrentDatabase_Click);
             this.tscCurrentDatabase.TextChanged += new System.EventHandler(this.tscCurrentDatabase_TextChanged);
             // 
-            // toolbarMain
-            // 
-            this.toolbarMain.DataBindings.Add(new System.Windows.Forms.Binding("Visible", global::sqlnexus.Properties.Settings.Default, "ShowStandardToolbar", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            resources.ApplyResources(this.toolbarMain, "toolbarMain");
-            this.toolbarMain.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.toolbarMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tspUnpin,
-            this.tstbConnect,
-            this.tspPin,
-            this.tstbOpen,
-            this.toolStripSeparator8,
-            this.tstbRunAll,
-            this.toolStripSeparator9,
-            this.tspHelp});
-            this.toolbarMain.Name = "toolbarMain";
-            this.toolbarMain.Visible = global::sqlnexus.Properties.Settings.Default.ShowStandardToolbar;
-            this.toolbarMain.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.toolbarMain_ItemClicked);
-            // 
-            // tspUnpin
-            // 
-            this.tspUnpin.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tspUnpin.Image = global::sqlnexus.Properties.Resources.Collapse_large_left;
-            resources.ApplyResources(this.tspUnpin, "tspUnpin");
-            this.tspUnpin.Name = "tspUnpin";
-            this.tspUnpin.Click += new System.EventHandler(this.tspUnpin_Click);
-            // 
-            // tstbConnect
-            // 
-            this.tstbConnect.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tstbConnect.Image = global::sqlnexus.Properties.Resources.Webcontrol_Sqldatasrc;
-            resources.ApplyResources(this.tstbConnect, "tstbConnect");
-            this.tstbConnect.Name = "tstbConnect";
-            this.tstbConnect.Click += new System.EventHandler(this.tstbConnect_Click);
-            // 
-            // tspPin
-            // 
-            this.tspPin.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tspPin.Image = global::sqlnexus.Properties.Resources.Collapse_large_right;
-            resources.ApplyResources(this.tspPin, "tspPin");
-            this.tspPin.Name = "tspPin";
-            this.tspPin.Click += new System.EventHandler(this.tspPin_Click);
-            // 
-            // tstbOpen
-            // 
-            this.tstbOpen.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tstbOpen.Image = global::sqlnexus.Properties.Resources.openHS;
-            resources.ApplyResources(this.tstbOpen, "tstbOpen");
-            this.tstbOpen.Name = "tstbOpen";
-            this.tstbOpen.Click += new System.EventHandler(this.tstbOpen_Click);
-            // 
-            // toolStripSeparator8
-            // 
-            this.toolStripSeparator8.Name = "toolStripSeparator8";
-            resources.ApplyResources(this.toolStripSeparator8, "toolStripSeparator8");
-            // 
-            // tstbRunAll
-            // 
-            this.tstbRunAll.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tstbRunAll.Image = global::sqlnexus.Properties.Resources.Book_StackOfReportsHS;
-            resources.ApplyResources(this.tstbRunAll, "tstbRunAll");
-            this.tstbRunAll.Name = "tstbRunAll";
-            this.tstbRunAll.Click += new System.EventHandler(this.tstbRunAll_Click);
-            // 
-            // toolStripSeparator9
-            // 
-            this.toolStripSeparator9.Name = "toolStripSeparator9";
-            resources.ApplyResources(this.toolStripSeparator9, "toolStripSeparator9");
-            // 
-            // tspHelp
-            // 
-            this.tspHelp.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tspHelp.Image = global::sqlnexus.Properties.Resources.Help;
-            resources.ApplyResources(this.tspHelp, "tspHelp");
-            this.tspHelp.Name = "tspHelp";
-            this.tspHelp.Click += new System.EventHandler(this.indexToolStripMenuItem_Click);
-            // 
             // cmReport
             // 
             this.cmReport.ImageScalingSize = new System.Drawing.Size(20, 20);
@@ -1506,14 +1505,14 @@ namespace sqlnexus
             this.paReportsBody.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bpPowerBIrpt)).EndInit();
             this.paReportsHeader.ResumeLayout(false);
-            this.menuBarMain.ResumeLayout(false);
-            this.menuBarMain.PerformLayout();
-            this.toolbarService.ResumeLayout(false);
-            this.toolbarService.PerformLayout();
-            this.toolbarReport.ResumeLayout(false);
-            this.toolbarReport.PerformLayout();
             this.toolbarMain.ResumeLayout(false);
             this.toolbarMain.PerformLayout();
+            this.toolbarService.ResumeLayout(false);
+            this.toolbarService.PerformLayout();
+            this.menuBarMain.ResumeLayout(false);
+            this.menuBarMain.PerformLayout();
+            this.toolbarReport.ResumeLayout(false);
+            this.toolbarReport.PerformLayout();
             this.cmReport.ResumeLayout(false);
             this.ResumeLayout(false);
 
