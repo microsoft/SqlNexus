@@ -28,6 +28,10 @@ namespace sqlnexus
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(fmLoginEx));
+            sqlnexus.Theme theme25 = new sqlnexus.Theme();
+            sqlnexus.Theme theme26 = new sqlnexus.Theme();
+            sqlnexus.Theme theme27 = new sqlnexus.Theme();
             this.lblServerName = new System.Windows.Forms.Label();
             this.lblAuthentication = new System.Windows.Forms.Label();
             this.lblUserName = new System.Windows.Forms.Label();
@@ -97,6 +101,8 @@ namespace sqlnexus
             // 
             // cmbAuthentication
             // 
+            this.cmbAuthentication.AccessibleDescription = "Authentication Type";
+            this.cmbAuthentication.AccessibleName = "Authentication Type";
             this.cmbAuthentication.FormattingEnabled = true;
             this.cmbAuthentication.Items.AddRange(new object[] {
             "Windows Authentication",
@@ -189,7 +195,22 @@ namespace sqlnexus
             // 
             this.cmbTheme.AccessibleDescription = "Pick your layout theme";
             this.cmbTheme.FormattingEnabled = true;
-            this.cmbTheme.DataSource = ThemeManager.Themes;
+            theme25.BackColor = System.Drawing.SystemColors.Control;
+            theme25.ForeColor = System.Drawing.Color.Black;
+            theme25.Name = "Default";
+            theme25.OtherColor = System.Drawing.Color.FromArgb(((int)(((byte)(117)))), ((int)(((byte)(233)))), ((int)(((byte)(252)))));
+            theme26.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
+            theme26.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            theme26.Name = "Aquatic";
+            theme26.OtherColor = System.Drawing.Color.FromArgb(((int)(((byte)(117)))), ((int)(((byte)(233)))), ((int)(((byte)(252)))));
+            theme27.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(250)))), ((int)(((byte)(239)))));
+            theme27.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(61)))), ((int)(((byte)(61)))), ((int)(((byte)(61)))));
+            theme27.Name = "Desert";
+            theme27.OtherColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(94)))), ((int)(((byte)(117)))));
+            this.cmbTheme.Items.AddRange(new object[] {
+            theme25,
+            theme26,
+            theme27});
             this.cmbTheme.Location = new System.Drawing.Point(260, 256);
             this.cmbTheme.Name = "cmbTheme";
             this.cmbTheme.Size = new System.Drawing.Size(247, 28);

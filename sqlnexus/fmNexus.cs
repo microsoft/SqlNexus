@@ -887,7 +887,7 @@ namespace sqlnexus
         public static void CopyToClipboard(string text)
         {
             // We have to decode the text passed in from the form b/c our method invocation mechanism passes params as part of a URL
-            Clipboard.SetDataObject(HttpUtility.UrlDecode(text), true, 5, 100);
+            Clipboard.SetDataObject(HttpUtility.UrlDecode(text), true, 5, 100);            
         }
 
 
@@ -3298,24 +3298,81 @@ bool CreateDB(String dbName)
 
         private void tscCurrentDatabase_SelectedIndexChanged(object sender, EventArgs e)
         {
-            
             if (tscCurrentDatabase.SelectedItem.ToString() == "<New Database>")
             {
                 String CurrentDatabase = Globals.credentialMgr.Database;
 
-                String NewDBName =Microsoft.VisualBasic.Interaction.InputBox("Enter your database name", "Database Name", "", this.Location.X + this.Size.Width / 2, this.Location.Y + this.Size.Height / 2);
-                if (NewDBName.Trim().Length == 0)
+                // Create a form for better accessibility
+                using (Form inputForm = new Form())
                 {
-                    PopulateDatabaseList(CurrentDatabase);
-                    return;
+                    inputForm.Text = "Database Name";
+                    inputForm.Width = 400;
+                    inputForm.Height = 150;
+                    inputForm.StartPosition = FormStartPosition.CenterParent;
+                    inputForm.FormBorderStyle = FormBorderStyle.FixedDialog;
+                    inputForm.MaximizeBox = false;
+                    inputForm.MinimizeBox = false;
+                    inputForm.AccessibleName = "New Database Form";
+                    inputForm.AccessibleDescription = "Form to enter the name of the new database to create";
+
+                    Label lblPrompt = new Label();
+                    lblPrompt.Text = "Enter your database name:";
+                    lblPrompt.Left = 10;
+                    lblPrompt.Top = 20;
+                    lblPrompt.Width = 360;
+                    lblPrompt.TabIndex = 0;
+                    inputForm.Controls.Add(lblPrompt);
+
+                    TextBox txtInput = new TextBox();
+                    txtInput.Left = 10;
+                    txtInput.Top = 45;
+                    txtInput.Width = 360;
+                    txtInput.TabIndex = 1;
+                    txtInput.AccessibleName = "Enter Database Name";
+                    txtInput.AccessibleDescription = "Enter the name for the new database";
+                    inputForm.Controls.Add(txtInput);
+
+                    Button btnOK = new Button();
+                    btnOK.Text = "OK";
+                    btnOK.Left = 210;
+                    btnOK.Top = 75;
+                    btnOK.Width = 75;
+                    btnOK.TabIndex = 2;
+                    btnOK.DialogResult = DialogResult.OK;
+                    inputForm.Controls.Add(btnOK);
+
+                    Button btnCancel = new Button();
+                    btnCancel.Text = "Cancel";
+                    btnCancel.Left = 295;
+                    btnCancel.Top = 75;
+                    btnCancel.Width = 75;
+                    btnCancel.TabIndex = 3;
+                    btnCancel.DialogResult = DialogResult.Cancel;
+                    inputForm.Controls.Add(btnCancel);
+
+                    inputForm.AcceptButton = btnOK;
+                    inputForm.CancelButton = btnCancel;
+
+                    if (inputForm.ShowDialog(this) == DialogResult.OK)
+                    {
+                        String NewDBName = txtInput.Text.Trim();
+                        if (NewDBName.Length == 0)
+                        {
+                            PopulateDatabaseList(CurrentDatabase);
+                            return;
+                        }
+                        bool createDB = CreateDB(NewDBName);
+
+                        if (createDB)
+                            PopulateDatabaseList(NewDBName);
+                        else
+                            PopulateDatabaseList("sqlnexus");
+                    }
+                    else
+                    {
+                        PopulateDatabaseList(CurrentDatabase);
+                    }
                 }
-                bool createDB = CreateDB(NewDBName);
-                
-                if (createDB)
-                    PopulateDatabaseList(NewDBName);
-                else
-                    PopulateDatabaseList("sqlnexus");
-                 
             }
             else
             {
