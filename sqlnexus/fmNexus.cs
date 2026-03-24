@@ -543,13 +543,16 @@ namespace sqlnexus
                     {
                         //Select the first report if there is one
                         if (0 != tvReports.Nodes.Count)
+                        {
                             tvReports.SelectedNode = tvReports.Nodes[0];
+                            // Explicitly load the first report since AfterSelect won't trigger due to accessibility fix
+                            SelectLoadReport(tvReports.Nodes[0].Text, true, null);
+                        }
 
                         ShowHideUIElements();
 
                         Application.DoEvents();
 
-////                        UpdateServiceButtons();
                     }
                 }
                 catch (Exception ex)
@@ -572,13 +575,13 @@ namespace sqlnexus
             string instrep = Application.StartupPath + @"\Reports\SQL Perf Main" + RDL_EXT;
             if (File.Exists(instrep))
             {
-                LogMessage("Instructions report found: " + instrep);
+                LogMessage("SQL Perf Main report found: " + instrep);
                 instrep = ExtractReportName(instrep);
                 AddFindReportNode(instrep, null);
             }
             else
             {
-                LogMessage("Instructions report not found: " + instrep);
+                LogMessage("SQL Perf Main report not found: " + instrep);
             }
             // Enum all reports in <exedir>\Reports
             EnumReportDirectory(Application.StartupPath + @"\Reports");
@@ -628,7 +631,7 @@ namespace sqlnexus
                 if (0 == string.Compare(Path.GetExtension(f), RDLC_EXT, true, CultureInfo.InvariantCulture))
                     continue;
                 string filename = ExtractReportName(f);
-                if (0 == string.Compare(Path.GetFileName(filename), "Instructions.rdl", true, CultureInfo.InvariantCulture))
+                if (0 == string.Compare(Path.GetFileName(filename), "SQL Perf Main.rdl", true, CultureInfo.InvariantCulture))
                     continue;
                 LogMessage(sqlnexus.Properties.Resources.Msg_FoundReport + f, MessageOptions.Silent);
                 AddFindReportNode(filename, null);
@@ -3308,8 +3311,23 @@ bool CreateDB(String dbName)
             
         }
 
+        // Add a flag to track if selection was committed by user action
+        private bool _databaseSelectionCommitted = false;
+        private int _previousDatabaseIndex = -1;
+
         private void tscCurrentDatabase_SelectedIndexChanged(object sender, EventArgs e)
         {
+            // Only process if selection was explicitly committed (Enter/Space pressed)
+            if (!_databaseSelectionCommitted)
+            {
+                return;
+            }
+
+            _databaseSelectionCommitted = false; // Reset flag
+
+            if (tscCurrentDatabase.SelectedItem == null)
+                return;
+
             if (tscCurrentDatabase.SelectedItem.ToString() == "<New Database>")
             {
                 String CurrentDatabase = Globals.credentialMgr.Database;
@@ -3392,13 +3410,44 @@ bool CreateDB(String dbName)
             }
         }
 
+        // Add KeyDown handler for the ComboBox
+        private void tscCurrentDatabase_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Space)
+            {
+                _databaseSelectionCommitted = true;
+                // Manually trigger the selection change logic
+                tscCurrentDatabase_SelectedIndexChanged(sender, EventArgs.Empty);
+                e.Handled = true;
+            }
+            else if (e.KeyCode == Keys.Escape)
+            {
+                // Restore previous selection on Escape
+                if (_previousDatabaseIndex >= 0 && _previousDatabaseIndex < tscCurrentDatabase.Items.Count)
+                {
+                    tscCurrentDatabase.SelectedIndex = _previousDatabaseIndex;
+                }
+                e.Handled = true;
+            }
+        }
+
+        // Track when dropdown opens to save current selection
+        private void tscCurrentDatabase_DropDown(object sender, EventArgs e)
+        {
+            _previousDatabaseIndex = tscCurrentDatabase.SelectedIndex;
+        }
+
         private void refreshAfterDBChange()
         {
             Globals.credentialMgr.Database = tscCurrentDatabase.SelectedItem.ToString();
             CloseAll();
             EnumReports();
             if (0 != tvReports.Nodes.Count)
+            {
                 tvReports.SelectedNode = tvReports.Nodes[0];
+                // Explicitly load the first report since AfterSelect won't trigger due to accessibility fix
+                SelectLoadReport(tvReports.Nodes[0].Text, true, null);
+            }
             ShowHideUIElements();
             Application.DoEvents();
         }
