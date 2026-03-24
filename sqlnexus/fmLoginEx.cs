@@ -14,7 +14,15 @@ namespace sqlnexus
         public fmLoginEx()
         {
             InitializeComponent();
-            cmbTheme.SelectedItem = Properties.Settings.Default.Theme;
+            
+            // Ensure theme is properly selected - use SelectedIndex as fallback
+            string savedTheme = Properties.Settings.Default.Theme ?? "Default";
+            int themeIndex = cmbTheme.FindStringExact(savedTheme);
+            if (themeIndex >= 0)
+                cmbTheme.SelectedIndex = themeIndex;
+            else if (cmbTheme.Items.Count > 0)
+                cmbTheme.SelectedIndex = 0; // Default to first item
+            
             ThemeManager.ApplyTheme(this);
             chkTrustServerCertificate.Checked = Properties.Settings.Default.TrustCertificate;
             chkEncryptConnection.Checked = Properties.Settings.Default.EncryptConnection;
@@ -80,7 +88,9 @@ namespace sqlnexus
             //Saving trustcertificate & encrypt connection & theme for the user.
             Properties.Settings.Default.EncryptConnection = chkEncryptConnection.Checked;
             Properties.Settings.Default.TrustCertificate = chkTrustServerCertificate.Checked;
-            Properties.Settings.Default.Theme = cmbTheme.SelectedItem.ToString();
+            // Use selected theme or fall back to default if nothing is selected
+            Properties.Settings.Default.Theme = cmbTheme.SelectedItem?.ToString() ?? "Default";
+            Properties.Settings.Default.Save();
 
             //this.Dispose();
         }
