@@ -558,6 +558,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SQLScripts.resx</DependentUpon>
     </Compile>
+    <Compile Include="ThemeManager.cs" />
     <Compile Include="UserInstruction.cs">
       <SubType>Form</SubType>
     </Compile>
