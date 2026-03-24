@@ -1397,6 +1397,7 @@ namespace sqlnexus
             this.tscCurrentDatabase.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tscCurrentDatabase_KeyUp);
             this.tscCurrentDatabase.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tscCurrentDatabase_KeyDown);
             this.tscCurrentDatabase.DropDown += new System.EventHandler(this.tscCurrentDatabase_DropDown);
+            this.tscCurrentDatabase.DropDownClosed += new System.EventHandler(this.tscCurrentDatabase_DropDownClosed);
             this.tscCurrentDatabase.Click += new System.EventHandler(this.tscCurrentDatabase_Click);
             this.tscCurrentDatabase.TextChanged += new System.EventHandler(this.tscCurrentDatabase_TextChanged);
             // 

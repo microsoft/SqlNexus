@@ -3324,10 +3324,11 @@ bool CreateDB(String dbName)
         // Add a flag to track if selection was committed by user action
         private bool _databaseSelectionCommitted = false;
         private int _previousDatabaseIndex = -1;
+        private bool _dropDownOpen = false;
 
         private void tscCurrentDatabase_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // Only process if selection was explicitly committed (Enter/Space pressed)
+            // Only process if selection was explicitly committed (Enter/Space pressed or mouse click in dropdown)
             if (!_databaseSelectionCommitted)
             {
                 return;
@@ -3445,6 +3446,19 @@ bool CreateDB(String dbName)
         private void tscCurrentDatabase_DropDown(object sender, EventArgs e)
         {
             _previousDatabaseIndex = tscCurrentDatabase.SelectedIndex;
+            _dropDownOpen = true;
+        }
+
+        // Handle mouse selection when dropdown closes
+        private void tscCurrentDatabase_DropDownClosed(object sender, EventArgs e)
+        {
+            // If dropdown was open and selection changed, commit the selection (mouse click)
+            if (_dropDownOpen && tscCurrentDatabase.SelectedIndex != _previousDatabaseIndex)
+            {
+                _databaseSelectionCommitted = true;
+                tscCurrentDatabase_SelectedIndexChanged(sender, EventArgs.Empty);
+            }
+            _dropDownOpen = false;
         }
 
         private void refreshAfterDBChange()
