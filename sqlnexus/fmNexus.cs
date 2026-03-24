@@ -272,6 +272,16 @@ namespace sqlnexus
         // treeview hottracking is forcing color as blue , overriding its drawing to stick our own color
         private void tvReports_DrawMode(object sender, DrawTreeNodeEventArgs e)
         {
+            // Use system colors when Windows High Contrast mode is enabled
+            Color foreColor = ThemeManager.IsHighContrastEnabled ? SystemColors.WindowText : ThemeManager.CurrentForeColor;
+            Color backColor = ThemeManager.IsHighContrastEnabled ? SystemColors.Window : ThemeManager.CurrentBackColor;
+
+            // Handle selected/focused state for High Contrast
+            if (ThemeManager.IsHighContrastEnabled && (e.State & TreeNodeStates.Selected) != 0)
+            {
+                foreColor = SystemColors.HighlightText;
+                backColor = SystemColors.Highlight;
+            }
 
             if (e.State == TreeNodeStates.Hot)
             {

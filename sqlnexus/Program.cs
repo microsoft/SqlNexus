@@ -87,6 +87,11 @@ namespace sqlnexus
         public static System.Drawing.Color CurrentBackColor;
         public static System.Drawing.Color CurrentOtherColor;
 
+        /// <summary>
+        /// Returns true if Windows High Contrast mode is enabled
+        /// </summary>
+        public static bool IsHighContrastEnabled => SystemInformation.HighContrast;
+
         #region Theme Definitions
         public static List<Theme> Themes = new List<Theme>
         {
@@ -116,6 +121,13 @@ namespace sqlnexus
         //recursive function to apply theme to all controls, call this function from main control/form
         public static void ApplyTheme(Control control)
         {
+            // When Windows High Contrast mode is enabled, use system colors for accessibility
+            if (IsHighContrastEnabled)
+            {
+                ApplyHighContrastTheme(control);
+                return;
+            }
+
             control.ForeColor = ThemeManager.CurrentForeColor;
             control.BackColor = ThemeManager.CurrentBackColor;
 
@@ -140,9 +152,85 @@ namespace sqlnexus
             }
         }
 
+        /// <summary>
+        /// Applies Windows High Contrast system colors to controls for accessibility compliance
+        /// </summary>
+        private static void ApplyHighContrastTheme(Control control)
+        {
+            control.ForeColor = SystemColors.WindowText;
+            control.BackColor = SystemColors.Window;
+
+            if (control.GetType() == typeof(System.Windows.Forms.LinkLabel))
+            {
+                var linkLabel = (LinkLabel)control;
+                // Use ButtonHighlight for links on dark header panels, otherwise use HotTrack
+                bool isOnDarkHeader = control.Parent != null && 
+                    (control.Parent.Name.Contains("Header") || 
+                     control.Parent.BackColor == Color.DarkBlue ||
+                     control.Parent.BackColor == SystemColors.Highlight);
+                
+                if (isOnDarkHeader)
+                {
+                    linkLabel.LinkColor = SystemColors.ButtonHighlight;
+                    linkLabel.ActiveLinkColor = SystemColors.ButtonHighlight;
+                    linkLabel.DisabledLinkColor = SystemColors.GrayText;
+                }
+                else
+                {
+                    linkLabel.LinkColor = SystemColors.HotTrack;
+                    linkLabel.ActiveLinkColor = SystemColors.HotTrack;
+                    linkLabel.DisabledLinkColor = SystemColors.GrayText;
+                }
+            }
+
+            if (control.GetType() == typeof(System.Windows.Forms.Panel))
+            {
+                var panel = (Panel)control;
+                panel.BorderStyle = BorderStyle.FixedSingle;
+                
+                // Header panels should use system highlight colors
+                if (control.Name.Contains("Header"))
+                {
+                    panel.BackColor = SystemColors.Highlight;
+                }
+            }
+
+            if (control.GetType() == typeof(System.Windows.Forms.Button))
+            {
+                control.ForeColor = SystemColors.ControlText;
+                control.BackColor = SystemColors.Control;
+            }
+
+            if (control.GetType() == typeof(System.Windows.Forms.TextBox) ||
+                control.GetType() == typeof(System.Windows.Forms.ComboBox) ||
+                control.GetType() == typeof(System.Windows.Forms.ListBox))
+            {
+                control.ForeColor = SystemColors.WindowText;
+                control.BackColor = SystemColors.Window;
+            }
+
+            if (control.HasChildren)
+            {
+                foreach (Control childControl in control.Controls)
+                {
+                    ApplyHighContrastTheme(childControl);
+                }
+            }
+        }
+
         //sets the current theme based on the theme name passed
         public static void ChangeCurrentTheme(String theme)
         {
+            // If High Contrast is enabled, we'll use system colors regardless of selected theme
+            if (IsHighContrastEnabled)
+            {
+                CurrentForeColor = SystemColors.WindowText;
+                CurrentBackColor = SystemColors.Window;
+                CurrentOtherColor = SystemColors.HotTrack;
+                CurrentThemeName = "HighContrast";
+                return;
+            }
+
             var selectedTheme = Themes.FirstOrDefault(t => t.Name.Equals(theme));
             if (selectedTheme != null)
             {
