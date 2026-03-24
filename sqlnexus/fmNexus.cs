@@ -190,6 +190,13 @@ namespace sqlnexus
             if ((options & MessageOptions.StatusBar) == MessageOptions.StatusBar)
             {
                 ssText.Text = msg;
+
+                // Raise automation notification for screen readers (accessibility)
+                this.AccessibilityObject.RaiseAutomationNotification(
+                    System.Windows.Forms.Automation.AutomationNotificationKind.ActionCompleted,
+                    System.Windows.Forms.Automation.AutomationNotificationProcessing.ImportantMostRecent,
+                    msg);
+
                 Application.DoEvents();
             }
             Trace.Flush();
