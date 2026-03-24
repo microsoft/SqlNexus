@@ -1,3 +1,5 @@
+using Microsoft.Vbe.Interop;
+
 namespace sqlnexus
 {
     partial class fmNexus
@@ -602,6 +604,8 @@ namespace sqlnexus
             this.tvReports.ShowRootLines = false;            
             this.tvReports.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvReports_AfterSelect);
             this.tvReports.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvReports_NodeMouseClick);
+            this.tvReports.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tvReports_KeyDown);
+
             // 
             // imGlyphs
             // 

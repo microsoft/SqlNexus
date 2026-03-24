@@ -826,37 +826,49 @@ namespace sqlnexus
             }
         }
 
+        // Add a flag to track if selection change was user-initiated via Enter/Space
+        private bool _treeViewActivatedByKey = false;
+
         private void tvReports_AfterSelect(object sender, TreeViewEventArgs e)
         {
+            // Only load report if triggered by mouse click or Enter/Space key
+            // TreeViewAction.ByMouse indicates mouse click
+            // _treeViewActivatedByKey indicates Enter/Space was pressed
+            if (e.Action != TreeViewAction.ByMouse && !_treeViewActivatedByKey)
+            {
+                return;
+            }
+            
+            _treeViewActivatedByKey = false; // Reset flag
+            
             if ((e == null) || (e.Node == null) || (e.Node.Text == null))
             {
                 return;
             }
 
-            if (!CanRunReport(e.Node.Text + ".rdl"))
-            {
-            //    this.LogMessage("The database doesn't have necessary data to run this report", MessageOptions.All);
-                return;
-            }
             SelectLoadReport(e.Node.Text, true, null);
         }
-        private bool CanRunReport(string ReportName)
-        {
-            //we can add some logic in the future. for now removing older and unused code
-            return true;
-        }
+
         private void tvReports_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
-            if (!CanRunReport(e.Node.Text + ".rdl"))
-            {
-                this.LogMessage("The database doesn't have necessary data to run this report", MessageOptions.All);
-                return;
-            }
-
-
             if (e.Node == tvReports.SelectedNode)
             {
                 SelectLoadReport(e.Node.Text, true, null);
+            }
+        }
+
+        // Add KeyDown handler for tvReports
+        private void tvReports_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Space)
+            {
+                _treeViewActivatedByKey = true;
+                if (tvReports.SelectedNode != null)
+                {
+                    // Trigger the AfterSelect logic
+                    tvReports_AfterSelect(sender, new TreeViewEventArgs(tvReports.SelectedNode, TreeViewAction.ByKeyboard));
+                }
+                e.Handled = true;
             }
         }
 
