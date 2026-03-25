@@ -1348,7 +1348,7 @@ Parameters!ContrastTheme.Value="None", "Black")</Color>
                             <Actions>
                               <Action>
                                 <Drillthrough>
-                                  <ReportName>ReadTrace_InterestingEvents</ReportName>
+                                  <ReportName>ReadTrace_InterestingEvents_C</ReportName>
                                   <Parameters>
                                     <Parameter Name="dsServerName">
                                       <Value>=Parameters!dsServerName.Value</Value>
@@ -1778,7 +1778,7 @@ Parameters!ContrastTheme.Value="None", "Black")</Color>
                             <Actions>
                               <Action>
                                 <Drillthrough>
-                                  <ReportName>ReadTrace_InterestingEvents</ReportName>
+                                  <ReportName>ReadTrace_InterestingEvents_C</ReportName>
                                   <Parameters>
                                     <Parameter Name="dsServerName">
                                       <Value>=Parameters!dsServerName.Value</Value>
@@ -3494,7 +3494,7 @@ Parameters!ContrastTheme.Value="None", "Black")</Color>
                                 <Actions>
                                   <Action>
                                     <Drillthrough>
-                                      <ReportName>ReadTrace_UniqueBatchDetails</ReportName>
+                                      <ReportName>ReadTrace_UniqueBatchDetails_C</ReportName>
                                       <Parameters>
                                         <Parameter Name="dsServerName">
                                           <Value>=Parameters!dsServerName.Value</Value>
@@ -3746,7 +3746,7 @@ Parameters!ContrastTheme.Value="None", "Gainsboro")</BackgroundColor>
                                 <Actions>
                                   <Action>
                                     <Drillthrough>
-                                      <ReportName>ReadTrace_UniqueStmtDetails</ReportName>
+                                      <ReportName>ReadTrace_UniqueStmtDetails_C</ReportName>
                                       <Parameters>
                                         <Parameter Name="dsServerName">
                                           <Value>=Parameters!dsServerName.Value</Value>

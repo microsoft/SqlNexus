@@ -1757,7 +1757,7 @@ Parameters!ContrastTheme.Value="None", "Navy")</Color>
                             <Actions>
                               <Action>
                                 <Drillthrough>
-                                  <ReportName>ReadTrace_UniqueBatchTopN</ReportName>
+                                  <ReportName>ReadTrace_UniqueBatchTopN_C</ReportName>
                                   <Parameters>
                                     <Parameter Name="dsServerName">
                                       <Value>=Parameters!dsServerName.Value</Value>
@@ -4955,7 +4955,7 @@ Parameters!ContrastTheme.Value="None", "Blue")</Color>
               <Actions>
                 <Action>
                   <Drillthrough>
-                    <ReportName>ReadTrace_Grouping</ReportName>
+                    <ReportName>ReadTrace_Grouping_C</ReportName>
                     <Parameters>
                       <Parameter Name="dsServerName">
                         <Value>=Parameters!dsServerName.Value</Value>
@@ -5019,7 +5019,7 @@ Parameters!ContrastTheme.Value="None", "Blue")</Color>
               <Actions>
                 <Action>
                   <Drillthrough>
-                    <ReportName>ReadTrace_Grouping</ReportName>
+                    <ReportName>ReadTrace_Grouping_C</ReportName>
                     <Parameters>
                       <Parameter Name="dsServerName">
                         <Value>=Parameters!dsServerName.Value</Value>
@@ -5083,7 +5083,7 @@ Parameters!ContrastTheme.Value="None", "Blue")</Color>
               <Actions>
                 <Action>
                   <Drillthrough>
-                    <ReportName>ReadTrace_Grouping</ReportName>
+                    <ReportName>ReadTrace_Grouping_C</ReportName>
                     <Parameters>
                       <Parameter Name="dsServerName">
                         <Value>=Parameters!dsServerName.Value</Value>
@@ -5183,7 +5183,7 @@ Parameters!ContrastTheme.Value="None", "Blue")</Color>
               <Actions>
                 <Action>
                   <Drillthrough>
-                    <ReportName>ReadTrace_Lineage</ReportName>
+                    <ReportName>ReadTrace_Lineage_C</ReportName>
                     <Parameters>
                       <Parameter Name="dsServerName">
                         <Value>=Parameters!dsServerName.Value</Value>
@@ -5238,7 +5238,7 @@ Parameters!ContrastTheme.Value="None", "Blue")</Color>
               <Actions>
                 <Action>
                   <Drillthrough>
-                    <ReportName>ReadTrace_InterestingEvents</ReportName>
+                    <ReportName>ReadTrace_InterestingEvents_C</ReportName>
                     <Parameters>
                       <Parameter Name="dsServerName">
                         <Value>=Parameters!dsServerName.Value</Value>
@@ -5303,7 +5303,7 @@ Parameters!ContrastTheme.Value="None", "Blue")</Color>
               <Actions>
                 <Action>
                   <Drillthrough>
-                    <ReportName>ReadTrace_UniqueBatchTopN</ReportName>
+                    <ReportName>ReadTrace_UniqueBatchTopN_C</ReportName>
                     <Parameters>
                       <Parameter Name="dsServerName">
                         <Value>=Parameters!dsServerName.Value</Value>
@@ -5367,7 +5367,7 @@ Parameters!ContrastTheme.Value="None", "Blue")</Color>
               <Actions>
                 <Action>
                   <Drillthrough>
-                    <ReportName>ReadTrace_UniqueStmtTopN</ReportName>
+                    <ReportName>ReadTrace_UniqueStmtTopN_C</ReportName>
                     <Parameters>
                       <Parameter Name="dsServerName">
                         <Value>=Parameters!dsServerName.Value</Value>
@@ -5471,7 +5471,7 @@ Parameters!ContrastTheme.Value="None", "Blue")</Color>
               <Actions>
                 <Action>
                   <Drillthrough>
-                    <ReportName>ReadTrace_Warnings</ReportName>
+                    <ReportName>ReadTrace_Warnings_C</ReportName>
                     <Parameters>
                       <Parameter Name="dsServerName">
                         <Value>=Parameters!dsServerName.Value</Value>
