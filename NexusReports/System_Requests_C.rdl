@@ -9,7 +9,7 @@
       <am:Name>SSDTRS</am:Name>
       <am:Version>17.14.37027.9</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2026-03-25T19:26:36.5926928Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2026-03-26T14:14:49.5677110Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
@@ -24,26 +24,6 @@
     </DataSource>
   </DataSources>
   <DataSets>
-    <DataSet Name="DataSet_CoreCount">
-      <Query>
-        <DataSourceName>DataSource1</DataSourceName>
-        <CommandText>
-					DECLARE @CoreCount INT = 1;
-					SELECT @CoreCount = COALESCE(
-					(SELECT CAST(PropertyValue AS INT) FROM [dbo].[tbl_ServerProperties] WHERE PropertyName = 'cpu_count'),
-					(SELECT MAX(cpu_count) FROM [dbo].[tbl_dm_os_sys_info]),
-					1
-					);
-					SELECT @CoreCount AS CoreCount;
-				</CommandText>
-      </Query>
-      <Fields>
-        <Field Name="CoreCount">
-          <DataField>CoreCount</DataField>
-          <rd:TypeName>System.Int32</rd:TypeName>
-        </Field>
-      </Fields>
-    </DataSet>
     <DataSet Name="DataSet_Runtime">
       <Query>
         <DataSourceName>DataSource1</DataSourceName>
@@ -208,14 +188,13 @@ WHERE
             c2.prev_cpu_time &gt; 0
             AND c2.runtime BETWEEN @StartTime AND @EndTime
             AND c2.elapsed_ms &gt; 0
-        GROUP BY c2.command
+        GROUP BY c2.command, c2.runtime
         HAVING
             SUM(c2.delta_cpu) * 100.0
               / NULLIF(AVG(CONVERT(float, c2.elapsed_ms)), 0)
               / NULLIF(@CoreCount, 0) &gt; @PercentThreshold
     )
-ORDER BY c.delta_cpu DESC;
-</CommandText>
+ORDER BY c.delta_cpu DESC;</CommandText>
       </Query>
       <Fields>
         <Field Name="runtime">
@@ -228,15 +207,15 @@ ORDER BY c.delta_cpu DESC;
         </Field>
         <Field Name="os_thread_id">
           <DataField>os_thread_id</DataField>
-          <rd:TypeName>System.Int32</rd:TypeName>
+          <rd:TypeName>System.Int64</rd:TypeName>
         </Field>
         <Field Name="delta">
           <DataField>delta</DataField>
-          <rd:TypeName>System.Double</rd:TypeName>
+          <rd:TypeName>System.Int64</rd:TypeName>
         </Field>
         <Field Name="delta_elapse_time">
           <DataField>delta_elapse_time</DataField>
-          <rd:TypeName>System.Int32</rd:TypeName>
+          <rd:TypeName>System.Int64</rd:TypeName>
         </Field>
         <Field Name="cpu_percent">
           <DataField>cpu_percent</DataField>
@@ -1239,7 +1218,7 @@ ORDER BY c.delta_cpu DESC;
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>System Threads/Commands CPU Utilization (Normalized by Core Count)</Value>
+                    <Value>System Threads/Commands CPU Utilization (normalized by Core Count)</Value>
                     <Style>
                       <FontFamily>Verdana</FontFamily>
                       <FontSize>20pt</FontSize>
