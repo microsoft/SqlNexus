@@ -1485,7 +1485,7 @@ Parameters!ContrastTheme.Value="None", "DarkBlue")</Color>
                             <Actions>
                               <Action>
                                 <Drillthrough>
-                                  <ReportName>ReadTrace_UniqueBatchDetails</ReportName>
+                                  <ReportName>ReadTrace_UniqueBatchDetails_C</ReportName>
                                   <Parameters>
                                     <Parameter Name="dsServerName">
                                       <Value>=Parameters!dsServerName.Value</Value>

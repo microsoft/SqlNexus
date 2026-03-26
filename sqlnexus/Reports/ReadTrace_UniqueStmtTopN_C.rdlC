@@ -1377,7 +1377,7 @@
                             <Actions>
                               <Action>
                                 <Drillthrough>
-                                  <ReportName>ReadTrace_UniqueStmtDetails</ReportName>
+                                  <ReportName>ReadTrace_UniqueStmtDetails_C</ReportName>
                                   <Parameters>
                                     <Parameter Name="dsServerName">
                                       <Value>=Parameters!dsServerName.Value</Value>
