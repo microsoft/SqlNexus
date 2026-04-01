@@ -592,20 +592,20 @@ namespace sqlnexus
             // 
             // tvReports
             // 
+            this.tvReports.BackColor = System.Drawing.Color.AliceBlue;
             this.tvReports.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.tvReports.Cursor = System.Windows.Forms.Cursors.Hand;
             resources.ApplyResources(this.tvReports, "tvReports");
             this.tvReports.DrawMode = System.Windows.Forms.TreeViewDrawMode.OwnerDrawText;
-            this.tvReports.DrawNode += new System.Windows.Forms.DrawTreeNodeEventHandler(this.tvReports_DrawMode);
             this.tvReports.HideSelection = false;
             this.tvReports.HotTracking = true;
             this.tvReports.ImageList = this.imGlyphs;
             this.tvReports.Name = "tvReports";
-            this.tvReports.ShowRootLines = false;            
+            this.tvReports.ShowRootLines = false;
+            this.tvReports.DrawNode += new System.Windows.Forms.DrawTreeNodeEventHandler(this.tvReports_DrawMode);
             this.tvReports.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvReports_AfterSelect);
             this.tvReports.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvReports_NodeMouseClick);
             this.tvReports.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tvReports_KeyDown);
-
             // 
             // imGlyphs
             // 
@@ -801,7 +801,6 @@ namespace sqlnexus
             // 
             this.menuBarMain.DataBindings.Add(new System.Windows.Forms.Binding("Visible", global::sqlnexus.Properties.Settings.Default, "ShowMainMenu", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             resources.ApplyResources(this.menuBarMain, "menuBarMain");
-            this.menuBarMain.GripMargin = new System.Windows.Forms.Padding(2, 2, 0, 2);
             this.menuBarMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Visible;
             this.menuBarMain.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuBarMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -1391,13 +1390,13 @@ namespace sqlnexus
             resources.ApplyResources(this.tscCurrentDatabase, "tscCurrentDatabase");
             this.tscCurrentDatabase.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.tscCurrentDatabase.Name = "tscCurrentDatabase";
-            this.tscCurrentDatabase.SelectedIndexChanged += new System.EventHandler(this.tscCurrentDatabase_SelectedIndexChanged);
-            this.tscCurrentDatabase.TextUpdate += new System.EventHandler(this.tscCurrentDatabase_TextUpdate);
-            this.tscCurrentDatabase.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tscCurrentDatabase_KeyPress);
-            this.tscCurrentDatabase.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tscCurrentDatabase_KeyUp);
-            this.tscCurrentDatabase.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tscCurrentDatabase_KeyDown);
             this.tscCurrentDatabase.DropDown += new System.EventHandler(this.tscCurrentDatabase_DropDown);
             this.tscCurrentDatabase.DropDownClosed += new System.EventHandler(this.tscCurrentDatabase_DropDownClosed);
+            this.tscCurrentDatabase.SelectedIndexChanged += new System.EventHandler(this.tscCurrentDatabase_SelectedIndexChanged);
+            this.tscCurrentDatabase.TextUpdate += new System.EventHandler(this.tscCurrentDatabase_TextUpdate);
+            this.tscCurrentDatabase.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tscCurrentDatabase_KeyDown);
+            this.tscCurrentDatabase.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tscCurrentDatabase_KeyPress);
+            this.tscCurrentDatabase.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tscCurrentDatabase_KeyUp);
             this.tscCurrentDatabase.Click += new System.EventHandler(this.tscCurrentDatabase_Click);
             this.tscCurrentDatabase.TextChanged += new System.EventHandler(this.tscCurrentDatabase_TextChanged);
             // 

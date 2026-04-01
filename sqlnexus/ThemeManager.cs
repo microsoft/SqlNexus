@@ -59,6 +59,7 @@ namespace sqlnexus
         #endregion
 
         //recursive function to apply theme to all controls, call this function from main control/form
+        static bool leftMenu = false;
         public static void ApplyTheme(Control control)
         {
             // When Windows High Contrast mode is enabled, use system colors for accessibility
@@ -67,28 +68,83 @@ namespace sqlnexus
                 ApplyHighContrastTheme(control);
                 return;
             }
-
-            control.ForeColor = ThemeManager.CurrentForeColor;
-            control.BackColor = ThemeManager.CurrentBackColor;
-
-            //adding special checks for control types as some properties are control specific
-            if (control.GetType() == typeof(System.Windows.Forms.LinkLabel))
-            {
-                ((LinkLabel)control).LinkColor = CurrentForeColor;
-                ((LinkLabel)control).ActiveLinkColor = CurrentForeColor;
-                ((LinkLabel)control).DisabledLinkColor = CurrentForeColor;
+            #region special handling for default theme on left hand menu to keep original colors.
+            if (CurrentThemeName == "Default" || leftMenu)
+            {               
+                if (control.Name == "tableLayoutPanel1")
+                {
+                    control.BackColor = Color.LightSkyBlue;
+                    control.ForeColor = Color.Black;
+                }
+                else
+                {
+                    if (control is LinkLabel)
+                    {
+                        if (control.Name == "llTasks" || control.Name == "llData" || control.Name == "llReports")
+                        {
+                            var linkLabel = (LinkLabel)control;
+                            linkLabel.BackColor = Color.DarkBlue;
+                            linkLabel.ForeColor = Color.White;
+                            linkLabel.ActiveLinkColor = Color.White;
+                            linkLabel.LinkColor = Color.White;
+                            linkLabel.DisabledLinkColor = Color.Gray;
+                        }
+                        else
+                        {
+                            var linkLabel = (LinkLabel)control;
+                            linkLabel.BackColor = Color.AliceBlue;
+                            linkLabel.ForeColor = Color.Black;
+                            linkLabel.ActiveLinkColor = Color.DarkBlue;
+                            linkLabel.LinkColor = Color.DarkBlue;
+                            linkLabel.DisabledLinkColor = Color.DarkBlue;
+                        }
+                    }
+                    else
+                    {
+                        if (control.Name == "paReportsHeader" || control.Name == "paTasksHeader" || control.Name == "paDataHeader")
+                        {
+                            control.BackColor = Color.DarkBlue;
+                            control.ForeColor = Color.White;
+                        }
+                        else
+                        {
+                            control.BackColor = Color.AliceBlue;
+                            control.ForeColor = Color.Black;
+                        }
+                    }
+                }
+                leftMenu = true; // setting this for the iterations as we are in the hierarchy for the left hand menu
             }
-            //this was not there on the original design but the differentiation was background colors , using this as border line to separate different panels
-            if (control.GetType() == typeof(System.Windows.Forms.Panel))
+            #endregion  
+            else
             {
-                ((Panel)control).BorderStyle = BorderStyle.FixedSingle;
+                control.ForeColor = ThemeManager.CurrentForeColor;
+                control.BackColor = ThemeManager.CurrentBackColor;
+
+                //adding special checks for control types as some properties are control specific
+                if (control.GetType() == typeof(System.Windows.Forms.LinkLabel))
+                {
+                    ((LinkLabel)control).LinkColor = CurrentForeColor;
+                    ((LinkLabel)control).ActiveLinkColor = CurrentForeColor;
+                    ((LinkLabel)control).DisabledLinkColor = CurrentForeColor;
+                }
+                //this was not there on the original design but the differentiation was background colors , using this as border line to separate different panels
+                if (control.GetType() == typeof(System.Windows.Forms.Panel))
+                {
+                    ((Panel)control).BorderStyle = BorderStyle.FixedSingle;
+                }
             }
+
             if (control.HasChildren)
             {
                 foreach (Control childControl in control.Controls)
                 {
                     ApplyTheme(childControl);
                 }
+            }
+            else
+            {
+                leftMenu = false; // reset the flag when we are done with the current branch of the control hierarchy
             }
         }
 
