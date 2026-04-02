@@ -592,10 +592,10 @@ namespace sqlnexus
             // 
             // tvReports
             // 
+            resources.ApplyResources(this.tvReports, "tvReports");
             this.tvReports.BackColor = System.Drawing.Color.AliceBlue;
             this.tvReports.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.tvReports.Cursor = System.Windows.Forms.Cursors.Hand;
-            resources.ApplyResources(this.tvReports, "tvReports");
             this.tvReports.DrawMode = System.Windows.Forms.TreeViewDrawMode.OwnerDrawText;
             this.tvReports.HideSelection = false;
             this.tvReports.HotTracking = true;
@@ -801,6 +801,7 @@ namespace sqlnexus
             // 
             this.menuBarMain.DataBindings.Add(new System.Windows.Forms.Binding("Visible", global::sqlnexus.Properties.Settings.Default, "ShowMainMenu", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             resources.ApplyResources(this.menuBarMain, "menuBarMain");
+            this.menuBarMain.GripMargin = new System.Windows.Forms.Padding(2, 2, 0, 2);
             this.menuBarMain.GripStyle = System.Windows.Forms.ToolStripGripStyle.Visible;
             this.menuBarMain.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuBarMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
