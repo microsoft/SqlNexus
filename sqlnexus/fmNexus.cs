@@ -1,3 +1,5 @@
+
+
 #define TRACE
 
 using System;
@@ -23,6 +25,7 @@ using System.ServiceProcess;
 //using Microsoft.Office.Interop;
 using System.Globalization;
 using NexusInterfaces;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Threading;
@@ -343,6 +346,10 @@ namespace sqlnexus
             DialogResult dr = connect.ShowDialog();
             if (dr == DialogResult.OK)
             {
+                // Apply the theme selected in the Connect dialog to the main form
+                ThemeManager.ChangeCurrentTheme(Properties.Settings.Default.Theme);
+                ThemeManager.ApplyTheme(this);
+
                 if (!CreateDB("sqlnexus"))
                 {
                     dr = DialogResult.Abort;
@@ -1038,6 +1045,47 @@ namespace sqlnexus
 
         #region Report mgmt
 
+        /// <summary>
+        /// Updates the ContrastTheme parameter on the currently visible report and refreshes it.
+        /// Called from fmLoginEx when the user changes the theme in the combobox so the report
+        /// reflects the new theme immediately without closing the dialog.
+        /// Non-active tabs are intentionally skipped here because they may have unresolved
+        /// parameters that cause InvalidOperationException. They pick up the correct theme
+        /// via the existing ContrastTheme logic in RefreshReport() and SelectLoadReport()
+        /// whenever they are next refreshed or navigated to.
+        /// </summary>
+        public void RefreshCurrentReportTheme()
+        {
+            try
+            {
+                if (CurrentReport == null || CurrentReportViewer == null)
+                    return;
+
+                string currentTheme = Properties.Settings.Default.Theme;
+                string contrastThemeValue = (string.IsNullOrEmpty(currentTheme) || currentTheme == "Default") ? "None" : currentTheme;
+
+                var parameters = CurrentReport.GetParameters();
+
+                if (!parameters.Any(x => x.Name == "ContrastTheme"))
+                    return;
+
+                // Only refresh if every parameter already has at least one value.
+                // Reports with dataset-bound ValidValues (e.g. ReadTrace_Main_C)
+                // will throw InvalidOperationException during async rendering when
+                // those datasets cannot be resolved.  Setting the parameter value
+                // still takes effect on the next full RefreshReport / RefreshAllReports.
+                if (parameters.Any(p => p.Values == null || p.Values.Count == 0))
+                    return;
+
+                CurrentReport.SetParameters(new ReportParameter("ContrastTheme", contrastThemeValue));
+                CurrentReportViewer.RefreshReport();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Exception while refreshing report theme: " + ex.Message);
+            }
+        }
+
         public ReportViewer CurrentReportViewer
         {
             get
@@ -1076,7 +1124,29 @@ namespace sqlnexus
             {
                 try
                 {
-                    
+                    // Update ContrastTheme parameter to reflect any theme change before refreshing
+                    try
+                    {
+                        if (report.GetParameters().Any(x => x.Name == "ContrastTheme"))
+                        {
+                            string currentTheme = Properties.Settings.Default.Theme;
+                            string contrastThemeValue = (string.IsNullOrEmpty(currentTheme) || currentTheme == "Default") ? "None" : currentTheme;
+                            report.SetParameters(new ReportParameter("ContrastTheme", contrastThemeValue));
+                        }
+                    }
+                    catch (Exception) { /* Report may not have ContrastTheme parameter */ }
+
+                    // Skip reports that have parameters with no values assigned.
+                    // Reports with dataset-bound ValidValues (e.g. ReadTrace) throw
+                    // InvalidOperationException in the async rendering pipeline
+                    // (GetDocumentMap) when those datasets cannot be resolved.
+                    if (report.GetParameters().Any(p => p.Values == null || p.Values.Count == 0))
+                    {
+                        LogMessage("Skipping refresh for report with unresolved parameters: " +
+                            (report.DisplayName ?? Path.GetFileNameWithoutExtension(report.ReportPath)), MessageOptions.Silent);
+                        return;
+                    }
+
                     string reportname = (0 == report.DisplayName.Length) ? Path.GetFileNameWithoutExtension(report.ReportPath) : report.DisplayName;
                     LogMessage(sqlnexus.Properties.Resources.Msg_RefreshingReport+reportname, MessageOptions.Silent);
                     LogMessage(sqlnexus.Properties.Resources.Msg_Refreshing);
@@ -1394,8 +1464,29 @@ namespace sqlnexus
         /// <param name="master">true for top-level reports (.RDL), false for child reports (.RDLC)</param>
         /// <param name="parameters">Report parameter collection (can be null)</param>
         /// 
-        public void SelectLoadReport(string report, bool master, ReportParameter[] parameters)
+        public void SelectLoadReport(string report, bool master, ReportParameter[] _parameters)
         {
+            // ContrastTheme is a standard parameter that must exist in all reports for accessibility/TrIP compliance.
+            // ThemeManager uses "Default" but the RDL reports expect "None".
+            string currentTheme = Properties.Settings.Default.Theme;
+            string contrastThemeValue = (string.IsNullOrEmpty(currentTheme) || currentTheme == "Default") ? "None" : currentTheme;
+            ReportParameter paramTheme = new ReportParameter("ContrastTheme", contrastThemeValue);
+
+            ReportParameter[] parameters;
+            if (_parameters != null)
+            {
+                parameters = new ReportParameter[_parameters.Length + 1];
+                parameters[0] = paramTheme;
+                for (int idx = 0; idx < _parameters.Length; idx++)
+                {
+                    if (_parameters[idx] != null && _parameters[idx].Name != "ContrastTheme")
+                        parameters[idx + 1] = _parameters[idx];
+                }
+            }
+            else
+            {
+                parameters = new ReportParameter[] { paramTheme };
+            }
 
             NexusInfo nInfo = new NexusInfo(Globals.credentialMgr.ConnectionString, this);
             nInfo.SetAttribute("Nexus Report Version", Application.ProductVersion);
@@ -1469,6 +1560,10 @@ namespace sqlnexus
 
                         tcReports.TabPages.Add(p);
                         tcReports.SelectTab(tcReports.TabPages.Count - 1);
+
+                        // Apply the current theme to the new ReportViewer so its
+                        // background matches the rest of the UI on first launch.
+                        ThemeManager.ApplyTheme(rv);
 
                         //Hide the damned tabs!
                         if (!this.tsiShowReportTabs.Checked)
@@ -1590,13 +1685,18 @@ namespace sqlnexus
                 return;
             }
 
-            ReportParameter[] rparameters = new ReportParameter[nodes.Count];
-            int i = 0;
+            // Reserve index 0 for ContrastTheme since this is needed for accessibility/TrIP compliance.
+            // ThemeManager uses "Default" but the RDL reports expect "None".
+            string currentTheme = Properties.Settings.Default.Theme;
+            string contrastThemeValue = (string.IsNullOrEmpty(currentTheme) || currentTheme == "Default") ? "None" : currentTheme;
+            ReportParameter[] rparameters = new ReportParameter[nodes.Count + 1];
+            rparameters[0] = new ReportParameter("ContrastTheme", contrastThemeValue);
+            int i = 1;
             foreach (XmlNode node in nodes)
             {
                 // Get the name of the DataSet associated with this param default
                 XmlNode dsetnode = node.SelectSingleNode("rds:DefaultValue/rds:DataSetReference/rds:DataSetName", nsmgr);
-                
+
                 if (null != dsetnode)  //value from dataset
                 {
                     // Get the name of the DataSet field/column to use for the default value
@@ -1608,8 +1708,9 @@ namespace sqlnexus
                     SqlDataAdapter da = new SqlDataAdapter(fmNexus.GetQueryText(report.ReportPath, report.GetParameters(), dsetnode.InnerText), Globals.credentialMgr.ConnectionString);
                     da.Fill(dt);
                     // Add a new param to our param array
-                    if (dt.Rows.Count > 0)
-                        rparameters[i++] = new ReportParameter(node.Attributes["Name"].Value, dt.Rows[0][vfnode.InnerText].ToString());
+                    String paramName = node.Attributes["Name"].Value;
+                    if ((dt.Rows.Count > 0) && (!paramName.Equals("ContrastTheme")))
+                        rparameters[i++] = new ReportParameter(paramName, dt.Rows[0][vfnode.InnerText].ToString());
                 }
             }
             if (0!=i)
@@ -1690,11 +1791,24 @@ namespace sqlnexus
                         n.SelectedImageIndex = 1;
 
                         ReportParameterInfoCollection paramc = report.GetParameters();
-                        ReportParameter[] parameters = new ReportParameter[paramc.Count];
-                        int i = 0;
+
+                        List<ReportParameter> parameters = new List<ReportParameter>();
+                        // ThemeManager uses "Default" but the RDL reports expect "None".
+                        string currentTheme = Properties.Settings.Default.Theme;
+                        string contrastThemeValue = (string.IsNullOrEmpty(currentTheme) || currentTheme == "Default") ? "None" : currentTheme;
+                        ReportParameter contrastThemeParam = new ReportParameter("ContrastTheme", contrastThemeValue);
+
                         foreach (ReportParameterInfo p in paramc)
                         {
-                            parameters[i++] = new ReportParameter(p.Name, p.Values[0]);
+                            if (p.Name == "ContrastTheme")
+                            {
+                                parameters.Add(contrastThemeParam);
+                            }
+                            else
+                            {
+                                if (p.Values.Count > 0)
+                                    parameters.Add(new ReportParameter(p.Name, p.Values[0]));
+                            }
                         }
                         // First check for a child report (.RDLC) with the specified name in the same dir as the parent report
                         string filename = Path.GetDirectoryName(report.ReportPath) + @"\" + reportpath + RDLC_EXT;
@@ -1702,7 +1816,7 @@ namespace sqlnexus
                         {   // If not found, use our own reports dirs
                             filename = GetFullReportPath(reportpath, RDLC_EXT);
                         }
-                        SelectLoadReport(filename, false, parameters);
+                        SelectLoadReport(filename, false, parameters.ToArray());
                         return true;
                     }
                     else
@@ -3474,6 +3588,7 @@ bool CreateDB(String dbName)
             }
             ShowHideUIElements();
             Application.DoEvents();
+            ThemeManager.ApplyTheme(fmNexus.singleton);
         }
 
         private void tsb_CustomRowset_Click(object sender, EventArgs e)

@@ -100,6 +100,10 @@ namespace sqlnexus
             ThemeManager.ChangeCurrentTheme(Properties.Settings.Default.Theme);
             ThemeManager.ApplyTheme(this);
             ThemeManager.ApplyTheme(fmNexus.singleton);
+            if (fmNexus.singleton != null && fmNexus.singleton.IsHandleCreated)
+            {
+                fmNexus.singleton.BeginInvoke(new Action(() => fmNexus.singleton.RefreshCurrentReportTheme()));
+            }
         }
 
         private void fmLoginEx_Load(object sender, EventArgs e)
@@ -160,6 +164,15 @@ namespace sqlnexus
             ThemeManager.ChangeCurrentTheme(cmbTheme.Text);
             ThemeManager.ApplyTheme(this);
             ThemeManager.ApplyTheme(fmNexus.singleton);
+
+            // Update the report's ContrastTheme parameter and refresh it immediately.
+            // Use BeginInvoke to defer the report refresh so the ReportViewer can properly
+            // re-render while the modal dialog is open.
+            Properties.Settings.Default.Theme = cmbTheme.SelectedItem?.ToString() ?? "Default";
+            if (fmNexus.singleton != null && fmNexus.singleton.IsHandleCreated)
+            {
+                fmNexus.singleton.BeginInvoke(new Action(() => fmNexus.singleton.RefreshCurrentReportTheme()));
+            }
         }
 
         private void fmLoginEx_FormClosing(object sender, FormClosingEventArgs e)
