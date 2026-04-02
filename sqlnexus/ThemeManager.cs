@@ -75,6 +75,7 @@ namespace sqlnexus
                 {
                     control.BackColor = Color.LightSkyBlue;
                     control.ForeColor = Color.Black;
+                    leftMenu = true; // setting this for the iterations as we are in the hierarchy for the left hand menu
                 }
                 else
                 {
@@ -113,7 +114,7 @@ namespace sqlnexus
                         }
                     }
                 }
-                leftMenu = true; // setting this for the iterations as we are in the hierarchy for the left hand menu
+                
             }
             #endregion  
             else
