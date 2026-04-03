@@ -1672,8 +1672,27 @@ namespace sqlnexus
                 // Report may not have a ContrastTheme parameter; ignore.
             }
 
+            // During native drillthrough the child report's ReportPath may be
+            // empty, null, or point to a temporary/invalid file.  Guard against
+            // that so we don't crash on XmlDocument.Load().
+            string reportPath = report.ReportPath;
+            if (string.IsNullOrEmpty(reportPath) || !File.Exists(reportPath))
+            {
+                return;
+            }
+
             XmlDocument doc = new XmlDocument();
-            doc.Load(report.ReportPath);
+            try
+            {
+                doc.Load(reportPath);
+            }
+            catch (XmlException ex)
+            {
+                // ReportPath may point to a temp file with invalid XML content
+                // (e.g. during native drillthrough).  Nothing more we can do.
+                Util.Logger?.LogMessage("SetReportQueryParameters: failed to load report XML from '" + reportPath + "': " + ex.Message, MessageOptions.Silent);
+                return;
+            }
             //MessageBox.Show("name space" + ReportUtil.GetReportNameSpace(doc));
             XmlNamespaceManager nsmgr = new XmlNamespaceManager(doc.NameTable);
             //nsmgr.AddNamespace("rds", "http://schemas.microsoft.com/sqlserver/reporting/2008/01/reportdefinition");
