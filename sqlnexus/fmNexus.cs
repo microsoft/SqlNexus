@@ -1659,6 +1659,19 @@ namespace sqlnexus
         /// <param name="report">RS report</param>
         private static void SetReportQueryParameters(LocalReport report)
         {
+            // Always propagate ContrastTheme to every report for accessibility/TrIP compliance.
+            // ThemeManager uses "Default" but the RDL reports expect "None".
+            string currentTheme = Properties.Settings.Default.Theme;
+            string contrastThemeValue = (string.IsNullOrEmpty(currentTheme) || currentTheme == "Default") ? "None" : currentTheme;
+            try
+            {
+                report.SetParameters(new ReportParameter[] { new ReportParameter("ContrastTheme", contrastThemeValue) });
+            }
+            catch (Exception)
+            {
+                // Report may not have a ContrastTheme parameter; ignore.
+            }
+
             XmlDocument doc = new XmlDocument();
             doc.Load(report.ReportPath);
             //MessageBox.Show("name space" + ReportUtil.GetReportNameSpace(doc));
@@ -1679,19 +1692,13 @@ namespace sqlnexus
             // Retrieve all report parameters that have a default value bound to a DataSet
             XmlNodeList nodes = doc.DocumentElement.SelectNodes("//rds:Report//rds:ReportParameters/rds:ReportParameter[rds:DefaultValue/rds:DataSetReference]", nsmgr);
 
-            //If no params, bail
+            //If no dataset-bound params, bail
             if ((null == nodes) || (0 == nodes.Count))
             {
                 return;
             }
 
-            // Reserve index 0 for ContrastTheme since this is needed for accessibility/TrIP compliance.
-            // ThemeManager uses "Default" but the RDL reports expect "None".
-            string currentTheme = Properties.Settings.Default.Theme;
-            string contrastThemeValue = (string.IsNullOrEmpty(currentTheme) || currentTheme == "Default") ? "None" : currentTheme;
-            ReportParameter[] rparameters = new ReportParameter[nodes.Count + 1];
-            rparameters[0] = new ReportParameter("ContrastTheme", contrastThemeValue);
-            int i = 1;
+            List<ReportParameter> rparametersList = new List<ReportParameter>();
             foreach (XmlNode node in nodes)
             {
                 // Get the name of the DataSet associated with this param default
@@ -1710,11 +1717,11 @@ namespace sqlnexus
                     // Add a new param to our param array
                     String paramName = node.Attributes["Name"].Value;
                     if ((dt.Rows.Count > 0) && (!paramName.Equals("ContrastTheme")))
-                        rparameters[i++] = new ReportParameter(paramName, dt.Rows[0][vfnode.InnerText].ToString());
+                        rparametersList.Add(new ReportParameter(paramName, dt.Rows[0][vfnode.InnerText].ToString()));
                 }
             }
-            if (0!=i)
-                report.SetParameters(rparameters);
+            if (rparametersList.Count > 0)
+                report.SetParameters(rparametersList.ToArray());
         }
 
         /// <summary>
