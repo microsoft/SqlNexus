@@ -1069,14 +1069,6 @@ namespace sqlnexus
                 if (!parameters.Any(x => x.Name == "ContrastTheme"))
                     return;
 
-                // Only refresh if every parameter already has at least one value.
-                // Reports with dataset-bound ValidValues (e.g. ReadTrace_Main_C)
-                // will throw InvalidOperationException during async rendering when
-                // those datasets cannot be resolved.  Setting the parameter value
-                // still takes effect on the next full RefreshReport / RefreshAllReports.
-                if (parameters.Any(p => p.Values == null || p.Values.Count == 0))
-                    return;
-
                 CurrentReport.SetParameters(new ReportParameter("ContrastTheme", contrastThemeValue));
                 CurrentReportViewer.RefreshReport();
             }
@@ -1135,17 +1127,6 @@ namespace sqlnexus
                         }
                     }
                     catch (Exception) { /* Report may not have ContrastTheme parameter */ }
-
-                    // Skip reports that have parameters with no values assigned.
-                    // Reports with dataset-bound ValidValues (e.g. ReadTrace) throw
-                    // InvalidOperationException in the async rendering pipeline
-                    // (GetDocumentMap) when those datasets cannot be resolved.
-                    if (report.GetParameters().Any(p => p.Values == null || p.Values.Count == 0))
-                    {
-                        LogMessage("Skipping refresh for report with unresolved parameters: " +
-                            (report.DisplayName ?? Path.GetFileNameWithoutExtension(report.ReportPath)), MessageOptions.Silent);
-                        return;
-                    }
 
                     string reportname = (0 == report.DisplayName.Length) ? Path.GetFileNameWithoutExtension(report.ReportPath) : report.DisplayName;
                     LogMessage(sqlnexus.Properties.Resources.Msg_RefreshingReport+reportname, MessageOptions.Silent);
@@ -2418,6 +2399,18 @@ namespace sqlnexus
             {
                 CurrentReportViewer.PerformBack();
                 tsbBack.Enabled = CurrentReport.IsDrillthroughReport;
+
+                // After navigating back, the parent report is rendered from cache
+                // with its original ContrastTheme.  If the theme changed while a
+                // child was displayed, update the parameter and force a re-render.
+                try
+                {
+                    string currentTheme = Properties.Settings.Default.Theme;
+                    string contrastThemeValue = (string.IsNullOrEmpty(currentTheme) || currentTheme == "Default") ? "None" : currentTheme;
+                    CurrentReport.SetParameters(new ReportParameter("ContrastTheme", contrastThemeValue));
+                    CurrentReportViewer.RefreshReport();
+                }
+                catch (Exception) { /* report may not have ContrastTheme */ }
             }
             catch (Exception ex)
             {
@@ -3243,8 +3236,24 @@ namespace sqlnexus
             {
                 try
                 {
-                    //TODO:  Put Back code here
                     LogMessage(sqlnexus.Properties.Resources.Msg_RVSyncBack, MessageOptions.Silent);
+
+                    // Propagate the current ContrastTheme to the parent report so
+                    // it is available when the ReportViewer renders it.
+                    string currentTheme = Properties.Settings.Default.Theme;
+                    string contrastThemeValue = (string.IsNullOrEmpty(currentTheme) || currentTheme == "Default") ? "None" : currentTheme;
+
+                    try
+                    {
+                        if (e.ParentReport != null)
+                        {
+                            e.ParentReport.SetParameters(new ReportParameter[] { new ReportParameter("ContrastTheme", contrastThemeValue) });
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        // Parent report may not have a ContrastTheme parameter; ignore.
+                    }
                 }
                 catch (Exception ex)
                 {
