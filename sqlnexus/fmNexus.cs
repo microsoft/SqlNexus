@@ -1126,7 +1126,11 @@ namespace sqlnexus
                             report.SetParameters(new ReportParameter("ContrastTheme", contrastThemeValue));
                         }
                     }
-                    catch (Exception) { /* Report may not have ContrastTheme parameter */ }
+                    catch (Exception ex) 
+                    {
+                        /* Report may not have ContrastTheme parameter */
+                        LogMessage("RefreshReport: unable to set ContrastTheme: " + ex.Message, MessageOptions.Silent);
+                    }
 
                     string reportname = (0 == report.DisplayName.Length) ? Path.GetFileNameWithoutExtension(report.ReportPath) : report.DisplayName;
                     LogMessage(sqlnexus.Properties.Resources.Msg_RefreshingReport+reportname, MessageOptions.Silent);
@@ -1648,9 +1652,10 @@ namespace sqlnexus
             {
                 report.SetParameters(new ReportParameter[] { new ReportParameter("ContrastTheme", contrastThemeValue) });
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 // Report may not have a ContrastTheme parameter; ignore.
+                Util.Logger?.LogMessage("SetReportQueryParameters: unable to set ContrastTheme: " + ex.Message, MessageOptions.Silent);
             }
 
             // During native drillthrough the child report's ReportPath may be
@@ -3250,9 +3255,11 @@ namespace sqlnexus
                             e.ParentReport.SetParameters(new ReportParameter[] { new ReportParameter("ContrastTheme", contrastThemeValue) });
                         }
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
                         // Parent report may not have a ContrastTheme parameter; ignore.
+                        LogMessage($@"Parent report does not have ContrastTheme parameter. Exception: {ex.Message}", MessageOptions.Silent);
+
                     }
                 }
                 catch (Exception ex)
