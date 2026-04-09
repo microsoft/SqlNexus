@@ -1,4 +1,3 @@
-using Microsoft.Vbe.Interop;
 
 namespace sqlnexus
 {

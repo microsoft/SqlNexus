@@ -2923,40 +2923,9 @@ namespace sqlnexus
         #region Mail methods
 
         private void CreateEmail(string[] ReportFiles)
-        {/*
-            Cursor save = StartWaiting();
-            try
-            {
-                try
-                {
-                    Microsoft.Office.Interop.Word.Application app = new Microsoft.Office.Interop.Word.Application();
-
-                    object FileName = Application.StartupPath + @"\Docs\Analysis.Doc";
-                    System.Diagnostics.Debug.Assert(File.Exists((string)FileName));
-
-                    app.Visible = true;
-                    object m = Missing.Value;
-                    app.Documents.Open(ref FileName, ref m, ref m, ref m, ref m,
-                        ref m, ref m, ref m, ref m, ref m,
-                        ref m, ref m, ref m, ref m,
-                        ref m, ref m);
-                    app.ActiveWindow.EnvelopeVisible = true;
-                    foreach (string f in ReportFiles)
-                    {
-                        object bFalse = false;
-                        object bTrue = true;
-                        app.Selection.InsertFile(f, ref m, ref bFalse, ref bFalse, ref bTrue);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Globals.HandleException(ex, this, this);
-                }
-            }
-            finally
-            {
-                StopWaiting(save);
-            }*/
+        {
+            // No-op: mailto: does not support attachments reliably.
+            // Use the Copy to Clipboard functionality instead.
         }
 
         private void mailCurrentReportToolStripMenuItem_Click(object sender, EventArgs e)
