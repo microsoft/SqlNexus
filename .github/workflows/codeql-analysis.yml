@@ -35,7 +35,7 @@ jobs:
 
     - name: Restore NuGet packages
       run: |
-        nuget restore .github\sqlnexus-codeql.slnf
+        nuget restore sqlnexus.sln -PackagesDirectory packages -NonInteractive
         
     - name: Build .NET Framework solution
       shell: pwsh
