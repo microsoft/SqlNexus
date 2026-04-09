@@ -41,7 +41,7 @@ jobs:
       shell: pwsh
       run: |
         $msbuild = & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -latest -products * -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe
-        & $msbuild sqlnexus.sln /p:Configuration=Release /p:Platform="Any CPU" /p:UseSharedCompilation=false /nodeReuse:false /m:1
+        & $msbuild sqlnexus.sln /p:Configuration=Release /p:Platform="Any CPU" /p:UseSharedCompilation=false /nodeReuse:false /m:1 /ignoreprojectextensions:.rptproj
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v3
