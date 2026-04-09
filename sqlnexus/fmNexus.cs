@@ -288,8 +288,10 @@ namespace sqlnexus
 
             if (e.State == TreeNodeStates.Hot)
             {
-                Font font = new Font(e.Node.NodeFont ?? e.Node.TreeView.Font, FontStyle.Underline);
-                TextRenderer.DrawText(e.Graphics, e.Node.Text, font, e.Bounds, ThemeManager.CurrentForeColor, ThemeManager.CurrentBackColor, TextFormatFlags.GlyphOverhangPadding);
+                using (Font font = new Font(e.Node.NodeFont ?? e.Node.TreeView.Font, FontStyle.Underline))
+                {
+                    TextRenderer.DrawText(e.Graphics, e.Node.Text, font, e.Bounds, ThemeManager.CurrentForeColor, ThemeManager.CurrentBackColor, TextFormatFlags.GlyphOverhangPadding);
+                }
             }
             else
             {
@@ -851,6 +853,11 @@ namespace sqlnexus
 
         private void tvReports_AfterSelect(object sender, TreeViewEventArgs e)
         {
+            if ((e == null) || (e.Node == null) || (e.Node.Text == null))
+            {
+                return;
+            }
+
             // Only load report if triggered by mouse click or Enter/Space key
             // TreeViewAction.ByMouse indicates mouse click
             // _treeViewActivatedByKey indicates Enter/Space was pressed
@@ -861,10 +868,7 @@ namespace sqlnexus
             
             _treeViewActivatedByKey = false; // Reset flag
             
-            if ((e == null) || (e.Node == null) || (e.Node.Text == null))
-            {
-                return;
-            }
+
 
             SelectLoadReport(e.Node.Text, true, null);
         }
@@ -2415,7 +2419,11 @@ namespace sqlnexus
                     CurrentReport.SetParameters(new ReportParameter("ContrastTheme", contrastThemeValue));
                     CurrentReportViewer.RefreshReport();
                 }
-                catch (Exception) { /* report may not have ContrastTheme */ }
+                catch (Exception ex) 
+                { 
+                    // Report may not have ContrastTheme parameter; log and continue.
+                    LogMessage("tsbBack_Click: unable to set ContrastTheme: " + ex.Message, MessageOptions.Silent);
+                }
             }
             catch (Exception ex)
             {

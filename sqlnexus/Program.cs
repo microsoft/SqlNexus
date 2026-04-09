@@ -40,10 +40,14 @@ namespace sqlnexus
                     {
                         if (ex.Message.Contains("Could not load file or assembly"))
                         {
-
+                            string errorMsg = string.Format("Assembly load failure during exception handling: {0}", ex.Message);
+                            System.Diagnostics.Trace.TraceError(errorMsg);
+                            Console.Error.WriteLine(errorMsg);
                         }
                         else
+                        {
                             MessageBox.Show("Fatal Error", "Fatal Error", MessageBoxButtons.AbortRetryIgnore, MessageBoxIcon.Stop);
+                        }
                     }
                     finally
                     {
