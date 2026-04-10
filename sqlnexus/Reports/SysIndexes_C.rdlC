@@ -113,6 +113,7 @@ ORDER BY CAST(dbid AS INT),
                       <FontFamily>Trebuchet MS</FontFamily>
                       <FontSize>16pt</FontSize>
                       <FontWeight>Bold</FontWeight>
+                      <Color>=Variables!TitleColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -143,6 +144,7 @@ ORDER BY CAST(dbid AS INT),
                     <Style>
                       <FontSize>12pt</FontSize>
                       <FontWeight>Bold</FontWeight>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -154,8 +156,10 @@ ORDER BY CAST(dbid AS INT),
                 <TextRuns>
                   <TextRun>
                     <Value>This report displays a summary of index statistics and row ctr information.  It also display details of indexes of each database.</Value>
-                    <Style />
-                  </TextRun>
+                    <Style>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
+                                </TextRun>
                 </TextRuns>
                 <Style />
               </Paragraph>
@@ -209,7 +213,9 @@ ORDER BY CAST(dbid AS INT),
                               <TextRuns>
                                 <TextRun>
                                   <Value>dbid</Value>
-                                  <Style />
+                                  <Style>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -239,7 +245,9 @@ ORDER BY CAST(dbid AS INT),
                               <TextRuns>
                                 <TextRun>
                                   <Value>MaxRowMods</Value>
-                                  <Style />
+                                  <Style>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -269,7 +277,9 @@ ORDER BY CAST(dbid AS INT),
                               <TextRuns>
                                 <TextRun>
                                   <Value>EarliestStatsUpdated</Value>
-                                  <Style />
+                                  <Style>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -299,7 +309,9 @@ ORDER BY CAST(dbid AS INT),
                               <TextRuns>
                                 <TextRun>
                                   <Value>LatestStatsUpdated</Value>
-                                  <Style />
+                                  <Style>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -329,7 +341,9 @@ ORDER BY CAST(dbid AS INT),
                               <TextRuns>
                                 <TextRun>
                                   <Value>NumberOf NoRecmpute</Value>
-                                  <Style />
+                                  <Style>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -364,7 +378,9 @@ ORDER BY CAST(dbid AS INT),
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!dbid.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -394,7 +410,9 @@ ORDER BY CAST(dbid AS INT),
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!MaxRowMods.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -424,7 +442,9 @@ ORDER BY CAST(dbid AS INT),
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!EarliestStatsUpdated.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -454,7 +474,9 @@ ORDER BY CAST(dbid AS INT),
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!LatestStatsUpdated.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -484,7 +506,9 @@ ORDER BY CAST(dbid AS INT),
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!NumberOfNoRecmpute.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -547,8 +571,10 @@ ORDER BY CAST(dbid AS INT),
                 <TextRuns>
                   <TextRun>
                     <Value>MaxRowMods -- Of all the indexes in that particular database, what is the highest rowmodctr for a particular index</Value>
-                    <Style />
-                  </TextRun>
+                    <Style>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
+                                </TextRun>
                 </TextRuns>
                 <ListStyle>Numbered</ListStyle>
                 <ListLevel>1</ListLevel>
@@ -558,8 +584,10 @@ ORDER BY CAST(dbid AS INT),
                 <TextRuns>
                   <TextRun>
                     <Value>EarliestStatsUpdated /LatestStatsUpdated -- These columns display earliest date or latest  the stats was last updated for a particular index or stats within the database.  It is still the last updated value for any particular index.  Example:  a database 100 has 10 indexes.  Index 1 was last updated 2010/01/01.  Index 10 was last updated 2010/01/31.  Indexes 2-9 was last updated between.   In this case, 2010/01/01 will be the value for EarliestStatsUpdated  and 2010/01/31 LatestStatsUpdated .</Value>
-                    <Style />
-                  </TextRun>
+                    <Style>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
+                                </TextRun>
                 </TextRuns>
                 <ListStyle>Numbered</ListStyle>
                 <ListLevel>1</ListLevel>
@@ -569,8 +597,10 @@ ORDER BY CAST(dbid AS INT),
                 <TextRuns>
                   <TextRun>
                     <Value>NumberOfNoRecompute:  This column displays how many indexes are marked for norecompute (which doesn't allow stats update) for any given database</Value>
-                    <Style />
-                  </TextRun>
+                    <Style>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
+                                </TextRun>
                 </TextRuns>
                 <ListStyle>Numbered</ListStyle>
                 <ListLevel>1</ListLevel>
@@ -628,7 +658,9 @@ ORDER BY CAST(dbid AS INT),
                               <TextRuns>
                                 <TextRun>
                                   <Value>dbid</Value>
-                                  <Style />
+                                  <Style>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -658,7 +690,9 @@ ORDER BY CAST(dbid AS INT),
                               <TextRuns>
                                 <TextRun>
                                   <Value>Object Name</Value>
-                                  <Style />
+                                  <Style>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -688,7 +722,9 @@ ORDER BY CAST(dbid AS INT),
                               <TextRuns>
                                 <TextRun>
                                   <Value>type</Value>
-                                  <Style />
+                                  <Style>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -718,7 +754,9 @@ ORDER BY CAST(dbid AS INT),
                               <TextRuns>
                                 <TextRun>
                                   <Value>Index Name</Value>
-                                  <Style />
+                                  <Style>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -748,7 +786,9 @@ ORDER BY CAST(dbid AS INT),
                               <TextRuns>
                                 <TextRun>
                                   <Value>stats updated</Value>
-                                  <Style />
+                                  <Style>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -778,7 +818,9 @@ ORDER BY CAST(dbid AS INT),
                               <TextRuns>
                                 <TextRun>
                                   <Value>norecompute</Value>
-                                  <Style />
+                                  <Style>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -813,7 +855,9 @@ ORDER BY CAST(dbid AS INT),
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!dbid.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -843,7 +887,9 @@ ORDER BY CAST(dbid AS INT),
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!ObjectName.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -873,7 +919,9 @@ ORDER BY CAST(dbid AS INT),
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!type.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -903,7 +951,9 @@ ORDER BY CAST(dbid AS INT),
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!IndexName.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -933,7 +983,9 @@ ORDER BY CAST(dbid AS INT),
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!stats_updated.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -963,7 +1015,9 @@ ORDER BY CAST(dbid AS INT),
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!norecompute.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -1030,6 +1084,7 @@ ORDER BY CAST(dbid AS INT),
                     <Style>
                       <FontSize>12pt</FontSize>
                       <FontWeight>Bold</FontWeight>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1073,6 +1128,7 @@ ORDER BY CAST(dbid AS INT),
                     <Value>Show queries for this report.</Value>
                     <Style>
                       <FontWeight>Bold</FontWeight>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1104,8 +1160,10 @@ ORDER BY CAST(dbid AS INT),
                     <TextRuns>
                       <TextRun>
                         <Value>=DataSets!DataSet_Index_Summary.CommandText</Value>
-                        <Style />
-                      </TextRun>
+                        <Style>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
+                                </TextRun>
                     </TextRuns>
                     <Style />
                   </Paragraph>
@@ -1136,8 +1194,10 @@ ORDER BY CAST(dbid AS INT),
                     <TextRuns>
                       <TextRun>
                         <Value>=DataSets!DataSet_Sysindexes.CommandText</Value>
-                        <Style />
-                      </TextRun>
+                        <Style>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
+                                </TextRun>
                     </TextRuns>
                     <Style />
                   </Paragraph>
@@ -1173,6 +1233,7 @@ ORDER BY CAST(dbid AS INT),
             </Visibility>
             <Style>
               <Border>
+                <Color>=Variables!ReportTextColor.Value</Color>
                 <Style>Solid</Style>
               </Border>
             </Style>
@@ -1181,7 +1242,7 @@ ORDER BY CAST(dbid AS INT),
         <Height>7.35277in</Height>
         <Style>
           <Border />
-          <BackgroundColor>White</BackgroundColor>
+          <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
         </Style>
       </Body>
       <Width>16.09041in</Width>
@@ -1262,11 +1323,36 @@ ORDER BY CAST(dbid AS INT),
       <Prompt>FmtWarning</Prompt>
       <Hidden>true</Hidden>
     </ReportParameter>
+    <ReportParameter Name="ContrastTheme">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>None</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>ContrastTheme</Prompt>
+      <ValidValues>
+        <ParameterValues>
+          <ParameterValue>
+            <Value>None</Value>
+            <Label>None</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>Aquatic</Value>
+            <Label>Aquatic</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>Desert</Value>
+            <Label>Desert</Label>
+          </ParameterValue>
+        </ParameterValues>
+      </ValidValues>
+    </ReportParameter>
   </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>
       <NumberOfColumns>4</NumberOfColumns>
-      <NumberOfRows>2</NumberOfRows>
+      <NumberOfRows>3</NumberOfRows>
       <CellDefinitions>
         <CellDefinition>
           <ColumnIndex>0</ColumnIndex>
@@ -1298,6 +1384,11 @@ ORDER BY CAST(dbid AS INT),
           <RowIndex>1</RowIndex>
           <ParameterName>FmtWarning</ParameterName>
         </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>2</RowIndex>
+          <ParameterName>ContrastTheme</ParameterName>
+        </CellDefinition>
       </CellDefinitions>
     </GridLayoutDefinition>
   </ReportParametersLayout>
@@ -1308,6 +1399,59 @@ ORDER BY CAST(dbid AS INT),
     </EmbeddedImage>
   </EmbeddedImages>
   <Language>en-US</Language>
+  <Variables>
+    <Variable Name="ReportTextColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+Parameters!ContrastTheme.Value="None", "Black")</Value>
+    </Variable>
+    <Variable Name="BodyBackgroundColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
+Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
+Parameters!ContrastTheme.Value="None", "#FAFDFF")</Value>
+    </Variable>
+    <Variable Name="TitleColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+Parameters!ContrastTheme.Value="None", "SteelBlue")</Value>
+    </Variable>
+    <Variable Name="TableHeadingColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
+Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
+Parameters!ContrastTheme.Value="None", "SteelBlue")</Value>
+    </Variable>
+    <Variable Name="ChartColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
+Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
+Parameters!ContrastTheme.Value="None", "LightSteelBlue")</Value>
+    </Variable>
+    <Variable Name="ChartSecondaryColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "No Color",
+Parameters!ContrastTheme.Value="Desert", "No Color",
+Parameters!ContrastTheme.Value="None", "Automatic")</Value>
+    </Variable>
+    <Variable Name="ChartGradientStyle">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "None",
+Parameters!ContrastTheme.Value="Desert", "None",
+Parameters!ContrastTheme.Value="None", "TopBottom")</Value>
+    </Variable>
+    <Variable Name="TableShowCell">
+      <Value>"Red"</Value>
+    </Variable>
+    <Variable Name="TableHidcell">
+      <Value>"Green"</Value>
+    </Variable>
+    <Variable Name="TableHeadingFontColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+Parameters!ContrastTheme.Value="None", "#FFFFFF")</Value>
+    </Variable>
+    <Variable Name="URILinkFontColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#75E9FC",
+Parameters!ContrastTheme.Value="Desert", "#1C5E75",
+Parameters!ContrastTheme.Value="None", "Blue")</Value>
+    </Variable>
+  </Variables>
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
   <rd:ReportUnitType>Inch</rd:ReportUnitType>
   <rd:ReportID>c3d56265-155e-47a8-b4d6-b3b2a50f269b</rd:ReportID>
