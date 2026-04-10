@@ -816,9 +816,9 @@ FROM
             <ChartBorderSkin>
               <ChartBorderSkinType>Emboss</ChartBorderSkinType>
               <Style>
-                <BackgroundColor>Gray</BackgroundColor>
+                <BackgroundColor>=Variables!ChartColor.Value</BackgroundColor>
                 <BackgroundGradientType>None</BackgroundGradientType>
-                <Color>White</Color>
+                <Color>=Variables!ReportTextColor.Value</Color>
               </Style>
             </ChartBorderSkin>
             <ChartNoDataMessage Name="NoDataMessage">
@@ -1242,9 +1242,9 @@ FROM
             <ChartBorderSkin>
               <ChartBorderSkinType>Emboss</ChartBorderSkinType>
               <Style>
-                <BackgroundColor>Gray</BackgroundColor>
+                <BackgroundColor>=Variables!ChartColor.Value</BackgroundColor>
                 <BackgroundGradientType>None</BackgroundGradientType>
-                <Color>White</Color>
+                <Color>=Variables!ReportTextColor.Value</Color>
               </Style>
             </ChartBorderSkin>
             <ChartNoDataMessage Name="NoDataMessage">
