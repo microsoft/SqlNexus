@@ -228,10 +228,10 @@ namespace sqlnexus
             // 
             // toolStripContainer1.TopToolStripPanel
             // 
-            this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.toolbarMain);
-            this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.toolbarService);
             this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.menuBarMain);
+            this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.toolbarService);
             this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.toolbarReport);
+            this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.toolbarMain);
             // 
             // ssStatus
             // 
