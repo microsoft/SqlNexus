@@ -339,7 +339,7 @@ namespace sqlnexus
             // 
             this.llPrint.ActiveLinkColor = System.Drawing.Color.LightSkyBlue;
             resources.ApplyResources(this.llPrint, "llPrint");
-            this.llPrint.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+            this.llPrint.LinkBehavior = System.Windows.Forms.LinkBehavior.AlwaysUnderline;
             this.llPrint.LinkColor = System.Drawing.Color.DarkBlue;
             this.llPrint.Name = "llPrint";
             this.llPrint.TabStop = true;
@@ -349,7 +349,7 @@ namespace sqlnexus
             // 
             this.ll_CustomRowset.ActiveLinkColor = System.Drawing.Color.LightSkyBlue;
             resources.ApplyResources(this.ll_CustomRowset, "ll_CustomRowset");
-            this.ll_CustomRowset.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+            this.ll_CustomRowset.LinkBehavior = System.Windows.Forms.LinkBehavior.AlwaysUnderline;
             this.ll_CustomRowset.LinkColor = System.Drawing.Color.DarkBlue;
             this.ll_CustomRowset.Name = "ll_CustomRowset";
             this.ll_CustomRowset.TabStop = true;
@@ -378,7 +378,7 @@ namespace sqlnexus
             // 
             resources.ApplyResources(this.linkLabel1, "linkLabel1");
             this.linkLabel1.ActiveLinkColor = System.Drawing.Color.LightSkyBlue;
-            this.linkLabel1.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+            this.linkLabel1.LinkBehavior = System.Windows.Forms.LinkBehavior.AlwaysUnderline;
             this.linkLabel1.LinkColor = System.Drawing.Color.DarkBlue;
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.TabStop = true;
@@ -388,7 +388,7 @@ namespace sqlnexus
             // 
             this.linkLabel8.ActiveLinkColor = System.Drawing.Color.LightSkyBlue;
             resources.ApplyResources(this.linkLabel8, "linkLabel8");
-            this.linkLabel8.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+            this.linkLabel8.LinkBehavior = System.Windows.Forms.LinkBehavior.AlwaysUnderline;
             this.linkLabel8.LinkColor = System.Drawing.Color.DarkBlue;
             this.linkLabel8.Name = "linkLabel8";
             this.linkLabel8.TabStop = true;
@@ -418,7 +418,7 @@ namespace sqlnexus
             // 
             this.linkLabelImport.ActiveLinkColor = System.Drawing.Color.LightSkyBlue;
             resources.ApplyResources(this.linkLabelImport, "linkLabelImport");
-            this.linkLabelImport.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+            this.linkLabelImport.LinkBehavior = System.Windows.Forms.LinkBehavior.AlwaysUnderline;
             this.linkLabelImport.LinkColor = System.Drawing.Color.DarkBlue;
             this.linkLabelImport.Name = "linkLabelImport";
             this.linkLabelImport.TabStop = true;
@@ -458,7 +458,7 @@ namespace sqlnexus
             this.llTasks.ActiveLinkColor = System.Drawing.Color.LightSkyBlue;
             resources.ApplyResources(this.llTasks, "llTasks");
             this.llTasks.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.llTasks.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+            this.llTasks.LinkBehavior = System.Windows.Forms.LinkBehavior.AlwaysUnderline;
             this.llTasks.LinkColor = System.Drawing.SystemColors.ButtonFace;
             this.llTasks.Name = "llTasks";
             this.llTasks.TabStop = true;
@@ -485,7 +485,7 @@ namespace sqlnexus
             this.llData.ActiveLinkColor = System.Drawing.Color.LightSkyBlue;
             resources.ApplyResources(this.llData, "llData");
             this.llData.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.llData.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+            this.llData.LinkBehavior = System.Windows.Forms.LinkBehavior.AlwaysUnderline;
             this.llData.LinkColor = System.Drawing.SystemColors.ButtonFace;
             this.llData.Name = "llData";
             this.llData.TabStop = true;
@@ -523,7 +523,7 @@ namespace sqlnexus
             // llOpenNexusLog
             // 
             resources.ApplyResources(this.llOpenNexusLog, "llOpenNexusLog");
-            this.llOpenNexusLog.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+            this.llOpenNexusLog.LinkBehavior = System.Windows.Forms.LinkBehavior.AlwaysUnderline;
             this.llOpenNexusLog.LinkColor = System.Drawing.Color.DarkBlue;
             this.llOpenNexusLog.Name = "llOpenNexusLog";
             this.llOpenNexusLog.TabStop = true;
@@ -542,7 +542,7 @@ namespace sqlnexus
             // llOpenReadTraceLog
             // 
             resources.ApplyResources(this.llOpenReadTraceLog, "llOpenReadTraceLog");
-            this.llOpenReadTraceLog.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+            this.llOpenReadTraceLog.LinkBehavior = System.Windows.Forms.LinkBehavior.AlwaysUnderline;
             this.llOpenReadTraceLog.LinkColor = System.Drawing.Color.DarkBlue;
             this.llOpenReadTraceLog.Name = "llOpenReadTraceLog";
             this.llOpenReadTraceLog.TabStop = true;
@@ -575,7 +575,7 @@ namespace sqlnexus
             // linkLabelPowerBI
             // 
             resources.ApplyResources(this.linkLabelPowerBI, "linkLabelPowerBI");
-            this.linkLabelPowerBI.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+            this.linkLabelPowerBI.LinkBehavior = System.Windows.Forms.LinkBehavior.AlwaysUnderline;
             this.linkLabelPowerBI.LinkColor = System.Drawing.Color.DarkBlue;
             this.linkLabelPowerBI.Name = "linkLabelPowerBI";
             this.linkLabelPowerBI.TabStop = true;
@@ -636,7 +636,7 @@ namespace sqlnexus
             this.llReports.ActiveLinkColor = System.Drawing.Color.LightSkyBlue;
             resources.ApplyResources(this.llReports, "llReports");
             this.llReports.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.llReports.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+            this.llReports.LinkBehavior = System.Windows.Forms.LinkBehavior.AlwaysUnderline;
             this.llReports.LinkColor = System.Drawing.SystemColors.ButtonFace;
             this.llReports.Name = "llReports";
             this.llReports.TabStop = true;
