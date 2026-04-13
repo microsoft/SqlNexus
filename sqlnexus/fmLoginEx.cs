@@ -32,11 +32,34 @@ namespace sqlnexus
 
         private void EnableSqlLogin(bool enable)
         {
-            lblUserName.Enabled = enable;
-            lblPassword.Enabled = enable;
+            // Keep labels always enabled so ForeColor is respected by WinForms rendering.
+            // WinForms disabled labels ignore ForeColor and draw with a system-derived dark
+            // gray that is invisible on dark theme backgrounds (e.g., Aquatic #202020).
+            // Instead, simulate the disabled look by setting a muted ForeColor.
+            lblUserName.Enabled = true;
+            lblPassword.Enabled = true;
             txtUserName.Enabled = enable;
             txtPassword.Enabled = enable;
 
+            // WinForms disabled labels ignore ForeColor and render with a system-derived
+            // dark gray, which is invisible on dark theme backgrounds (e.g., Aquatic).
+            // Explicitly set a muted but visible color when disabled.
+            if (!enable)
+            {
+                Color dimmed = ThemeManager.CurrentThemeName == "Aquatic"
+                    ? ColorTranslator.FromHtml("#808080")   // medium gray on dark bg
+                    : ThemeManager.CurrentThemeName == "Desert"
+                        ? ColorTranslator.FromHtml("#A0A0A0") // lighter gray on warm bg
+                        : SystemColors.GrayText;              // default system disabled color
+
+                lblUserName.ForeColor = dimmed;
+                lblPassword.ForeColor = dimmed;
+            }
+            else
+            {
+                lblUserName.ForeColor = ThemeManager.CurrentForeColor;
+                lblPassword.ForeColor = ThemeManager.CurrentForeColor;
+            }
         }
         private void cmbAuthentication_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -164,6 +187,9 @@ namespace sqlnexus
             ThemeManager.ChangeCurrentTheme(cmbTheme.Text);
             ThemeManager.ApplyTheme(this);
             ThemeManager.ApplyTheme(fmNexus.singleton);
+
+            // Re-apply disabled label dimming after theme resets all ForeColors.
+            EnableSqlLogin(cmbAuthentication.SelectedIndex == 1);
 
             // Update the report's ContrastTheme parameter and refresh it immediately.
             // Use BeginInvoke to defer the report refresh so the ReportViewer can properly
