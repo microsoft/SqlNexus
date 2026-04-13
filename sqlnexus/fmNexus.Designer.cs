@@ -1,4 +1,4 @@
-
+    
 namespace sqlnexus
 {
     partial class fmNexus
@@ -441,6 +441,7 @@ namespace sqlnexus
             this.btnExpandTasks.BackColor = System.Drawing.Color.Transparent;
             this.btnExpandTasks.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.btnExpandTasks.Name = "btnExpandTasks";
+            this.btnExpandTasks.TabStop = false;
             this.btnExpandTasks.UseVisualStyleBackColor = false;
             this.btnExpandTasks.Click += new System.EventHandler(this.btnExpandTasks_Click);
             // 
@@ -450,6 +451,7 @@ namespace sqlnexus
             this.btnCollapseTasks.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
             this.btnCollapseTasks.BackColor = System.Drawing.Color.Transparent;
             this.btnCollapseTasks.Name = "btnCollapseTasks";
+            this.btnCollapseTasks.TabStop = false;
             this.btnCollapseTasks.UseVisualStyleBackColor = false;
             this.btnCollapseTasks.Click += new System.EventHandler(this.btnExpandTasks_Click);
             // 
@@ -498,6 +500,7 @@ namespace sqlnexus
             this.btnExpandData.BackColor = System.Drawing.Color.Transparent;
             this.btnExpandData.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.btnExpandData.Name = "btnExpandData";
+            this.btnExpandData.TabStop = false;
             this.btnExpandData.UseVisualStyleBackColor = false;
             this.btnExpandData.Click += new System.EventHandler(this.btnExpandData_Click);
             // 
@@ -507,6 +510,7 @@ namespace sqlnexus
             this.btnCollapseData.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
             this.btnCollapseData.BackColor = System.Drawing.Color.Transparent;
             this.btnCollapseData.Name = "btnCollapseData";
+            this.btnCollapseData.TabStop = false;
             this.btnCollapseData.UseVisualStyleBackColor = false;
             this.btnCollapseData.Click += new System.EventHandler(this.btnExpandData_Click);
             // 
@@ -649,6 +653,7 @@ namespace sqlnexus
             this.btnexpandReports.BackColor = System.Drawing.Color.Transparent;
             this.btnexpandReports.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.btnexpandReports.Name = "btnexpandReports";
+            this.btnexpandReports.TabStop = false;
             this.btnexpandReports.UseVisualStyleBackColor = false;
             this.btnexpandReports.Click += new System.EventHandler(this.btnexpandReports_Click);
             // 
@@ -658,6 +663,7 @@ namespace sqlnexus
             this.btncollapsReports.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
             this.btncollapsReports.BackColor = System.Drawing.Color.Transparent;
             this.btncollapsReports.Name = "btncollapsReports";
+            this.btncollapsReports.TabStop = false;
             this.btncollapsReports.UseVisualStyleBackColor = false;
             this.btncollapsReports.Click += new System.EventHandler(this.btnexpandReports_Click);
             // 

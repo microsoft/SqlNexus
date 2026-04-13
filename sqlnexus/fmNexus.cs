@@ -3737,7 +3737,7 @@ bool CreateDB(String dbName)
 
         private void llData_LinkClicked_1(object sender, LinkLabelLinkClickedEventArgs e)
         {
-
+            CollapseExpandPanel(paLogBody, btnCollapseData, btnExpandData);
         }
 
         private void btnexpandReports_Click(object sender, EventArgs e)
