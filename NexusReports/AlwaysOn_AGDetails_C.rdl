@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
@@ -720,6 +720,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                     <Value>     Availability Group Details Report</Value>
                     <Style>
                       <FontSize>16pt</FontSize>
+                      <Color>=Variables!TitleColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -807,6 +808,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Style>
                                         <FontStyle>Italic</FontStyle>
                                         <FontWeight>Bold</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -821,6 +823,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <VerticalAlign>Top</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -843,6 +846,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Style>
                                         <FontStyle>Italic</FontStyle>
                                         <FontWeight>Bold</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -857,6 +861,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <VerticalAlign>Top</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -879,6 +884,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Style>
                                         <FontStyle>Italic</FontStyle>
                                         <FontWeight>Bold</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -893,6 +899,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <VerticalAlign>Top</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -915,6 +922,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Style>
                                         <FontStyle>Italic</FontStyle>
                                         <FontWeight>Bold</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -929,6 +937,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <VerticalAlign>Top</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -951,6 +960,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Style>
                                         <FontStyle>Italic</FontStyle>
                                         <FontWeight>Bold</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -965,6 +975,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <VerticalAlign>Top</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -987,6 +998,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Style>
                                         <FontStyle>Italic</FontStyle>
                                         <FontWeight>Bold</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -1001,6 +1013,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <VerticalAlign>Top</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -1023,6 +1036,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Style>
                                         <FontStyle>Italic</FontStyle>
                                         <FontWeight>Bold</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -1037,6 +1051,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Style>
                                         <FontStyle>Italic</FontStyle>
                                         <FontWeight>Bold</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -1051,6 +1066,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <VerticalAlign>Top</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -1073,6 +1089,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Style>
                                         <FontStyle>Italic</FontStyle>
                                         <FontWeight>Bold</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -1087,6 +1104,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <VerticalAlign>Top</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -1109,6 +1127,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Style>
                                         <FontStyle>Italic</FontStyle>
                                         <FontWeight>Bold</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -1123,6 +1142,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <VerticalAlign>Top</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -1145,6 +1165,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Style>
                                         <FontStyle>Italic</FontStyle>
                                         <FontWeight>Bold</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -1159,6 +1180,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <VerticalAlign>Top</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -1181,6 +1203,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Style>
                                         <FontStyle>Italic</FontStyle>
                                         <FontWeight>Bold</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -1195,6 +1218,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <VerticalAlign>Top</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -1217,6 +1241,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Style>
                                         <FontStyle>Italic</FontStyle>
                                         <FontWeight>Bold</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -1231,6 +1256,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <VerticalAlign>Top</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -1253,6 +1279,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Style>
                                         <FontStyle>Italic</FontStyle>
                                         <FontWeight>Bold</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -1267,6 +1294,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <VerticalAlign>Top</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -1289,6 +1317,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Style>
                                         <FontStyle>Italic</FontStyle>
                                         <FontWeight>Bold</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -1303,6 +1332,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <VerticalAlign>Top</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -1330,6 +1360,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <MarkupType>HTML</MarkupType>
                                       <Style>
                                         <FontWeight>Thin</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -1351,7 +1382,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 , "#c7d7ff","Transparent")</BackgroundColor>
+                                <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(Nothing))</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -1373,6 +1404,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Value>=Fields!node_name.Value</Value>
                                       <Style>
                                         <FontWeight>Thin</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -1387,7 +1419,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 , "#c7d7ff","Transparent")</BackgroundColor>
+                                <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(Nothing))</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -1409,6 +1441,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Value>=Fields!replica_server_name.Value</Value>
                                       <Style>
                                         <FontWeight>Thin</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -1423,7 +1456,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 , "#c7d7ff","Transparent")</BackgroundColor>
+                                <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(Nothing))</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -1446,6 +1479,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Style>
                                         <FontSize>8pt</FontSize>
                                         <FontWeight>Thin</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -1460,7 +1494,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 , "#c7d7ff","Transparent")</BackgroundColor>
+                                <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(Nothing))</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -1482,6 +1516,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Value>=Fields!failover_mode_desc.Value</Value>
                                       <Style>
                                         <FontWeight>Thin</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -1496,7 +1531,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 , "#c7d7ff","Transparent")</BackgroundColor>
+                                <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(Nothing))</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -1518,6 +1553,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Value>=Fields!session_timeout.Value</Value>
                                       <Style>
                                         <FontWeight>Thin</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -1532,7 +1568,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 , "#c7d7ff","Transparent")</BackgroundColor>
+                                <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(Nothing))</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -1554,6 +1590,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Value>=Fields!secondary_role_allow_connections_desc.Value</Value>
                                       <Style>
                                         <FontWeight>Thin</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -1568,7 +1605,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 , "#c7d7ff","Transparent")</BackgroundColor>
+                                <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(Nothing))</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -1590,6 +1627,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Value>=Fields!seeding_mode_desc.Value</Value>
                                       <Style>
                                         <FontWeight>Thin</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -1604,7 +1642,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 , "#c7d7ff","Transparent")</BackgroundColor>
+                                <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(Nothing))</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -1626,6 +1664,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Value>=Fields!synchronization_health_desc.Value</Value>
                                       <Style>
                                         <FontWeight>Thin</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -1640,7 +1679,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 , "#c7d7ff","Transparent")</BackgroundColor>
+                                <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(Nothing))</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -1662,6 +1701,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Value>=Fields!role_desc.Value</Value>
                                       <Style>
                                         <FontWeight>Thin</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -1676,7 +1716,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 , "#c7d7ff","Transparent")</BackgroundColor>
+                                <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(Nothing))</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -1698,6 +1738,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Value>=Fields!operational_state_desc.Value</Value>
                                       <Style>
                                         <FontWeight>Thin</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -1712,7 +1753,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 , "#c7d7ff","Transparent")</BackgroundColor>
+                                <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(Nothing))</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -1734,6 +1775,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Value>=Fields!connected_state_desc.Value</Value>
                                       <Style>
                                         <FontWeight>Thin</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -1748,7 +1790,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 , "#c7d7ff","Transparent")</BackgroundColor>
+                                <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(Nothing))</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -1770,6 +1812,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Value>=Fields!endpoint_url.Value</Value>
                                       <Style>
                                         <FontWeight>Thin</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -1784,7 +1827,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 , "#c7d7ff","Transparent")</BackgroundColor>
+                                <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(Nothing))</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -1806,6 +1849,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Value>=Fields!replica_id.Value</Value>
                                       <Style>
                                         <FontWeight>Thin</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -1820,7 +1864,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 , "#c7d7ff","Transparent")</BackgroundColor>
+                                <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(Nothing))</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -1896,7 +1940,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                           <FontStyle>Italic</FontStyle>
                           <FontSize>12pt</FontSize>
                           <FontWeight>Bold</FontWeight>
-                          <Color>Blue</Color>
+                          <Color>=Variables!TitleColor.Value</Color>
                         </Style>
                       </TextRun>
                     </TextRuns>
@@ -1969,6 +2013,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Style>
                                         <FontStyle>Italic</FontStyle>
                                         <FontWeight>Bold</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -1983,6 +2028,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <VerticalAlign>Top</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -2005,6 +2051,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Style>
                                         <FontStyle>Italic</FontStyle>
                                         <FontWeight>Bold</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -2019,6 +2066,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <VerticalAlign>Top</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -2041,6 +2089,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Style>
                                         <FontStyle>Italic</FontStyle>
                                         <FontWeight>Bold</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -2055,6 +2104,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <VerticalAlign>Top</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -2077,6 +2127,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Style>
                                         <FontStyle>Italic</FontStyle>
                                         <FontWeight>Bold</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -2091,6 +2142,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <VerticalAlign>Top</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -2113,6 +2165,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Style>
                                         <FontStyle>Italic</FontStyle>
                                         <FontWeight>Bold</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -2127,6 +2180,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <VerticalAlign>Top</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -2149,6 +2203,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Style>
                                         <FontStyle>Italic</FontStyle>
                                         <FontWeight>Bold</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -2163,6 +2218,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <VerticalAlign>Top</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -2185,6 +2241,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Style>
                                         <FontStyle>Italic</FontStyle>
                                         <FontWeight>Bold</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -2199,6 +2256,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <VerticalAlign>Top</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -2221,6 +2279,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Style>
                                         <FontStyle>Italic</FontStyle>
                                         <FontWeight>Bold</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -2235,6 +2294,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <VerticalAlign>Top</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -2257,6 +2317,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Style>
                                         <FontStyle>Italic</FontStyle>
                                         <FontWeight>Bold</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -2271,6 +2332,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <VerticalAlign>Top</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -2297,6 +2359,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Value>=Fields!Listener_Name.Value</Value>
                                       <Style>
                                         <FontWeight>Thin</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -2311,7 +2374,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 , "#c7d7ff","Transparent")</BackgroundColor>
+                                <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(Nothing))</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -2333,6 +2396,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Value>=Fields!dns_name.Value</Value>
                                       <Style>
                                         <FontWeight>Thin</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -2347,7 +2411,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 , "#c7d7ff","Transparent")</BackgroundColor>
+                                <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(Nothing))</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -2369,6 +2433,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Value>=Fields!state_desc.Value</Value>
                                       <Style>
                                         <FontWeight>Thin</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -2383,7 +2448,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 , "#c7d7ff","Transparent")</BackgroundColor>
+                                <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(Nothing))</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -2405,6 +2470,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Value>=Fields!ip_address.Value</Value>
                                       <Style>
                                         <FontWeight>Thin</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -2419,7 +2485,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 , "#c7d7ff","Transparent")</BackgroundColor>
+                                <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(Nothing))</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -2441,6 +2507,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Value>=Fields!port.Value</Value>
                                       <Style>
                                         <FontWeight>Thin</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -2455,7 +2522,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 , "#c7d7ff","Transparent")</BackgroundColor>
+                                <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(Nothing))</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -2477,6 +2544,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Value>=Fields!ip_subnet_mask.Value</Value>
                                       <Style>
                                         <FontWeight>Thin</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -2491,7 +2559,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 , "#c7d7ff","Transparent")</BackgroundColor>
+                                <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(Nothing))</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -2513,6 +2581,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Value>=Fields!is_dhcp.Value</Value>
                                       <Style>
                                         <FontWeight>Thin</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -2527,7 +2596,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 , "#c7d7ff","Transparent")</BackgroundColor>
+                                <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(Nothing))</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -2549,6 +2618,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Value>=Fields!ip_configuration_string_from_cluster.Value</Value>
                                       <Style>
                                         <FontWeight>Thin</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -2563,7 +2633,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 , "#c7d7ff","Transparent")</BackgroundColor>
+                                <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(Nothing))</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -2585,6 +2655,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Value>=Fields!listener_id.Value</Value>
                                       <Style>
                                         <FontWeight>Thin</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -2599,7 +2670,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 , "#c7d7ff","Transparent")</BackgroundColor>
+                                <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(Nothing))</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -2659,7 +2730,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                         <Style>
                           <FontSize>12pt</FontSize>
                           <FontWeight>Bold</FontWeight>
-                          <Color>Blue</Color>
+                          <Color>=Variables!TitleColor.Value</Color>
                         </Style>
                       </TextRun>
                     </TextRuns>
@@ -2695,7 +2766,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                         <Style>
                           <FontSize>12pt</FontSize>
                           <FontWeight>Bold</FontWeight>
-                          <Color>Blue</Color>
+                          <Color>=Variables!TitleColor.Value</Color>
                         </Style>
                       </TextRun>
                     </TextRuns>
@@ -2753,6 +2824,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Style>
                                         <FontStyle>Italic</FontStyle>
                                         <FontWeight>Bold</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -2767,6 +2839,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <VerticalAlign>Top</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -2789,6 +2862,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Style>
                                         <FontStyle>Italic</FontStyle>
                                         <FontWeight>Bold</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -2803,6 +2877,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <VerticalAlign>Top</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -2825,6 +2900,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Style>
                                         <FontStyle>Italic</FontStyle>
                                         <FontWeight>Bold</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -2839,6 +2915,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <VerticalAlign>Top</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -2861,6 +2938,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Style>
                                         <FontStyle>Italic</FontStyle>
                                         <FontWeight>Bold</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -2875,6 +2953,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <VerticalAlign>Top</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -2901,6 +2980,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Value>=Fields!TimeStampUTC.Value</Value>
                                       <Style>
                                         <FontWeight>Thin</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -2915,7 +2995,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 , "#c7d7ff","Transparent")</BackgroundColor>
+                                <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(Nothing))</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -2937,6 +3017,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Value>=Fields!DDLAction.Value</Value>
                                       <Style>
                                         <FontWeight>Thin</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -2951,7 +3032,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 , "#c7d7ff","Transparent")</BackgroundColor>
+                                <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(Nothing))</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -2973,6 +3054,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Value>=Fields!DDLPhase.Value</Value>
                                       <Style>
                                         <FontWeight>Thin</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -2987,7 +3069,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 , "#c7d7ff","Transparent")</BackgroundColor>
+                                <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(Nothing))</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -3009,6 +3091,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Value>=Fields!DDLStatement.Value</Value>
                                       <Style>
                                         <FontWeight>Thin</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -3023,7 +3106,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 , "#c7d7ff","Transparent")</BackgroundColor>
+                                <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(Nothing))</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -3084,7 +3167,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                           <FontStyle>Italic</FontStyle>
                           <FontSize>12pt</FontSize>
                           <FontWeight>Bold</FontWeight>
-                          <Color>Blue</Color>
+                          <Color>=Variables!TitleColor.Value</Color>
                         </Style>
                       </TextRun>
                     </TextRuns>
@@ -3181,6 +3264,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Style>
                                         <FontStyle>Italic</FontStyle>
                                         <FontWeight>Bold</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -3195,6 +3279,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <VerticalAlign>Top</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -3217,6 +3302,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Style>
                                         <FontStyle>Italic</FontStyle>
                                         <FontWeight>Bold</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -3231,6 +3317,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <VerticalAlign>Top</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -3253,6 +3340,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Style>
                                         <FontStyle>Italic</FontStyle>
                                         <FontWeight>Bold</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -3267,6 +3355,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <VerticalAlign>Top</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -3289,6 +3378,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Style>
                                         <FontStyle>Italic</FontStyle>
                                         <FontWeight>Bold</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -3303,6 +3393,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <VerticalAlign>Top</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -3325,6 +3416,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Style>
                                         <FontStyle>Italic</FontStyle>
                                         <FontWeight>Bold</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -3339,6 +3431,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <VerticalAlign>Top</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -3361,6 +3454,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Style>
                                         <FontStyle>Italic</FontStyle>
                                         <FontWeight>Bold</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -3375,6 +3469,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <VerticalAlign>Top</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -3397,6 +3492,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Style>
                                         <FontStyle>Italic</FontStyle>
                                         <FontWeight>Bold</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -3411,6 +3507,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <VerticalAlign>Top</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -3433,6 +3530,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Style>
                                         <FontStyle>Italic</FontStyle>
                                         <FontWeight>Bold</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -3447,6 +3545,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <VerticalAlign>Top</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -3469,6 +3568,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Style>
                                         <FontStyle>Italic</FontStyle>
                                         <FontWeight>Bold</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -3483,6 +3583,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <VerticalAlign>Top</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -3505,6 +3606,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Style>
                                         <FontStyle>Italic</FontStyle>
                                         <FontWeight>Bold</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -3519,6 +3621,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <VerticalAlign>Top</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -3541,6 +3644,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Style>
                                         <FontStyle>Italic</FontStyle>
                                         <FontWeight>Bold</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -3555,6 +3659,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <VerticalAlign>Top</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -3577,6 +3682,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Style>
                                         <FontStyle>Italic</FontStyle>
                                         <FontWeight>Bold</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -3591,6 +3697,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <VerticalAlign>Top</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -3613,6 +3720,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Style>
                                         <FontStyle>Italic</FontStyle>
                                         <FontWeight>Bold</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -3627,6 +3735,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <VerticalAlign>Top</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -3649,6 +3758,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Style>
                                         <FontStyle>Italic</FontStyle>
                                         <FontWeight>Bold</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -3663,6 +3773,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <VerticalAlign>Top</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -3685,6 +3796,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Style>
                                         <FontStyle>Italic</FontStyle>
                                         <FontWeight>Bold</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -3699,6 +3811,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <VerticalAlign>Top</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -3721,6 +3834,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Style>
                                         <FontStyle>Italic</FontStyle>
                                         <FontWeight>Bold</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -3735,6 +3849,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <VerticalAlign>Top</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -3757,6 +3872,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Style>
                                         <FontStyle>Italic</FontStyle>
                                         <FontWeight>Bold</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -3771,6 +3887,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <VerticalAlign>Top</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -3798,6 +3915,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Style>
                                         <FontSize>9pt</FontSize>
                                         <FontWeight>Thin</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -3812,7 +3930,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 , "#c7d7ff","Transparent")</BackgroundColor>
+                                <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(Nothing))</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -3835,6 +3953,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Style>
                                         <FontSize>9pt</FontSize>
                                         <FontWeight>Thin</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -3849,7 +3968,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 , "#c7d7ff","Transparent")</BackgroundColor>
+                                <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(Nothing))</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -3872,6 +3991,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Style>
                                         <FontSize>9pt</FontSize>
                                         <FontWeight>Thin</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -3886,7 +4006,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 , "#c7d7ff","Transparent")</BackgroundColor>
+                                <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(Nothing))</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -3908,6 +4028,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Value>=Fields!is_failover_ready.Value</Value>
                                       <Style>
                                         <FontWeight>Thin</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -3922,7 +4043,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 , "#c7d7ff","Transparent")</BackgroundColor>
+                                <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(Nothing))</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -3944,6 +4065,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Value>=Fields!is_primary_replica.Value</Value>
                                       <Style>
                                         <FontWeight>Thin</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -3958,7 +4080,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 , "#c7d7ff","Transparent")</BackgroundColor>
+                                <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(Nothing))</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -3981,6 +4103,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Style>
                                         <FontSize>9pt</FontSize>
                                         <FontWeight>Thin</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -3995,7 +4118,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 , "#c7d7ff","Transparent")</BackgroundColor>
+                                <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(Nothing))</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -4018,6 +4141,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Style>
                                         <FontSize>9pt</FontSize>
                                         <FontWeight>Thin</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -4032,7 +4156,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 , "#c7d7ff","Transparent")</BackgroundColor>
+                                <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(Nothing))</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -4055,6 +4179,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Style>
                                         <FontSize>9pt</FontSize>
                                         <FontWeight>Thin</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -4069,7 +4194,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 , "#c7d7ff","Transparent")</BackgroundColor>
+                                <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(Nothing))</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -4091,6 +4216,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Value>=Fields!is_suspended.Value</Value>
                                       <Style>
                                         <FontWeight>Thin</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -4105,7 +4231,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 , "#c7d7ff","Transparent")</BackgroundColor>
+                                <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(Nothing))</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -4127,6 +4253,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Value>=Fields!last_sent_time.Value</Value>
                                       <Style>
                                         <FontWeight>Thin</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -4141,7 +4268,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 , "#c7d7ff","Transparent")</BackgroundColor>
+                                <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(Nothing))</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -4163,6 +4290,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Value>=Fields!last_received_time.Value</Value>
                                       <Style>
                                         <FontWeight>Thin</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -4177,7 +4305,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 , "#c7d7ff","Transparent")</BackgroundColor>
+                                <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(Nothing))</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -4199,6 +4327,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Value>=Fields!last_hardened_time.Value</Value>
                                       <Style>
                                         <FontWeight>Thin</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -4213,7 +4342,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 , "#c7d7ff","Transparent")</BackgroundColor>
+                                <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(Nothing))</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -4235,6 +4364,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Value>=Fields!last_redone_time.Value</Value>
                                       <Style>
                                         <FontWeight>Thin</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -4249,7 +4379,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 , "#c7d7ff","Transparent")</BackgroundColor>
+                                <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(Nothing))</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -4271,6 +4401,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Value>=Fields!log_send_queue_size.Value</Value>
                                       <Style>
                                         <FontWeight>Thin</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -4285,7 +4416,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 , "#c7d7ff","Transparent")</BackgroundColor>
+                                <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(Nothing))</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -4307,6 +4438,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Value>=Fields!log_send_rate.Value</Value>
                                       <Style>
                                         <FontWeight>Thin</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -4321,7 +4453,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 , "#c7d7ff","Transparent")</BackgroundColor>
+                                <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(Nothing))</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -4343,6 +4475,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Value>=Fields!redo_rate.Value</Value>
                                       <Style>
                                         <FontWeight>Thin</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -4357,7 +4490,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 , "#c7d7ff","Transparent")</BackgroundColor>
+                                <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(Nothing))</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -4379,6 +4512,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                       <Value>=Fields!redo_queue_size.Value</Value>
                                       <Style>
                                         <FontWeight>Thin</FontWeight>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -4393,7 +4527,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=IIf(RowNumber(Nothing) Mod 2 , "#c7d7ff","Transparent")</BackgroundColor>
+                                <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(Nothing))</BackgroundColor>
                                 <VerticalAlign>Middle</VerticalAlign>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -4476,7 +4610,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
               <Border>
                 <Style>None</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
+              <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
             </Style>
           </Rectangle>
           <Textbox Name="tb_ReportQueryHeader">
@@ -4489,6 +4623,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
                     <Value>Show queries for this report.</Value>
                     <Style>
                       <FontWeight>Bold</FontWeight>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -4664,7 +4799,7 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
           <Border>
             <Style>None</Style>
           </Border>
-          <BackgroundColor>=Parameters!FmtAmbientBackground.Value</BackgroundColor>
+          <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
         </Style>
       </Body>
       <Width>25.79064in</Width>
@@ -4735,6 +4870,31 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
       <Prompt>Databsae Name</Prompt>
       <Hidden>true</Hidden>
     </ReportParameter>
+    <ReportParameter Name="ContrastTheme">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>None</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>ContrastTheme</Prompt>
+      <ValidValues>
+        <ParameterValues>
+          <ParameterValue>
+            <Value>None</Value>
+            <Label>None</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>Aquatic</Value>
+            <Label>Aquatic</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>Desert</Value>
+            <Label>Desert</Label>
+          </ParameterValue>
+        </ParameterValues>
+      </ValidValues>
+    </ReportParameter>
   </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>
@@ -4766,12 +4926,54 @@ FROM [dbo].[tbl_hadr_ag_database_replica_states] A
           <RowIndex>1</RowIndex>
           <ParameterName>dsDatabaseName</ParameterName>
         </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>0</RowIndex>
+          <ParameterName>ContrastTheme</ParameterName>
+        </CellDefinition>
       </CellDefinitions>
     </GridLayoutDefinition>
   </ReportParametersLayout>
+  <Code>Function GetTableRowFillColor(Theme as String, RowNumber As Integer) As String
+If Theme ="Aquatic" Then 
+    return "#202020"
+ElseIf Theme ="Desert" Then 
+    return "#FFFAEF"
+Elseif RowNumber Mod 2 &lt;&gt; 0 Then
+        return "White"
+Else 
+        Return "#c7d7ff"
+End If
+End Function
+</Code>
   <Variables>
     <Variable Name="IsLocalReport">
       <Value>= (Globals!ReportServerUrl="")</Value>
+    </Variable>
+    <Variable Name="ReportTextColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+Parameters!ContrastTheme.Value="None", "Black")</Value>
+    </Variable>
+    <Variable Name="BodyColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
+Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
+Parameters!ContrastTheme.Value="None", "No Color")</Value>
+    </Variable>
+    <Variable Name="TitleColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+Parameters!ContrastTheme.Value="None", "#1c3a70")</Value>
+    </Variable>
+    <Variable Name="URLColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#75E9FC",
+Parameters!ContrastTheme.Value="Desert", "#1C5E75",
+Parameters!ContrastTheme.Value="None", "Blue")</Value>
+    </Variable>
+    <Variable Name="TableHeadingColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "No Color",
+Parameters!ContrastTheme.Value="Desert", "No Color",
+Parameters!ContrastTheme.Value="None", "Gainsboro")</Value>
     </Variable>
   </Variables>
   <rd:ReportUnitType>Inch</rd:ReportUnitType>
