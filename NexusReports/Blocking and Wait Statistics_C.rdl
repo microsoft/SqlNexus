@@ -1233,6 +1233,9 @@ ELSE
                                     <Parameter Name="dsDatabaseName">
                                       <Value>=Parameters!dsDatabaseName.Value</Value>
                                     </Parameter>
+                                    <Parameter Name="ContrastTheme">
+                                      <Value>=Parameters!ContrastTheme.Value</Value>
+                                    </Parameter>
                                   </Parameters>
                                 </Drillthrough>
                               </Action>
