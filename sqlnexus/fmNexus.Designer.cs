@@ -1190,6 +1190,7 @@ namespace sqlnexus
             // 
             this.excelToolStripMenuItem.MergeIndex = 1;
             this.excelToolStripMenuItem.Name = "excelToolStripMenuItem";
+            this.excelToolStripMenuItem.AccessibleDescription = "1 of 8";
             resources.ApplyResources(this.excelToolStripMenuItem, "excelToolStripMenuItem");
             this.excelToolStripMenuItem.Click += new System.EventHandler(this.excelToolStripMenuItem_Click);
             // 
@@ -1197,6 +1198,7 @@ namespace sqlnexus
             // 
             this.acrobatPDFFileToolStripMenuItem.MergeIndex = 2;
             this.acrobatPDFFileToolStripMenuItem.Name = "acrobatPDFFileToolStripMenuItem";
+            this.acrobatPDFFileToolStripMenuItem.AccessibleDescription = "2 of 8";
             resources.ApplyResources(this.acrobatPDFFileToolStripMenuItem, "acrobatPDFFileToolStripMenuItem");
             this.acrobatPDFFileToolStripMenuItem.Click += new System.EventHandler(this.excelToolStripMenuItem_Click);
             // 
@@ -1204,6 +1206,7 @@ namespace sqlnexus
             // 
             this.jPEGToolStripMenuItem.MergeIndex = 3;
             this.jPEGToolStripMenuItem.Name = "jPEGToolStripMenuItem";
+            this.jPEGToolStripMenuItem.AccessibleDescription = "3 of 8";
             resources.ApplyResources(this.jPEGToolStripMenuItem, "jPEGToolStripMenuItem");
             this.jPEGToolStripMenuItem.Click += new System.EventHandler(this.excelToolStripMenuItem_Click);
             // 
@@ -1211,6 +1214,7 @@ namespace sqlnexus
             // 
             this.bitmapToolStripMenuItem.MergeIndex = 4;
             this.bitmapToolStripMenuItem.Name = "bitmapToolStripMenuItem";
+            this.bitmapToolStripMenuItem.AccessibleDescription = "4 of 8";
             resources.ApplyResources(this.bitmapToolStripMenuItem, "bitmapToolStripMenuItem");
             this.bitmapToolStripMenuItem.Click += new System.EventHandler(this.excelToolStripMenuItem_Click);
             // 
@@ -1218,6 +1222,7 @@ namespace sqlnexus
             // 
             this.windowsEMFToolStripMenuItem.MergeIndex = 5;
             this.windowsEMFToolStripMenuItem.Name = "windowsEMFToolStripMenuItem";
+            this.windowsEMFToolStripMenuItem.AccessibleDescription = "5 of 8";
             resources.ApplyResources(this.windowsEMFToolStripMenuItem, "windowsEMFToolStripMenuItem");
             this.windowsEMFToolStripMenuItem.Click += new System.EventHandler(this.excelToolStripMenuItem_Click);
             // 
@@ -1225,6 +1230,7 @@ namespace sqlnexus
             // 
             this.GIFToolStripMenuItem.MergeIndex = 6;
             this.GIFToolStripMenuItem.Name = "GIFToolStripMenuItem";
+            this.GIFToolStripMenuItem.AccessibleDescription = "6 of 8";
             resources.ApplyResources(this.GIFToolStripMenuItem, "GIFToolStripMenuItem");
             this.GIFToolStripMenuItem.Click += new System.EventHandler(this.excelToolStripMenuItem_Click);
             // 
@@ -1232,6 +1238,7 @@ namespace sqlnexus
             // 
             this.PNGToolStripMenuItem.MergeIndex = 7;
             this.PNGToolStripMenuItem.Name = "PNGToolStripMenuItem";
+            this.PNGToolStripMenuItem.AccessibleDescription = "7 of 8";
             resources.ApplyResources(this.PNGToolStripMenuItem, "PNGToolStripMenuItem");
             this.PNGToolStripMenuItem.Click += new System.EventHandler(this.excelToolStripMenuItem_Click);
             // 
@@ -1239,6 +1246,7 @@ namespace sqlnexus
             // 
             this.TIFFToolStripMenuItem.MergeIndex = 8;
             this.TIFFToolStripMenuItem.Name = "TIFFToolStripMenuItem";
+            this.TIFFToolStripMenuItem.AccessibleDescription = "8 of 8";
             resources.ApplyResources(this.TIFFToolStripMenuItem, "TIFFToolStripMenuItem");
             this.TIFFToolStripMenuItem.Click += new System.EventHandler(this.excelToolStripMenuItem_Click);
             // 
