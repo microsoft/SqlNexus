@@ -35,9 +35,9 @@ namespace sqlnexus
             this.lblAuthentication = new System.Windows.Forms.Label();
             this.lblUserName = new System.Windows.Forms.Label();
             this.lblPassword = new System.Windows.Forms.Label();
-            this.txtServerName = new System.Windows.Forms.TextBox();
+            this.txtServerName = new sqlnexus.AccessibleTextBox();
             this.cmbAuthentication = new System.Windows.Forms.ComboBox();
-            this.txtUserName = new System.Windows.Forms.TextBox();
+            this.txtUserName = new sqlnexus.AccessibleTextBox();
             this.txtPassword = new System.Windows.Forms.TextBox();
             this.btnConnect = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
@@ -89,9 +89,11 @@ namespace sqlnexus
             // 
             this.txtServerName.AccessibleName = "Server Name";
             this.txtServerName.Location = new System.Drawing.Point(173, 40);
+            this.txtServerName.Multiline = true;
             this.txtServerName.Name = "txtServerName";
             this.txtServerName.Size = new System.Drawing.Size(166, 20);
             this.txtServerName.TabIndex = 0;
+            this.txtServerName.WordWrap = false;
             // 
             // cmbAuthentication
             // 
@@ -113,9 +115,11 @@ namespace sqlnexus
             this.txtUserName.AccessibleName = "UserName";
             this.txtUserName.Enabled = false;
             this.txtUserName.Location = new System.Drawing.Point(173, 105);
+            this.txtUserName.Multiline = true;
             this.txtUserName.Name = "txtUserName";
             this.txtUserName.Size = new System.Drawing.Size(166, 20);
             this.txtUserName.TabIndex = 2;
+            this.txtUserName.WordWrap = false;
             // 
             // txtPassword
             // 
@@ -183,6 +187,7 @@ namespace sqlnexus
             // cmbTheme
             // 
             this.cmbTheme.AccessibleDescription = "Pick your layout theme";
+            this.cmbTheme.AccessibleName = "Contrast Theme";
             this.cmbTheme.FormattingEnabled = true;
             theme1.BackColor = System.Drawing.SystemColors.Control;
             theme1.ForeColor = System.Drawing.Color.Black;
@@ -201,7 +206,7 @@ namespace sqlnexus
             theme2,
             theme3});
             this.cmbTheme.Location = new System.Drawing.Point(173, 166);
-            this.cmbTheme.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cmbTheme.Margin = new System.Windows.Forms.Padding(2);
             this.cmbTheme.Name = "cmbTheme";
             this.cmbTheme.Size = new System.Drawing.Size(166, 21);
             this.cmbTheme.TabIndex = 4;
@@ -252,9 +257,9 @@ namespace sqlnexus
         private System.Windows.Forms.Label lblAuthentication;
         private System.Windows.Forms.Label lblUserName;
         private System.Windows.Forms.Label lblPassword;
-        private System.Windows.Forms.TextBox txtServerName;
+        private sqlnexus.AccessibleTextBox txtServerName;
         private System.Windows.Forms.ComboBox cmbAuthentication;
-        private System.Windows.Forms.TextBox txtUserName;
+        private sqlnexus.AccessibleTextBox txtUserName;
         private System.Windows.Forms.TextBox txtPassword;
         private System.Windows.Forms.Button btnConnect;
         private System.Windows.Forms.Button btnCancel;

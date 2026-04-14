@@ -398,7 +398,7 @@ namespace sqlnexus
                         else //string
                         {
 
-                            ctl = new TextBox();
+                            ctl = new AccessibleTextBox();
                             ((TextBox)ctl).Size = new Size(200, ((TextBox)ctl).Size.Height);
 
 
@@ -448,6 +448,7 @@ namespace sqlnexus
                     System.Diagnostics.Debug.WriteLine(ex.Message);
                     la.Text = node.Attributes["Name"].Value;
                 }
+                ctl.AccessibleName = la.Text;
 
                 fmP.tlpClient.Controls.Add(ctl, 1, i);
 

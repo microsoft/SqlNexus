@@ -269,6 +269,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccessibleTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="ClickOnce\ClickOnce.cs" />
     <Compile Include="CredentialManager.cs" />
     <Compile Include="CustomXELImporter.cs" />

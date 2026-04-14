@@ -35,12 +35,12 @@ namespace sqlnexus
             this.lblSelectRowset = new System.Windows.Forms.Label();
             this.cbSelectRowset = new System.Windows.Forms.ComboBox();
             this.lblRowsetName = new System.Windows.Forms.Label();
-            this.txtRowsetName = new System.Windows.Forms.TextBox();
+            this.txtRowsetName = new sqlnexus.AccessibleTextBox();
             this.grpEnableDisable = new System.Windows.Forms.GroupBox();
             this.rdDisable = new System.Windows.Forms.RadioButton();
             this.rdEnable = new System.Windows.Forms.RadioButton();
             this.lblIdentifier = new System.Windows.Forms.Label();
-            this.txtIdentifier = new System.Windows.Forms.TextBox();
+            this.txtIdentifier = new sqlnexus.AccessibleTextBox();
             this.lblType = new System.Windows.Forms.Label();
             this.cbType = new System.Windows.Forms.ComboBox();
             this.btnAdd = new System.Windows.Forms.Button();
@@ -126,6 +126,7 @@ namespace sqlnexus
             // 
             // txtRowsetName
             // 
+            this.txtRowsetName.AccessibleName = "Rowset Name";
             this.txtRowsetName.Location = new System.Drawing.Point(143, 135);
             this.txtRowsetName.Name = "txtRowsetName";
             this.txtRowsetName.Size = new System.Drawing.Size(174, 20);
@@ -175,6 +176,7 @@ namespace sqlnexus
             // 
             // txtIdentifier
             // 
+            this.txtIdentifier.AccessibleName = "Identifier";
             this.txtIdentifier.Location = new System.Drawing.Point(143, 233);
             this.txtIdentifier.Name = "txtIdentifier";
             this.txtIdentifier.Size = new System.Drawing.Size(174, 20);
@@ -256,12 +258,12 @@ namespace sqlnexus
         private System.Windows.Forms.Label lblSelectRowset;
         private System.Windows.Forms.ComboBox cbSelectRowset;
         private System.Windows.Forms.Label lblRowsetName;
-        private System.Windows.Forms.TextBox txtRowsetName;
+        private sqlnexus.AccessibleTextBox txtRowsetName;
         private System.Windows.Forms.GroupBox grpEnableDisable;
         private System.Windows.Forms.RadioButton rdDisable;
         private System.Windows.Forms.RadioButton rdEnable;
         private System.Windows.Forms.Label lblIdentifier;
-        private System.Windows.Forms.TextBox txtIdentifier;
+        private sqlnexus.AccessibleTextBox txtIdentifier;
         private System.Windows.Forms.Label lblType;
         private System.Windows.Forms.ComboBox cbType;
         private System.Windows.Forms.Button btnAdd;
