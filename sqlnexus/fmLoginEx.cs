@@ -1,4 +1,5 @@
 using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -14,15 +15,7 @@ namespace sqlnexus
         public fmLoginEx()
         {
             InitializeComponent();
-            
-            // Ensure theme is properly selected - use SelectedIndex as fallback
-            string savedTheme = Properties.Settings.Default.Theme ?? "Default";
-            int themeIndex = cmbTheme.FindStringExact(savedTheme);
-            if (themeIndex >= 0)
-                cmbTheme.SelectedIndex = themeIndex;
-            else if (cmbTheme.Items.Count > 0)
-                cmbTheme.SelectedIndex = 0; // Default to first item
-            
+
             ThemeManager.ApplyTheme(this);
             chkTrustServerCertificate.Checked = Properties.Settings.Default.TrustCertificate;
             chkEncryptConnection.Checked = Properties.Settings.Default.EncryptConnection;
@@ -108,11 +101,9 @@ namespace sqlnexus
                 txtPassword.Text = "";//since this object is cached, erase the password
             }
 
-            //Saving trustcertificate & encrypt connection & theme for the user.
+            //Saving trustcertificate & encrypt connection for the user.
             Properties.Settings.Default.EncryptConnection = chkEncryptConnection.Checked;
             Properties.Settings.Default.TrustCertificate = chkTrustServerCertificate.Checked;
-            // Use selected theme or fall back to default if nothing is selected
-            Properties.Settings.Default.Theme = cmbTheme.SelectedItem?.ToString() ?? "Default";
             Properties.Settings.Default.Save();
 
             //this.Dispose();
@@ -120,13 +111,6 @@ namespace sqlnexus
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
-            ThemeManager.ChangeCurrentTheme(Properties.Settings.Default.Theme);
-            ThemeManager.ApplyTheme(this);
-            ThemeManager.ApplyTheme(fmNexus.singleton);
-            if (fmNexus.singleton != null && fmNexus.singleton.IsHandleCreated)
-            {
-                fmNexus.singleton.BeginInvoke(new Action(() => fmNexus.singleton.RefreshCurrentReportTheme()));
-            }
         }
 
         private void fmLoginEx_Load(object sender, EventArgs e)
@@ -182,30 +166,8 @@ namespace sqlnexus
 
         }
 
-        private void cmbTheme_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            ThemeManager.ChangeCurrentTheme(cmbTheme.Text);
-            ThemeManager.ApplyTheme(this);
-            ThemeManager.ApplyTheme(fmNexus.singleton);
-
-            // Re-apply disabled label dimming after theme resets all ForeColors.
-            EnableSqlLogin(cmbAuthentication.SelectedIndex == 1);
-
-            // Update the report's ContrastTheme parameter and refresh it immediately.
-            // Use BeginInvoke to defer the report refresh so the ReportViewer can properly
-            // re-render while the modal dialog is open.
-            Properties.Settings.Default.Theme = cmbTheme.SelectedItem?.ToString() ?? "Default";
-            if (fmNexus.singleton != null && fmNexus.singleton.IsHandleCreated)
-            {
-                fmNexus.singleton.BeginInvoke(new Action(() => fmNexus.singleton.RefreshCurrentReportTheme()));
-            }
-        }
-
         private void fmLoginEx_FormClosing(object sender, FormClosingEventArgs e)
         {
-            ThemeManager.ChangeCurrentTheme(Properties.Settings.Default.Theme);
-            ThemeManager.ApplyTheme(this);
-            ThemeManager.ApplyTheme(fmNexus.singleton);
         }
     }
 }

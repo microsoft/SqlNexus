@@ -43,8 +43,6 @@ namespace sqlnexus
             this.btnCancel = new System.Windows.Forms.Button();
             this.chkTrustServerCertificate = new System.Windows.Forms.CheckBox();
             this.chkEncryptConnection = new System.Windows.Forms.CheckBox();
-            this.cmbTheme = new System.Windows.Forms.ComboBox();
-            this.lblThemea = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // lblServerName
@@ -184,52 +182,12 @@ namespace sqlnexus
             this.chkEncryptConnection.UseVisualStyleBackColor = true;
             this.chkEncryptConnection.CheckedChanged += new System.EventHandler(this.chkEncryptConnection_CheckedChanged);
             // 
-            // cmbTheme
-            // 
-            this.cmbTheme.AccessibleDescription = "Pick your layout theme";
-            this.cmbTheme.AccessibleName = "Contrast Theme";
-            this.cmbTheme.FormattingEnabled = true;
-            theme1.BackColor = System.Drawing.SystemColors.Control;
-            theme1.ForeColor = System.Drawing.Color.Black;
-            theme1.Name = "Default";
-            theme1.OtherColor = System.Drawing.Color.FromArgb(((int)(((byte)(117)))), ((int)(((byte)(233)))), ((int)(((byte)(252)))));
-            theme2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(32)))), ((int)(((byte)(32)))));
-            theme2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            theme2.Name = "Aquatic";
-            theme2.OtherColor = System.Drawing.Color.FromArgb(((int)(((byte)(117)))), ((int)(((byte)(233)))), ((int)(((byte)(252)))));
-            theme3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(250)))), ((int)(((byte)(239)))));
-            theme3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(61)))), ((int)(((byte)(61)))), ((int)(((byte)(61)))));
-            theme3.Name = "Desert";
-            theme3.OtherColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(94)))), ((int)(((byte)(117)))));
-            this.cmbTheme.Items.AddRange(new object[] {
-            theme1,
-            theme2,
-            theme3});
-            this.cmbTheme.Location = new System.Drawing.Point(173, 166);
-            this.cmbTheme.Margin = new System.Windows.Forms.Padding(2);
-            this.cmbTheme.Name = "cmbTheme";
-            this.cmbTheme.Size = new System.Drawing.Size(166, 21);
-            this.cmbTheme.TabIndex = 4;
-            this.cmbTheme.SelectedIndexChanged += new System.EventHandler(this.cmbTheme_SelectedIndexChanged);
-            // 
-            // lblThemea
-            // 
-            this.lblThemea.AutoSize = true;
-            this.lblThemea.Location = new System.Drawing.Point(113, 166);
-            this.lblThemea.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblThemea.Name = "lblThemea";
-            this.lblThemea.Size = new System.Drawing.Size(40, 13);
-            this.lblThemea.TabIndex = 402;
-            this.lblThemea.Text = "Theme";
-            // 
             // fmLoginEx
             // 
             this.AcceptButton = this.btnConnect;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(420, 281);
-            this.Controls.Add(this.lblThemea);
-            this.Controls.Add(this.cmbTheme);
+            this.ClientSize = new System.Drawing.Size(420, 255);
             this.Controls.Add(this.chkEncryptConnection);
             this.Controls.Add(this.chkTrustServerCertificate);
             this.Controls.Add(this.btnCancel);
@@ -265,7 +223,5 @@ namespace sqlnexus
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.CheckBox chkTrustServerCertificate;
         private System.Windows.Forms.CheckBox chkEncryptConnection;
-        private System.Windows.Forms.ComboBox cmbTheme;
-        private System.Windows.Forms.Label lblThemea;
     }
 }
