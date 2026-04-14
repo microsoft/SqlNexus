@@ -29,16 +29,16 @@ namespace sqlnexus
         private void InitializeComponent()
         {
             this.grpAddorEditRowset = new System.Windows.Forms.GroupBox();
-            this.rdDelete = new System.Windows.Forms.RadioButton();
-            this.rdEditRowset = new System.Windows.Forms.RadioButton();
-            this.rdAddRowset = new System.Windows.Forms.RadioButton();
+            this.rdDelete = new sqlnexus.AccessibleRadioButton();
+            this.rdEditRowset = new sqlnexus.AccessibleRadioButton();
+            this.rdAddRowset = new sqlnexus.AccessibleRadioButton();
             this.lblSelectRowset = new System.Windows.Forms.Label();
             this.cbSelectRowset = new System.Windows.Forms.ComboBox();
             this.lblRowsetName = new System.Windows.Forms.Label();
             this.txtRowsetName = new sqlnexus.AccessibleTextBox();
             this.grpEnableDisable = new System.Windows.Forms.GroupBox();
-            this.rdDisable = new System.Windows.Forms.RadioButton();
-            this.rdEnable = new System.Windows.Forms.RadioButton();
+            this.rdDisable = new sqlnexus.AccessibleRadioButton();
+            this.rdEnable = new sqlnexus.AccessibleRadioButton();
             this.lblIdentifier = new System.Windows.Forms.Label();
             this.txtIdentifier = new sqlnexus.AccessibleTextBox();
             this.lblType = new System.Windows.Forms.Label();
@@ -68,7 +68,6 @@ namespace sqlnexus
             this.rdDelete.Name = "rdDelete";
             this.rdDelete.Size = new System.Drawing.Size(95, 17);
             this.rdDelete.TabIndex = 2;
-            this.rdDelete.TabStop = true;
             this.rdDelete.Text = "Delete Rowset";
             this.rdDelete.UseVisualStyleBackColor = true;
             this.rdDelete.CheckedChanged += new System.EventHandler(this.rdDelete_CheckedChanged);
@@ -253,21 +252,21 @@ namespace sqlnexus
         #endregion
 
         private System.Windows.Forms.GroupBox grpAddorEditRowset;
-        private System.Windows.Forms.RadioButton rdEditRowset;
-        private System.Windows.Forms.RadioButton rdAddRowset;
+        private sqlnexus.AccessibleRadioButton rdEditRowset;
+        private sqlnexus.AccessibleRadioButton rdAddRowset;
         private System.Windows.Forms.Label lblSelectRowset;
         private System.Windows.Forms.ComboBox cbSelectRowset;
         private System.Windows.Forms.Label lblRowsetName;
         private sqlnexus.AccessibleTextBox txtRowsetName;
         private System.Windows.Forms.GroupBox grpEnableDisable;
-        private System.Windows.Forms.RadioButton rdDisable;
-        private System.Windows.Forms.RadioButton rdEnable;
+        private sqlnexus.AccessibleRadioButton rdDisable;
+        private sqlnexus.AccessibleRadioButton rdEnable;
         private System.Windows.Forms.Label lblIdentifier;
         private sqlnexus.AccessibleTextBox txtIdentifier;
         private System.Windows.Forms.Label lblType;
         private System.Windows.Forms.ComboBox cbType;
         private System.Windows.Forms.Button btnAdd;
-        private System.Windows.Forms.RadioButton rdDelete;
+        private sqlnexus.AccessibleRadioButton rdDelete;
         private System.Windows.Forms.LinkLabel llCustomRowsetHelp;
     }
 }

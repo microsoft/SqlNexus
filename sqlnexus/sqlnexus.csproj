@@ -269,7 +269,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AccessibleTextBox.cs">
+    <Compile Include="AccessibleControls.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="ClickOnce\ClickOnce.cs" />
