@@ -60,6 +60,106 @@ namespace sqlnexus
 
         #endregion
 
+        #region Keyboard toolbar accessibility
+
+        /// <summary>
+        /// Enables F6 to cycle focus between toolbars and the content area for keyboard-only users.
+        /// This follows the standard Windows convention for pane cycling (WCAG 2.1.1, 2.4.3).
+        /// </summary>
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == Keys.F6 || keyData == (Keys.F6 | Keys.Shift))
+            {
+                bool reverse = (keyData & Keys.Shift) == Keys.Shift;
+                CycleFocusBetweenPanes(reverse);
+                return true;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        private void CycleFocusBetweenPanes(bool reverse)
+        {
+            // Build the list of focusable panes in order:
+            // 1. Report toolbar (page nav, zoom, find, Current DB, Theme)
+            // 2. Standard toolbar (Connect, Open, Run All, Help)
+            // 3. Service toolbar (Start, Stop - only when visible)
+            // 4. Content area (left nav + report viewer)
+            var panes = new System.Collections.Generic.List<Control>();
+
+            if (toolbarReport.Visible)
+                panes.Add(toolbarReport);
+            if (toolbarMain.Visible)
+                panes.Add(toolbarMain);
+            if (toolbarService.Visible)
+                panes.Add(toolbarService);
+
+            // Content area: left nav panel or report viewer
+            if (splClient.Visible)
+                panes.Add(splClient);
+
+            if (panes.Count == 0)
+                return;
+
+            // Find which pane currently has focus
+            Control focused = this.ActiveControl;
+            int currentIndex = -1;
+            for (int i = 0; i < panes.Count; i++)
+            {
+                if (panes[i].ContainsFocus || panes[i] == focused)
+                {
+                    currentIndex = i;
+                    break;
+                }
+                // Check if focused control is a child of a toolbar
+                if (focused != null)
+                {
+                    Control parent = focused.Parent;
+                    while (parent != null)
+                    {
+                        if (parent == panes[i])
+                        {
+                            currentIndex = i;
+                            break;
+                        }
+                        parent = parent.Parent;
+                    }
+                    if (currentIndex >= 0) break;
+                }
+            }
+
+            // Move to next/previous pane
+            int nextIndex;
+            if (currentIndex < 0)
+                nextIndex = 0;
+            else if (reverse)
+                nextIndex = (currentIndex - 1 + panes.Count) % panes.Count;
+            else
+                nextIndex = (currentIndex + 1) % panes.Count;
+
+            Control target = panes[nextIndex];
+            if (target is ToolStrip toolStrip)
+            {
+                // Focus the first visible, enabled item in the toolbar
+                foreach (ToolStripItem item in toolStrip.Items)
+                {
+                    if (item.Visible && item.Enabled && item.CanSelect)
+                    {
+                        toolStrip.Focus();
+                        item.Select();
+                        return;
+                    }
+                }
+            }
+            else
+            {
+                target.Focus();
+                if (target.Controls.Count > 0)
+                    target.SelectNextControl(null, true, true, true, true);
+            }
+        }
+
+        #endregion
+
         #region Member vars, constants, and enums
 
         const string RDL_EXT = ".rdl";
