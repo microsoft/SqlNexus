@@ -1,5 +1,16 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:am="http://schemas.microsoft.com/sqlserver/reporting/authoringmetadata">
+  <am:AuthoringMetadata>
+    <am:CreatedBy>
+      <am:Name>SSDTRS</am:Name>
+      <am:Version>17.14.37203.1</am:Version>
+    </am:CreatedBy>
+    <am:UpdatedBy>
+      <am:Name>SSDTRS</am:Name>
+      <am:Version>17.14.37203.1</am:Version>
+    </am:UpdatedBy>
+    <am:LastModifiedTimestamp>2026-04-15T20:03:09.3307151Z</am:LastModifiedTimestamp>
+  </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
     <DataSource Name="DataSource_SqlNexus_Private">
@@ -187,7 +198,7 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                                     <FontFamily>Tahoma</FontFamily>
                                     <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -197,10 +208,10 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                           <rd:DefaultName>Textbox18</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>#7292cc</Color>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>#4c68a2</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -226,7 +237,7 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                                   <Value>=Sum(Fields!LockCount.Value)</Value>
                                   <Style>
                                     <FontFamily>Tahoma</FontFamily>
-                                    <Color>#4d4d4d</Color>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -236,7 +247,7 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                           <rd:DefaultName>LockCount</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>#e5e5e5</Color>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>Solid</Style>
                             </Border>
                             <PaddingLeft>2pt</PaddingLeft>
@@ -265,7 +276,7 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                                   <Style>
                                     <FontFamily>Tahoma</FontFamily>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>#4c68a2</Color>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -275,10 +286,10 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                           <rd:DefaultName>Textbox35</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>#e6eefc</Color>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>#c6daf8</BackgroundColor>
+                            <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -305,7 +316,7 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                                   <Style>
                                     <FontFamily>Tahoma</FontFamily>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>#465678</Color>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -315,10 +326,10 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                           <rd:DefaultName>Textbox32</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>#c6daf8</Color>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>#9eb6e4</BackgroundColor>
+                            <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -345,7 +356,7 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                                   <Style>
                                     <FontFamily>Tahoma</FontFamily>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -355,10 +366,10 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                           <rd:DefaultName>Textbox28</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>#9eb6e4</Color>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>#7292cc</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -394,7 +405,7 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                                   <FontFamily>Tahoma</FontFamily>
                                   <FontSize>11pt</FontSize>
                                   <FontWeight>Bold</FontWeight>
-                                  <Color>White</Color>
+                                  <Color>=Variables!ReportTextColor.Value</Color>
                                 </Style>
                               </TextRun>
                             </TextRuns>
@@ -404,10 +415,10 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                         <rd:DefaultName>Textbox23</rd:DefaultName>
                         <Style>
                           <Border>
-                            <Color>#7292cc</Color>
+                            <Color>=Variables!ReportTextColor.Value</Color>
                             <Style>Solid</Style>
                           </Border>
-                          <BackgroundColor>#4c68a2</BackgroundColor>
+                          <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                           <PaddingLeft>2pt</PaddingLeft>
                           <PaddingRight>2pt</PaddingRight>
                           <PaddingTop>2pt</PaddingTop>
@@ -433,7 +444,7 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                                       <FontFamily>Tahoma</FontFamily>
                                       <FontSize>11pt</FontSize>
                                       <FontWeight>Bold</FontWeight>
-                                      <Color>White</Color>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                     </Style>
                                   </TextRun>
                                 </TextRuns>
@@ -443,10 +454,10 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                             <rd:DefaultName>Textbox21</rd:DefaultName>
                             <Style>
                               <Border>
-                                <Color>#7292cc</Color>
+                                <Color>=Variables!ReportTextColor.Value</Color>
                                 <Style>Solid</Style>
                               </Border>
-                              <BackgroundColor>#4c68a2</BackgroundColor>
+                              <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                               <PaddingLeft>2pt</PaddingLeft>
                               <PaddingRight>2pt</PaddingRight>
                               <PaddingTop>2pt</PaddingTop>
@@ -472,7 +483,7 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                                           <FontFamily>Tahoma</FontFamily>
                                           <FontSize>11pt</FontSize>
                                           <FontWeight>Bold</FontWeight>
-                                          <Color>White</Color>
+                                          <Color>=Variables!ReportTextColor.Value</Color>
                                         </Style>
                                       </TextRun>
                                     </TextRuns>
@@ -482,10 +493,10 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                                 <rd:DefaultName>Textbox19</rd:DefaultName>
                                 <Style>
                                   <Border>
-                                    <Color>#7292cc</Color>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                     <Style>Solid</Style>
                                   </Border>
-                                  <BackgroundColor>#4c68a2</BackgroundColor>
+                                  <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                   <PaddingLeft>2pt</PaddingLeft>
                                   <PaddingRight>2pt</PaddingRight>
                                   <PaddingTop>2pt</PaddingTop>
@@ -527,7 +538,7 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                                 <Style>
                                   <FontFamily>Tahoma</FontFamily>
                                   <FontWeight>Bold</FontWeight>
-                                  <Color>#465678</Color>
+                                  <Color>=Variables!ReportTextColor.Value</Color>
                                 </Style>
                               </TextRun>
                             </TextRuns>
@@ -537,10 +548,10 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                         <rd:DefaultName>runtime</rd:DefaultName>
                         <Style>
                           <Border>
-                            <Color>#c6daf8</Color>
+                            <Color>=Variables!ReportTextColor.Value</Color>
                             <Style>Solid</Style>
                           </Border>
-                          <BackgroundColor>#9eb6e4</BackgroundColor>
+                          <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
                           <PaddingLeft>2pt</PaddingLeft>
                           <PaddingRight>2pt</PaddingRight>
                           <PaddingTop>2pt</PaddingTop>
@@ -575,7 +586,7 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                                     <Style>
                                       <FontFamily>Tahoma</FontFamily>
                                       <FontWeight>Bold</FontWeight>
-                                      <Color>#4c68a2</Color>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                     </Style>
                                   </TextRun>
                                 </TextRuns>
@@ -585,10 +596,10 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                             <rd:DefaultName>Resource_database_id</rd:DefaultName>
                             <Style>
                               <Border>
-                                <Color>#e6eefc</Color>
+                                <Color>=Variables!ReportTextColor.Value</Color>
                                 <Style>Solid</Style>
                               </Border>
-                              <BackgroundColor>#c6daf8</BackgroundColor>
+                              <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
                               <PaddingLeft>2pt</PaddingLeft>
                               <PaddingRight>2pt</PaddingRight>
                               <PaddingTop>2pt</PaddingTop>
@@ -623,7 +634,7 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                                         <Style>
                                           <FontFamily>Tahoma</FontFamily>
                                           <FontWeight>Bold</FontWeight>
-                                          <Color>#4c68a2</Color>
+                                          <Color>=Variables!ReportTextColor.Value</Color>
                                         </Style>
                                       </TextRun>
                                     </TextRuns>
@@ -633,10 +644,10 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                                 <rd:DefaultName>resource_type</rd:DefaultName>
                                 <Style>
                                   <Border>
-                                    <Color>White</Color>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                     <Style>Solid</Style>
                                   </Border>
-                                  <BackgroundColor>#e6eefc</BackgroundColor>
+                                  <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
                                   <PaddingLeft>2pt</PaddingLeft>
                                   <PaddingRight>2pt</PaddingRight>
                                   <PaddingTop>2pt</PaddingTop>
@@ -668,7 +679,7 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                                         <Style>
                                           <FontFamily>Tahoma</FontFamily>
                                           <FontWeight>Bold</FontWeight>
-                                          <Color>#4c68a2</Color>
+                                          <Color>=Variables!ReportTextColor.Value</Color>
                                         </Style>
                                       </TextRun>
                                     </TextRuns>
@@ -678,10 +689,10 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                                 <rd:DefaultName>Textbox34</rd:DefaultName>
                                 <Style>
                                   <Border>
-                                    <Color>#e6eefc</Color>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                     <Style>Solid</Style>
                                   </Border>
-                                  <BackgroundColor>#c6daf8</BackgroundColor>
+                                  <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
                                   <PaddingLeft>2pt</PaddingLeft>
                                   <PaddingRight>2pt</PaddingRight>
                                   <PaddingTop>2pt</PaddingTop>
@@ -713,7 +724,7 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                                     <Style>
                                       <FontFamily>Tahoma</FontFamily>
                                       <FontWeight>Bold</FontWeight>
-                                      <Color>#465678</Color>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                     </Style>
                                   </TextRun>
                                 </TextRuns>
@@ -723,10 +734,10 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                             <rd:DefaultName>Textbox30</rd:DefaultName>
                             <Style>
                               <Border>
-                                <Color>#c6daf8</Color>
+                                <Color>=Variables!ReportTextColor.Value</Color>
                                 <Style>Solid</Style>
                               </Border>
-                              <BackgroundColor>#9eb6e4</BackgroundColor>
+                              <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
                               <PaddingLeft>2pt</PaddingLeft>
                               <PaddingRight>2pt</PaddingRight>
                               <PaddingTop>2pt</PaddingTop>
@@ -751,7 +762,7 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                                         <Style>
                                           <FontFamily>Tahoma</FontFamily>
                                           <FontWeight>Bold</FontWeight>
-                                          <Color>#465678</Color>
+                                          <Color>=Variables!ReportTextColor.Value</Color>
                                         </Style>
                                       </TextRun>
                                     </TextRuns>
@@ -761,10 +772,10 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                                 <rd:DefaultName>Textbox31</rd:DefaultName>
                                 <Style>
                                   <Border>
-                                    <Color>#c6daf8</Color>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                     <Style>Solid</Style>
                                   </Border>
-                                  <BackgroundColor>#9eb6e4</BackgroundColor>
+                                  <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
                                   <PaddingLeft>2pt</PaddingLeft>
                                   <PaddingRight>2pt</PaddingRight>
                                   <PaddingTop>2pt</PaddingTop>
@@ -794,7 +805,7 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                                 <Style>
                                   <FontFamily>Tahoma</FontFamily>
                                   <FontWeight>Bold</FontWeight>
-                                  <Color>White</Color>
+                                  <Color>=Variables!ReportTextColor.Value</Color>
                                 </Style>
                               </TextRun>
                             </TextRuns>
@@ -804,10 +815,10 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                         <rd:DefaultName>Textbox25</rd:DefaultName>
                         <Style>
                           <Border>
-                            <Color>#9eb6e4</Color>
+                            <Color>=Variables!ReportTextColor.Value</Color>
                             <Style>Solid</Style>
                           </Border>
-                          <BackgroundColor>#7292cc</BackgroundColor>
+                          <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                           <PaddingLeft>2pt</PaddingLeft>
                           <PaddingRight>2pt</PaddingRight>
                           <PaddingTop>2pt</PaddingTop>
@@ -832,7 +843,7 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                                     <Style>
                                       <FontFamily>Tahoma</FontFamily>
                                       <FontWeight>Bold</FontWeight>
-                                      <Color>White</Color>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                     </Style>
                                   </TextRun>
                                 </TextRuns>
@@ -842,10 +853,10 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                             <rd:DefaultName>Textbox26</rd:DefaultName>
                             <Style>
                               <Border>
-                                <Color>#9eb6e4</Color>
+                                <Color>=Variables!ReportTextColor.Value</Color>
                                 <Style>Solid</Style>
                               </Border>
-                              <BackgroundColor>#7292cc</BackgroundColor>
+                              <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                               <PaddingLeft>2pt</PaddingLeft>
                               <PaddingRight>2pt</PaddingRight>
                               <PaddingTop>2pt</PaddingTop>
@@ -870,7 +881,7 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                                         <Style>
                                           <FontFamily>Tahoma</FontFamily>
                                           <FontWeight>Bold</FontWeight>
-                                          <Color>White</Color>
+                                          <Color>=Variables!ReportTextColor.Value</Color>
                                         </Style>
                                       </TextRun>
                                     </TextRuns>
@@ -880,10 +891,10 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                                 <rd:DefaultName>Textbox27</rd:DefaultName>
                                 <Style>
                                   <Border>
-                                    <Color>#9eb6e4</Color>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                     <Style>Solid</Style>
                                   </Border>
-                                  <BackgroundColor>#7292cc</BackgroundColor>
+                                  <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                   <PaddingLeft>2pt</PaddingLeft>
                                   <PaddingRight>2pt</PaddingRight>
                                   <PaddingTop>2pt</PaddingTop>
@@ -955,9 +966,13 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                         </Style>
                       </ChartDataLabel>
                       <ToolTip>#VALY</ToolTip>
-                      <Style />
+                      <Style>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Style>
                       <ChartMarker>
-                        <Style />
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </ChartMarker>
                       <DataElementOutput>Output</DataElementOutput>
                     </ChartDataPoint>
@@ -968,12 +983,18 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                     <ShadowOffset>1pt</ShadowOffset>
                   </Style>
                   <ChartEmptyPoints>
-                    <Style />
+                    <Style>
+                      <Color>=Variables!ReportTextColor.Value</Color>
+                    </Style>
                     <ChartMarker>
-                      <Style />
+                      <Style>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Style>
                     </ChartMarker>
                     <ChartDataLabel>
-                      <Style />
+                      <Style>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Style>
                     </ChartDataLabel>
                   </ChartEmptyPoints>
                   <ValueAxisName>Primary</ValueAxisName>
@@ -1008,14 +1029,14 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                       <Enabled>False</Enabled>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Border>
                       </Style>
                     </ChartMajorGridLines>
                     <ChartMinorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                           <Style>Dotted</Style>
                         </Border>
                       </Style>
@@ -1061,14 +1082,14 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                       <Enabled>False</Enabled>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Border>
                       </Style>
                     </ChartMajorGridLines>
                     <ChartMinorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                           <Style>Dotted</Style>
                         </Border>
                       </Style>
@@ -1117,14 +1138,14 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                     <ChartMajorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Border>
                       </Style>
                     </ChartMajorGridLines>
                     <ChartMinorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                           <Style>Dotted</Style>
                         </Border>
                       </Style>
@@ -1169,14 +1190,14 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                     <ChartMajorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Border>
                       </Style>
                     </ChartMajorGridLines>
                     <ChartMinorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                           <Style>Dotted</Style>
                         </Border>
                       </Style>
@@ -1206,7 +1227,7 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                   </ChartAxis>
                 </ChartValueAxes>
                 <Style>
-                  <BackgroundColor>#e6eefc</BackgroundColor>
+                  <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
                   <BackgroundGradientType>None</BackgroundGradientType>
                 </Style>
               </ChartArea>
@@ -1215,9 +1236,9 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
               <ChartLegend Name="Default">
                 <Style>
                   <Border>
-                    <Color>#7292cc</Color>
+                    <Color>=Variables!ReportTextColor.Value</Color>
                   </Border>
-                  <BackgroundColor>#e6eefc</BackgroundColor>
+                  <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
                   <BackgroundGradientType>TopBottom</BackgroundGradientType>
                   <BackgroundGradientEndColor>#c6daf8</BackgroundGradientEndColor>
                   <FontFamily>Tahoma</FontFamily>
@@ -1267,7 +1288,7 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
               <Style>
                 <BackgroundColor>Gray</BackgroundColor>
                 <BackgroundGradientType>None</BackgroundGradientType>
-                <Color>White</Color>
+                <Color>=Variables!ReportTextColor.Value</Color>
               </Style>
             </ChartBorderSkin>
             <ChartNoDataMessage Name="NoDataMessage">
@@ -1288,11 +1309,11 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
             <ZIndex>1</ZIndex>
             <Style>
               <Border>
-                <Color>#7292cc</Color>
+                <Color>=Variables!ReportTextColor.Value</Color>
                 <Style>Solid</Style>
                 <Width>2pt</Width>
               </Border>
-              <BackgroundColor>#c6daf8</BackgroundColor>
+              <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
               <BackgroundGradientType>TopBottom</BackgroundGradientType>
               <BackgroundGradientEndColor>#e6eefc</BackgroundGradientEndColor>
             </Style>
@@ -1307,6 +1328,7 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                     <Value>Lock Summary</Value>
                     <Style>
                       <FontSize>16pt</FontSize>
+                      <Color>=Variables!TitleColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1341,6 +1363,7 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                     <Value>This report charts number of locks by resource type over time.  </Value>
                     <Style>
                       <FontSize>12pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1371,7 +1394,9 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                 <TextRuns>
                   <TextRun>
                     <Value>Lock Count Details</Value>
-                    <Style />
+                    <Style>
+                      <Color>=Variables!ReportTextColor.Value</Color>
+                    </Style>
                   </TextRun>
                 </TextRuns>
                 <Style />
@@ -1402,6 +1427,7 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                     <Value>Show queries for this report.</Value>
                     <Style>
                       <FontWeight>Bold</FontWeight>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1433,7 +1459,9 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                     <TextRuns>
                       <TextRun>
                         <Value>=DataSets!DataSet_LockSummary.CommandText</Value>
-                        <Style />
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </TextRun>
                     </TextRuns>
                     <Style />
@@ -1465,7 +1493,9 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                     <TextRuns>
                       <TextRun>
                         <Value>=DataSets!DataSet_LockCount_breakouts.CommandText</Value>
-                        <Style />
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </TextRun>
                     </TextRuns>
                     <Style />
@@ -1502,6 +1532,7 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
             </Visibility>
             <Style>
               <Border>
+                <Color>=Variables!ReportTextColor.Value</Color>
                 <Style>Solid</Style>
               </Border>
             </Style>
@@ -1512,7 +1543,7 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
           <Border>
             <Style>None</Style>
           </Border>
-          <BackgroundColor>=Parameters!FmtAmbientBackground.Value</BackgroundColor>
+          <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
         </Style>
       </Body>
       <Width>12.99666in</Width>
@@ -1531,7 +1562,7 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                     <TextRun>
                       <Value>Report Help</Value>
                       <Style>
-                        <Color>=Parameters!FmtHyperlink.Value</Color>
+                        <Color>=Variables!URLColor.Value</Color>
                       </Style>
                     </TextRun>
                   </TextRuns>
@@ -1580,7 +1611,9 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
         <RightMargin>1in</RightMargin>
         <TopMargin>1in</TopMargin>
         <BottomMargin>1in</BottomMargin>
-        <Style />
+        <Style>
+          <Color>=Variables!ReportTextColor.Value</Color>
+        </Style>
       </Page>
     </ReportSection>
   </ReportSections>
@@ -1695,11 +1728,36 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
       <Prompt>ReportParameter1</Prompt>
       <Hidden>true</Hidden>
     </ReportParameter>
+    <ReportParameter Name="ContrastTheme">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>None</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>ContrastTheme</Prompt>
+      <ValidValues>
+        <ParameterValues>
+          <ParameterValue>
+            <Value>None</Value>
+            <Label>None</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>Aquatic</Value>
+            <Label>Aquatic</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>Desert</Value>
+            <Label>Desert</Label>
+          </ParameterValue>
+        </ParameterValues>
+      </ValidValues>
+    </ReportParameter>
   </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>
       <NumberOfColumns>4</NumberOfColumns>
-      <NumberOfRows>3</NumberOfRows>
+      <NumberOfRows>4</NumberOfRows>
       <CellDefinitions>
         <CellDefinition>
           <ColumnIndex>0</ColumnIndex>
@@ -1746,12 +1804,42 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
           <RowIndex>2</RowIndex>
           <ParameterName>FmtHyperlink</ParameterName>
         </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>3</RowIndex>
+          <ParameterName>ContrastTheme</ParameterName>
+        </CellDefinition>
       </CellDefinitions>
     </GridLayoutDefinition>
   </ReportParametersLayout>
   <Variables>
     <Variable Name="IsLocalReport">
       <Value>= (Globals!ReportServerUrl="")</Value>
+    </Variable>
+    <Variable Name="ReportTextColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+Parameters!ContrastTheme.Value="None", "Black")</Value>
+    </Variable>
+    <Variable Name="BodyColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
+Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
+Parameters!ContrastTheme.Value="None", "No Color")</Value>
+    </Variable>
+    <Variable Name="TitleColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+Parameters!ContrastTheme.Value="None", "#1c3a70")</Value>
+    </Variable>
+    <Variable Name="URLColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#75E9FC",
+Parameters!ContrastTheme.Value="Desert", "#1C5E75",
+Parameters!ContrastTheme.Value="None", "Blue")</Value>
+    </Variable>
+    <Variable Name="TableHeadingColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "No Color",
+Parameters!ContrastTheme.Value="Desert", "No Color",
+Parameters!ContrastTheme.Value="None", "Gainsboro")</Value>
     </Variable>
   </Variables>
   <rd:ReportUnitType>Inch</rd:ReportUnitType>
