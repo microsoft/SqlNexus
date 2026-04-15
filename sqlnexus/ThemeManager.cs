@@ -89,6 +89,7 @@ namespace sqlnexus
                             linkLabel.ActiveLinkColor = Color.White;
                             linkLabel.LinkColor = Color.White;
                             linkLabel.DisabledLinkColor = Color.Gray;
+                            linkLabel.LinkBehavior = LinkBehavior.AlwaysUnderline;
                         }
                         else
                         {
@@ -98,6 +99,7 @@ namespace sqlnexus
                             linkLabel.ActiveLinkColor = Color.DarkBlue;
                             linkLabel.LinkColor = Color.DarkBlue;
                             linkLabel.DisabledLinkColor = Color.DarkBlue;
+                            linkLabel.LinkBehavior = LinkBehavior.AlwaysUnderline;
                         }
                     }
                     else
@@ -128,6 +130,7 @@ namespace sqlnexus
                     ((LinkLabel)control).LinkColor = CurrentForeColor;
                     ((LinkLabel)control).ActiveLinkColor = CurrentForeColor;
                     ((LinkLabel)control).DisabledLinkColor = CurrentForeColor;
+                    ((LinkLabel)control).LinkBehavior = LinkBehavior.AlwaysUnderline;
                 }
                 //this was not there on the original design but the differentiation was background colors , using this as border line to separate different panels
                 if (control.GetType() == typeof(System.Windows.Forms.Panel))
@@ -171,12 +174,14 @@ namespace sqlnexus
                     linkLabel.LinkColor = SystemColors.ButtonHighlight;
                     linkLabel.ActiveLinkColor = SystemColors.ButtonHighlight;
                     linkLabel.DisabledLinkColor = SystemColors.GrayText;
+                    linkLabel.LinkBehavior = LinkBehavior.AlwaysUnderline;
                 }
                 else
                 {
                     linkLabel.LinkColor = SystemColors.HotTrack;
                     linkLabel.ActiveLinkColor = SystemColors.HotTrack;
                     linkLabel.DisabledLinkColor = SystemColors.GrayText;
+                    linkLabel.LinkBehavior = LinkBehavior.AlwaysUnderline;
                 }
             }
 

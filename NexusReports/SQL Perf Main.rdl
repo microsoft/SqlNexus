@@ -1435,6 +1435,7 @@ END;</CommandText>
                                   <Style>
                                     <FontFamily>Tahoma</FontFamily>
                                     <FontSize>9pt</FontSize>
+                                    <TextDecoration>Underline</TextDecoration>
                                     <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>

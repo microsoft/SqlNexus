@@ -60,6 +60,106 @@ namespace sqlnexus
 
         #endregion
 
+        #region Keyboard toolbar accessibility
+
+        /// <summary>
+        /// Enables F6 to cycle focus between toolbars and the content area for keyboard-only users.
+        /// This follows the standard Windows convention for pane cycling (WCAG 2.1.1, 2.4.3).
+        /// </summary>
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == Keys.F6 || keyData == (Keys.F6 | Keys.Shift))
+            {
+                bool reverse = (keyData & Keys.Shift) == Keys.Shift;
+                CycleFocusBetweenPanes(reverse);
+                return true;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        private void CycleFocusBetweenPanes(bool reverse)
+        {
+            // Build the list of focusable panes in order:
+            // 1. Report toolbar (page nav, zoom, find, Current DB, Theme)
+            // 2. Standard toolbar (Connect, Open, Run All, Help)
+            // 3. Service toolbar (Start, Stop - only when visible)
+            // 4. Content area (left nav + report viewer)
+            var panes = new System.Collections.Generic.List<Control>();
+
+            if (toolbarReport.Visible)
+                panes.Add(toolbarReport);
+            if (toolbarMain.Visible)
+                panes.Add(toolbarMain);
+            if (toolbarService.Visible)
+                panes.Add(toolbarService);
+
+            // Content area: left nav panel or report viewer
+            if (splClient.Visible)
+                panes.Add(splClient);
+
+            if (panes.Count == 0)
+                return;
+
+            // Find which pane currently has focus
+            Control focused = this.ActiveControl;
+            int currentIndex = -1;
+            for (int i = 0; i < panes.Count; i++)
+            {
+                if (panes[i].ContainsFocus || panes[i] == focused)
+                {
+                    currentIndex = i;
+                    break;
+                }
+                // Check if focused control is a child of a toolbar
+                if (focused != null)
+                {
+                    Control parent = focused.Parent;
+                    while (parent != null)
+                    {
+                        if (parent == panes[i])
+                        {
+                            currentIndex = i;
+                            break;
+                        }
+                        parent = parent.Parent;
+                    }
+                    if (currentIndex >= 0) break;
+                }
+            }
+
+            // Move to next/previous pane
+            int nextIndex;
+            if (currentIndex < 0)
+                nextIndex = 0;
+            else if (reverse)
+                nextIndex = (currentIndex - 1 + panes.Count) % panes.Count;
+            else
+                nextIndex = (currentIndex + 1) % panes.Count;
+
+            Control target = panes[nextIndex];
+            if (target is ToolStrip toolStrip)
+            {
+                // Focus the first visible, enabled item in the toolbar
+                foreach (ToolStripItem item in toolStrip.Items)
+                {
+                    if (item.Visible && item.Enabled && item.CanSelect)
+                    {
+                        toolStrip.Focus();
+                        item.Select();
+                        return;
+                    }
+                }
+            }
+            else
+            {
+                target.Focus();
+                if (target.Controls.Count > 0)
+                    target.SelectNextControl(null, true, true, true, true);
+            }
+        }
+
+        #endregion
+
         #region Member vars, constants, and enums
 
         const string RDL_EXT = ".rdl";
@@ -265,10 +365,25 @@ namespace sqlnexus
 
         #region Form methods
 
+        private bool _suppressThemeChange = false;
+
         public fmNexus()
         {
             InitializeComponent();
             ThemeManager.ChangeCurrentTheme(Properties.Settings.Default.Theme);
+
+            // Initialize theme combo to match saved setting.
+            // Suppress the SelectedIndexChanged handler to avoid side effects
+            // (e.g., ApplyTheme during construction breaks toolbar visibility bindings).
+            _suppressThemeChange = true;
+            string savedTheme = Properties.Settings.Default.Theme ?? "Default";
+            int themeIndex = tscTheme.FindStringExact(savedTheme);
+            if (themeIndex >= 0)
+                tscTheme.SelectedIndex = themeIndex;
+            else if (tscTheme.Items.Count > 0)
+                tscTheme.SelectedIndex = 0;
+            _suppressThemeChange = false;
+
             ThemeManager.ApplyTheme(this);
             singleton = this;
         }
@@ -669,6 +784,11 @@ namespace sqlnexus
             this.askWhetherToStopTheSQLDiagCollectionServiceWhenExitingToolStripMenuItem.Checked = sqlnexus.Properties.Settings.Default.SQLDiagStopDontAsk;
             this.tsiShowReportTabs.Checked = sqlnexus.Properties.Settings.Default.ShowReportTabs;
             ToggleTabs(this.tsiShowReportTabs.Checked);
+
+            // Explicitly sync toolbar visibility with settings.
+            // The DataBinding on toolbarMain.Visible can get out of sync
+            // when resources.ApplyResources runs during InitializeComponent.
+            this.toolbarMain.Visible = sqlnexus.Properties.Settings.Default.ShowStandardToolbar;
         }
 
 
@@ -810,18 +930,14 @@ namespace sqlnexus
 
         private void fmNexus_FormClosing(object sender, FormClosingEventArgs e)
         {
-            /*
-            if (false)
-            {
-                //PromptStopCollector();
-            }*/
 
             //Save settings to app.config
             sqlnexus.Properties.Settings.Default.ShowReportTabs = tsiShowReportTabs.Checked;
+            sqlnexus.Properties.Settings.Default.ShowStandardToolbar = toolbarMain.Visible;
+            sqlnexus.Properties.Settings.Default.ShowReportToolbar = toolbarReport.Visible;
+            sqlnexus.Properties.Settings.Default.ShowDataCollectionToolbar = toolbarService.Visible;
             sqlnexus.Properties.Settings.Default.Save();
-            //workaround http://connect.microsoft.com/VisualStudio/feedback/details/522208/wpf-app-with-reportviewer-gets-error-while-unloading-appdomain-exception-on-termination
             CloseAllReports();
-            //Thread.Sleep(1000);
         }
 
         private void PromptStopCollector()
@@ -1019,7 +1135,10 @@ namespace sqlnexus
             tvReports.SelectedNode = null;
             if (0 == tcReports.TabCount)
             {
+                // Hide the report toolbar when no reports are open, but preserve
+                // the user's preference so it can be restored when a report loads.
                 toolbarReport.Visible = false;
+                Properties.Settings.Default.ShowReportToolbar = reportToolStripMenuItem.Checked;
                 this.editToolStripMenuItem.Enabled = false;
                 //disable the panel with all the logs - Nexus, RML, copy to clipboard. For now we don't want this functionality
                 //paTasksBody.Enabled = false;
@@ -1080,6 +1199,23 @@ namespace sqlnexus
             {
                 Debug.WriteLine("Exception while refreshing report theme: " + ex.Message);
             }
+        }
+
+        private void tscTheme_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (_suppressThemeChange)
+                return;
+
+            string selectedTheme = tscTheme.SelectedItem?.ToString() ?? "Default";
+            ThemeManager.ChangeCurrentTheme(selectedTheme);
+            ThemeManager.ApplyTheme(this);
+
+            // Persist the theme setting
+            Properties.Settings.Default.Theme = selectedTheme;
+            Properties.Settings.Default.Save();
+
+            // Refresh the current report with the new ContrastTheme
+            RefreshCurrentReportTheme();
         }
 
         public ReportViewer CurrentReportViewer
@@ -1577,7 +1713,12 @@ namespace sqlnexus
                             fmNexus.GetReportParameters(false,"");
 
                         rv.RefreshReport();
-                        toolbarReport.Visible = reportToolStripMenuItem.Checked;
+                        // Only show the report toolbar if the user hasn't explicitly hidden it.
+                        // Use the persisted setting rather than the menu Checked state, because
+                        // CloseTab sets Visible=false when the last tab closes which can desync
+                        // the menu state from the user's actual preference.
+                        toolbarReport.Visible = Properties.Settings.Default.ShowReportToolbar;
+                        reportToolStripMenuItem.Checked = toolbarReport.Visible;
                         TreeNode n = AddFindReportNode(report, null);
                         n.ImageIndex = 1;
                         n.SelectedImageIndex = 1;
@@ -3596,6 +3737,12 @@ bool CreateDB(String dbName)
 
         private void refreshAfterDBChange()
         {
+            // Save toolbar row positions.  SelectLoadReport() sets toolbarReport.Visible
+            // which triggers a TopToolStripPanel layout pass that can collapse toolbars
+            // from separate rows into one row.
+            int toolbarMainRow = toolStripContainer1.TopToolStripPanel.Rows.Length > 0
+                ? GetToolStripRow(toolbarMain) : -1;
+
             Globals.credentialMgr.Database = tscCurrentDatabase.SelectedItem.ToString();
             CloseAll();
             EnumReports();
@@ -3608,6 +3755,34 @@ bool CreateDB(String dbName)
             ShowHideUIElements();
             Application.DoEvents();
             ThemeManager.ApplyTheme(fmNexus.singleton);
+
+            // If the Standard toolbar was on its own row before the refresh,
+            // re-join it on that row to undo any layout collapsing.
+            if (toolbarMainRow >= 0 && toolbarMain.Visible)
+            {
+                int currentRow = GetToolStripRow(toolbarMain);
+                if (currentRow != toolbarMainRow)
+                {
+                    toolStripContainer1.TopToolStripPanel.Join(toolbarMain, toolbarMainRow);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Returns the row index of a ToolStrip within the TopToolStripPanel, or -1 if not found.
+        /// </summary>
+        private int GetToolStripRow(ToolStrip ts)
+        {
+            var rows = toolStripContainer1.TopToolStripPanel.Rows;
+            for (int i = 0; i < rows.Length; i++)
+            {
+                foreach (Control c in rows[i].Controls)
+                {
+                    if (c == ts)
+                        return i;
+                }
+            }
+            return -1;
         }
 
         private void tsb_CustomRowset_Click(object sender, EventArgs e)
@@ -3737,7 +3912,7 @@ bool CreateDB(String dbName)
 
         private void llData_LinkClicked_1(object sender, LinkLabelLinkClickedEventArgs e)
         {
-
+            CollapseExpandPanel(paLogBody, btnCollapseData, btnExpandData);
         }
 
         private void btnexpandReports_Click(object sender, EventArgs e)
