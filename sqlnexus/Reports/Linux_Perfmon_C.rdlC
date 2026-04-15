@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Report xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:cl="http://schemas.microsoft.com/sqlserver/reporting/2010/01/componentdefinition" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2010/01/reportdefinition">
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
@@ -231,6 +231,7 @@ order by avgval desc</CommandText>
                     <Value>     Perfmon Summary</Value>
                     <Style>
                       <FontSize>16pt</FontSize>
+                      <Color>=Variables!TitleColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -291,7 +292,8 @@ order by avgval desc</CommandText>
                                       <Value>Instance Name</Value>
                                       <Style>
                                         <FontWeight>Bold</FontWeight>
-                                      </Style>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -326,7 +328,8 @@ order by avgval desc</CommandText>
                                       <Value>Sum - IO Data MB/Sec</Value>
                                       <Style>
                                         <FontWeight>Bold</FontWeight>
-                                      </Style>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -337,7 +340,7 @@ order by avgval desc</CommandText>
                                   <TextRuns>
                                     <TextRun>
                                       <Value />
-                                      <Style />
+                                      <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -372,7 +375,8 @@ order by avgval desc</CommandText>
                                       <Value>Min - IO Data MB/sec</Value>
                                       <Style>
                                         <FontWeight>Bold</FontWeight>
-                                      </Style>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -385,10 +389,11 @@ order by avgval desc</CommandText>
                                       <Value />
                                       <Style>
                                         <FontWeight>Bold</FontWeight>
-                                      </Style>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
                                     </TextRun>
                                   </TextRuns>
-                                  <Style />
+                                  <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
                                 </Paragraph>
                               </Paragraphs>
                               <rd:DefaultName>Textbox46</rd:DefaultName>
@@ -418,7 +423,8 @@ order by avgval desc</CommandText>
                                       <Value>Avg - IO Data MB/Sec</Value>
                                       <Style>
                                         <FontWeight>Bold</FontWeight>
-                                      </Style>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -431,10 +437,11 @@ order by avgval desc</CommandText>
                                       <Value />
                                       <Style>
                                         <FontWeight>Bold</FontWeight>
-                                      </Style>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
                                     </TextRun>
                                   </TextRuns>
-                                  <Style />
+                                  <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
                                 </Paragraph>
                               </Paragraphs>
                               <rd:DefaultName>Textbox48</rd:DefaultName>
@@ -464,7 +471,8 @@ order by avgval desc</CommandText>
                                       <Value>Max - IO Data MB/Sec</Value>
                                       <Style>
                                         <FontWeight>Bold</FontWeight>
-                                      </Style>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -502,7 +510,7 @@ order by avgval desc</CommandText>
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!instname.Value</Value>
-                                      <Style />
+                                      <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -535,7 +543,7 @@ order by avgval desc</CommandText>
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!SumCounterValue.Value</Value>
-                                      <Style />
+                                      <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -568,7 +576,7 @@ order by avgval desc</CommandText>
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!MinCounterValue.Value</Value>
-                                      <Style />
+                                      <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -601,7 +609,7 @@ order by avgval desc</CommandText>
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!AvgCounterValue.Value</Value>
-                                      <Style />
+                                      <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -634,7 +642,7 @@ order by avgval desc</CommandText>
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!MaxCounterValue.Value</Value>
-                                      <Style />
+                                      <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -718,6 +726,12 @@ order by avgval desc</CommandText>
                                     <Value>=Parameters!dsDatabaseName.Value</Value>
                                     <Omit>=Variables!IsLocalReport.Value</Omit>
                                   </Parameter>
+                                  <Parameter Name="ContrastTheme">
+
+                                    <Value>=Parameters!ContrastTheme.Value</Value>
+
+                                  </Parameter>
+
                                 </Parameters>
                               </Drillthrough>
                             </Action>
@@ -728,7 +742,7 @@ order by avgval desc</CommandText>
                           <FontSize>12pt</FontSize>
                           <FontWeight>Bold</FontWeight>
                           <TextDecoration>Underline</TextDecoration>
-                          <Color>Blue</Color>
+                          <Color>=Variables!URLColor.Value</Color>
                         </Style>
                       </TextRun>
                     </TextRuns>
@@ -757,6 +771,12 @@ order by avgval desc</CommandText>
                             <Value>=Parameters!dsDatabaseName.Value</Value>
                             <Omit>=Variables!IsLocalReport.Value</Omit>
                           </Parameter>
+                          <Parameter Name="ContrastTheme">
+
+                            <Value>=Parameters!ContrastTheme.Value</Value>
+
+                          </Parameter>
+
                         </Parameters>
                       </Drillthrough>
                     </Action>
@@ -788,7 +808,8 @@ order by avgval desc</CommandText>
                         <Style>
                           <FontSize>12pt</FontSize>
                           <FontWeight>Bold</FontWeight>
-                        </Style>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
                       </TextRun>
                     </TextRuns>
                     <Style>
@@ -822,7 +843,7 @@ order by avgval desc</CommandText>
               <Border>
                 <Style>None</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
+              <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
             </Style>
           </Rectangle>
           <Rectangle Name="RectangleCPU">
@@ -859,7 +880,8 @@ order by avgval desc</CommandText>
                                       <Value>Instance Name</Value>
                                       <Style>
                                         <FontWeight>Bold</FontWeight>
-                                      </Style>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -894,7 +916,8 @@ order by avgval desc</CommandText>
                                       <Value>Min -% Processor Time</Value>
                                       <Style>
                                         <FontWeight>Bold</FontWeight>
-                                      </Style>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -907,10 +930,11 @@ order by avgval desc</CommandText>
                                       <Value />
                                       <Style>
                                         <FontWeight>Bold</FontWeight>
-                                      </Style>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
                                     </TextRun>
                                   </TextRuns>
-                                  <Style />
+                                  <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
                                 </Paragraph>
                               </Paragraphs>
                               <rd:DefaultName>Textbox46</rd:DefaultName>
@@ -940,7 +964,8 @@ order by avgval desc</CommandText>
                                       <Value>Avg - % Processor Time</Value>
                                       <Style>
                                         <FontWeight>Bold</FontWeight>
-                                      </Style>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -953,10 +978,11 @@ order by avgval desc</CommandText>
                                       <Value />
                                       <Style>
                                         <FontWeight>Bold</FontWeight>
-                                      </Style>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
                                     </TextRun>
                                   </TextRuns>
-                                  <Style />
+                                  <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
                                 </Paragraph>
                               </Paragraphs>
                               <rd:DefaultName>Textbox48</rd:DefaultName>
@@ -986,7 +1012,8 @@ order by avgval desc</CommandText>
                                       <Value>Max - % Processor Time</Value>
                                       <Style>
                                         <FontWeight>Bold</FontWeight>
-                                      </Style>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -999,7 +1026,8 @@ order by avgval desc</CommandText>
                                       <Value />
                                       <Style>
                                         <FontWeight>Bold</FontWeight>
-                                      </Style>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -1037,7 +1065,7 @@ order by avgval desc</CommandText>
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!InstName.Value</Value>
-                                      <Style />
+                                      <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -1070,7 +1098,7 @@ order by avgval desc</CommandText>
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!MinCounterValue.Value</Value>
-                                      <Style />
+                                      <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -1103,7 +1131,7 @@ order by avgval desc</CommandText>
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!AvgCounterValue.Value</Value>
-                                      <Style />
+                                      <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -1136,7 +1164,7 @@ order by avgval desc</CommandText>
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!MaxCounterValue.Value</Value>
-                                      <Style />
+                                      <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -1219,6 +1247,12 @@ order by avgval desc</CommandText>
                                     <Value>=Parameters!dsDatabaseName.Value</Value>
                                     <Omit>=Variables!IsLocalReport.Value</Omit>
                                   </Parameter>
+                                  <Parameter Name="ContrastTheme">
+
+                                    <Value>=Parameters!ContrastTheme.Value</Value>
+
+                                  </Parameter>
+
                                 </Parameters>
                               </Drillthrough>
                             </Action>
@@ -1228,7 +1262,7 @@ order by avgval desc</CommandText>
                           <FontSize>12pt</FontSize>
                           <FontWeight>Bold</FontWeight>
                           <TextDecoration>Underline</TextDecoration>
-                          <Color>Blue</Color>
+                          <Color>=Variables!URLColor.Value</Color>
                         </Style>
                       </TextRun>
                     </TextRuns>
@@ -1257,6 +1291,12 @@ order by avgval desc</CommandText>
                             <Value>=Parameters!dsDatabaseName.Value</Value>
                             <Omit>=Variables!IsLocalReport.Value</Omit>
                           </Parameter>
+                          <Parameter Name="ContrastTheme">
+
+                            <Value>=Parameters!ContrastTheme.Value</Value>
+
+                          </Parameter>
+
                         </Parameters>
                       </Drillthrough>
                     </Action>
@@ -1288,7 +1328,8 @@ order by avgval desc</CommandText>
                         <Style>
                           <FontSize>12pt</FontSize>
                           <FontWeight>Bold</FontWeight>
-                        </Style>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
                       </TextRun>
                     </TextRuns>
                     <Style>
@@ -1322,7 +1363,7 @@ order by avgval desc</CommandText>
               <Border>
                 <Style>None</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
+              <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
             </Style>
           </Rectangle>
           <Rectangle Name="RectangleMemory">
@@ -1359,7 +1400,8 @@ order by avgval desc</CommandText>
                                       <Value>Instance Name</Value>
                                       <Style>
                                         <FontWeight>Bold</FontWeight>
-                                      </Style>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -1394,7 +1436,8 @@ order by avgval desc</CommandText>
                                       <Value>Min - Pvt Bytes ( in MB )</Value>
                                       <Style>
                                         <FontWeight>Bold</FontWeight>
-                                      </Style>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -1407,10 +1450,11 @@ order by avgval desc</CommandText>
                                       <Value />
                                       <Style>
                                         <FontWeight>Bold</FontWeight>
-                                      </Style>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
                                     </TextRun>
                                   </TextRuns>
-                                  <Style />
+                                  <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
                                 </Paragraph>
                               </Paragraphs>
                               <rd:DefaultName>Textbox46</rd:DefaultName>
@@ -1440,7 +1484,8 @@ order by avgval desc</CommandText>
                                       <Value>Avg - Pvt Bytes ( in MB )</Value>
                                       <Style>
                                         <FontWeight>Bold</FontWeight>
-                                      </Style>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -1453,10 +1498,11 @@ order by avgval desc</CommandText>
                                       <Value />
                                       <Style>
                                         <FontWeight>Bold</FontWeight>
-                                      </Style>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
                                     </TextRun>
                                   </TextRuns>
-                                  <Style />
+                                  <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
                                 </Paragraph>
                               </Paragraphs>
                               <rd:DefaultName>Textbox48</rd:DefaultName>
@@ -1486,7 +1532,8 @@ order by avgval desc</CommandText>
                                       <Value>Max - Pvt Bytes ( in MB )</Value>
                                       <Style>
                                         <FontWeight>Bold</FontWeight>
-                                      </Style>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -1499,7 +1546,8 @@ order by avgval desc</CommandText>
                                       <Value />
                                       <Style>
                                         <FontWeight>Bold</FontWeight>
-                                      </Style>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -1537,7 +1585,7 @@ order by avgval desc</CommandText>
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!instname.Value</Value>
-                                      <Style />
+                                      <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -1570,7 +1618,7 @@ order by avgval desc</CommandText>
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!minval.Value</Value>
-                                      <Style />
+                                      <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -1603,7 +1651,7 @@ order by avgval desc</CommandText>
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!avgval.Value</Value>
-                                      <Style />
+                                      <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -1636,7 +1684,7 @@ order by avgval desc</CommandText>
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!maxval.Value</Value>
-                                      <Style />
+                                      <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -1719,6 +1767,12 @@ order by avgval desc</CommandText>
                                     <Value>=Parameters!dsDatabaseName.Value</Value>
                                     <Omit>=Variables!IsLocalReport.Value</Omit>
                                   </Parameter>
+                                  <Parameter Name="ContrastTheme">
+
+                                    <Value>=Parameters!ContrastTheme.Value</Value>
+
+                                  </Parameter>
+
                                 </Parameters>
                               </Drillthrough>
                             </Action>
@@ -1728,7 +1782,7 @@ order by avgval desc</CommandText>
                           <FontSize>12pt</FontSize>
                           <FontWeight>Bold</FontWeight>
                           <TextDecoration>Underline</TextDecoration>
-                          <Color>Blue</Color>
+                          <Color>=Variables!URLColor.Value</Color>
                         </Style>
                       </TextRun>
                     </TextRuns>
@@ -1757,6 +1811,12 @@ order by avgval desc</CommandText>
                             <Value>=Parameters!dsDatabaseName.Value</Value>
                             <Omit>=Variables!IsLocalReport.Value</Omit>
                           </Parameter>
+                          <Parameter Name="ContrastTheme">
+
+                            <Value>=Parameters!ContrastTheme.Value</Value>
+
+                          </Parameter>
+
                         </Parameters>
                       </Drillthrough>
                     </Action>
@@ -1788,7 +1848,8 @@ order by avgval desc</CommandText>
                         <Style>
                           <FontSize>12pt</FontSize>
                           <FontWeight>Bold</FontWeight>
-                        </Style>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
                       </TextRun>
                     </TextRuns>
                     <Style>
@@ -1822,7 +1883,7 @@ order by avgval desc</CommandText>
               <Border>
                 <Style>None</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
+              <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
             </Style>
           </Rectangle>
           <Textbox Name="TextboxNetwork">
@@ -1853,6 +1914,12 @@ order by avgval desc</CommandText>
                                 <Value>=Parameters!dsDatabaseName.Value</Value>
                                 <Omit>=Variables!IsLocalReport.Value</Omit>
                               </Parameter>
+                              <Parameter Name="ContrastTheme">
+
+                                <Value>=Parameters!ContrastTheme.Value</Value>
+
+                              </Parameter>
+
                             </Parameters>
                           </Drillthrough>
                         </Action>
@@ -1862,7 +1929,7 @@ order by avgval desc</CommandText>
                       <FontSize>12pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                       <TextDecoration>Underline</TextDecoration>
-                      <Color>Blue</Color>
+                      <Color>=Variables!URLColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1891,6 +1958,12 @@ order by avgval desc</CommandText>
                         <Value>=Parameters!dsDatabaseName.Value</Value>
                         <Omit>=Variables!IsLocalReport.Value</Omit>
                       </Parameter>
+                      <Parameter Name="ContrastTheme">
+
+                        <Value>=Parameters!ContrastTheme.Value</Value>
+
+                      </Parameter>
+
                     </Parameters>
                   </Drillthrough>
                 </Action>
@@ -1917,7 +1990,7 @@ order by avgval desc</CommandText>
           <Border>
             <Style>None</Style>
           </Border>
-          <BackgroundColor>=Parameters!FmtAmbientBackground.Value</BackgroundColor>
+          <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
         </Style>
       </Body>
       <Width>67.90291in</Width>
@@ -1936,7 +2009,7 @@ order by avgval desc</CommandText>
         <RightMargin>1in</RightMargin>
         <TopMargin>1in</TopMargin>
         <BottomMargin>1in</BottomMargin>
-        <Style />
+        <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
       </Page>
     </ReportSection>
   </ReportSections>
@@ -2021,10 +2094,60 @@ order by avgval desc</CommandText>
         </DataSetReference>
       </ValidValues>
     </ReportParameter>
+    <ReportParameter Name="ContrastTheme">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>None</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>ContrastTheme</Prompt>
+      <ValidValues>
+        <ParameterValues>
+          <ParameterValue>
+            <Value>None</Value>
+            <Label>None</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>Aquatic</Value>
+            <Label>Aquatic</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>Desert</Value>
+            <Label>Desert</Label>
+          </ParameterValue>
+        </ParameterValues>
+      </ValidValues>
+    </ReportParameter>
   </ReportParameters>
   <Variables>
     <Variable Name="IsLocalReport">
       <Value>= (Globals!ReportServerUrl="")</Value>
+    </Variable>
+    <Variable Name="ReportTextColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+Parameters!ContrastTheme.Value="None", "Black")</Value>
+    </Variable>
+    <Variable Name="BodyColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
+Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
+Parameters!ContrastTheme.Value="None", "No Color")</Value>
+    </Variable>
+    <Variable Name="TitleColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+Parameters!ContrastTheme.Value="None", "#1c3a70")</Value>
+    </Variable>
+    <Variable Name="URLColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#75E9FC",
+Parameters!ContrastTheme.Value="Desert", "#1C5E75",
+Parameters!ContrastTheme.Value="None", "Blue")</Value>
+    </Variable>
+    <Variable Name="TableHeadingColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "No Color",
+Parameters!ContrastTheme.Value="Desert", "No Color",
+Parameters!ContrastTheme.Value="None", "Gainsboro")</Value>
     </Variable>
   </Variables>
   <rd:ReportUnitType>Inch</rd:ReportUnitType>

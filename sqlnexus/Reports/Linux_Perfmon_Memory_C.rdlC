@@ -586,7 +586,7 @@ order by CounterDateTime</CommandText>
             <Color>LightGrey</Color>
             <Style>Solid</Style>
           </Border>
-          <BackgroundColor>White</BackgroundColor>
+          <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
           <BackgroundGradientType>None</BackgroundGradientType>
         </Style>
       </Chart>
@@ -601,6 +601,7 @@ order by CounterDateTime</CommandText>
                 <Style>
                   <FontStyle>Normal</FontStyle>
                   <FontSize>16pt</FontSize>
+                  <Color>=Variables!TitleColor.Value</Color>
                 </Style>
               </TextRun>
             </TextRuns>
@@ -864,7 +865,7 @@ order by CounterDateTime</CommandText>
             <Color>LightGrey</Color>
             <Style>Solid</Style>
           </Border>
-          <BackgroundColor>White</BackgroundColor>
+          <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
           <BackgroundGradientType>None</BackgroundGradientType>
         </Style>
       </Chart>
@@ -1108,7 +1109,7 @@ order by CounterDateTime</CommandText>
             <Color>LightGrey</Color>
             <Style>Solid</Style>
           </Border>
-          <BackgroundColor>White</BackgroundColor>
+          <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
           <BackgroundGradientType>None</BackgroundGradientType>
         </Style>
       </Chart>
@@ -1354,7 +1355,7 @@ Indicates the number of buffers written per second by the buffer manager's lazy 
             <Color>LightGrey</Color>
             <Style>Solid</Style>
           </Border>
-          <BackgroundColor>White</BackgroundColor>
+          <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
           <BackgroundGradientType>None</BackgroundGradientType>
         </Style>
       </Chart>
@@ -1600,7 +1601,7 @@ Indicates the number of pages flushed to disk per second by a checkpoint or othe
             <Color>LightGrey</Color>
             <Style>Solid</Style>
           </Border>
-          <BackgroundColor>White</BackgroundColor>
+          <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
           <BackgroundGradientType>None</BackgroundGradientType>
         </Style>
       </Chart>
@@ -1844,7 +1845,7 @@ Indicates the number of pages flushed to disk per second by a checkpoint or othe
             <Color>LightGrey</Color>
             <Style>Solid</Style>
           </Border>
-          <BackgroundColor>White</BackgroundColor>
+          <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
           <BackgroundGradientType>None</BackgroundGradientType>
         </Style>
       </Chart>
@@ -1854,7 +1855,7 @@ Indicates the number of pages flushed to disk per second by a checkpoint or othe
       <Border>
         <Style>None</Style>
       </Border>
-      <BackgroundColor>=Parameters!FmtAmbientBackground.Value</BackgroundColor>
+      <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
     </Style>
   </Body>
   <ReportParameters>
@@ -1938,6 +1939,31 @@ Indicates the number of pages flushed to disk per second by a checkpoint or othe
         </DataSetReference>
       </ValidValues>
     </ReportParameter>
+    <ReportParameter Name="ContrastTheme">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>None</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>ContrastTheme</Prompt>
+      <ValidValues>
+        <ParameterValues>
+          <ParameterValue>
+            <Value>None</Value>
+            <Label>None</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>Aquatic</Value>
+            <Label>Aquatic</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>Desert</Value>
+            <Label>Desert</Label>
+          </ParameterValue>
+        </ParameterValues>
+      </ValidValues>
+    </ReportParameter>
   </ReportParameters>
   <Width>15.38125in</Width>
   <Page>
@@ -1957,6 +1983,36 @@ Indicates the number of pages flushed to disk per second by a checkpoint or othe
     <BottomMargin>1in</BottomMargin>
     <Style />
   </Page>
+  <Variables>
+    <Variable Name="IsLocalReport">
+      <Value>= (Globals!ReportServerUrl="")</Value>
+    </Variable>
+    <Variable Name="ReportTextColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+Parameters!ContrastTheme.Value="None", "Black")</Value>
+    </Variable>
+    <Variable Name="BodyColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
+Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
+Parameters!ContrastTheme.Value="None", "No Color")</Value>
+    </Variable>
+    <Variable Name="TitleColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+Parameters!ContrastTheme.Value="None", "#1c3a70")</Value>
+    </Variable>
+    <Variable Name="URLColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#75E9FC",
+Parameters!ContrastTheme.Value="Desert", "#1C5E75",
+Parameters!ContrastTheme.Value="None", "Blue")</Value>
+    </Variable>
+    <Variable Name="TableHeadingColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "No Color",
+Parameters!ContrastTheme.Value="Desert", "No Color",
+Parameters!ContrastTheme.Value="None", "Gainsboro")</Value>
+    </Variable>
+  </Variables>
   <rd:ReportID>a76e7f4b-33f9-4c5d-b662-abe74d8c86e8</rd:ReportID>
   <rd:ReportUnitType>Inch</rd:ReportUnitType>
 </Report>
