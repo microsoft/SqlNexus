@@ -20,7 +20,7 @@
           <TextAlign>Right</TextAlign>
           <PaddingLeft>2pt</PaddingLeft>
           <PaddingBottom>2pt</PaddingBottom>
-          <Color>Blue</Color>
+          <Color>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#75E9FC", Parameters!ContrastTheme.Value="Desert", "#1C5E75", Parameters!ContrastTheme.Value="None", "Blue")</Color>
           <TextDecoration>Underline</TextDecoration>
           <PaddingRight>2pt</PaddingRight>
           <PaddingTop>2pt</PaddingTop>
@@ -56,7 +56,7 @@
           <TextAlign>Right</TextAlign>
           <PaddingLeft>2pt</PaddingLeft>
           <PaddingBottom>2pt</PaddingBottom>
-          <Color>Blue</Color>
+          <Color>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#75E9FC", Parameters!ContrastTheme.Value="Desert", "#1C5E75", Parameters!ContrastTheme.Value="None", "Blue")</Color>
           <TextDecoration>Underline</TextDecoration>
           <PaddingRight>2pt</PaddingRight>
           <PaddingTop>2pt</PaddingTop>
@@ -78,7 +78,7 @@
           <TextAlign>Right</TextAlign>
           <PaddingLeft>2pt</PaddingLeft>
           <PaddingBottom>2pt</PaddingBottom>
-          <Color>Blue</Color>
+          <Color>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#75E9FC", Parameters!ContrastTheme.Value="Desert", "#1C5E75", Parameters!ContrastTheme.Value="None", "Blue")</Color>
           <TextDecoration>Underline</TextDecoration>
           <PaddingRight>2pt</PaddingRight>
           <PaddingTop>2pt</PaddingTop>
@@ -106,7 +106,8 @@
               <FontSize>8pt</FontSize>
               <PaddingRight>2pt</PaddingRight>
               <PaddingTop>2pt</PaddingTop>
-            </Style>
+            
+              <Color>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF", Parameters!ContrastTheme.Value="Desert", "#3D3D3D", Parameters!ContrastTheme.Value="None", "Black")</Color></Style>
             <CanGrow>true</CanGrow>
             <Value>*Dictionary excerpts from MSN Encarta</Value>
           </Textbox>
@@ -125,7 +126,7 @@
               <PaddingBottom>2pt</PaddingBottom>
               <FontFamily>Bell MT</FontFamily>
               <FontSize>12pt</FontSize>
-              <Color>Purple</Color>
+              <Color>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF", Parameters!ContrastTheme.Value="Desert", "#3D3D3D", Parameters!ContrastTheme.Value="None", "#1c3a70")</Color>
               <PaddingRight>2pt</PaddingRight>
               <PaddingTop>2pt</PaddingTop>
             </Style>
@@ -145,7 +146,7 @@
             <Style>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingBottom>2pt</PaddingBottom>
-              <Color>Blue</Color>
+              <Color>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#75E9FC", Parameters!ContrastTheme.Value="Desert", "#1C5E75", Parameters!ContrastTheme.Value="None", "Blue")</Color>
               <PaddingRight>2pt</PaddingRight>
               <PaddingTop>2pt</PaddingTop>
             </Style>
@@ -164,7 +165,8 @@
               <PaddingBottom>2pt</PaddingBottom>
               <PaddingRight>2pt</PaddingRight>
               <PaddingTop>2pt</PaddingTop>
-            </Style>
+            
+              <Color>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF", Parameters!ContrastTheme.Value="Desert", "#3D3D3D", Parameters!ContrastTheme.Value="None", "Black")</Color></Style>
             <CanGrow>true</CanGrow>
             <Height>0.625in</Height>
             <Value>SQL Nexus is a SQL Server-based diagnostics analysis tool.  It provides an extensible facility for analyzing, reporting, and charting diagnostic data, particularly that related to SQL Server itself.</Value>
@@ -178,6 +180,9 @@
               <BorderStyle>
                 <Default>Solid</Default>
               </BorderStyle>
+              <BorderColor>
+                <Default>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF", Parameters!ContrastTheme.Value="Desert", "#3D3D3D", Parameters!ContrastTheme.Value="None", "Black")</Default>
+              </BorderColor>
             </Style>
             <Height>0in</Height>
           </Line>
@@ -193,7 +198,7 @@
             <Style>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingBottom>2pt</PaddingBottom>
-              <Color>Blue</Color>
+              <Color>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#75E9FC", Parameters!ContrastTheme.Value="Desert", "#1C5E75", Parameters!ContrastTheme.Value="None", "Blue")</Color>
               <PaddingRight>2pt</PaddingRight>
               <PaddingTop>2pt</PaddingTop>
             </Style>
@@ -213,7 +218,7 @@
             <Style>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingBottom>2pt</PaddingBottom>
-              <Color>Blue</Color>
+              <Color>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#75E9FC", Parameters!ContrastTheme.Value="Desert", "#1C5E75", Parameters!ContrastTheme.Value="None", "Blue")</Color>
               <PaddingRight>2pt</PaddingRight>
               <PaddingTop>2pt</PaddingTop>
             </Style>
@@ -232,7 +237,8 @@
               <PaddingBottom>2pt</PaddingBottom>
               <PaddingRight>2pt</PaddingRight>
               <PaddingTop>2pt</PaddingTop>
-            </Style>
+            
+              <Color>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF", Parameters!ContrastTheme.Value="Desert", "#3D3D3D", Parameters!ContrastTheme.Value="None", "Black")</Color></Style>
             <CanGrow>true</CanGrow>
             <Height>0.375in</Height>
             <Value>SQL [ èss kyoo él, sékwəl ]. Noun.  Definition: computer language: a standardized language that approximates the structure of natural English for obtaining information from databases. 
@@ -308,6 +314,7 @@
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingBottom>2pt</PaddingBottom>
               <FontSize>14pt</FontSize>
+              <Color>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF", Parameters!ContrastTheme.Value="Desert", "#3D3D3D", Parameters!ContrastTheme.Value="None", "#1c3a70")</Color>
               <PaddingRight>2pt</PaddingRight>
               <PaddingTop>2pt</PaddingTop>
             </Style>
@@ -324,7 +331,8 @@
               <PaddingBottom>2pt</PaddingBottom>
               <PaddingRight>2pt</PaddingRight>
               <PaddingTop>2pt</PaddingTop>
-            </Style>
+            
+              <Color>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF", Parameters!ContrastTheme.Value="Desert", "#3D3D3D", Parameters!ContrastTheme.Value="None", "Black")</Color></Style>
             <CanGrow>true</CanGrow>
             <Height>1.375in</Height>
             <Value>
@@ -341,6 +349,7 @@ You can add your own reports to those included with SQL Nexus by simply creating
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingBottom>2pt</PaddingBottom>
               <FontSize>14pt</FontSize>
+              <Color>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF", Parameters!ContrastTheme.Value="Desert", "#3D3D3D", Parameters!ContrastTheme.Value="None", "#1c3a70")</Color>
               <PaddingRight>2pt</PaddingRight>
               <PaddingTop>2pt</PaddingTop>
             </Style>
@@ -358,6 +367,7 @@ You can add your own reports to those included with SQL Nexus by simply creating
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingBottom>2pt</PaddingBottom>
               <FontSize>14pt</FontSize>
+              <Color>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF", Parameters!ContrastTheme.Value="Desert", "#3D3D3D", Parameters!ContrastTheme.Value="None", "#1c3a70")</Color>
               <PaddingRight>2pt</PaddingRight>
               <PaddingTop>2pt</PaddingTop>
             </Style>
@@ -375,6 +385,7 @@ You can add your own reports to those included with SQL Nexus by simply creating
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingBottom>2pt</PaddingBottom>
               <FontSize>14pt</FontSize>
+              <Color>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF", Parameters!ContrastTheme.Value="Desert", "#3D3D3D", Parameters!ContrastTheme.Value="None", "#1c3a70")</Color>
               <PaddingRight>2pt</PaddingRight>
               <PaddingTop>2pt</PaddingTop>
             </Style>
@@ -393,7 +404,8 @@ You can add your own reports to those included with SQL Nexus by simply creating
               <PaddingBottom>2pt</PaddingBottom>
               <PaddingRight>2pt</PaddingRight>
               <PaddingTop>2pt</PaddingTop>
-            </Style>
+            
+              <Color>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF", Parameters!ContrastTheme.Value="Desert", "#3D3D3D", Parameters!ContrastTheme.Value="None", "Black")</Color></Style>
             <CanGrow>true</CanGrow>
             <Height>1.125in</Height>
             <Value>
@@ -411,7 +423,8 @@ You can export reports in a variety of file formats including: Excel, PDF, and s
               <PaddingBottom>2pt</PaddingBottom>
               <PaddingRight>2pt</PaddingRight>
               <PaddingTop>2pt</PaddingTop>
-            </Style>
+            
+              <Color>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF", Parameters!ContrastTheme.Value="Desert", "#3D3D3D", Parameters!ContrastTheme.Value="None", "Black")</Color></Style>
             <CanGrow>true</CanGrow>
             <Height>1.25in</Height>
             <Value>
@@ -427,6 +440,9 @@ SQL Nexus provides built-in support for emailing reports.  Click the Email butto
               <BorderStyle>
                 <Default>Solid</Default>
               </BorderStyle>
+              <BorderColor>
+                <Default>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF", Parameters!ContrastTheme.Value="Desert", "#3D3D3D", Parameters!ContrastTheme.Value="None", "Black")</Default>
+              </BorderColor>
             </Style>
             <Height>3.375in</Height>
           </Line>
@@ -441,7 +457,8 @@ SQL Nexus provides built-in support for emailing reports.  Click the Email butto
               <PaddingBottom>2pt</PaddingBottom>
               <PaddingRight>2pt</PaddingRight>
               <PaddingTop>2pt</PaddingTop>
-            </Style>
+            
+              <Color>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF", Parameters!ContrastTheme.Value="Desert", "#3D3D3D", Parameters!ContrastTheme.Value="None", "Black")</Color></Style>
             <CanGrow>true</CanGrow>
             <Height>1.375in</Height>
             <Value>
@@ -462,7 +479,7 @@ Click one of the reports on the left to view it.  If the report includes a link 
               <FontFamily>Bell MT</FontFamily>
               <FontWeight>700</FontWeight>
               <FontSize>36pt</FontSize>
-              <Color>Purple</Color>
+              <Color>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF", Parameters!ContrastTheme.Value="Desert", "#3D3D3D", Parameters!ContrastTheme.Value="None", "#1c3a70")</Color>
               <PaddingRight>2pt</PaddingRight>
               <PaddingTop>2pt</PaddingTop>
             </Style>
@@ -480,7 +497,8 @@ Click one of the reports on the left to view it.  If the report includes a link 
               <PaddingBottom>2pt</PaddingBottom>
               <PaddingRight>2pt</PaddingRight>
               <PaddingTop>2pt</PaddingTop>
-            </Style>
+            
+              <Color>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF", Parameters!ContrastTheme.Value="Desert", "#3D3D3D", Parameters!ContrastTheme.Value="None", "Black")</Color></Style>
             <CanGrow>true</CanGrow>
             <Height>0.75in</Height>
             <Value>nex·us [ néksəss ] (plural nex·us or nex·us·es).  Noun.  Definition: 1) connection: a connection or link associating two or more people or things  2) connected group: a group or series of connected people or things  3) center: the center or focus of something.</Value>
@@ -622,6 +640,33 @@ ETEVCKhFpFwREn866JcvPFIlnUZAH3DM5LjhsE3GuGI8+KZw6Ab0NgMRgyaGiCsw8DoNGVl+dx68EIAB
       <MIMEType>image/png</MIMEType>
     </EmbeddedImage>
   </EmbeddedImages>
+  <ReportParameters>
+    <ReportParameter Name="ContrastTheme">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>None</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>ContrastTheme</Prompt>
+      <ValidValues>
+        <ParameterValues>
+          <ParameterValue>
+            <Value>None</Value>
+            <Label>None</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>Aquatic</Value>
+            <Label>Aquatic</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>Desert</Value>
+            <Label>Desert</Label>
+          </ParameterValue>
+        </ParameterValues>
+      </ValidValues>
+    </ReportParameter>
+  </ReportParameters>
   <Width>8.125in</Width>
   <InteractiveHeight>11in</InteractiveHeight>
   <Language>en-US</Language>

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Report MustUnderstand="df" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:df="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition/defaultfontfamily">
   <df:DefaultFontFamily>Segoe UI</df:DefaultFontFamily>
   <AutoRefresh>0</AutoRefresh>
@@ -161,6 +161,7 @@ END;</CommandText>
                       <FontSize>24pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                       <TextDecoration>None</TextDecoration>
+                      <Color>=Variables!TitleColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -217,6 +218,7 @@ END;</CommandText>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                  <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -234,7 +236,7 @@ END;</CommandText>
                             <RightBorder>
                               <Style>None</Style>
                             </RightBorder>
-                            <BackgroundColor>Khaki</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <FontFamily />
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
@@ -258,6 +260,7 @@ END;</CommandText>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                  <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -278,7 +281,7 @@ END;</CommandText>
                             <RightBorder>
                               <Style>None</Style>
                             </RightBorder>
-                            <BackgroundColor>Khaki</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <FontFamily />
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
@@ -302,6 +305,7 @@ END;</CommandText>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                  <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -322,7 +326,7 @@ END;</CommandText>
                             <RightBorder>
                               <Style>None</Style>
                             </RightBorder>
-                            <BackgroundColor>Khaki</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <FontFamily />
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
@@ -346,6 +350,7 @@ END;</CommandText>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                  <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -363,7 +368,7 @@ END;</CommandText>
                             <RightBorder>
                               <Style>None</Style>
                             </RightBorder>
-                            <BackgroundColor>Khaki</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <FontFamily />
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
@@ -387,6 +392,7 @@ END;</CommandText>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                  <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -404,7 +410,7 @@ END;</CommandText>
                             <RightBorder>
                               <Style>None</Style>
                             </RightBorder>
-                            <BackgroundColor>Khaki</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <FontFamily />
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
@@ -428,6 +434,7 @@ END;</CommandText>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                  <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -445,7 +452,7 @@ END;</CommandText>
                             <RightBorder>
                               <Style>None</Style>
                             </RightBorder>
-                            <BackgroundColor>Khaki</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <FontFamily />
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
@@ -472,6 +479,7 @@ END;</CommandText>
                                   <Value>=Fields!Filter_Name.Value</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
+                                  <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -511,6 +519,7 @@ END;</CommandText>
                                   <Value>=Fields!Num_Instances.Value</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
+                                  <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -552,6 +561,7 @@ END;</CommandText>
                                   <Value>=Fields!Altitude.Value</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
+                                  <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -593,6 +603,7 @@ END;</CommandText>
                                   <Value>=Fields!FilterType.Value</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
+                                  <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -632,6 +643,7 @@ END;</CommandText>
                                   <Value>=Fields!Minifilter.Value</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
+                                  <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -671,6 +683,7 @@ END;</CommandText>
                                   <Value>=Fields!Company.Value</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
+                                  <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -790,6 +803,7 @@ END;</CommandText>
                                   <Style>
                                     <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                  <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -803,18 +817,18 @@ END;</CommandText>
                               <Style>Solid</Style>
                             </Border>
                             <TopBorder>
-                              <Color>Black</Color>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                             </TopBorder>
                             <BottomBorder>
-                              <Color>Black</Color>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                             </BottomBorder>
                             <LeftBorder>
-                              <Color>Black</Color>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                             </LeftBorder>
                             <RightBorder>
                               <Style>None</Style>
                             </RightBorder>
-                            <BackgroundColor>LightGreen</BackgroundColor>
+                            <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -836,6 +850,7 @@ END;</CommandText>
                                   <Style>
                                     <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                  <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -849,10 +864,10 @@ END;</CommandText>
                               <Style>Solid</Style>
                             </Border>
                             <TopBorder>
-                              <Color>Black</Color>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                             </TopBorder>
                             <BottomBorder>
-                              <Color>Black</Color>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                             </BottomBorder>
                             <LeftBorder>
                               <Style>None</Style>
@@ -860,7 +875,7 @@ END;</CommandText>
                             <RightBorder>
                               <Style>None</Style>
                             </RightBorder>
-                            <BackgroundColor>LightGreen</BackgroundColor>
+                            <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -882,6 +897,7 @@ END;</CommandText>
                                   <Style>
                                     <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                  <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -897,10 +913,10 @@ END;</CommandText>
                               <Style>Solid</Style>
                             </Border>
                             <TopBorder>
-                              <Color>Black</Color>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                             </TopBorder>
                             <BottomBorder>
-                              <Color>Black</Color>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                             </BottomBorder>
                             <LeftBorder>
                               <Style>None</Style>
@@ -908,7 +924,7 @@ END;</CommandText>
                             <RightBorder>
                               <Style>None</Style>
                             </RightBorder>
-                            <BackgroundColor>LightGreen</BackgroundColor>
+                            <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -931,6 +947,7 @@ END;</CommandText>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                  <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -944,10 +961,10 @@ END;</CommandText>
                               <Style>Solid</Style>
                             </Border>
                             <TopBorder>
-                              <Color>Black</Color>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                             </TopBorder>
                             <BottomBorder>
-                              <Color>Black</Color>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                             </BottomBorder>
                             <LeftBorder>
                               <Style>None</Style>
@@ -955,7 +972,7 @@ END;</CommandText>
                             <RightBorder>
                               <Style>None</Style>
                             </RightBorder>
-                            <BackgroundColor>LightGreen</BackgroundColor>
+                            <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -978,6 +995,7 @@ END;</CommandText>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                  <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -991,10 +1009,10 @@ END;</CommandText>
                               <Style>Solid</Style>
                             </Border>
                             <TopBorder>
-                              <Color>Black</Color>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                             </TopBorder>
                             <BottomBorder>
-                              <Color>Black</Color>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                             </BottomBorder>
                             <LeftBorder>
                               <Style>None</Style>
@@ -1002,7 +1020,7 @@ END;</CommandText>
                             <RightBorder>
                               <Style>None</Style>
                             </RightBorder>
-                            <BackgroundColor>LightGreen</BackgroundColor>
+                            <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -1025,6 +1043,7 @@ END;</CommandText>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                  <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1038,10 +1057,10 @@ END;</CommandText>
                               <Style>Solid</Style>
                             </Border>
                             <TopBorder>
-                              <Color>Black</Color>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                             </TopBorder>
                             <BottomBorder>
-                              <Color>Black</Color>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                             </BottomBorder>
                             <LeftBorder>
                               <Style>None</Style>
@@ -1049,7 +1068,7 @@ END;</CommandText>
                             <RightBorder>
                               <Style>None</Style>
                             </RightBorder>
-                            <BackgroundColor>LightGreen</BackgroundColor>
+                            <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -1072,6 +1091,7 @@ END;</CommandText>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                  <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1085,18 +1105,18 @@ END;</CommandText>
                               <Style>Solid</Style>
                             </Border>
                             <TopBorder>
-                              <Color>Black</Color>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                             </TopBorder>
                             <BottomBorder>
-                              <Color>Black</Color>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                             </BottomBorder>
                             <LeftBorder>
                               <Style>None</Style>
                             </LeftBorder>
                             <RightBorder>
-                              <Color>Black</Color>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                             </RightBorder>
-                            <BackgroundColor>LightGreen</BackgroundColor>
+                            <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -1120,7 +1140,7 @@ END;</CommandText>
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!Filter.Value</Value>
-                                  <Style />
+                                  <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -1157,7 +1177,7 @@ END;</CommandText>
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!Volume_Name.Value</Value>
-                                  <Style />
+                                  <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -1194,7 +1214,7 @@ END;</CommandText>
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!Altitude.Value</Value>
-                                  <Style />
+                                  <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
                                 </TextRun>
                               </TextRuns>
                               <Style>
@@ -1235,6 +1255,7 @@ END;</CommandText>
                                   <Value>=Fields!Instance_Name.Value</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
+                                  <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1274,6 +1295,7 @@ END;</CommandText>
                                   <Value>=Fields!FilterType.Value</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
+                                  <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1313,6 +1335,7 @@ END;</CommandText>
                                   <Value>=Fields!Minifilter.Value</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
+                                  <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1352,6 +1375,7 @@ END;</CommandText>
                                   <Value>=Fields!Company.Value</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
+                                  <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1426,6 +1450,7 @@ END;</CommandText>
                     <Style>
                       <FontSize>14pt</FontSize>
                       <TextDecoration>Underline</TextDecoration>
+                    <Color>=Variables!TitleColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1461,6 +1486,7 @@ END;</CommandText>
                     <Style>
                       <FontSize>14pt</FontSize>
                       <TextDecoration>Underline</TextDecoration>
+                    <Color>=Variables!TitleColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1495,6 +1521,7 @@ END;</CommandText>
                     <Value>Show queries for this report.</Value>
                     <Style>
                       <FontWeight>Bold</FontWeight>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1526,7 +1553,7 @@ END;</CommandText>
                     <TextRuns>
                       <TextRun>
                         <Value>=DataSets!NonMS_FilterDrivers.CommandText</Value>
-                        <Style />
+                        <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
                       </TextRun>
                     </TextRuns>
                     <Style />
@@ -1558,7 +1585,7 @@ END;</CommandText>
                     <TextRuns>
                       <TextRun>
                         <Value>=DataSets!FilterDriverDetails.CommandText</Value>
-                        <Style />
+                        <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
                       </TextRun>
                     </TextRuns>
                     <Style />
@@ -1613,17 +1640,81 @@ END;</CommandText>
         <RightMargin>1in</RightMargin>
         <TopMargin>1in</TopMargin>
         <BottomMargin>1in</BottomMargin>
-        <Style />
+        <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
       </Page>
     </ReportSection>
   </ReportSections>
+  <ReportParameters>
+    <ReportParameter Name="ContrastTheme">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>None</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>ContrastTheme</Prompt>
+      <ValidValues>
+        <ParameterValues>
+          <ParameterValue>
+            <Value>None</Value>
+            <Label>None</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>Aquatic</Value>
+            <Label>Aquatic</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>Desert</Value>
+            <Label>Desert</Label>
+          </ParameterValue>
+        </ParameterValues>
+      </ValidValues>
+    </ReportParameter>
+  </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>
       <NumberOfColumns>4</NumberOfColumns>
-      <NumberOfRows>2</NumberOfRows>
+      <NumberOfRows>3</NumberOfRows>
+      <CellDefinitions>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>0</RowIndex>
+          <ParameterName>ContrastTheme</ParameterName>
+        </CellDefinition>
+      </CellDefinitions>
     </GridLayoutDefinition>
   </ReportParametersLayout>
   <Language>en-US</Language>
+  <Variables>
+    <Variable Name="IsLocalReport">
+      <Value>= (Globals!ReportServerUrl="")</Value>
+    </Variable>
+    <Variable Name="ReportTextColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+Parameters!ContrastTheme.Value="None", "Black")</Value>
+    </Variable>
+    <Variable Name="BodyColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
+Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
+Parameters!ContrastTheme.Value="None", "No Color")</Value>
+    </Variable>
+    <Variable Name="TitleColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+Parameters!ContrastTheme.Value="None", "#1c3a70")</Value>
+    </Variable>
+    <Variable Name="URLColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#75E9FC",
+Parameters!ContrastTheme.Value="Desert", "#1C5E75",
+Parameters!ContrastTheme.Value="None", "Blue")</Value>
+    </Variable>
+    <Variable Name="TableHeadingColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "No Color",
+Parameters!ContrastTheme.Value="Desert", "No Color",
+Parameters!ContrastTheme.Value="None", "Gainsboro")</Value>
+    </Variable>
+  </Variables>
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
   <rd:ReportUnitType>Inch</rd:ReportUnitType>
   <rd:ReportID>a18ff7e5-64b0-4b54-8c04-53cb20e4f527</rd:ReportID>
