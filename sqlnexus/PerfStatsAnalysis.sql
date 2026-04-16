@@ -4575,6 +4575,29 @@ VALUES
  'https://learn.microsoft.com/sql/tools/sql-assessment-api/sql-assessment-api-overview',
  '  ', 1, 100, 0, 'SQL Assessment API');
 
+INSERT INTO dbo.tbl_AnalysisSummary
+(
+    SolutionSourceId,
+    Category,
+    Type,
+    TypeDesc,
+    Name,
+    FriendlyName,
+    Description,
+    InternalUrl,
+    ExternalUrl,
+    Author,
+    Priority,
+    SeqNum,
+    Status,
+    Report
+)
+VALUES
+('A3B7D9E1-5F2C-4A8E-B6D4-1C9E3F7A2B5D', 'Server Performance', 'W', 'Warning', 'usp_SlowIO_RootCause',
+ 'Slow I/O Root Cause Analysis',
+ 'Analyzes wait stats, perfmon counters, memory pressure indicators, and virtual file stats to determine the most likely root cause of slow I/O', '',
+ 'https://learn.microsoft.com/troubleshoot/sql/database-engine/performance/troubleshoot-sql-io-performance',
+ '  ', 1, 100, 0, ' ');
 
 
 
@@ -7228,6 +7251,599 @@ GO
 
 
 
+CREATE PROCEDURE [dbo].[usp_SlowIO_RootCause]
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- This procedure follows the methodology from:
+    -- https://learn.microsoft.com/troubleshoot/sql/database-engine/performance/troubleshoot-sql-io-performance
+    --
+    -- Decision tree (matching the flowchart):
+    -- STEP 1: Is SQL Server reporting slow I/O?
+    --         Check PAGEIOLATCH_*, WRITELOG, ASYNC_IO_COMPLETION, IO_COMPLETION waits
+    --         Check Page IO Latch perfmon > 15-20ms consistently
+    --         Check for stalled I/O error messages
+    --         If No -> No slow I/O issue, exit
+    -- STEP 2: Do Perfmon counters indicate slow I/O (latency)?
+    --         Check Physical/Logical Disk: Avg. Disk sec/Transfer > 15-20ms consistently
+    --         If No -> Examine File System Filter Drivers (fltmc)
+    --         If Yes -> Continue to Step 3
+    -- STEP 3: Is the I/O subsystem overwhelmed?
+    --         Check Disk Bytes/Sec capacity (SAN: 150-300 MB/sec, single disk: 50-70 MB/sec)
+    --         If No -> I/O path/hardware problems (SAN misconfig, faulty drivers, cables)
+    --         If Yes -> Continue to Step 4
+    -- STEP 4: Is SQL Server driving the I/O activity?
+    --         Check Process: IO Data Bytes/sec, Buffer Manager: Page Reads/sec, Page Writes/sec
+    --         If No -> Other application is driving the I/O
+    --         If Yes -> Tune queries, increase memory, stagger backups, check auto-grow/checkpoint
+    -- Additionally: Identify file-level hotspots and pending I/O
+
+    DECLARE @description VARCHAR(MAX) = '';
+    DECLARE @root_cause VARCHAR(MAX) = '';
+    DECLARE @has_io_issue BIT = 0;
+
+    -- ============================================================
+    -- STEP 1: Is SQL Server reporting slow I/O?
+    -- Check for PAGEIOLATCH_*, WRITELOG, ASYNC_IO_COMPLETION,
+    -- IO_COMPLETION waits > 15 ms consistently (more than 5 occurrences)
+    -- If tbl_REQUESTS is unavailable or has too few snapshots, fall back
+    -- to perfmon counters: SQLServer:Wait Statistics
+    --   "Page IO latch waits" and "Log write waits" avg wait time (ms)
+    -- ============================================================
+    DECLARE @io_wait_count INT = 0;
+    DECLARE @perfmon_io_wait_count INT = 0;
+    DECLARE @request_snapshot_count INT = 0;
+    DECLARE @step1_source VARCHAR(30) = '';
+
+    -- Primary check: tbl_REQUESTS for individual I/O-related waits > 15 ms
+    -- "Consistently" means more than 5 occurrences across snapshots
+    IF (OBJECT_ID('tbl_REQUESTS') IS NOT NULL)
+    BEGIN
+        SELECT @request_snapshot_count = COUNT(DISTINCT runtime)
+        FROM dbo.tbl_REQUESTS;
+
+        IF @request_snapshot_count > 2
+        BEGIN
+            SELECT @io_wait_count = COUNT(*)
+            FROM dbo.tbl_REQUESTS
+            WHERE wait_type IN ( 'PAGEIOLATCH_SH', 'PAGEIOLATCH_EX', 'PAGEIOLATCH_UP',
+                                 'PAGEIOLATCH_DT', 'PAGEIOLATCH_KP', 'PAGEIOLATCH_NL',
+                                 'WRITELOG', 'ASYNC_IO_COMPLETION', 'IO_COMPLETION' )
+                  AND wait_duration_ms > 15;
+            SET @step1_source = 'tbl_REQUESTS';
+        END;
+    END;
+
+    -- Fallback: if tbl_REQUESTS is missing or has too few snapshots,
+    -- use SQLServer:Wait Statistics perfmon counters from tbl_SYSPERFINFO
+    -- Counter: "Average wait time (ms)" for instances "Page IO latch waits" and "Log write waits"
+    IF @step1_source = '' AND (OBJECT_ID('tbl_SYSPERFINFO') IS NOT NULL)
+    BEGIN
+        SELECT @perfmon_io_wait_count = COUNT(*)
+        FROM dbo.tbl_SYSPERFINFO
+        WHERE object_name LIKE '%Wait Statistics%'
+              AND counter_name LIKE '%Average wait time%'
+              AND instance_name IN ( 'Page IO latch waits', 'Log write waits' )
+              AND cntr_value > 15;
+
+        IF @perfmon_io_wait_count > 0
+        BEGIN
+            SET @io_wait_count = @perfmon_io_wait_count;
+            SET @step1_source = 'tbl_SYSPERFINFO';
+        END;
+    END;
+
+    -- Also check CounterData/CounterDetails (Windows perfmon) as another fallback
+    IF @step1_source = '' AND (OBJECT_ID('CounterDetails') IS NOT NULL) AND (OBJECT_ID('CounterData') IS NOT NULL)
+    BEGIN
+        SELECT @perfmon_io_wait_count = COUNT(*)
+        FROM dbo.CounterDetails c
+            JOIN dbo.CounterData dat ON c.CounterID = dat.CounterID
+        WHERE c.ObjectName LIKE '%Wait Statistics%'
+              AND c.CounterName LIKE '%Average wait time%'
+              AND c.InstanceName IN ( 'Page IO latch waits', 'Log write waits' )
+              AND dat.CounterValue > 15;
+
+        IF @perfmon_io_wait_count > 0
+        BEGIN
+            SET @io_wait_count = @perfmon_io_wait_count;
+            SET @step1_source = 'CounterData';
+        END;
+    END;
+
+    -- Decision: Is SQL Server reporting slow I/O?
+    -- Need more than 5 occurrences of I/O waits > 15ms
+    IF @io_wait_count <= 5
+    BEGIN
+        -- No Slow I/O issue for SQL Server
+        RETURN;
+    END;
+
+    SET @has_io_issue = 1;
+    SET @description = 'STEP 1 - SQL Server IS reporting slow I/O: ';
+    IF @step1_source = 'tbl_REQUESTS'
+        SET @description = @description + 'Found ' + CONVERT(VARCHAR, @io_wait_count)
+                           + ' occurrences of I/O-related waits (PAGEIOLATCH_*, WRITELOG, IO_COMPLETION, ASYNC_IO_COMPLETION) > 15 ms in tbl_REQUESTS. ';
+    ELSE
+        SET @description = @description + 'Found ' + CONVERT(VARCHAR, @io_wait_count)
+                           + ' occurrences of SQLServer:Wait Statistics avg wait time > 15 ms '
+                           + 'for Page IO latch waits/Log write waits (source: ' + @step1_source + '). ';
+
+    -- ============================================================
+    -- STEP 2: Do Perfmon counters indicate slow I/O (latency)?
+    -- Check Physical/Logical Disk: Avg. Disk sec/Transfer
+    -- > 15-20 ms consistently
+    -- ============================================================
+    DECLARE @disk_latency_threshold_sec DECIMAL(12, 6) = 0.015; -- 15 ms threshold
+    DECLARE @disk_latency_min_occurrences INT = 3; -- min samples > threshold within a 1-min window
+
+    DECLARE @slow_drive VARCHAR(128) = '';
+    DECLARE @slow_write_drive VARCHAR(128) = '';
+    DECLARE @is_disk_slow BIT = 0;
+    DECLARE @prolonged_read_latency DECIMAL(12, 6) = 0;
+    DECLARE @prolonged_write_latency DECIMAL(12, 6) = 0;
+    DECLARE @prolonged_transfer_latency DECIMAL(12, 6) = 0;
+    DECLARE @slow_transfer_drive VARCHAR(128) = '';
+    DECLARE @windowed_latency DECIMAL(12, 6) = 0;
+    DECLARE @windowed_drive VARCHAR(128) = '';
+
+    IF (OBJECT_ID('CounterDetails') IS NOT NULL) AND (OBJECT_ID('CounterData') IS NOT NULL)
+    BEGIN
+        -- Collect all disk latency samples exceeding the threshold into a temp table
+        -- to allow both overall AVG and windowed (1-min) analysis
+        IF OBJECT_ID('tempdb.dbo.#disk_latency') IS NOT NULL
+            DROP TABLE #disk_latency;
+
+        CREATE TABLE #disk_latency
+        (
+            CounterDateTime DATETIME,
+            CounterValue DECIMAL(12, 6),
+            CounterName VARCHAR(256),
+            InstanceName VARCHAR(256)
+        );
+
+        CREATE INDEX idx_disk_latency_dt
+        ON #disk_latency (CounterDateTime)
+        INCLUDE (CounterValue, CounterName, InstanceName);
+
+        INSERT INTO #disk_latency (CounterDateTime, CounterValue, CounterName, InstanceName)
+        SELECT CONVERT(DATETIME, dat.CounterDateTime),
+               dat.CounterValue,
+               dl.CounterName,
+               dl.InstanceName
+        FROM dbo.CounterData dat
+            INNER JOIN dbo.CounterDetails dl ON dat.CounterID = dl.CounterID
+        WHERE dl.ObjectName IN ( 'physicaldisk', 'PhysicalDisk', 'logicaldisk', 'LogicalDisk' )
+              AND dl.CounterName IN ( 'Avg. Disk sec/Transfer', 'Avg. Disk sec/Read', 'Avg. Disk sec/Write' )
+              AND dl.InstanceName <> '_Total'
+              AND dat.CounterValue >= @disk_latency_threshold_sec;
+
+        IF (@@ROWCOUNT > 0)
+        BEGIN
+            -- METHOD 1: Windowed check - find 3+ occurrences within any 1-min window
+            -- This confirms sustained latency, not just isolated spikes
+            DECLARE @T_CounterDateTime DATETIME;
+
+            DECLARE c_disk_latency CURSOR FOR
+            SELECT DISTINCT CounterDateTime
+            FROM #disk_latency
+            WHERE CounterName = 'Avg. Disk sec/Transfer';
+
+            OPEN c_disk_latency;
+            FETCH NEXT FROM c_disk_latency INTO @T_CounterDateTime;
+
+            WHILE (@@FETCH_STATUS = 0)
+            BEGIN
+                SELECT @windowed_latency = AVG(CounterValue),
+                       @windowed_drive = InstanceName
+                FROM #disk_latency
+                WHERE CounterName = 'Avg. Disk sec/Transfer'
+                      AND CounterDateTime BETWEEN (@T_CounterDateTime - '00:00:30') AND (@T_CounterDateTime + '00:00:30')
+                GROUP BY InstanceName
+                HAVING COUNT(*) >= @disk_latency_min_occurrences
+                       AND AVG(CounterValue) >= @disk_latency_threshold_sec;
+
+                IF (@@ROWCOUNT > 0)
+                BEGIN
+                    SET @is_disk_slow = 1;
+                    SET @prolonged_transfer_latency = @windowed_latency;
+                    SET @slow_transfer_drive = @windowed_drive;
+                    BREAK;
+                END;
+
+                FETCH NEXT FROM c_disk_latency INTO @T_CounterDateTime;
+            END;
+
+            CLOSE c_disk_latency;
+            DEALLOCATE c_disk_latency;
+
+            -- METHOD 2: Overall AVG check - if avg across all data exceeds threshold,
+            -- that alone guarantees high I/O even without the windowed check
+            IF @is_disk_slow = 0
+            BEGIN
+                SELECT TOP 1
+                       @prolonged_transfer_latency = AVG(CounterValue),
+                       @slow_transfer_drive = InstanceName
+                FROM #disk_latency
+                WHERE CounterName = 'Avg. Disk sec/Transfer'
+                GROUP BY InstanceName
+                HAVING AVG(CounterValue) >= @disk_latency_threshold_sec
+                ORDER BY AVG(CounterValue) DESC;
+
+                IF @prolonged_transfer_latency >= @disk_latency_threshold_sec
+                    SET @is_disk_slow = 1;
+            END;
+
+            -- Get read and write breakdown for detail reporting (using overall AVG)
+            SELECT TOP 1
+                   @prolonged_read_latency = AVG(CounterValue),
+                   @slow_drive = InstanceName
+            FROM #disk_latency
+            WHERE CounterName = 'Avg. Disk sec/Read'
+            GROUP BY InstanceName
+            HAVING AVG(CounterValue) >= @disk_latency_threshold_sec
+            ORDER BY AVG(CounterValue) DESC;
+
+            SELECT TOP 1
+                   @prolonged_write_latency = AVG(CounterValue),
+                   @slow_write_drive = InstanceName
+            FROM #disk_latency
+            WHERE CounterName = 'Avg. Disk sec/Write'
+            GROUP BY InstanceName
+            HAVING AVG(CounterValue) >= @disk_latency_threshold_sec
+            ORDER BY AVG(CounterValue) DESC;
+
+            -- If windowed check didn't fire, but read or write individually show sustained latency, flag it
+            IF @is_disk_slow = 0 AND (@prolonged_read_latency >= @disk_latency_threshold_sec OR @prolonged_write_latency >= @disk_latency_threshold_sec)
+                SET @is_disk_slow = 1;
+        END;
+
+        DROP TABLE #disk_latency;
+    END;
+
+    -- ============================================================
+    -- STEP 2 DECISION: Perfmon shows slow latency?
+    -- ============================================================
+    IF @is_disk_slow = 0
+    BEGIN
+        -- ============================================================
+        -- STEP 2 -> No: Examine File System Filter Drivers
+        -- The problem is between SQL Server and the Partition Manager
+        -- (where the OS collects Perfmon counters). Filter drivers sit
+        -- in this layer.
+        -- ============================================================
+        SET @root_cause = @root_cause + 'STEP 2 - Perfmon disk latency is NORMAL (Avg. Disk sec/Transfer < '
+                          + CONVERT(VARCHAR, CAST(@disk_latency_threshold_sec * 1000 AS INT)) + ' ms consistently). ';
+        SET @root_cause = @root_cause + 'Since SQL Server reports I/O waits but Perfmon does not show disk latency, '
+                          + 'the problem is between SQL Server and the Partition Manager (the I/O layer where the OS collects Perfmon counters). '
+                          + 'This is typically caused by File System Filter Drivers (Anti-virus, Backup solutions, Encryption, Compression). ';
+
+        DECLARE @filter_driver_list VARCHAR(MAX) = '';
+
+        IF (OBJECT_ID('tbl_fltmc_instances') IS NOT NULL)
+        BEGIN
+            SELECT @filter_driver_list = COALESCE(@filter_driver_list + ', ', '') + FilterName
+            FROM
+            (
+                SELECT DISTINCT FilterName
+                FROM dbo.tbl_fltmc_instances
+                WHERE Company != 'Microsoft'
+            ) fd;
+        END;
+
+        IF @filter_driver_list != ''
+        BEGIN
+            SET @root_cause = @root_cause + 'Non-Microsoft filter drivers detected on this system: ' + @filter_driver_list + '. '
+                              + 'RECOMMENDATION: '
+                              + '(1) Work with the system admin/filter driver vendor to resolve. '
+                              + '(2) Exclude SQL Server data/log/backup/tempdb folders from being examined by filter drivers (e.g. Anti-virus, intrusion detection). '
+                              + '(3) Use WPR.exe to collect short-period (<10 sec) data on Minifilter I/O activity and check for delays. '
+                              + 'Look up the driver names in the Microsoft Allocated Filter Altitudes article. ';
+        END;
+        ELSE
+        BEGIN
+            SET @root_cause = @root_cause + 'No tbl_fltmc_instances data was available to identify specific filter drivers. '
+                              + 'RECOMMENDATION: Run ''fltmc instances'' on the server to list filter drivers and the volumes they attach to. '
+                              + 'Exclude SQL Server data/log/backup folders from being scanned by filter drivers. '
+                              + 'Use WPR.exe (Windows Performance Recorder) to collect short-period Minifilter I/O data. ';
+        END;
+    END;
+    ELSE
+    BEGIN
+        -- ============================================================
+        -- STEP 2 -> Yes: Perfmon shows slow disk I/O
+        -- ============================================================
+        SET @root_cause = @root_cause + 'STEP 2 - Perfmon disk latency IS elevated. ';
+
+        IF @prolonged_transfer_latency >= @disk_latency_threshold_sec
+            SET @root_cause = @root_cause + 'Avg. Disk sec/Transfer = '
+                              + CONVERT(VARCHAR, CAST(@prolonged_transfer_latency * 1000 AS DECIMAL(10, 1))) + ' ms on drive ''' + @slow_transfer_drive + '''. ';
+        IF @prolonged_read_latency >= @disk_latency_threshold_sec
+            SET @root_cause = @root_cause + 'Avg. Disk sec/Read = '
+                              + CONVERT(VARCHAR, CAST(@prolonged_read_latency * 1000 AS DECIMAL(10, 1))) + ' ms on drive ''' + @slow_drive + '''. ';
+        IF @prolonged_write_latency >= @disk_latency_threshold_sec
+            SET @root_cause = @root_cause + 'Avg. Disk sec/Write = '
+                              + CONVERT(VARCHAR, CAST(@prolonged_write_latency * 1000 AS DECIMAL(10, 1))) + ' ms on drive ''' + @slow_write_drive + '''. ';
+
+        -- ============================================================
+        -- STEP 3: Is the I/O subsystem overwhelmed?
+        -- Check Disk Bytes/Sec against subsystem capacity:
+        -- - For SANs: Avg Disk Bytes/sec > 150-300 MB/sec (approx.)
+        -- - For single disk: Avg Disk Bytes/sec > 50-70 MB/sec (approx.)
+        -- ============================================================
+        DECLARE @max_disk_bytes_sec DECIMAL(20, 2) = 0;
+        DECLARE @avg_disk_bytes_sec DECIMAL(20, 2) = 0;
+
+        IF (OBJECT_ID('CounterDetails') IS NOT NULL) AND (OBJECT_ID('CounterData') IS NOT NULL)
+        BEGIN
+            SELECT @max_disk_bytes_sec = MAX(CAST(dat.CounterValue AS FLOAT)),
+                   @avg_disk_bytes_sec = AVG(CAST(dat.CounterValue AS FLOAT))
+            FROM dbo.CounterDetails c
+                JOIN dbo.CounterData dat ON c.CounterID = dat.CounterID
+            WHERE c.CounterName = 'Disk Bytes/sec'
+                  AND c.ObjectName IN ( 'physicaldisk', 'PhysicalDisk', 'logicaldisk', 'LogicalDisk' )
+                  AND c.InstanceName <> '_Total';
+        END;
+
+        -- Use SAN threshold: Avg Disk Bytes/sec > 150 MB/sec (approx.)
+        DECLARE @is_io_overwhelmed BIT = 0;
+        IF @avg_disk_bytes_sec > 150000000 -- > 150 MB/sec avg throughput
+            SET @is_io_overwhelmed = 1;
+
+        IF @is_io_overwhelmed = 0
+        BEGIN
+            -- ============================================================
+            -- STEP 3 -> No: I/O subsystem is NOT overwhelmed
+            -- This points to I/O path or hardware problems
+            -- ============================================================
+            SET @root_cause = @root_cause + 'STEP 3 - I/O subsystem is NOT overwhelmed (Avg Disk Bytes/sec = '
+                              + CONVERT(VARCHAR, CAST(@avg_disk_bytes_sec / 1048576 AS INT)) + ' MB/sec, Max = '
+                              + CONVERT(VARCHAR, CAST(@max_disk_bytes_sec / 1048576 AS INT)) + ' MB/sec). ';
+            SET @root_cause = @root_cause + 'I/O PATH or HARDWARE PROBLEM: The disk is slow but not due to high I/O volume. '
+                              + 'RECOMMENDATION: Work with system admin/hardware vendor to: '
+                              + '(1) Fix mis-configuration of SAN/NAS system. '
+                              + '(2) Update old/faulty drivers, controllers, firmware. '
+                              + '(3) Collect Storport trace for further analysis. '
+                              + '(4) Check and repair cables, switches, disks. ';
+        END;
+        ELSE
+        BEGIN
+            -- ============================================================
+            -- STEP 3 -> Yes: I/O subsystem IS overwhelmed
+            -- ============================================================
+            SET @root_cause = @root_cause + 'STEP 3 - I/O subsystem IS overwhelmed/close to capacity (Avg Disk Bytes/sec = '
+                              + CONVERT(VARCHAR, CAST(@avg_disk_bytes_sec / 1048576 AS INT)) + ' MB/sec, Max = '
+                              + CONVERT(VARCHAR, CAST(@max_disk_bytes_sec / 1048576 AS INT)) + ' MB/sec). ';
+
+            -- ============================================================
+            -- STEP 4: Is SQL Server driving the I/O activity?
+            -- Check Process: IO Data Bytes/sec for sqlservr
+            -- Check Buffer Manager: Page Reads/sec (most common)
+            -- Check Buffer Manager: Page Writes/sec
+            -- ============================================================
+            DECLARE @max_sql_io_data_bytes_sec DECIMAL(20, 2) = 0;
+            DECLARE @max_page_reads_sec DECIMAL(20, 2) = 0;
+            DECLARE @avg_page_reads_sec DECIMAL(20, 2) = 0;
+            DECLARE @max_page_writes_sec DECIMAL(20, 2) = 0;
+            DECLARE @max_checkpoint_pages_sec DECIMAL(20, 2) = 0;
+            DECLARE @max_lazy_writes DECIMAL(12, 2) = 0;
+            DECLARE @avg_ple DECIMAL(12, 2) = 0;
+
+            IF (OBJECT_ID('CounterDetails') IS NOT NULL) AND (OBJECT_ID('CounterData') IS NOT NULL)
+            BEGIN
+                -- Process: IO Data Bytes/sec for SQL Server process
+                SELECT @max_sql_io_data_bytes_sec = MAX(CAST(dat.CounterValue AS FLOAT))
+                FROM dbo.CounterDetails c
+                    JOIN dbo.CounterData dat ON c.CounterID = dat.CounterID
+                WHERE c.CounterName = 'IO Data Bytes/sec'
+                      AND c.ObjectName IN ( 'Process' )
+                      AND c.InstanceName LIKE 'sqlservr%';
+
+                -- Buffer Manager: Page Reads/sec (most common I/O driver)
+                SELECT @max_page_reads_sec = MAX(CAST(dat.CounterValue AS FLOAT)),
+                       @avg_page_reads_sec = AVG(CAST(dat.CounterValue AS FLOAT))
+                FROM dbo.CounterDetails c
+                    JOIN dbo.CounterData dat ON c.CounterID = dat.CounterID
+                WHERE c.CounterName = 'Page reads/sec'
+                      AND c.ObjectName LIKE '%Buffer Manager%';
+
+                -- Buffer Manager: Page Writes/sec
+                SELECT @max_page_writes_sec = MAX(CAST(dat.CounterValue AS FLOAT))
+                FROM dbo.CounterDetails c
+                    JOIN dbo.CounterData dat ON c.CounterID = dat.CounterID
+                WHERE c.CounterName = 'Page writes/sec'
+                      AND c.ObjectName LIKE '%Buffer Manager%';
+
+                -- Buffer Manager: Checkpoint pages/sec (driver of Page Writes)
+                SELECT @max_checkpoint_pages_sec = MAX(CAST(dat.CounterValue AS FLOAT))
+                FROM dbo.CounterDetails c
+                    JOIN dbo.CounterData dat ON c.CounterID = dat.CounterID
+                WHERE c.CounterName = 'Checkpoint pages/sec'
+                      AND c.ObjectName LIKE '%Buffer Manager%';
+
+                -- Buffer Manager: Lazy writes/sec (driver of Page Writes, indicates memory pressure)
+                SELECT @max_lazy_writes = MAX(CAST(dat.CounterValue AS FLOAT))
+                FROM dbo.CounterDetails c
+                    JOIN dbo.CounterData dat ON c.CounterID = dat.CounterID
+                WHERE c.CounterName = 'Lazy writes/sec'
+                      AND c.ObjectName LIKE '%Buffer Manager%';
+
+                -- Page Life Expectancy (memory pressure indicator)
+                SELECT @avg_ple = AVG(CAST(dat.CounterValue AS FLOAT))
+                FROM dbo.CounterDetails c
+                    JOIN dbo.CounterData dat ON c.CounterID = dat.CounterID
+                WHERE c.CounterName = 'Page life expectancy'
+                      AND c.ObjectName LIKE '%Buffer Manager%';
+            END;
+
+            -- Determine if SQL Server is the main I/O driver
+            DECLARE @sql_is_io_driver BIT = 0;
+            IF ISNULL(@max_sql_io_data_bytes_sec, 0) > 50000000 -- SQL IO Data Bytes/sec > 50 MB/sec
+               OR ISNULL(@max_page_reads_sec, 0) > 500
+               OR ISNULL(@avg_page_reads_sec, 0) > 200
+               OR ISNULL(@max_page_writes_sec, 0) > 300
+                SET @sql_is_io_driver = 1;
+
+            IF @sql_is_io_driver = 0
+            BEGIN
+                -- ============================================================
+                -- STEP 4 -> No: SQL Server is NOT the main I/O driver
+                -- ============================================================
+                SET @root_cause = @root_cause + 'STEP 4 - SQL Server is NOT the primary I/O driver. ';
+                IF ISNULL(@max_sql_io_data_bytes_sec, 0) > 0
+                    SET @root_cause = @root_cause + 'SQL Server Process IO Data Bytes/sec max = '
+                                      + CONVERT(VARCHAR, CAST(@max_sql_io_data_bytes_sec / 1048576 AS INT)) + ' MB/sec. ';
+                SET @root_cause = @root_cause
+                                  + 'RECOMMENDATION: Determine which application is driving the I/O. '
+                                  + 'Check Perfmon Process: IO Data Bytes/sec for all (*) instances to identify the top I/O consumer. ';
+            END;
+            ELSE
+            BEGIN
+                -- ============================================================
+                -- STEP 4 -> Yes: SQL Server IS driving the I/O activity
+                -- Provide targeted remediation
+                -- ============================================================
+                SET @root_cause = @root_cause + 'STEP 4 - SQL Server IS the primary I/O driver. ';
+
+                IF ISNULL(@max_sql_io_data_bytes_sec, 0) > 0
+                    SET @root_cause = @root_cause + 'SQL Server Process IO Data Bytes/sec max = '
+                                      + CONVERT(VARCHAR, CAST(@max_sql_io_data_bytes_sec / 1048576 AS INT)) + ' MB/sec. ';
+
+                -- Report Page Reads/sec (most common I/O driver)
+                IF ISNULL(@max_page_reads_sec, 0) > 500 OR ISNULL(@avg_page_reads_sec, 0) > 200
+                BEGIN
+                    SET @root_cause = @root_cause + 'Buffer Manager Page Reads/sec: max = '
+                                      + CONVERT(VARCHAR, CAST(ISNULL(@max_page_reads_sec, 0) AS INT)) + ', avg = '
+                                      + CONVERT(VARCHAR, CAST(ISNULL(@avg_page_reads_sec, 0) AS INT))
+                                      + ' - READS are a major I/O driver. ';
+                END;
+
+                -- Report Page Writes/sec and correlate with its drivers
+                IF ISNULL(@max_page_writes_sec, 0) > 300
+                BEGIN
+                    SET @root_cause = @root_cause + 'Buffer Manager Page Writes/sec: max = '
+                                      + CONVERT(VARCHAR, CAST(@max_page_writes_sec AS INT))
+                                      + ' - WRITES are a significant I/O driver. ';
+
+                    -- Checkpoint pages/sec drives Page Writes
+                    IF ISNULL(@max_checkpoint_pages_sec, 0) > 100
+                        SET @root_cause = @root_cause + 'Checkpoint pages/sec max = '
+                                          + CONVERT(VARCHAR, CAST(@max_checkpoint_pages_sec AS INT))
+                                          + ' - checkpoint flushes are driving write I/O. ';
+
+                    -- Lazy Writes/sec drives Page Writes (indicates memory pressure)
+                    IF ISNULL(@max_lazy_writes, 0) > 20
+                        SET @root_cause = @root_cause + 'Lazy Writes/sec max = '
+                                          + CONVERT(VARCHAR, CAST(@max_lazy_writes AS INT))
+                                          + ' - Lazy Writer is flushing dirty pages (memory pressure driving write I/O). ';
+                END;
+
+                -- REMEDIATION recommendations per the flowchart
+                SET @root_cause = @root_cause + 'RECOMMENDATIONS: ';
+
+                -- (1) Tune Queries
+                SET @root_cause = @root_cause
+                                  + '(1) TUNE QUERIES: Use DMVs and SQL Trace to identify queries by reads/writes. '
+                                  + 'Confirm with Buffer Manager Page Reads/sec and Page Writes/sec. '
+                                  + 'Create appropriate indexes, update statistics, re-write queries. ';
+
+                -- (2) Increase Memory for SQL Server
+                SET @root_cause = @root_cause
+                                  + '(2) INCREASE MEMORY: Increase max server memory or add more RAM to reduce physical reads. ';
+
+                IF ISNULL(@avg_ple, 0) > 0
+                    SET @root_cause = @root_cause + 'Avg Page Life Expectancy = ' + CONVERT(VARCHAR, CAST(@avg_ple AS INT)) + ' sec'
+                                      + CASE WHEN @avg_ple < 300 THEN ' (LOW - indicates memory pressure). ' ELSE '. ' END;
+
+                IF ISNULL(@max_lazy_writes, 0) > 20
+                    SET @root_cause = @root_cause + 'Lazy Writes/sec = ' + CONVERT(VARCHAR, CAST(@max_lazy_writes AS INT))
+                                      + ' (elevated - memory pressure is forcing frequent page flushes). ';
+
+                -- (3) Stagger backups/change backup volume
+                SET @root_cause = @root_cause
+                                  + '(3) STAGGER BACKUPS: If backups are causing heavy I/O, stagger them or change the backup volume. ';
+
+                -- (4) Auto-grow / Checkpoint
+                SET @root_cause = @root_cause + '(4) CHECK AUTO-GROW/CHECKPOINT: ';
+
+                IF ISNULL(@max_checkpoint_pages_sec, 0) > 100
+                    SET @root_cause = @root_cause + 'Checkpoint pages/sec = ' + CONVERT(VARCHAR, CAST(@max_checkpoint_pages_sec AS INT))
+                                      + ' - consider using Indirect Checkpoints to smooth I/O over time, or increase hardware I/O throughput. ';
+            END;
+        END;
+    END;
+
+    -- ============================================================
+    -- SUPPLEMENTAL: Identify file-level hotspots from virtual file stats
+    -- ============================================================
+
+    DECLARE @hot_file VARCHAR(512) = '';
+    DECLARE @hot_file_avg_io_ms BIGINT = 0;
+
+    IF (OBJECT_ID('tbl_FILE_STATS') IS NOT NULL)
+    BEGIN
+        SELECT TOP 1
+               @hot_file = [database] + ':' + [file],
+               @hot_file_avg_io_ms = AvgIOTimeMS
+        FROM dbo.tbl_FILE_STATS
+        WHERE AvgIOTimeMS IS NOT NULL
+              AND AvgIOTimeMS > 20
+              AND (NumberReads + NumberWrites) > 100
+        ORDER BY AvgIOTimeMS DESC;
+
+        IF @hot_file != ''
+            SET @root_cause = @root_cause + 'FILE-LEVEL HOTSPOT: ''' + @hot_file + ''' has avg I/O latency of '
+                              + CONVERT(VARCHAR, @hot_file_avg_io_ms) + ' ms. ';
+    END;
+    ELSE IF (OBJECT_ID('tbl_FileStats') IS NOT NULL)
+    BEGIN
+        SELECT TOP 1
+               @hot_file = [database] + ':' + [file],
+               @hot_file_avg_io_ms = AvgIOTimeMS
+        FROM dbo.tbl_FileStats
+        WHERE AvgIOTimeMS IS NOT NULL
+              AND AvgIOTimeMS > 20
+              AND (NumberReads + NumberWrites) > 100
+        ORDER BY AvgIOTimeMS DESC;
+
+        IF @hot_file != ''
+            SET @root_cause = @root_cause + 'FILE-LEVEL HOTSPOT: ''' + @hot_file + ''' has avg I/O latency of '
+                              + CONVERT(VARCHAR, @hot_file_avg_io_ms) + ' ms. ';
+    END;
+
+    -- ============================================================
+    -- SUPPLEMENTAL: Check for high pending I/O from active requests
+    -- ============================================================
+
+    DECLARE @max_pending_io INT = 0;
+
+    IF (OBJECT_ID('tbl_REQUESTS') IS NOT NULL)
+    BEGIN
+        SELECT @max_pending_io = MAX(ISNULL(pending_io_count, 0))
+        FROM dbo.tbl_REQUESTS;
+
+        IF @max_pending_io > 50
+            SET @root_cause = @root_cause + 'HIGH PENDING I/O detected: max pending_io_count = '
+                              + CONVERT(VARCHAR, @max_pending_io)
+                              + ' across sessions, indicating I/O requests are queuing up. ';
+    END;
+
+    -- ============================================================
+    -- Update the analysis summary with findings
+    -- ============================================================
+    IF @has_io_issue = 1
+    BEGIN
+        UPDATE dbo.tbl_AnalysisSummary
+        SET [Status] = 1,
+            [Description] = @description + @root_cause,
+            [Report] = 'Perfmon IO'
+        WHERE [Name] = OBJECT_NAME(@@PROCID);
+    END;
+END;
+GO
+
+
 /********************************************************
 firing rules
 ********************************************************/
@@ -7321,4 +7937,6 @@ GO
 EXEC dbo.usp_MissingMSI_MSP
 GO
 EXEC dbo.usp_AssessmentAPI_Rules;
+GO
+EXEC dbo.usp_SlowIO_RootCause;
 /******END of script***/
