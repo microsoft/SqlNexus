@@ -520,7 +520,8 @@ ELSE
                       <Caption />
                       <Style>
                         <FontSize>8pt</FontSize>
-                      </Style>
+                      
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     </ChartAxisTitle>
                     <Margin>False</Margin>
                     <Interval>1</Interval>
@@ -570,7 +571,8 @@ ELSE
                       <Caption />
                       <Style>
                         <FontSize>8pt</FontSize>
-                      </Style>
+                      
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     </ChartAxisTitle>
                     <CrossAt>NaN</CrossAt>
                     <Location>Opposite</Location>
@@ -596,7 +598,8 @@ ELSE
                         <FontSize>8pt</FontSize>
                         <FontWeight>Bold</FontWeight>
                         <TextDecoration>None</TextDecoration>
-                      </Style>
+                      
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     </ChartAxisTitle>
                     <Margin>False</Margin>
                     <ChartMajorGridLines>
@@ -645,7 +648,8 @@ ELSE
                       <Caption />
                       <Style>
                         <FontSize>8pt</FontSize>
-                      </Style>
+                      
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     </ChartAxisTitle>
                     <CrossAt>NaN</CrossAt>
                     <Location>Opposite</Location>
@@ -705,7 +709,8 @@ ELSE
                   <FontFamily>Tahoma</FontFamily>
                   <FontSize>14pt</FontSize>
                   <FontWeight>Bold</FontWeight>
-                </Style>
+                
+                  <Color>=Variables!ReportTextColor.Value</Color></Style>
               </ChartTitle>
             </ChartTitles>
             <Palette>Excel</Palette>

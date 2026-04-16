@@ -429,7 +429,8 @@ GROUP BY runtime,
                       <Style>
                         <FontFamily>Tahoma</FontFamily>
                         <FontSize>8pt</FontSize>
-                      </Style>
+                      
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Enabled>False</Enabled>
@@ -482,7 +483,8 @@ GROUP BY runtime,
                       <Style>
                         <FontFamily>Tahoma</FontFamily>
                         <FontSize>8pt</FontSize>
-                      </Style>
+                      
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Enabled>False</Enabled>
@@ -539,7 +541,8 @@ GROUP BY runtime,
                       <Style>
                         <FontFamily>Tahoma</FontFamily>
                         <FontSize>8pt</FontSize>
-                      </Style>
+                      
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Style>
@@ -591,7 +594,8 @@ GROUP BY runtime,
                       <Style>
                         <FontFamily>Tahoma</FontFamily>
                         <FontSize>8pt</FontSize>
-                      </Style>
+                      
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Style>
@@ -673,7 +677,8 @@ GROUP BY runtime,
                   <FontWeight>Bold</FontWeight>
                   <TextAlign>General</TextAlign>
                   <VerticalAlign>Top</VerticalAlign>
-                </Style>
+                
+                  <Color>=Variables!ReportTextColor.Value</Color></Style>
               </ChartTitle>
             </ChartTitles>
             <Palette>Excel</Palette>
