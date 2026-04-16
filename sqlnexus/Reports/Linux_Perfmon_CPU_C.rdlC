@@ -369,20 +369,21 @@ order by AVG(cast (CounterValue as float)) desc)</CommandText>
                   <Caption>Time</Caption>
                   <Style>
                     <FontSize>8pt</FontSize>
-                  </Style>
+                  
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                 </ChartAxisTitle>
                 <ChartMajorGridLines>
                   <Enabled>False</Enabled>
                   <Style>
                     <Border>
-                      <Color>Gainsboro</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Border>
                   </Style>
                 </ChartMajorGridLines>
                 <ChartMinorGridLines>
                   <Style>
                     <Border>
-                      <Color>Gainsboro</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                       <Style>Dotted</Style>
                     </Border>
                   </Style>
@@ -402,20 +403,21 @@ order by AVG(cast (CounterValue as float)) desc)</CommandText>
                   <Caption>Axis Title</Caption>
                   <Style>
                     <FontSize>8pt</FontSize>
-                  </Style>
+                  
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                 </ChartAxisTitle>
                 <ChartMajorGridLines>
                   <Enabled>False</Enabled>
                   <Style>
                     <Border>
-                      <Color>Gainsboro</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Border>
                   </Style>
                 </ChartMajorGridLines>
                 <ChartMinorGridLines>
                   <Style>
                     <Border>
-                      <Color>Gainsboro</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                       <Style>Dotted</Style>
                     </Border>
                   </Style>
@@ -438,19 +440,20 @@ order by AVG(cast (CounterValue as float)) desc)</CommandText>
                   <Caption>Top 10 CPU Processes</Caption>
                   <Style>
                     <FontSize>8pt</FontSize>
-                  </Style>
+                  
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                 </ChartAxisTitle>
                 <ChartMajorGridLines>
                   <Style>
                     <Border>
-                      <Color>Gainsboro</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Border>
                   </Style>
                 </ChartMajorGridLines>
                 <ChartMinorGridLines>
                   <Style>
                     <Border>
-                      <Color>Gainsboro</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                       <Style>Dotted</Style>
                     </Border>
                   </Style>
@@ -470,19 +473,20 @@ order by AVG(cast (CounterValue as float)) desc)</CommandText>
                   <Caption>Axis Title</Caption>
                   <Style>
                     <FontSize>8pt</FontSize>
-                  </Style>
+                  
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                 </ChartAxisTitle>
                 <ChartMajorGridLines>
                   <Style>
                     <Border>
-                      <Color>Gainsboro</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Border>
                   </Style>
                 </ChartMajorGridLines>
                 <ChartMinorGridLines>
                   <Style>
                     <Border>
-                      <Color>Gainsboro</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                       <Style>Dotted</Style>
                     </Border>
                   </Style>
@@ -506,7 +510,8 @@ order by AVG(cast (CounterValue as float)) desc)</CommandText>
             <Style>
               <BackgroundGradientType>None</BackgroundGradientType>
               <FontSize>8pt</FontSize>
-            </Style>
+            
+                  <Color>=Variables!ReportTextColor.Value</Color></Style>
             <ChartLegendTitle>
               <Caption />
               <Style>
@@ -527,7 +532,8 @@ order by AVG(cast (CounterValue as float)) desc)</CommandText>
               <FontWeight>Bold</FontWeight>
               <TextAlign>General</TextAlign>
               <VerticalAlign>Top</VerticalAlign>
-            </Style>
+            
+                  <Color>=Variables!ReportTextColor.Value</Color></Style>
           </ChartTitle>
         </ChartTitles>
         <Palette>BrightPastel</Palette>
@@ -670,20 +676,21 @@ order by AVG(cast (CounterValue as float)) desc)</CommandText>
                   <Caption>Time</Caption>
                   <Style>
                     <FontSize>8pt</FontSize>
-                  </Style>
+                  
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                 </ChartAxisTitle>
                 <ChartMajorGridLines>
                   <Enabled>False</Enabled>
                   <Style>
                     <Border>
-                      <Color>Gainsboro</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Border>
                   </Style>
                 </ChartMajorGridLines>
                 <ChartMinorGridLines>
                   <Style>
                     <Border>
-                      <Color>Gainsboro</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                       <Style>Dotted</Style>
                     </Border>
                   </Style>
@@ -703,20 +710,21 @@ order by AVG(cast (CounterValue as float)) desc)</CommandText>
                   <Caption>Axis Title</Caption>
                   <Style>
                     <FontSize>8pt</FontSize>
-                  </Style>
+                  
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                 </ChartAxisTitle>
                 <ChartMajorGridLines>
                   <Enabled>False</Enabled>
                   <Style>
                     <Border>
-                      <Color>Gainsboro</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Border>
                   </Style>
                 </ChartMajorGridLines>
                 <ChartMinorGridLines>
                   <Style>
                     <Border>
-                      <Color>Gainsboro</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                       <Style>Dotted</Style>
                     </Border>
                   </Style>
@@ -739,19 +747,20 @@ order by AVG(cast (CounterValue as float)) desc)</CommandText>
                   <Caption>% Privileged Time</Caption>
                   <Style>
                     <FontSize>8pt</FontSize>
-                  </Style>
+                  
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                 </ChartAxisTitle>
                 <ChartMajorGridLines>
                   <Style>
                     <Border>
-                      <Color>Gainsboro</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Border>
                   </Style>
                 </ChartMajorGridLines>
                 <ChartMinorGridLines>
                   <Style>
                     <Border>
-                      <Color>Gainsboro</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                       <Style>Dotted</Style>
                     </Border>
                   </Style>
@@ -771,19 +780,20 @@ order by AVG(cast (CounterValue as float)) desc)</CommandText>
                   <Caption>Axis Title</Caption>
                   <Style>
                     <FontSize>8pt</FontSize>
-                  </Style>
+                  
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                 </ChartAxisTitle>
                 <ChartMajorGridLines>
                   <Style>
                     <Border>
-                      <Color>Gainsboro</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Border>
                   </Style>
                 </ChartMajorGridLines>
                 <ChartMinorGridLines>
                   <Style>
                     <Border>
-                      <Color>Gainsboro</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                       <Style>Dotted</Style>
                     </Border>
                   </Style>
@@ -807,7 +817,8 @@ order by AVG(cast (CounterValue as float)) desc)</CommandText>
             <Style>
               <BackgroundGradientType>None</BackgroundGradientType>
               <FontSize>8pt</FontSize>
-            </Style>
+            
+                  <Color>=Variables!ReportTextColor.Value</Color></Style>
             <ChartLegendTitle>
               <Caption />
               <Style>
@@ -828,7 +839,8 @@ order by AVG(cast (CounterValue as float)) desc)</CommandText>
               <FontWeight>Bold</FontWeight>
               <TextAlign>General</TextAlign>
               <VerticalAlign>Top</VerticalAlign>
-            </Style>
+            
+                  <Color>=Variables!ReportTextColor.Value</Color></Style>
           </ChartTitle>
         </ChartTitles>
         <Palette>BrightPastel</Palette>
@@ -932,20 +944,21 @@ order by AVG(cast (CounterValue as float)) desc)</CommandText>
                   <Caption>Time</Caption>
                   <Style>
                     <FontSize>8pt</FontSize>
-                  </Style>
+                  
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                 </ChartAxisTitle>
                 <ChartMajorGridLines>
                   <Enabled>False</Enabled>
                   <Style>
                     <Border>
-                      <Color>Gainsboro</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Border>
                   </Style>
                 </ChartMajorGridLines>
                 <ChartMinorGridLines>
                   <Style>
                     <Border>
-                      <Color>Gainsboro</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                       <Style>Dotted</Style>
                     </Border>
                   </Style>
@@ -965,20 +978,21 @@ order by AVG(cast (CounterValue as float)) desc)</CommandText>
                   <Caption>Axis Title</Caption>
                   <Style>
                     <FontSize>8pt</FontSize>
-                  </Style>
+                  
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                 </ChartAxisTitle>
                 <ChartMajorGridLines>
                   <Enabled>False</Enabled>
                   <Style>
                     <Border>
-                      <Color>Gainsboro</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Border>
                   </Style>
                 </ChartMajorGridLines>
                 <ChartMinorGridLines>
                   <Style>
                     <Border>
-                      <Color>Gainsboro</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                       <Style>Dotted</Style>
                     </Border>
                   </Style>
@@ -1001,19 +1015,20 @@ order by AVG(cast (CounterValue as float)) desc)</CommandText>
                   <Caption>Compilations/sec</Caption>
                   <Style>
                     <FontSize>8pt</FontSize>
-                  </Style>
+                  
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                 </ChartAxisTitle>
                 <ChartMajorGridLines>
                   <Style>
                     <Border>
-                      <Color>Gainsboro</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Border>
                   </Style>
                 </ChartMajorGridLines>
                 <ChartMinorGridLines>
                   <Style>
                     <Border>
-                      <Color>Gainsboro</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                       <Style>Dotted</Style>
                     </Border>
                   </Style>
@@ -1033,19 +1048,20 @@ order by AVG(cast (CounterValue as float)) desc)</CommandText>
                   <Caption>Axis Title</Caption>
                   <Style>
                     <FontSize>8pt</FontSize>
-                  </Style>
+                  
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                 </ChartAxisTitle>
                 <ChartMajorGridLines>
                   <Style>
                     <Border>
-                      <Color>Gainsboro</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Border>
                   </Style>
                 </ChartMajorGridLines>
                 <ChartMinorGridLines>
                   <Style>
                     <Border>
-                      <Color>Gainsboro</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                       <Style>Dotted</Style>
                     </Border>
                   </Style>
@@ -1072,7 +1088,8 @@ order by AVG(cast (CounterValue as float)) desc)</CommandText>
               <FontWeight>Bold</FontWeight>
               <TextAlign>General</TextAlign>
               <VerticalAlign>Top</VerticalAlign>
-            </Style>
+            
+                  <Color>=Variables!ReportTextColor.Value</Color></Style>
           </ChartTitle>
         </ChartTitles>
         <Palette>BrightPastel</Palette>
@@ -1176,20 +1193,21 @@ order by AVG(cast (CounterValue as float)) desc)</CommandText>
                   <Caption>Time</Caption>
                   <Style>
                     <FontSize>8pt</FontSize>
-                  </Style>
+                  
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                 </ChartAxisTitle>
                 <ChartMajorGridLines>
                   <Enabled>False</Enabled>
                   <Style>
                     <Border>
-                      <Color>Gainsboro</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Border>
                   </Style>
                 </ChartMajorGridLines>
                 <ChartMinorGridLines>
                   <Style>
                     <Border>
-                      <Color>Gainsboro</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                       <Style>Dotted</Style>
                     </Border>
                   </Style>
@@ -1209,20 +1227,21 @@ order by AVG(cast (CounterValue as float)) desc)</CommandText>
                   <Caption>Axis Title</Caption>
                   <Style>
                     <FontSize>8pt</FontSize>
-                  </Style>
+                  
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                 </ChartAxisTitle>
                 <ChartMajorGridLines>
                   <Enabled>False</Enabled>
                   <Style>
                     <Border>
-                      <Color>Gainsboro</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Border>
                   </Style>
                 </ChartMajorGridLines>
                 <ChartMinorGridLines>
                   <Style>
                     <Border>
-                      <Color>Gainsboro</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                       <Style>Dotted</Style>
                     </Border>
                   </Style>
@@ -1245,19 +1264,20 @@ order by AVG(cast (CounterValue as float)) desc)</CommandText>
                   <Caption>SQL Re-compilations/sec</Caption>
                   <Style>
                     <FontSize>8pt</FontSize>
-                  </Style>
+                  
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                 </ChartAxisTitle>
                 <ChartMajorGridLines>
                   <Style>
                     <Border>
-                      <Color>Gainsboro</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Border>
                   </Style>
                 </ChartMajorGridLines>
                 <ChartMinorGridLines>
                   <Style>
                     <Border>
-                      <Color>Gainsboro</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                       <Style>Dotted</Style>
                     </Border>
                   </Style>
@@ -1277,19 +1297,20 @@ order by AVG(cast (CounterValue as float)) desc)</CommandText>
                   <Caption>Axis Title</Caption>
                   <Style>
                     <FontSize>8pt</FontSize>
-                  </Style>
+                  
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                 </ChartAxisTitle>
                 <ChartMajorGridLines>
                   <Style>
                     <Border>
-                      <Color>Gainsboro</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Border>
                   </Style>
                 </ChartMajorGridLines>
                 <ChartMinorGridLines>
                   <Style>
                     <Border>
-                      <Color>Gainsboro</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                       <Style>Dotted</Style>
                     </Border>
                   </Style>
@@ -1316,7 +1337,8 @@ order by AVG(cast (CounterValue as float)) desc)</CommandText>
               <FontWeight>Bold</FontWeight>
               <TextAlign>General</TextAlign>
               <VerticalAlign>Top</VerticalAlign>
-            </Style>
+            
+                  <Color>=Variables!ReportTextColor.Value</Color></Style>
           </ChartTitle>
         </ChartTitles>
         <Palette>BrightPastel</Palette>
@@ -1420,20 +1442,21 @@ order by AVG(cast (CounterValue as float)) desc)</CommandText>
                   <Caption>Time</Caption>
                   <Style>
                     <FontSize>8pt</FontSize>
-                  </Style>
+                  
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                 </ChartAxisTitle>
                 <ChartMajorGridLines>
                   <Enabled>False</Enabled>
                   <Style>
                     <Border>
-                      <Color>Gainsboro</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Border>
                   </Style>
                 </ChartMajorGridLines>
                 <ChartMinorGridLines>
                   <Style>
                     <Border>
-                      <Color>Gainsboro</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                       <Style>Dotted</Style>
                     </Border>
                   </Style>
@@ -1453,20 +1476,21 @@ order by AVG(cast (CounterValue as float)) desc)</CommandText>
                   <Caption>Axis Title</Caption>
                   <Style>
                     <FontSize>8pt</FontSize>
-                  </Style>
+                  
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                 </ChartAxisTitle>
                 <ChartMajorGridLines>
                   <Enabled>False</Enabled>
                   <Style>
                     <Border>
-                      <Color>Gainsboro</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Border>
                   </Style>
                 </ChartMajorGridLines>
                 <ChartMinorGridLines>
                   <Style>
                     <Border>
-                      <Color>Gainsboro</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                       <Style>Dotted</Style>
                     </Border>
                   </Style>
@@ -1489,19 +1513,20 @@ order by AVG(cast (CounterValue as float)) desc)</CommandText>
                   <Caption>Batches/Sec</Caption>
                   <Style>
                     <FontSize>8pt</FontSize>
-                  </Style>
+                  
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                 </ChartAxisTitle>
                 <ChartMajorGridLines>
                   <Style>
                     <Border>
-                      <Color>Gainsboro</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Border>
                   </Style>
                 </ChartMajorGridLines>
                 <ChartMinorGridLines>
                   <Style>
                     <Border>
-                      <Color>Gainsboro</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                       <Style>Dotted</Style>
                     </Border>
                   </Style>
@@ -1521,19 +1546,20 @@ order by AVG(cast (CounterValue as float)) desc)</CommandText>
                   <Caption>Axis Title</Caption>
                   <Style>
                     <FontSize>8pt</FontSize>
-                  </Style>
+                  
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                 </ChartAxisTitle>
                 <ChartMajorGridLines>
                   <Style>
                     <Border>
-                      <Color>Gainsboro</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Border>
                   </Style>
                 </ChartMajorGridLines>
                 <ChartMinorGridLines>
                   <Style>
                     <Border>
-                      <Color>Gainsboro</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                       <Style>Dotted</Style>
                     </Border>
                   </Style>
@@ -1560,7 +1586,8 @@ order by AVG(cast (CounterValue as float)) desc)</CommandText>
               <FontWeight>Bold</FontWeight>
               <TextAlign>General</TextAlign>
               <VerticalAlign>Top</VerticalAlign>
-            </Style>
+            
+                  <Color>=Variables!ReportTextColor.Value</Color></Style>
           </ChartTitle>
         </ChartTitles>
         <Palette>BrightPastel</Palette>
@@ -1669,20 +1696,21 @@ order by AVG(cast (CounterValue as float)) desc)</CommandText>
                   <Caption>Time</Caption>
                   <Style>
                     <FontSize>8pt</FontSize>
-                  </Style>
+                  
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                 </ChartAxisTitle>
                 <ChartMajorGridLines>
                   <Enabled>False</Enabled>
                   <Style>
                     <Border>
-                      <Color>Gainsboro</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Border>
                   </Style>
                 </ChartMajorGridLines>
                 <ChartMinorGridLines>
                   <Style>
                     <Border>
-                      <Color>Gainsboro</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                       <Style>Dotted</Style>
                     </Border>
                   </Style>
@@ -1702,20 +1730,21 @@ order by AVG(cast (CounterValue as float)) desc)</CommandText>
                   <Caption>Axis Title</Caption>
                   <Style>
                     <FontSize>8pt</FontSize>
-                  </Style>
+                  
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                 </ChartAxisTitle>
                 <ChartMajorGridLines>
                   <Enabled>False</Enabled>
                   <Style>
                     <Border>
-                      <Color>Gainsboro</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Border>
                   </Style>
                 </ChartMajorGridLines>
                 <ChartMinorGridLines>
                   <Style>
                     <Border>
-                      <Color>Gainsboro</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                       <Style>Dotted</Style>
                     </Border>
                   </Style>
@@ -1738,19 +1767,20 @@ order by AVG(cast (CounterValue as float)) desc)</CommandText>
                   <Caption>% User Time</Caption>
                   <Style>
                     <FontSize>8pt</FontSize>
-                  </Style>
+                  
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                 </ChartAxisTitle>
                 <ChartMajorGridLines>
                   <Style>
                     <Border>
-                      <Color>Gainsboro</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Border>
                   </Style>
                 </ChartMajorGridLines>
                 <ChartMinorGridLines>
                   <Style>
                     <Border>
-                      <Color>Gainsboro</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                       <Style>Dotted</Style>
                     </Border>
                   </Style>
@@ -1770,19 +1800,20 @@ order by AVG(cast (CounterValue as float)) desc)</CommandText>
                   <Caption>Axis Title</Caption>
                   <Style>
                     <FontSize>8pt</FontSize>
-                  </Style>
+                  
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                 </ChartAxisTitle>
                 <ChartMajorGridLines>
                   <Style>
                     <Border>
-                      <Color>Gainsboro</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Border>
                   </Style>
                 </ChartMajorGridLines>
                 <ChartMinorGridLines>
                   <Style>
                     <Border>
-                      <Color>Gainsboro</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                       <Style>Dotted</Style>
                     </Border>
                   </Style>
@@ -1806,7 +1837,8 @@ order by AVG(cast (CounterValue as float)) desc)</CommandText>
             <Style>
               <BackgroundGradientType>None</BackgroundGradientType>
               <FontSize>8pt</FontSize>
-            </Style>
+            
+                  <Color>=Variables!ReportTextColor.Value</Color></Style>
             <ChartLegendTitle>
               <Caption />
               <Style>
@@ -1827,7 +1859,8 @@ order by AVG(cast (CounterValue as float)) desc)</CommandText>
               <FontWeight>Bold</FontWeight>
               <TextAlign>General</TextAlign>
               <VerticalAlign>Top</VerticalAlign>
-            </Style>
+            
+                  <Color>=Variables!ReportTextColor.Value</Color></Style>
           </ChartTitle>
         </ChartTitles>
         <Palette>BrightPastel</Palette>
