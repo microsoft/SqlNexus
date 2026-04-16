@@ -364,7 +364,7 @@ order by AVG(cast (CounterValue as float)) desc)</CommandText>
               <ChartAxis Name="Primary">
                 <Style>
                   <FontSize>8pt</FontSize>
-                </Style>
+                <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartAxisTitle>
                   <Caption>Time</Caption>
                   <Style>
@@ -398,7 +398,7 @@ order by AVG(cast (CounterValue as float)) desc)</CommandText>
               <ChartAxis Name="Secondary">
                 <Style>
                   <FontSize>8pt</FontSize>
-                </Style>
+                <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartAxisTitle>
                   <Caption>Axis Title</Caption>
                   <Style>
@@ -435,7 +435,7 @@ order by AVG(cast (CounterValue as float)) desc)</CommandText>
               <ChartAxis Name="Primary">
                 <Style>
                   <FontSize>8pt</FontSize>
-                </Style>
+                <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartAxisTitle>
                   <Caption>Top 10 CPU Processes</Caption>
                   <Style>
@@ -468,7 +468,7 @@ order by AVG(cast (CounterValue as float)) desc)</CommandText>
               <ChartAxis Name="Secondary">
                 <Style>
                   <FontSize>8pt</FontSize>
-                </Style>
+                <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartAxisTitle>
                   <Caption>Axis Title</Caption>
                   <Style>
@@ -671,7 +671,7 @@ order by AVG(cast (CounterValue as float)) desc)</CommandText>
               <ChartAxis Name="Primary">
                 <Style>
                   <FontSize>8pt</FontSize>
-                </Style>
+                <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartAxisTitle>
                   <Caption>Time</Caption>
                   <Style>
@@ -705,7 +705,7 @@ order by AVG(cast (CounterValue as float)) desc)</CommandText>
               <ChartAxis Name="Secondary">
                 <Style>
                   <FontSize>8pt</FontSize>
-                </Style>
+                <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartAxisTitle>
                   <Caption>Axis Title</Caption>
                   <Style>
@@ -742,7 +742,7 @@ order by AVG(cast (CounterValue as float)) desc)</CommandText>
               <ChartAxis Name="Primary">
                 <Style>
                   <FontSize>8pt</FontSize>
-                </Style>
+                <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartAxisTitle>
                   <Caption>% Privileged Time</Caption>
                   <Style>
@@ -775,7 +775,7 @@ order by AVG(cast (CounterValue as float)) desc)</CommandText>
               <ChartAxis Name="Secondary">
                 <Style>
                   <FontSize>8pt</FontSize>
-                </Style>
+                <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartAxisTitle>
                   <Caption>Axis Title</Caption>
                   <Style>
@@ -939,7 +939,7 @@ order by AVG(cast (CounterValue as float)) desc)</CommandText>
               <ChartAxis Name="Primary">
                 <Style>
                   <FontSize>8pt</FontSize>
-                </Style>
+                <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartAxisTitle>
                   <Caption>Time</Caption>
                   <Style>
@@ -973,7 +973,7 @@ order by AVG(cast (CounterValue as float)) desc)</CommandText>
               <ChartAxis Name="Secondary">
                 <Style>
                   <FontSize>8pt</FontSize>
-                </Style>
+                <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartAxisTitle>
                   <Caption>Axis Title</Caption>
                   <Style>
@@ -1010,7 +1010,7 @@ order by AVG(cast (CounterValue as float)) desc)</CommandText>
               <ChartAxis Name="Primary">
                 <Style>
                   <FontSize>8pt</FontSize>
-                </Style>
+                <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartAxisTitle>
                   <Caption>Compilations/sec</Caption>
                   <Style>
@@ -1043,7 +1043,7 @@ order by AVG(cast (CounterValue as float)) desc)</CommandText>
               <ChartAxis Name="Secondary">
                 <Style>
                   <FontSize>8pt</FontSize>
-                </Style>
+                <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartAxisTitle>
                   <Caption>Axis Title</Caption>
                   <Style>
@@ -1188,7 +1188,7 @@ order by AVG(cast (CounterValue as float)) desc)</CommandText>
               <ChartAxis Name="Primary">
                 <Style>
                   <FontSize>8pt</FontSize>
-                </Style>
+                <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartAxisTitle>
                   <Caption>Time</Caption>
                   <Style>
@@ -1222,7 +1222,7 @@ order by AVG(cast (CounterValue as float)) desc)</CommandText>
               <ChartAxis Name="Secondary">
                 <Style>
                   <FontSize>8pt</FontSize>
-                </Style>
+                <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartAxisTitle>
                   <Caption>Axis Title</Caption>
                   <Style>
@@ -1259,7 +1259,7 @@ order by AVG(cast (CounterValue as float)) desc)</CommandText>
               <ChartAxis Name="Primary">
                 <Style>
                   <FontSize>8pt</FontSize>
-                </Style>
+                <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartAxisTitle>
                   <Caption>SQL Re-compilations/sec</Caption>
                   <Style>
@@ -1292,7 +1292,7 @@ order by AVG(cast (CounterValue as float)) desc)</CommandText>
               <ChartAxis Name="Secondary">
                 <Style>
                   <FontSize>8pt</FontSize>
-                </Style>
+                <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartAxisTitle>
                   <Caption>Axis Title</Caption>
                   <Style>
@@ -1437,7 +1437,7 @@ order by AVG(cast (CounterValue as float)) desc)</CommandText>
               <ChartAxis Name="Primary">
                 <Style>
                   <FontSize>8pt</FontSize>
-                </Style>
+                <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartAxisTitle>
                   <Caption>Time</Caption>
                   <Style>
@@ -1471,7 +1471,7 @@ order by AVG(cast (CounterValue as float)) desc)</CommandText>
               <ChartAxis Name="Secondary">
                 <Style>
                   <FontSize>8pt</FontSize>
-                </Style>
+                <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartAxisTitle>
                   <Caption>Axis Title</Caption>
                   <Style>
@@ -1508,7 +1508,7 @@ order by AVG(cast (CounterValue as float)) desc)</CommandText>
               <ChartAxis Name="Primary">
                 <Style>
                   <FontSize>8pt</FontSize>
-                </Style>
+                <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartAxisTitle>
                   <Caption>Batches/Sec</Caption>
                   <Style>
@@ -1541,7 +1541,7 @@ order by AVG(cast (CounterValue as float)) desc)</CommandText>
               <ChartAxis Name="Secondary">
                 <Style>
                   <FontSize>8pt</FontSize>
-                </Style>
+                <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartAxisTitle>
                   <Caption>Axis Title</Caption>
                   <Style>
@@ -1691,7 +1691,7 @@ order by AVG(cast (CounterValue as float)) desc)</CommandText>
               <ChartAxis Name="Primary">
                 <Style>
                   <FontSize>8pt</FontSize>
-                </Style>
+                <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartAxisTitle>
                   <Caption>Time</Caption>
                   <Style>
@@ -1725,7 +1725,7 @@ order by AVG(cast (CounterValue as float)) desc)</CommandText>
               <ChartAxis Name="Secondary">
                 <Style>
                   <FontSize>8pt</FontSize>
-                </Style>
+                <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartAxisTitle>
                   <Caption>Axis Title</Caption>
                   <Style>
@@ -1762,7 +1762,7 @@ order by AVG(cast (CounterValue as float)) desc)</CommandText>
               <ChartAxis Name="Primary">
                 <Style>
                   <FontSize>8pt</FontSize>
-                </Style>
+                <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartAxisTitle>
                   <Caption>% User Time</Caption>
                   <Style>
@@ -1795,7 +1795,7 @@ order by AVG(cast (CounterValue as float)) desc)</CommandText>
               <ChartAxis Name="Secondary">
                 <Style>
                   <FontSize>8pt</FontSize>
-                </Style>
+                <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartAxisTitle>
                   <Caption>Axis Title</Caption>
                   <Style>

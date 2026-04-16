@@ -566,7 +566,7 @@ ELSE
                   <ChartAxis Name="Secondary">
                     <Style>
                       <FontSize>8pt</FontSize>
-                    </Style>
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     <ChartAxisTitle>
                       <Caption />
                       <Style>
@@ -643,7 +643,7 @@ ELSE
                   <ChartAxis Name="Secondary">
                     <Style>
                       <FontSize>8pt</FontSize>
-                    </Style>
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     <ChartAxisTitle>
                       <Caption />
                       <Style>
@@ -715,7 +715,7 @@ ELSE
             </ChartTitles>
             <Palette>Excel</Palette>
             <ChartBorderSkin>
-              <ChartBorderSkinType>Emboss</ChartBorderSkinType>
+              <ChartBorderSkinType>None</ChartBorderSkinType>
               <Style>
                 <BackgroundColor>Gray</BackgroundColor>
                 <BackgroundGradientType>None</BackgroundGradientType>

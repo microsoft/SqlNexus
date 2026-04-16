@@ -381,7 +381,8 @@ EXEC sp_executesql @sqlcmd;</CommandText>
                 <Style>
                   <BackgroundGradientType>None</BackgroundGradientType>
                   <FontSize>8pt</FontSize>
-                </Style>
+                
+                  <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <Position>TopLeft</Position>
                 <ChartLegendTitle>
                   <Caption />

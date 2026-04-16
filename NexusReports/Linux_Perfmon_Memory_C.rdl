@@ -394,7 +394,7 @@ order by CounterDateTime</CommandText>
               <ChartAxis Name="Primary">
                 <Style>
                   <FontSize>8pt</FontSize>
-                </Style>
+                <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartAxisTitle>
                   <Caption>Time</Caption>
                   <Style>
@@ -428,7 +428,7 @@ order by CounterDateTime</CommandText>
               <ChartAxis Name="Secondary">
                 <Style>
                   <FontSize>8pt</FontSize>
-                </Style>
+                <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartAxisTitle>
                   <Caption>Axis Title</Caption>
                   <Style>
@@ -465,7 +465,7 @@ order by CounterDateTime</CommandText>
               <ChartAxis Name="Primary">
                 <Style>
                   <FontSize>8pt</FontSize>
-                </Style>
+                <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartAxisTitle>
                   <Caption>Top 10 Memory Processes</Caption>
                   <Style>
@@ -498,7 +498,7 @@ order by CounterDateTime</CommandText>
               <ChartAxis Name="Secondary">
                 <Style>
                   <FontSize>8pt</FontSize>
-                </Style>
+                <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartAxisTitle>
                   <Caption>Axis Title</Caption>
                   <Style>
@@ -696,7 +696,7 @@ order by CounterDateTime</CommandText>
               <ChartAxis Name="Primary">
                 <Style>
                   <FontSize>8pt</FontSize>
-                </Style>
+                <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartAxisTitle>
                   <Caption>Time</Caption>
                   <Style>
@@ -730,7 +730,7 @@ order by CounterDateTime</CommandText>
               <ChartAxis Name="Secondary">
                 <Style>
                   <FontSize>8pt</FontSize>
-                </Style>
+                <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartAxisTitle>
                   <Caption>Axis Title</Caption>
                   <Style>
@@ -767,7 +767,7 @@ order by CounterDateTime</CommandText>
               <ChartAxis Name="Primary">
                 <Style>
                   <FontSize>8pt</FontSize>
-                </Style>
+                <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartAxisTitle>
                   <Caption>Available MBytes</Caption>
                   <Style>
@@ -800,7 +800,7 @@ order by CounterDateTime</CommandText>
               <ChartAxis Name="Secondary">
                 <Style>
                   <FontSize>8pt</FontSize>
-                </Style>
+                <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartAxisTitle>
                   <Caption>Axis Title</Caption>
                   <Style>
@@ -945,7 +945,7 @@ order by CounterDateTime</CommandText>
               <ChartAxis Name="Primary">
                 <Style>
                   <FontSize>8pt</FontSize>
-                </Style>
+                <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartAxisTitle>
                   <Caption>Time</Caption>
                   <Style>
@@ -979,7 +979,7 @@ order by CounterDateTime</CommandText>
               <ChartAxis Name="Secondary">
                 <Style>
                   <FontSize>8pt</FontSize>
-                </Style>
+                <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartAxisTitle>
                   <Caption>Axis Title</Caption>
                   <Style>
@@ -1016,7 +1016,7 @@ order by CounterDateTime</CommandText>
               <ChartAxis Name="Primary">
                 <Style>
                   <FontSize>8pt</FontSize>
-                </Style>
+                <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartAxisTitle>
                   <Caption>Cache Bytes ( In MB )</Caption>
                   <Style>
@@ -1049,7 +1049,7 @@ order by CounterDateTime</CommandText>
               <ChartAxis Name="Secondary">
                 <Style>
                   <FontSize>8pt</FontSize>
-                </Style>
+                <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartAxisTitle>
                   <Caption>Axis Title</Caption>
                   <Style>
@@ -1194,7 +1194,7 @@ order by CounterDateTime</CommandText>
               <ChartAxis Name="Primary">
                 <Style>
                   <FontSize>8pt</FontSize>
-                </Style>
+                <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartAxisTitle>
                   <Caption>Time</Caption>
                   <Style>
@@ -1228,7 +1228,7 @@ order by CounterDateTime</CommandText>
               <ChartAxis Name="Secondary">
                 <Style>
                   <FontSize>8pt</FontSize>
-                </Style>
+                <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartAxisTitle>
                   <Caption>Axis Title</Caption>
                   <Style>
@@ -1265,7 +1265,7 @@ order by CounterDateTime</CommandText>
               <ChartAxis Name="Primary">
                 <Style>
                   <FontSize>8pt</FontSize>
-                </Style>
+                <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartAxisTitle>
                   <Caption>Lazy writes/sec</Caption>
                   <Style>
@@ -1298,7 +1298,7 @@ order by CounterDateTime</CommandText>
               <ChartAxis Name="Secondary">
                 <Style>
                   <FontSize>8pt</FontSize>
-                </Style>
+                <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartAxisTitle>
                   <Caption>Axis Title</Caption>
                   <Style>
@@ -1445,7 +1445,7 @@ Indicates the number of buffers written per second by the buffer manager's lazy 
               <ChartAxis Name="Primary">
                 <Style>
                   <FontSize>8pt</FontSize>
-                </Style>
+                <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartAxisTitle>
                   <Caption>Time</Caption>
                   <Style>
@@ -1479,7 +1479,7 @@ Indicates the number of buffers written per second by the buffer manager's lazy 
               <ChartAxis Name="Secondary">
                 <Style>
                   <FontSize>8pt</FontSize>
-                </Style>
+                <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartAxisTitle>
                   <Caption>Axis Title</Caption>
                   <Style>
@@ -1516,7 +1516,7 @@ Indicates the number of buffers written per second by the buffer manager's lazy 
               <ChartAxis Name="Primary">
                 <Style>
                   <FontSize>8pt</FontSize>
-                </Style>
+                <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartAxisTitle>
                   <Caption>Checkpoint pages/sec</Caption>
                   <Style>
@@ -1549,7 +1549,7 @@ Indicates the number of buffers written per second by the buffer manager's lazy 
               <ChartAxis Name="Secondary">
                 <Style>
                   <FontSize>8pt</FontSize>
-                </Style>
+                <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartAxisTitle>
                   <Caption>Axis Title</Caption>
                   <Style>
@@ -1696,7 +1696,7 @@ Indicates the number of pages flushed to disk per second by a checkpoint or othe
               <ChartAxis Name="Primary">
                 <Style>
                   <FontSize>8pt</FontSize>
-                </Style>
+                <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartAxisTitle>
                   <Caption>Time</Caption>
                   <Style>
@@ -1730,7 +1730,7 @@ Indicates the number of pages flushed to disk per second by a checkpoint or othe
               <ChartAxis Name="Secondary">
                 <Style>
                   <FontSize>8pt</FontSize>
-                </Style>
+                <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartAxisTitle>
                   <Caption>Axis Title</Caption>
                   <Style>
@@ -1767,7 +1767,7 @@ Indicates the number of pages flushed to disk per second by a checkpoint or othe
               <ChartAxis Name="Primary">
                 <Style>
                   <FontSize>8pt</FontSize>
-                </Style>
+                <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartAxisTitle>
                   <Caption>Page Life Expectancy</Caption>
                   <Style>
@@ -1800,7 +1800,7 @@ Indicates the number of pages flushed to disk per second by a checkpoint or othe
               <ChartAxis Name="Secondary">
                 <Style>
                   <FontSize>8pt</FontSize>
-                </Style>
+                <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartAxisTitle>
                   <Caption>Axis Title</Caption>
                   <Style>

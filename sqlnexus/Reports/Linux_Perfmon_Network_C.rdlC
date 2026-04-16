@@ -285,7 +285,7 @@ order by CounterDateTime</CommandText>
               <ChartAxis Name="Primary">
                 <Style>
                   <FontSize>8pt</FontSize>
-                </Style>
+                <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartAxisTitle>
                   <Caption>Time</Caption>
                   <Style>
@@ -319,7 +319,7 @@ order by CounterDateTime</CommandText>
               <ChartAxis Name="Secondary">
                 <Style>
                   <FontSize>8pt</FontSize>
-                </Style>
+                <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartAxisTitle>
                   <Caption>Axis Title</Caption>
                   <Style>
@@ -356,7 +356,7 @@ order by CounterDateTime</CommandText>
               <ChartAxis Name="Primary">
                 <Style>
                   <FontSize>8pt</FontSize>
-                </Style>
+                <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartAxisTitle>
                   <Caption>Output Queue Length</Caption>
                   <Style>
@@ -389,7 +389,7 @@ order by CounterDateTime</CommandText>
               <ChartAxis Name="Secondary">
                 <Style>
                   <FontSize>8pt</FontSize>
-                </Style>
+                <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartAxisTitle>
                   <Caption>Axis Title</Caption>
                   <Style>
@@ -592,7 +592,7 @@ order by CounterDateTime</CommandText>
               <ChartAxis Name="Primary">
                 <Style>
                   <FontSize>8pt</FontSize>
-                </Style>
+                <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartAxisTitle>
                   <Caption>Time</Caption>
                   <Style>
@@ -626,7 +626,7 @@ order by CounterDateTime</CommandText>
               <ChartAxis Name="Secondary">
                 <Style>
                   <FontSize>8pt</FontSize>
-                </Style>
+                <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartAxisTitle>
                   <Caption>Axis Title</Caption>
                   <Style>
@@ -663,7 +663,7 @@ order by CounterDateTime</CommandText>
               <ChartAxis Name="Primary">
                 <Style>
                   <FontSize>8pt</FontSize>
-                </Style>
+                <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartAxisTitle>
                   <Caption>Packets Received Discarded</Caption>
                   <Style>
@@ -696,7 +696,7 @@ order by CounterDateTime</CommandText>
               <ChartAxis Name="Secondary">
                 <Style>
                   <FontSize>8pt</FontSize>
-                </Style>
+                <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartAxisTitle>
                   <Caption>Axis Title</Caption>
                   <Style>
@@ -865,7 +865,7 @@ order by CounterDateTime</CommandText>
               <ChartAxis Name="Primary">
                 <Style>
                   <FontSize>8pt</FontSize>
-                </Style>
+                <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartAxisTitle>
                   <Caption>Time</Caption>
                   <Style>
@@ -899,7 +899,7 @@ order by CounterDateTime</CommandText>
               <ChartAxis Name="Secondary">
                 <Style>
                   <FontSize>8pt</FontSize>
-                </Style>
+                <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartAxisTitle>
                   <Caption>Axis Title</Caption>
                   <Style>
@@ -936,7 +936,7 @@ order by CounterDateTime</CommandText>
               <ChartAxis Name="Primary">
                 <Style>
                   <FontSize>8pt</FontSize>
-                </Style>
+                <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartAxisTitle>
                   <Caption>Packets Outbound Discarded</Caption>
                   <Style>
@@ -969,7 +969,7 @@ order by CounterDateTime</CommandText>
               <ChartAxis Name="Secondary">
                 <Style>
                   <FontSize>8pt</FontSize>
-                </Style>
+                <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartAxisTitle>
                   <Caption>Axis Title</Caption>
                   <Style>
@@ -1138,7 +1138,7 @@ order by CounterDateTime</CommandText>
               <ChartAxis Name="Primary">
                 <Style>
                   <FontSize>8pt</FontSize>
-                </Style>
+                <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartAxisTitle>
                   <Caption>Time</Caption>
                   <Style>
@@ -1172,7 +1172,7 @@ order by CounterDateTime</CommandText>
               <ChartAxis Name="Secondary">
                 <Style>
                   <FontSize>8pt</FontSize>
-                </Style>
+                <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartAxisTitle>
                   <Caption>Axis Title</Caption>
                   <Style>
@@ -1209,7 +1209,7 @@ order by CounterDateTime</CommandText>
               <ChartAxis Name="Primary">
                 <Style>
                   <FontSize>8pt</FontSize>
-                </Style>
+                <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartAxisTitle>
                   <Caption>Bytes Total/Sec</Caption>
                   <Style>
@@ -1242,7 +1242,7 @@ order by CounterDateTime</CommandText>
               <ChartAxis Name="Secondary">
                 <Style>
                   <FontSize>8pt</FontSize>
-                </Style>
+                <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartAxisTitle>
                   <Caption>Axis Title</Caption>
                   <Style>

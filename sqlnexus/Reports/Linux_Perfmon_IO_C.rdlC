@@ -326,7 +326,7 @@ order by CounterDateTime</CommandText>
                   <ChartAxis Name="Primary">
                     <Style>
                       <FontSize>8pt</FontSize>
-                    </Style>
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     <ChartAxisTitle>
                       <Caption>Time</Caption>
                       <Style>
@@ -363,7 +363,7 @@ order by CounterDateTime</CommandText>
                   <ChartAxis Name="Secondary">
                     <Style>
                       <FontSize>8pt</FontSize>
-                    </Style>
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     <ChartAxisTitle>
                       <Caption>Axis Title</Caption>
                       <Style>
@@ -403,7 +403,7 @@ order by CounterDateTime</CommandText>
                   <ChartAxis Name="Primary">
                     <Style>
                       <FontSize>8pt</FontSize>
-                    </Style>
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     <ChartAxisTitle>
                       <Caption>Avg Disk Sec/Read</Caption>
                       <Style>
@@ -439,7 +439,7 @@ order by CounterDateTime</CommandText>
                   <ChartAxis Name="Secondary">
                     <Style>
                       <FontSize>8pt</FontSize>
-                    </Style>
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     <ChartAxisTitle>
                       <Caption>Axis Title</Caption>
                       <Style>
@@ -646,7 +646,7 @@ order by CounterDateTime</CommandText>
                   <ChartAxis Name="Primary">
                     <Style>
                       <FontSize>8pt</FontSize>
-                    </Style>
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     <ChartAxisTitle>
                       <Caption>Time</Caption>
                       <Style>
@@ -683,7 +683,7 @@ order by CounterDateTime</CommandText>
                   <ChartAxis Name="Secondary">
                     <Style>
                       <FontSize>8pt</FontSize>
-                    </Style>
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     <ChartAxisTitle>
                       <Caption>Axis Title</Caption>
                       <Style>
@@ -723,7 +723,7 @@ order by CounterDateTime</CommandText>
                   <ChartAxis Name="Primary">
                     <Style>
                       <FontSize>8pt</FontSize>
-                    </Style>
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     <ChartAxisTitle>
                       <Caption>Avg Disk Sec/Write</Caption>
                       <Style>
@@ -759,7 +759,7 @@ order by CounterDateTime</CommandText>
                   <ChartAxis Name="Secondary">
                     <Style>
                       <FontSize>8pt</FontSize>
-                    </Style>
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     <ChartAxisTitle>
                       <Caption>Axis Title</Caption>
                       <Style>
@@ -933,7 +933,7 @@ order by CounterDateTime</CommandText>
                   <ChartAxis Name="Primary">
                     <Style>
                       <FontSize>8pt</FontSize>
-                    </Style>
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     <ChartAxisTitle>
                       <Caption>Time</Caption>
                       <Style>
@@ -970,7 +970,7 @@ order by CounterDateTime</CommandText>
                   <ChartAxis Name="Secondary">
                     <Style>
                       <FontSize>8pt</FontSize>
-                    </Style>
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     <ChartAxisTitle>
                       <Caption>Axis Title</Caption>
                       <Style>
@@ -1010,7 +1010,7 @@ order by CounterDateTime</CommandText>
                   <ChartAxis Name="Primary">
                     <Style>
                       <FontSize>8pt</FontSize>
-                    </Style>
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     <ChartAxisTitle>
                       <Caption>Disk MB/Sec</Caption>
                       <Style>
@@ -1046,7 +1046,7 @@ order by CounterDateTime</CommandText>
                   <ChartAxis Name="Secondary">
                     <Style>
                       <FontSize>8pt</FontSize>
-                    </Style>
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     <ChartAxisTitle>
                       <Caption>Axis Title</Caption>
                       <Style>
@@ -1220,7 +1220,7 @@ order by CounterDateTime</CommandText>
                   <ChartAxis Name="Primary">
                     <Style>
                       <FontSize>8pt</FontSize>
-                    </Style>
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     <ChartAxisTitle>
                       <Caption>Time</Caption>
                       <Style>
@@ -1257,7 +1257,7 @@ order by CounterDateTime</CommandText>
                   <ChartAxis Name="Secondary">
                     <Style>
                       <FontSize>8pt</FontSize>
-                    </Style>
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     <ChartAxisTitle>
                       <Caption>Axis Title</Caption>
                       <Style>
@@ -1297,7 +1297,7 @@ order by CounterDateTime</CommandText>
                   <ChartAxis Name="Primary">
                     <Style>
                       <FontSize>8pt</FontSize>
-                    </Style>
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     <ChartAxisTitle>
                       <Caption>Disk MB/Sec</Caption>
                       <Style>
@@ -1333,7 +1333,7 @@ order by CounterDateTime</CommandText>
                   <ChartAxis Name="Secondary">
                     <Style>
                       <FontSize>8pt</FontSize>
-                    </Style>
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     <ChartAxisTitle>
                       <Caption>Axis Title</Caption>
                       <Style>
@@ -1508,7 +1508,7 @@ order by CounterDateTime</CommandText>
                   <ChartAxis Name="Primary">
                     <Style>
                       <FontSize>8pt</FontSize>
-                    </Style>
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     <ChartAxisTitle>
                       <Caption>Time</Caption>
                       <Style>
@@ -1545,7 +1545,7 @@ order by CounterDateTime</CommandText>
                   <ChartAxis Name="Secondary">
                     <Style>
                       <FontSize>8pt</FontSize>
-                    </Style>
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     <ChartAxisTitle>
                       <Caption>Axis Title</Caption>
                       <Style>
@@ -1585,7 +1585,7 @@ order by CounterDateTime</CommandText>
                   <ChartAxis Name="Primary">
                     <Style>
                       <FontSize>8pt</FontSize>
-                    </Style>
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     <ChartAxisTitle>
                       <Caption>Avg Disk Queue Length</Caption>
                       <Style>
@@ -1621,7 +1621,7 @@ order by CounterDateTime</CommandText>
                   <ChartAxis Name="Secondary">
                     <Style>
                       <FontSize>8pt</FontSize>
-                    </Style>
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     <ChartAxisTitle>
                       <Caption>Axis Title</Caption>
                       <Style>
