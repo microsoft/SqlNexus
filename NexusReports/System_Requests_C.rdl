@@ -7,9 +7,9 @@
     </am:CreatedBy>
     <am:UpdatedBy>
       <am:Name>SSDTRS</am:Name>
-      <am:Version>17.14.37111.16</am:Version>
+      <am:Version>17.14.37203.1</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2026-04-10T17:43:09.7748627Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2026-04-17T19:07:57.3879168Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
@@ -1006,6 +1006,7 @@ ORDER BY 4 DESC;</CommandText>
                       <FontFamily>Tahoma</FontFamily>
                       <FontSize>8pt</FontSize>
                       <Format>#,0;(#,0)</Format>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                     <ChartAxisTitle>
                       <Caption>CPU % over Elapse Time</Caption>
@@ -1252,7 +1253,9 @@ ORDER BY 4 DESC;</CommandText>
                               <TextRuns>
                                 <TextRun>
                                   <Value>Parmaeter</Value>
-                                  <Style />
+                                  <Style>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style>
@@ -1273,6 +1276,7 @@ ORDER BY 4 DESC;</CommandText>
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
+                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                     <TablixCell>
@@ -1285,7 +1289,9 @@ ORDER BY 4 DESC;</CommandText>
                               <TextRuns>
                                 <TextRun>
                                   <Value>Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style>
@@ -1306,6 +1312,7 @@ ORDER BY 4 DESC;</CommandText>
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
+                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                   </TablixCells>

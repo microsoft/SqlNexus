@@ -9,7 +9,7 @@
       <am:Name>SSDTRS</am:Name>
       <am:Version>17.14.37203.1</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2026-04-17T11:54:02.3487061Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2026-04-17T19:11:53.6557571Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
@@ -180,6 +180,9 @@ END;</CommandText>
                       <CellContents>
                         <Textbox Name="Textbox1">
                           <CanGrow>true</CanGrow>
+                          <UserSort>
+                            <SortExpression>=Fields!Name.Value</SortExpression>
+                          </UserSort>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
@@ -215,6 +218,9 @@ END;</CommandText>
                       <CellContents>
                         <Textbox Name="Textbox3">
                           <CanGrow>true</CanGrow>
+                          <UserSort>
+                            <SortExpression>=Fields!Company.Value</SortExpression>
+                          </UserSort>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
@@ -250,6 +256,9 @@ END;</CommandText>
                       <CellContents>
                         <Textbox Name="Textbox5">
                           <CanGrow>true</CanGrow>
+                          <UserSort>
+                            <SortExpression>=Fields!file_version.Value</SortExpression>
+                          </UserSort>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
@@ -279,6 +288,7 @@ END;</CommandText>
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
+                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                     <TablixCell>
@@ -547,6 +557,17 @@ END;</CommandText>
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>DataSet_Loaded_Modules</DataSetName>
+            <SortExpressions>
+              <SortExpression>
+                <Value>=Fields!Name.Value</Value>
+              </SortExpression>
+              <SortExpression>
+                <Value>=Fields!Company.Value</Value>
+              </SortExpression>
+              <SortExpression>
+                <Value>=Fields!product_version.Value</Value>
+              </SortExpression>
+            </SortExpressions>
             <Top>1.23625in</Top>
             <Left>0.66333in</Left>
             <Height>0.4375in</Height>
