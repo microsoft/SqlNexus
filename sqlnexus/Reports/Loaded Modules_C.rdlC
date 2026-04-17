@@ -9,7 +9,7 @@
       <am:Name>SSDTRS</am:Name>
       <am:Version>17.14.37203.1</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2026-04-15T20:00:57.2968463Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2026-04-17T11:54:02.3487061Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
@@ -98,7 +98,7 @@ END;</CommandText>
                       <FontFamily>Trebuchet MS</FontFamily>
                       <FontSize>16pt</FontSize>
                       <FontWeight>Bold</FontWeight>
-                      <Color>=Variables!ReportTextColor.Value</Color>
+                      <Color>=Variables!TitleColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -112,6 +112,9 @@ END;</CommandText>
             <Height>0.35417in</Height>
             <Width>12.42708in</Width>
             <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
               <PaddingTop>2pt</PaddingTop>
@@ -186,7 +189,7 @@ END;</CommandText>
                                   <Style>
                                     <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>=Variables!ReportTextColor.Value</Color>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -221,7 +224,7 @@ END;</CommandText>
                                   <Style>
                                     <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>=Variables!ReportTextColor.Value</Color>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -256,7 +259,7 @@ END;</CommandText>
                                   <Style>
                                     <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>=Variables!ReportTextColor.Value</Color>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -291,7 +294,7 @@ END;</CommandText>
                                   <Style>
                                     <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>=Variables!ReportTextColor.Value</Color>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -326,7 +329,7 @@ END;</CommandText>
                                   <Style>
                                     <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>=Variables!ReportTextColor.Value</Color>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -377,6 +380,7 @@ END;</CommandText>
                               <Color>LightGrey</Color>
                               <Style>Solid</Style>
                             </Border>
+                            <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(nothing))</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -396,7 +400,8 @@ END;</CommandText>
                                 <TextRun>
                                   <Value>=Fields!Company.Value</Value>
                                   <Style>
-                                    <Color>=Variables!ReportTextColor.Value</Color>
+                                    <FontWeight>=IIF(Fields!Company.Value="Microsoft Corporation", "No Color",IIF(Fields!Company.Value="Microsoft Corp.","No Color", "Bold"))</FontWeight>
+                                    <Color>=IIF(Fields!Company.Value="Microsoft Corporation", Variables!ReportTextColor.Value,IIF(Fields!Company.Value="Microsoft Corp.",Variables!ReportTextColor.Value, "Tomato"))</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -409,7 +414,7 @@ END;</CommandText>
                               <Color>LightGrey</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>=IIF(Fields!Company.Value="Microsoft Corporation", "No Color",IIF(Fields!Company.Value="Microsoft Corp.","No Color", "Yellow"))</BackgroundColor>
+                            <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(nothing))</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -442,6 +447,7 @@ END;</CommandText>
                               <Color>LightGrey</Color>
                               <Style>Solid</Style>
                             </Border>
+                            <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(nothing))</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -474,6 +480,7 @@ END;</CommandText>
                               <Color>LightGrey</Color>
                               <Style>Solid</Style>
                             </Border>
+                            <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(nothing))</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -507,6 +514,7 @@ END;</CommandText>
                               <Color>LightGrey</Color>
                               <Style>Solid</Style>
                             </Border>
+                            <BackgroundColor>=code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(nothing))</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -639,7 +647,11 @@ END;</CommandText>
         </ReportItems>
         <Height>5.80416in</Height>
         <Style>
-          <Border />
+          <Border>
+            <Color>=Variables!ReportTextColor.Value</Color>
+            <Style>None</Style>
+          </Border>
+          <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
         </Style>
       </Body>
       <Width>14.63208in</Width>
@@ -651,7 +663,7 @@ END;</CommandText>
         <TopMargin>0.5in</TopMargin>
         <BottomMargin>0.5in</BottomMargin>
         <Style>
-          <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
+          <BackgroundColor>=Parameters!FmtAmbientBackground.Value</BackgroundColor>
         </Style>
       </Page>
     </ReportSection>
@@ -791,6 +803,20 @@ END;</CommandText>
       </CellDefinitions>
     </GridLayoutDefinition>
   </ReportParametersLayout>
+  <Code>
+    Function GetTableRowFillColor(Theme as String, RowNumber As Integer) As String
+    If Theme ="Aquatic" Then
+    return "#202020"
+    ElseIf Theme ="Desert" Then
+    return "#FFFAEF"
+    Elseif RowNumber Mod 2 &lt;&gt; 0 Then
+    return "White"
+    Else
+    Return "LightSteelBlue"
+    End If
+    End Function
+
+  </Code>
   <EmbeddedImages>
     <EmbeddedImage Name="warning">
       <MIMEType>image/gif</MIMEType>
@@ -802,30 +828,77 @@ END;</CommandText>
     <Variable Name="IsLocalReport">
       <Value>= (Globals!ReportServerUrl="")</Value>
     </Variable>
-    <Variable Name="ReportTextColor">
-      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
-Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
-Parameters!ContrastTheme.Value="None", "Black")</Value>
+    <Variable Name="FLocalMode">
+      <Value>=Globals!ReportServerUrl = ""</Value>
     </Variable>
-    <Variable Name="BodyColor">
-      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
-Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
-Parameters!ContrastTheme.Value="None", "No Color")</Value>
+    <Variable Name="ReportTextColor">
+      <Value>
+        =Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+        Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+        Parameters!ContrastTheme.Value="None", "Black")
+      </Value>
+    </Variable>
+    <Variable Name="BodyBackgroundColor">
+      <Value>
+        =Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
+        Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
+        Parameters!ContrastTheme.Value="None", "#FAFDFF")
+      </Value>
     </Variable>
     <Variable Name="TitleColor">
-      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
-Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
-Parameters!ContrastTheme.Value="None", "#1c3a70")</Value>
-    </Variable>
-    <Variable Name="URLColor">
-      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#75E9FC",
-Parameters!ContrastTheme.Value="Desert", "#1C5E75",
-Parameters!ContrastTheme.Value="None", "Blue")</Value>
+      <Value>
+        =Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+        Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+        Parameters!ContrastTheme.Value="None", "SteelBlue")
+      </Value>
     </Variable>
     <Variable Name="TableHeadingColor">
-      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "No Color",
-Parameters!ContrastTheme.Value="Desert", "No Color",
-Parameters!ContrastTheme.Value="None", "Gainsboro")</Value>
+      <Value>
+        =Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
+        Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
+        Parameters!ContrastTheme.Value="None", "SteelBlue")
+      </Value>
+    </Variable>
+    <Variable Name="ChartColor">
+      <Value>
+        =Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
+        Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
+        Parameters!ContrastTheme.Value="None", "LightSteelBlue")
+      </Value>
+    </Variable>
+    <Variable Name="ChartSecondaryColor">
+      <Value>
+        =Switch(Parameters!ContrastTheme.Value="Aquatic", "No Color",
+        Parameters!ContrastTheme.Value="Desert", "No Color",
+        Parameters!ContrastTheme.Value="None", "Automatic")
+      </Value>
+    </Variable>
+    <Variable Name="ChartGradientStyle">
+      <Value>
+        =Switch(Parameters!ContrastTheme.Value="Aquatic", "None",
+        Parameters!ContrastTheme.Value="Desert", "None",
+        Parameters!ContrastTheme.Value="None", "TopBottom")
+      </Value>
+    </Variable>
+    <Variable Name="TableShowCell">
+      <Value>"Red"</Value>
+    </Variable>
+    <Variable Name="TableHidcell">
+      <Value>"Green"</Value>
+    </Variable>
+    <Variable Name="TableHeadingFontColor">
+      <Value>
+        =Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+        Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+        Parameters!ContrastTheme.Value="None", "#FFFFFF")
+      </Value>
+    </Variable>
+    <Variable Name="URILinkFontColor">
+      <Value>
+        =Switch(Parameters!ContrastTheme.Value="Aquatic", "#75E9FC",
+        Parameters!ContrastTheme.Value="Desert", "#1C5E75",
+        Parameters!ContrastTheme.Value="None", "Blue")
+      </Value>
     </Variable>
   </Variables>
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>

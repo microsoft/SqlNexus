@@ -9,7 +9,7 @@
       <am:Name>SSDTRS</am:Name>
       <am:Version>17.14.37203.1</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2026-04-15T20:03:09.3307151Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2026-04-17T12:39:22.0531972Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
@@ -1227,6 +1227,9 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                   </ChartAxis>
                 </ChartValueAxes>
                 <Style>
+                  <Border>
+                    <Color>=Variables!ReportTextColor.Value</Color>
+                  </Border>
                   <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
                   <BackgroundGradientType>None</BackgroundGradientType>
                 </Style>
@@ -1239,8 +1242,8 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                     <Color>=Variables!ReportTextColor.Value</Color>
                   </Border>
                   <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
-                  <BackgroundGradientType>TopBottom</BackgroundGradientType>
-                  <BackgroundGradientEndColor>#c6daf8</BackgroundGradientEndColor>
+                  <BackgroundGradientType>None</BackgroundGradientType>
+                  <BackgroundGradientEndColor>=Variables!BodyColor.Value</BackgroundGradientEndColor>
                   <FontFamily>Tahoma</FontFamily>
                   <FontSize>8pt</FontSize>
                 </Style>
@@ -1314,8 +1317,8 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                 <Width>2pt</Width>
               </Border>
               <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
-              <BackgroundGradientType>TopBottom</BackgroundGradientType>
-              <BackgroundGradientEndColor>#e6eefc</BackgroundGradientEndColor>
+              <BackgroundGradientType>None</BackgroundGradientType>
+              <BackgroundGradientEndColor>=Variables!BodyColor.Value</BackgroundGradientEndColor>
             </Style>
           </Chart>
           <Textbox Name="ReportTitle">

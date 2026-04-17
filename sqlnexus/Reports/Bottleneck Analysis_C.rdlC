@@ -801,9 +801,8 @@ ELSE
                         <Style>None</Style>
                         <Width>0.75pt</Width>
                       </Border>
-                      <FontSize>8pt</FontSize>
                       <Format>M/d HH:mm</Format>
-                      <TextDecoration>Underline</TextDecoration>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                     <ChartAxisTitle>
                       <Caption />
@@ -880,19 +879,19 @@ ELSE
                         <Style>None</Style>
                         <Width>0.75pt</Width>
                       </Border>
-                      <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                     <ChartAxisTitle>
                       <Caption>% CPU</Caption>
                       <Style>
-                        <FontSize>8pt</FontSize>
+                        <Color>=Variables!ReportTextColor.Value</Color>
                       </Style>
                     </ChartAxisTitle>
                     <Margin>False</Margin>
                     <ChartMajorGridLines>
-                      <Enabled>True</Enabled>
                       <Style>
                         <Border>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                           <Style>Solid</Style>
                           <Width>0.75pt</Width>
                         </Border>
@@ -952,11 +951,13 @@ ELSE
                 </ChartThreeDProperties>
                 <Style>
                   <Border>
+                    <Color>=Variables!ReportTextColor.Value</Color>
                     <Style>Solid</Style>
                     <Width>0.75pt</Width>
                   </Border>
-                  <BackgroundColor>=Parameters!FmtChartBackground.Value</BackgroundColor>
-                  <BackgroundGradientType>DiagonalRight</BackgroundGradientType>
+                  <BackgroundColor>=Variables!ChartColor.Value</BackgroundColor>
+                  <BackgroundGradientType>=Variables!ChartGradientStyle.Value</BackgroundGradientType>
+                  <BackgroundGradientEndColor>=Variables!ChartSecondaryColor.Value</BackgroundGradientEndColor>
                 </Style>
               </ChartArea>
             </ChartAreas>
@@ -964,12 +965,14 @@ ELSE
               <ChartLegend Name="Default">
                 <Style>
                   <Border>
+                    <Color>=Variables!ReportTextColor.Value</Color>
                     <Style>Solid</Style>
                     <Width>0.75pt</Width>
                   </Border>
-                  <BackgroundColor>=Parameters!FmtChartBackground.Value</BackgroundColor>
-                  <BackgroundGradientType>DiagonalLeft</BackgroundGradientType>
-                  <FontSize>8pt</FontSize>
+                  <BackgroundColor>=Variables!ChartColor.Value</BackgroundColor>
+                  <BackgroundGradientType>=Variables!ChartGradientStyle.Value</BackgroundGradientType>
+                  <BackgroundGradientEndColor>=Variables!ChartSecondaryColor.Value</BackgroundGradientEndColor>
+                  <Color>=Variables!ReportTextColor.Value</Color>
                 </Style>
                 <Position>BottomCenter</Position>
                 <ChartLegendTitle>
@@ -986,7 +989,11 @@ ELSE
             <ChartTitles>
               <ChartTitle Name="Default">
                 <Caption>System CPU Utilization</Caption>
-                <Style />
+                <Style>
+                  <FontSize>11pt</FontSize>
+                  <FontWeight>Bold</FontWeight>
+                  <Color>=Variables!ReportTextColor.Value</Color>
+                </Style>
               </ChartTitle>
             </ChartTitles>
             <ChartBorderSkin>
@@ -994,7 +1001,7 @@ ELSE
               <Style>
                 <BackgroundColor>Gray</BackgroundColor>
                 <BackgroundGradientType>None</BackgroundGradientType>
-                <Color>=Variables!ReportTextColor.Value</Color>
+                <Color>White</Color>
               </Style>
             </ChartBorderSkin>
             <ChartNoDataMessage Name="NoDataMessageTitle">
@@ -1022,7 +1029,9 @@ ELSE
                 <Color>=Variables!ReportTextColor.Value</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundGradientType>DiagonalRight</BackgroundGradientType>
+              <BackgroundColor>=Variables!ChartColor.Value</BackgroundColor>
+              <BackgroundGradientType>=Variables!ChartGradientStyle.Value</BackgroundGradientType>
+              <BackgroundGradientEndColor>=Variables!ChartSecondaryColor.Value</BackgroundGradientEndColor>
               <FontSize>8pt</FontSize>
             </Style>
           </Chart>
@@ -1057,7 +1066,7 @@ ELSE
                       </ChartDataPointValues>
                       <ChartDataLabel>
                         <Style>
-                          <FontSize>8pt</FontSize>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Style>
                         <Label>=CInt(Fields!percent_of_total_waittime.Value) &amp; "%"</Label>
                         <Visible>true</Visible>
@@ -1146,6 +1155,7 @@ ELSE
                       </Border>
                       <FontSize>8pt</FontSize>
                       <FontWeight>Bold</FontWeight>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                     <ChartAxisTitle>
                       <Caption />
@@ -1217,14 +1227,14 @@ ELSE
                         <Style>None</Style>
                         <Width>0.75pt</Width>
                       </Border>
-                      <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                     <ChartAxisTitle>
                       <Caption>% Active Thread Time</Caption>
                       <Style>
-                        <FontSize>8pt</FontSize>
                         <FontWeight>Bold</FontWeight>
                         <TextDecoration>None</TextDecoration>
+                        <Color>=Variables!ReportTextColor.Value</Color>
                       </Style>
                     </ChartAxisTitle>
                     <Margin>False</Margin>
@@ -1292,11 +1302,13 @@ ELSE
                 </ChartThreeDProperties>
                 <Style>
                   <Border>
+                    <Color>=Variables!ReportTextColor.Value</Color>
                     <Style>Solid</Style>
                     <Width>0.75pt</Width>
                   </Border>
-                  <BackgroundColor>=Parameters!FmtChartBackground.Value</BackgroundColor>
-                  <BackgroundGradientType>TopBottom</BackgroundGradientType>
+                  <BackgroundColor>=Variables!ChartColor.Value</BackgroundColor>
+                  <BackgroundGradientType>=Variables!ChartGradientStyle.Value</BackgroundGradientType>
+                  <BackgroundGradientEndColor>=Variables!ChartSecondaryColor.Value</BackgroundGradientEndColor>
                   <BackgroundHatchType>None</BackgroundHatchType>
                 </Style>
               </ChartArea>
@@ -1330,7 +1342,7 @@ ELSE
                   <FontFamily>Tahoma</FontFamily>
                   <FontSize>14pt</FontSize>
                   <FontWeight>Bold</FontWeight>
-                  <Color>=Variables!TitleColor.Value</Color>
+                  <Color>=Variables!ReportTextColor.Value</Color>
                 </Style>
               </ChartTitle>
             </ChartTitles>
@@ -1340,7 +1352,7 @@ ELSE
               <Style>
                 <BackgroundColor>Gray</BackgroundColor>
                 <BackgroundGradientType>None</BackgroundGradientType>
-                <Color>=Variables!ReportTextColor.Value</Color>
+                <Color>White</Color>
               </Style>
             </ChartBorderSkin>
             <ChartNoDataMessage Name="NoDataMessageTitle">
@@ -1365,9 +1377,12 @@ ELSE
             </CustomProperties>
             <Style>
               <Border>
-                <Color>=Variables!ReportTextColor.Value</Color>
+                <Color>Gray</Color>
                 <Style>Solid</Style>
               </Border>
+              <BackgroundColor>=Variables!ChartColor.Value</BackgroundColor>
+              <BackgroundGradientType>=Variables!ChartGradientStyle.Value</BackgroundGradientType>
+              <BackgroundGradientEndColor>=Variables!ChartSecondaryColor.Value</BackgroundGradientEndColor>
               <BackgroundHatchType>None</BackgroundHatchType>
             </Style>
           </Chart>
@@ -2601,6 +2616,27 @@ Parameters!ContrastTheme.Value="None", "Blue")</Value>
       <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "No Color",
 Parameters!ContrastTheme.Value="Desert", "No Color",
 Parameters!ContrastTheme.Value="None", "Gainsboro")</Value>
+    </Variable>
+    <Variable Name="ChartColor">
+      <Value>
+        =Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
+        Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
+        Parameters!ContrastTheme.Value="None", "LightSteelBlue")
+      </Value>
+    </Variable>
+    <Variable Name="ChartSecondaryColor">
+      <Value>
+        =Switch(Parameters!ContrastTheme.Value="Aquatic", "No Color",
+        Parameters!ContrastTheme.Value="Desert", "No Color",
+        Parameters!ContrastTheme.Value="None", "Automatic")
+      </Value>
+    </Variable>
+    <Variable Name="ChartGradientStyle">
+      <Value>
+        =Switch(Parameters!ContrastTheme.Value="Aquatic", "None",
+        Parameters!ContrastTheme.Value="Desert", "None",
+        Parameters!ContrastTheme.Value="None", "TopBottom")
+      </Value>
     </Variable>
   </Variables>
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>

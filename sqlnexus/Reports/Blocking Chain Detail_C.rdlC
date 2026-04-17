@@ -1269,7 +1269,7 @@ ELSE
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <TextDecoration>Underline</TextDecoration>
-                                    <Color>=Variables!URLColor.Value</Color>
+                                    <Color>=Variables!URILinkFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1817,7 +1817,7 @@ ELSE
                     <Style>
                       <FontSize>8pt</FontSize>
                       <FontWeight>SemiBold</FontWeight>
-                      <Color>=Variables!TitleColor.Value</Color>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1856,7 +1856,7 @@ ELSE
                     <Style>
                       <FontSize>8pt</FontSize>
                       <FontWeight>SemiBold</FontWeight>
-                      <Color>=Variables!TitleColor.Value</Color>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1894,7 +1894,7 @@ ELSE
                     <Style>
                       <FontSize>8pt</FontSize>
                       <FontWeight>SemiBold</FontWeight>
-                      <Color>=Variables!TitleColor.Value</Color>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1932,7 +1932,7 @@ ELSE
                     <Style>
                       <FontSize>8pt</FontSize>
                       <FontWeight>SemiBold</FontWeight>
-                      <Color>=Variables!TitleColor.Value</Color>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1970,7 +1970,7 @@ ELSE
                     <Style>
                       <FontSize>8pt</FontSize>
                       <FontWeight>SemiBold</FontWeight>
-                      <Color>=Variables!TitleColor.Value</Color>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2008,7 +2008,7 @@ ELSE
                     <Style>
                       <FontSize>8pt</FontSize>
                       <FontWeight>SemiBold</FontWeight>
-                      <Color>=Variables!TitleColor.Value</Color>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2046,7 +2046,7 @@ ELSE
                     <Style>
                       <FontSize>8pt</FontSize>
                       <FontWeight>SemiBold</FontWeight>
-                      <Color>=Variables!TitleColor.Value</Color>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2102,7 +2102,7 @@ ELSE
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
+              <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2139,7 +2139,7 @@ ELSE
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
+              <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2176,7 +2176,7 @@ ELSE
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
+              <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2211,7 +2211,7 @@ ELSE
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
+              <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2246,7 +2246,7 @@ ELSE
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
+              <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2280,7 +2280,7 @@ ELSE
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
+              <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2317,7 +2317,7 @@ ELSE
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
+              <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2336,7 +2336,7 @@ ELSE
                     <Style>
                       <FontSize>8pt</FontSize>
                       <FontWeight>SemiBold</FontWeight>
-                      <Color>=Variables!TitleColor.Value</Color>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2374,7 +2374,7 @@ ELSE
                     <Style>
                       <FontSize>8pt</FontSize>
                       <FontWeight>SemiBold</FontWeight>
-                      <Color>=Variables!TitleColor.Value</Color>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2430,7 +2430,7 @@ ELSE
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
+              <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2467,7 +2467,7 @@ ELSE
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
+              <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2486,7 +2486,7 @@ ELSE
                     <Style>
                       <FontSize>8pt</FontSize>
                       <FontWeight>SemiBold</FontWeight>
-                      <Color>=Variables!TitleColor.Value</Color>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2540,7 +2540,7 @@ ELSE
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
+              <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2559,7 +2559,7 @@ ELSE
                     <Style>
                       <FontSize>8pt</FontSize>
                       <FontWeight>SemiBold</FontWeight>
-                      <Color>=Variables!TitleColor.Value</Color>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2615,7 +2615,7 @@ ELSE
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
+              <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2634,7 +2634,7 @@ ELSE
                     <Style>
                       <FontSize>8pt</FontSize>
                       <FontWeight>SemiBold</FontWeight>
-                      <Color>=Variables!TitleColor.Value</Color>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2690,7 +2690,7 @@ ELSE
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
+              <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2710,7 +2710,7 @@ ELSE
                       <FontFamily>Trebuchet MS</FontFamily>
                       <FontSize>12pt</FontSize>
                       <FontWeight>Bold</FontWeight>
-                      <Color>=Variables!TitleColor.Value</Color>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2744,7 +2744,7 @@ ELSE
                       <FontFamily>Trebuchet MS</FontFamily>
                       <FontSize>12pt</FontSize>
                       <FontWeight>Bold</FontWeight>
-                      <Color>=Variables!TitleColor.Value</Color>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2777,7 +2777,7 @@ ELSE
                     <Style>
                       <FontSize>14pt</FontSize>
                       <FontWeight>Bold</FontWeight>
-                      <Color>=Variables!TitleColor.Value</Color>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2859,7 +2859,7 @@ ELSE
                     <Color>DarkGray</Color>
                     <Style>Solid</Style>
                   </Border>
-                  <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
+                  <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
                   <VerticalAlign>Middle</VerticalAlign>
                   <PaddingLeft>2pt</PaddingLeft>
                   <PaddingRight>2pt</PaddingRight>
@@ -2931,7 +2931,7 @@ ELSE
                     <Color>DarkGray</Color>
                     <Style>Solid</Style>
                   </Border>
-                  <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
+                  <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
                   <VerticalAlign>Middle</VerticalAlign>
                   <PaddingLeft>2pt</PaddingLeft>
                   <PaddingRight>2pt</PaddingRight>
@@ -3135,7 +3135,7 @@ ELSE
                     <Style>
                       <FontSize>8pt</FontSize>
                       <FontWeight>SemiBold</FontWeight>
-                      <Color>=Variables!TitleColor.Value</Color>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -3189,7 +3189,7 @@ ELSE
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
+              <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -3208,7 +3208,7 @@ ELSE
                     <Style>
                       <FontSize>8pt</FontSize>
                       <FontWeight>SemiBold</FontWeight>
-                      <Color>=Variables!TitleColor.Value</Color>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -3262,7 +3262,7 @@ ELSE
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
+              <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -3284,7 +3284,7 @@ ELSE
                       <FontFamily>Trebuchet MS</FontFamily>
                       <FontSize>12pt</FontSize>
                       <FontWeight>Bold</FontWeight>
-                      <Color>=Variables!TitleColor.Value</Color>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -3317,7 +3317,7 @@ ELSE
                     <Style>
                       <FontSize>8pt</FontSize>
                       <TextDecoration>Underline</TextDecoration>
-                      <Color>=Variables!URLColor.Value</Color>
+                      <Color>=Variables!URILinkFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -3718,7 +3718,7 @@ ELSE
           <Border>
             <Color>DarkGray</Color>
           </Border>
-          <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
+          <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
         </Style>
       </Body>
       <Width>13.61458in</Width>
@@ -3844,30 +3844,73 @@ ELSE
     <Variable Name="IsLocalReport">
       <Value>= (Globals!ReportServerUrl="")</Value>
     </Variable>
-    <Variable Name="ReportTextColor">
-      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
-Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
-Parameters!ContrastTheme.Value="None", "Black")</Value>
+    <Variable Name="FLocalMode">
+      <Value>=Globals!ReportServerUrl = ""</Value>
     </Variable>
-    <Variable Name="BodyColor">
+    <Variable Name="ReportTextColor">
+      <Value>
+        =Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+        Parameters!ContrastTheme.Value="None", "Black")
+      </Value>
+    </Variable>
+    <Variable Name="BodyBackgroundColor">
       <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
 Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
-Parameters!ContrastTheme.Value="None", "No Color")</Value>
+        Parameters!ContrastTheme.Value="None", "#FAFDFF")</Value>
     </Variable>
     <Variable Name="TitleColor">
-      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
-Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
-Parameters!ContrastTheme.Value="None", "#1c3a70")</Value>
+      <Value>
+        =Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+        Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+        Parameters!ContrastTheme.Value="None", "SteelBlue")
+      </Value>
     </Variable>
-    <Variable Name="URLColor">
+    <Variable Name="TableHeadingColor">
+      <Value>
+        =Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
+        Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
+        Parameters!ContrastTheme.Value="None", "SteelBlue")
+      </Value>
+    </Variable>
+    <Variable Name="ChartColor">
+      <Value>
+        =Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
+        Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
+        Parameters!ContrastTheme.Value="None", "LightSteelBlue")
+      </Value>
+    </Variable>
+    <Variable Name="ChartSecondaryColor">
+      <Value>
+        =Switch(Parameters!ContrastTheme.Value="Aquatic", "No Color",
+        Parameters!ContrastTheme.Value="Desert", "No Color",
+        Parameters!ContrastTheme.Value="None", "Automatic")
+      </Value>
+    </Variable>
+    <Variable Name="ChartGradientStyle">
+      <Value>
+        =Switch(Parameters!ContrastTheme.Value="Aquatic", "None",
+        Parameters!ContrastTheme.Value="Desert", "None",
+        Parameters!ContrastTheme.Value="None", "TopBottom")
+      </Value>
+    </Variable>
+    <Variable Name="TableShowCell">
+      <Value>"Red"</Value>
+    </Variable>
+    <Variable Name="TableHidcell">
+      <Value>"Green"</Value>
+    </Variable>
+    <Variable Name="TableHeadingFontColor">
+      <Value>
+        =Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+        Parameters!ContrastTheme.Value="None", "#FFFFFF")
+      </Value>
+    </Variable>
+    <Variable Name="URILinkFontColor">
       <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#75E9FC",
 Parameters!ContrastTheme.Value="Desert", "#1C5E75",
 Parameters!ContrastTheme.Value="None", "Blue")</Value>
-    </Variable>
-    <Variable Name="TableHeadingColor">
-      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "No Color",
-Parameters!ContrastTheme.Value="Desert", "No Color",
-Parameters!ContrastTheme.Value="None", "Gainsboro")</Value>
     </Variable>
   </Variables>
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
