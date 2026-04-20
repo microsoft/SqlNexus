@@ -1074,13 +1074,15 @@ namespace sqlnexus
 
                         // do the custom XEL import - system health, Always ON, etc.
                         CustomXELImporter CI = new CustomXELImporter();
+                        bool alwaysOnXelEnabled = tsiSQLDiagAlwaysOnXEL_Enabled != null && tsiSQLDiagAlwaysOnXEL_Enabled.Checked;
+                        bool alwaysOnXelDropTables = tsiSQLDiagAlwaysOnXEL_DropTables != null && tsiSQLDiagAlwaysOnXEL_DropTables.Checked;
                         string XelImprtStatusStr = CI.SQLBaseImport(Globals.credentialMgr.ConnectionString, Globals.credentialMgr.Server,
                                                                 Globals.credentialMgr.WindowsAuth,
                                                                 Globals.credentialMgr.User,
                                                                 Globals.credentialMgr.Password,
                                                                 Globals.credentialMgr.Database, srcPath,
-                                                                tsiSQLDiagAlwaysOnXEL_Enabled.Checked,
-                                                                tsiSQLDiagAlwaysOnXEL_DropTables.Checked);
+                                                                alwaysOnXelEnabled,
+                                                                alwaysOnXelDropTables);
                         
 
                         currBar.Value = 100;
