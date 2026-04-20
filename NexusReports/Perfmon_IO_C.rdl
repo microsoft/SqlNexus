@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:am="http://schemas.microsoft.com/sqlserver/reporting/authoringmetadata">
+  <am:AuthoringMetadata>
+    <am:CreatedBy>
+      <am:Name>SSDTRS</am:Name>
+      <am:Version>17.14.37203.1</am:Version>
+    </am:CreatedBy>
+    <am:UpdatedBy>
+      <am:Name>SSDTRS</am:Name>
+      <am:Version>17.14.37203.1</am:Version>
+    </am:UpdatedBy>
+    <am:LastModifiedTimestamp>2026-04-20T20:43:29.3576927Z</am:LastModifiedTimestamp>
+  </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
     <DataSource Name="DataSource_SqlNexus_Private">
@@ -319,25 +330,37 @@ ORDER BY dat.CounterDateTime;</CommandText>
                         <Y>=Fields!CounterValue.Value</Y>
                       </ChartDataPointValues>
                       <ChartDataLabel>
-                        <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </ChartDataLabel>
                       <ToolTip>#VALY</ToolTip>
-                      <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
+                      <Style>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Style>
                       <ChartMarker>
-                        <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </ChartMarker>
                       <DataElementOutput>Output</DataElementOutput>
                     </ChartDataPoint>
                   </ChartDataPoints>
                   <Type>Line</Type>
-                  <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
+                  <Style />
                   <ChartEmptyPoints>
-                    <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
+                    <Style>
+                      <Color>=Variables!ReportTextColor.Value</Color>
+                    </Style>
                     <ChartMarker>
-                      <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
+                      <Style>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Style>
                     </ChartMarker>
                     <ChartDataLabel>
-                      <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
+                      <Style>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Style>
                     </ChartDataLabel>
                   </ChartEmptyPoints>
                   <ValueAxisName>Primary</ValueAxisName>
@@ -355,13 +378,14 @@ ORDER BY dat.CounterDateTime;</CommandText>
                   <ChartAxis Name="Primary">
                     <Style>
                       <FontSize>8pt</FontSize>
-                    <Color>=Variables!ReportTextColor.Value</Color></Style>
+                      <Color>=Variables!ReportTextColor.Value</Color>
+                    </Style>
                     <ChartAxisTitle>
                       <Caption>Time</Caption>
                       <Style>
                         <FontSize>8pt</FontSize>
-                      
-                    <Color>=Variables!ReportTextColor.Value</Color></Style>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Enabled>False</Enabled>
@@ -386,19 +410,20 @@ ORDER BY dat.CounterDateTime;</CommandText>
                     <Minimum>NaN</Minimum>
                     <Maximum>NaN</Maximum>
                     <ChartAxisScaleBreak>
-                      <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
+                      <Style />
                     </ChartAxisScaleBreak>
                   </ChartAxis>
                   <ChartAxis Name="Secondary">
                     <Style>
                       <FontSize>8pt</FontSize>
-                    <Color>=Variables!ReportTextColor.Value</Color></Style>
+                      <Color>=Variables!ReportTextColor.Value</Color>
+                    </Style>
                     <ChartAxisTitle>
                       <Caption>Axis Title</Caption>
                       <Style>
                         <FontSize>8pt</FontSize>
-                      
-                    <Color>=Variables!ReportTextColor.Value</Color></Style>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Enabled>False</Enabled>
@@ -424,21 +449,25 @@ ORDER BY dat.CounterDateTime;</CommandText>
                     <Minimum>NaN</Minimum>
                     <Maximum>NaN</Maximum>
                     <ChartAxisScaleBreak>
-                      <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
+                      <Style />
                     </ChartAxisScaleBreak>
                   </ChartAxis>
                 </ChartCategoryAxes>
                 <ChartValueAxes>
                   <ChartAxis Name="Primary">
                     <Style>
+                      <Border>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Border>
                       <FontSize>8pt</FontSize>
-                    <Color>=Variables!ReportTextColor.Value</Color></Style>
+                      <Color>=Variables!ReportTextColor.Value</Color>
+                    </Style>
                     <ChartAxisTitle>
                       <Caption>Avg Disk Sec/Read</Caption>
                       <Style>
                         <FontSize>8pt</FontSize>
-                      
-                    <Color>=Variables!ReportTextColor.Value</Color></Style>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Style>
@@ -455,6 +484,13 @@ ORDER BY dat.CounterDateTime;</CommandText>
                         </Border>
                       </Style>
                     </ChartMinorGridLines>
+                    <ChartMajorTickMarks>
+                      <Style>
+                        <Border>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Border>
+                      </Style>
+                    </ChartMajorTickMarks>
                     <ChartMinorTickMarks>
                       <Length>0.5</Length>
                     </ChartMinorTickMarks>
@@ -462,19 +498,20 @@ ORDER BY dat.CounterDateTime;</CommandText>
                     <Minimum>NaN</Minimum>
                     <Maximum>NaN</Maximum>
                     <ChartAxisScaleBreak>
-                      <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
+                      <Style />
                     </ChartAxisScaleBreak>
                   </ChartAxis>
                   <ChartAxis Name="Secondary">
                     <Style>
                       <FontSize>8pt</FontSize>
-                    <Color>=Variables!ReportTextColor.Value</Color></Style>
+                      <Color>=Variables!ReportTextColor.Value</Color>
+                    </Style>
                     <ChartAxisTitle>
                       <Caption>Axis Title</Caption>
                       <Style>
                         <FontSize>8pt</FontSize>
-                      
-                    <Color>=Variables!ReportTextColor.Value</Color></Style>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Style>
@@ -499,7 +536,7 @@ ORDER BY dat.CounterDateTime;</CommandText>
                     <Minimum>NaN</Minimum>
                     <Maximum>NaN</Maximum>
                     <ChartAxisScaleBreak>
-                      <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
+                      <Style />
                     </ChartAxisScaleBreak>
                   </ChartAxis>
                 </ChartValueAxes>
@@ -514,8 +551,8 @@ ORDER BY dat.CounterDateTime;</CommandText>
                 <Style>
                   <BackgroundGradientType>None</BackgroundGradientType>
                   <FontSize>8pt</FontSize>
-                
-                  <Color>=Variables!ReportTextColor.Value</Color></Style>
+                  <Color>=Variables!ReportTextColor.Value</Color>
+                </Style>
                 <ChartLegendTitle>
                   <Caption />
                   <Style>
@@ -536,8 +573,8 @@ ORDER BY dat.CounterDateTime;</CommandText>
                   <FontWeight>Bold</FontWeight>
                   <TextAlign>General</TextAlign>
                   <VerticalAlign>Top</VerticalAlign>
-                
-                  <Color>=Variables!ReportTextColor.Value</Color></Style>
+                  <Color>=Variables!ReportTextColor.Value</Color>
+                </Style>
               </ChartTitle>
             </ChartTitles>
             <Palette>BrightPastel</Palette>
@@ -581,7 +618,8 @@ ORDER BY dat.CounterDateTime;</CommandText>
                     <Style>
                       <FontStyle>Normal</FontStyle>
                       <FontSize>16pt</FontSize>
-                    <Color>=Variables!TitleColor.Value</Color></Style>
+                      <Color>=Variables!TitleColor.Value</Color>
+                    </Style>
                   </TextRun>
                 </TextRuns>
                 <Style>
@@ -638,25 +676,37 @@ ORDER BY dat.CounterDateTime;</CommandText>
                         <Y>=Fields!CounterValue.Value</Y>
                       </ChartDataPointValues>
                       <ChartDataLabel>
-                        <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </ChartDataLabel>
                       <ToolTip>#VALY</ToolTip>
-                      <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
+                      <Style>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Style>
                       <ChartMarker>
-                        <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </ChartMarker>
                       <DataElementOutput>Output</DataElementOutput>
                     </ChartDataPoint>
                   </ChartDataPoints>
                   <Type>Line</Type>
-                  <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
+                  <Style />
                   <ChartEmptyPoints>
-                    <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
+                    <Style>
+                      <Color>=Variables!ReportTextColor.Value</Color>
+                    </Style>
                     <ChartMarker>
-                      <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
+                      <Style>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Style>
                     </ChartMarker>
                     <ChartDataLabel>
-                      <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
+                      <Style>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Style>
                     </ChartDataLabel>
                   </ChartEmptyPoints>
                   <ValueAxisName>Primary</ValueAxisName>
@@ -674,13 +724,14 @@ ORDER BY dat.CounterDateTime;</CommandText>
                   <ChartAxis Name="Primary">
                     <Style>
                       <FontSize>8pt</FontSize>
-                    <Color>=Variables!ReportTextColor.Value</Color></Style>
+                      <Color>=Variables!ReportTextColor.Value</Color>
+                    </Style>
                     <ChartAxisTitle>
                       <Caption>Time</Caption>
                       <Style>
                         <FontSize>8pt</FontSize>
-                      
-                    <Color>=Variables!ReportTextColor.Value</Color></Style>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Enabled>False</Enabled>
@@ -705,19 +756,20 @@ ORDER BY dat.CounterDateTime;</CommandText>
                     <Minimum>NaN</Minimum>
                     <Maximum>NaN</Maximum>
                     <ChartAxisScaleBreak>
-                      <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
+                      <Style />
                     </ChartAxisScaleBreak>
                   </ChartAxis>
                   <ChartAxis Name="Secondary">
                     <Style>
                       <FontSize>8pt</FontSize>
-                    <Color>=Variables!ReportTextColor.Value</Color></Style>
+                      <Color>=Variables!ReportTextColor.Value</Color>
+                    </Style>
                     <ChartAxisTitle>
                       <Caption>Axis Title</Caption>
                       <Style>
                         <FontSize>8pt</FontSize>
-                      
-                    <Color>=Variables!ReportTextColor.Value</Color></Style>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Enabled>False</Enabled>
@@ -743,21 +795,25 @@ ORDER BY dat.CounterDateTime;</CommandText>
                     <Minimum>NaN</Minimum>
                     <Maximum>NaN</Maximum>
                     <ChartAxisScaleBreak>
-                      <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
+                      <Style />
                     </ChartAxisScaleBreak>
                   </ChartAxis>
                 </ChartCategoryAxes>
                 <ChartValueAxes>
                   <ChartAxis Name="Primary">
                     <Style>
+                      <Border>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Border>
                       <FontSize>8pt</FontSize>
-                    <Color>=Variables!ReportTextColor.Value</Color></Style>
+                      <Color>=Variables!ReportTextColor.Value</Color>
+                    </Style>
                     <ChartAxisTitle>
                       <Caption>Avg Disk Sec/Write</Caption>
                       <Style>
                         <FontSize>8pt</FontSize>
-                      
-                    <Color>=Variables!ReportTextColor.Value</Color></Style>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Style>
@@ -774,6 +830,13 @@ ORDER BY dat.CounterDateTime;</CommandText>
                         </Border>
                       </Style>
                     </ChartMinorGridLines>
+                    <ChartMajorTickMarks>
+                      <Style>
+                        <Border>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Border>
+                      </Style>
+                    </ChartMajorTickMarks>
                     <ChartMinorTickMarks>
                       <Length>0.5</Length>
                     </ChartMinorTickMarks>
@@ -781,19 +844,20 @@ ORDER BY dat.CounterDateTime;</CommandText>
                     <Minimum>NaN</Minimum>
                     <Maximum>NaN</Maximum>
                     <ChartAxisScaleBreak>
-                      <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
+                      <Style />
                     </ChartAxisScaleBreak>
                   </ChartAxis>
                   <ChartAxis Name="Secondary">
                     <Style>
                       <FontSize>8pt</FontSize>
-                    <Color>=Variables!ReportTextColor.Value</Color></Style>
+                      <Color>=Variables!ReportTextColor.Value</Color>
+                    </Style>
                     <ChartAxisTitle>
                       <Caption>Axis Title</Caption>
                       <Style>
                         <FontSize>8pt</FontSize>
-                      
-                    <Color>=Variables!ReportTextColor.Value</Color></Style>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Style>
@@ -818,7 +882,7 @@ ORDER BY dat.CounterDateTime;</CommandText>
                     <Minimum>NaN</Minimum>
                     <Maximum>NaN</Maximum>
                     <ChartAxisScaleBreak>
-                      <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
+                      <Style />
                     </ChartAxisScaleBreak>
                   </ChartAxis>
                 </ChartValueAxes>
@@ -833,8 +897,8 @@ ORDER BY dat.CounterDateTime;</CommandText>
                 <Style>
                   <BackgroundGradientType>None</BackgroundGradientType>
                   <FontSize>8pt</FontSize>
-                
-                  <Color>=Variables!ReportTextColor.Value</Color></Style>
+                  <Color>=Variables!ReportTextColor.Value</Color>
+                </Style>
                 <ChartLegendTitle>
                   <Caption />
                   <Style>
@@ -855,8 +919,8 @@ ORDER BY dat.CounterDateTime;</CommandText>
                   <FontWeight>Bold</FontWeight>
                   <TextAlign>General</TextAlign>
                   <VerticalAlign>Top</VerticalAlign>
-                
-                  <Color>=Variables!ReportTextColor.Value</Color></Style>
+                  <Color>=Variables!ReportTextColor.Value</Color>
+                </Style>
               </ChartTitle>
             </ChartTitles>
             <Palette>BrightPastel</Palette>
@@ -924,25 +988,37 @@ ORDER BY dat.CounterDateTime;</CommandText>
                         <Y>=Fields!CounterValue.Value</Y>
                       </ChartDataPointValues>
                       <ChartDataLabel>
-                        <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </ChartDataLabel>
                       <ToolTip>#VALY</ToolTip>
-                      <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
+                      <Style>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Style>
                       <ChartMarker>
-                        <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </ChartMarker>
                       <DataElementOutput>Output</DataElementOutput>
                     </ChartDataPoint>
                   </ChartDataPoints>
                   <Type>Line</Type>
-                  <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
+                  <Style />
                   <ChartEmptyPoints>
-                    <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
+                    <Style>
+                      <Color>=Variables!ReportTextColor.Value</Color>
+                    </Style>
                     <ChartMarker>
-                      <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
+                      <Style>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Style>
                     </ChartMarker>
                     <ChartDataLabel>
-                      <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
+                      <Style>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Style>
                     </ChartDataLabel>
                   </ChartEmptyPoints>
                   <ValueAxisName>Primary</ValueAxisName>
@@ -960,13 +1036,14 @@ ORDER BY dat.CounterDateTime;</CommandText>
                   <ChartAxis Name="Primary">
                     <Style>
                       <FontSize>8pt</FontSize>
-                    <Color>=Variables!ReportTextColor.Value</Color></Style>
+                      <Color>=Variables!ReportTextColor.Value</Color>
+                    </Style>
                     <ChartAxisTitle>
                       <Caption>Time</Caption>
                       <Style>
                         <FontSize>8pt</FontSize>
-                      
-                    <Color>=Variables!ReportTextColor.Value</Color></Style>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Enabled>False</Enabled>
@@ -991,19 +1068,20 @@ ORDER BY dat.CounterDateTime;</CommandText>
                     <Minimum>NaN</Minimum>
                     <Maximum>NaN</Maximum>
                     <ChartAxisScaleBreak>
-                      <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
+                      <Style />
                     </ChartAxisScaleBreak>
                   </ChartAxis>
                   <ChartAxis Name="Secondary">
                     <Style>
                       <FontSize>8pt</FontSize>
-                    <Color>=Variables!ReportTextColor.Value</Color></Style>
+                      <Color>=Variables!ReportTextColor.Value</Color>
+                    </Style>
                     <ChartAxisTitle>
                       <Caption>Axis Title</Caption>
                       <Style>
                         <FontSize>8pt</FontSize>
-                      
-                    <Color>=Variables!ReportTextColor.Value</Color></Style>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Enabled>False</Enabled>
@@ -1029,21 +1107,25 @@ ORDER BY dat.CounterDateTime;</CommandText>
                     <Minimum>NaN</Minimum>
                     <Maximum>NaN</Maximum>
                     <ChartAxisScaleBreak>
-                      <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
+                      <Style />
                     </ChartAxisScaleBreak>
                   </ChartAxis>
                 </ChartCategoryAxes>
                 <ChartValueAxes>
                   <ChartAxis Name="Primary">
                     <Style>
+                      <Border>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Border>
                       <FontSize>8pt</FontSize>
-                    <Color>=Variables!ReportTextColor.Value</Color></Style>
+                      <Color>=Variables!ReportTextColor.Value</Color>
+                    </Style>
                     <ChartAxisTitle>
                       <Caption>Disk MB/Sec</Caption>
                       <Style>
                         <FontSize>8pt</FontSize>
-                      
-                    <Color>=Variables!ReportTextColor.Value</Color></Style>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Style>
@@ -1060,6 +1142,13 @@ ORDER BY dat.CounterDateTime;</CommandText>
                         </Border>
                       </Style>
                     </ChartMinorGridLines>
+                    <ChartMajorTickMarks>
+                      <Style>
+                        <Border>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Border>
+                      </Style>
+                    </ChartMajorTickMarks>
                     <ChartMinorTickMarks>
                       <Length>0.5</Length>
                     </ChartMinorTickMarks>
@@ -1067,19 +1156,20 @@ ORDER BY dat.CounterDateTime;</CommandText>
                     <Minimum>NaN</Minimum>
                     <Maximum>NaN</Maximum>
                     <ChartAxisScaleBreak>
-                      <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
+                      <Style />
                     </ChartAxisScaleBreak>
                   </ChartAxis>
                   <ChartAxis Name="Secondary">
                     <Style>
                       <FontSize>8pt</FontSize>
-                    <Color>=Variables!ReportTextColor.Value</Color></Style>
+                      <Color>=Variables!ReportTextColor.Value</Color>
+                    </Style>
                     <ChartAxisTitle>
                       <Caption>Axis Title</Caption>
                       <Style>
                         <FontSize>8pt</FontSize>
-                      
-                    <Color>=Variables!ReportTextColor.Value</Color></Style>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Style>
@@ -1104,7 +1194,7 @@ ORDER BY dat.CounterDateTime;</CommandText>
                     <Minimum>NaN</Minimum>
                     <Maximum>NaN</Maximum>
                     <ChartAxisScaleBreak>
-                      <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
+                      <Style />
                     </ChartAxisScaleBreak>
                   </ChartAxis>
                 </ChartValueAxes>
@@ -1119,8 +1209,8 @@ ORDER BY dat.CounterDateTime;</CommandText>
                 <Style>
                   <BackgroundGradientType>None</BackgroundGradientType>
                   <FontSize>8pt</FontSize>
-                
-                  <Color>=Variables!ReportTextColor.Value</Color></Style>
+                  <Color>=Variables!ReportTextColor.Value</Color>
+                </Style>
                 <ChartLegendTitle>
                   <Caption />
                   <Style>
@@ -1141,8 +1231,8 @@ ORDER BY dat.CounterDateTime;</CommandText>
                   <FontWeight>Bold</FontWeight>
                   <TextAlign>General</TextAlign>
                   <VerticalAlign>Top</VerticalAlign>
-                
-                  <Color>=Variables!ReportTextColor.Value</Color></Style>
+                  <Color>=Variables!ReportTextColor.Value</Color>
+                </Style>
               </ChartTitle>
             </ChartTitles>
             <Palette>BrightPastel</Palette>
@@ -1210,25 +1300,37 @@ ORDER BY dat.CounterDateTime;</CommandText>
                         <Y>=Fields!CounterValue.Value</Y>
                       </ChartDataPointValues>
                       <ChartDataLabel>
-                        <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </ChartDataLabel>
                       <ToolTip>#VALY</ToolTip>
-                      <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
+                      <Style>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Style>
                       <ChartMarker>
-                        <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </ChartMarker>
                       <DataElementOutput>Output</DataElementOutput>
                     </ChartDataPoint>
                   </ChartDataPoints>
                   <Type>Line</Type>
-                  <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
+                  <Style />
                   <ChartEmptyPoints>
-                    <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
+                    <Style>
+                      <Color>=Variables!ReportTextColor.Value</Color>
+                    </Style>
                     <ChartMarker>
-                      <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
+                      <Style>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Style>
                     </ChartMarker>
                     <ChartDataLabel>
-                      <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
+                      <Style>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Style>
                     </ChartDataLabel>
                   </ChartEmptyPoints>
                   <ValueAxisName>Primary</ValueAxisName>
@@ -1246,13 +1348,14 @@ ORDER BY dat.CounterDateTime;</CommandText>
                   <ChartAxis Name="Primary">
                     <Style>
                       <FontSize>8pt</FontSize>
-                    <Color>=Variables!ReportTextColor.Value</Color></Style>
+                      <Color>=Variables!ReportTextColor.Value</Color>
+                    </Style>
                     <ChartAxisTitle>
                       <Caption>Time</Caption>
                       <Style>
                         <FontSize>8pt</FontSize>
-                      
-                    <Color>=Variables!ReportTextColor.Value</Color></Style>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Enabled>False</Enabled>
@@ -1277,19 +1380,20 @@ ORDER BY dat.CounterDateTime;</CommandText>
                     <Minimum>NaN</Minimum>
                     <Maximum>NaN</Maximum>
                     <ChartAxisScaleBreak>
-                      <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
+                      <Style />
                     </ChartAxisScaleBreak>
                   </ChartAxis>
                   <ChartAxis Name="Secondary">
                     <Style>
                       <FontSize>8pt</FontSize>
-                    <Color>=Variables!ReportTextColor.Value</Color></Style>
+                      <Color>=Variables!ReportTextColor.Value</Color>
+                    </Style>
                     <ChartAxisTitle>
                       <Caption>Axis Title</Caption>
                       <Style>
                         <FontSize>8pt</FontSize>
-                      
-                    <Color>=Variables!ReportTextColor.Value</Color></Style>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Enabled>False</Enabled>
@@ -1315,21 +1419,25 @@ ORDER BY dat.CounterDateTime;</CommandText>
                     <Minimum>NaN</Minimum>
                     <Maximum>NaN</Maximum>
                     <ChartAxisScaleBreak>
-                      <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
+                      <Style />
                     </ChartAxisScaleBreak>
                   </ChartAxis>
                 </ChartCategoryAxes>
                 <ChartValueAxes>
                   <ChartAxis Name="Primary">
                     <Style>
+                      <Border>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Border>
                       <FontSize>8pt</FontSize>
-                    <Color>=Variables!ReportTextColor.Value</Color></Style>
+                      <Color>=Variables!ReportTextColor.Value</Color>
+                    </Style>
                     <ChartAxisTitle>
                       <Caption>Avg Disk Queue Length</Caption>
                       <Style>
                         <FontSize>8pt</FontSize>
-                      
-                    <Color>=Variables!ReportTextColor.Value</Color></Style>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Style>
@@ -1346,6 +1454,13 @@ ORDER BY dat.CounterDateTime;</CommandText>
                         </Border>
                       </Style>
                     </ChartMinorGridLines>
+                    <ChartMajorTickMarks>
+                      <Style>
+                        <Border>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Border>
+                      </Style>
+                    </ChartMajorTickMarks>
                     <ChartMinorTickMarks>
                       <Length>0.5</Length>
                     </ChartMinorTickMarks>
@@ -1353,19 +1468,20 @@ ORDER BY dat.CounterDateTime;</CommandText>
                     <Minimum>NaN</Minimum>
                     <Maximum>NaN</Maximum>
                     <ChartAxisScaleBreak>
-                      <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
+                      <Style />
                     </ChartAxisScaleBreak>
                   </ChartAxis>
                   <ChartAxis Name="Secondary">
                     <Style>
                       <FontSize>8pt</FontSize>
-                    <Color>=Variables!ReportTextColor.Value</Color></Style>
+                      <Color>=Variables!ReportTextColor.Value</Color>
+                    </Style>
                     <ChartAxisTitle>
                       <Caption>Axis Title</Caption>
                       <Style>
                         <FontSize>8pt</FontSize>
-                      
-                    <Color>=Variables!ReportTextColor.Value</Color></Style>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Style>
@@ -1390,11 +1506,14 @@ ORDER BY dat.CounterDateTime;</CommandText>
                     <Minimum>NaN</Minimum>
                     <Maximum>NaN</Maximum>
                     <ChartAxisScaleBreak>
-                      <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
+                      <Style />
                     </ChartAxisScaleBreak>
                   </ChartAxis>
                 </ChartValueAxes>
                 <Style>
+                  <Border>
+                    <Color>=Variables!ReportTextColor.Value</Color>
+                  </Border>
                   <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
                   <BackgroundGradientType>None</BackgroundGradientType>
                 </Style>
@@ -1405,8 +1524,8 @@ ORDER BY dat.CounterDateTime;</CommandText>
                 <Style>
                   <BackgroundGradientType>None</BackgroundGradientType>
                   <FontSize>8pt</FontSize>
-                
-                  <Color>=Variables!ReportTextColor.Value</Color></Style>
+                  <Color>=Variables!ReportTextColor.Value</Color>
+                </Style>
                 <ChartLegendTitle>
                   <Caption />
                   <Style>
@@ -1427,8 +1546,8 @@ ORDER BY dat.CounterDateTime;</CommandText>
                   <FontWeight>Bold</FontWeight>
                   <TextAlign>General</TextAlign>
                   <VerticalAlign>Top</VerticalAlign>
-                
-                  <Color>=Variables!ReportTextColor.Value</Color></Style>
+                  <Color>=Variables!ReportTextColor.Value</Color>
+                </Style>
               </ChartTitle>
             </ChartTitles>
             <Palette>BrightPastel</Palette>
@@ -1504,7 +1623,9 @@ ORDER BY dat.CounterDateTime;</CommandText>
                     <TextRuns>
                       <TextRun>
                         <Value>=DataSets!DataSetAvgDiskSecRead.CommandText</Value>
-                        <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </TextRun>
                     </TextRuns>
                     <Style />
@@ -1536,7 +1657,9 @@ ORDER BY dat.CounterDateTime;</CommandText>
                     <TextRuns>
                       <TextRun>
                         <Value>=DataSets!DataSetAvgDiskSecWrite.CommandText</Value>
-                        <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </TextRun>
                     </TextRuns>
                     <Style />
@@ -1568,7 +1691,9 @@ ORDER BY dat.CounterDateTime;</CommandText>
                     <TextRuns>
                       <TextRun>
                         <Value>=DataSets!DataSetDiskBytesPerSec.CommandText</Value>
-                        <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </TextRun>
                     </TextRuns>
                     <Style />
@@ -1601,7 +1726,9 @@ ORDER BY dat.CounterDateTime;</CommandText>
                     <TextRuns>
                       <TextRun>
                         <Value>=DataSets!DataSetAvgDiskQLen.CommandText</Value>
-                        <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </TextRun>
                     </TextRuns>
                     <Style />
@@ -1668,7 +1795,9 @@ ORDER BY dat.CounterDateTime;</CommandText>
         <RightMargin>1in</RightMargin>
         <TopMargin>1in</TopMargin>
         <BottomMargin>1in</BottomMargin>
-        <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
+        <Style>
+          <Color>=Variables!ReportTextColor.Value</Color>
+        </Style>
       </Page>
     </ReportSection>
   </ReportSections>
@@ -1822,7 +1951,6 @@ ORDER BY dat.CounterDateTime;</CommandText>
       </CellDefinitions>
     </GridLayoutDefinition>
   </ReportParametersLayout>
-  <rd:ReportUnitType>Inch</rd:ReportUnitType>
   <Variables>
     <Variable Name="IsLocalReport">
       <Value>= (Globals!ReportServerUrl="")</Value>
@@ -1830,28 +1958,29 @@ ORDER BY dat.CounterDateTime;</CommandText>
     <Variable Name="ReportTextColor">
       <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
 Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
-Parameters!ContrastTheme.Value="None", "Black")</Value>
+Parameters!ContrastTheme.Value="Default", "Black")</Value>
     </Variable>
     <Variable Name="BodyColor">
       <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
 Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
-Parameters!ContrastTheme.Value="None", "No Color")</Value>
+Parameters!ContrastTheme.Value="Default", "No Color")</Value>
     </Variable>
     <Variable Name="TitleColor">
       <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
 Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
-Parameters!ContrastTheme.Value="None", "#1c3a70")</Value>
+Parameters!ContrastTheme.Value="Default", "#1c3a70")</Value>
     </Variable>
     <Variable Name="URLColor">
       <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#75E9FC",
 Parameters!ContrastTheme.Value="Desert", "#1C5E75",
-Parameters!ContrastTheme.Value="None", "Blue")</Value>
+Parameters!ContrastTheme.Value="Default", "Blue")</Value>
     </Variable>
     <Variable Name="TableHeadingColor">
       <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "No Color",
 Parameters!ContrastTheme.Value="Desert", "No Color",
-Parameters!ContrastTheme.Value="None", "Gainsboro")</Value>
+Parameters!ContrastTheme.Value="Default", "Gainsboro")</Value>
     </Variable>
   </Variables>
+  <rd:ReportUnitType>Inch</rd:ReportUnitType>
   <rd:ReportID>a76e7f4b-33f9-4c5d-b662-abe74d8c86e8</rd:ReportID>
 </Report>

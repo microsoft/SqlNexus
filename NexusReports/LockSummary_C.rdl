@@ -1,5 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:am="http://schemas.microsoft.com/sqlserver/reporting/authoringmetadata">
+  <am:AuthoringMetadata>
+    <am:CreatedBy>
+      <am:Name>SSDTRS</am:Name>
+      <am:Version>17.14.37203.1</am:Version>
+    </am:CreatedBy>
+    <am:UpdatedBy>
+      <am:Name>SSDTRS</am:Name>
+      <am:Version>17.14.37203.1</am:Version>
+    </am:UpdatedBy>
+    <am:LastModifiedTimestamp>2026-04-20T20:02:20.4418174Z</am:LastModifiedTimestamp>
+  </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
     <DataSource Name="DataSource_SqlNexus_Private">
@@ -197,7 +208,7 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                           <rd:DefaultName>Textbox18</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>#7292cc</Color>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>Solid</Style>
                             </Border>
                             <BackgroundColor>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
@@ -238,7 +249,7 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                           <rd:DefaultName>LockCount</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>#e5e5e5</Color>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>Solid</Style>
                             </Border>
                             <PaddingLeft>2pt</PaddingLeft>
@@ -277,7 +288,7 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                           <rd:DefaultName>Textbox35</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>#e6eefc</Color>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>Solid</Style>
                             </Border>
                             <BackgroundColor>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
@@ -319,7 +330,7 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                           <rd:DefaultName>Textbox32</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>#c6daf8</Color>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>Solid</Style>
                             </Border>
                             <BackgroundColor>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
@@ -361,7 +372,7 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                           <rd:DefaultName>Textbox28</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>#9eb6e4</Color>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>Solid</Style>
                             </Border>
                             <BackgroundColor>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
@@ -412,7 +423,7 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                         <rd:DefaultName>Textbox23</rd:DefaultName>
                         <Style>
                           <Border>
-                            <Color>#7292cc</Color>
+                            <Color>=Variables!ReportTextColor.Value</Color>
                             <Style>Solid</Style>
                           </Border>
                           <BackgroundColor>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
@@ -453,7 +464,7 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                             <rd:DefaultName>Textbox21</rd:DefaultName>
                             <Style>
                               <Border>
-                                <Color>#7292cc</Color>
+                                <Color>=Variables!ReportTextColor.Value</Color>
                                 <Style>Solid</Style>
                               </Border>
                               <BackgroundColor>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
@@ -494,7 +505,7 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                                 <rd:DefaultName>Textbox19</rd:DefaultName>
                                 <Style>
                                   <Border>
-                                    <Color>#7292cc</Color>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                     <Style>Solid</Style>
                                   </Border>
                                   <BackgroundColor>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
@@ -551,7 +562,7 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                         <rd:DefaultName>runtime</rd:DefaultName>
                         <Style>
                           <Border>
-                            <Color>#c6daf8</Color>
+                            <Color>=Variables!ReportTextColor.Value</Color>
                             <Style>Solid</Style>
                           </Border>
                           <BackgroundColor>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
@@ -601,7 +612,7 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                             <rd:DefaultName>Resource_database_id</rd:DefaultName>
                             <Style>
                               <Border>
-                                <Color>#e6eefc</Color>
+                                <Color>=Variables!ReportTextColor.Value</Color>
                                 <Style>Solid</Style>
                               </Border>
                               <BackgroundColor>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
@@ -651,7 +662,7 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                                 <rd:DefaultName>resource_type</rd:DefaultName>
                                 <Style>
                                   <Border>
-                                    <Color>White</Color>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                     <Style>Solid</Style>
                                   </Border>
                                   <BackgroundColor>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
@@ -698,7 +709,7 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                                 <rd:DefaultName>Textbox34</rd:DefaultName>
                                 <Style>
                                   <Border>
-                                    <Color>#e6eefc</Color>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                     <Style>Solid</Style>
                                   </Border>
                                   <BackgroundColor>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
@@ -745,7 +756,7 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                             <rd:DefaultName>Textbox30</rd:DefaultName>
                             <Style>
                               <Border>
-                                <Color>#c6daf8</Color>
+                                <Color>=Variables!ReportTextColor.Value</Color>
                                 <Style>Solid</Style>
                               </Border>
                               <BackgroundColor>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
@@ -785,7 +796,7 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                                 <rd:DefaultName>Textbox31</rd:DefaultName>
                                 <Style>
                                   <Border>
-                                    <Color>#c6daf8</Color>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                     <Style>Solid</Style>
                                   </Border>
                                   <BackgroundColor>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
@@ -830,7 +841,7 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                         <rd:DefaultName>Textbox25</rd:DefaultName>
                         <Style>
                           <Border>
-                            <Color>#9eb6e4</Color>
+                            <Color>=Variables!ReportTextColor.Value</Color>
                             <Style>Solid</Style>
                           </Border>
                           <BackgroundColor>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
@@ -870,7 +881,7 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                             <rd:DefaultName>Textbox26</rd:DefaultName>
                             <Style>
                               <Border>
-                                <Color>#9eb6e4</Color>
+                                <Color>=Variables!ReportTextColor.Value</Color>
                                 <Style>Solid</Style>
                               </Border>
                               <BackgroundColor>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
@@ -910,7 +921,7 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
                                 <rd:DefaultName>Textbox27</rd:DefaultName>
                                 <Style>
                                   <Border>
-                                    <Color>#9eb6e4</Color>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                     <Style>Solid</Style>
                                   </Border>
                                   <BackgroundColor>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
@@ -943,6 +954,7 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
             </Visibility>
             <Style>
               <Border>
+                <Color>=Variables!ReportTextColor.Value</Color>
                 <Style>None</Style>
               </Border>
             </Style>
@@ -1548,6 +1560,7 @@ BETWEEN @StartTime AND @EndTime;</CommandText>
             </Visibility>
             <Style>
               <Border>
+                <Color>=Variables!ReportTextColor.Value</Color>
                 <Style>Solid</Style>
               </Border>
             </Style>
