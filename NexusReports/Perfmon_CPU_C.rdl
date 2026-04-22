@@ -9,7 +9,7 @@
       <am:Name>SSDTRS</am:Name>
       <am:Version>17.14.37203.1</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2026-04-20T20:54:52.7826467Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2026-04-22T20:07:59.5922076Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
@@ -447,6 +447,9 @@ WHERE dl.ObjectName IN ( 'Process' )
                 <ChartCategoryAxes>
                   <ChartAxis Name="Primary">
                     <Style>
+                      <Border>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Border>
                       <FontSize>8pt</FontSize>
                       <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
@@ -1105,6 +1108,9 @@ WHERE dl.ObjectName IN ( 'Process' )
                 <ChartCategoryAxes>
                   <ChartAxis Name="Primary">
                     <Style>
+                      <Border>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Border>
                       <FontSize>8pt</FontSize>
                       <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
@@ -1212,6 +1218,13 @@ WHERE dl.ObjectName IN ( 'Process' )
                         </Border>
                       </Style>
                     </ChartMinorGridLines>
+                    <ChartMajorTickMarks>
+                      <Style>
+                        <Border>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Border>
+                      </Style>
+                    </ChartMajorTickMarks>
                     <ChartMinorTickMarks>
                       <Length>0.5</Length>
                     </ChartMinorTickMarks>
@@ -1386,6 +1399,9 @@ WHERE dl.ObjectName IN ( 'Process' )
                 <ChartCategoryAxes>
                   <ChartAxis Name="Primary">
                     <Style>
+                      <Border>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Border>
                       <FontSize>8pt</FontSize>
                       <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
@@ -1493,6 +1509,13 @@ WHERE dl.ObjectName IN ( 'Process' )
                         </Border>
                       </Style>
                     </ChartMinorGridLines>
+                    <ChartMajorTickMarks>
+                      <Style>
+                        <Border>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Border>
+                      </Style>
+                    </ChartMajorTickMarks>
                     <ChartMinorTickMarks>
                       <Length>0.5</Length>
                     </ChartMinorTickMarks>
@@ -1578,7 +1601,7 @@ WHERE dl.ObjectName IN ( 'Process' )
             </ChartNoDataMessage>
             <DataSetName>DataSetReCompilations</DataSetName>
             <Top>10.78056in</Top>
-            <Left>0.27708in</Left>
+            <Left>0.26667in</Left>
             <Height>2in</Height>
             <Width>13.84375in</Width>
             <ZIndex>4</ZIndex>
@@ -1667,6 +1690,9 @@ WHERE dl.ObjectName IN ( 'Process' )
                 <ChartCategoryAxes>
                   <ChartAxis Name="Primary">
                     <Style>
+                      <Border>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Border>
                       <FontSize>8pt</FontSize>
                       <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
@@ -1774,6 +1800,13 @@ WHERE dl.ObjectName IN ( 'Process' )
                         </Border>
                       </Style>
                     </ChartMinorGridLines>
+                    <ChartMajorTickMarks>
+                      <Style>
+                        <Border>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Border>
+                      </Style>
+                    </ChartMajorTickMarks>
                     <ChartMinorTickMarks>
                       <Length>0.5</Length>
                     </ChartMinorTickMarks>
@@ -1953,6 +1986,9 @@ WHERE dl.ObjectName IN ( 'Process' )
                 <ChartCategoryAxes>
                   <ChartAxis Name="Primary">
                     <Style>
+                      <Border>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Border>
                       <FontSize>8pt</FontSize>
                       <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
@@ -2032,6 +2068,9 @@ WHERE dl.ObjectName IN ( 'Process' )
                 <ChartValueAxes>
                   <ChartAxis Name="Primary">
                     <Style>
+                      <Border>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Border>
                       <FontSize>8pt</FontSize>
                       <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
@@ -2057,6 +2096,13 @@ WHERE dl.ObjectName IN ( 'Process' )
                         </Border>
                       </Style>
                     </ChartMinorGridLines>
+                    <ChartMajorTickMarks>
+                      <Style>
+                        <Border>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Border>
+                      </Style>
+                    </ChartMajorTickMarks>
                     <ChartMinorTickMarks>
                       <Length>0.5</Length>
                     </ChartMinorTickMarks>

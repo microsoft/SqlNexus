@@ -9,7 +9,7 @@
       <am:Name>SSDTRS</am:Name>
       <am:Version>17.14.37203.1</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2026-04-20T20:59:09.1503378Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2026-04-22T20:19:27.4737709Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
@@ -333,6 +333,9 @@ ORDER BY dat.CounterDateTime;</CommandText>
                 <ChartCategoryAxes>
                   <ChartAxis Name="Primary">
                     <Style>
+                      <Border>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Border>
                       <FontSize>8pt</FontSize>
                       <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
@@ -359,6 +362,13 @@ ORDER BY dat.CounterDateTime;</CommandText>
                         </Border>
                       </Style>
                     </ChartMinorGridLines>
+                    <ChartMajorTickMarks>
+                      <Style>
+                        <Border>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Border>
+                      </Style>
+                    </ChartMajorTickMarks>
                     <ChartMinorTickMarks>
                       <Length>0.5</Length>
                     </ChartMinorTickMarks>
@@ -440,6 +450,13 @@ ORDER BY dat.CounterDateTime;</CommandText>
                         </Border>
                       </Style>
                     </ChartMinorGridLines>
+                    <ChartMajorTickMarks>
+                      <Style>
+                        <Border>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Border>
+                      </Style>
+                    </ChartMajorTickMarks>
                     <ChartMinorTickMarks>
                       <Length>0.5</Length>
                     </ChartMinorTickMarks>
@@ -672,6 +689,9 @@ ORDER BY dat.CounterDateTime;</CommandText>
                 <ChartCategoryAxes>
                   <ChartAxis Name="Primary">
                     <Style>
+                      <Border>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Border>
                       <FontSize>8pt</FontSize>
                       <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
@@ -698,6 +718,13 @@ ORDER BY dat.CounterDateTime;</CommandText>
                         </Border>
                       </Style>
                     </ChartMinorGridLines>
+                    <ChartMajorTickMarks>
+                      <Style>
+                        <Border>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Border>
+                      </Style>
+                    </ChartMajorTickMarks>
                     <ChartMinorTickMarks>
                       <Length>0.5</Length>
                     </ChartMinorTickMarks>
@@ -779,6 +806,13 @@ ORDER BY dat.CounterDateTime;</CommandText>
                         </Border>
                       </Style>
                     </ChartMinorGridLines>
+                    <ChartMajorTickMarks>
+                      <Style>
+                        <Border>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Border>
+                      </Style>
+                    </ChartMajorTickMarks>
                     <ChartMinorTickMarks>
                       <Length>0.5</Length>
                     </ChartMinorTickMarks>
@@ -977,6 +1011,9 @@ ORDER BY dat.CounterDateTime;</CommandText>
                 <ChartCategoryAxes>
                   <ChartAxis Name="Primary">
                     <Style>
+                      <Border>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Border>
                       <FontSize>8pt</FontSize>
                       <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
@@ -1003,6 +1040,13 @@ ORDER BY dat.CounterDateTime;</CommandText>
                         </Border>
                       </Style>
                     </ChartMinorGridLines>
+                    <ChartMajorTickMarks>
+                      <Style>
+                        <Border>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Border>
+                      </Style>
+                    </ChartMajorTickMarks>
                     <ChartMinorTickMarks>
                       <Length>0.5</Length>
                     </ChartMinorTickMarks>
@@ -1084,6 +1128,13 @@ ORDER BY dat.CounterDateTime;</CommandText>
                         </Border>
                       </Style>
                     </ChartMinorGridLines>
+                    <ChartMajorTickMarks>
+                      <Style>
+                        <Border>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Border>
+                      </Style>
+                    </ChartMajorTickMarks>
                     <ChartMinorTickMarks>
                       <Length>0.5</Length>
                     </ChartMinorTickMarks>
@@ -1282,6 +1333,9 @@ ORDER BY dat.CounterDateTime;</CommandText>
                 <ChartCategoryAxes>
                   <ChartAxis Name="Primary">
                     <Style>
+                      <Border>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Border>
                       <FontSize>8pt</FontSize>
                       <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
@@ -1308,6 +1362,13 @@ ORDER BY dat.CounterDateTime;</CommandText>
                         </Border>
                       </Style>
                     </ChartMinorGridLines>
+                    <ChartMajorTickMarks>
+                      <Style>
+                        <Border>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Border>
+                      </Style>
+                    </ChartMajorTickMarks>
                     <ChartMinorTickMarks>
                       <Length>0.5</Length>
                     </ChartMinorTickMarks>
@@ -1389,6 +1450,13 @@ ORDER BY dat.CounterDateTime;</CommandText>
                         </Border>
                       </Style>
                     </ChartMinorGridLines>
+                    <ChartMajorTickMarks>
+                      <Style>
+                        <Border>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Border>
+                      </Style>
+                    </ChartMajorTickMarks>
                     <ChartMinorTickMarks>
                       <Length>0.5</Length>
                     </ChartMinorTickMarks>

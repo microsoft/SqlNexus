@@ -9,7 +9,7 @@
       <am:Name>SSDTRS</am:Name>
       <am:Version>17.14.37203.1</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2026-04-20T20:43:29.3576927Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2026-04-22T20:01:55.1502048Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
@@ -377,6 +377,9 @@ ORDER BY dat.CounterDateTime;</CommandText>
                 <ChartCategoryAxes>
                   <ChartAxis Name="Primary">
                     <Style>
+                      <Border>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Border>
                       <FontSize>8pt</FontSize>
                       <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
@@ -723,6 +726,9 @@ ORDER BY dat.CounterDateTime;</CommandText>
                 <ChartCategoryAxes>
                   <ChartAxis Name="Primary">
                     <Style>
+                      <Border>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Border>
                       <FontSize>8pt</FontSize>
                       <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
@@ -1347,6 +1353,9 @@ ORDER BY dat.CounterDateTime;</CommandText>
                 <ChartCategoryAxes>
                   <ChartAxis Name="Primary">
                     <Style>
+                      <Border>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Border>
                       <FontSize>8pt</FontSize>
                       <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
