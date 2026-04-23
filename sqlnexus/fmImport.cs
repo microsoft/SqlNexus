@@ -608,6 +608,13 @@ namespace sqlnexus
 
                             tsi.DropDownItems.Add(subtsi);
                         }
+
+                        // Keep submenu open when toggling checkbox options (mouse click or keyboard Enter/Space)
+                        tsi.DropDown.Closing += (s, ev) =>
+                        {
+                            if (ev.CloseReason == ToolStripDropDownCloseReason.ItemClicked)
+                                ev.Cancel = true;
+                        };
                     }
                 }
             }
@@ -645,6 +652,14 @@ namespace sqlnexus
 
             tsiSQLDiagAlwaysOnXEL.DropDownItems.Add(tsiSQLDiagAlwaysOnXEL_DropTables);
             tsiSQLDiagAlwaysOnXEL.DropDownItems.Add(tsiSQLDiagAlwaysOnXEL_Enabled);
+
+            // Keep submenu open when toggling checkbox options (mouse click or keyboard Enter/Space)
+            tsiSQLDiagAlwaysOnXEL.DropDown.Closing += (s, ev) =>
+            {
+                if (ev.CloseReason == ToolStripDropDownCloseReason.ItemClicked)
+                    ev.Cancel = true;
+            };
+
             tsiImporters.DropDownItems.Add(tsiSQLDiagAlwaysOnXEL);
         }
 
@@ -1543,7 +1558,10 @@ namespace sqlnexus
                         {
                             foreach (ToolStripMenuItem tsi_IndividualOptionMenu in tsi_ProductMenu.DropDownItems)
                             {
-                                INexusImporter prod = (INexusImporter)tsi_IndividualOptionMenu.Tag;
+                                INexusImporter prod = tsi_IndividualOptionMenu.Tag as INexusImporter;
+                                // Skip menu items not backed by an INexusImporter (e.g. custom SQLDiag/AlwaysOn XEL sub-items)
+                                if (prod == null)
+                                    continue;
                                 String OptionName = String.Format("{0}.{1}", prod.Name, tsi_IndividualOptionMenu.Text);
                                 ImportOptions.Set(OptionName, tsi_IndividualOptionMenu.Checked);
 
