@@ -7,9 +7,9 @@
     </am:CreatedBy>
     <am:UpdatedBy>
       <am:Name>SSDTRS</am:Name>
-      <am:Version>17.14.37027.9</am:Version>
+      <am:Version>17.14.37203.1</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2026-03-26T14:14:49.5677110Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2026-04-24T18:21:31.7188336Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
@@ -162,24 +162,30 @@ calc AS
         END AS elapsed_ms
     FROM src
 )
-SELECT TOP (10)
+SELECT 
     c.runtime,
     c.command,
     c.os_thread_id,
-    c.delta_cpu AS delta,
+    CASE WHEN c.delta_cpu &lt; 0 THEN 0 ELSE c.delta_cpu END AS delta,
     c.elapsed_ms AS delta_elapse_time,
 
-    -- Normalize CPU percentage by dividing by elapsed time and core count
-    c.delta_cpu * 100.0
-      / NULLIF(CONVERT(float, c.elapsed_ms), 0)
-      / NULLIF(@CoreCount, 0) AS cpu_percent,
+    -- Normalize CPU percentage: clamp negatives to 0, cap at 100%
+    CASE
+        WHEN c.delta_cpu &lt;= 0 THEN 0
+        WHEN c.delta_cpu * 100.0
+              / NULLIF(CONVERT(float, c.elapsed_ms), 0)
+              / NULLIF(@CoreCount, 0) &gt; 100.0 THEN 100.0
+        ELSE c.delta_cpu * 100.0
+              / NULLIF(CONVERT(float, c.elapsed_ms), 0)
+              / NULLIF(@CoreCount, 0)
+    END AS cpu_percent,
 
     @CoreCount AS core_count
 FROM calc AS c
 WHERE
     c.prev_cpu_time &gt; 0
     AND c.runtime BETWEEN @StartTime AND @EndTime
-    AND c.elapsed_ms &gt; 0
+    AND c.elapsed_ms &gt;= 500
     AND c.command IN
     (
         SELECT c2.command
@@ -187,10 +193,10 @@ WHERE
         WHERE
             c2.prev_cpu_time &gt; 0
             AND c2.runtime BETWEEN @StartTime AND @EndTime
-            AND c2.elapsed_ms &gt; 0
+            AND c2.elapsed_ms &gt;= 500
         GROUP BY c2.command, c2.runtime
         HAVING
-            SUM(c2.delta_cpu) * 100.0
+            SUM(CASE WHEN c2.delta_cpu &lt; 0 THEN 0 ELSE c2.delta_cpu END) * 100.0
               / NULLIF(AVG(CONVERT(float, c2.elapsed_ms)), 0)
               / NULLIF(@CoreCount, 0) &gt; @PercentThreshold
     )
