@@ -27,7 +27,9 @@ namespace sqlnexus
         int countTotalFilesFound = 0;
         int totalRowsAffected = 0;
 
-        public string SQLBaseImport(string connString, string Server, bool UseWindowsAuth, string SQLLogin, string SQLPassword, string DatabaseName, string srcpath)
+        bool dropExistingTables = true;
+
+        public string SQLBaseImport(string connString, string Server, bool UseWindowsAuth, string SQLLogin, string SQLPassword, string DatabaseName, string srcpath, bool importSQLDiagAlwaysOnXEL = true, bool dropTables = true)
         {
 
             connStr = connString;
@@ -37,19 +39,30 @@ namespace sqlnexus
             sqlpassword = SQLPassword;
             databasename = DatabaseName;
             srcPath = srcpath;
+            dropExistingTables = dropTables;
 
 
-            int sqlDiagRowsImported = LoadSQLDiaglFiles();
-            int alwaysOnRowsImported = LoadAlwaysonHealthFiles();
-            int systemHealthRowsImported = LoadSystemHealthFiles();
+            int sqlDiagRowsImported = 0;
+            int alwaysOnRowsImported = 0;
+            if (importSQLDiagAlwaysOnXEL)
+            {
+                sqlDiagRowsImported = LoadSQLDiaglFiles();
+                alwaysOnRowsImported = LoadAlwaysonHealthFiles();
+                int systemHealthRowsImported = LoadSystemHealthFiles();
 
-            string retStr = String.Format("{0} rows imported (SqlDiag {2}, AOHealth {3}, SysHealth {4}) across {1} XEL files.", 
-                                totalRowsAffected, 
-                                countTotalFilesFound,
-                                sqlDiagRowsImported,
-                                alwaysOnRowsImported,
-                                systemHealthRowsImported);
-            return retStr;
+                string retStr = String.Format("{0} rows imported (SqlDiag {2}, AOHealth {3}, SysHealth {4}) across {1} XEL files.", 
+                                    totalRowsAffected, 
+                                    countTotalFilesFound,
+                                    sqlDiagRowsImported,
+                                    alwaysOnRowsImported,
+                                    systemHealthRowsImported);
+                return retStr;
+            }
+            else
+            {
+                Util.Logger.LogMessage("Skipping SQLDiag and AlwaysOn XEL import (SQLDiagAlwaysOnXEL option is disabled).");
+                return "Skipped (disabled)";
+            }
 
 
         }
@@ -83,11 +96,12 @@ namespace sqlnexus
                     if (index > 0)
                         XEFile = XEFile.Substring(0, index);
 
-                    string sqlstatment = @"IF OBJECT_ID(N'tbl_SQL_Base_SQLDIAGXEL_Startup', N'U') IS NOT NULL
+                    string dropSql = dropExistingTables ? @"IF OBJECT_ID(N'tbl_SQL_Base_SQLDIAGXEL_Startup', N'U') IS NOT NULL
                             BEGIN
                             DROP TABLE tbl_SQL_Base_SQLDIAGXEL_Startup;
                             END
-                            SELECT * INTO tbl_SQL_Base_SQLDIAGXEL_Startup FROM sys.fn_xe_file_target_read_file('" + XEFile + "*.XEL', NULL, null, null);";
+                            " : "";
+                    string sqlstatment = dropSql + "SELECT * INTO tbl_SQL_Base_SQLDIAGXEL_Startup FROM sys.fn_xe_file_target_read_file('" + XEFile + "*.XEL', NULL, null, null);";
 
 
 
@@ -141,11 +155,12 @@ namespace sqlnexus
                     if (index > 0)
                         XEFile = XEFile.Substring(0, index);
 
-                    string sqlstatment = @"IF OBJECT_ID(N'tbl_SQL_Base_AlwaysOnHealth', N'U') IS NOT NULL
+                    string dropSql = dropExistingTables ? @"IF OBJECT_ID(N'tbl_SQL_Base_AlwaysOnHealth', N'U') IS NOT NULL
                              BEGIN
                             DROP TABLE tbl_SQL_Base_AlwaysOnHealth;
                                 END
-                            SELECT * INTO tbl_SQL_Base_AlwaysOnHealth FROM sys.fn_xe_file_target_read_file('" + XEFile + "*.XEL', NULL, null, null);";
+                            " : "";
+                    string sqlstatment = dropSql + "SELECT * INTO tbl_SQL_Base_AlwaysOnHealth FROM sys.fn_xe_file_target_read_file('" + XEFile + "*.XEL', NULL, null, null);";
                     SqlCommand cmd = new SqlCommand(sqlstatment, cnn);
                     cmd.CommandTimeout = 0;
                     totalRowsAffected += AlwaysOnRowsImported = cmd.ExecuteNonQuery();
@@ -195,11 +210,12 @@ namespace sqlnexus
                     int index = XEFile.IndexOf("system_health");
                     if (index > 0)
                         XEFile = XEFile.Substring(0, index);
-                    string sqlstatment = @" IF OBJECT_ID(N'tbl_SQL_Base_SystemHealthXEL_Startup', N'U') IS NOT NULL
+                    string dropSql = dropExistingTables ? @"IF OBJECT_ID(N'tbl_SQL_Base_SystemHealthXEL_Startup', N'U') IS NOT NULL
                             BEGIN
                             DROP TABLE tbl_SQL_Base_SystemHealthXEL_Startup;
                             END
-                            SELECT * INTO tbl_SQL_Base_SystemHealthXEL_Startup FROM sys.fn_xe_file_target_read_file('" + XEFile + "*.XEL', NULL, null, null);";
+                            " : "";
+                    string sqlstatment = dropSql + "SELECT * INTO tbl_SQL_Base_SystemHealthXEL_Startup FROM sys.fn_xe_file_target_read_file('" + XEFile + "*.XEL', NULL, null, null);";
 
 
 
