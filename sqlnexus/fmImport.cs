@@ -19,15 +19,19 @@ namespace sqlnexus
     public partial class fmImport : Form
     {
         private List<ToolStripMenuItem> m_OptionList = new List<ToolStripMenuItem>();
+        private ToolStripMenuItem tsiSQLDiagAlwaysOnXEL_Enabled;
+        private ToolStripMenuItem tsiSQLDiagAlwaysOnXEL_DropTables;
         private SqlInstances instances;
         private fmImport()
         {
             InitializeComponent();
+            ThemeManager.ApplyTheme(this);
         }
         private fmNexus MainForm;  //Cache an instance of this for logging to the log file and other stuff
         public fmImport(fmNexus mainform)
         {
             InitializeComponent();
+            ThemeManager.ApplyTheme(this);
             MainForm = mainform;
         }
         public static void ImportFiles(fmNexus mainform, string path)
@@ -606,9 +610,59 @@ namespace sqlnexus
 
                             tsi.DropDownItems.Add(subtsi);
                         }
+
+                        // Keep submenu open when toggling checkbox options (mouse click or keyboard Enter/Space)
+                        tsi.DropDown.Closing += (s, ev) =>
+                        {
+                            if (ev.CloseReason == ToolStripDropDownCloseReason.ItemClicked)
+                                ev.Cancel = true;
+                        };
                     }
                 }
             }
+
+            // Add the SQLDiag/AlwaysOn XEL option under Importers with sub-items
+            tsiSQLDiagAlwaysOnXEL.Name = "tsiSQLDiagAlwaysOnXEL";
+            tsiSQLDiagAlwaysOnXEL.Text = "Import SQLDiag/AlwaysOn XEL";
+            tsiSQLDiagAlwaysOnXEL.AccessibleName = "Import SQLDiag AlwaysOn XEL";
+            tsiSQLDiagAlwaysOnXEL.AccessibleDescription = "Submenu for importing SQLDiag and AlwaysOn Extended Events XEL files";
+            tsiSQLDiagAlwaysOnXEL.DropDownItems.Clear();
+
+            // "Drop existing tables" sub-item
+            tsiSQLDiagAlwaysOnXEL_DropTables = new ToolStripMenuItem("Drop existing tables");
+            tsiSQLDiagAlwaysOnXEL_DropTables.Name = "tsiSQLDiagAlwaysOnXEL_DropTables";
+            tsiSQLDiagAlwaysOnXEL_DropTables.CheckOnClick = true;
+            tsiSQLDiagAlwaysOnXEL_DropTables.Checked = true;
+            tsiSQLDiagAlwaysOnXEL_DropTables.AccessibleName = "Drop existing tables";
+            tsiSQLDiagAlwaysOnXEL_DropTables.AccessibleDescription = "When checked, existing SQLDiag and AlwaysOn XEL tables are dropped before import";
+            tsiSQLDiagAlwaysOnXEL_DropTables.Click += new EventHandler(tsiSQLDiagAlwaysOnXEL_SubOption_Click);
+
+            // "Enabled" sub-item
+            tsiSQLDiagAlwaysOnXEL_Enabled = new ToolStripMenuItem("Enabled");
+            tsiSQLDiagAlwaysOnXEL_Enabled.Name = "tsiSQLDiagAlwaysOnXEL_Enabled";
+            tsiSQLDiagAlwaysOnXEL_Enabled.CheckOnClick = true;
+            tsiSQLDiagAlwaysOnXEL_Enabled.Checked = false;
+            tsiSQLDiagAlwaysOnXEL_Enabled.AccessibleName = "Enabled";
+            tsiSQLDiagAlwaysOnXEL_Enabled.AccessibleDescription = "When checked, SQLDiag and AlwaysOn XEL files are included in the import";
+            tsiSQLDiagAlwaysOnXEL_Enabled.Click += new EventHandler(tsiSQLDiagAlwaysOnXEL_SubOption_Click);
+
+            if (ImportOptions.IsEnabled("SaveImportOptions"))
+            {
+                tsiSQLDiagAlwaysOnXEL_Enabled.Checked = ImportOptions.IsEnabled("SQLDiagAlwaysOnXEL.Enabled");
+                tsiSQLDiagAlwaysOnXEL_DropTables.Checked = ImportOptions.IsEnabled("SQLDiagAlwaysOnXEL.DropExistingTables");
+            }
+
+            tsiSQLDiagAlwaysOnXEL.DropDownItems.Add(tsiSQLDiagAlwaysOnXEL_DropTables);
+            tsiSQLDiagAlwaysOnXEL.DropDownItems.Add(tsiSQLDiagAlwaysOnXEL_Enabled);
+
+            // Keep submenu open when toggling checkbox options (mouse click or keyboard Enter/Space)
+            tsiSQLDiagAlwaysOnXEL.DropDown.Closing += (s, ev) =>
+            {
+                if (ev.CloseReason == ToolStripDropDownCloseReason.ItemClicked)
+                    ev.Cancel = true;
+            };
+
+            tsiImporters.DropDownItems.Add(tsiSQLDiagAlwaysOnXEL);
         }
 
 
@@ -636,6 +690,9 @@ namespace sqlnexus
             foreach (ToolStripMenuItem tsi in tsiImporters.DropDownItems)
             {
                 prod = (tsi.Tag as INexusImporter);
+                // Skip menu items that are not backed by an INexusImporter (e.g. the custom SQLDiag/AlwaysOn XEL menu item)
+                if (prod == null)
+                    continue;
                 // See whether this importer is enabled (each importer should have an "Enabled" option)
                 bool Enabled = true;
                 foreach (ToolStripMenuItem tsi2 in tsi.DropDownItems)
@@ -872,7 +929,10 @@ namespace sqlnexus
 
             //add individual rows for each of these so they show up as progress bars in the summary window listview
             string customXELImprtStr = "CustomXELImporter";
-            AddFileRow((tlpFiles.RowCount - 1), "Custom XEL import (SQLDiag, AlwaysOnHealth, System Health)", null, customXELImprtStr);
+            if (tsiSQLDiagAlwaysOnXEL_Enabled != null && tsiSQLDiagAlwaysOnXEL_Enabled.Checked)
+            {
+                AddFileRow((tlpFiles.RowCount - 1), "Custom XEL import (SQLDiag, AlwaysOnHealth, System Health)", null, customXELImprtStr);
+            }
 
             string rawFileImprtStr = "RawFileImport";
             AddFileRow((tlpFiles.RowCount - 1), "Raw file import", null, rawFileImprtStr);
@@ -1031,11 +1091,15 @@ namespace sqlnexus
 
                         // do the custom XEL import - system health, Always ON, etc.
                         CustomXELImporter CI = new CustomXELImporter();
+                        bool alwaysOnXelEnabled = tsiSQLDiagAlwaysOnXEL_Enabled != null && tsiSQLDiagAlwaysOnXEL_Enabled.Checked;
+                        bool alwaysOnXelDropTables = tsiSQLDiagAlwaysOnXEL_DropTables != null && tsiSQLDiagAlwaysOnXEL_DropTables.Checked;
                         string XelImprtStatusStr = CI.SQLBaseImport(Globals.credentialMgr.ConnectionString, Globals.credentialMgr.Server,
                                                                 Globals.credentialMgr.WindowsAuth,
                                                                 Globals.credentialMgr.User,
                                                                 Globals.credentialMgr.Password,
-                                                                Globals.credentialMgr.Database, srcPath);
+                                                                Globals.credentialMgr.Database, srcPath,
+                                                                alwaysOnXelEnabled,
+                                                                alwaysOnXelDropTables);
                         
 
                         currBar.Value = 100;
@@ -1496,7 +1560,10 @@ namespace sqlnexus
                         {
                             foreach (ToolStripMenuItem tsi_IndividualOptionMenu in tsi_ProductMenu.DropDownItems)
                             {
-                                INexusImporter prod = (INexusImporter)tsi_IndividualOptionMenu.Tag;
+                                INexusImporter prod = tsi_IndividualOptionMenu.Tag as INexusImporter;
+                                // Skip menu items not backed by an INexusImporter (e.g. custom SQLDiag/AlwaysOn XEL sub-items)
+                                if (prod == null)
+                                    continue;
                                 String OptionName = String.Format("{0}.{1}", prod.Name, tsi_IndividualOptionMenu.Text);
                                 ImportOptions.Set(OptionName, tsi_IndividualOptionMenu.Checked);
 
@@ -1507,6 +1574,8 @@ namespace sqlnexus
                 }
 
                 ImportOptions.Set("DropDbBeforeImporting", tsiDropDBBeforeImporting.Checked);
+                ImportOptions.Set("SQLDiagAlwaysOnXEL.Enabled", tsiSQLDiagAlwaysOnXEL_Enabled.Checked);
+                ImportOptions.Set("SQLDiagAlwaysOnXEL.DropExistingTables", tsiSQLDiagAlwaysOnXEL_DropTables.Checked);
             }
             else
                 ImportOptions.Clear();
@@ -1563,6 +1632,14 @@ namespace sqlnexus
 
 
         }
+        private void tsiSQLDiagAlwaysOnXEL_SubOption_Click(object sender, EventArgs e)
+        {
+            if (ImportOptions.IsEnabled("SaveImportOptions"))
+            {
+                ImportOptions.Set("SQLDiagAlwaysOnXEL.Enabled", tsiSQLDiagAlwaysOnXEL_Enabled.Checked);
+                ImportOptions.Set("SQLDiagAlwaysOnXEL.DropExistingTables", tsiSQLDiagAlwaysOnXEL_DropTables.Checked);
+            }
+        }
         private void cmOptions_Opening(object sender, CancelEventArgs e)
         {
             tsiSaveOptions.Click += new EventHandler(tsiSaveOptions_Click);
@@ -1570,7 +1647,9 @@ namespace sqlnexus
             tsiDropDBBeforeImporting.CheckedChanged += new EventHandler(tsiDropDBBeforeImporting_Click);
             tsiSaveOptions.Checked = ImportOptions.IsEnabled("SaveImportOptions");
             if (ImportOptions.IsEnabled("SaveImportOptions"))
+            {
                 tsiDropDBBeforeImporting.Checked = ImportOptions.IsEnabled("DropDbBeforeImporting");
+            }
 
         }
 

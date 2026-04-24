@@ -3,7 +3,7 @@
   <am:AuthoringMetadata>
     <am:CreatedBy>
       <am:Name>SSDTRS</am:Name>
-      <am:Version>17.14.37027.9</am:Version>
+      <am:Version>17.14.37111.16</am:Version>
     </am:CreatedBy>
     <am:UpdatedBy>
       <am:Name>SSDTRS</am:Name>
@@ -263,7 +263,7 @@ ORDER BY c.delta_cpu DESC;</CommandText>
                                     <FontFamily>Tahoma</FontFamily>
                                     <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -275,10 +275,10 @@ ORDER BY c.delta_cpu DESC;</CommandText>
                           <rd:DefaultName>Textbox11</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>#7292cc</Color>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>SteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!ChartColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -304,8 +304,8 @@ ORDER BY c.delta_cpu DESC;</CommandText>
                                   <Value>=Sum(Fields!cpu_percent.Value)</Value>
                                   <Style>
                                     <FontFamily>Tahoma</FontFamily>
-                                    <Format>0.00;(0.00)</Format>
-                                    <Color>#4d4d4d</Color>
+                                    <Format>0;(0)</Format>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -315,7 +315,7 @@ ORDER BY c.delta_cpu DESC;</CommandText>
                           <rd:DefaultName>cpu_percent</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>#e5e5e5</Color>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>Solid</Style>
                             </Border>
                             <PaddingLeft>2pt</PaddingLeft>
@@ -344,8 +344,8 @@ ORDER BY c.delta_cpu DESC;</CommandText>
                                   <Style>
                                     <FontFamily>Tahoma</FontFamily>
                                     <FontWeight>Bold</FontWeight>
-                                    <Format>0.00;(0.00)</Format>
-                                    <Color>#4c68a2</Color>
+                                    <Format>0;(0)</Format>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -355,10 +355,10 @@ ORDER BY c.delta_cpu DESC;</CommandText>
                           <rd:DefaultName>Textbox34</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>#e6eefc</Color>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>#c6daf8</BackgroundColor>
+                            <BackgroundColor>=Variables!ChartColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -385,8 +385,8 @@ ORDER BY c.delta_cpu DESC;</CommandText>
                                   <Style>
                                     <FontFamily>Tahoma</FontFamily>
                                     <FontWeight>Bold</FontWeight>
-                                    <Format>0.00;(0.00)</Format>
-                                    <Color>#465678</Color>
+                                    <Format>0;(0)</Format>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -396,10 +396,10 @@ ORDER BY c.delta_cpu DESC;</CommandText>
                           <rd:DefaultName>Textbox27</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>#c6daf8</Color>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>#9eb6e4</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -435,7 +435,7 @@ ORDER BY c.delta_cpu DESC;</CommandText>
                                   <FontFamily>Tahoma</FontFamily>
                                   <FontSize>11pt</FontSize>
                                   <FontWeight>Bold</FontWeight>
-                                  <Color>White</Color>
+                                  <Color>=Variables!ReportTextColor.Value</Color>
                                 </Style>
                               </TextRun>
                             </TextRuns>
@@ -445,10 +445,10 @@ ORDER BY c.delta_cpu DESC;</CommandText>
                         <rd:DefaultName>Textbox16</rd:DefaultName>
                         <Style>
                           <Border>
-                            <Color>#7292cc</Color>
+                            <Color>=Variables!ReportTextColor.Value</Color>
                             <Style>Solid</Style>
                           </Border>
-                          <BackgroundColor>SteelBlue</BackgroundColor>
+                          <BackgroundColor>=Variables!ChartColor.Value</BackgroundColor>
                           <PaddingLeft>2pt</PaddingLeft>
                           <PaddingRight>2pt</PaddingRight>
                           <PaddingTop>2pt</PaddingTop>
@@ -474,7 +474,7 @@ ORDER BY c.delta_cpu DESC;</CommandText>
                                       <FontFamily>Tahoma</FontFamily>
                                       <FontSize>11pt</FontSize>
                                       <FontWeight>Bold</FontWeight>
-                                      <Color>White</Color>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                     </Style>
                                   </TextRun>
                                 </TextRuns>
@@ -484,10 +484,10 @@ ORDER BY c.delta_cpu DESC;</CommandText>
                             <rd:DefaultName>Textbox14</rd:DefaultName>
                             <Style>
                               <Border>
-                                <Color>#7292cc</Color>
+                                <Color>=Variables!ReportTextColor.Value</Color>
                                 <Style>Solid</Style>
                               </Border>
-                              <BackgroundColor>SteelBlue</BackgroundColor>
+                              <BackgroundColor>=Variables!ChartColor.Value</BackgroundColor>
                               <PaddingLeft>2pt</PaddingLeft>
                               <PaddingRight>2pt</PaddingRight>
                               <PaddingTop>2pt</PaddingTop>
@@ -513,7 +513,7 @@ ORDER BY c.delta_cpu DESC;</CommandText>
                                           <FontFamily>Tahoma</FontFamily>
                                           <FontSize>11pt</FontSize>
                                           <FontWeight>Bold</FontWeight>
-                                          <Color>White</Color>
+                                          <Color>=Variables!ReportTextColor.Value</Color>
                                         </Style>
                                       </TextRun>
                                     </TextRuns>
@@ -525,10 +525,10 @@ ORDER BY c.delta_cpu DESC;</CommandText>
                                 <rd:DefaultName>Textbox12</rd:DefaultName>
                                 <Style>
                                   <Border>
-                                    <Color>#7292cc</Color>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                     <Style>Solid</Style>
                                   </Border>
-                                  <BackgroundColor>SteelBlue</BackgroundColor>
+                                  <BackgroundColor>=Variables!ChartColor.Value</BackgroundColor>
                                   <PaddingLeft>2pt</PaddingLeft>
                                   <PaddingRight>2pt</PaddingRight>
                                   <PaddingTop>2pt</PaddingTop>
@@ -570,7 +570,7 @@ ORDER BY c.delta_cpu DESC;</CommandText>
                                 <Style>
                                   <FontFamily>Tahoma</FontFamily>
                                   <FontWeight>Bold</FontWeight>
-                                  <Color>#465678</Color>
+                                  <Color>=Variables!ReportTextColor.Value</Color>
                                 </Style>
                               </TextRun>
                             </TextRuns>
@@ -580,10 +580,10 @@ ORDER BY c.delta_cpu DESC;</CommandText>
                         <rd:DefaultName>runtime</rd:DefaultName>
                         <Style>
                           <Border>
-                            <Color>#c6daf8</Color>
+                            <Color>=Variables!ReportTextColor.Value</Color>
                             <Style>Solid</Style>
                           </Border>
-                          <BackgroundColor>#9eb6e4</BackgroundColor>
+                          <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                           <PaddingLeft>2pt</PaddingLeft>
                           <PaddingRight>2pt</PaddingRight>
                           <PaddingTop>2pt</PaddingTop>
@@ -618,7 +618,7 @@ ORDER BY c.delta_cpu DESC;</CommandText>
                                     <Style>
                                       <FontFamily>Tahoma</FontFamily>
                                       <FontWeight>Bold</FontWeight>
-                                      <Color>#4c68a2</Color>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                     </Style>
                                   </TextRun>
                                 </TextRuns>
@@ -628,10 +628,10 @@ ORDER BY c.delta_cpu DESC;</CommandText>
                             <rd:DefaultName>command</rd:DefaultName>
                             <Style>
                               <Border>
-                                <Color>#e6eefc</Color>
+                                <Color>=Variables!ReportTextColor.Value</Color>
                                 <Style>Solid</Style>
                               </Border>
-                              <BackgroundColor>#c6daf8</BackgroundColor>
+                              <BackgroundColor>=Variables!ChartColor.Value</BackgroundColor>
                               <PaddingLeft>2pt</PaddingLeft>
                               <PaddingRight>2pt</PaddingRight>
                               <PaddingTop>2pt</PaddingTop>
@@ -666,7 +666,7 @@ ORDER BY c.delta_cpu DESC;</CommandText>
                                         <Style>
                                           <FontFamily>Tahoma</FontFamily>
                                           <FontWeight>Bold</FontWeight>
-                                          <Color>#4c68a2</Color>
+                                          <Color>=Variables!ReportTextColor.Value</Color>
                                         </Style>
                                       </TextRun>
                                     </TextRuns>
@@ -676,10 +676,10 @@ ORDER BY c.delta_cpu DESC;</CommandText>
                                 <rd:DefaultName>os_thread_id</rd:DefaultName>
                                 <Style>
                                   <Border>
-                                    <Color>White</Color>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                     <Style>Solid</Style>
                                   </Border>
-                                  <BackgroundColor>#e6eefc</BackgroundColor>
+                                  <BackgroundColor>=Variables!ChartSecondaryColor.Value</BackgroundColor>
                                   <PaddingLeft>2pt</PaddingLeft>
                                   <PaddingRight>2pt</PaddingRight>
                                   <PaddingTop>2pt</PaddingTop>
@@ -711,7 +711,7 @@ ORDER BY c.delta_cpu DESC;</CommandText>
                                         <Style>
                                           <FontFamily>Tahoma</FontFamily>
                                           <FontWeight>Bold</FontWeight>
-                                          <Color>#4c68a2</Color>
+                                          <Color>=Variables!ReportTextColor.Value</Color>
                                         </Style>
                                       </TextRun>
                                     </TextRuns>
@@ -721,10 +721,10 @@ ORDER BY c.delta_cpu DESC;</CommandText>
                                 <rd:DefaultName>Textbox32</rd:DefaultName>
                                 <Style>
                                   <Border>
-                                    <Color>#e6eefc</Color>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                     <Style>Solid</Style>
                                   </Border>
-                                  <BackgroundColor>#c6daf8</BackgroundColor>
+                                  <BackgroundColor>=Variables!ChartColor.Value</BackgroundColor>
                                   <PaddingLeft>2pt</PaddingLeft>
                                   <PaddingRight>2pt</PaddingRight>
                                   <PaddingTop>2pt</PaddingTop>
@@ -756,7 +756,7 @@ ORDER BY c.delta_cpu DESC;</CommandText>
                                     <Style>
                                       <FontFamily>Tahoma</FontFamily>
                                       <FontWeight>Bold</FontWeight>
-                                      <Color>#465678</Color>
+                                      <Color>=Variables!ReportTextColor.Value</Color>
                                     </Style>
                                   </TextRun>
                                 </TextRuns>
@@ -766,10 +766,10 @@ ORDER BY c.delta_cpu DESC;</CommandText>
                             <rd:DefaultName>Textbox23</rd:DefaultName>
                             <Style>
                               <Border>
-                                <Color>#c6daf8</Color>
+                                <Color>=Variables!ReportTextColor.Value</Color>
                                 <Style>Solid</Style>
                               </Border>
-                              <BackgroundColor>#9eb6e4</BackgroundColor>
+                              <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                               <PaddingLeft>2pt</PaddingLeft>
                               <PaddingRight>2pt</PaddingRight>
                               <PaddingTop>2pt</PaddingTop>
@@ -794,7 +794,7 @@ ORDER BY c.delta_cpu DESC;</CommandText>
                                         <Style>
                                           <FontFamily>Tahoma</FontFamily>
                                           <FontWeight>Bold</FontWeight>
-                                          <Color>#465678</Color>
+                                          <Color>=Variables!ReportTextColor.Value</Color>
                                         </Style>
                                       </TextRun>
                                     </TextRuns>
@@ -804,10 +804,10 @@ ORDER BY c.delta_cpu DESC;</CommandText>
                                 <rd:DefaultName>Textbox26</rd:DefaultName>
                                 <Style>
                                   <Border>
-                                    <Color>#c6daf8</Color>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                     <Style>Solid</Style>
                                   </Border>
-                                  <BackgroundColor>#9eb6e4</BackgroundColor>
+                                  <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                   <PaddingLeft>2pt</PaddingLeft>
                                   <PaddingRight>2pt</PaddingRight>
                                   <PaddingTop>2pt</PaddingTop>
@@ -925,12 +925,14 @@ ORDER BY c.delta_cpu DESC;</CommandText>
                       </Border>
                       <FontFamily>Tahoma</FontFamily>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                     <ChartAxisTitle>
                       <Caption>Runtime</Caption>
                       <Style>
                         <FontFamily>Tahoma</FontFamily>
                         <FontSize>8pt</FontSize>
+                        <Color>=Variables!ReportTextColor.Value</Color>
                       </Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
@@ -978,12 +980,14 @@ ORDER BY c.delta_cpu DESC;</CommandText>
                       </Border>
                       <FontFamily>Tahoma</FontFamily>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                     <ChartAxisTitle>
                       <Caption>Axis Title</Caption>
                       <Style>
                         <FontFamily>Tahoma</FontFamily>
                         <FontSize>8pt</FontSize>
+                        <Color>=Variables!ReportTextColor.Value</Color>
                       </Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
@@ -1034,13 +1038,15 @@ ORDER BY c.delta_cpu DESC;</CommandText>
                       </Border>
                       <FontFamily>Tahoma</FontFamily>
                       <FontSize>8pt</FontSize>
-                      <Format>#,0.00;(#,0.00)</Format>
+                      <Format>#,0;(#,0)</Format>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                     <ChartAxisTitle>
                       <Caption>CPU % (Normalized by Core Count)</Caption>
                       <Style>
                         <FontFamily>Tahoma</FontFamily>
                         <FontSize>8pt</FontSize>
+                        <Color>=Variables!ReportTextColor.Value</Color>
                       </Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
@@ -1094,6 +1100,7 @@ ORDER BY c.delta_cpu DESC;</CommandText>
                       <Style>
                         <FontFamily>Tahoma</FontFamily>
                         <FontSize>8pt</FontSize>
+                        <Color>=Variables!ReportTextColor.Value</Color>
                       </Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
@@ -1136,7 +1143,7 @@ ORDER BY c.delta_cpu DESC;</CommandText>
                   </ChartAxis>
                 </ChartValueAxes>
                 <Style>
-                  <BackgroundColor>#e6eefc</BackgroundColor>
+                  <BackgroundColor>=Variables!ChartSecondaryColor.Value</BackgroundColor>
                   <BackgroundGradientType>None</BackgroundGradientType>
                 </Style>
               </ChartArea>
@@ -1146,6 +1153,7 @@ ORDER BY c.delta_cpu DESC;</CommandText>
                 <Style>
                   <BackgroundGradientType>None</BackgroundGradientType>
                   <FontSize>8pt</FontSize>
+                  <Color>=Variables!ReportTextColor.Value</Color>
                 </Style>
                 <ChartLegendTitle>
                   <Caption />
@@ -1153,6 +1161,7 @@ ORDER BY c.delta_cpu DESC;</CommandText>
                     <FontSize>8pt</FontSize>
                     <FontWeight>Bold</FontWeight>
                     <TextAlign>Center</TextAlign>
+                    <Color>=Variables!ReportTextColor.Value</Color>
                   </Style>
                 </ChartLegendTitle>
                 <HeaderSeparatorColor>Black</HeaderSeparatorColor>
@@ -1169,6 +1178,7 @@ ORDER BY c.delta_cpu DESC;</CommandText>
                   <FontWeight>Bold</FontWeight>
                   <TextAlign>General</TextAlign>
                   <VerticalAlign>Top</VerticalAlign>
+                  <Color>=Variables!ReportTextColor.Value</Color>
                 </Style>
               </ChartTitle>
             </ChartTitles>
@@ -1186,9 +1196,9 @@ ORDER BY c.delta_cpu DESC;</CommandText>
             <ChartBorderSkin>
               <ChartBorderSkinType>Emboss</ChartBorderSkinType>
               <Style>
-                <BackgroundColor>Gray</BackgroundColor>
+                <BackgroundColor>=Variables!ChartColor.Value</BackgroundColor>
                 <BackgroundGradientType>None</BackgroundGradientType>
-                <Color>White</Color>
+                <Color>=Variables!ReportTextColor.Value</Color>
               </Style>
             </ChartBorderSkin>
             <ChartNoDataMessage Name="NoDataMessage">
@@ -1209,12 +1219,13 @@ ORDER BY c.delta_cpu DESC;</CommandText>
             <ZIndex>1</ZIndex>
             <Style>
               <Border>
-                <Color>#7292cc</Color>
+                <Color>=Variables!ReportTextColor.Value</Color>
                 <Style>Solid</Style>
                 <Width>2pt</Width>
               </Border>
-              <BackgroundColor>SteelBlue</BackgroundColor>
-              <BackgroundGradientType>TopBottom</BackgroundGradientType>
+              <BackgroundColor>=Variables!ChartColor.Value</BackgroundColor>
+              <BackgroundGradientType>None</BackgroundGradientType>
+              <BackgroundGradientEndColor>=Variables!ChartSecondaryColor.Value</BackgroundGradientEndColor>
             </Style>
           </Chart>
           <Textbox Name="ReportTitle">
@@ -1228,7 +1239,7 @@ ORDER BY c.delta_cpu DESC;</CommandText>
                     <Style>
                       <FontFamily>Verdana</FontFamily>
                       <FontSize>20pt</FontSize>
-                      <Color>#1c3a70</Color>
+                      <Color>=Variables!TitleColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1274,8 +1285,10 @@ ORDER BY c.delta_cpu DESC;</CommandText>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Parameter</Value>
-                                  <Style />
+                                  <Value>Parmaeter</Value>
+                                  <Style>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style>
@@ -1289,13 +1302,14 @@ ORDER BY c.delta_cpu DESC;</CommandText>
                               <Color>LightGrey</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>Gainsboro</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
+                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                     <TablixCell>
@@ -1308,7 +1322,9 @@ ORDER BY c.delta_cpu DESC;</CommandText>
                               <TextRuns>
                                 <TextRun>
                                   <Value>Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style>
@@ -1322,13 +1338,14 @@ ORDER BY c.delta_cpu DESC;</CommandText>
                               <Color>LightGrey</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>Gainsboro</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
+                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                   </TablixCells>
@@ -1348,6 +1365,7 @@ ORDER BY c.delta_cpu DESC;</CommandText>
                                   <Value>Start Time  </Value>
                                   <Style>
                                     <FontWeight>Normal</FontWeight>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1382,6 +1400,7 @@ ORDER BY c.delta_cpu DESC;</CommandText>
                                   <Value>=Parameters!StartTime.Value</Value>
                                   <Style>
                                     <FontWeight>Normal</FontWeight>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1421,6 +1440,7 @@ ORDER BY c.delta_cpu DESC;</CommandText>
                                   <Value>End Time  </Value>
                                   <Style>
                                     <FontWeight>Normal</FontWeight>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1455,6 +1475,7 @@ ORDER BY c.delta_cpu DESC;</CommandText>
                                   <Value>=Parameters!EndTime.Value</Value>
                                   <Style>
                                     <FontWeight>Normal</FontWeight>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1590,6 +1611,7 @@ ORDER BY c.delta_cpu DESC;</CommandText>
                     <Value>Show queries for this report.</Value>
                     <Style>
                       <FontWeight>Bold</FontWeight>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1621,7 +1643,9 @@ ORDER BY c.delta_cpu DESC;</CommandText>
                     <TextRuns>
                       <TextRun>
                         <Value>=DataSets!DataSet_System_Threads_Stats.CommandText</Value>
-                        <Style />
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </TextRun>
                     </TextRuns>
                     <Style />
@@ -1653,7 +1677,9 @@ ORDER BY c.delta_cpu DESC;</CommandText>
                     <TextRuns>
                       <TextRun>
                         <Value>=DataSets!DataSet_Runtime.CommandText</Value>
-                        <Style />
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </TextRun>
                     </TextRuns>
                     <Style />
@@ -1690,6 +1716,7 @@ ORDER BY c.delta_cpu DESC;</CommandText>
             </Visibility>
             <Style>
               <Border>
+                <Color>=Variables!ReportTextColor.Value</Color>
                 <Style>Solid</Style>
               </Border>
             </Style>
@@ -1700,6 +1727,7 @@ ORDER BY c.delta_cpu DESC;</CommandText>
           <Border>
             <Style>None</Style>
           </Border>
+          <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
         </Style>
       </Body>
       <Width>13.89583in</Width>
@@ -1788,11 +1816,36 @@ ORDER BY c.delta_cpu DESC;</CommandText>
       </DefaultValue>
       <Prompt>CPU Percent Threshold (Normalized)</Prompt>
     </ReportParameter>
+    <ReportParameter Name="ContrastTheme">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>None</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>ContrastTheme</Prompt>
+      <ValidValues>
+        <ParameterValues>
+          <ParameterValue>
+            <Value>None</Value>
+            <Label>None</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>Aquatic</Value>
+            <Label>Aquatic</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>Desert</Value>
+            <Label>Desert</Label>
+          </ParameterValue>
+        </ParameterValues>
+      </ValidValues>
+    </ReportParameter>
   </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>
       <NumberOfColumns>2</NumberOfColumns>
-      <NumberOfRows>3</NumberOfRows>
+      <NumberOfRows>4</NumberOfRows>
       <CellDefinitions>
         <CellDefinition>
           <ColumnIndex>0</ColumnIndex>
@@ -1819,9 +1872,67 @@ ORDER BY c.delta_cpu DESC;</CommandText>
           <RowIndex>2</RowIndex>
           <ParameterName>PercentThreshold</ParameterName>
         </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>1</ColumnIndex>
+          <RowIndex>2</RowIndex>
+          <ParameterName>ContrastTheme</ParameterName>
+        </CellDefinition>
       </CellDefinitions>
     </GridLayoutDefinition>
   </ReportParametersLayout>
+  <Variables>
+    <Variable Name="ReportTextColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+Parameters!ContrastTheme.Value="None", "Black")</Value>
+    </Variable>
+    <Variable Name="BodyBackgroundColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
+Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
+Parameters!ContrastTheme.Value="None", "#FAFDFF")</Value>
+    </Variable>
+    <Variable Name="TitleColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+Parameters!ContrastTheme.Value="None", "SteelBlue")</Value>
+    </Variable>
+    <Variable Name="TableHeadingColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
+Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
+Parameters!ContrastTheme.Value="None", "SteelBlue")</Value>
+    </Variable>
+    <Variable Name="ChartColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
+Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
+Parameters!ContrastTheme.Value="None", "LightSteelBlue")</Value>
+    </Variable>
+    <Variable Name="ChartSecondaryColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "No Color",
+Parameters!ContrastTheme.Value="Desert", "No Color",
+Parameters!ContrastTheme.Value="None", "Automatic")</Value>
+    </Variable>
+    <Variable Name="ChartGradientStyle">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "None",
+Parameters!ContrastTheme.Value="Desert", "None",
+Parameters!ContrastTheme.Value="None", "TopBottom")</Value>
+    </Variable>
+    <Variable Name="TableShowCell">
+      <Value>"Red"</Value>
+    </Variable>
+    <Variable Name="TableHidcell">
+      <Value>"Green"</Value>
+    </Variable>
+    <Variable Name="TableHeadingFontColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+Parameters!ContrastTheme.Value="None", "#FFFFFF")</Value>
+    </Variable>
+    <Variable Name="URILinkFontColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#75E9FC",
+Parameters!ContrastTheme.Value="Desert", "#1C5E75",
+Parameters!ContrastTheme.Value="None", "Blue")</Value>
+    </Variable>
+  </Variables>
   <rd:ReportUnitType>Inch</rd:ReportUnitType>
   <rd:ReportID>067dd8ac-7b58-4702-a47e-a1668f054c47</rd:ReportID>
 </Report>

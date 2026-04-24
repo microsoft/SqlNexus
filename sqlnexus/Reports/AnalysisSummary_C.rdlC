@@ -7,9 +7,9 @@
     </am:CreatedBy>
     <am:UpdatedBy>
       <am:Name>SSDTRS</am:Name>
-      <am:Version>17.14.36301.6</am:Version>
+      <am:Version>17.14.37111.16</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2025-07-26T21:03:49.7879119Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2026-04-13T19:10:59.0559119Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
@@ -212,6 +212,7 @@ END;</CommandText>
                     <Style>
                       <FontSize>16pt</FontSize>
                       <FontWeight>Bold</FontWeight>
+                      <Color>=Variables!TitleColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -246,6 +247,7 @@ END;</CommandText>
                     <Value>Rules below are commonly observed issues that can cause performance problems on your system.  If you want to see all results, including ones for which no issues are found, click the </Value>
                     <Style>
                       <FontSize>12pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                   <TextRun>
@@ -253,12 +255,14 @@ END;</CommandText>
                     <Style>
                       <FontSize>12pt</FontSize>
                       <FontWeight>Bold</FontWeight>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                   <TextRun>
                     <Value> button above and change 'Show all rule results (both Success and Warning)' to </Value>
                     <Style>
                       <FontSize>12pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                   <TextRun>
@@ -267,12 +271,14 @@ END;</CommandText>
                       <FontStyle>Italic</FontStyle>
                       <FontSize>12pt</FontSize>
                       <FontWeight>Normal</FontWeight>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                   <TextRun>
                     <Value>.</Value>
                     <Style>
                       <FontSize>12pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -331,7 +337,7 @@ END;</CommandText>
                                   <Style>
                                     <FontSize>12pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>FloralWhite</Color>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -341,13 +347,10 @@ END;</CommandText>
                           <rd:DefaultName>Textbox4</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>LightGrey</Color>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BottomBorder>
-                              <Color>Black</Color>
-                            </BottomBorder>
-                            <BackgroundColor>OliveDrab</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -369,7 +372,7 @@ END;</CommandText>
                                   <Style>
                                     <FontSize>12pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>FloralWhite</Color>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -379,13 +382,22 @@ END;</CommandText>
                           <rd:DefaultName>Textbox3</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>LightGrey</Color>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>Solid</Style>
                             </Border>
+                            <TopBorder>
+                              <Color>=Variables!ReportTextColor.Value</Color>
+                            </TopBorder>
                             <BottomBorder>
-                              <Color>Black</Color>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                             </BottomBorder>
-                            <BackgroundColor>OliveDrab</BackgroundColor>
+                            <LeftBorder>
+                              <Color>=Variables!ReportTextColor.Value</Color>
+                            </LeftBorder>
+                            <RightBorder>
+                              <Color>=Variables!ReportTextColor.Value</Color>
+                            </RightBorder>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -407,7 +419,7 @@ END;</CommandText>
                                   <Style>
                                     <FontSize>12pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>FloralWhite</Color>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -417,13 +429,22 @@ END;</CommandText>
                           <rd:DefaultName>Textbox5</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>LightGrey</Color>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>Solid</Style>
                             </Border>
+                            <TopBorder>
+                              <Color>=Variables!ReportTextColor.Value</Color>
+                            </TopBorder>
                             <BottomBorder>
-                              <Color>Black</Color>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                             </BottomBorder>
-                            <BackgroundColor>OliveDrab</BackgroundColor>
+                            <LeftBorder>
+                              <Color>=Variables!ReportTextColor.Value</Color>
+                            </LeftBorder>
+                            <RightBorder>
+                              <Color>=Variables!ReportTextColor.Value</Color>
+                            </RightBorder>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -445,7 +466,7 @@ END;</CommandText>
                                   <Style>
                                     <FontSize>12pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>FloralWhite</Color>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -455,13 +476,22 @@ END;</CommandText>
                           <rd:DefaultName>Textbox13</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>LightGrey</Color>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>Solid</Style>
                             </Border>
+                            <TopBorder>
+                              <Color>=Variables!ReportTextColor.Value</Color>
+                            </TopBorder>
                             <BottomBorder>
-                              <Color>Black</Color>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                             </BottomBorder>
-                            <BackgroundColor>OliveDrab</BackgroundColor>
+                            <LeftBorder>
+                              <Color>=Variables!ReportTextColor.Value</Color>
+                            </LeftBorder>
+                            <RightBorder>
+                              <Color>=Variables!ReportTextColor.Value</Color>
+                            </RightBorder>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -483,7 +513,7 @@ END;</CommandText>
                                   <Style>
                                     <FontSize>12pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>FloralWhite</Color>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -493,13 +523,22 @@ END;</CommandText>
                           <rd:DefaultName>Textbox12</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>LightGrey</Color>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>Solid</Style>
                             </Border>
+                            <TopBorder>
+                              <Color>=Variables!ReportTextColor.Value</Color>
+                            </TopBorder>
                             <BottomBorder>
-                              <Color>Black</Color>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                             </BottomBorder>
-                            <BackgroundColor>OliveDrab</BackgroundColor>
+                            <LeftBorder>
+                              <Color>=Variables!ReportTextColor.Value</Color>
+                            </LeftBorder>
+                            <RightBorder>
+                              <Color>=Variables!ReportTextColor.Value</Color>
+                            </RightBorder>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -523,7 +562,9 @@ END;</CommandText>
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!FriendlyName.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -532,13 +573,21 @@ END;</CommandText>
                           <rd:DefaultName>FriendlyName</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>LightGrey</Color>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>None</Style>
                             </Border>
+                            <TopBorder>
+                              <Color>=Variables!ReportTextColor.Value</Color>
+                            </TopBorder>
                             <BottomBorder>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>Solid</Style>
                             </BottomBorder>
+                            <LeftBorder>
+                              <Color>=Variables!ReportTextColor.Value</Color>
+                            </LeftBorder>
                             <RightBorder>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>Solid</Style>
                             </RightBorder>
                             <PaddingLeft>2pt</PaddingLeft>
@@ -559,7 +608,9 @@ END;</CommandText>
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!Description.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -568,13 +619,21 @@ END;</CommandText>
                           <rd:DefaultName>Description</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>LightGrey</Color>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>None</Style>
                             </Border>
+                            <TopBorder>
+                              <Color>=Variables!ReportTextColor.Value</Color>
+                            </TopBorder>
                             <BottomBorder>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>Solid</Style>
                             </BottomBorder>
+                            <LeftBorder>
+                              <Color>=Variables!ReportTextColor.Value</Color>
+                            </LeftBorder>
                             <RightBorder>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>Solid</Style>
                             </RightBorder>
                             <PaddingLeft>2pt</PaddingLeft>
@@ -592,14 +651,21 @@ END;</CommandText>
                           <Value>=IIF(Fields!Status.Value=0, "ProgressSuccess", "ProgressWarn")</Value>
                           <Style>
                             <Border>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>None</Style>
                             </Border>
+                            <TopBorder>
+                              <Color>=Variables!ReportTextColor.Value</Color>
+                            </TopBorder>
                             <BottomBorder>
-                              <Color>LightGrey</Color>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>Solid</Style>
                             </BottomBorder>
+                            <LeftBorder>
+                              <Color>=Variables!ReportTextColor.Value</Color>
+                            </LeftBorder>
                             <RightBorder>
-                              <Color>LightGrey</Color>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>Solid</Style>
                             </RightBorder>
                             <PaddingLeft>15pt</PaddingLeft>
@@ -619,7 +685,7 @@ END;</CommandText>
                                 <TextRun>
                                   <Value>=Fields!ExternalUrl.Value</Value>
                                   <Style>
-                                    <Color>RoyalBlue</Color>
+                                    <Color>=Variables!URLColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -636,14 +702,21 @@ END;</CommandText>
                           </ActionInfo>
                           <Style>
                             <Border>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>None</Style>
                             </Border>
+                            <TopBorder>
+                              <Color>=Variables!ReportTextColor.Value</Color>
+                            </TopBorder>
                             <BottomBorder>
-                              <Color>LightGrey</Color>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>Solid</Style>
                             </BottomBorder>
+                            <LeftBorder>
+                              <Color>=Variables!ReportTextColor.Value</Color>
+                            </LeftBorder>
                             <RightBorder>
-                              <Color>LightGrey</Color>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>Solid</Style>
                             </RightBorder>
                             <PaddingLeft>2pt</PaddingLeft>
@@ -665,7 +738,7 @@ END;</CommandText>
                                 <TextRun>
                                   <Value>=Fields!Report.Value</Value>
                                   <Style>
-                                    <Color>RoyalBlue</Color>
+                                    <Color>=Variables!URLColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -696,14 +769,21 @@ Fields!Report.Value = "", Nothing)</ReportName>
                           </ActionInfo>
                           <Style>
                             <Border>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>None</Style>
                             </Border>
+                            <TopBorder>
+                              <Color>=Variables!ReportTextColor.Value</Color>
+                            </TopBorder>
                             <BottomBorder>
-                              <Color>LightGrey</Color>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>Solid</Style>
                             </BottomBorder>
+                            <LeftBorder>
+                              <Color>=Variables!ReportTextColor.Value</Color>
+                            </LeftBorder>
                             <RightBorder>
-                              <Color>LightGrey</Color>
+                              <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>Solid</Style>
                             </RightBorder>
                             <PaddingLeft>2pt</PaddingLeft>
@@ -744,8 +824,10 @@ Fields!Report.Value = "", Nothing)</ReportName>
             <ZIndex>2</ZIndex>
             <Style>
               <Border>
+                <Color>=Variables!ReportTextColor.Value</Color>
                 <Style>Solid</Style>
               </Border>
+              <Color>=Variables!ReportTextColor.Value</Color>
             </Style>
           </Tablix>
           <Textbox Name="Textbox_Bottlneck_Analysis">
@@ -757,7 +839,7 @@ Fields!Report.Value = "", Nothing)</ReportName>
                   <TextRun>
                     <Value>Bottlneck Analysis </Value>
                     <Style>
-                      <Color>=Parameters!FmtHyperlink.Value</Color>
+                      <Color>=Variables!URLColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -799,7 +881,7 @@ Fields!Report.Value = "", Nothing)</ReportName>
                   <TextRun>
                     <Value>Blocking Report</Value>
                     <Style>
-                      <Color>=Parameters!FmtHyperlink.Value</Color>
+                      <Color>=Variables!URLColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -841,7 +923,7 @@ Fields!Report.Value = "", Nothing)</ReportName>
                   <TextRun>
                     <Value>ReadTrace Report</Value>
                     <Style>
-                      <Color>=Parameters!FmtHyperlink.Value</Color>
+                      <Color>=Variables!URLColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -884,6 +966,7 @@ Fields!Report.Value = "", Nothing)</ReportName>
                     <Value>Show queries for this report.</Value>
                     <Style>
                       <FontWeight>Bold</FontWeight>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -915,14 +998,16 @@ Fields!Report.Value = "", Nothing)</ReportName>
                     <TextRuns>
                       <TextRun>
                         <Value>=DataSets!DataSet_Summary.CommandText</Value>
-                        <Style />
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </TextRun>
                     </TextRuns>
                     <Style />
                   </Paragraph>
                 </Paragraphs>
                 <Top>0.2257in</Top>
-                <Left>0.01042in</Left>
+                <Left>0.00416in</Left>
                 <Height>0.25in</Height>
                 <Width>9.81249in</Width>
                 <Visibility>
@@ -952,6 +1037,7 @@ Fields!Report.Value = "", Nothing)</ReportName>
             </Visibility>
             <Style>
               <Border>
+                <Color>=Variables!ReportTextColor.Value</Color>
                 <Style>Solid</Style>
               </Border>
             </Style>
@@ -980,7 +1066,7 @@ Fields!Report.Value = "", Nothing)</ReportName>
                     <TextRun>
                       <Value>Report Help</Value>
                       <Style>
-                        <Color>=Parameters!FmtHyperlink.Value</Color>
+                        <Color>=Variables!URLColor.Value</Color>
                       </Style>
                     </TextRun>
                   </TextRuns>
@@ -1167,6 +1253,31 @@ Fields!Report.Value = "", Nothing)</ReportName>
       <Prompt>Show Internal Url Column</Prompt>
       <Hidden>true</Hidden>
     </ReportParameter>
+    <ReportParameter Name="ContrastTheme">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>None</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>ContrastTheme</Prompt>
+      <ValidValues>
+        <ParameterValues>
+          <ParameterValue>
+            <Value>None</Value>
+            <Label>None</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>Aquatic</Value>
+            <Label>Aquatic</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>Desert</Value>
+            <Label>Desert</Label>
+          </ParameterValue>
+        </ParameterValues>
+      </ValidValues>
+    </ReportParameter>
   </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>
@@ -1228,9 +1339,26 @@ Fields!Report.Value = "", Nothing)</ReportName>
           <RowIndex>3</RowIndex>
           <ParameterName>ShowInternalUrlColumn</ParameterName>
         </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>2</ColumnIndex>
+          <RowIndex>2</RowIndex>
+          <ParameterName>ContrastTheme</ParameterName>
+        </CellDefinition>
       </CellDefinitions>
     </GridLayoutDefinition>
   </ReportParametersLayout>
+  <Code>Function GetTableRowFillColor(Theme as String, RowNumber As Integer) As String
+If Theme ="Aquatic" Then 
+    return "#202020"
+ElseIf Theme ="Desert" Then 
+    return "#FFFAEF"
+Elseif RowNumber Mod 2 &lt;&gt; 0 Then
+        return "White"
+Else 
+        Return "#c7d7ff"
+End If
+End Function
+</Code>
   <EmbeddedImages>
     <EmbeddedImage Name="ProgressSuccess">
       <MIMEType>image/png</MIMEType>
@@ -1244,6 +1372,31 @@ Fields!Report.Value = "", Nothing)</ReportName>
   <Variables>
     <Variable Name="IsLocalReport">
       <Value>= (Globals!ReportServerUrl="")</Value>
+    </Variable>
+    <Variable Name="ReportTextColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+Parameters!ContrastTheme.Value="None", "Black")</Value>
+    </Variable>
+    <Variable Name="BodyColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
+Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
+Parameters!ContrastTheme.Value="None", "No Color")</Value>
+    </Variable>
+    <Variable Name="TitleColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+Parameters!ContrastTheme.Value="None", "#1c3a70")</Value>
+    </Variable>
+    <Variable Name="URLColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#75E9FC",
+Parameters!ContrastTheme.Value="Desert", "#1C5E75",
+Parameters!ContrastTheme.Value="None", "Blue")</Value>
+    </Variable>
+    <Variable Name="TableHeadingColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "No Color",
+Parameters!ContrastTheme.Value="Desert", "No Color",
+Parameters!ContrastTheme.Value="None", "Gainsboro")</Value>
     </Variable>
   </Variables>
   <rd:ReportUnitType>Inch</rd:ReportUnitType>

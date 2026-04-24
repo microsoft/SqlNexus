@@ -1,5 +1,16 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:am="http://schemas.microsoft.com/sqlserver/reporting/authoringmetadata">
+  <am:AuthoringMetadata>
+    <am:CreatedBy>
+      <am:Name>SSDTRS</am:Name>
+      <am:Version>17.14.37111.16</am:Version>
+    </am:CreatedBy>
+    <am:UpdatedBy>
+      <am:Name>SSDTRS</am:Name>
+      <am:Version>17.14.37111.16</am:Version>
+    </am:UpdatedBy>
+    <am:LastModifiedTimestamp>2026-04-10T17:43:09.7748627Z</am:LastModifiedTimestamp>
+  </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
     <DataSource Name="DataSource_Private">
@@ -599,6 +610,7 @@ ELSE
                         <Width>0.75pt</Width>
                       </Border>
                       <Format>M/d HH:mm</Format>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                     <ChartAxisTitle>
                       <Caption />
@@ -675,11 +687,13 @@ ELSE
                         <Style>None</Style>
                         <Width>0.75pt</Width>
                       </Border>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                     <ChartAxisTitle>
                       <Caption>Wait Rate (ms/sec)</Caption>
                       <Style>
                         <FontWeight>Bold</FontWeight>
+                        <Color>=Variables!ReportTextColor.Value</Color>
                       </Style>
                     </ChartAxisTitle>
                     <Margin>True</Margin>
@@ -687,6 +701,7 @@ ELSE
                       <Enabled>True</Enabled>
                       <Style>
                         <Border>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                           <Style>Solid</Style>
                           <Width>0.75pt</Width>
                         </Border>
@@ -752,10 +767,11 @@ ELSE
                 </ChartThreeDProperties>
                 <Style>
                   <Border>
+                    <Color>=Variables!ReportTextColor.Value</Color>
                     <Style>Solid</Style>
                     <Width>0.75pt</Width>
                   </Border>
-                  <BackgroundColor>=Parameters!FmtChartBackground.Value</BackgroundColor>
+                  <BackgroundColor>=Variables!ChartColor.Value</BackgroundColor>
                 </Style>
               </ChartArea>
             </ChartAreas>
@@ -763,9 +779,11 @@ ELSE
               <ChartLegend Name="Default">
                 <Style>
                   <Border>
+                    <Color>=Variables!ReportTextColor.Value</Color>
                     <Style>Solid</Style>
                     <Width>0.75pt</Width>
                   </Border>
+                  <Color>=Variables!ReportTextColor.Value</Color>
                 </Style>
                 <Position>BottomCenter</Position>
                 <ChartLegendTitle>
@@ -785,15 +803,16 @@ ELSE
                 <Style>
                   <FontSize>12pt</FontSize>
                   <FontWeight>Bold</FontWeight>
+                  <Color>=Variables!ReportTextColor.Value</Color>
                 </Style>
               </ChartTitle>
             </ChartTitles>
             <ChartBorderSkin>
               <ChartBorderSkinType>Emboss</ChartBorderSkinType>
               <Style>
-                <BackgroundColor>Gray</BackgroundColor>
+                <BackgroundColor>=Variables!ChartColor.Value</BackgroundColor>
                 <BackgroundGradientType>None</BackgroundGradientType>
-                <Color>White</Color>
+                <Color>=Variables!ReportTextColor.Value</Color>
               </Style>
             </ChartBorderSkin>
             <ChartNoDataMessage Name="NoDataMessageTitle">
@@ -808,7 +827,7 @@ ELSE
             <Top>0.75in</Top>
             <Left>0.35937in</Left>
             <Height>3.875in</Height>
-            <Width>8.25in</Width>
+            <Width>8.89583in</Width>
             <CustomProperties>
               <CustomProperty>
                 <Name>__Upgraded2005__</Name>
@@ -819,6 +838,7 @@ ELSE
               <Border>
                 <Style>Solid</Style>
               </Border>
+              <BackgroundColor>=Variables!ChartFrameColor.Value</BackgroundColor>
             </Style>
           </Chart>
           <Tablix Name="table2">
@@ -831,10 +851,10 @@ ELSE
                   <Width>2.875in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.75in</Width>
+                  <Width>1.89583in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.75in</Width>
+                  <Width>2.10417in</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -852,8 +872,8 @@ ELSE
                                 <TextRun>
                                   <Value>Snapshot Time</Value>
                                   <Style>
-                                    <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -865,7 +885,7 @@ ELSE
                           <rd:DefaultName>textbox3</rd:DefaultName>
                           <ZIndex>11</ZIndex>
                           <Style>
-                            <BackgroundColor>=Parameters!FmtChartBackground.Value</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -885,8 +905,8 @@ ELSE
                                 <TextRun>
                                   <Value>Time Interval (sec)</Value>
                                   <Style>
-                                    <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -898,7 +918,7 @@ ELSE
                           <rd:DefaultName>textbox4</rd:DefaultName>
                           <ZIndex>10</ZIndex>
                           <Style>
-                            <BackgroundColor>=Parameters!FmtChartBackground.Value</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -918,8 +938,8 @@ ELSE
                                 <TextRun>
                                   <Value>Wait Time (ms)</Value>
                                   <Style>
-                                    <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -931,7 +951,7 @@ ELSE
                           <rd:DefaultName>textbox5</rd:DefaultName>
                           <ZIndex>9</ZIndex>
                           <Style>
-                            <BackgroundColor>=Parameters!FmtChartBackground.Value</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -951,8 +971,8 @@ ELSE
                                 <TextRun>
                                   <Value>Wait  Rate (ms/sec)</Value>
                                   <Style>
-                                    <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -964,7 +984,7 @@ ELSE
                           <rd:DefaultName>textbox6</rd:DefaultName>
                           <ZIndex>8</ZIndex>
                           <Style>
-                            <BackgroundColor>=Parameters!FmtChartBackground.Value</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -989,7 +1009,7 @@ ELSE
                                 <TextRun>
                                   <Value>=Fields!endtime.Value</Value>
                                   <Style>
-                                    <FontSize>8pt</FontSize>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1024,7 +1044,7 @@ ELSE
                                 <TextRun>
                                   <Value>=Fields!delta_seconds.Value</Value>
                                   <Style>
-                                    <FontSize>8pt</FontSize>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1057,7 +1077,7 @@ ELSE
                                 <TextRun>
                                   <Value>=Sum(Fields!delta_wait_time_ms.Value)</Value>
                                   <Style>
-                                    <FontSize>8pt</FontSize>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1092,8 +1112,8 @@ ELSE
                                 <TextRun>
                                   <Value>=Sum(Fields!delta_wait_time_ms.Value) / Fields!delta_seconds.Value</Value>
                                   <Style>
-                                    <FontSize>8pt</FontSize>
                                     <Format>N0</Format>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1133,7 +1153,7 @@ ELSE
                                 <TextRun>
                                   <Value />
                                   <Style>
-                                    <FontSize>8pt</FontSize>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1166,7 +1186,7 @@ ELSE
                                 <TextRun>
                                   <Value>=Fields!wait_type.Value</Value>
                                   <Style>
-                                    <FontSize>8pt</FontSize>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1199,7 +1219,7 @@ ELSE
                                 <TextRun>
                                   <Value>=Fields!delta_wait_time_ms.Value</Value>
                                   <Style>
-                                    <FontSize>8pt</FontSize>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1234,8 +1254,8 @@ ELSE
                                 <TextRun>
                                   <Value>=Fields!wait_ms_per_sec.Value</Value>
                                   <Style>
-                                    <FontSize>8pt</FontSize>
                                     <Format>N0</Format>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1310,7 +1330,7 @@ ELSE
             <Top>4.875in</Top>
             <Left>0.35937in</Left>
             <Height>0.75in</Height>
-            <Width>8.25in</Width>
+            <Width>8.75in</Width>
             <ZIndex>1</ZIndex>
             <Visibility>
               <Hidden>true</Hidden>
@@ -1332,7 +1352,7 @@ ELSE
                   <TextRun>
                     <Value>View Details</Value>
                     <Style>
-                      <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1349,6 +1369,9 @@ ELSE
             </Visibility>
             <DataElementOutput>NoOutput</DataElementOutput>
             <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
               <PaddingTop>2pt</PaddingTop>
@@ -1366,8 +1389,8 @@ ELSE
                       <TextRun>
                         <Value>Start Time</Value>
                         <Style>
-                          <FontSize>8pt</FontSize>
                           <FontWeight>Bold</FontWeight>
+                          <Color>=Variables!TableHeadingFontColor.Value</Color>
                         </Style>
                       </TextRun>
                     </TextRuns>
@@ -1380,10 +1403,10 @@ ELSE
                 <Width>1in</Width>
                 <Style>
                   <Border>
-                    <Color>DarkGray</Color>
+                    <Color>=Variables!ReportTextColor.Value</Color>
                     <Style>Solid</Style>
                   </Border>
-                  <BackgroundColor>=Parameters!FmtChartBackground.Value</BackgroundColor>
+                  <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                   <VerticalAlign>Middle</VerticalAlign>
                   <PaddingLeft>2pt</PaddingLeft>
                   <PaddingRight>2pt</PaddingRight>
@@ -1400,7 +1423,7 @@ ELSE
                       <TextRun>
                         <Value>=Parameters!StartTime.Value</Value>
                         <Style>
-                          <FontSize>8pt</FontSize>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Style>
                       </TextRun>
                     </TextRuns>
@@ -1409,14 +1432,13 @@ ELSE
                 </Paragraphs>
                 <Left>1in</Left>
                 <Height>0.25in</Height>
-                <Width>1.375in</Width>
+                <Width>2.25in</Width>
                 <ZIndex>1</ZIndex>
                 <Style>
                   <Border>
-                    <Color>DarkGray</Color>
+                    <Color>=Variables!ReportTextColor.Value</Color>
                     <Style>Solid</Style>
                   </Border>
-                  <BackgroundColor>White</BackgroundColor>
                   <VerticalAlign>Middle</VerticalAlign>
                   <PaddingLeft>2pt</PaddingLeft>
                   <PaddingRight>2pt</PaddingRight>
@@ -1433,8 +1455,8 @@ ELSE
                       <TextRun>
                         <Value>End Time</Value>
                         <Style>
-                          <FontSize>8pt</FontSize>
                           <FontWeight>Bold</FontWeight>
+                          <Color>=Variables!TableHeadingFontColor.Value</Color>
                         </Style>
                       </TextRun>
                     </TextRuns>
@@ -1449,10 +1471,10 @@ ELSE
                 <ZIndex>2</ZIndex>
                 <Style>
                   <Border>
-                    <Color>DarkGray</Color>
+                    <Color>=Variables!ReportTextColor.Value</Color>
                     <Style>Solid</Style>
                   </Border>
-                  <BackgroundColor>=Parameters!FmtChartBackground.Value</BackgroundColor>
+                  <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                   <VerticalAlign>Middle</VerticalAlign>
                   <PaddingLeft>2pt</PaddingLeft>
                   <PaddingRight>2pt</PaddingRight>
@@ -1469,7 +1491,7 @@ ELSE
                       <TextRun>
                         <Value>=Parameters!EndTime.Value</Value>
                         <Style>
-                          <FontSize>8pt</FontSize>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Style>
                       </TextRun>
                     </TextRuns>
@@ -1479,14 +1501,13 @@ ELSE
                 <Top>0.25in</Top>
                 <Left>1in</Left>
                 <Height>0.25in</Height>
-                <Width>1.375in</Width>
+                <Width>2.25in</Width>
                 <ZIndex>3</ZIndex>
                 <Style>
                   <Border>
-                    <Color>DarkGray</Color>
+                    <Color>=Variables!ReportTextColor.Value</Color>
                     <Style>Solid</Style>
                   </Border>
-                  <BackgroundColor>White</BackgroundColor>
                   <VerticalAlign>Middle</VerticalAlign>
                   <PaddingLeft>2pt</PaddingLeft>
                   <PaddingRight>2pt</PaddingRight>
@@ -1497,9 +1518,9 @@ ELSE
             </ReportItems>
             <DataElementOutput>ContentsOnly</DataElementOutput>
             <Top>0.125in</Top>
-            <Left>6.23437in</Left>
+            <Left>5.85937in</Left>
             <Height>0.5in</Height>
-            <Width>2.375in</Width>
+            <Width>3.25in</Width>
             <ZIndex>3</ZIndex>
             <Style />
           </Rectangle>
@@ -1512,8 +1533,9 @@ ELSE
                   <TextRun>
                     <Value>Wait Details</Value>
                     <Style>
-                      <FontSize>14pt</FontSize>
+                      <FontSize>16pt</FontSize>
                       <FontWeight>Bold</FontWeight>
+                      <Color>=Variables!TitleColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1526,6 +1548,9 @@ ELSE
             <Width>2.625in</Width>
             <ZIndex>4</ZIndex>
             <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
               <PaddingTop>2pt</PaddingTop>
@@ -1547,13 +1572,13 @@ ELSE
                       <Width>1in</Width>
                     </TablixColumn>
                     <TablixColumn>
-                      <Width>1in</Width>
+                      <Width>1.14583in</Width>
                     </TablixColumn>
                     <TablixColumn>
                       <Width>2.5in</Width>
                     </TablixColumn>
                     <TablixColumn>
-                      <Width>0.75in</Width>
+                      <Width>0.60417in</Width>
                     </TablixColumn>
                     <TablixColumn>
                       <Width>0.75in</Width>
@@ -1577,8 +1602,8 @@ ELSE
                                     <TextRun>
                                       <Value>Snapshot Time</Value>
                                       <Style>
-                                        <FontSize>8pt</FontSize>
                                         <FontWeight>Bold</FontWeight>
+                                        <Color>=Variables!TableHeadingFontColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -1592,7 +1617,7 @@ ELSE
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=Parameters!FmtChartBackground.Value</BackgroundColor>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
                                 <PaddingTop>2pt</PaddingTop>
@@ -1612,8 +1637,8 @@ ELSE
                                     <TextRun>
                                       <Value>SPID</Value>
                                       <Style>
-                                        <FontSize>8pt</FontSize>
                                         <FontWeight>Bold</FontWeight>
+                                        <Color>=Variables!TableHeadingFontColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -1629,7 +1654,7 @@ ELSE
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=Parameters!FmtChartBackground.Value</BackgroundColor>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
                                 <PaddingTop>2pt</PaddingTop>
@@ -1649,8 +1674,8 @@ ELSE
                                     <TextRun>
                                       <Value>Wait Type</Value>
                                       <Style>
-                                        <FontSize>8pt</FontSize>
                                         <FontWeight>Bold</FontWeight>
+                                        <Color>=Variables!TableHeadingFontColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -1664,7 +1689,7 @@ ELSE
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=Parameters!FmtChartBackground.Value</BackgroundColor>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
                                 <PaddingTop>2pt</PaddingTop>
@@ -1684,8 +1709,8 @@ ELSE
                                     <TextRun>
                                       <Value>Wait Duration (ms)</Value>
                                       <Style>
-                                        <FontSize>8pt</FontSize>
                                         <FontWeight>Bold</FontWeight>
+                                        <Color>=Variables!TableHeadingFontColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -1701,7 +1726,7 @@ ELSE
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=Parameters!FmtChartBackground.Value</BackgroundColor>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
                                 <PaddingTop>2pt</PaddingTop>
@@ -1721,8 +1746,8 @@ ELSE
                                     <TextRun>
                                       <Value>Wait Resource</Value>
                                       <Style>
-                                        <FontSize>8pt</FontSize>
                                         <FontWeight>Bold</FontWeight>
+                                        <Color>=Variables!TableHeadingFontColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -1736,7 +1761,7 @@ ELSE
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=Parameters!FmtChartBackground.Value</BackgroundColor>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
                                 <PaddingTop>2pt</PaddingTop>
@@ -1756,8 +1781,8 @@ ELSE
                                     <TextRun>
                                       <Value>CPU</Value>
                                       <Style>
-                                        <FontSize>8pt</FontSize>
                                         <FontWeight>Bold</FontWeight>
+                                        <Color>=Variables!TableHeadingFontColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -1773,7 +1798,7 @@ ELSE
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=Parameters!FmtChartBackground.Value</BackgroundColor>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
                                 <PaddingTop>2pt</PaddingTop>
@@ -1793,8 +1818,8 @@ ELSE
                                     <TextRun>
                                       <Value>Logical Reads</Value>
                                       <Style>
-                                        <FontSize>8pt</FontSize>
                                         <FontWeight>Bold</FontWeight>
+                                        <Color>=Variables!TableHeadingFontColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -1810,7 +1835,7 @@ ELSE
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=Parameters!FmtChartBackground.Value</BackgroundColor>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
                                 <PaddingTop>2pt</PaddingTop>
@@ -1830,8 +1855,8 @@ ELSE
                                     <TextRun>
                                       <Value>Duration</Value>
                                       <Style>
-                                        <FontSize>8pt</FontSize>
                                         <FontWeight>Bold</FontWeight>
+                                        <Color>=Variables!TableHeadingFontColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -1845,7 +1870,7 @@ ELSE
                                   <Color>LightGrey</Color>
                                   <Style>Solid</Style>
                                 </Border>
-                                <BackgroundColor>=Parameters!FmtChartBackground.Value</BackgroundColor>
+                                <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
                                 <PaddingTop>2pt</PaddingTop>
@@ -1870,7 +1895,7 @@ ELSE
                                     <TextRun>
                                       <Value>=Fields!runtime.Value</Value>
                                       <Style>
-                                        <FontSize>8pt</FontSize>
+                                        <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -1903,7 +1928,7 @@ ELSE
                                     <TextRun>
                                       <Value>=IIF(Fields!request_id.Value &gt; 0, Fields!session_id.Value.ToString() + ":" + Fields!request_id.Value.ToString(), Fields!session_id.Value)</Value>
                                       <Style>
-                                        <FontSize>8pt</FontSize>
+                                        <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -1938,7 +1963,7 @@ ELSE
                                     <TextRun>
                                       <Value>=Fields!wait_type.Value</Value>
                                       <Style>
-                                        <FontSize>8pt</FontSize>
+                                        <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -1971,7 +1996,7 @@ ELSE
                                     <TextRun>
                                       <Value>=Fields!wait_duration_ms.Value</Value>
                                       <Style>
-                                        <FontSize>8pt</FontSize>
+                                        <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -2006,7 +2031,7 @@ ELSE
                                     <TextRun>
                                       <Value>=Fields!wait_resource.Value</Value>
                                       <Style>
-                                        <FontSize>8pt</FontSize>
+                                        <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -2039,7 +2064,7 @@ ELSE
                                     <TextRun>
                                       <Value>=Fields!request_cpu_time.Value</Value>
                                       <Style>
-                                        <FontSize>8pt</FontSize>
+                                        <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -2074,7 +2099,7 @@ ELSE
                                     <TextRun>
                                       <Value>=Fields!request_logical_reads.Value</Value>
                                       <Style>
-                                        <FontSize>8pt</FontSize>
+                                        <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -2109,7 +2134,7 @@ ELSE
                                     <TextRun>
                                       <Value>=Fields!request_total_elapsed_time.Value</Value>
                                       <Style>
-                                        <FontSize>8pt</FontSize>
+                                        <Color>=Variables!ReportTextColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -2185,9 +2210,7 @@ ELSE
                     <TextRuns>
                       <TextRun>
                         <Value>Following are the top 50 rows sampled from dm_exec_requests having the specified wait type(s), ordered by longest wait duration.</Value>
-                        <Style>
-                          <FontSize>8pt</FontSize>
-                        </Style>
+                        <Style />
                       </TextRun>
                     </TextRuns>
                     <Style />
@@ -2226,6 +2249,7 @@ ELSE
                     <Value>Show queries for this report.</Value>
                     <Style>
                       <FontWeight>Bold</FontWeight>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2257,7 +2281,9 @@ ELSE
                     <TextRuns>
                       <TextRun>
                         <Value>=DataSets!SAMPLED_WAITS.CommandText</Value>
-                        <Style />
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </TextRun>
                     </TextRuns>
                     <Style />
@@ -2289,7 +2315,9 @@ ELSE
                     <TextRuns>
                       <TextRun>
                         <Value>=DataSets!SPECIFIC_WAIT_OVER_TIME.CommandText</Value>
-                        <Style />
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </TextRun>
                     </TextRuns>
                     <Style />
@@ -2332,9 +2360,14 @@ ELSE
           </Rectangle>
         </ReportItems>
         <Height>8.75348in</Height>
-        <Style />
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
+        </Style>
       </Body>
-      <Width>10.19269in</Width>
+      <Width>10.44269in</Width>
       <Page>
         <LeftMargin>1in</LeftMargin>
         <RightMargin>1in</RightMargin>
@@ -2419,11 +2452,36 @@ ELSE
       <Prompt>FmtAmbientBackground</Prompt>
       <Hidden>true</Hidden>
     </ReportParameter>
+    <ReportParameter Name="ContrastTheme">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>None</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>ContrastTheme</Prompt>
+      <ValidValues>
+        <ParameterValues>
+          <ParameterValue>
+            <Value>None</Value>
+            <Label>None</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>Aquatic</Value>
+            <Label>Aquatic</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>Desert</Value>
+            <Label>Desert</Label>
+          </ParameterValue>
+        </ParameterValues>
+      </ValidValues>
+    </ReportParameter>
   </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>
       <NumberOfColumns>3</NumberOfColumns>
-      <NumberOfRows>3</NumberOfRows>
+      <NumberOfRows>4</NumberOfRows>
       <CellDefinitions>
         <CellDefinition>
           <ColumnIndex>0</ColumnIndex>
@@ -2460,10 +2518,73 @@ ELSE
           <RowIndex>2</RowIndex>
           <ParameterName>FmtAmbientBackground</ParameterName>
         </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>3</RowIndex>
+          <ParameterName>ContrastTheme</ParameterName>
+        </CellDefinition>
       </CellDefinitions>
     </GridLayoutDefinition>
   </ReportParametersLayout>
   <Language>en-US</Language>
+  <Variables>
+    <Variable Name="ReportTextColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+Parameters!ContrastTheme.Value="None", "Black")</Value>
+    </Variable>
+    <Variable Name="BodyBackgroundColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
+Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
+Parameters!ContrastTheme.Value="None", "#FAFDFF")</Value>
+    </Variable>
+    <Variable Name="TitleColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+Parameters!ContrastTheme.Value="None", "SteelBlue")</Value>
+    </Variable>
+    <Variable Name="TableHeadingColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
+Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
+Parameters!ContrastTheme.Value="None", "SteelBlue")</Value>
+    </Variable>
+    <Variable Name="ChartColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
+Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
+Parameters!ContrastTheme.Value="None", "LightSteelBlue")</Value>
+    </Variable>
+    <Variable Name="ChartSecondaryColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "No Color",
+Parameters!ContrastTheme.Value="Desert", "No Color",
+Parameters!ContrastTheme.Value="None", "Automatic")</Value>
+    </Variable>
+    <Variable Name="ChartGradientStyle">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "None",
+Parameters!ContrastTheme.Value="Desert", "None",
+Parameters!ContrastTheme.Value="None", "TopBottom")</Value>
+    </Variable>
+    <Variable Name="TableShowCell">
+      <Value>"Red"</Value>
+    </Variable>
+    <Variable Name="TableHidcell">
+      <Value>"Green"</Value>
+    </Variable>
+    <Variable Name="TableHeadingFontColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+Parameters!ContrastTheme.Value="None", "#FFFFFF")</Value>
+    </Variable>
+    <Variable Name="URILinkFontColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#75E9FC",
+Parameters!ContrastTheme.Value="Desert", "#1C5E75",
+Parameters!ContrastTheme.Value="None", "Blue")</Value>
+    </Variable>
+    <Variable Name="ChartFrameColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
+Parameters!ContrastTheme.Value="Desert", "#c6daf8",
+Parameters!ContrastTheme.Value="None", "#c6daf8")</Value>
+    </Variable>
+  </Variables>
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
   <rd:ReportUnitType>Inch</rd:ReportUnitType>
   <rd:ReportID>17f53028-2b84-4434-b420-ddcbedc6209f</rd:ReportID>

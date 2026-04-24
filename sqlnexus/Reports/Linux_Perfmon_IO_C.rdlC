@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Report xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:cl="http://schemas.microsoft.com/sqlserver/reporting/2010/01/componentdefinition" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2010/01/reportdefinition">
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
@@ -326,25 +326,26 @@ order by CounterDateTime</CommandText>
                   <ChartAxis Name="Primary">
                     <Style>
                       <FontSize>8pt</FontSize>
-                    </Style>
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     <ChartAxisTitle>
                       <Caption>Time</Caption>
                       <Style>
                         <FontSize>8pt</FontSize>
-                      </Style>
+                      
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Enabled>False</Enabled>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Border>
                       </Style>
                     </ChartMajorGridLines>
                     <ChartMinorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                           <Style>Dotted</Style>
                         </Border>
                       </Style>
@@ -362,25 +363,26 @@ order by CounterDateTime</CommandText>
                   <ChartAxis Name="Secondary">
                     <Style>
                       <FontSize>8pt</FontSize>
-                    </Style>
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     <ChartAxisTitle>
                       <Caption>Axis Title</Caption>
                       <Style>
                         <FontSize>8pt</FontSize>
-                      </Style>
+                      
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Enabled>False</Enabled>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Border>
                       </Style>
                     </ChartMajorGridLines>
                     <ChartMinorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                           <Style>Dotted</Style>
                         </Border>
                       </Style>
@@ -401,24 +403,25 @@ order by CounterDateTime</CommandText>
                   <ChartAxis Name="Primary">
                     <Style>
                       <FontSize>8pt</FontSize>
-                    </Style>
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     <ChartAxisTitle>
                       <Caption>Avg Disk Sec/Read</Caption>
                       <Style>
                         <FontSize>8pt</FontSize>
-                      </Style>
+                      
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Border>
                       </Style>
                     </ChartMajorGridLines>
                     <ChartMinorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                           <Style>Dotted</Style>
                         </Border>
                       </Style>
@@ -436,24 +439,25 @@ order by CounterDateTime</CommandText>
                   <ChartAxis Name="Secondary">
                     <Style>
                       <FontSize>8pt</FontSize>
-                    </Style>
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     <ChartAxisTitle>
                       <Caption>Axis Title</Caption>
                       <Style>
                         <FontSize>8pt</FontSize>
-                      </Style>
+                      
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Border>
                       </Style>
                     </ChartMajorGridLines>
                     <ChartMinorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                           <Style>Dotted</Style>
                         </Border>
                       </Style>
@@ -471,6 +475,7 @@ order by CounterDateTime</CommandText>
                   </ChartAxis>
                 </ChartValueAxes>
                 <Style>
+                  <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
                   <BackgroundGradientType>None</BackgroundGradientType>
                 </Style>
               </ChartArea>
@@ -480,7 +485,8 @@ order by CounterDateTime</CommandText>
                 <Style>
                   <BackgroundGradientType>None</BackgroundGradientType>
                   <FontSize>8pt</FontSize>
-                </Style>
+                
+                  <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartLegendTitle>
                   <Caption />
                   <Style>
@@ -501,7 +507,8 @@ order by CounterDateTime</CommandText>
                   <FontWeight>Bold</FontWeight>
                   <TextAlign>General</TextAlign>
                   <VerticalAlign>Top</VerticalAlign>
-                </Style>
+                
+                  <Color>=Variables!ReportTextColor.Value</Color></Style>
               </ChartTitle>
             </ChartTitles>
             <Palette>BrightPastel</Palette>
@@ -530,7 +537,7 @@ order by CounterDateTime</CommandText>
                 <Color>LightGrey</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
+              <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
               <BackgroundGradientType>None</BackgroundGradientType>
             </Style>
           </Chart>
@@ -545,6 +552,7 @@ order by CounterDateTime</CommandText>
                     <Style>
                       <FontStyle>Normal</FontStyle>
                       <FontSize>16pt</FontSize>
+                      <Color>=Variables!TitleColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -638,25 +646,26 @@ order by CounterDateTime</CommandText>
                   <ChartAxis Name="Primary">
                     <Style>
                       <FontSize>8pt</FontSize>
-                    </Style>
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     <ChartAxisTitle>
                       <Caption>Time</Caption>
                       <Style>
                         <FontSize>8pt</FontSize>
-                      </Style>
+                      
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Enabled>False</Enabled>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Border>
                       </Style>
                     </ChartMajorGridLines>
                     <ChartMinorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                           <Style>Dotted</Style>
                         </Border>
                       </Style>
@@ -674,25 +683,26 @@ order by CounterDateTime</CommandText>
                   <ChartAxis Name="Secondary">
                     <Style>
                       <FontSize>8pt</FontSize>
-                    </Style>
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     <ChartAxisTitle>
                       <Caption>Axis Title</Caption>
                       <Style>
                         <FontSize>8pt</FontSize>
-                      </Style>
+                      
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Enabled>False</Enabled>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Border>
                       </Style>
                     </ChartMajorGridLines>
                     <ChartMinorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                           <Style>Dotted</Style>
                         </Border>
                       </Style>
@@ -713,24 +723,25 @@ order by CounterDateTime</CommandText>
                   <ChartAxis Name="Primary">
                     <Style>
                       <FontSize>8pt</FontSize>
-                    </Style>
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     <ChartAxisTitle>
                       <Caption>Avg Disk Sec/Write</Caption>
                       <Style>
                         <FontSize>8pt</FontSize>
-                      </Style>
+                      
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Border>
                       </Style>
                     </ChartMajorGridLines>
                     <ChartMinorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                           <Style>Dotted</Style>
                         </Border>
                       </Style>
@@ -748,24 +759,25 @@ order by CounterDateTime</CommandText>
                   <ChartAxis Name="Secondary">
                     <Style>
                       <FontSize>8pt</FontSize>
-                    </Style>
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     <ChartAxisTitle>
                       <Caption>Axis Title</Caption>
                       <Style>
                         <FontSize>8pt</FontSize>
-                      </Style>
+                      
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Border>
                       </Style>
                     </ChartMajorGridLines>
                     <ChartMinorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                           <Style>Dotted</Style>
                         </Border>
                       </Style>
@@ -783,6 +795,7 @@ order by CounterDateTime</CommandText>
                   </ChartAxis>
                 </ChartValueAxes>
                 <Style>
+                  <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
                   <BackgroundGradientType>None</BackgroundGradientType>
                 </Style>
               </ChartArea>
@@ -792,7 +805,8 @@ order by CounterDateTime</CommandText>
                 <Style>
                   <BackgroundGradientType>None</BackgroundGradientType>
                   <FontSize>8pt</FontSize>
-                </Style>
+                
+                  <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartLegendTitle>
                   <Caption />
                   <Style>
@@ -813,7 +827,8 @@ order by CounterDateTime</CommandText>
                   <FontWeight>Bold</FontWeight>
                   <TextAlign>General</TextAlign>
                   <VerticalAlign>Top</VerticalAlign>
-                </Style>
+                
+                  <Color>=Variables!ReportTextColor.Value</Color></Style>
               </ChartTitle>
             </ChartTitles>
             <Palette>BrightPastel</Palette>
@@ -843,7 +858,7 @@ order by CounterDateTime</CommandText>
                 <Color>LightGrey</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
+              <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
               <BackgroundGradientType>None</BackgroundGradientType>
             </Style>
           </Chart>
@@ -918,25 +933,26 @@ order by CounterDateTime</CommandText>
                   <ChartAxis Name="Primary">
                     <Style>
                       <FontSize>8pt</FontSize>
-                    </Style>
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     <ChartAxisTitle>
                       <Caption>Time</Caption>
                       <Style>
                         <FontSize>8pt</FontSize>
-                      </Style>
+                      
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Enabled>False</Enabled>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Border>
                       </Style>
                     </ChartMajorGridLines>
                     <ChartMinorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                           <Style>Dotted</Style>
                         </Border>
                       </Style>
@@ -954,25 +970,26 @@ order by CounterDateTime</CommandText>
                   <ChartAxis Name="Secondary">
                     <Style>
                       <FontSize>8pt</FontSize>
-                    </Style>
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     <ChartAxisTitle>
                       <Caption>Axis Title</Caption>
                       <Style>
                         <FontSize>8pt</FontSize>
-                      </Style>
+                      
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Enabled>False</Enabled>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Border>
                       </Style>
                     </ChartMajorGridLines>
                     <ChartMinorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                           <Style>Dotted</Style>
                         </Border>
                       </Style>
@@ -993,24 +1010,25 @@ order by CounterDateTime</CommandText>
                   <ChartAxis Name="Primary">
                     <Style>
                       <FontSize>8pt</FontSize>
-                    </Style>
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     <ChartAxisTitle>
                       <Caption>Disk MB/Sec</Caption>
                       <Style>
                         <FontSize>8pt</FontSize>
-                      </Style>
+                      
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Border>
                       </Style>
                     </ChartMajorGridLines>
                     <ChartMinorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                           <Style>Dotted</Style>
                         </Border>
                       </Style>
@@ -1028,24 +1046,25 @@ order by CounterDateTime</CommandText>
                   <ChartAxis Name="Secondary">
                     <Style>
                       <FontSize>8pt</FontSize>
-                    </Style>
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     <ChartAxisTitle>
                       <Caption>Axis Title</Caption>
                       <Style>
                         <FontSize>8pt</FontSize>
-                      </Style>
+                      
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Border>
                       </Style>
                     </ChartMajorGridLines>
                     <ChartMinorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                           <Style>Dotted</Style>
                         </Border>
                       </Style>
@@ -1063,6 +1082,7 @@ order by CounterDateTime</CommandText>
                   </ChartAxis>
                 </ChartValueAxes>
                 <Style>
+                  <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
                   <BackgroundGradientType>None</BackgroundGradientType>
                 </Style>
               </ChartArea>
@@ -1072,7 +1092,8 @@ order by CounterDateTime</CommandText>
                 <Style>
                   <BackgroundGradientType>None</BackgroundGradientType>
                   <FontSize>8pt</FontSize>
-                </Style>
+                
+                  <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartLegendTitle>
                   <Caption />
                   <Style>
@@ -1093,7 +1114,8 @@ order by CounterDateTime</CommandText>
                   <FontWeight>Bold</FontWeight>
                   <TextAlign>General</TextAlign>
                   <VerticalAlign>Top</VerticalAlign>
-                </Style>
+                
+                  <Color>=Variables!ReportTextColor.Value</Color></Style>
               </ChartTitle>
             </ChartTitles>
             <Palette>BrightPastel</Palette>
@@ -1123,7 +1145,7 @@ order by CounterDateTime</CommandText>
                 <Color>LightGrey</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
+              <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
               <BackgroundGradientType>None</BackgroundGradientType>
             </Style>
           </Chart>
@@ -1198,25 +1220,26 @@ order by CounterDateTime</CommandText>
                   <ChartAxis Name="Primary">
                     <Style>
                       <FontSize>8pt</FontSize>
-                    </Style>
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     <ChartAxisTitle>
                       <Caption>Time</Caption>
                       <Style>
                         <FontSize>8pt</FontSize>
-                      </Style>
+                      
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Enabled>False</Enabled>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Border>
                       </Style>
                     </ChartMajorGridLines>
                     <ChartMinorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                           <Style>Dotted</Style>
                         </Border>
                       </Style>
@@ -1234,25 +1257,26 @@ order by CounterDateTime</CommandText>
                   <ChartAxis Name="Secondary">
                     <Style>
                       <FontSize>8pt</FontSize>
-                    </Style>
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     <ChartAxisTitle>
                       <Caption>Axis Title</Caption>
                       <Style>
                         <FontSize>8pt</FontSize>
-                      </Style>
+                      
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Enabled>False</Enabled>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Border>
                       </Style>
                     </ChartMajorGridLines>
                     <ChartMinorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                           <Style>Dotted</Style>
                         </Border>
                       </Style>
@@ -1273,24 +1297,25 @@ order by CounterDateTime</CommandText>
                   <ChartAxis Name="Primary">
                     <Style>
                       <FontSize>8pt</FontSize>
-                    </Style>
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     <ChartAxisTitle>
                       <Caption>Disk MB/Sec</Caption>
                       <Style>
                         <FontSize>8pt</FontSize>
-                      </Style>
+                      
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Border>
                       </Style>
                     </ChartMajorGridLines>
                     <ChartMinorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                           <Style>Dotted</Style>
                         </Border>
                       </Style>
@@ -1308,24 +1333,25 @@ order by CounterDateTime</CommandText>
                   <ChartAxis Name="Secondary">
                     <Style>
                       <FontSize>8pt</FontSize>
-                    </Style>
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     <ChartAxisTitle>
                       <Caption>Axis Title</Caption>
                       <Style>
                         <FontSize>8pt</FontSize>
-                      </Style>
+                      
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Border>
                       </Style>
                     </ChartMajorGridLines>
                     <ChartMinorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                           <Style>Dotted</Style>
                         </Border>
                       </Style>
@@ -1343,6 +1369,7 @@ order by CounterDateTime</CommandText>
                   </ChartAxis>
                 </ChartValueAxes>
                 <Style>
+                  <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
                   <BackgroundGradientType>None</BackgroundGradientType>
                 </Style>
               </ChartArea>
@@ -1352,7 +1379,8 @@ order by CounterDateTime</CommandText>
                 <Style>
                   <BackgroundGradientType>None</BackgroundGradientType>
                   <FontSize>8pt</FontSize>
-                </Style>
+                
+                  <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartLegendTitle>
                   <Caption />
                   <Style>
@@ -1373,7 +1401,8 @@ order by CounterDateTime</CommandText>
                   <FontWeight>Bold</FontWeight>
                   <TextAlign>General</TextAlign>
                   <VerticalAlign>Top</VerticalAlign>
-                </Style>
+                
+                  <Color>=Variables!ReportTextColor.Value</Color></Style>
               </ChartTitle>
             </ChartTitles>
             <Palette>BrightPastel</Palette>
@@ -1403,7 +1432,7 @@ order by CounterDateTime</CommandText>
                 <Color>LightGrey</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
+              <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
               <BackgroundGradientType>None</BackgroundGradientType>
             </Style>
           </Chart>
@@ -1479,25 +1508,26 @@ order by CounterDateTime</CommandText>
                   <ChartAxis Name="Primary">
                     <Style>
                       <FontSize>8pt</FontSize>
-                    </Style>
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     <ChartAxisTitle>
                       <Caption>Time</Caption>
                       <Style>
                         <FontSize>8pt</FontSize>
-                      </Style>
+                      
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Enabled>False</Enabled>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Border>
                       </Style>
                     </ChartMajorGridLines>
                     <ChartMinorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                           <Style>Dotted</Style>
                         </Border>
                       </Style>
@@ -1515,25 +1545,26 @@ order by CounterDateTime</CommandText>
                   <ChartAxis Name="Secondary">
                     <Style>
                       <FontSize>8pt</FontSize>
-                    </Style>
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     <ChartAxisTitle>
                       <Caption>Axis Title</Caption>
                       <Style>
                         <FontSize>8pt</FontSize>
-                      </Style>
+                      
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Enabled>False</Enabled>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Border>
                       </Style>
                     </ChartMajorGridLines>
                     <ChartMinorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                           <Style>Dotted</Style>
                         </Border>
                       </Style>
@@ -1554,24 +1585,25 @@ order by CounterDateTime</CommandText>
                   <ChartAxis Name="Primary">
                     <Style>
                       <FontSize>8pt</FontSize>
-                    </Style>
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     <ChartAxisTitle>
                       <Caption>Avg Disk Queue Length</Caption>
                       <Style>
                         <FontSize>8pt</FontSize>
-                      </Style>
+                      
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Border>
                       </Style>
                     </ChartMajorGridLines>
                     <ChartMinorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                           <Style>Dotted</Style>
                         </Border>
                       </Style>
@@ -1589,24 +1621,25 @@ order by CounterDateTime</CommandText>
                   <ChartAxis Name="Secondary">
                     <Style>
                       <FontSize>8pt</FontSize>
-                    </Style>
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     <ChartAxisTitle>
                       <Caption>Axis Title</Caption>
                       <Style>
                         <FontSize>8pt</FontSize>
-                      </Style>
+                      
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Border>
                       </Style>
                     </ChartMajorGridLines>
                     <ChartMinorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                           <Style>Dotted</Style>
                         </Border>
                       </Style>
@@ -1624,6 +1657,7 @@ order by CounterDateTime</CommandText>
                   </ChartAxis>
                 </ChartValueAxes>
                 <Style>
+                  <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
                   <BackgroundGradientType>None</BackgroundGradientType>
                 </Style>
               </ChartArea>
@@ -1633,7 +1667,8 @@ order by CounterDateTime</CommandText>
                 <Style>
                   <BackgroundGradientType>None</BackgroundGradientType>
                   <FontSize>8pt</FontSize>
-                </Style>
+                
+                  <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <ChartLegendTitle>
                   <Caption />
                   <Style>
@@ -1654,7 +1689,8 @@ order by CounterDateTime</CommandText>
                   <FontWeight>Bold</FontWeight>
                   <TextAlign>General</TextAlign>
                   <VerticalAlign>Top</VerticalAlign>
-                </Style>
+                
+                  <Color>=Variables!ReportTextColor.Value</Color></Style>
               </ChartTitle>
             </ChartTitles>
             <Palette>BrightPastel</Palette>
@@ -1684,7 +1720,7 @@ order by CounterDateTime</CommandText>
                 <Color>LightGrey</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
+              <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
               <BackgroundGradientType>None</BackgroundGradientType>
             </Style>
           </Chart>
@@ -1694,7 +1730,7 @@ order by CounterDateTime</CommandText>
           <Border>
             <Style>None</Style>
           </Border>
-          <BackgroundColor>=Parameters!FmtAmbientBackground.Value</BackgroundColor>
+          <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
         </Style>
       </Body>
       <Width>14.29181in</Width>
@@ -1798,7 +1834,62 @@ order by CounterDateTime</CommandText>
         </DataSetReference>
       </ValidValues>
     </ReportParameter>
+    <ReportParameter Name="ContrastTheme">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>None</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>ContrastTheme</Prompt>
+      <ValidValues>
+        <ParameterValues>
+          <ParameterValue>
+            <Value>None</Value>
+            <Label>None</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>Aquatic</Value>
+            <Label>Aquatic</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>Desert</Value>
+            <Label>Desert</Label>
+          </ParameterValue>
+        </ParameterValues>
+      </ValidValues>
+    </ReportParameter>
   </ReportParameters>
   <rd:ReportUnitType>Inch</rd:ReportUnitType>
+  <Variables>
+    <Variable Name="IsLocalReport">
+      <Value>= (Globals!ReportServerUrl="")</Value>
+    </Variable>
+    <Variable Name="ReportTextColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+Parameters!ContrastTheme.Value="None", "Black")</Value>
+    </Variable>
+    <Variable Name="BodyColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
+Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
+Parameters!ContrastTheme.Value="None", "No Color")</Value>
+    </Variable>
+    <Variable Name="TitleColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+Parameters!ContrastTheme.Value="None", "#1c3a70")</Value>
+    </Variable>
+    <Variable Name="URLColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#75E9FC",
+Parameters!ContrastTheme.Value="Desert", "#1C5E75",
+Parameters!ContrastTheme.Value="None", "Blue")</Value>
+    </Variable>
+    <Variable Name="TableHeadingColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "No Color",
+Parameters!ContrastTheme.Value="Desert", "No Color",
+Parameters!ContrastTheme.Value="None", "Gainsboro")</Value>
+    </Variable>
+  </Variables>
   <rd:ReportID>a76e7f4b-33f9-4c5d-b662-abe74d8c86e8</rd:ReportID>
 </Report>

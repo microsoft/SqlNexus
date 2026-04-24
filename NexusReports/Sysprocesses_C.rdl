@@ -1,5 +1,16 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:am="http://schemas.microsoft.com/sqlserver/reporting/authoringmetadata">
+  <am:AuthoringMetadata>
+    <am:CreatedBy>
+      <am:Name>SSDTRS</am:Name>
+      <am:Version>17.14.37111.16</am:Version>
+    </am:CreatedBy>
+    <am:UpdatedBy>
+      <am:Name>SSDTRS</am:Name>
+      <am:Version>17.14.37111.16</am:Version>
+    </am:UpdatedBy>
+    <am:LastModifiedTimestamp>2026-04-10T16:49:49.8979217Z</am:LastModifiedTimestamp>
+  </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
     <DataSource Name="DataSource_Private">
@@ -249,7 +260,7 @@ WHERE rownum = @rowids;</CommandText>
                     <Style>
                       <FontSize>16pt</FontSize>
                       <FontWeight>Bold</FontWeight>
-                      <Color>SteelBlue</Color>
+                      <Color>=Variables!TitleColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -262,6 +273,9 @@ WHERE rownum = @rowids;</CommandText>
             <Height>0.375in</Height>
             <Width>7.125in</Width>
             <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
               <PaddingTop>2pt</PaddingTop>
@@ -322,7 +336,7 @@ WHERE rownum = @rowids;</CommandText>
                                   <Style>
                                     <FontFamily />
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -339,7 +353,7 @@ WHERE rownum = @rowids;</CommandText>
                               <Color>Silver</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>SteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <FontFamily />
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
@@ -362,7 +376,7 @@ WHERE rownum = @rowids;</CommandText>
                                   <Style>
                                     <FontFamily />
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -379,7 +393,7 @@ WHERE rownum = @rowids;</CommandText>
                               <Color>Silver</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>SteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <FontFamily />
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
@@ -402,7 +416,7 @@ WHERE rownum = @rowids;</CommandText>
                                   <Style>
                                     <FontFamily />
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -419,7 +433,7 @@ WHERE rownum = @rowids;</CommandText>
                               <Color>Silver</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>SteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <FontFamily />
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
@@ -442,7 +456,7 @@ WHERE rownum = @rowids;</CommandText>
                                   <Style>
                                     <FontFamily />
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -459,7 +473,7 @@ WHERE rownum = @rowids;</CommandText>
                               <Color>Silver</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>SteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <FontFamily />
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
@@ -482,7 +496,7 @@ WHERE rownum = @rowids;</CommandText>
                                   <Style>
                                     <FontFamily />
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -499,7 +513,7 @@ WHERE rownum = @rowids;</CommandText>
                               <Color>Silver</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>SteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <FontFamily />
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
@@ -522,7 +536,7 @@ WHERE rownum = @rowids;</CommandText>
                                   <Style>
                                     <FontFamily />
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -539,7 +553,7 @@ WHERE rownum = @rowids;</CommandText>
                               <Color>Silver</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>SteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <FontFamily />
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
@@ -562,7 +576,7 @@ WHERE rownum = @rowids;</CommandText>
                                   <Style>
                                     <FontFamily />
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -579,7 +593,7 @@ WHERE rownum = @rowids;</CommandText>
                               <Color>Silver</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>SteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <FontFamily />
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
@@ -602,7 +616,7 @@ WHERE rownum = @rowids;</CommandText>
                                   <Style>
                                     <FontFamily />
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -619,7 +633,7 @@ WHERE rownum = @rowids;</CommandText>
                               <Color>Silver</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>SteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <FontFamily />
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
@@ -642,7 +656,7 @@ WHERE rownum = @rowids;</CommandText>
                                   <Style>
                                     <FontFamily />
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -659,7 +673,7 @@ WHERE rownum = @rowids;</CommandText>
                               <Color>Silver</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>SteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <FontFamily />
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
@@ -682,7 +696,7 @@ WHERE rownum = @rowids;</CommandText>
                                   <Style>
                                     <FontFamily />
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -699,7 +713,7 @@ WHERE rownum = @rowids;</CommandText>
                               <Color>Silver</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>SteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <FontFamily />
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
@@ -722,7 +736,7 @@ WHERE rownum = @rowids;</CommandText>
                                   <Style>
                                     <FontFamily />
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -739,7 +753,7 @@ WHERE rownum = @rowids;</CommandText>
                               <Color>Silver</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>SteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <FontFamily />
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
@@ -768,7 +782,7 @@ WHERE rownum = @rowids;</CommandText>
                                     <FontFamily />
                                     <FontWeight>Bold</FontWeight>
                                     <TextDecoration>Underline</TextDecoration>
-                                    <Color>Blue</Color>
+                                    <Color>=Variables!URILinkFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -830,6 +844,7 @@ WHERE rownum = @rowids;</CommandText>
                                   <Value>=Fields!blocked.Value</Value>
                                   <Style>
                                     <FontFamily />
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -868,6 +883,7 @@ WHERE rownum = @rowids;</CommandText>
                                   <Value>=Fields!ecid.Value</Value>
                                   <Style>
                                     <FontFamily />
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -906,6 +922,7 @@ WHERE rownum = @rowids;</CommandText>
                                   <Value>=Fields!kpid.Value</Value>
                                   <Style>
                                     <FontFamily />
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -944,6 +961,7 @@ WHERE rownum = @rowids;</CommandText>
                                   <Value>=Fields!status.Value</Value>
                                   <Style>
                                     <FontFamily />
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -979,6 +997,7 @@ WHERE rownum = @rowids;</CommandText>
                                   <Value>=Fields!dbid.Value</Value>
                                   <Style>
                                     <FontFamily />
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1017,6 +1036,7 @@ WHERE rownum = @rowids;</CommandText>
                                   <Value>=Fields!open_tran.Value</Value>
                                   <Style>
                                     <FontFamily />
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1055,6 +1075,7 @@ WHERE rownum = @rowids;</CommandText>
                                   <Value>=Fields!waittime.Value/1000</Value>
                                   <Style>
                                     <FontFamily />
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1093,6 +1114,7 @@ WHERE rownum = @rowids;</CommandText>
                                   <Value>=Fields!waitresource.Value</Value>
                                   <Style>
                                     <FontFamily />
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1128,6 +1150,7 @@ WHERE rownum = @rowids;</CommandText>
                                   <Value>=Fields!lastwaittype.Value</Value>
                                   <Style>
                                     <FontFamily />
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1163,6 +1186,7 @@ WHERE rownum = @rowids;</CommandText>
                                   <Value>=Fields!cmd.Value</Value>
                                   <Style>
                                     <FontFamily />
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1241,7 +1265,7 @@ WHERE rownum = @rowids;</CommandText>
                     <Value>= "Runtime snapshot information @ " + First(Fields!runtime.Value, "DataSet_Runtime")</Value>
                     <Style>
                       <FontWeight>Bold</FontWeight>
-                      <Color>Maroon</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1275,7 +1299,7 @@ WHERE rownum = @rowids;</CommandText>
                     <Value>= "Details for SPID " + CStr(Parameters!SPID.Value) + " @ Runtime " + First(Fields!runtime.Value, "DataSet_Runtime")</Value>
                     <Style>
                       <FontWeight>Bold</FontWeight>
-                      <Color>Maroon</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1306,7 +1330,7 @@ WHERE rownum = @rowids;</CommandText>
                     <Style>
                       <FontSize>8pt</FontSize>
                       <FontWeight>Bold</FontWeight>
-                      <Color>White</Color>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1324,7 +1348,7 @@ WHERE rownum = @rowids;</CommandText>
                 <Color>Silver</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>SteelBlue</BackgroundColor>
+              <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
               <PaddingTop>2pt</PaddingTop>
@@ -1341,6 +1365,7 @@ WHERE rownum = @rowids;</CommandText>
                     <Value>=First(Fields!program_name.Value, "DataSet_HeadBlk")</Value>
                     <Style>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1377,7 +1402,7 @@ WHERE rownum = @rowids;</CommandText>
                     <Style>
                       <FontSize>8pt</FontSize>
                       <FontWeight>Bold</FontWeight>
-                      <Color>White</Color>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1395,7 +1420,7 @@ WHERE rownum = @rowids;</CommandText>
                 <Color>Silver</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>SteelBlue</BackgroundColor>
+              <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
               <PaddingTop>2pt</PaddingTop>
@@ -1413,7 +1438,7 @@ WHERE rownum = @rowids;</CommandText>
                     <Style>
                       <FontSize>8pt</FontSize>
                       <FontWeight>Bold</FontWeight>
-                      <Color>White</Color>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1430,7 +1455,7 @@ WHERE rownum = @rowids;</CommandText>
                 <Color>Silver</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>SteelBlue</BackgroundColor>
+              <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
               <PaddingTop>2pt</PaddingTop>
@@ -1448,7 +1473,7 @@ WHERE rownum = @rowids;</CommandText>
                     <Style>
                       <FontSize>8pt</FontSize>
                       <FontWeight>Bold</FontWeight>
-                      <Color>White</Color>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1465,7 +1490,7 @@ WHERE rownum = @rowids;</CommandText>
                 <Color>Silver</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>SteelBlue</BackgroundColor>
+              <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
               <PaddingTop>2pt</PaddingTop>
@@ -1483,7 +1508,7 @@ WHERE rownum = @rowids;</CommandText>
                     <Style>
                       <FontSize>8pt</FontSize>
                       <FontWeight>Bold</FontWeight>
-                      <Color>White</Color>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1500,7 +1525,7 @@ WHERE rownum = @rowids;</CommandText>
                 <Color>Silver</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>SteelBlue</BackgroundColor>
+              <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
               <PaddingTop>2pt</PaddingTop>
@@ -1518,7 +1543,7 @@ WHERE rownum = @rowids;</CommandText>
                     <Style>
                       <FontSize>8pt</FontSize>
                       <FontWeight>Bold</FontWeight>
-                      <Color>White</Color>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1535,7 +1560,7 @@ WHERE rownum = @rowids;</CommandText>
                 <Color>Silver</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>SteelBlue</BackgroundColor>
+              <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
               <PaddingTop>2pt</PaddingTop>
@@ -1553,7 +1578,7 @@ WHERE rownum = @rowids;</CommandText>
                     <Style>
                       <FontSize>8pt</FontSize>
                       <FontWeight>Bold</FontWeight>
-                      <Color>White</Color>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1572,7 +1597,7 @@ WHERE rownum = @rowids;</CommandText>
                 <Color>Silver</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>SteelBlue</BackgroundColor>
+              <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
               <PaddingTop>2pt</PaddingTop>
@@ -1590,7 +1615,7 @@ WHERE rownum = @rowids;</CommandText>
                     <Style>
                       <FontSize>8pt</FontSize>
                       <FontWeight>Bold</FontWeight>
-                      <Color>White</Color>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1609,7 +1634,7 @@ WHERE rownum = @rowids;</CommandText>
                 <Color>Silver</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>SteelBlue</BackgroundColor>
+              <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
               <PaddingTop>2pt</PaddingTop>
@@ -1627,7 +1652,7 @@ WHERE rownum = @rowids;</CommandText>
                     <Style>
                       <FontSize>8pt</FontSize>
                       <FontWeight>Bold</FontWeight>
-                      <Color>White</Color>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1646,7 +1671,7 @@ WHERE rownum = @rowids;</CommandText>
                 <Color>Silver</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>SteelBlue</BackgroundColor>
+              <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
               <PaddingTop>2pt</PaddingTop>
@@ -1664,7 +1689,7 @@ WHERE rownum = @rowids;</CommandText>
                     <Style>
                       <FontSize>8pt</FontSize>
                       <FontWeight>Bold</FontWeight>
-                      <Color>White</Color>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1683,7 +1708,7 @@ WHERE rownum = @rowids;</CommandText>
                 <Color>Silver</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>SteelBlue</BackgroundColor>
+              <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
               <PaddingTop>2pt</PaddingTop>
@@ -1701,7 +1726,7 @@ WHERE rownum = @rowids;</CommandText>
                     <Style>
                       <FontSize>8pt</FontSize>
                       <FontWeight>Bold</FontWeight>
-                      <Color>White</Color>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1720,7 +1745,7 @@ WHERE rownum = @rowids;</CommandText>
                 <Color>Silver</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>SteelBlue</BackgroundColor>
+              <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
               <PaddingTop>2pt</PaddingTop>
@@ -1738,7 +1763,7 @@ WHERE rownum = @rowids;</CommandText>
                     <Style>
                       <FontSize>8pt</FontSize>
                       <FontWeight>Bold</FontWeight>
-                      <Color>White</Color>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1757,7 +1782,7 @@ WHERE rownum = @rowids;</CommandText>
                 <Color>Silver</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>SteelBlue</BackgroundColor>
+              <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
               <PaddingTop>2pt</PaddingTop>
@@ -1774,6 +1799,7 @@ WHERE rownum = @rowids;</CommandText>
                     <Value>=First(Fields!loginame.Value, "DataSet_HeadBlk")</Value>
                     <Style>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1808,6 +1834,7 @@ WHERE rownum = @rowids;</CommandText>
                     <Value>=First(Fields!hostname.Value, "DataSet_HeadBlk")</Value>
                     <Style>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1842,6 +1869,7 @@ WHERE rownum = @rowids;</CommandText>
                     <Value>=First(Fields!lastwaittype.Value, "DataSet_HeadBlk")</Value>
                     <Style>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1876,6 +1904,7 @@ WHERE rownum = @rowids;</CommandText>
                     <Value>=First(Fields!waittime.Value, "DataSet_HeadBlk")</Value>
                     <Style>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1910,7 +1939,7 @@ WHERE rownum = @rowids;</CommandText>
                     <Value>= First(Fields!open_tran.Value, "DataSet_HeadBlk")</Value>
                     <Style>
                       <FontSize>8pt</FontSize>
-                      <Color>=iif(First(Fields!open_tran.Value, "DataSet_HeadBlk")&gt;0,"Maroon","Black")</Color>
+                      <Color>=iif(First(Fields!open_tran.Value, "DataSet_HeadBlk")&gt;0,"Maroon",Variables!ReportTextColor.Value)</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1945,6 +1974,7 @@ WHERE rownum = @rowids;</CommandText>
                     <Value>=First(Fields!cmd.Value, "DataSet_HeadBlk")</Value>
                     <Style>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1979,6 +2009,7 @@ WHERE rownum = @rowids;</CommandText>
                     <Value>=First(Fields!dbid.Value, "DataSet_HeadBlk")</Value>
                     <Style>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2013,6 +2044,7 @@ WHERE rownum = @rowids;</CommandText>
                     <Value>=First(Fields!last_batch.Value, "DataSet_HeadBlk")</Value>
                     <Style>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2045,6 +2077,7 @@ WHERE rownum = @rowids;</CommandText>
                     <Value>=First(Fields!login_time.Value, "DataSet_HeadBlk")</Value>
                     <Style>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2077,6 +2110,7 @@ WHERE rownum = @rowids;</CommandText>
                     <Value>=First(Fields!status.Value, "DataSet_HeadBlk")</Value>
                     <Style>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2109,6 +2143,7 @@ WHERE rownum = @rowids;</CommandText>
                     <Value>=First(Fields!waitresource.Value, "DataSet_HeadBlk")</Value>
                     <Style>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2144,7 +2179,7 @@ WHERE rownum = @rowids;</CommandText>
                     <Value>="Input Buffer: "+First(Fields!eventinfo.Value, "DataSet_HeadBlk")</Value>
                     <Style>
                       <FontWeight>Bold</FontWeight>
-                      <Color>Maroon</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2178,6 +2213,7 @@ WHERE rownum = @rowids;</CommandText>
                     <Value>Show queries for this report.</Value>
                     <Style>
                       <FontWeight>Bold</FontWeight>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2278,13 +2314,16 @@ WHERE rownum = @rowids;</CommandText>
             </Visibility>
             <Style>
               <Border>
+                <Color>=Variables!ReportTextColor.Value</Color>
                 <Style>Solid</Style>
               </Border>
             </Style>
           </Rectangle>
         </ReportItems>
         <Height>5.92361in</Height>
-        <Style />
+        <Style>
+          <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
+        </Style>
       </Body>
       <Width>13in</Width>
       <Page>
@@ -2325,11 +2364,36 @@ WHERE rownum = @rowids;</CommandText>
       <DataType>String</DataType>
       <Prompt>rowids</Prompt>
     </ReportParameter>
+    <ReportParameter Name="ContrastTheme">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>None</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>ContrastTheme</Prompt>
+      <ValidValues>
+        <ParameterValues>
+          <ParameterValue>
+            <Value>None</Value>
+            <Label>None</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>Aquatic</Value>
+            <Label>Aquatic</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>Desert</Value>
+            <Label>Desert</Label>
+          </ParameterValue>
+        </ParameterValues>
+      </ValidValues>
+    </ReportParameter>
   </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>
       <NumberOfColumns>2</NumberOfColumns>
-      <NumberOfRows>2</NumberOfRows>
+      <NumberOfRows>3</NumberOfRows>
       <CellDefinitions>
         <CellDefinition>
           <ColumnIndex>0</ColumnIndex>
@@ -2351,10 +2415,68 @@ WHERE rownum = @rowids;</CommandText>
           <RowIndex>1</RowIndex>
           <ParameterName>rowids</ParameterName>
         </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>2</RowIndex>
+          <ParameterName>ContrastTheme</ParameterName>
+        </CellDefinition>
       </CellDefinitions>
     </GridLayoutDefinition>
   </ReportParametersLayout>
   <Language>en-US</Language>
+  <Variables>
+    <Variable Name="ReportTextColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+Parameters!ContrastTheme.Value="None", "Black")</Value>
+    </Variable>
+    <Variable Name="BodyBackgroundColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
+Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
+Parameters!ContrastTheme.Value="None", "#FAFDFF")</Value>
+    </Variable>
+    <Variable Name="TitleColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+Parameters!ContrastTheme.Value="None", "SteelBlue")</Value>
+    </Variable>
+    <Variable Name="TableHeadingColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
+Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
+Parameters!ContrastTheme.Value="None", "SteelBlue")</Value>
+    </Variable>
+    <Variable Name="ChartColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
+Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
+Parameters!ContrastTheme.Value="None", "LightSteelBlue")</Value>
+    </Variable>
+    <Variable Name="ChartSecondaryColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "No Color",
+Parameters!ContrastTheme.Value="Desert", "No Color",
+Parameters!ContrastTheme.Value="None", "Automatic")</Value>
+    </Variable>
+    <Variable Name="ChartGradientStyle">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "None",
+Parameters!ContrastTheme.Value="Desert", "None",
+Parameters!ContrastTheme.Value="None", "TopBottom")</Value>
+    </Variable>
+    <Variable Name="TableShowCell">
+      <Value>"Red"</Value>
+    </Variable>
+    <Variable Name="TableHidcell">
+      <Value>"Green"</Value>
+    </Variable>
+    <Variable Name="TableHeadingFontColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+Parameters!ContrastTheme.Value="None", "#FFFFFF")</Value>
+    </Variable>
+    <Variable Name="URILinkFontColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#75E9FC",
+Parameters!ContrastTheme.Value="Desert", "#1C5E75",
+Parameters!ContrastTheme.Value="None", "Blue")</Value>
+    </Variable>
+  </Variables>
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
   <rd:ReportUnitType>Inch</rd:ReportUnitType>
   <rd:ReportID>a9ce1d01-9145-47b8-8663-71b7a1842316</rd:ReportID>

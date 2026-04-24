@@ -19,6 +19,7 @@ namespace sqlnexus
         public fmAbout()
         {
             InitializeComponent();
+            ThemeManager.ApplyTheme(this);
         }
 
         private void fmAbout_Paint(object sender, PaintEventArgs e)

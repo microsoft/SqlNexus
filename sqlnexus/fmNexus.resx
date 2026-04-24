@@ -130,22 +130,22 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="ssText.Size" type="System.Drawing.Size, System.Drawing">
-	  <value>600, 18</value>
+    <value>600, 21</value>
   </data>
   <data name="ssText.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-	  <value>MiddleLeft</value>
+    <value>MiddleLeft</value>
   </data>
   <data name="ssProgress.Size" type="System.Drawing.Size, System.Drawing">
-	  <value>205, 16</value>
+    <value>205, 20</value>
   </data>
   <data name="ssProgress.Visible" type="System.Boolean, mscorlib">
-	  <value>False</value>
+    <value>False</value>
   </data>
   <data name="ssStatus.Location" type="System.Drawing.Point, System.Drawing">
-	  <value>0, 0</value>
+    <value>0, 0</value>
   </data>
   <data name="ssStatus.Size" type="System.Drawing.Size, System.Drawing">
-	  <value>1725, 24</value>
+    <value>1042, 26</value>
   </data>
   <data name="ssStatus.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -186,23 +186,23 @@
   <data name="splClient.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-	<data name="splClient.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-		<value>4, 4, 4, 4</value>
-	</data>
-	<data name="tableLayoutPanel1.ColumnCount" type="System.Int32, mscorlib">
-		<value>1</value>
-	</data>
-	<metadata name="cmNav.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-		<value>592, 0</value>
-	</metadata>
-	<data name="collapseAllToolStripMenuItem.ImageScaling" type="System.Windows.Forms.ToolStripItemImageScaling, System.Windows.Forms">
-		<value>None</value>
-	</data>
-	<data name="collapseAllToolStripMenuItem.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-		<value>Fuchsia</value>
-	</data>
-	<data name="collapseAllToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-		<value>222, 24</value>
+  <data name="splClient.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
+  </data>
+  <data name="tableLayoutPanel1.ColumnCount" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <metadata name="cmNav.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>592, 0</value>
+  </metadata>
+  <data name="collapseAllToolStripMenuItem.ImageScaling" type="System.Windows.Forms.ToolStripItemImageScaling, System.Windows.Forms">
+    <value>None</value>
+  </data>
+  <data name="collapseAllToolStripMenuItem.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Fuchsia</value>
+  </data>
+  <data name="collapseAllToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>187, 22</value>
   </data>
   <data name="collapseAllToolStripMenuItem.Text" xml:space="preserve">
     <value>Collapse all</value>
@@ -214,25 +214,25 @@
     <value>Fuchsia</value>
   </data>
   <data name="expandAllToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-	  <value>222, 24</value>
+    <value>187, 22</value>
   </data>
   <data name="expandAllToolStripMenuItem.Text" xml:space="preserve">
     <value>Expand all</value>
   </data>
   <data name="hideReportNavigatorToolStripMenuItem.ImageScaling" type="System.Windows.Forms.ToolStripItemImageScaling, System.Windows.Forms">
-	  <value>None</value>
+    <value>None</value>
   </data>
   <data name="hideReportNavigatorToolStripMenuItem.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-	  <value>Fuchsia</value>
+    <value>Fuchsia</value>
   </data>
   <data name="hideReportNavigatorToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-	  <value>222, 24</value>
+    <value>187, 22</value>
   </data>
   <data name="hideReportNavigatorToolStripMenuItem.Text" xml:space="preserve">
     <value>Hide report navigator</value>
   </data>
   <data name="cmNav.Size" type="System.Drawing.Size, System.Drawing">
-	  <value>223, 76</value>
+    <value>188, 70</value>
   </data>
   <data name="&gt;&gt;cmNav.Name" xml:space="preserve">
     <value>cmNav</value>
@@ -253,13 +253,13 @@
     <value>NoControl</value>
   </data>
   <data name="llPrint.Location" type="System.Drawing.Point, System.Drawing">
-	  <value>47, 105</value>
+    <value>47, 105</value>
   </data>
   <data name="llPrint.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-	  <value>4, 0, 4, 0</value>
+    <value>4, 0, 4, 0</value>
   </data>
   <data name="llPrint.Size" type="System.Drawing.Size, System.Drawing">
-	  <value>44, 20</value>
+    <value>33, 16</value>
   </data>
   <data name="llPrint.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -290,12 +290,12 @@
   </data>
   <data name="ll_CustomRowset.Location" type="System.Drawing.Point, System.Drawing">
     <value>47, 46</value>
-	</data>
-	<data name="ll_CustomRowset.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-		<value>4, 0, 4, 0</value>
-	</data>
-	<data name="ll_CustomRowset.Size" type="System.Drawing.Size, System.Drawing">
-		<value>162, 20</value>
+  </data>
+  <data name="ll_CustomRowset.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
+  </data>
+  <data name="ll_CustomRowset.Size" type="System.Drawing.Size, System.Drawing">
+    <value>126, 16</value>
   </data>
   <data name="ll_CustomRowset.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -319,10 +319,10 @@
     <value>NoControl</value>
   </data>
   <data name="pbPrint.Location" type="System.Drawing.Point, System.Drawing">
-	  <value>13, 103</value>
+    <value>13, 103</value>
   </data>
   <data name="pbPrint.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-	  <value>4, 4, 4, 4</value>
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="pbPrint.Size" type="System.Drawing.Size, System.Drawing">
     <value>16, 16</value>
@@ -350,12 +350,12 @@
   </data>
   <data name="pbEditCustRowset.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 44</value>
-	</data>
-	<data name="pbEditCustRowset.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-		<value>4, 4, 4, 4</value>
-	</data>
-	<data name="pbEditCustRowset.Size" type="System.Drawing.Size, System.Drawing">
-		<value>21, 20</value>
+  </data>
+  <data name="pbEditCustRowset.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
+  </data>
+  <data name="pbEditCustRowset.Size" type="System.Drawing.Size, System.Drawing">
+    <value>21, 20</value>
   </data>
   <data name="pbEditCustRowset.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
     <value>StretchImage</value>
@@ -375,6 +375,12 @@
   <data name="&gt;&gt;pbEditCustRowset.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
+  <data name="linkLabel1.AccessibleDescription" xml:space="preserve">
+    <value>Copy to clipboard</value>
+  </data>
+  <data name="linkLabel1.AccessibleName" xml:space="preserve">
+    <value>Copy to clipboard</value>
+  </data>
   <data name="linkLabel1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -386,12 +392,12 @@
   </data>
   <data name="linkLabel1.Location" type="System.Drawing.Point, System.Drawing">
     <value>47, 134</value>
-	</data>
-	<data name="linkLabel1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-		<value>4, 0, 4, 0</value>
-	</data>
-	<data name="linkLabel1.Size" type="System.Drawing.Size, System.Drawing">
-		<value>139, 20</value>
+  </data>
+  <data name="linkLabel1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
+  </data>
+  <data name="linkLabel1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>113, 16</value>
   </data>
   <data name="linkLabel1.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -421,13 +427,13 @@
     <value>NoControl</value>
   </data>
   <data name="linkLabel8.Location" type="System.Drawing.Point, System.Drawing">
-	  <value>47, 75</value>
+    <value>47, 75</value>
   </data>
   <data name="linkLabel8.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-	  <value>4, 0, 4, 0</value>
+    <value>4, 0, 4, 0</value>
   </data>
   <data name="linkLabel8.Size" type="System.Drawing.Size, System.Drawing">
-	  <value>57, 20</value>
+    <value>45, 16</value>
   </data>
   <data name="linkLabel8.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -451,10 +457,10 @@
     <value>NoControl</value>
   </data>
   <data name="pbCopy.Location" type="System.Drawing.Point, System.Drawing">
-	  <value>13, 133</value>
+    <value>13, 133</value>
   </data>
   <data name="pbCopy.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-	  <value>4, 4, 4, 4</value>
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="pbCopy.Size" type="System.Drawing.Size, System.Drawing">
     <value>16, 16</value>
@@ -481,10 +487,10 @@
     <value>NoControl</value>
   </data>
   <data name="pbExport.Location" type="System.Drawing.Point, System.Drawing">
-	  <value>13, 74</value>
+    <value>13, 74</value>
   </data>
   <data name="pbExport.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-	  <value>4, 4, 4, 4</value>
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="pbExport.Size" type="System.Drawing.Size, System.Drawing">
     <value>16, 16</value>
@@ -517,13 +523,13 @@
     <value>NoControl</value>
   </data>
   <data name="linkLabelImport.Location" type="System.Drawing.Point, System.Drawing">
-	  <value>47, 16</value>
+    <value>47, 16</value>
   </data>
   <data name="linkLabelImport.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-	  <value>4, 0, 4, 0</value>
+    <value>4, 0, 4, 0</value>
   </data>
   <data name="linkLabelImport.Size" type="System.Drawing.Size, System.Drawing">
-	  <value>56, 20</value>
+    <value>44, 16</value>
   </data>
   <data name="linkLabelImport.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1124,6 +1130,12 @@
   <data name="&gt;&gt;bpPowerBIrpt.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <data name="tvReports.AccessibleDescription" xml:space="preserve">
+    <value>Reports List</value>
+  </data>
+  <data name="tvReports.AccessibleName" xml:space="preserve">
+    <value>Reports List</value>
+  </data>
   <data name="tvReports.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -1141,7 +1153,7 @@
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZTeXN0
         ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAADy
-        EQAAAk1TRnQBSQFMAgEBCwEAAdwBAQHcAQEBEAEAARABAAT/AQkBAAj/AUIBTQE2AQQGAAE2AQQCAAEo
+        EQAAAk1TRnQBSQFMAgEBCwEAASwBAgEsAQIBEAEAARABAAT/AQkBAAj/AUIBTQE2AQQGAAE2AQQCAAEo
         AwABQAMAATADAAEBAQABCAYAAQwYAAGAAgABgAMAAoABAAGAAwABgAEAAYABAAKAAgADwAEAAcAB3AHA
         AQAB8AHKAaYBAAEzBQABMwEAATMBAAEzAQACMwIAAxYBAAMcAQADIgEAAykBAANVAQADTQEAA0IBAAM5
         AQABgAF8Af8BAAJQAf8BAAGTAQAB1gEAAf8B7AHMAQABxgHWAe8BAAHWAucBAAGQAakBrQIAAf8BMwMA
@@ -1462,7 +1474,7 @@
     <value>3</value>
   </data>
   <data name="tableLayoutPanel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>207, 507</value>
+    <value>207, 550</value>
   </data>
   <data name="tableLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -1528,7 +1540,7 @@
     <value>0, 0</value>
   </data>
   <data name="tcReports.Size" type="System.Drawing.Size, System.Drawing">
-    <value>815, 507</value>
+    <value>829, 550</value>
   </data>
   <data name="tcReports.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1558,7 +1570,7 @@
     <value>1</value>
   </data>
   <data name="splClient.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1028, 507</value>
+    <value>1042, 550</value>
   </data>
   <data name="splClient.SplitterDistance" type="System.Int32, mscorlib">
     <value>209</value>
@@ -1579,7 +1591,7 @@
     <value>0</value>
   </data>
   <data name="toolStripContainer1.ContentPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1028, 507</value>
+    <value>1042, 550</value>
   </data>
   <data name="&gt;&gt;toolStripContainer1.ContentPanel.Name" xml:space="preserve">
     <value>toolStripContainer1.ContentPanel</value>
@@ -1624,7 +1636,7 @@
     <value>2</value>
   </data>
   <data name="toolStripContainer1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1028, 609</value>
+    <value>1042, 654</value>
   </data>
   <data name="toolStripContainer1.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -1632,352 +1644,352 @@
   <data name="toolStripContainer1.Text" xml:space="preserve">
     <value>toolStripContainer1</value>
   </data>
-	<metadata name="menuBarMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-		<value>464, 0</value>
-	</metadata>
-	<data name="menuBarMain.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-		<value>None</value>
-	</data>
-	<data name="connectToolStripMenuItem.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-		<value>Fuchsia</value>
-	</data>
-	<data name="connectToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-		<value>188, 26</value>
-	</data>
-	<data name="connectToolStripMenuItem.Text" xml:space="preserve">
-    <value>Connect</value>
-  </data>
-	<data name="miOpen.Size" type="System.Drawing.Size, System.Drawing">
-		<value>188, 26</value>
-	</data>
-	<data name="miOpen.Text" xml:space="preserve">
-    <value>&amp;Open</value>
-  </data>
-	<data name="toolStripSeparator11.Size" type="System.Drawing.Size, System.Drawing">
-		<value>185, 6</value>
-	</data>
-	<data name="runAllReportsToolStripMenuItem.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-		<value>Black</value>
-	</data>
-	<data name="runAllReportsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-		<value>188, 26</value>
-	</data>
-	<data name="runAllReportsToolStripMenuItem.Text" xml:space="preserve">
-    <value>Run &amp;all reports</value>
-  </data>
-	<data name="toolStripSeparator10.Size" type="System.Drawing.Size, System.Drawing">
-		<value>185, 6</value>
-	</data>
-	<data name="toolStripSeparator12.Size" type="System.Drawing.Size, System.Drawing">
-		<value>185, 6</value>
-	</data>
-	<data name="toolStripSeparator12.Visible" type="System.Boolean, mscorlib">
-		<value>False</value>
-	</data>
-	<data name="importToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-		<value>188, 26</value>
-	</data>
-	<data name="importToolStripMenuItem.Text" xml:space="preserve">
-    <value>Import</value>
-  </data>
-	<data name="exitToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-		<value>188, 26</value>
-	</data>
-	<data name="exitToolStripMenuItem.Text" xml:space="preserve">
-    <value>E&amp;xit</value>
-  </data>
-	<data name="fileToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-		<value>46, 26</value>
-	</data>
-	<data name="fileToolStripMenuItem.Text" xml:space="preserve">
-    <value>&amp;File</value>
-  </data>
-	<data name="copyToolStripMenuItem.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-		<value>Black</value>
-	</data>
-	<data name="copyToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-		<value>257, 26</value>
-	</data>
-	<data name="copyToolStripMenuItem.Text" xml:space="preserve">
-    <value>C&amp;opy report to clipboard</value>
-  </data>
-	<data name="getReportParametersToolStripMenuItem.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-		<value>Black</value>
-	</data>
-	<data name="getReportParametersToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-		<value>257, 26</value>
-	</data>
-	<data name="getReportParametersToolStripMenuItem.Text" xml:space="preserve">
-    <value>Get report parameters</value>
-  </data>
-	<data name="editToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-		<value>49, 26</value>
-	</data>
-	<data name="editToolStripMenuItem.Text" xml:space="preserve">
-    <value>&amp;Edit</value>
-  </data>
-	<data name="mainMenuToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-		<value>244, 26</value>
-	</data>
-	<data name="mainMenuToolStripMenuItem.Text" xml:space="preserve">
-    <value>Main menu</value>
-  </data>
-	<data name="mainToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-		<value>244, 26</value>
-	</data>
-	<data name="mainToolStripMenuItem.Text" xml:space="preserve">
-    <value>&amp;Standard buttons</value>
-  </data>
-	<data name="reportToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-		<value>244, 26</value>
-	</data>
-	<data name="reportToolStripMenuItem.Text" xml:space="preserve">
-    <value>Report buttons</value>
-  </data>
-	<data name="serviceToolStripMenuItem.Enabled" type="System.Boolean, mscorlib">
-		<value>False</value>
-	</data>
-	<data name="serviceToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-		<value>244, 26</value>
-	</data>
-	<data name="serviceToolStripMenuItem.Text" xml:space="preserve">
-    <value>Service control buttons</value>
-  </data>
-	<data name="toolbarsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-		<value>205, 26</value>
-	</data>
-	<data name="toolbarsToolStripMenuItem.Text" xml:space="preserve">
-    <value>&amp;Toolbars</value>
-  </data>
-	<data name="askWhetherToStartTheSQLDiagCollectionServiceToolStripMenuItem.Enabled" type="System.Boolean, mscorlib">
-		<value>False</value>
-	</data>
-	<data name="askWhetherToStartTheSQLDiagCollectionServiceToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-		<value>451, 26</value>
-	</data>
-	<data name="askWhetherToStartTheSQLDiagCollectionServiceToolStripMenuItem.Text" xml:space="preserve">
-    <value>Bypass prompt to start the SQLDiag collection service </value>
-  </data>
-	<data name="askWhetherToStopTheSQLDiagCollectionServiceWhenExitingToolStripMenuItem.Enabled" type="System.Boolean, mscorlib">
-		<value>False</value>
-	</data>
-	<data name="askWhetherToStopTheSQLDiagCollectionServiceWhenExitingToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-		<value>451, 26</value>
-	</data>
-	<data name="askWhetherToStopTheSQLDiagCollectionServiceWhenExitingToolStripMenuItem.Text" xml:space="preserve">
-    <value>Bypass prompt to stop the SQLDiag collection service</value>
-  </data>
-	<data name="promptsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-		<value>205, 26</value>
-	</data>
-	<data name="promptsToolStripMenuItem.Text" xml:space="preserve">
-    <value>Prompts</value>
-  </data>
-	<data name="tsiShowReportTabs.Size" type="System.Drawing.Size, System.Drawing">
-		<value>205, 26</value>
-	</data>
-	<data name="tsiShowReportTabs.Text" xml:space="preserve">
-    <value>Show report tabs</value>
-  </data>
-	<data name="viewToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-		<value>55, 26</value>
-	</data>
-	<data name="viewToolStripMenuItem.Text" xml:space="preserve">
-    <value>&amp;View</value>
-  </data>
-	<data name="closeToolStripMenuItem2.Size" type="System.Drawing.Size, System.Drawing">
-		<value>224, 26</value>
-	</data>
-	<data name="closeToolStripMenuItem2.Text" xml:space="preserve">
-    <value>Close</value>
-  </data>
-	<data name="closeAllButCurrentToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-		<value>224, 26</value>
-	</data>
-	<data name="closeAllButCurrentToolStripMenuItem.Text" xml:space="preserve">
-    <value>Close all but current</value>
-  </data>
-	<data name="closeAllToolStripMenuItem2.Size" type="System.Drawing.Size, System.Drawing">
-		<value>224, 26</value>
-	</data>
-	<data name="closeAllToolStripMenuItem2.Text" xml:space="preserve">
-    <value>Close all</value>
-  </data>
-	<data name="windowToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-		<value>78, 26</value>
-	</data>
-	<data name="windowToolStripMenuItem.Text" xml:space="preserve">
-    <value>&amp;Window</value>
-  </data>
-	<data name="contentsToolStripMenuItem.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-		<value>Fuchsia</value>
-	</data>
-	<data name="contentsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-		<value>161, 26</value>
-	</data>
-	<data name="contentsToolStripMenuItem.Text" xml:space="preserve">
-    <value>&amp;Contents</value>
-  </data>
-	<data name="indexToolStripMenuItem.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-		<value>Fuchsia</value>
-	</data>
-	<data name="indexToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-		<value>161, 26</value>
-	</data>
-	<data name="indexToolStripMenuItem.Text" xml:space="preserve">
-    <value>&amp;Index</value>
-  </data>
-	<data name="supportToolStripMenuItem.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-		<value>Black</value>
-	</data>
-	<data name="supportToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-		<value>161, 26</value>
-	</data>
-	<data name="supportToolStripMenuItem.Text" xml:space="preserve">
-    <value>&amp;Support</value>
-  </data>
-	<data name="contactUsToolStripMenuItem.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-		<value>Black</value>
-	</data>
-	<data name="contactUsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-		<value>161, 26</value>
-	</data>
-	<data name="contactUsToolStripMenuItem.Text" xml:space="preserve">
-    <value>C&amp;ontact us</value>
-  </data>
-	<data name="aboutToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-		<value>161, 26</value>
-	</data>
-	<data name="aboutToolStripMenuItem.Text" xml:space="preserve">
-    <value>&amp;About</value>
-  </data>
-	<data name="helpToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-		<value>55, 26</value>
-	</data>
-	<data name="helpToolStripMenuItem.Text" xml:space="preserve">
-    <value>&amp;Help</value>
-  </data>
-	<data name="menuBarMain.Location" type="System.Drawing.Point, System.Drawing">
-		<value>0, 62</value>
-	</data>
-	<data name="menuBarMain.Size" type="System.Drawing.Size, System.Drawing">
-		<value>1725, 30</value>
-	</data>
-	<data name="menuBarMain.TabIndex" type="System.Int32, mscorlib">
-		<value>5</value>
-	</data>
-	<data name="menuBarMain.Text" xml:space="preserve">
-    <value>menuStrip1</value>
-  </data>
-	<data name="&gt;&gt;menuBarMain.Name" xml:space="preserve">
-    <value>menuBarMain</value>
-  </data>
-	<data name="&gt;&gt;menuBarMain.Type" xml:space="preserve">
-    <value>System.Windows.Forms.MenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-	<data name="&gt;&gt;menuBarMain.Parent" xml:space="preserve">
-    <value>toolStripContainer1.TopToolStripPanel</value>
-  </data>
-	<data name="&gt;&gt;menuBarMain.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-	<metadata name="toolbarService.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-		<value>207, 0</value>
-	</metadata>
-	<data name="toolbarService.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-		<value>Top</value>
-	</data>
-	<data name="toolbarService.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-		<value>None</value>
-	</data>
-	<data name="tsbStart.Enabled" type="System.Boolean, mscorlib">
-		<value>False</value>
-	</data>
-	<data name="tsbStart.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-		<value>Magenta</value>
-	</data>
-	<data name="tsbStart.Size" type="System.Drawing.Size, System.Drawing">
-		<value>167, 29</value>
-	</data>
-	<data name="tsbStart.Text" xml:space="preserve">
-    <value>Start data collection</value>
-  </data>
-	<data name="tsbStart.ToolTipText" xml:space="preserve">
-    <value>Start diagnostic data collection service</value>
-  </data>
-	<data name="tsbStop.Enabled" type="System.Boolean, mscorlib">
-		<value>False</value>
-	</data>
-	<data name="tsbStop.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-		<value>Magenta</value>
-	</data>
-	<data name="tsbStop.Size" type="System.Drawing.Size, System.Drawing">
-		<value>167, 29</value>
-	</data>
-	<data name="tsbStop.Text" xml:space="preserve">
-    <value>Stop data collection</value>
-  </data>
-	<data name="tsbStop.ToolTipText" xml:space="preserve">
-    <value>Stop diagnostic data collection service</value>
-  </data>
-	<data name="tscbAutoUpdate.Enabled" type="System.Boolean, mscorlib">
-		<value>False</value>
-	</data>
-	<data name="tscbAutoUpdate.Items" xml:space="preserve">
+  <metadata name="menuBarMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>464, 0</value>
+  </metadata>
+  <data name="menuBarMain.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>None</value>
   </data>
-	<data name="tscbAutoUpdate.Items1" xml:space="preserve">
-    <value>5 seconds</value>
+  <data name="connectToolStripMenuItem.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Fuchsia</value>
   </data>
-	<data name="tscbAutoUpdate.Items2" xml:space="preserve">
-    <value>10 seconds</value>
+  <data name="connectToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>150, 22</value>
   </data>
-	<data name="tscbAutoUpdate.Items3" xml:space="preserve">
-    <value>30 seconds</value>
+  <data name="connectToolStripMenuItem.Text" xml:space="preserve">
+    <value>Connect</value>
   </data>
-	<data name="tscbAutoUpdate.Items4" xml:space="preserve">
-    <value>1 minute</value>
+  <data name="miOpen.Size" type="System.Drawing.Size, System.Drawing">
+    <value>150, 22</value>
   </data>
-	<data name="tscbAutoUpdate.Items5" xml:space="preserve">
-    <value>5 minutes</value>
+  <data name="miOpen.Text" xml:space="preserve">
+    <value>&amp;Open</value>
   </data>
-	<data name="tscbAutoUpdate.Items6" xml:space="preserve">
-    <value>10 minutes</value>
+  <data name="toolStripSeparator11.Size" type="System.Drawing.Size, System.Drawing">
+    <value>147, 6</value>
   </data>
-	<data name="tscbAutoUpdate.Items7" xml:space="preserve">
-    <value>30 minutes</value>
+  <data name="runAllReportsToolStripMenuItem.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Black</value>
   </data>
-	<data name="tscbAutoUpdate.Size" type="System.Drawing.Size, System.Drawing">
-		<value>80, 32</value>
-	</data>
-	<data name="tscbAutoUpdate.Text" xml:space="preserve">
-    <value>1 minute</value>
+  <data name="runAllReportsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>150, 22</value>
   </data>
-	<data name="tscbAutoUpdate.ToolTipText" xml:space="preserve">
-    <value>Auto-update report frequency</value>
+  <data name="runAllReportsToolStripMenuItem.Text" xml:space="preserve">
+    <value>Run &amp;all reports</value>
   </data>
-	<data name="toolbarService.Location" type="System.Drawing.Point, System.Drawing">
-		<value>3, 24</value>
-	</data>
-	<data name="toolbarService.Size" type="System.Drawing.Size, System.Drawing">
-		<value>431, 32</value>
-	</data>
-	<data name="toolbarService.TabIndex" type="System.Int32, mscorlib">
-		<value>12</value>
-	</data>
-	<data name="toolbarService.Text" xml:space="preserve">
-    <value>toolStrip2</value>
+  <data name="toolStripSeparator10.Size" type="System.Drawing.Size, System.Drawing">
+    <value>147, 6</value>
   </data>
-	<data name="&gt;&gt;toolbarService.Name" xml:space="preserve">
-    <value>toolbarService</value>
+  <data name="toolStripSeparator12.Size" type="System.Drawing.Size, System.Drawing">
+    <value>147, 6</value>
   </data>
-	<data name="&gt;&gt;toolbarService.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="toolStripSeparator12.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
   </data>
-	<data name="&gt;&gt;toolbarService.Parent" xml:space="preserve">
+  <data name="importToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>150, 22</value>
+  </data>
+  <data name="importToolStripMenuItem.Text" xml:space="preserve">
+    <value>Import</value>
+  </data>
+  <data name="exitToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>150, 22</value>
+  </data>
+  <data name="exitToolStripMenuItem.Text" xml:space="preserve">
+    <value>E&amp;xit</value>
+  </data>
+  <data name="fileToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>37, 20</value>
+  </data>
+  <data name="fileToolStripMenuItem.Text" xml:space="preserve">
+    <value>&amp;File</value>
+  </data>
+  <data name="copyToolStripMenuItem.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Black</value>
+  </data>
+  <data name="copyToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>204, 22</value>
+  </data>
+  <data name="copyToolStripMenuItem.Text" xml:space="preserve">
+    <value>C&amp;opy report to clipboard</value>
+  </data>
+  <data name="getReportParametersToolStripMenuItem.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Black</value>
+  </data>
+  <data name="getReportParametersToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>204, 22</value>
+  </data>
+  <data name="getReportParametersToolStripMenuItem.Text" xml:space="preserve">
+    <value>Get report parameters</value>
+  </data>
+  <data name="editToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>39, 20</value>
+  </data>
+  <data name="editToolStripMenuItem.Text" xml:space="preserve">
+    <value>&amp;Edit</value>
+  </data>
+  <data name="mainMenuToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>196, 22</value>
+  </data>
+  <data name="mainMenuToolStripMenuItem.Text" xml:space="preserve">
+    <value>Main menu</value>
+  </data>
+  <data name="mainToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>196, 22</value>
+  </data>
+  <data name="mainToolStripMenuItem.Text" xml:space="preserve">
+    <value>&amp;Standard buttons</value>
+  </data>
+  <data name="reportToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>196, 22</value>
+  </data>
+  <data name="reportToolStripMenuItem.Text" xml:space="preserve">
+    <value>Report buttons</value>
+  </data>
+  <data name="serviceToolStripMenuItem.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="serviceToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>196, 22</value>
+  </data>
+  <data name="serviceToolStripMenuItem.Text" xml:space="preserve">
+    <value>Service control buttons</value>
+  </data>
+  <data name="toolbarsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>163, 22</value>
+  </data>
+  <data name="toolbarsToolStripMenuItem.Text" xml:space="preserve">
+    <value>&amp;Toolbars</value>
+  </data>
+  <data name="askWhetherToStartTheSQLDiagCollectionServiceToolStripMenuItem.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="askWhetherToStartTheSQLDiagCollectionServiceToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>358, 22</value>
+  </data>
+  <data name="askWhetherToStartTheSQLDiagCollectionServiceToolStripMenuItem.Text" xml:space="preserve">
+    <value>Bypass prompt to start the SQLDiag collection service </value>
+  </data>
+  <data name="askWhetherToStopTheSQLDiagCollectionServiceWhenExitingToolStripMenuItem.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="askWhetherToStopTheSQLDiagCollectionServiceWhenExitingToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>358, 22</value>
+  </data>
+  <data name="askWhetherToStopTheSQLDiagCollectionServiceWhenExitingToolStripMenuItem.Text" xml:space="preserve">
+    <value>Bypass prompt to stop the SQLDiag collection service</value>
+  </data>
+  <data name="promptsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>163, 22</value>
+  </data>
+  <data name="promptsToolStripMenuItem.Text" xml:space="preserve">
+    <value>Prompts</value>
+  </data>
+  <data name="tsiShowReportTabs.Size" type="System.Drawing.Size, System.Drawing">
+    <value>163, 22</value>
+  </data>
+  <data name="tsiShowReportTabs.Text" xml:space="preserve">
+    <value>Show report tabs</value>
+  </data>
+  <data name="viewToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>44, 20</value>
+  </data>
+  <data name="viewToolStripMenuItem.Text" xml:space="preserve">
+    <value>&amp;View</value>
+  </data>
+  <data name="closeToolStripMenuItem2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>180, 22</value>
+  </data>
+  <data name="closeToolStripMenuItem2.Text" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="closeAllButCurrentToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>180, 22</value>
+  </data>
+  <data name="closeAllButCurrentToolStripMenuItem.Text" xml:space="preserve">
+    <value>Close all but current</value>
+  </data>
+  <data name="closeAllToolStripMenuItem2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>180, 22</value>
+  </data>
+  <data name="closeAllToolStripMenuItem2.Text" xml:space="preserve">
+    <value>Close all</value>
+  </data>
+  <data name="windowToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>63, 20</value>
+  </data>
+  <data name="windowToolStripMenuItem.Text" xml:space="preserve">
+    <value>&amp;Window</value>
+  </data>
+  <data name="contentsToolStripMenuItem.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Fuchsia</value>
+  </data>
+  <data name="contentsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>131, 22</value>
+  </data>
+  <data name="contentsToolStripMenuItem.Text" xml:space="preserve">
+    <value>&amp;Contents</value>
+  </data>
+  <data name="indexToolStripMenuItem.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Fuchsia</value>
+  </data>
+  <data name="indexToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>131, 22</value>
+  </data>
+  <data name="indexToolStripMenuItem.Text" xml:space="preserve">
+    <value>&amp;Index</value>
+  </data>
+  <data name="supportToolStripMenuItem.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Black</value>
+  </data>
+  <data name="supportToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>131, 22</value>
+  </data>
+  <data name="supportToolStripMenuItem.Text" xml:space="preserve">
+    <value>&amp;Support</value>
+  </data>
+  <data name="contactUsToolStripMenuItem.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Black</value>
+  </data>
+  <data name="contactUsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>131, 22</value>
+  </data>
+  <data name="contactUsToolStripMenuItem.Text" xml:space="preserve">
+    <value>C&amp;ontact us</value>
+  </data>
+  <data name="aboutToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>131, 22</value>
+  </data>
+  <data name="aboutToolStripMenuItem.Text" xml:space="preserve">
+    <value>&amp;About</value>
+  </data>
+  <data name="helpToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>44, 20</value>
+  </data>
+  <data name="helpToolStripMenuItem.Text" xml:space="preserve">
+    <value>&amp;Help</value>
+  </data>
+  <data name="menuBarMain.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="menuBarMain.Size" type="System.Drawing.Size, System.Drawing">
+    <value>1042, 24</value>
+  </data>
+  <data name="menuBarMain.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="menuBarMain.Text" xml:space="preserve">
+    <value>menuStrip1</value>
+  </data>
+  <data name="&gt;&gt;menuBarMain.Name" xml:space="preserve">
+    <value>menuBarMain</value>
+  </data>
+  <data name="&gt;&gt;menuBarMain.Type" xml:space="preserve">
+    <value>System.Windows.Forms.MenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;menuBarMain.Parent" xml:space="preserve">
     <value>toolStripContainer1.TopToolStripPanel</value>
   </data>
-	<data name="&gt;&gt;toolbarService.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;menuBarMain.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <metadata name="toolbarService.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>207, 0</value>
+  </metadata>
+  <data name="toolbarService.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top</value>
+  </data>
+  <data name="toolbarService.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>None</value>
+  </data>
+  <data name="tsbStart.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="tsbStart.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="tsbStart.Size" type="System.Drawing.Size, System.Drawing">
+    <value>136, 24</value>
+  </data>
+  <data name="tsbStart.Text" xml:space="preserve">
+    <value>Start data collection</value>
+  </data>
+  <data name="tsbStart.ToolTipText" xml:space="preserve">
+    <value>Start diagnostic data collection service</value>
+  </data>
+  <data name="tsbStop.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="tsbStop.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="tsbStop.Size" type="System.Drawing.Size, System.Drawing">
+    <value>136, 24</value>
+  </data>
+  <data name="tsbStop.Text" xml:space="preserve">
+    <value>Stop data collection</value>
+  </data>
+  <data name="tsbStop.ToolTipText" xml:space="preserve">
+    <value>Stop diagnostic data collection service</value>
+  </data>
+  <data name="tscbAutoUpdate.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="tscbAutoUpdate.Items" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="tscbAutoUpdate.Items1" xml:space="preserve">
+    <value>5 seconds</value>
+  </data>
+  <data name="tscbAutoUpdate.Items2" xml:space="preserve">
+    <value>10 seconds</value>
+  </data>
+  <data name="tscbAutoUpdate.Items3" xml:space="preserve">
+    <value>30 seconds</value>
+  </data>
+  <data name="tscbAutoUpdate.Items4" xml:space="preserve">
+    <value>1 minute</value>
+  </data>
+  <data name="tscbAutoUpdate.Items5" xml:space="preserve">
+    <value>5 minutes</value>
+  </data>
+  <data name="tscbAutoUpdate.Items6" xml:space="preserve">
+    <value>10 minutes</value>
+  </data>
+  <data name="tscbAutoUpdate.Items7" xml:space="preserve">
+    <value>30 minutes</value>
+  </data>
+  <data name="tscbAutoUpdate.Size" type="System.Drawing.Size, System.Drawing">
+    <value>80, 27</value>
+  </data>
+  <data name="tscbAutoUpdate.Text" xml:space="preserve">
+    <value>1 minute</value>
+  </data>
+  <data name="tscbAutoUpdate.ToolTipText" xml:space="preserve">
+    <value>Auto-update report frequency</value>
+  </data>
+  <data name="toolbarService.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 24</value>
+  </data>
+  <data name="toolbarService.Size" type="System.Drawing.Size, System.Drawing">
+    <value>366, 27</value>
+  </data>
+  <data name="toolbarService.TabIndex" type="System.Int32, mscorlib">
+    <value>12</value>
+  </data>
+  <data name="toolbarService.Text" xml:space="preserve">
+    <value>toolStrip2</value>
+  </data>
+  <data name="&gt;&gt;toolbarService.Name" xml:space="preserve">
+    <value>toolbarService</value>
+  </data>
+  <data name="&gt;&gt;toolbarService.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolbarService.Parent" xml:space="preserve">
+    <value>toolStripContainer1.TopToolStripPanel</value>
+  </data>
+  <data name="&gt;&gt;toolbarService.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <metadata name="toolbarReport.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
@@ -2286,16 +2298,16 @@
   <data name="tsbFind.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIDSURBVDhPpZLrS5NhGMb3j4SWh0oRQVExD4gonkDpg4hG
-        YKxG6WBogkMZKgPNCEVJFBGdGETEvgwyO9DJE5syZw3PIlPEE9pgBCLZ5XvdMB8Ew8gXbl54nuf63dd9
-        0OGSnwCahxbPRNPAPMw9Xpg6ZmF46kZZ0xSKzJPIrhpDWsVnpBhGkKx3nAX8Pv7z1zg8OoY/cITdn4fw
-        bf/C0kYAN3Ma/w3gWfZL5kzTKBxjWyK2DftwI9tyMYCZKXbNHaD91bLYJrDXsYbrWfUKwJrPE9M2M1Oc
-        VzOOpHI7Jr376Hi9ogHqFIANO0/MmmmbmSmm9a8ze+I4MrNWAdjtoJgWcx+PSzg166yZZ8xM8XvXDix9
-        c4jIqFYAjoriBV9AhEPv1mH/sonogha0afbZMMZz+yreTGyhpusHwtNNCsA5U1zS4BLxzJIfg299qO32
-        Ir7UJtZfftyATqeT+8o2D8JSjQrAJblrncYL7ZJ2+bfaFnC/1S1NjL3diRat7qrO7wLRP3HjWsojBeCo
-        mDEo5mNjuweFGvjWg2EBhCbpkW78htSHHwRyNdmgAFzPEee2iFkzayy2OLXzT4gr6UdUnlXrullsxxQ+
-        kx0g8BTA3aZlButjSTyjODq/WcQcW/B/Je4OQhLvKQDnzN1mp0nnkvAhR8VuMzNrpm1mpjgkoVwB/v8D
-        TgDQASA1MVpwzwAAAABJRU5ErkJggg==
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIFSURBVDhPpZLtS1NhGMbPPxJmmlYSgqHiKzGU1EDxg4iK
+        YKyG2WBogqMYJQOtCEVRFBGdTBCJfRnkS4VaaWNT5sqx1BUxRXxDHYxAJLvkusEeBaPAB+5z4Jzn+t3X
+        /aLhnEfjo8m+dCoa+7/C3O2Hqe0zDC+8KG+cRZHZhdzaaWTVTCLDMIY0vfM04Nfh77/G/sEhwpEDbO3t
+        I7TxE8urEVy99fT/AL5gWDLrTB/hnF4XsW0khCu5ln8DmJliT2AXrcNBsU1gj/MH4nMeKwBrPktM28xM
+        cX79DFKrHHD5d9D26hvicx4pABt2lpg10zYzU0zr7+e3xXGcrkEB2O2TNec9nJFwB3alZn5jZorfeDZh
+        6Q3g8s06BeCoKF4MRURoH1+BY2oNCbeb0TIclIYxOhzf8frTOuo7FxCbbVIAzpni0iceEc8vhzEwGkJD
+        lx83ymxifejdKjRNk/8PWnyIyTQqAJek0jqHwfEVscu31baIu8+90sTE4nY025dQ2/5FIPpnXlzKuK8A
+        HBUzHot52djqQ6HZhfR7IwK4mKpHtvEDMqvfCiQ6zaAAXM8x94aIWTNrLLG4kVUzgaTSPlzLtyJOZxbb
+        1wtfyg4Q+AfA3aZlButjSfxGcUJBk4g5tuP3haQKRKXcUQDOmbvNTpPOJeFFjordZmbWTNvMTHFUcpUC
+        nOccAdABIDXXE1nzAAAAAElFTkSuQmCC
 </value>
   </data>
   <data name="tsbFind.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
@@ -2316,23 +2328,23 @@
   <data name="tsbFindNext.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIDSURBVDhPpZLrS5NhGMb3j4SWh0oRQVExD4gonkDpg4hG
-        YKxG6WBogkMZKgPNCEVJFBGdGETEvgwyO9DJE5syZw3PIlPEE9pgBCLZ5XvdMB8Ew8gXbl54nuf63dd9
-        0OGSnwCahxbPRNPAPMw9Xpg6ZmF46kZZ0xSKzJPIrhpDWsVnpBhGkKx3nAX8Pv7z1zg8OoY/cITdn4fw
-        bf/C0kYAN3Ma/w3gWfZL5kzTKBxjWyK2DftwI9tyMYCZKXbNHaD91bLYJrDXsYbrWfUKwJrPE9M2M1Oc
-        VzOOpHI7Jr376Hi9ogHqFIANO0/MmmmbmSmm9a8ze+I4MrNWAdjtoJgWcx+PSzg166yZZ8xM8XvXDix9
-        c4jIqFYAjoriBV9AhEPv1mH/sonogha0afbZMMZz+yreTGyhpusHwtNNCsA5U1zS4BLxzJIfg299qO32
-        Ir7UJtZfftyATqeT+8o2D8JSjQrAJblrncYL7ZJ2+bfaFnC/1S1NjL3diRat7qrO7wLRP3HjWsojBeCo
-        mDEo5mNjuweFGvjWg2EBhCbpkW78htSHHwRyNdmgAFzPEee2iFkzayy2OLXzT4gr6UdUnlXrullsxxQ+
-        kx0g8BTA3aZlButjSTyjODq/WcQcW/B/Je4OQhLvKQDnzN1mp0nnkvAhR8VuMzNrpm1mpjgkoVwB/v8D
-        TgDQASA1MVpwzwAAAABJRU5ErkJggg==
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIFSURBVDhPpZLtS1NhGMbPPxJmmlYSgqHiKzGU1EDxg4iK
+        YKyG2WBogqMYJQOtCEVRFBGdTBCJfRnkS4VaaWNT5sqx1BUxRXxDHYxAJLvkusEeBaPAB+5z4Jzn+t3X
+        /aLhnEfjo8m+dCoa+7/C3O2Hqe0zDC+8KG+cRZHZhdzaaWTVTCLDMIY0vfM04Nfh77/G/sEhwpEDbO3t
+        I7TxE8urEVy99fT/AL5gWDLrTB/hnF4XsW0khCu5ln8DmJliT2AXrcNBsU1gj/MH4nMeKwBrPktM28xM
+        cX79DFKrHHD5d9D26hvicx4pABt2lpg10zYzU0zr7+e3xXGcrkEB2O2TNec9nJFwB3alZn5jZorfeDZh
+        6Q3g8s06BeCoKF4MRURoH1+BY2oNCbeb0TIclIYxOhzf8frTOuo7FxCbbVIAzpni0iceEc8vhzEwGkJD
+        lx83ymxifejdKjRNk/8PWnyIyTQqAJek0jqHwfEVscu31baIu8+90sTE4nY025dQ2/5FIPpnXlzKuK8A
+        HBUzHot52djqQ6HZhfR7IwK4mKpHtvEDMqvfCiQ6zaAAXM8x94aIWTNrLLG4kVUzgaTSPlzLtyJOZxbb
+        1wtfyg4Q+AfA3aZlButjSfxGcUJBk4g5tuP3haQKRKXcUQDOmbvNTpPOJeFFjordZmbWTNvMTHFUcpUC
+        nOccAdABIDXXE1nzAAAAAElFTkSuQmCC
 </value>
   </data>
   <data name="tsbFindNext.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
     <value>Magenta</value>
   </data>
   <data name="tsbFindNext.Size" type="System.Drawing.Size, System.Drawing">
-    <value>36, 24</value>
+    <value>35, 24</value>
   </data>
   <data name="tsbFindNext.Text" xml:space="preserve">
     <value>Next</value>
@@ -2355,11 +2367,38 @@
   <data name="tscCurrentDatabase.Size" type="System.Drawing.Size, System.Drawing">
     <value>240, 23</value>
   </data>
+  <data name="toolStripSeparatorTheme.Size" type="System.Drawing.Size, System.Drawing">
+    <value>6, 27</value>
+  </data>
+  <data name="tsLabelTheme.Size" type="System.Drawing.Size, System.Drawing">
+    <value>44, 15</value>
+  </data>
+  <data name="tsLabelTheme.Text" xml:space="preserve">
+    <value>Theme</value>
+  </data>
+  <data name="tscTheme.AccessibleDescription" xml:space="preserve">
+    <value>Pick your layout theme</value>
+  </data>
+  <data name="tscTheme.AccessibleName" xml:space="preserve">
+    <value>Contrast Theme</value>
+  </data>
+  <data name="tscTheme.Items" xml:space="preserve">
+    <value>Default</value>
+  </data>
+  <data name="tscTheme.Items1" xml:space="preserve">
+    <value>Aquatic</value>
+  </data>
+  <data name="tscTheme.Items2" xml:space="preserve">
+    <value>Desert</value>
+  </data>
+  <data name="tscTheme.Size" type="System.Drawing.Size, System.Drawing">
+    <value>90, 23</value>
+  </data>
   <data name="toolbarReport.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 0</value>
+    <value>3, 24</value>
   </data>
   <data name="toolbarReport.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1025, 27</value>
+    <value>1039, 27</value>
   </data>
   <data name="toolbarReport.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -2373,7 +2412,8 @@
   <data name="&gt;&gt;toolbarReport.Parent" xml:space="preserve">
     <value>toolStripContainer1.TopToolStripPanel</value>
   </data>
-  <data name="&gt;&gt;toolbarReport.ZOrder" xml:space="preserve">  
+  <data name="&gt;&gt;toolbarReport.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
   <metadata name="toolbarMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>1111, 0</value>
@@ -2451,7 +2491,7 @@
     <value>Help</value>
   </data>
   <data name="toolbarMain.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 27</value>
+    <value>3, 51</value>
   </data>
   <data name="toolbarMain.Size" type="System.Drawing.Size, System.Drawing">
     <value>143, 27</value>
@@ -2496,7 +2536,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;toolStripContainer1.ZOrder" xml:space="preserve">
-    <value>2</value>  
+    <value>2</value>
   </data>
   <metadata name="cmReport.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>900, 0</value>
@@ -2571,7 +2611,7 @@
     <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>1028, 609</value>
+    <value>1042, 654</value>
   </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -2768,214 +2808,214 @@
   <data name="&gt;&gt;imGlyphs.Type" xml:space="preserve">
     <value>System.Windows.Forms.ImageList, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-	<data name="&gt;&gt;fileToolStripMenuItem.Name" xml:space="preserve">
+  <data name="&gt;&gt;fileToolStripMenuItem.Name" xml:space="preserve">
     <value>fileToolStripMenuItem</value>
   </data>
-	<data name="&gt;&gt;fileToolStripMenuItem.Type" xml:space="preserve">
+  <data name="&gt;&gt;fileToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-	<data name="&gt;&gt;connectToolStripMenuItem.Name" xml:space="preserve">
+  <data name="&gt;&gt;connectToolStripMenuItem.Name" xml:space="preserve">
     <value>connectToolStripMenuItem</value>
   </data>
-	<data name="&gt;&gt;connectToolStripMenuItem.Type" xml:space="preserve">
+  <data name="&gt;&gt;connectToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-	<data name="&gt;&gt;miOpen.Name" xml:space="preserve">
+  <data name="&gt;&gt;miOpen.Name" xml:space="preserve">
     <value>miOpen</value>
   </data>
-	<data name="&gt;&gt;miOpen.Type" xml:space="preserve">
+  <data name="&gt;&gt;miOpen.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-	<data name="&gt;&gt;toolStripSeparator11.Name" xml:space="preserve">
+  <data name="&gt;&gt;toolStripSeparator11.Name" xml:space="preserve">
     <value>toolStripSeparator11</value>
   </data>
-	<data name="&gt;&gt;toolStripSeparator11.Type" xml:space="preserve">
+  <data name="&gt;&gt;toolStripSeparator11.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-	<data name="&gt;&gt;runAllReportsToolStripMenuItem.Name" xml:space="preserve">
+  <data name="&gt;&gt;runAllReportsToolStripMenuItem.Name" xml:space="preserve">
     <value>runAllReportsToolStripMenuItem</value>
   </data>
-	<data name="&gt;&gt;runAllReportsToolStripMenuItem.Type" xml:space="preserve">
+  <data name="&gt;&gt;runAllReportsToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-	<data name="&gt;&gt;toolStripSeparator10.Name" xml:space="preserve">
+  <data name="&gt;&gt;toolStripSeparator10.Name" xml:space="preserve">
     <value>toolStripSeparator10</value>
   </data>
-	<data name="&gt;&gt;toolStripSeparator10.Type" xml:space="preserve">
+  <data name="&gt;&gt;toolStripSeparator10.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-	<data name="&gt;&gt;toolStripSeparator12.Name" xml:space="preserve">
+  <data name="&gt;&gt;toolStripSeparator12.Name" xml:space="preserve">
     <value>toolStripSeparator12</value>
   </data>
-	<data name="&gt;&gt;toolStripSeparator12.Type" xml:space="preserve">
+  <data name="&gt;&gt;toolStripSeparator12.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-	<data name="&gt;&gt;importToolStripMenuItem.Name" xml:space="preserve">
+  <data name="&gt;&gt;importToolStripMenuItem.Name" xml:space="preserve">
     <value>importToolStripMenuItem</value>
   </data>
-	<data name="&gt;&gt;importToolStripMenuItem.Type" xml:space="preserve">
+  <data name="&gt;&gt;importToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-	<data name="&gt;&gt;exitToolStripMenuItem.Name" xml:space="preserve">
+  <data name="&gt;&gt;exitToolStripMenuItem.Name" xml:space="preserve">
     <value>exitToolStripMenuItem</value>
   </data>
-	<data name="&gt;&gt;exitToolStripMenuItem.Type" xml:space="preserve">
+  <data name="&gt;&gt;exitToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-	<data name="&gt;&gt;editToolStripMenuItem.Name" xml:space="preserve">
+  <data name="&gt;&gt;editToolStripMenuItem.Name" xml:space="preserve">
     <value>editToolStripMenuItem</value>
   </data>
-	<data name="&gt;&gt;editToolStripMenuItem.Type" xml:space="preserve">
+  <data name="&gt;&gt;editToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-	<data name="&gt;&gt;copyToolStripMenuItem.Name" xml:space="preserve">
+  <data name="&gt;&gt;copyToolStripMenuItem.Name" xml:space="preserve">
     <value>copyToolStripMenuItem</value>
   </data>
-	<data name="&gt;&gt;copyToolStripMenuItem.Type" xml:space="preserve">
+  <data name="&gt;&gt;copyToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-	<data name="&gt;&gt;getReportParametersToolStripMenuItem.Name" xml:space="preserve">
+  <data name="&gt;&gt;getReportParametersToolStripMenuItem.Name" xml:space="preserve">
     <value>getReportParametersToolStripMenuItem</value>
   </data>
-	<data name="&gt;&gt;getReportParametersToolStripMenuItem.Type" xml:space="preserve">
+  <data name="&gt;&gt;getReportParametersToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-	<data name="&gt;&gt;viewToolStripMenuItem.Name" xml:space="preserve">
+  <data name="&gt;&gt;viewToolStripMenuItem.Name" xml:space="preserve">
     <value>viewToolStripMenuItem</value>
   </data>
-	<data name="&gt;&gt;viewToolStripMenuItem.Type" xml:space="preserve">
+  <data name="&gt;&gt;viewToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-	<data name="&gt;&gt;toolbarsToolStripMenuItem.Name" xml:space="preserve">
+  <data name="&gt;&gt;toolbarsToolStripMenuItem.Name" xml:space="preserve">
     <value>toolbarsToolStripMenuItem</value>
   </data>
-	<data name="&gt;&gt;toolbarsToolStripMenuItem.Type" xml:space="preserve">
+  <data name="&gt;&gt;toolbarsToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-	<data name="&gt;&gt;mainMenuToolStripMenuItem.Name" xml:space="preserve">
+  <data name="&gt;&gt;mainMenuToolStripMenuItem.Name" xml:space="preserve">
     <value>mainMenuToolStripMenuItem</value>
   </data>
-	<data name="&gt;&gt;mainMenuToolStripMenuItem.Type" xml:space="preserve">
+  <data name="&gt;&gt;mainMenuToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-	<data name="&gt;&gt;mainToolStripMenuItem.Name" xml:space="preserve">
+  <data name="&gt;&gt;mainToolStripMenuItem.Name" xml:space="preserve">
     <value>mainToolStripMenuItem</value>
   </data>
-	<data name="&gt;&gt;mainToolStripMenuItem.Type" xml:space="preserve">
+  <data name="&gt;&gt;mainToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-	<data name="&gt;&gt;reportToolStripMenuItem.Name" xml:space="preserve">
+  <data name="&gt;&gt;reportToolStripMenuItem.Name" xml:space="preserve">
     <value>reportToolStripMenuItem</value>
   </data>
-	<data name="&gt;&gt;reportToolStripMenuItem.Type" xml:space="preserve">
+  <data name="&gt;&gt;reportToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-	<data name="&gt;&gt;serviceToolStripMenuItem.Name" xml:space="preserve">
+  <data name="&gt;&gt;serviceToolStripMenuItem.Name" xml:space="preserve">
     <value>serviceToolStripMenuItem</value>
   </data>
-	<data name="&gt;&gt;serviceToolStripMenuItem.Type" xml:space="preserve">
+  <data name="&gt;&gt;serviceToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-	<data name="&gt;&gt;promptsToolStripMenuItem.Name" xml:space="preserve">
+  <data name="&gt;&gt;promptsToolStripMenuItem.Name" xml:space="preserve">
     <value>promptsToolStripMenuItem</value>
   </data>
-	<data name="&gt;&gt;promptsToolStripMenuItem.Type" xml:space="preserve">
+  <data name="&gt;&gt;promptsToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-	<data name="&gt;&gt;askWhetherToStartTheSQLDiagCollectionServiceToolStripMenuItem.Name" xml:space="preserve">
+  <data name="&gt;&gt;askWhetherToStartTheSQLDiagCollectionServiceToolStripMenuItem.Name" xml:space="preserve">
     <value>askWhetherToStartTheSQLDiagCollectionServiceToolStripMenuItem</value>
   </data>
-	<data name="&gt;&gt;askWhetherToStartTheSQLDiagCollectionServiceToolStripMenuItem.Type" xml:space="preserve">
+  <data name="&gt;&gt;askWhetherToStartTheSQLDiagCollectionServiceToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-	<data name="&gt;&gt;askWhetherToStopTheSQLDiagCollectionServiceWhenExitingToolStripMenuItem.Name" xml:space="preserve">
+  <data name="&gt;&gt;askWhetherToStopTheSQLDiagCollectionServiceWhenExitingToolStripMenuItem.Name" xml:space="preserve">
     <value>askWhetherToStopTheSQLDiagCollectionServiceWhenExitingToolStripMenuItem</value>
   </data>
-	<data name="&gt;&gt;askWhetherToStopTheSQLDiagCollectionServiceWhenExitingToolStripMenuItem.Type" xml:space="preserve">
+  <data name="&gt;&gt;askWhetherToStopTheSQLDiagCollectionServiceWhenExitingToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-	<data name="&gt;&gt;tsiShowReportTabs.Name" xml:space="preserve">
+  <data name="&gt;&gt;tsiShowReportTabs.Name" xml:space="preserve">
     <value>tsiShowReportTabs</value>
   </data>
-	<data name="&gt;&gt;tsiShowReportTabs.Type" xml:space="preserve">
+  <data name="&gt;&gt;tsiShowReportTabs.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-	<data name="&gt;&gt;windowToolStripMenuItem.Name" xml:space="preserve">
+  <data name="&gt;&gt;windowToolStripMenuItem.Name" xml:space="preserve">
     <value>windowToolStripMenuItem</value>
   </data>
-	<data name="&gt;&gt;windowToolStripMenuItem.Type" xml:space="preserve">
+  <data name="&gt;&gt;windowToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-	<data name="&gt;&gt;closeToolStripMenuItem2.Name" xml:space="preserve">
+  <data name="&gt;&gt;closeToolStripMenuItem2.Name" xml:space="preserve">
     <value>closeToolStripMenuItem2</value>
   </data>
-	<data name="&gt;&gt;closeToolStripMenuItem2.Type" xml:space="preserve">
+  <data name="&gt;&gt;closeToolStripMenuItem2.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-	<data name="&gt;&gt;closeAllButCurrentToolStripMenuItem.Name" xml:space="preserve">
+  <data name="&gt;&gt;closeAllButCurrentToolStripMenuItem.Name" xml:space="preserve">
     <value>closeAllButCurrentToolStripMenuItem</value>
   </data>
-	<data name="&gt;&gt;closeAllButCurrentToolStripMenuItem.Type" xml:space="preserve">
+  <data name="&gt;&gt;closeAllButCurrentToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-	<data name="&gt;&gt;closeAllToolStripMenuItem2.Name" xml:space="preserve">
+  <data name="&gt;&gt;closeAllToolStripMenuItem2.Name" xml:space="preserve">
     <value>closeAllToolStripMenuItem2</value>
   </data>
-	<data name="&gt;&gt;closeAllToolStripMenuItem2.Type" xml:space="preserve">
+  <data name="&gt;&gt;closeAllToolStripMenuItem2.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-	<data name="&gt;&gt;helpToolStripMenuItem.Name" xml:space="preserve">
+  <data name="&gt;&gt;helpToolStripMenuItem.Name" xml:space="preserve">
     <value>helpToolStripMenuItem</value>
   </data>
-	<data name="&gt;&gt;helpToolStripMenuItem.Type" xml:space="preserve">
+  <data name="&gt;&gt;helpToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-	<data name="&gt;&gt;contentsToolStripMenuItem.Name" xml:space="preserve">
+  <data name="&gt;&gt;contentsToolStripMenuItem.Name" xml:space="preserve">
     <value>contentsToolStripMenuItem</value>
   </data>
-	<data name="&gt;&gt;contentsToolStripMenuItem.Type" xml:space="preserve">
+  <data name="&gt;&gt;contentsToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-	<data name="&gt;&gt;indexToolStripMenuItem.Name" xml:space="preserve">
+  <data name="&gt;&gt;indexToolStripMenuItem.Name" xml:space="preserve">
     <value>indexToolStripMenuItem</value>
   </data>
-	<data name="&gt;&gt;indexToolStripMenuItem.Type" xml:space="preserve">
+  <data name="&gt;&gt;indexToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-	<data name="&gt;&gt;supportToolStripMenuItem.Name" xml:space="preserve">
+  <data name="&gt;&gt;supportToolStripMenuItem.Name" xml:space="preserve">
     <value>supportToolStripMenuItem</value>
   </data>
-	<data name="&gt;&gt;supportToolStripMenuItem.Type" xml:space="preserve">
+  <data name="&gt;&gt;supportToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-	<data name="&gt;&gt;contactUsToolStripMenuItem.Name" xml:space="preserve">
+  <data name="&gt;&gt;contactUsToolStripMenuItem.Name" xml:space="preserve">
     <value>contactUsToolStripMenuItem</value>
   </data>
-	<data name="&gt;&gt;contactUsToolStripMenuItem.Type" xml:space="preserve">
+  <data name="&gt;&gt;contactUsToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-	<data name="&gt;&gt;aboutToolStripMenuItem.Name" xml:space="preserve">
+  <data name="&gt;&gt;aboutToolStripMenuItem.Name" xml:space="preserve">
     <value>aboutToolStripMenuItem</value>
   </data>
-	<data name="&gt;&gt;aboutToolStripMenuItem.Type" xml:space="preserve">
+  <data name="&gt;&gt;aboutToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-	<data name="&gt;&gt;tsbStart.Name" xml:space="preserve">
+  <data name="&gt;&gt;tsbStart.Name" xml:space="preserve">
     <value>tsbStart</value>
   </data>
-	<data name="&gt;&gt;tsbStart.Type" xml:space="preserve">
+  <data name="&gt;&gt;tsbStart.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-	<data name="&gt;&gt;tsbStop.Name" xml:space="preserve">
+  <data name="&gt;&gt;tsbStop.Name" xml:space="preserve">
     <value>tsbStop</value>
   </data>
-	<data name="&gt;&gt;tsbStop.Type" xml:space="preserve">
+  <data name="&gt;&gt;tsbStop.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-	<data name="&gt;&gt;tscbAutoUpdate.Name" xml:space="preserve">
+  <data name="&gt;&gt;tscbAutoUpdate.Name" xml:space="preserve">
     <value>tscbAutoUpdate</value>
   </data>
-	<data name="&gt;&gt;tscbAutoUpdate.Type" xml:space="preserve">
+  <data name="&gt;&gt;tscbAutoUpdate.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;tsbDocMap.Name" xml:space="preserve">
@@ -3216,6 +3256,24 @@
     <value>tscCurrentDatabase</value>
   </data>
   <data name="&gt;&gt;tscCurrentDatabase.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparatorTheme.Name" xml:space="preserve">
+    <value>toolStripSeparatorTheme</value>
+  </data>
+  <data name="&gt;&gt;toolStripSeparatorTheme.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tsLabelTheme.Name" xml:space="preserve">
+    <value>tsLabelTheme</value>
+  </data>
+  <data name="&gt;&gt;tsLabelTheme.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tscTheme.Name" xml:space="preserve">
+    <value>tscTheme</value>
+  </data>
+  <data name="&gt;&gt;tscTheme.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;tspUnpin.Name" xml:space="preserve">

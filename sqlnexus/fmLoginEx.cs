@@ -1,4 +1,5 @@
 using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -10,10 +11,12 @@ using NexusInterfaces;
 namespace sqlnexus
 {
     public partial class fmLoginEx : Form
-    {      
+    {
         public fmLoginEx()
         {
             InitializeComponent();
+
+            ThemeManager.ApplyTheme(this);
             chkTrustServerCertificate.Checked = Properties.Settings.Default.TrustCertificate;
             chkEncryptConnection.Checked = Properties.Settings.Default.EncryptConnection;
             btnCancel.FlatStyle = FlatStyle.Flat;
@@ -22,11 +25,34 @@ namespace sqlnexus
 
         private void EnableSqlLogin(bool enable)
         {
-            lblUserName.Enabled = enable;
-            lblPassword.Enabled = enable;
+            // Keep labels always enabled so ForeColor is respected by WinForms rendering.
+            // WinForms disabled labels ignore ForeColor and draw with a system-derived dark
+            // gray that is invisible on dark theme backgrounds (e.g., Aquatic #202020).
+            // Instead, simulate the disabled look by setting a muted ForeColor.
+            lblUserName.Enabled = true;
+            lblPassword.Enabled = true;
             txtUserName.Enabled = enable;
             txtPassword.Enabled = enable;
 
+            // WinForms disabled labels ignore ForeColor and render with a system-derived
+            // dark gray, which is invisible on dark theme backgrounds (e.g., Aquatic).
+            // Explicitly set a muted but visible color when disabled.
+            if (!enable)
+            {
+                Color dimmed = ThemeManager.CurrentThemeName == "Aquatic"
+                    ? ColorTranslator.FromHtml("#808080")   // medium gray on dark bg
+                    : ThemeManager.CurrentThemeName == "Desert"
+                        ? ColorTranslator.FromHtml("#A0A0A0") // lighter gray on warm bg
+                        : SystemColors.GrayText;              // default system disabled color
+
+                lblUserName.ForeColor = dimmed;
+                lblPassword.ForeColor = dimmed;
+            }
+            else
+            {
+                lblUserName.ForeColor = ThemeManager.CurrentForeColor;
+                lblPassword.ForeColor = ThemeManager.CurrentForeColor;
+            }
         }
         private void cmbAuthentication_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -75,16 +101,16 @@ namespace sqlnexus
                 txtPassword.Text = "";//since this object is cached, erase the password
             }
 
-            //Saving trustcertificate and encrypt connection for the user.
+            //Saving trustcertificate & encrypt connection for the user.
             Properties.Settings.Default.EncryptConnection = chkEncryptConnection.Checked;
             Properties.Settings.Default.TrustCertificate = chkTrustServerCertificate.Checked;
+            Properties.Settings.Default.Save();
 
             //this.Dispose();
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
-
         }
 
         private void fmLoginEx_Load(object sender, EventArgs e)
@@ -102,11 +128,11 @@ namespace sqlnexus
         }
 
         private void btnCancel_Enter(object sender, EventArgs e)
-        {           
+        {
             btnCancel.FlatStyle = FlatStyle.Flat;
             btnCancel.FlatAppearance.BorderColor = ColorTranslator.FromHtml("#0078D7");
             btnCancel.BackColor = ColorTranslator.FromHtml("#E5F1FB");
-        }     
+        }
         private void btnCancel_Leave(object sender, EventArgs e)
         {
             btnCancel.FlatStyle = FlatStyle.Flat;
@@ -138,6 +164,10 @@ namespace sqlnexus
             btnConnect.FlatAppearance.BorderColor = ColorTranslator.FromHtml("#0078D7");
             btnConnect.BackColor = ColorTranslator.FromHtml("#E5F1FB");
 
+        }
+
+        private void fmLoginEx_FormClosing(object sender, FormClosingEventArgs e)
+        {
         }
     }
 }

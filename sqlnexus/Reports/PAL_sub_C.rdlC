@@ -109,24 +109,24 @@ EXEC sp_executesql @sqlcmd;</CommandText>
                         <Y>=Sum(Fields!CounterValue.Value)</Y>
                       </ChartDataPointValues>
                       <ChartDataLabel>
-                        <Style />
+                        <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
                       </ChartDataLabel>
-                      <Style />
+                      <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
                       <ChartMarker>
-                        <Style />
+                        <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
                       </ChartMarker>
                       <DataElementOutput>Output</DataElementOutput>
                     </ChartDataPoint>
                   </ChartDataPoints>
                   <Type>Line</Type>
-                  <Style />
+                  <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
                   <ChartEmptyPoints>
-                    <Style />
+                    <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
                     <ChartMarker>
-                      <Style />
+                      <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
                     </ChartMarker>
                     <ChartDataLabel>
-                      <Style />
+                      <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
                     </ChartDataLabel>
                   </ChartEmptyPoints>
                   <ValueAxisName>Primary</ValueAxisName>
@@ -144,18 +144,18 @@ EXEC sp_executesql @sqlcmd;</CommandText>
                   <ChartAxis Name="Primary">
                     <Style>
                       <Border>
-                        <Color>Gainsboro</Color>
+                        <Color>=Variables!ReportTextColor.Value</Color>
                         <Style>None</Style>
                       </Border>
                       <FontSize>8pt</FontSize>
                       <Format>t</Format>
-                      <Color>#5c5c5c</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                     <ChartAxisTitle>
                       <Caption />
                       <Style>
                         <FontSize>9pt</FontSize>
-                        <Color>#5c5c5c</Color>
+                        <Color>=Variables!ReportTextColor.Value</Color>
                       </Style>
                     </ChartAxisTitle>
                     <IntervalType>Minutes</IntervalType>
@@ -164,14 +164,14 @@ EXEC sp_executesql @sqlcmd;</CommandText>
                       <Enabled>True</Enabled>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Border>
                       </Style>
                     </ChartMajorGridLines>
                     <ChartMinorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                           <Style>Dotted</Style>
                         </Border>
                       </Style>
@@ -179,7 +179,7 @@ EXEC sp_executesql @sqlcmd;</CommandText>
                     <ChartMajorTickMarks>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                           <Style>None</Style>
                         </Border>
                       </Style>
@@ -187,7 +187,7 @@ EXEC sp_executesql @sqlcmd;</CommandText>
                     <ChartMinorTickMarks>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Border>
                       </Style>
                       <Length>0.5</Length>
@@ -198,37 +198,37 @@ EXEC sp_executesql @sqlcmd;</CommandText>
                     <Maximum>NaN</Maximum>
                     <Angle>-90</Angle>
                     <ChartAxisScaleBreak>
-                      <Style />
+                      <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
                     </ChartAxisScaleBreak>
                   </ChartAxis>
                   <ChartAxis Name="Secondary">
                     <Style>
                       <Border>
-                        <Color>Gainsboro</Color>
+                        <Color>=Variables!ReportTextColor.Value</Color>
                         <Style>None</Style>
                       </Border>
                       <FontSize>8pt</FontSize>
-                      <Color>#5c5c5c</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                     <ChartAxisTitle>
                       <Caption />
                       <Style>
                         <FontSize>9pt</FontSize>
-                        <Color>#5c5c5c</Color>
+                        <Color>=Variables!ReportTextColor.Value</Color>
                       </Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Enabled>False</Enabled>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Border>
                       </Style>
                     </ChartMajorGridLines>
                     <ChartMinorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                           <Style>Dotted</Style>
                         </Border>
                       </Style>
@@ -236,7 +236,7 @@ EXEC sp_executesql @sqlcmd;</CommandText>
                     <ChartMajorTickMarks>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                           <Style>None</Style>
                         </Border>
                       </Style>
@@ -244,7 +244,7 @@ EXEC sp_executesql @sqlcmd;</CommandText>
                     <ChartMinorTickMarks>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Border>
                       </Style>
                       <Length>0.5</Length>
@@ -254,7 +254,7 @@ EXEC sp_executesql @sqlcmd;</CommandText>
                     <Minimum>NaN</Minimum>
                     <Maximum>NaN</Maximum>
                     <ChartAxisScaleBreak>
-                      <Style />
+                      <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
                     </ChartAxisScaleBreak>
                   </ChartAxis>
                 </ChartCategoryAxes>
@@ -262,30 +262,30 @@ EXEC sp_executesql @sqlcmd;</CommandText>
                   <ChartAxis Name="Primary">
                     <Style>
                       <Border>
-                        <Color>Gainsboro</Color>
+                        <Color>=Variables!ReportTextColor.Value</Color>
                         <Style>None</Style>
                       </Border>
                       <FontSize>8pt</FontSize>
-                      <Color>#5c5c5c</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                     <ChartAxisTitle>
                       <Caption />
                       <Style>
                         <FontSize>9pt</FontSize>
-                        <Color>#5c5c5c</Color>
+                        <Color>=Variables!ReportTextColor.Value</Color>
                       </Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Border>
                       </Style>
                     </ChartMajorGridLines>
                     <ChartMinorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                           <Style>Dotted</Style>
                         </Border>
                       </Style>
@@ -293,7 +293,7 @@ EXEC sp_executesql @sqlcmd;</CommandText>
                     <ChartMajorTickMarks>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                           <Style>None</Style>
                         </Border>
                       </Style>
@@ -301,7 +301,7 @@ EXEC sp_executesql @sqlcmd;</CommandText>
                     <ChartMinorTickMarks>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Border>
                       </Style>
                       <Length>0.5</Length>
@@ -310,36 +310,36 @@ EXEC sp_executesql @sqlcmd;</CommandText>
                     <Minimum>NaN</Minimum>
                     <Maximum>NaN</Maximum>
                     <ChartAxisScaleBreak>
-                      <Style />
+                      <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
                     </ChartAxisScaleBreak>
                   </ChartAxis>
                   <ChartAxis Name="Secondary">
                     <Style>
                       <Border>
-                        <Color>Gainsboro</Color>
+                        <Color>=Variables!ReportTextColor.Value</Color>
                         <Style>None</Style>
                       </Border>
                       <FontSize>8pt</FontSize>
-                      <Color>#5c5c5c</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                     <ChartAxisTitle>
                       <Caption />
                       <Style>
                         <FontSize>9pt</FontSize>
-                        <Color>#5c5c5c</Color>
+                        <Color>=Variables!ReportTextColor.Value</Color>
                       </Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Border>
                       </Style>
                     </ChartMajorGridLines>
                     <ChartMinorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                           <Style>Dotted</Style>
                         </Border>
                       </Style>
@@ -347,7 +347,7 @@ EXEC sp_executesql @sqlcmd;</CommandText>
                     <ChartMajorTickMarks>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                           <Style>None</Style>
                         </Border>
                       </Style>
@@ -355,7 +355,7 @@ EXEC sp_executesql @sqlcmd;</CommandText>
                     <ChartMinorTickMarks>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Border>
                       </Style>
                       <Length>0.5</Length>
@@ -365,7 +365,7 @@ EXEC sp_executesql @sqlcmd;</CommandText>
                     <Minimum>NaN</Minimum>
                     <Maximum>NaN</Maximum>
                     <ChartAxisScaleBreak>
-                      <Style />
+                      <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
                     </ChartAxisScaleBreak>
                   </ChartAxis>
                 </ChartValueAxes>
@@ -381,7 +381,8 @@ EXEC sp_executesql @sqlcmd;</CommandText>
                 <Style>
                   <BackgroundGradientType>None</BackgroundGradientType>
                   <FontSize>8pt</FontSize>
-                </Style>
+                
+                  <Color>=Variables!ReportTextColor.Value</Color></Style>
                 <Position>TopLeft</Position>
                 <ChartLegendTitle>
                   <Caption />
@@ -404,7 +405,7 @@ EXEC sp_executesql @sqlcmd;</CommandText>
                   <FontWeight>Bold</FontWeight>
                   <TextAlign>Left</TextAlign>
                   <VerticalAlign>Top</VerticalAlign>
-                  <Color>Maroon</Color>
+                  <Color>=Variables!TitleColor.Value</Color>
                 </Style>
                 <Position>TopLeft</Position>
               </ChartTitle>
@@ -435,7 +436,7 @@ EXEC sp_executesql @sqlcmd;</CommandText>
                 <Color>LightGrey</Color>
                 <Style>None</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
+              <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
               <BackgroundGradientType>None</BackgroundGradientType>
             </Style>
           </Chart>
@@ -449,6 +450,7 @@ EXEC sp_executesql @sqlcmd;</CommandText>
                     <Value>=Parameters!Desc.Value</Value>
                     <Style>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -478,7 +480,7 @@ EXEC sp_executesql @sqlcmd;</CommandText>
                 <TextRuns>
                   <TextRun>
                     <Value>=Parameters!Title.Value</Value>
-                    <Style />
+                    <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
                   </TextRun>
                 </TextRuns>
                 <Style />
@@ -508,6 +510,7 @@ EXEC sp_executesql @sqlcmd;</CommandText>
                     <Value>Show queries for this report.</Value>
                     <Style>
                       <FontWeight>Bold</FontWeight>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -539,7 +542,7 @@ EXEC sp_executesql @sqlcmd;</CommandText>
                     <TextRuns>
                       <TextRun>
                         <Value>=DataSets!GetCounters.CommandText</Value>
-                        <Style />
+                        <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
                       </TextRun>
                     </TextRuns>
                     <Style />
@@ -576,6 +579,7 @@ EXEC sp_executesql @sqlcmd;</CommandText>
             </Visibility>
             <Style>
               <Border>
+                <Color>=Variables!ReportTextColor.Value</Color>
                 <Style>Solid</Style>
               </Border>
             </Style>
@@ -642,6 +646,31 @@ EXEC sp_executesql @sqlcmd;</CommandText>
       </DefaultValue>
       <Prompt>Desc</Prompt>
     </ReportParameter>
+    <ReportParameter Name="ContrastTheme">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>None</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>ContrastTheme</Prompt>
+      <ValidValues>
+        <ParameterValues>
+          <ParameterValue>
+            <Value>None</Value>
+            <Label>None</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>Aquatic</Value>
+            <Label>Aquatic</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>Desert</Value>
+            <Label>Desert</Label>
+          </ParameterValue>
+        </ParameterValues>
+      </ValidValues>
+    </ReportParameter>
   </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>
@@ -669,13 +698,48 @@ EXEC sp_executesql @sqlcmd;</CommandText>
           <ParameterName>Counters</ParameterName>
         </CellDefinition>
         <CellDefinition>
-          <ColumnIndex>0</ColumnIndex>
+          <ColumnIndex>1</ColumnIndex>
           <RowIndex>1</RowIndex>
           <ParameterName>Desc</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>2</ColumnIndex>
+          <RowIndex>1</RowIndex>
+          <ParameterName>ContrastTheme</ParameterName>
         </CellDefinition>
       </CellDefinitions>
     </GridLayoutDefinition>
   </ReportParametersLayout>
+  <Variables>
+    <Variable Name="IsLocalReport">
+      <Value>= (Globals!ReportServerUrl="")</Value>
+    </Variable>
+    <Variable Name="ReportTextColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+Parameters!ContrastTheme.Value="None", "Black")</Value>
+    </Variable>
+    <Variable Name="BodyColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
+Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
+Parameters!ContrastTheme.Value="None", "No Color")</Value>
+    </Variable>
+    <Variable Name="TitleColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+Parameters!ContrastTheme.Value="None", "#1c3a70")</Value>
+    </Variable>
+    <Variable Name="URLColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#75E9FC",
+Parameters!ContrastTheme.Value="Desert", "#1C5E75",
+Parameters!ContrastTheme.Value="None", "Blue")</Value>
+    </Variable>
+    <Variable Name="TableHeadingColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "No Color",
+Parameters!ContrastTheme.Value="Desert", "No Color",
+Parameters!ContrastTheme.Value="None", "Gainsboro")</Value>
+    </Variable>
+  </Variables>
   <rd:ReportUnitType>Inch</rd:ReportUnitType>
   <rd:ReportID>03765a5e-4e35-477e-8e2d-4d5e91dea08b</rd:ReportID>
 </Report>

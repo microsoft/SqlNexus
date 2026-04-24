@@ -1,5 +1,16 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:am="http://schemas.microsoft.com/sqlserver/reporting/authoringmetadata">
+  <am:AuthoringMetadata>
+    <am:CreatedBy>
+      <am:Name>SSDTRS</am:Name>
+      <am:Version>17.14.37111.16</am:Version>
+    </am:CreatedBy>
+    <am:UpdatedBy>
+      <am:Name>SSDTRS</am:Name>
+      <am:Version>17.14.37203.1</am:Version>
+    </am:UpdatedBy>
+    <am:LastModifiedTimestamp>2026-04-20T19:42:22.9926138Z</am:LastModifiedTimestamp>
+  </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
     <DataSource Name="DataSource_Private">
@@ -898,6 +909,7 @@ ORDER BY r.session_id;</CommandText>
                     <Style>
                       <FontSize>8pt</FontSize>
                       <FontWeight>Bold</FontWeight>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -915,7 +927,7 @@ ORDER BY r.session_id;</CommandText>
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>LightSteelBlue</BackgroundColor>
+              <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
             </Style>
           </Textbox>
@@ -929,6 +941,7 @@ ORDER BY r.session_id;</CommandText>
                     <Value>=Parameters!Runtime.Value</Value>
                     <Style>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -947,7 +960,7 @@ ORDER BY r.session_id;</CommandText>
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
+              <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -967,6 +980,7 @@ ORDER BY r.session_id;</CommandText>
                       <FontFamily>Trebuchet MS</FontFamily>
                       <FontSize>12pt</FontSize>
                       <FontWeight>Bold</FontWeight>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -999,6 +1013,7 @@ ORDER BY r.session_id;</CommandText>
                     <Style>
                       <FontSize>14pt</FontSize>
                       <FontWeight>Bold</FontWeight>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1019,40 +1034,6 @@ ORDER BY r.session_id;</CommandText>
           </Textbox>
           <Rectangle Name="rectangle1">
             <ReportItems>
-              <Textbox Name="textbox60">
-                <CanGrow>true</CanGrow>
-                <KeepTogether>true</KeepTogether>
-                <Paragraphs>
-                  <Paragraph>
-                    <TextRuns>
-                      <TextRun>
-                        <Value>Server</Value>
-                        <Style>
-                          <FontSize>8pt</FontSize>
-                          <FontWeight>Bold</FontWeight>
-                        </Style>
-                      </TextRun>
-                    </TextRuns>
-                    <Style>
-                      <TextAlign>Right</TextAlign>
-                    </Style>
-                  </Paragraph>
-                </Paragraphs>
-                <Height>0.25in</Height>
-                <Width>1in</Width>
-                <Style>
-                  <Border>
-                    <Color>DarkGray</Color>
-                    <Style>Solid</Style>
-                  </Border>
-                  <BackgroundColor>LightSteelBlue</BackgroundColor>
-                  <VerticalAlign>Middle</VerticalAlign>
-                  <PaddingLeft>2pt</PaddingLeft>
-                  <PaddingRight>2pt</PaddingRight>
-                  <PaddingTop>1pt</PaddingTop>
-                  <PaddingBottom>1pt</PaddingBottom>
-                </Style>
-              </Textbox>
               <Textbox Name="textbox59">
                 <CanGrow>true</CanGrow>
                 <KeepTogether>true</KeepTogether>
@@ -1063,22 +1044,58 @@ ORDER BY r.session_id;</CommandText>
                         <Value>=First(Fields!value.Value, "DataSet_Shared_SQLServerName")</Value>
                         <Style>
                           <FontSize>8pt</FontSize>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Style>
                       </TextRun>
                     </TextRuns>
                     <Style />
                   </Paragraph>
                 </Paragraphs>
-                <Left>1in</Left>
+                <Top>0.07056cm</Top>
+                <Left>1.28056in</Left>
                 <Height>0.25in</Height>
-                <Width>1.125in</Width>
+                <Width>1.34444in</Width>
+                <Style>
+                  <Border>
+                    <Color>DarkGray</Color>
+                    <Style>Solid</Style>
+                  </Border>
+                  <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
+                  <VerticalAlign>Middle</VerticalAlign>
+                  <PaddingLeft>2pt</PaddingLeft>
+                  <PaddingRight>2pt</PaddingRight>
+                  <PaddingTop>1pt</PaddingTop>
+                  <PaddingBottom>1pt</PaddingBottom>
+                </Style>
+              </Textbox>
+              <Textbox Name="textbox57">
+                <CanGrow>true</CanGrow>
+                <KeepTogether>true</KeepTogether>
+                <Paragraphs>
+                  <Paragraph>
+                    <TextRuns>
+                      <TextRun>
+                        <Value>=First(Fields!value.Value, "DataSet_Shared_SQLVersion")</Value>
+                        <Style>
+                          <FontSize>8pt</FontSize>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
+                      </TextRun>
+                    </TextRuns>
+                    <Style />
+                  </Paragraph>
+                </Paragraphs>
+                <Top>0.30556in</Top>
+                <Left>1.28056in</Left>
+                <Height>0.25in</Height>
+                <Width>1.34444in</Width>
                 <ZIndex>1</ZIndex>
                 <Style>
                   <Border>
                     <Color>DarkGray</Color>
                     <Style>Solid</Style>
                   </Border>
-                  <BackgroundColor>White</BackgroundColor>
+                  <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
                   <VerticalAlign>Middle</VerticalAlign>
                   <PaddingLeft>2pt</PaddingLeft>
                   <PaddingRight>2pt</PaddingRight>
@@ -1097,6 +1114,7 @@ ORDER BY r.session_id;</CommandText>
                         <Style>
                           <FontSize>8pt</FontSize>
                           <FontWeight>Bold</FontWeight>
+                          <Color>=Variables!TableHeadingFontColor.Value</Color>
                         </Style>
                       </TextRun>
                     </TextRuns>
@@ -1105,7 +1123,8 @@ ORDER BY r.session_id;</CommandText>
                     </Style>
                   </Paragraph>
                 </Paragraphs>
-                <Top>0.25in</Top>
+                <Top>0.30556in</Top>
+                <Left>0.53622cm</Left>
                 <Height>0.25in</Height>
                 <Width>1in</Width>
                 <ZIndex>2</ZIndex>
@@ -1114,7 +1133,7 @@ ORDER BY r.session_id;</CommandText>
                     <Color>DarkGray</Color>
                     <Style>Solid</Style>
                   </Border>
-                  <BackgroundColor>LightSteelBlue</BackgroundColor>
+                  <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                   <VerticalAlign>Middle</VerticalAlign>
                   <PaddingLeft>2pt</PaddingLeft>
                   <PaddingRight>2pt</PaddingRight>
@@ -1122,33 +1141,37 @@ ORDER BY r.session_id;</CommandText>
                   <PaddingBottom>1pt</PaddingBottom>
                 </Style>
               </Textbox>
-              <Textbox Name="textbox57">
+              <Textbox Name="textbox60">
                 <CanGrow>true</CanGrow>
                 <KeepTogether>true</KeepTogether>
                 <Paragraphs>
                   <Paragraph>
                     <TextRuns>
                       <TextRun>
-                        <Value>=First(Fields!value.Value, "DataSet_Shared_SQLVersion")</Value>
+                        <Value>Server</Value>
                         <Style>
                           <FontSize>8pt</FontSize>
+                          <FontWeight>Bold</FontWeight>
+                          <Color>=Variables!TableHeadingFontColor.Value</Color>
                         </Style>
                       </TextRun>
                     </TextRuns>
-                    <Style />
+                    <Style>
+                      <TextAlign>Right</TextAlign>
+                    </Style>
                   </Paragraph>
                 </Paragraphs>
-                <Top>0.25in</Top>
-                <Left>1in</Left>
+                <Top>0.07056cm</Top>
+                <Left>0.53622cm</Left>
                 <Height>0.25in</Height>
-                <Width>1.125in</Width>
+                <Width>1in</Width>
                 <ZIndex>3</ZIndex>
                 <Style>
                   <Border>
                     <Color>DarkGray</Color>
                     <Style>Solid</Style>
                   </Border>
-                  <BackgroundColor>White</BackgroundColor>
+                  <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                   <VerticalAlign>Middle</VerticalAlign>
                   <PaddingLeft>2pt</PaddingLeft>
                   <PaddingRight>2pt</PaddingRight>
@@ -1159,9 +1182,9 @@ ORDER BY r.session_id;</CommandText>
             </ReportItems>
             <DataElementOutput>ContentsOnly</DataElementOutput>
             <Top>0.125in</Top>
-            <Left>6.75in</Left>
-            <Height>0.5in</Height>
-            <Width>2.125in</Width>
+            <Left>6.25in</Left>
+            <Height>0.60416in</Height>
+            <Width>2.78583in</Width>
             <ZIndex>4</ZIndex>
             <Style />
           </Rectangle>
@@ -1216,6 +1239,7 @@ ORDER BY r.session_id;</CommandText>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1228,7 +1252,7 @@ ORDER BY r.session_id;</CommandText>
                               <Color>DarkGray</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>LightSteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <VerticalAlign>Bottom</VerticalAlign>
                             <PaddingLeft>1pt</PaddingLeft>
                           </Style>
@@ -1248,6 +1272,7 @@ ORDER BY r.session_id;</CommandText>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1260,7 +1285,7 @@ ORDER BY r.session_id;</CommandText>
                               <Color>DarkGray</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>LightSteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <VerticalAlign>Bottom</VerticalAlign>
                             <PaddingLeft>1pt</PaddingLeft>
                           </Style>
@@ -1280,6 +1305,7 @@ ORDER BY r.session_id;</CommandText>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1292,7 +1318,7 @@ ORDER BY r.session_id;</CommandText>
                               <Color>DarkGray</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>LightSteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <VerticalAlign>Bottom</VerticalAlign>
                             <PaddingLeft>1pt</PaddingLeft>
                           </Style>
@@ -1315,6 +1341,7 @@ ORDER BY r.session_id;</CommandText>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1327,7 +1354,7 @@ ORDER BY r.session_id;</CommandText>
                               <Color>DarkGray</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>LightSteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <VerticalAlign>Bottom</VerticalAlign>
                             <PaddingLeft>1pt</PaddingLeft>
                           </Style>
@@ -1347,6 +1374,7 @@ ORDER BY r.session_id;</CommandText>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1359,7 +1387,7 @@ ORDER BY r.session_id;</CommandText>
                               <Color>DarkGray</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>LightSteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <VerticalAlign>Bottom</VerticalAlign>
                             <PaddingLeft>1pt</PaddingLeft>
                           </Style>
@@ -1382,6 +1410,7 @@ ORDER BY r.session_id;</CommandText>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1394,7 +1423,7 @@ ORDER BY r.session_id;</CommandText>
                               <Color>DarkGray</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>LightSteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <VerticalAlign>Bottom</VerticalAlign>
                             <PaddingLeft>1pt</PaddingLeft>
                           </Style>
@@ -1414,6 +1443,7 @@ ORDER BY r.session_id;</CommandText>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1426,7 +1456,7 @@ ORDER BY r.session_id;</CommandText>
                               <Color>DarkGray</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>LightSteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <VerticalAlign>Bottom</VerticalAlign>
                             <PaddingLeft>1pt</PaddingLeft>
                           </Style>
@@ -1446,6 +1476,7 @@ ORDER BY r.session_id;</CommandText>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1458,7 +1489,7 @@ ORDER BY r.session_id;</CommandText>
                               <Color>DarkGray</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>LightSteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <VerticalAlign>Bottom</VerticalAlign>
                             <PaddingLeft>1pt</PaddingLeft>
                           </Style>
@@ -1478,6 +1509,7 @@ ORDER BY r.session_id;</CommandText>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1490,7 +1522,7 @@ ORDER BY r.session_id;</CommandText>
                               <Color>DarkGray</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>LightSteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <VerticalAlign>Bottom</VerticalAlign>
                             <PaddingLeft>1pt</PaddingLeft>
                           </Style>
@@ -1515,7 +1547,7 @@ ORDER BY r.session_id;</CommandText>
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <TextDecoration>Underline</TextDecoration>
-                                    <Color>Blue</Color>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1542,6 +1574,9 @@ ORDER BY r.session_id;</CommandText>
                                     <Parameter Name="dsDatabaseName">
                                       <Value>=Parameters!dsDatabaseName.Value</Value>
                                     </Parameter>
+                                    <Parameter Name="ContrastTheme">
+                                      <Value>=Parameters!ContrastTheme.Value</Value>
+                                    </Parameter>
                                   </Parameters>
                                 </Drillthrough>
                               </Action>
@@ -1549,7 +1584,7 @@ ORDER BY r.session_id;</CommandText>
                           </ActionInfo>
                           <ZIndex>8</ZIndex>
                           <Style>
-                            <BackgroundColor>=iif(Fields!session_id.Value=Parameters!HighlightSessionID.Value, "LightYellow", iif(RowNumber(nothing) Mod 2, "", "AliceBlue"))</BackgroundColor>
+                            <BackgroundColor>=Switch(Parameters!ContrastTheme.Value="Aquatic", iif(Fields!session_id.Value=Parameters!HighlightSessionID.Value, "#3A3A00", "#202020"), Parameters!ContrastTheme.Value="Desert", iif(Fields!session_id.Value=Parameters!HighlightSessionID.Value, "#FFF0C0", "#FFFAEF"), True, iif(Fields!session_id.Value=Parameters!HighlightSessionID.Value, "LightYellow", iif(RowNumber(nothing) Mod 2, "", "AliceBlue")))</BackgroundColor>
                           </Style>
                         </Textbox>
                       </CellContents>
@@ -1566,6 +1601,7 @@ ORDER BY r.session_id;</CommandText>
                                   <Value>=Fields!task_state.Value</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1576,7 +1612,7 @@ ORDER BY r.session_id;</CommandText>
                           </Paragraphs>
                           <ZIndex>7</ZIndex>
                           <Style>
-                            <BackgroundColor>=iif(Fields!session_id.Value=Parameters!HighlightSessionID.Value, "LightYellow", iif(RowNumber(nothing) Mod 2, "", "AliceBlue"))</BackgroundColor>
+                            <BackgroundColor>=Switch(Parameters!ContrastTheme.Value="Aquatic", iif(Fields!session_id.Value=Parameters!HighlightSessionID.Value, "#3A3A00", "#202020"), Parameters!ContrastTheme.Value="Desert", iif(Fields!session_id.Value=Parameters!HighlightSessionID.Value, "#FFF0C0", "#FFFAEF"), True, iif(Fields!session_id.Value=Parameters!HighlightSessionID.Value, "LightYellow", iif(RowNumber(nothing) Mod 2, "", "AliceBlue")))</BackgroundColor>
                           </Style>
                         </Textbox>
                       </CellContents>
@@ -1593,6 +1629,7 @@ ORDER BY r.session_id;</CommandText>
                                   <Value>=Fields!command.Value</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1603,7 +1640,7 @@ ORDER BY r.session_id;</CommandText>
                           </Paragraphs>
                           <ZIndex>6</ZIndex>
                           <Style>
-                            <BackgroundColor>=iif(Fields!session_id.Value=Parameters!HighlightSessionID.Value, "LightYellow", iif(RowNumber(nothing) Mod 2, "", "AliceBlue"))</BackgroundColor>
+                            <BackgroundColor>=Switch(Parameters!ContrastTheme.Value="Aquatic", iif(Fields!session_id.Value=Parameters!HighlightSessionID.Value, "#3A3A00", "#202020"), Parameters!ContrastTheme.Value="Desert", iif(Fields!session_id.Value=Parameters!HighlightSessionID.Value, "#FFF0C0", "#FFFAEF"), True, iif(Fields!session_id.Value=Parameters!HighlightSessionID.Value, "LightYellow", iif(RowNumber(nothing) Mod 2, "", "AliceBlue")))</BackgroundColor>
                           </Style>
                         </Textbox>
                       </CellContents>
@@ -1620,6 +1657,7 @@ ORDER BY r.session_id;</CommandText>
                                   <Value>=Fields!blocking_session_id.Value</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1630,7 +1668,7 @@ ORDER BY r.session_id;</CommandText>
                           </Paragraphs>
                           <ZIndex>5</ZIndex>
                           <Style>
-                            <BackgroundColor>=iif(Fields!session_id.Value=Parameters!HighlightSessionID.Value, "LightYellow", iif(RowNumber(nothing) Mod 2, "", "AliceBlue"))</BackgroundColor>
+                            <BackgroundColor>=Switch(Parameters!ContrastTheme.Value="Aquatic", iif(Fields!session_id.Value=Parameters!HighlightSessionID.Value, "#3A3A00", "#202020"), Parameters!ContrastTheme.Value="Desert", iif(Fields!session_id.Value=Parameters!HighlightSessionID.Value, "#FFF0C0", "#FFFAEF"), True, iif(Fields!session_id.Value=Parameters!HighlightSessionID.Value, "LightYellow", iif(RowNumber(nothing) Mod 2, "", "AliceBlue")))</BackgroundColor>
                           </Style>
                         </Textbox>
                       </CellContents>
@@ -1647,6 +1685,7 @@ ORDER BY r.session_id;</CommandText>
                                   <Value>=Fields!wait_type.Value</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1657,7 +1696,7 @@ ORDER BY r.session_id;</CommandText>
                           </Paragraphs>
                           <ZIndex>4</ZIndex>
                           <Style>
-                            <BackgroundColor>=iif(Fields!session_id.Value=Parameters!HighlightSessionID.Value, "LightYellow", iif(RowNumber(nothing) Mod 2, "", "AliceBlue"))</BackgroundColor>
+                            <BackgroundColor>=Switch(Parameters!ContrastTheme.Value="Aquatic", iif(Fields!session_id.Value=Parameters!HighlightSessionID.Value, "#3A3A00", "#202020"), Parameters!ContrastTheme.Value="Desert", iif(Fields!session_id.Value=Parameters!HighlightSessionID.Value, "#FFF0C0", "#FFFAEF"), True, iif(Fields!session_id.Value=Parameters!HighlightSessionID.Value, "LightYellow", iif(RowNumber(nothing) Mod 2, "", "AliceBlue")))</BackgroundColor>
                           </Style>
                         </Textbox>
                       </CellContents>
@@ -1674,6 +1713,7 @@ ORDER BY r.session_id;</CommandText>
                                   <Value>=Fields!wait_duration_ms.Value</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1684,7 +1724,7 @@ ORDER BY r.session_id;</CommandText>
                           </Paragraphs>
                           <ZIndex>3</ZIndex>
                           <Style>
-                            <BackgroundColor>=iif(Fields!session_id.Value=Parameters!HighlightSessionID.Value, "LightYellow", iif(RowNumber(nothing) Mod 2, "", "AliceBlue"))</BackgroundColor>
+                            <BackgroundColor>=Switch(Parameters!ContrastTheme.Value="Aquatic", iif(Fields!session_id.Value=Parameters!HighlightSessionID.Value, "#3A3A00", "#202020"), Parameters!ContrastTheme.Value="Desert", iif(Fields!session_id.Value=Parameters!HighlightSessionID.Value, "#FFF0C0", "#FFFAEF"), True, iif(Fields!session_id.Value=Parameters!HighlightSessionID.Value, "LightYellow", iif(RowNumber(nothing) Mod 2, "", "AliceBlue")))</BackgroundColor>
                           </Style>
                         </Textbox>
                       </CellContents>
@@ -1701,6 +1741,7 @@ ORDER BY r.session_id;</CommandText>
                                   <Value>=Fields!wait_resource.Value</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1711,7 +1752,7 @@ ORDER BY r.session_id;</CommandText>
                           </Paragraphs>
                           <ZIndex>2</ZIndex>
                           <Style>
-                            <BackgroundColor>=iif(Fields!session_id.Value=Parameters!HighlightSessionID.Value, "LightYellow", iif(RowNumber(nothing) Mod 2, "", "AliceBlue"))</BackgroundColor>
+                            <BackgroundColor>=Switch(Parameters!ContrastTheme.Value="Aquatic", iif(Fields!session_id.Value=Parameters!HighlightSessionID.Value, "#3A3A00", "#202020"), Parameters!ContrastTheme.Value="Desert", iif(Fields!session_id.Value=Parameters!HighlightSessionID.Value, "#FFF0C0", "#FFFAEF"), True, iif(Fields!session_id.Value=Parameters!HighlightSessionID.Value, "LightYellow", iif(RowNumber(nothing) Mod 2, "", "AliceBlue")))</BackgroundColor>
                           </Style>
                         </Textbox>
                       </CellContents>
@@ -1728,6 +1769,7 @@ ORDER BY r.session_id;</CommandText>
                                   <Value>=Left (Fields!stmt_text.Value, 25) &amp; "..."</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1738,7 +1780,7 @@ ORDER BY r.session_id;</CommandText>
                           </Paragraphs>
                           <ZIndex>1</ZIndex>
                           <Style>
-                            <BackgroundColor>=iif(Fields!session_id.Value=Parameters!HighlightSessionID.Value, "LightYellow", iif(RowNumber(nothing) Mod 2, "", "AliceBlue"))</BackgroundColor>
+                            <BackgroundColor>=Switch(Parameters!ContrastTheme.Value="Aquatic", iif(Fields!session_id.Value=Parameters!HighlightSessionID.Value, "#3A3A00", "#202020"), Parameters!ContrastTheme.Value="Desert", iif(Fields!session_id.Value=Parameters!HighlightSessionID.Value, "#FFF0C0", "#FFFAEF"), True, iif(Fields!session_id.Value=Parameters!HighlightSessionID.Value, "LightYellow", iif(RowNumber(nothing) Mod 2, "", "AliceBlue")))</BackgroundColor>
                           </Style>
                         </Textbox>
                       </CellContents>
@@ -1755,6 +1797,7 @@ ORDER BY r.session_id;</CommandText>
                                   <Value>=Fields!request_cpu_time.Value</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1764,7 +1807,7 @@ ORDER BY r.session_id;</CommandText>
                             </Paragraph>
                           </Paragraphs>
                           <Style>
-                            <BackgroundColor>=iif(Fields!session_id.Value=Parameters!HighlightSessionID.Value, "LightYellow", iif(RowNumber(nothing) Mod 2, "", "AliceBlue"))</BackgroundColor>
+                            <BackgroundColor>=Switch(Parameters!ContrastTheme.Value="Aquatic", iif(Fields!session_id.Value=Parameters!HighlightSessionID.Value, "#3A3A00", "#202020"), Parameters!ContrastTheme.Value="Desert", iif(Fields!session_id.Value=Parameters!HighlightSessionID.Value, "#FFF0C0", "#FFFAEF"), True, iif(Fields!session_id.Value=Parameters!HighlightSessionID.Value, "LightYellow", iif(RowNumber(nothing) Mod 2, "", "AliceBlue")))</BackgroundColor>
                           </Style>
                         </Textbox>
                       </CellContents>
@@ -2094,6 +2137,7 @@ ORDER BY r.session_id;</CommandText>
                     <Style>
                       <FontSize>8pt</FontSize>
                       <FontWeight>SemiBold</FontWeight>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2102,7 +2146,7 @@ ORDER BY r.session_id;</CommandText>
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <Top>1in</Top>
+            <Top>1.02083in</Top>
             <Left>0.25in</Left>
             <Height>0.25in</Height>
             <Width>1.5in</Width>
@@ -2112,7 +2156,7 @@ ORDER BY r.session_id;</CommandText>
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>LightSteelBlue</BackgroundColor>
+              <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2131,6 +2175,7 @@ ORDER BY r.session_id;</CommandText>
                     <Style>
                       <FontSize>8pt</FontSize>
                       <FontWeight>SemiBold</FontWeight>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2139,7 +2184,7 @@ ORDER BY r.session_id;</CommandText>
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <Top>1.25in</Top>
+            <Top>1.27083in</Top>
             <Left>0.25in</Left>
             <Height>0.25in</Height>
             <Width>1.5in</Width>
@@ -2149,7 +2194,7 @@ ORDER BY r.session_id;</CommandText>
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>LightSteelBlue</BackgroundColor>
+              <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2168,6 +2213,7 @@ ORDER BY r.session_id;</CommandText>
                     <Style>
                       <FontSize>8pt</FontSize>
                       <FontWeight>SemiBold</FontWeight>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2176,7 +2222,7 @@ ORDER BY r.session_id;</CommandText>
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <Top>1.5in</Top>
+            <Top>1.52083in</Top>
             <Left>0.25in</Left>
             <Height>0.25in</Height>
             <Width>1.5in</Width>
@@ -2186,7 +2232,7 @@ ORDER BY r.session_id;</CommandText>
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>LightSteelBlue</BackgroundColor>
+              <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2205,6 +2251,7 @@ ORDER BY r.session_id;</CommandText>
                     <Style>
                       <FontSize>8pt</FontSize>
                       <FontWeight>SemiBold</FontWeight>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2213,7 +2260,7 @@ ORDER BY r.session_id;</CommandText>
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <Top>1.75in</Top>
+            <Top>1.76389in</Top>
             <Left>0.25in</Left>
             <Height>0.25in</Height>
             <Width>1.5in</Width>
@@ -2223,7 +2270,7 @@ ORDER BY r.session_id;</CommandText>
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>LightSteelBlue</BackgroundColor>
+              <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2242,6 +2289,7 @@ ORDER BY r.session_id;</CommandText>
                     <Style>
                       <FontSize>8pt</FontSize>
                       <FontWeight>SemiBold</FontWeight>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2250,7 +2298,7 @@ ORDER BY r.session_id;</CommandText>
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <Top>3in</Top>
+            <Top>3.00694in</Top>
             <Left>0.25in</Left>
             <Height>0.25in</Height>
             <Width>1.5in</Width>
@@ -2260,7 +2308,7 @@ ORDER BY r.session_id;</CommandText>
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>LightSteelBlue</BackgroundColor>
+              <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2278,13 +2326,14 @@ ORDER BY r.session_id;</CommandText>
                     <Value>=First(Fields!procname.Value, "DataSet_Runtime_SessionDetails")</Value>
                     <Style>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
                 <Style />
               </Paragraph>
             </Paragraphs>
-            <Top>3in</Top>
+            <Top>3.00694in</Top>
             <Left>1.75in</Left>
             <Height>0.25in</Height>
             <Width>7.125in</Width>
@@ -2294,7 +2343,7 @@ ORDER BY r.session_id;</CommandText>
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
+              <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2312,6 +2361,7 @@ ORDER BY r.session_id;</CommandText>
                     <Value>=First(Fields!login_name.Value, "DataSet_Runtime_SessionDetails")</Value>
                     <Style>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2320,8 +2370,8 @@ ORDER BY r.session_id;</CommandText>
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <Top>1.75in</Top>
-            <Left>1.75in</Left>
+            <Top>1.76389in</Top>
+            <Left>1.75694in</Left>
             <Height>0.25in</Height>
             <Width>2.75in</Width>
             <ZIndex>12</ZIndex>
@@ -2330,7 +2380,7 @@ ORDER BY r.session_id;</CommandText>
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
+              <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2348,14 +2398,15 @@ ORDER BY r.session_id;</CommandText>
                     <Value>=First(Fields!nt_domain.Value, "DataSet_Runtime_SessionDetails") &amp; "\" &amp; First(Fields!nt_user_name.Value, "DataSet_Runtime_SessionDetails")</Value>
                     <Style>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
                 <Style />
               </Paragraph>
             </Paragraphs>
-            <Top>1.5in</Top>
-            <Left>1.75in</Left>
+            <Top>1.52083in</Top>
+            <Left>1.75694in</Left>
             <Height>0.25in</Height>
             <Width>2.75in</Width>
             <ZIndex>13</ZIndex>
@@ -2364,7 +2415,7 @@ ORDER BY r.session_id;</CommandText>
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
+              <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2382,14 +2433,15 @@ ORDER BY r.session_id;</CommandText>
                     <Value>=First(Fields!host_name.Value, "DataSet_Runtime_SessionDetails")</Value>
                     <Style>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
                 <Style />
               </Paragraph>
             </Paragraphs>
-            <Top>1.25in</Top>
-            <Left>1.75in</Left>
+            <Top>1.27083in</Top>
+            <Left>1.75694in</Left>
             <Height>0.25in</Height>
             <Width>2.75in</Width>
             <ZIndex>14</ZIndex>
@@ -2398,7 +2450,7 @@ ORDER BY r.session_id;</CommandText>
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
+              <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2415,14 +2467,15 @@ ORDER BY r.session_id;</CommandText>
                     <Value>=First(Fields!program_name.Value, "DataSet_Runtime_SessionDetails")</Value>
                     <Style>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
                 <Style />
               </Paragraph>
             </Paragraphs>
-            <Top>1in</Top>
-            <Left>1.75in</Left>
+            <Top>1.02083in</Top>
+            <Left>1.75694in</Left>
             <Height>0.25in</Height>
             <Width>2.75in</Width>
             <ZIndex>15</ZIndex>
@@ -2431,7 +2484,7 @@ ORDER BY r.session_id;</CommandText>
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
+              <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2450,6 +2503,7 @@ ORDER BY r.session_id;</CommandText>
                     <Style>
                       <FontSize>8pt</FontSize>
                       <FontWeight>SemiBold</FontWeight>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2458,7 +2512,7 @@ ORDER BY r.session_id;</CommandText>
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <Top>3.25in</Top>
+            <Top>3.25694in</Top>
             <Left>0.25in</Left>
             <Height>0.25in</Height>
             <Width>1.5in</Width>
@@ -2468,7 +2522,7 @@ ORDER BY r.session_id;</CommandText>
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>LightSteelBlue</BackgroundColor>
+              <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2492,13 +2546,14 @@ ORDER BY r.session_id;</CommandText>
   , vbCrLf, " "))</Value>
                     <Style>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
                 <Style />
               </Paragraph>
             </Paragraphs>
-            <Top>3.25in</Top>
+            <Top>3.25694in</Top>
             <Left>1.75in</Left>
             <Height>0.25in</Height>
             <Width>7.125in</Width>
@@ -2508,7 +2563,7 @@ ORDER BY r.session_id;</CommandText>
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
+              <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2527,6 +2582,7 @@ ORDER BY r.session_id;</CommandText>
                     <Style>
                       <FontSize>8pt</FontSize>
                       <FontWeight>SemiBold</FontWeight>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2535,7 +2591,7 @@ ORDER BY r.session_id;</CommandText>
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <Top>2.25in</Top>
+            <Top>2.26389in</Top>
             <Left>0.25in</Left>
             <Height>0.25in</Height>
             <Width>1.5in</Width>
@@ -2545,7 +2601,7 @@ ORDER BY r.session_id;</CommandText>
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>LightSteelBlue</BackgroundColor>
+              <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2563,6 +2619,7 @@ ORDER BY r.session_id;</CommandText>
                     <Value>=First(Fields!wait_type.Value, "DataSet_Runtime_SessionDetails")</Value>
                     <Style>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2570,7 +2627,7 @@ ORDER BY r.session_id;</CommandText>
               </Paragraph>
             </Paragraphs>
             <Top>2.25in</Top>
-            <Left>1.75in</Left>
+            <Left>1.75694in</Left>
             <Height>0.25in</Height>
             <Width>2.75in</Width>
             <ZIndex>19</ZIndex>
@@ -2579,7 +2636,7 @@ ORDER BY r.session_id;</CommandText>
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
+              <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2598,6 +2655,7 @@ ORDER BY r.session_id;</CommandText>
                     <Style>
                       <FontSize>8pt</FontSize>
                       <FontWeight>SemiBold</FontWeight>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2606,7 +2664,7 @@ ORDER BY r.session_id;</CommandText>
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <Top>2.5in</Top>
+            <Top>2.50694in</Top>
             <Left>0.25in</Left>
             <Height>0.25in</Height>
             <Width>1.5in</Width>
@@ -2616,7 +2674,7 @@ ORDER BY r.session_id;</CommandText>
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>LightSteelBlue</BackgroundColor>
+              <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2634,6 +2692,7 @@ ORDER BY r.session_id;</CommandText>
                     <Value>=Sum(Fields!wait_duration_ms.Value, "DataSet_Runtime_SessionDetails")</Value>
                     <Style>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2642,8 +2701,8 @@ ORDER BY r.session_id;</CommandText>
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <Top>2.5in</Top>
-            <Left>1.75in</Left>
+            <Top>2.50694in</Top>
+            <Left>1.76389in</Left>
             <Height>0.25in</Height>
             <Width>2.75in</Width>
             <ZIndex>21</ZIndex>
@@ -2652,7 +2711,7 @@ ORDER BY r.session_id;</CommandText>
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
+              <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2671,6 +2730,7 @@ ORDER BY r.session_id;</CommandText>
                     <Style>
                       <FontSize>8pt</FontSize>
                       <FontWeight>SemiBold</FontWeight>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2679,7 +2739,7 @@ ORDER BY r.session_id;</CommandText>
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <Top>1.5in</Top>
+            <Top>1.52083in</Top>
             <Left>4.75in</Left>
             <Height>0.25in</Height>
             <Width>1.5in</Width>
@@ -2689,7 +2749,7 @@ ORDER BY r.session_id;</CommandText>
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>LightSteelBlue</BackgroundColor>
+              <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2707,13 +2767,14 @@ ORDER BY r.session_id;</CommandText>
                     <Value>=First(Fields!tran_name.Value, "DataSet_Runtime_SessionDetails")</Value>
                     <Style>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
                 <Style />
               </Paragraph>
             </Paragraphs>
-            <Top>1.5in</Top>
+            <Top>1.52083in</Top>
             <Left>6.25in</Left>
             <Height>0.25in</Height>
             <Width>2.625in</Width>
@@ -2723,7 +2784,7 @@ ORDER BY r.session_id;</CommandText>
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
+              <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2742,6 +2803,7 @@ ORDER BY r.session_id;</CommandText>
                     <Style>
                       <FontSize>8pt</FontSize>
                       <FontWeight>SemiBold</FontWeight>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2750,7 +2812,7 @@ ORDER BY r.session_id;</CommandText>
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <Top>1.75in</Top>
+            <Top>1.76389in</Top>
             <Left>4.75in</Left>
             <Height>0.25in</Height>
             <Width>1.5in</Width>
@@ -2760,7 +2822,7 @@ ORDER BY r.session_id;</CommandText>
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>LightSteelBlue</BackgroundColor>
+              <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2779,6 +2841,7 @@ ORDER BY r.session_id;</CommandText>
   &amp; DateDiff ("s", First(Fields!transaction_begin_time.Value, "DataSet_Runtime_SessionDetails"), First(Fields!runtime.Value, "DataSet_Runtime_SessionDetails")) &amp; " sec)"</Value>
                     <Style>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2787,7 +2850,7 @@ ORDER BY r.session_id;</CommandText>
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <Top>1.75in</Top>
+            <Top>1.76389in</Top>
             <Left>6.25in</Left>
             <Height>0.25in</Height>
             <Width>2.625in</Width>
@@ -2797,7 +2860,7 @@ ORDER BY r.session_id;</CommandText>
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
+              <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2816,6 +2879,7 @@ ORDER BY r.session_id;</CommandText>
                     <Style>
                       <FontSize>8pt</FontSize>
                       <FontWeight>SemiBold</FontWeight>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2824,7 +2888,7 @@ ORDER BY r.session_id;</CommandText>
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <Top>2in</Top>
+            <Top>2.01389in</Top>
             <Left>4.75in</Left>
             <Height>0.25in</Height>
             <Width>1.5in</Width>
@@ -2834,7 +2898,7 @@ ORDER BY r.session_id;</CommandText>
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>LightSteelBlue</BackgroundColor>
+              <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2852,6 +2916,7 @@ ORDER BY r.session_id;</CommandText>
                     <Value>=Sum(Fields!open_trans.Value, "DataSet_Runtime_SessionDetails")</Value>
                     <Style>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2860,7 +2925,7 @@ ORDER BY r.session_id;</CommandText>
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <Top>2in</Top>
+            <Top>2.01389in</Top>
             <Left>6.25in</Left>
             <Height>0.25in</Height>
             <Width>2.625in</Width>
@@ -2870,7 +2935,7 @@ ORDER BY r.session_id;</CommandText>
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
+              <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2890,6 +2955,7 @@ ORDER BY r.session_id;</CommandText>
                       <FontFamily>Trebuchet MS</FontFamily>
                       <FontSize>12pt</FontSize>
                       <FontWeight>Bold</FontWeight>
+                      <Color>=Variables!TitleColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2898,8 +2964,8 @@ ORDER BY r.session_id;</CommandText>
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <Top>0.75in</Top>
-            <Left>0.125in</Left>
+            <Top>0.70834in</Top>
+            <Left>0.11459in</Left>
             <Height>0.25in</Height>
             <Width>8.75in</Width>
             <ZIndex>28</ZIndex>
@@ -2922,6 +2988,7 @@ ORDER BY r.session_id;</CommandText>
                     <Style>
                       <FontSize>8pt</FontSize>
                       <FontWeight>SemiBold</FontWeight>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2930,7 +2997,7 @@ ORDER BY r.session_id;</CommandText>
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <Top>2in</Top>
+            <Top>2.01389in</Top>
             <Left>0.25in</Left>
             <Height>0.25in</Height>
             <Width>1.5in</Width>
@@ -2940,7 +3007,7 @@ ORDER BY r.session_id;</CommandText>
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>LightSteelBlue</BackgroundColor>
+              <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2958,6 +3025,7 @@ ORDER BY r.session_id;</CommandText>
                     <Value>=First(Fields!last_request_start_time.Value, "DataSet_Runtime_SessionDetails") &amp; " / " &amp; First(Fields!last_request_end_time.Value, "DataSet_Runtime_SessionDetails")</Value>
                     <Style>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2966,8 +3034,8 @@ ORDER BY r.session_id;</CommandText>
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <Top>2in</Top>
-            <Left>1.75in</Left>
+            <Top>2.01389in</Top>
+            <Left>1.75694in</Left>
             <Height>0.25in</Height>
             <Width>2.75in</Width>
             <ZIndex>30</ZIndex>
@@ -2976,7 +3044,7 @@ ORDER BY r.session_id;</CommandText>
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
+              <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -3146,7 +3214,7 @@ ORDER BY r.session_id;</CommandText>
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
+              <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
               <PaddingTop>1pt</PaddingTop>
@@ -3164,6 +3232,7 @@ ORDER BY r.session_id;</CommandText>
                     <Style>
                       <FontSize>8pt</FontSize>
                       <FontWeight>SemiBold</FontWeight>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -3172,7 +3241,7 @@ ORDER BY r.session_id;</CommandText>
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <Top>1.25in</Top>
+            <Top>1.27083in</Top>
             <Left>4.75in</Left>
             <Height>0.25in</Height>
             <Width>1.5in</Width>
@@ -3182,7 +3251,7 @@ ORDER BY r.session_id;</CommandText>
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>LightSteelBlue</BackgroundColor>
+              <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -3200,13 +3269,14 @@ ORDER BY r.session_id;</CommandText>
                     <Value>=First(Fields!transaction_isolation_level.Value, "DataSet_Runtime_SessionDetails")</Value>
                     <Style>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
                 <Style />
               </Paragraph>
             </Paragraphs>
-            <Top>1.25in</Top>
+            <Top>1.27083in</Top>
             <Left>6.25in</Left>
             <Height>0.25in</Height>
             <Width>2.625in</Width>
@@ -3216,7 +3286,7 @@ ORDER BY r.session_id;</CommandText>
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
+              <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -3235,6 +3305,7 @@ ORDER BY r.session_id;</CommandText>
                     <Style>
                       <FontSize>8pt</FontSize>
                       <FontWeight>SemiBold</FontWeight>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -3243,7 +3314,7 @@ ORDER BY r.session_id;</CommandText>
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <Top>1in</Top>
+            <Top>1.02083in</Top>
             <Left>4.75in</Left>
             <Height>0.25in</Height>
             <Width>1.5in</Width>
@@ -3253,7 +3324,7 @@ ORDER BY r.session_id;</CommandText>
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>LightSteelBlue</BackgroundColor>
+              <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -3271,13 +3342,14 @@ ORDER BY r.session_id;</CommandText>
                     <Value>=First(Fields!tran_type.Value, "DataSet_Runtime_SessionDetails")</Value>
                     <Style>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
                 <Style />
               </Paragraph>
             </Paragraphs>
-            <Top>1in</Top>
+            <Top>1.02083in</Top>
             <Left>6.25in</Left>
             <Height>0.25in</Height>
             <Width>2.625in</Width>
@@ -3287,7 +3359,7 @@ ORDER BY r.session_id;</CommandText>
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
+              <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -3306,6 +3378,7 @@ ORDER BY r.session_id;</CommandText>
                     <Style>
                       <FontSize>8pt</FontSize>
                       <FontWeight>SemiBold</FontWeight>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -3314,7 +3387,7 @@ ORDER BY r.session_id;</CommandText>
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <Top>2.75in</Top>
+            <Top>2.75694in</Top>
             <Left>0.25in</Left>
             <Height>0.25in</Height>
             <Width>1.5in</Width>
@@ -3324,7 +3397,7 @@ ORDER BY r.session_id;</CommandText>
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>LightSteelBlue</BackgroundColor>
+              <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -3342,6 +3415,7 @@ ORDER BY r.session_id;</CommandText>
                     <Value>=First(Fields!resource_description.Value, "DataSet_Runtime_SessionDetails")</Value>
                     <Style>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -3350,7 +3424,7 @@ ORDER BY r.session_id;</CommandText>
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <Top>2.75in</Top>
+            <Top>2.75694in</Top>
             <Left>1.75in</Left>
             <Height>0.25in</Height>
             <Width>7.125in</Width>
@@ -3360,7 +3434,7 @@ ORDER BY r.session_id;</CommandText>
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
+              <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -3378,6 +3452,7 @@ ORDER BY r.session_id;</CommandText>
                     <Value>Show queries for this report.</Value>
                     <Style>
                       <FontWeight>Bold</FontWeight>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -3409,7 +3484,9 @@ ORDER BY r.session_id;</CommandText>
                     <TextRuns>
                       <TextRun>
                         <Value>=DataSets!DataSet_RuntimeDetails.CommandText</Value>
-                        <Style />
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </TextRun>
                     </TextRuns>
                     <Style />
@@ -3441,7 +3518,9 @@ ORDER BY r.session_id;</CommandText>
                     <TextRuns>
                       <TextRun>
                         <Value>=DataSets!DataSet_Runtime_SessionDetails.CommandText</Value>
-                        <Style />
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </TextRun>
                     </TextRuns>
                     <Style />
@@ -3478,8 +3557,21 @@ ORDER BY r.session_id;</CommandText>
             </Visibility>
             <Style>
               <Border>
+                <Color>=Variables!ReportTextColor.Value</Color>
                 <Style>Solid</Style>
               </Border>
+              <TopBorder>
+                <Color>=Variables!ReportTextColor.Value</Color>
+              </TopBorder>
+              <BottomBorder>
+                <Color>=Variables!ReportTextColor.Value</Color>
+              </BottomBorder>
+              <LeftBorder>
+                <Color>=Variables!ReportTextColor.Value</Color>
+              </LeftBorder>
+              <RightBorder>
+                <Color>=Variables!ReportTextColor.Value</Color>
+              </RightBorder>
             </Style>
           </Rectangle>
         </ReportItems>
@@ -3488,7 +3580,7 @@ ORDER BY r.session_id;</CommandText>
           <Border>
             <Color>DarkGray</Color>
           </Border>
-          <BackgroundColor>=Parameters!FmtAmbientBackground.Value</BackgroundColor>
+          <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
         </Style>
       </Body>
       <Width>11.45833in</Width>
@@ -3560,11 +3652,36 @@ ORDER BY r.session_id;</CommandText>
       <AllowBlank>true</AllowBlank>
       <Prompt>Database Name</Prompt>
     </ReportParameter>
+    <ReportParameter Name="ContrastTheme">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>None</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>ContrastTheme</Prompt>
+      <ValidValues>
+        <ParameterValues>
+          <ParameterValue>
+            <Value>None</Value>
+            <Label>None</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>Aquatic</Value>
+            <Label>Aquatic</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>Desert</Value>
+            <Label>Desert</Label>
+          </ParameterValue>
+        </ParameterValues>
+      </ValidValues>
+    </ReportParameter>
   </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>
       <NumberOfColumns>3</NumberOfColumns>
-      <NumberOfRows>2</NumberOfRows>
+      <NumberOfRows>3</NumberOfRows>
       <CellDefinitions>
         <CellDefinition>
           <ColumnIndex>0</ColumnIndex>
@@ -3591,6 +3708,11 @@ ORDER BY r.session_id;</CommandText>
           <RowIndex>1</RowIndex>
           <ParameterName>dsDatabaseName</ParameterName>
         </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>2</RowIndex>
+          <ParameterName>ContrastTheme</ParameterName>
+        </CellDefinition>
       </CellDefinitions>
     </GridLayoutDefinition>
   </ReportParametersLayout>
@@ -3605,6 +3727,79 @@ ORDER BY r.session_id;</CommandText>
     </EmbeddedImage>
   </EmbeddedImages>
   <Language>en-US</Language>
+  <Variables>
+    <Variable Name="IsLocalReport">
+      <Value>= (Globals!ReportServerUrl="")</Value>
+    </Variable>
+    <Variable Name="FLocalMode">
+      <Value>=Globals!ReportServerUrl = ""</Value>
+    </Variable>
+    <Variable Name="ReportTextColor">
+      <Value>
+        =Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+        Parameters!ContrastTheme.Value="Default", "Black")
+      </Value>
+    </Variable>
+    <Variable Name="BodyBackgroundColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
+Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
+        Parameters!ContrastTheme.Value="Default", "#FAFDFF")</Value>
+    </Variable>
+    <Variable Name="TitleColor">
+      <Value>
+        =Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+        Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+        Parameters!ContrastTheme.Value="Default", "SteelBlue")
+      </Value>
+    </Variable>
+    <Variable Name="TableHeadingColor">
+      <Value>
+        =Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
+        Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
+        Parameters!ContrastTheme.Value="Default", "SteelBlue")
+      </Value>
+    </Variable>
+    <Variable Name="ChartColor">
+      <Value>
+        =Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
+        Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
+        Parameters!ContrastTheme.Value="Default", "LightSteelBlue")
+      </Value>
+    </Variable>
+    <Variable Name="ChartSecondaryColor">
+      <Value>
+        =Switch(Parameters!ContrastTheme.Value="Aquatic", "No Color",
+        Parameters!ContrastTheme.Value="Desert", "No Color",
+        Parameters!ContrastTheme.Value="Default", "Automatic")
+      </Value>
+    </Variable>
+    <Variable Name="ChartGradientStyle">
+      <Value>
+        =Switch(Parameters!ContrastTheme.Value="Aquatic", "None",
+        Parameters!ContrastTheme.Value="Desert", "None",
+        Parameters!ContrastTheme.Value="Default", "TopBottom")
+      </Value>
+    </Variable>
+    <Variable Name="TableShowCell">
+      <Value>"Red"</Value>
+    </Variable>
+    <Variable Name="TableHidcell">
+      <Value>"Green"</Value>
+    </Variable>
+    <Variable Name="TableHeadingFontColor">
+      <Value>
+        =Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+        Parameters!ContrastTheme.Value="Default", "#FFFFFF")
+      </Value>
+    </Variable>
+    <Variable Name="URILinkFontColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#75E9FC",
+Parameters!ContrastTheme.Value="Desert", "#1C5E75",
+Parameters!ContrastTheme.Value="Default", "Blue")</Value>
+    </Variable>
+  </Variables>
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
   <rd:ReportUnitType>Inch</rd:ReportUnitType>
   <rd:ReportID>7e6c1a85-c19e-48ee-84bd-8d94d5d48c23</rd:ReportID>
