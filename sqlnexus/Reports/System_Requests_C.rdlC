@@ -9,14 +9,14 @@
       <am:Name>SSDTRS</am:Name>
       <am:Version>17.14.37203.1</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2026-04-17T19:07:57.3879168Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2026-04-24T18:21:31.7188336Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
     <DataSource Name="DataSource1">
       <ConnectionProperties>
         <DataProvider>SQL</DataProvider>
-        <ConnectString>="data source=" &amp; Parameters!dsServerName.Value &amp; ";initial catalog="&amp;Parameters!dsDatabaseName.Value</ConnectString>
+        <ConnectString>Data Source=.;Initial Catalog=sqlnexus</ConnectString>
         <IntegratedSecurity>true</IntegratedSecurity>
       </ConnectionProperties>
       <rd:SecurityType>Integrated</rd:SecurityType>
@@ -27,27 +27,29 @@
     <DataSet Name="DataSet_Runtime">
       <Query>
         <DataSourceName>DataSource1</DataSourceName>
-        <CommandText>IF OBJECT_ID('tbl_System_Requests') IS NOT NULL
-BEGIN
-    SELECT DISTINCT
-           CAST(runtime AS DATETIME2(3)) Runtime
-    FROM dbo.tbl_System_Requests
-    ORDER BY Runtime;
+        <CommandText>
+					IF OBJECT_ID('tbl_System_Requests') IS NOT NULL
+					BEGIN
+					SELECT DISTINCT
+					CAST(runtime AS DATETIME2(3)) Runtime
+					FROM dbo.tbl_System_Requests
+					ORDER BY Runtime;
 
-END;
-ELSE
-BEGIN
+					END;
+					ELSE
+					BEGIN
 
-    SELECT *
-    FROM
-    (
-        SELECT CAST('1990/1/1' AS DATETIME) AS Runtime
-        UNION
-        SELECT CAST('9999/12/31' AS DATETIME) AS Runtime
-    ) t
-    ORDER BY Runtime;
+					SELECT *
+					FROM
+					(
+					SELECT CAST('1990/1/1' AS DATETIME) AS Runtime
+					UNION
+					SELECT CAST('9999/12/31' AS DATETIME) AS Runtime
+					) t
+					ORDER BY Runtime;
 
-END;</CommandText>
+					END;
+				</CommandText>
       </Query>
       <Fields>
         <Field Name="Runtime">
@@ -59,17 +61,19 @@ END;</CommandText>
     <DataSet Name="DataSet_StartTime">
       <Query>
         <DataSourceName>DataSource1</DataSourceName>
-        <CommandText>IF OBJECT_ID('tbl_System_Requests') IS NOT NULL
-BEGIN
-    SELECT CAST(MIN(runtime) AS DATETIME2(3)) StartTime
-    FROM dbo.tbl_System_Requests;
+        <CommandText>
+					IF OBJECT_ID('tbl_System_Requests') IS NOT NULL
+					BEGIN
+					SELECT CAST(MIN(runtime) AS DATETIME2(3)) StartTime
+					FROM dbo.tbl_System_Requests;
 
-END;
-ELSE
-BEGIN
-    SELECT CAST('1990/1/1' AS DATETIME) AS StartTime;
+					END;
+					ELSE
+					BEGIN
+					SELECT CAST('1990/1/1' AS DATETIME) AS StartTime;
 
-END;</CommandText>
+					END;
+				</CommandText>
       </Query>
       <Fields>
         <Field Name="StartTime">
@@ -81,17 +85,19 @@ END;</CommandText>
     <DataSet Name="DataSet_EndTime">
       <Query>
         <DataSourceName>DataSource1</DataSourceName>
-        <CommandText>IF OBJECT_ID('tbl_System_Requests') IS NOT NULL
-BEGIN
-    SELECT CAST(MAX(runtime) AS DATETIME2(3)) EndTime
-    FROM dbo.tbl_System_Requests;
+        <CommandText>
+					IF OBJECT_ID('tbl_System_Requests') IS NOT NULL
+					BEGIN
+					SELECT CAST(MAX(runtime) AS DATETIME2(3)) EndTime
+					FROM dbo.tbl_System_Requests;
 
-END;
-ELSE
-BEGIN
-    SELECT CAST('9999/12/31' AS DATETIME) AS EndTime;
+					END;
+					ELSE
+					BEGIN
+					SELECT CAST('9999/12/31' AS DATETIME) AS EndTime;
 
-END;</CommandText>
+					END;
+				</CommandText>
       </Query>
       <Fields>
         <Field Name="EndTime">
@@ -114,64 +120,87 @@ END;</CommandText>
             <Value>=Parameters!PercentThreshold.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>--declare @PercentThreshold float = 10
---declare @StartTime datetime = '1900-01-01'
---declare @EndTime datetime = '9999-12-31'
-DECLARE @tmp TABLE
-(
-    runtime DATETIME,
-    os_thread_id INT,
-    command NVARCHAR(128),
-    cpu_time FLOAT,
-    prev_cpu_time FLOAT,
-    prev_runtime DATETIME
+        <CommandText>-- Get CPU core count for normalization
+DECLARE @CoreCount INT = 1;
+SELECT @CoreCount = COALESCE(
+    (SELECT CAST(PropertyValue AS INT) FROM [dbo].[tbl_ServerProperties] WHERE PropertyName = 'cpu_count'),
+    (SELECT MAX(cpu_count) FROM [dbo].[tbl_dm_os_sys_info]),
+    1
 );
 
-INSERT INTO @tmp
-SELECT runtime,
-       os_thread_id,
-       command,
-       cpu_time,
-       LAG(cpu_time, 1, 0) OVER (PARTITION BY os_thread_id, command ORDER BY runtime) AS prev_cpu_time,
-       LAG(runtime, 1, 0) OVER (PARTITION BY os_thread_id, command ORDER BY runtime) AS prev_runtime
-FROM dbo.tbl_System_Requests;
+-- Boundary: treat "uninitialized / bogus" prev_runtime as invalid
+DECLARE @MinPrevRuntime datetime2(0) = '2000-01-01T00:00:00';
 
-SELECT TOP 10
-       runtime,
-       t1.command,
-       t1.os_thread_id,
-       (cpu_time - prev_cpu_time) delta,
-       DATEDIFF(ms, prev_runtime, runtime) delta_elapse_time,
-       (cpu_time - prev_cpu_time) * 100.0 / CASE
-                                                WHEN DATEDIFF(ms, prev_runtime, runtime) = 0 THEN
-                                                    NULL
-                                                ELSE
-                                                    DATEDIFF(ms, prev_runtime, runtime)
-                                            END cpu_percent
-FROM @tmp t1
---join (select distinct command, os_thread_id from @tmp where prev_cpu_time &gt;0  and (cpu_time-prev_cpu_time) * 100.0/datediff (ms, prev_runtime, runtime) &gt; @PercentThreshold) t on t1.command=t.command and t1.os_thread_id = t.os_thread_id
-WHERE prev_cpu_time &gt; 0
-      AND runtime
-      BETWEEN @StartTime AND @EndTime
-      AND command IN
-          (
-              SELECT command
-              FROM @tmp
-              WHERE prev_cpu_time &gt; 0
-                    AND runtime
-                    BETWEEN @StartTime AND @EndTime
-              GROUP BY command,
-                       runtime
-              HAVING SUM(cpu_time - prev_cpu_time) * 100.00
-                     / (CASE
-                            WHEN AVG(DATEDIFF(ms, prev_runtime, runtime)) = 0 THEN
-                                NULL
-                            ELSE
-                                AVG(DATEDIFF(ms, prev_runtime, runtime))
-                        END
-                       ) &gt; @PercentThreshold
-          )
-ORDER BY 4 DESC;</CommandText>
+;WITH src AS
+(
+    SELECT
+        r.runtime,
+        r.os_thread_id,
+        r.command,
+        r.cpu_time,
+        LAG(r.cpu_time)  OVER (PARTITION BY r.os_thread_id, r.command ORDER BY r.runtime) AS prev_cpu_time,
+        LAG(r.runtime)   OVER (PARTITION BY r.os_thread_id, r.command ORDER BY r.runtime) AS prev_runtime
+    FROM dbo.tbl_System_Requests AS r
+),
+calc AS
+(
+    SELECT
+        runtime,
+        os_thread_id,
+        command,
+        cpu_time,
+        prev_cpu_time,
+        prev_runtime,
+        (cpu_time - prev_cpu_time) AS delta_cpu,
+
+        CASE
+            WHEN prev_runtime IS NULL
+              OR prev_runtime &lt; @MinPrevRuntime
+              OR runtime &lt; prev_runtime
+            THEN NULL
+            ELSE DATEDIFF_BIG(ms, prev_runtime, runtime)
+        END AS elapsed_ms
+    FROM src
+)
+SELECT 
+    c.runtime,
+    c.command,
+    c.os_thread_id,
+    CASE WHEN c.delta_cpu &lt; 0 THEN 0 ELSE c.delta_cpu END AS delta,
+    c.elapsed_ms AS delta_elapse_time,
+
+    -- Normalize CPU percentage: clamp negatives to 0, cap at 100%
+    CASE
+        WHEN c.delta_cpu &lt;= 0 THEN 0
+        WHEN c.delta_cpu * 100.0
+              / NULLIF(CONVERT(float, c.elapsed_ms), 0)
+              / NULLIF(@CoreCount, 0) &gt; 100.0 THEN 100.0
+        ELSE c.delta_cpu * 100.0
+              / NULLIF(CONVERT(float, c.elapsed_ms), 0)
+              / NULLIF(@CoreCount, 0)
+    END AS cpu_percent,
+
+    @CoreCount AS core_count
+FROM calc AS c
+WHERE
+    c.prev_cpu_time &gt; 0
+    AND c.runtime BETWEEN @StartTime AND @EndTime
+    AND c.elapsed_ms &gt;= 500
+    AND c.command IN
+    (
+        SELECT c2.command
+        FROM calc AS c2
+        WHERE
+            c2.prev_cpu_time &gt; 0
+            AND c2.runtime BETWEEN @StartTime AND @EndTime
+            AND c2.elapsed_ms &gt;= 500
+        GROUP BY c2.command, c2.runtime
+        HAVING
+            SUM(CASE WHEN c2.delta_cpu &lt; 0 THEN 0 ELSE c2.delta_cpu END) * 100.0
+              / NULLIF(AVG(CONVERT(float, c2.elapsed_ms)), 0)
+              / NULLIF(@CoreCount, 0) &gt; @PercentThreshold
+    )
+ORDER BY c.delta_cpu DESC;</CommandText>
       </Query>
       <Fields>
         <Field Name="runtime">
@@ -184,19 +213,23 @@ ORDER BY 4 DESC;</CommandText>
         </Field>
         <Field Name="os_thread_id">
           <DataField>os_thread_id</DataField>
-          <rd:TypeName>System.Int32</rd:TypeName>
+          <rd:TypeName>System.Int64</rd:TypeName>
         </Field>
         <Field Name="delta">
           <DataField>delta</DataField>
-          <rd:TypeName>System.Double</rd:TypeName>
+          <rd:TypeName>System.Int64</rd:TypeName>
         </Field>
         <Field Name="delta_elapse_time">
           <DataField>delta_elapse_time</DataField>
-          <rd:TypeName>System.Int32</rd:TypeName>
+          <rd:TypeName>System.Int64</rd:TypeName>
         </Field>
         <Field Name="cpu_percent">
           <DataField>cpu_percent</DataField>
           <rd:TypeName>System.Double</rd:TypeName>
+        </Field>
+        <Field Name="core_count">
+          <DataField>core_count</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
       </Fields>
     </DataSet>
@@ -225,7 +258,7 @@ ORDER BY 4 DESC;</CommandText>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>cpu utilization percent</Value>
+                                  <Value>cpu utilization percent (normalized)</Value>
                                   <Style>
                                     <FontFamily>Tahoma</FontFamily>
                                     <FontSize>11pt</FontSize>
@@ -1009,7 +1042,7 @@ ORDER BY 4 DESC;</CommandText>
                       <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                     <ChartAxisTitle>
-                      <Caption>CPU % over Elapse Time</Caption>
+                      <Caption>CPU % (Normalized by Core Count)</Caption>
                       <Style>
                         <FontFamily>Tahoma</FontFamily>
                         <FontSize>8pt</FontSize>
@@ -1137,7 +1170,7 @@ ORDER BY 4 DESC;</CommandText>
             </ChartLegends>
             <ChartTitles>
               <ChartTitle Name="Default">
-                <Caption>CPU Utilization by Commands</Caption>
+                <Caption>CPU Utilization by Commands (Normalized)</Caption>
                 <Style>
                   <BackgroundGradientType>None</BackgroundGradientType>
                   <FontFamily>Tahoma</FontFamily>
@@ -1202,7 +1235,7 @@ ORDER BY 4 DESC;</CommandText>
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>System Threads/Commands CPU Utilization</Value>
+                    <Value>System Threads/Commands CPU Utilization (normalized by Core Count)</Value>
                     <Style>
                       <FontFamily>Verdana</FontFamily>
                       <FontSize>20pt</FontSize>
@@ -1217,7 +1250,7 @@ ORDER BY 4 DESC;</CommandText>
             <rd:DefaultName>ReportTitle</rd:DefaultName>
             <Left>0.30208in</Left>
             <Height>0.61333in</Height>
-            <Width>7.54167in</Width>
+            <Width>10.54167in</Width>
             <ZIndex>2</ZIndex>
             <Style>
               <Border>
@@ -1467,6 +1500,79 @@ ORDER BY 4 DESC;</CommandText>
                     </TablixCell>
                   </TablixCells>
                 </TablixRow>
+                <TablixRow>
+                  <Height>0.25in</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox35">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>CPU Core Count  </Value>
+                                  <Style>
+                                    <FontWeight>Normal</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox35</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox36">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=First(Fields!core_count.Value, "DataSet_System_Threads_Stats")</Value>
+                                  <Style>
+                                    <FontWeight>Normal</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox36</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
               </TablixRows>
             </TablixBody>
             <TablixColumnHierarchy>
@@ -1480,12 +1586,13 @@ ORDER BY 4 DESC;</CommandText>
                 <TablixMember />
                 <TablixMember />
                 <TablixMember />
+                <TablixMember />
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>DataSet_StartTime</DataSetName>
             <Top>0.36333in</Top>
             <Left>8.61681in</Left>
-            <Height>0.75in</Height>
+            <Height>1in</Height>
             <Width>4.43527in</Width>
             <ZIndex>3</ZIndex>
             <Style>
@@ -1707,7 +1814,7 @@ ORDER BY 4 DESC;</CommandText>
           <Value>0</Value>
         </Values>
       </DefaultValue>
-      <Prompt>CPU Percent Threshold </Prompt>
+      <Prompt>CPU Percent Threshold (Normalized)</Prompt>
     </ReportParameter>
     <ReportParameter Name="ContrastTheme">
       <DataType>String</DataType>
