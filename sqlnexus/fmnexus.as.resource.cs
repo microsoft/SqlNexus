@@ -19,7 +19,6 @@ using System.Reflection;
 using System.Diagnostics;
 using Microsoft.Win32;
 using System.ServiceProcess;
-using Microsoft.Office.Interop;
 using System.Globalization;
 using NexusInterfaces;
 using System.Text.RegularExpressions;
@@ -2578,43 +2577,6 @@ namespace sqlnexus
         #endregion Service routines
 
         #region Mail methods
-
-        private void CreateEmail(string[] ReportFiles)
-        {
-            Cursor save = StartWaiting();
-            try
-            {
-                try
-                {
-                    Microsoft.Office.Interop.Word.Application app = new Microsoft.Office.Interop.Word.Application();
-
-                    object FileName = Application.StartupPath + @"\Docs\Analysis.Doc";
-                    System.Diagnostics.Debug.Assert(File.Exists((string)FileName));
-
-                    app.Visible = true;
-                    object m = Missing.Value;
-                    app.Documents.Open(ref FileName, ref m, ref m, ref m, ref m,
-                        ref m, ref m, ref m, ref m, ref m,
-                        ref m, ref m, ref m, ref m,
-                        ref m, ref m);
-                    app.ActiveWindow.EnvelopeVisible = true;
-                    foreach (string f in ReportFiles)
-                    {
-                        object bFalse = false;
-                        object bTrue = true;
-                        app.Selection.InsertFile(f, ref m, ref bFalse, ref bFalse, ref bTrue);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Globals.HandleException(ex, this, this);
-                }
-            }
-            finally
-            {
-                StopWaiting(save);
-            }
-        }
 
         private void mailCurrentReportToolStripMenuItem_Click(object sender, EventArgs e)
         {

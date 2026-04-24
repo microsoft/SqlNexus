@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Report MustUnderstand="df" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:df="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition/defaultfontfamily">
   <df:DefaultFontFamily>Segoe UI</df:DefaultFontFamily>
   <AutoRefresh>0</AutoRefresh>
@@ -67,6 +67,7 @@ FROM pal_Counters;</CommandText>
                       <FontFamily>Segoe UI Light</FontFamily>
                       <FontSize>28pt</FontSize>
                       <FontWeight>Bold</FontWeight>
+                      <Color>=Variables!TitleColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -112,7 +113,7 @@ FROM pal_Counters;</CommandText>
                                     <TextRun>
                                       <Value>=Fields!NAME.Value &amp; " --- " &amp; Fields!COUNTERLIST.Value</Value>
                                       <Style>
-                                        <Color>Blue</Color>
+                                        <Color>=Variables!URLColor.Value</Color>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -138,10 +139,13 @@ FROM pal_Counters;</CommandText>
                                         <Parameter Name="Counters">
                                           <Value>=Fields!COUNTERLIST.Value</Value>
                                         </Parameter>
-                                        <Parameter Name="Desc">
-                                          <Value>=Fields!description.Value</Value>
-                                        </Parameter>
-                                      </Parameters>
+                                          <Parameter Name="Desc">
+                                            <Value>=Fields!description.Value</Value>
+                                          </Parameter>
+                                          <Parameter Name="ContrastTheme">
+                                            <Value>=Parameters!ContrastTheme.Value</Value>
+                                          </Parameter>
+                                        </Parameters>
                                     </Drillthrough>
                                   </Action>
                                 </Actions>
@@ -206,6 +210,7 @@ FROM pal_Counters;</CommandText>
                     <Value>Show queries for this report.</Value>
                     <Style>
                       <FontWeight>Bold</FontWeight>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -237,7 +242,7 @@ FROM pal_Counters;</CommandText>
                     <TextRuns>
                       <TextRun>
                         <Value>=DataSets("dsCounters").CommandText</Value>
-                        <Style />
+                        <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
                       </TextRun>
                     </TextRuns>
                     <Style />
@@ -274,6 +279,7 @@ FROM pal_Counters;</CommandText>
             </Visibility>
             <Style>
               <Border>
+                <Color>=Variables!ReportTextColor.Value</Color>
                 <Style>Solid</Style>
               </Border>
             </Style>
@@ -292,7 +298,7 @@ FROM pal_Counters;</CommandText>
         <RightMargin>1in</RightMargin>
         <TopMargin>1in</TopMargin>
         <BottomMargin>1in</BottomMargin>
-        <Style />
+        <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
       </Page>
     </ReportSection>
   </ReportSections>
@@ -315,6 +321,31 @@ FROM pal_Counters;</CommandText>
       </DefaultValue>
       <Prompt>Database Name:</Prompt>
     </ReportParameter>
+    <ReportParameter Name="ContrastTheme">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>None</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>ContrastTheme</Prompt>
+      <ValidValues>
+        <ParameterValues>
+          <ParameterValue>
+            <Value>None</Value>
+            <Label>None</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>Aquatic</Value>
+            <Label>Aquatic</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>Desert</Value>
+            <Label>Desert</Label>
+          </ParameterValue>
+        </ParameterValues>
+      </ValidValues>
+    </ReportParameter>
   </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>
@@ -331,9 +362,44 @@ FROM pal_Counters;</CommandText>
           <RowIndex>0</RowIndex>
           <ParameterName>dsDatabaseName</ParameterName>
         </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>2</ColumnIndex>
+          <RowIndex>0</RowIndex>
+          <ParameterName>ContrastTheme</ParameterName>
+        </CellDefinition>
       </CellDefinitions>
     </GridLayoutDefinition>
   </ReportParametersLayout>
+  <Variables>
+    <Variable Name="IsLocalReport">
+      <Value>= (Globals!ReportServerUrl="")</Value>
+    </Variable>
+    <Variable Name="ReportTextColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+Parameters!ContrastTheme.Value="None", "Black")</Value>
+    </Variable>
+    <Variable Name="BodyColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
+Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
+Parameters!ContrastTheme.Value="None", "No Color")</Value>
+    </Variable>
+    <Variable Name="TitleColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+Parameters!ContrastTheme.Value="None", "#1c3a70")</Value>
+    </Variable>
+    <Variable Name="URLColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#75E9FC",
+Parameters!ContrastTheme.Value="Desert", "#1C5E75",
+Parameters!ContrastTheme.Value="None", "Blue")</Value>
+    </Variable>
+    <Variable Name="TableHeadingColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "No Color",
+Parameters!ContrastTheme.Value="Desert", "No Color",
+Parameters!ContrastTheme.Value="None", "Gainsboro")</Value>
+    </Variable>
+  </Variables>
   <rd:ReportUnitType>Inch</rd:ReportUnitType>
   <rd:ReportID>4701708b-3852-4998-946b-7b4a72559c2d</rd:ReportID>
 </Report>

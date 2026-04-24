@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:am="http://schemas.microsoft.com/sqlserver/reporting/authoringmetadata">
+  <am:AuthoringMetadata>
+    <am:CreatedBy>
+      <am:Name>SSDTRS</am:Name>
+      <am:Version>17.14.37203.1</am:Version>
+    </am:CreatedBy>
+    <am:UpdatedBy>
+      <am:Name>SSDTRS</am:Name>
+      <am:Version>17.14.37203.1</am:Version>
+    </am:UpdatedBy>
+    <am:LastModifiedTimestamp>2026-04-24T15:59:06.3546875Z</am:LastModifiedTimestamp>
+  </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
     <DataSource Name="DataSource_SqlNexus_Private">
@@ -422,12 +433,16 @@ ORDER BY dat.CounterDateTime;</CommandText>
                         <Y>=Fields!CounterValue.Value</Y>
                       </ChartDataPointValues>
                       <ChartDataLabel>
-                        <Style />
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </ChartDataLabel>
                       <ToolTip>#VALY</ToolTip>
                       <Style />
                       <ChartMarker>
-                        <Style />
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </ChartMarker>
                       <DataElementOutput>Output</DataElementOutput>
                     </ChartDataPoint>
@@ -435,12 +450,18 @@ ORDER BY dat.CounterDateTime;</CommandText>
                   <Type>Line</Type>
                   <Style />
                   <ChartEmptyPoints>
-                    <Style />
+                    <Style>
+                      <Color>=Variables!ReportTextColor.Value</Color>
+                    </Style>
                     <ChartMarker>
-                      <Style />
+                      <Style>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Style>
                     </ChartMarker>
                     <ChartDataLabel>
-                      <Style />
+                      <Style>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Style>
                     </ChartDataLabel>
                   </ChartEmptyPoints>
                   <ValueAxisName>Primary</ValueAxisName>
@@ -457,30 +478,42 @@ ORDER BY dat.CounterDateTime;</CommandText>
                 <ChartCategoryAxes>
                   <ChartAxis Name="Primary">
                     <Style>
+                      <Border>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Border>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                     <ChartAxisTitle>
                       <Caption>Time</Caption>
                       <Style>
                         <FontSize>8pt</FontSize>
+                        <Color>=Variables!ReportTextColor.Value</Color>
                       </Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Enabled>False</Enabled>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Border>
                       </Style>
                     </ChartMajorGridLines>
                     <ChartMinorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                           <Style>Dotted</Style>
                         </Border>
                       </Style>
                     </ChartMinorGridLines>
+                    <ChartMajorTickMarks>
+                      <Style>
+                        <Border>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Border>
+                      </Style>
+                    </ChartMajorTickMarks>
                     <ChartMinorTickMarks>
                       <Length>0.5</Length>
                     </ChartMinorTickMarks>
@@ -494,25 +527,27 @@ ORDER BY dat.CounterDateTime;</CommandText>
                   <ChartAxis Name="Secondary">
                     <Style>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                     <ChartAxisTitle>
                       <Caption>Axis Title</Caption>
                       <Style>
                         <FontSize>8pt</FontSize>
+                        <Color>=Variables!ReportTextColor.Value</Color>
                       </Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Enabled>False</Enabled>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Border>
                       </Style>
                     </ChartMajorGridLines>
                     <ChartMinorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                           <Style>Dotted</Style>
                         </Border>
                       </Style>
@@ -532,29 +567,41 @@ ORDER BY dat.CounterDateTime;</CommandText>
                 <ChartValueAxes>
                   <ChartAxis Name="Primary">
                     <Style>
+                      <Border>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Border>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                     <ChartAxisTitle>
                       <Caption>Top 10 Memory Processes</Caption>
                       <Style>
                         <FontSize>8pt</FontSize>
+                        <Color>=Variables!ReportTextColor.Value</Color>
                       </Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Border>
                       </Style>
                     </ChartMajorGridLines>
                     <ChartMinorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                           <Style>Dotted</Style>
                         </Border>
                       </Style>
                     </ChartMinorGridLines>
+                    <ChartMajorTickMarks>
+                      <Style>
+                        <Border>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Border>
+                      </Style>
+                    </ChartMajorTickMarks>
                     <ChartMinorTickMarks>
                       <Length>0.5</Length>
                     </ChartMinorTickMarks>
@@ -568,24 +615,26 @@ ORDER BY dat.CounterDateTime;</CommandText>
                   <ChartAxis Name="Secondary">
                     <Style>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                     <ChartAxisTitle>
                       <Caption>Axis Title</Caption>
                       <Style>
                         <FontSize>8pt</FontSize>
+                        <Color>=Variables!ReportTextColor.Value</Color>
                       </Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Border>
                       </Style>
                     </ChartMajorGridLines>
                     <ChartMinorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                           <Style>Dotted</Style>
                         </Border>
                       </Style>
@@ -603,6 +652,7 @@ ORDER BY dat.CounterDateTime;</CommandText>
                   </ChartAxis>
                 </ChartValueAxes>
                 <Style>
+                  <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
                   <BackgroundGradientType>None</BackgroundGradientType>
                 </Style>
               </ChartArea>
@@ -612,6 +662,7 @@ ORDER BY dat.CounterDateTime;</CommandText>
                 <Style>
                   <BackgroundGradientType>None</BackgroundGradientType>
                   <FontSize>8pt</FontSize>
+                  <Color>=Variables!ReportTextColor.Value</Color>
                 </Style>
                 <ChartLegendTitle>
                   <Caption />
@@ -633,6 +684,7 @@ ORDER BY dat.CounterDateTime;</CommandText>
                   <FontWeight>Bold</FontWeight>
                   <TextAlign>General</TextAlign>
                   <VerticalAlign>Top</VerticalAlign>
+                  <Color>=Variables!ReportTextColor.Value</Color>
                 </Style>
               </ChartTitle>
             </ChartTitles>
@@ -662,7 +714,7 @@ ORDER BY dat.CounterDateTime;</CommandText>
                 <Color>LightGrey</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
+              <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
               <BackgroundGradientType>None</BackgroundGradientType>
             </Style>
           </Chart>
@@ -677,6 +729,7 @@ ORDER BY dat.CounterDateTime;</CommandText>
                     <Style>
                       <FontStyle>Normal</FontStyle>
                       <FontSize>16pt</FontSize>
+                      <Color>=Variables!TitleColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -729,12 +782,16 @@ ORDER BY dat.CounterDateTime;</CommandText>
                         <Y>=Fields!CounterValue.Value</Y>
                       </ChartDataPointValues>
                       <ChartDataLabel>
-                        <Style />
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </ChartDataLabel>
                       <ToolTip>#VALY</ToolTip>
                       <Style />
                       <ChartMarker>
-                        <Style />
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </ChartMarker>
                       <DataElementOutput>Output</DataElementOutput>
                     </ChartDataPoint>
@@ -742,12 +799,18 @@ ORDER BY dat.CounterDateTime;</CommandText>
                   <Type>Line</Type>
                   <Style />
                   <ChartEmptyPoints>
-                    <Style />
+                    <Style>
+                      <Color>=Variables!ReportTextColor.Value</Color>
+                    </Style>
                     <ChartMarker>
-                      <Style />
+                      <Style>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Style>
                     </ChartMarker>
                     <ChartDataLabel>
-                      <Style />
+                      <Style>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Style>
                     </ChartDataLabel>
                   </ChartEmptyPoints>
                   <ValueAxisName>Primary</ValueAxisName>
@@ -764,30 +827,42 @@ ORDER BY dat.CounterDateTime;</CommandText>
                 <ChartCategoryAxes>
                   <ChartAxis Name="Primary">
                     <Style>
+                      <Border>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Border>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                     <ChartAxisTitle>
                       <Caption>Time</Caption>
                       <Style>
                         <FontSize>8pt</FontSize>
+                        <Color>=Variables!ReportTextColor.Value</Color>
                       </Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Enabled>False</Enabled>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Border>
                       </Style>
                     </ChartMajorGridLines>
                     <ChartMinorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                           <Style>Dotted</Style>
                         </Border>
                       </Style>
                     </ChartMinorGridLines>
+                    <ChartMajorTickMarks>
+                      <Style>
+                        <Border>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Border>
+                      </Style>
+                    </ChartMajorTickMarks>
                     <ChartMinorTickMarks>
                       <Length>0.5</Length>
                     </ChartMinorTickMarks>
@@ -801,25 +876,27 @@ ORDER BY dat.CounterDateTime;</CommandText>
                   <ChartAxis Name="Secondary">
                     <Style>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                     <ChartAxisTitle>
                       <Caption>Axis Title</Caption>
                       <Style>
                         <FontSize>8pt</FontSize>
+                        <Color>=Variables!ReportTextColor.Value</Color>
                       </Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Enabled>False</Enabled>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Border>
                       </Style>
                     </ChartMajorGridLines>
                     <ChartMinorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                           <Style>Dotted</Style>
                         </Border>
                       </Style>
@@ -839,29 +916,41 @@ ORDER BY dat.CounterDateTime;</CommandText>
                 <ChartValueAxes>
                   <ChartAxis Name="Primary">
                     <Style>
+                      <Border>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Border>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                     <ChartAxisTitle>
                       <Caption>Available MBytes</Caption>
                       <Style>
                         <FontSize>8pt</FontSize>
+                        <Color>=Variables!ReportTextColor.Value</Color>
                       </Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Border>
                       </Style>
                     </ChartMajorGridLines>
                     <ChartMinorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                           <Style>Dotted</Style>
                         </Border>
                       </Style>
                     </ChartMinorGridLines>
+                    <ChartMajorTickMarks>
+                      <Style>
+                        <Border>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Border>
+                      </Style>
+                    </ChartMajorTickMarks>
                     <ChartMinorTickMarks>
                       <Length>0.5</Length>
                     </ChartMinorTickMarks>
@@ -875,24 +964,26 @@ ORDER BY dat.CounterDateTime;</CommandText>
                   <ChartAxis Name="Secondary">
                     <Style>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                     <ChartAxisTitle>
                       <Caption>Axis Title</Caption>
                       <Style>
                         <FontSize>8pt</FontSize>
+                        <Color>=Variables!ReportTextColor.Value</Color>
                       </Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Border>
                       </Style>
                     </ChartMajorGridLines>
                     <ChartMinorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                           <Style>Dotted</Style>
                         </Border>
                       </Style>
@@ -910,6 +1001,7 @@ ORDER BY dat.CounterDateTime;</CommandText>
                   </ChartAxis>
                 </ChartValueAxes>
                 <Style>
+                  <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
                   <BackgroundGradientType>None</BackgroundGradientType>
                 </Style>
               </ChartArea>
@@ -922,6 +1014,7 @@ ORDER BY dat.CounterDateTime;</CommandText>
                   <FontWeight>Bold</FontWeight>
                   <TextAlign>General</TextAlign>
                   <VerticalAlign>Top</VerticalAlign>
+                  <Color>=Variables!ReportTextColor.Value</Color>
                 </Style>
               </ChartTitle>
             </ChartTitles>
@@ -952,7 +1045,7 @@ ORDER BY dat.CounterDateTime;</CommandText>
                 <Color>LightGrey</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
+              <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
               <BackgroundGradientType>None</BackgroundGradientType>
             </Style>
           </Chart>
@@ -985,12 +1078,16 @@ ORDER BY dat.CounterDateTime;</CommandText>
                         <Y>=Fields!CounterValue.Value</Y>
                       </ChartDataPointValues>
                       <ChartDataLabel>
-                        <Style />
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </ChartDataLabel>
                       <ToolTip>#VALY</ToolTip>
                       <Style />
                       <ChartMarker>
-                        <Style />
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </ChartMarker>
                       <DataElementOutput>Output</DataElementOutput>
                     </ChartDataPoint>
@@ -998,12 +1095,18 @@ ORDER BY dat.CounterDateTime;</CommandText>
                   <Type>Line</Type>
                   <Style />
                   <ChartEmptyPoints>
-                    <Style />
+                    <Style>
+                      <Color>=Variables!ReportTextColor.Value</Color>
+                    </Style>
                     <ChartMarker>
-                      <Style />
+                      <Style>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Style>
                     </ChartMarker>
                     <ChartDataLabel>
-                      <Style />
+                      <Style>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Style>
                     </ChartDataLabel>
                   </ChartEmptyPoints>
                   <ValueAxisName>Primary</ValueAxisName>
@@ -1020,30 +1123,42 @@ ORDER BY dat.CounterDateTime;</CommandText>
                 <ChartCategoryAxes>
                   <ChartAxis Name="Primary">
                     <Style>
+                      <Border>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Border>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                     <ChartAxisTitle>
                       <Caption>Time</Caption>
                       <Style>
                         <FontSize>8pt</FontSize>
+                        <Color>=Variables!ReportTextColor.Value</Color>
                       </Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Enabled>False</Enabled>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Border>
                       </Style>
                     </ChartMajorGridLines>
                     <ChartMinorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                           <Style>Dotted</Style>
                         </Border>
                       </Style>
                     </ChartMinorGridLines>
+                    <ChartMajorTickMarks>
+                      <Style>
+                        <Border>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Border>
+                      </Style>
+                    </ChartMajorTickMarks>
                     <ChartMinorTickMarks>
                       <Length>0.5</Length>
                     </ChartMinorTickMarks>
@@ -1057,25 +1172,27 @@ ORDER BY dat.CounterDateTime;</CommandText>
                   <ChartAxis Name="Secondary">
                     <Style>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                     <ChartAxisTitle>
                       <Caption>Axis Title</Caption>
                       <Style>
                         <FontSize>8pt</FontSize>
+                        <Color>=Variables!ReportTextColor.Value</Color>
                       </Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Enabled>False</Enabled>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Border>
                       </Style>
                     </ChartMajorGridLines>
                     <ChartMinorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                           <Style>Dotted</Style>
                         </Border>
                       </Style>
@@ -1095,29 +1212,41 @@ ORDER BY dat.CounterDateTime;</CommandText>
                 <ChartValueAxes>
                   <ChartAxis Name="Primary">
                     <Style>
+                      <Border>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Border>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                     <ChartAxisTitle>
                       <Caption>Cache Bytes ( In MB )</Caption>
                       <Style>
                         <FontSize>8pt</FontSize>
+                        <Color>=Variables!ReportTextColor.Value</Color>
                       </Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Border>
                       </Style>
                     </ChartMajorGridLines>
                     <ChartMinorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                           <Style>Dotted</Style>
                         </Border>
                       </Style>
                     </ChartMinorGridLines>
+                    <ChartMajorTickMarks>
+                      <Style>
+                        <Border>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Border>
+                      </Style>
+                    </ChartMajorTickMarks>
                     <ChartMinorTickMarks>
                       <Length>0.5</Length>
                     </ChartMinorTickMarks>
@@ -1131,24 +1260,26 @@ ORDER BY dat.CounterDateTime;</CommandText>
                   <ChartAxis Name="Secondary">
                     <Style>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                     <ChartAxisTitle>
                       <Caption>Axis Title</Caption>
                       <Style>
                         <FontSize>8pt</FontSize>
+                        <Color>=Variables!ReportTextColor.Value</Color>
                       </Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Border>
                       </Style>
                     </ChartMajorGridLines>
                     <ChartMinorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                           <Style>Dotted</Style>
                         </Border>
                       </Style>
@@ -1166,6 +1297,7 @@ ORDER BY dat.CounterDateTime;</CommandText>
                   </ChartAxis>
                 </ChartValueAxes>
                 <Style>
+                  <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
                   <BackgroundGradientType>None</BackgroundGradientType>
                 </Style>
               </ChartArea>
@@ -1178,6 +1310,7 @@ ORDER BY dat.CounterDateTime;</CommandText>
                   <FontWeight>Bold</FontWeight>
                   <TextAlign>General</TextAlign>
                   <VerticalAlign>Top</VerticalAlign>
+                  <Color>=Variables!ReportTextColor.Value</Color>
                 </Style>
               </ChartTitle>
             </ChartTitles>
@@ -1208,7 +1341,7 @@ ORDER BY dat.CounterDateTime;</CommandText>
                 <Color>LightGrey</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
+              <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
               <BackgroundGradientType>None</BackgroundGradientType>
             </Style>
           </Chart>
@@ -1241,12 +1374,16 @@ ORDER BY dat.CounterDateTime;</CommandText>
                         <Y>=Fields!CounterValue.Value</Y>
                       </ChartDataPointValues>
                       <ChartDataLabel>
-                        <Style />
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </ChartDataLabel>
                       <ToolTip>#VALY</ToolTip>
                       <Style />
                       <ChartMarker>
-                        <Style />
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </ChartMarker>
                       <DataElementOutput>Output</DataElementOutput>
                     </ChartDataPoint>
@@ -1254,12 +1391,18 @@ ORDER BY dat.CounterDateTime;</CommandText>
                   <Type>Line</Type>
                   <Style />
                   <ChartEmptyPoints>
-                    <Style />
+                    <Style>
+                      <Color>=Variables!ReportTextColor.Value</Color>
+                    </Style>
                     <ChartMarker>
-                      <Style />
+                      <Style>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Style>
                     </ChartMarker>
                     <ChartDataLabel>
-                      <Style />
+                      <Style>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Style>
                     </ChartDataLabel>
                   </ChartEmptyPoints>
                   <ValueAxisName>Primary</ValueAxisName>
@@ -1276,30 +1419,42 @@ ORDER BY dat.CounterDateTime;</CommandText>
                 <ChartCategoryAxes>
                   <ChartAxis Name="Primary">
                     <Style>
+                      <Border>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Border>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                     <ChartAxisTitle>
                       <Caption>Time</Caption>
                       <Style>
                         <FontSize>8pt</FontSize>
+                        <Color>=Variables!ReportTextColor.Value</Color>
                       </Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Enabled>False</Enabled>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Border>
                       </Style>
                     </ChartMajorGridLines>
                     <ChartMinorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                           <Style>Dotted</Style>
                         </Border>
                       </Style>
                     </ChartMinorGridLines>
+                    <ChartMajorTickMarks>
+                      <Style>
+                        <Border>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Border>
+                      </Style>
+                    </ChartMajorTickMarks>
                     <ChartMinorTickMarks>
                       <Length>0.5</Length>
                     </ChartMinorTickMarks>
@@ -1313,25 +1468,27 @@ ORDER BY dat.CounterDateTime;</CommandText>
                   <ChartAxis Name="Secondary">
                     <Style>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                     <ChartAxisTitle>
                       <Caption>Axis Title</Caption>
                       <Style>
                         <FontSize>8pt</FontSize>
+                        <Color>=Variables!ReportTextColor.Value</Color>
                       </Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Enabled>False</Enabled>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Border>
                       </Style>
                     </ChartMajorGridLines>
                     <ChartMinorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                           <Style>Dotted</Style>
                         </Border>
                       </Style>
@@ -1351,29 +1508,41 @@ ORDER BY dat.CounterDateTime;</CommandText>
                 <ChartValueAxes>
                   <ChartAxis Name="Primary">
                     <Style>
+                      <Border>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Border>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                     <ChartAxisTitle>
                       <Caption>Lazy writes/sec</Caption>
                       <Style>
                         <FontSize>8pt</FontSize>
+                        <Color>=Variables!ReportTextColor.Value</Color>
                       </Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Border>
                       </Style>
                     </ChartMajorGridLines>
                     <ChartMinorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                           <Style>Dotted</Style>
                         </Border>
                       </Style>
                     </ChartMinorGridLines>
+                    <ChartMajorTickMarks>
+                      <Style>
+                        <Border>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Border>
+                      </Style>
+                    </ChartMajorTickMarks>
                     <ChartMinorTickMarks>
                       <Length>0.5</Length>
                     </ChartMinorTickMarks>
@@ -1387,24 +1556,26 @@ ORDER BY dat.CounterDateTime;</CommandText>
                   <ChartAxis Name="Secondary">
                     <Style>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                     <ChartAxisTitle>
                       <Caption>Axis Title</Caption>
                       <Style>
                         <FontSize>8pt</FontSize>
+                        <Color>=Variables!ReportTextColor.Value</Color>
                       </Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Border>
                       </Style>
                     </ChartMajorGridLines>
                     <ChartMinorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                           <Style>Dotted</Style>
                         </Border>
                       </Style>
@@ -1422,6 +1593,7 @@ ORDER BY dat.CounterDateTime;</CommandText>
                   </ChartAxis>
                 </ChartValueAxes>
                 <Style>
+                  <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
                   <BackgroundGradientType>None</BackgroundGradientType>
                 </Style>
               </ChartArea>
@@ -1436,6 +1608,7 @@ Indicates the number of buffers written per second by the buffer manager's lazy 
                   <FontWeight>Bold</FontWeight>
                   <TextAlign>General</TextAlign>
                   <VerticalAlign>Top</VerticalAlign>
+                  <Color>=Variables!ReportTextColor.Value</Color>
                 </Style>
               </ChartTitle>
             </ChartTitles>
@@ -1466,7 +1639,7 @@ Indicates the number of buffers written per second by the buffer manager's lazy 
                 <Color>LightGrey</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
+              <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
               <BackgroundGradientType>None</BackgroundGradientType>
             </Style>
           </Chart>
@@ -1499,12 +1672,16 @@ Indicates the number of buffers written per second by the buffer manager's lazy 
                         <Y>=Fields!CounterValue.Value</Y>
                       </ChartDataPointValues>
                       <ChartDataLabel>
-                        <Style />
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </ChartDataLabel>
                       <ToolTip>#VALY</ToolTip>
                       <Style />
                       <ChartMarker>
-                        <Style />
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </ChartMarker>
                       <DataElementOutput>Output</DataElementOutput>
                     </ChartDataPoint>
@@ -1512,12 +1689,18 @@ Indicates the number of buffers written per second by the buffer manager's lazy 
                   <Type>Line</Type>
                   <Style />
                   <ChartEmptyPoints>
-                    <Style />
+                    <Style>
+                      <Color>=Variables!ReportTextColor.Value</Color>
+                    </Style>
                     <ChartMarker>
-                      <Style />
+                      <Style>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Style>
                     </ChartMarker>
                     <ChartDataLabel>
-                      <Style />
+                      <Style>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Style>
                     </ChartDataLabel>
                   </ChartEmptyPoints>
                   <ValueAxisName>Primary</ValueAxisName>
@@ -1534,30 +1717,42 @@ Indicates the number of buffers written per second by the buffer manager's lazy 
                 <ChartCategoryAxes>
                   <ChartAxis Name="Primary">
                     <Style>
+                      <Border>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Border>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                     <ChartAxisTitle>
                       <Caption>Time</Caption>
                       <Style>
                         <FontSize>8pt</FontSize>
+                        <Color>=Variables!ReportTextColor.Value</Color>
                       </Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Enabled>False</Enabled>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Border>
                       </Style>
                     </ChartMajorGridLines>
                     <ChartMinorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                           <Style>Dotted</Style>
                         </Border>
                       </Style>
                     </ChartMinorGridLines>
+                    <ChartMajorTickMarks>
+                      <Style>
+                        <Border>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Border>
+                      </Style>
+                    </ChartMajorTickMarks>
                     <ChartMinorTickMarks>
                       <Length>0.5</Length>
                     </ChartMinorTickMarks>
@@ -1571,25 +1766,27 @@ Indicates the number of buffers written per second by the buffer manager's lazy 
                   <ChartAxis Name="Secondary">
                     <Style>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                     <ChartAxisTitle>
                       <Caption>Axis Title</Caption>
                       <Style>
                         <FontSize>8pt</FontSize>
+                        <Color>=Variables!ReportTextColor.Value</Color>
                       </Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Enabled>False</Enabled>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Border>
                       </Style>
                     </ChartMajorGridLines>
                     <ChartMinorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                           <Style>Dotted</Style>
                         </Border>
                       </Style>
@@ -1609,29 +1806,41 @@ Indicates the number of buffers written per second by the buffer manager's lazy 
                 <ChartValueAxes>
                   <ChartAxis Name="Primary">
                     <Style>
+                      <Border>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Border>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                     <ChartAxisTitle>
                       <Caption>Checkpoint pages/sec</Caption>
                       <Style>
                         <FontSize>8pt</FontSize>
+                        <Color>=Variables!ReportTextColor.Value</Color>
                       </Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Border>
                       </Style>
                     </ChartMajorGridLines>
                     <ChartMinorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                           <Style>Dotted</Style>
                         </Border>
                       </Style>
                     </ChartMinorGridLines>
+                    <ChartMajorTickMarks>
+                      <Style>
+                        <Border>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Border>
+                      </Style>
+                    </ChartMajorTickMarks>
                     <ChartMinorTickMarks>
                       <Length>0.5</Length>
                     </ChartMinorTickMarks>
@@ -1645,24 +1854,26 @@ Indicates the number of buffers written per second by the buffer manager's lazy 
                   <ChartAxis Name="Secondary">
                     <Style>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                     <ChartAxisTitle>
                       <Caption>Axis Title</Caption>
                       <Style>
                         <FontSize>8pt</FontSize>
+                        <Color>=Variables!ReportTextColor.Value</Color>
                       </Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Border>
                       </Style>
                     </ChartMajorGridLines>
                     <ChartMinorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                           <Style>Dotted</Style>
                         </Border>
                       </Style>
@@ -1680,6 +1891,7 @@ Indicates the number of buffers written per second by the buffer manager's lazy 
                   </ChartAxis>
                 </ChartValueAxes>
                 <Style>
+                  <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
                   <BackgroundGradientType>None</BackgroundGradientType>
                 </Style>
               </ChartArea>
@@ -1694,6 +1906,7 @@ Indicates the number of pages flushed to disk per second by a checkpoint or othe
                   <FontWeight>Bold</FontWeight>
                   <TextAlign>General</TextAlign>
                   <VerticalAlign>Top</VerticalAlign>
+                  <Color>=Variables!ReportTextColor.Value</Color>
                 </Style>
               </ChartTitle>
             </ChartTitles>
@@ -1724,7 +1937,7 @@ Indicates the number of pages flushed to disk per second by a checkpoint or othe
                 <Color>LightGrey</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
+              <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
               <BackgroundGradientType>None</BackgroundGradientType>
             </Style>
           </Chart>
@@ -1757,12 +1970,16 @@ Indicates the number of pages flushed to disk per second by a checkpoint or othe
                         <Y>=Fields!CounterValue.Value</Y>
                       </ChartDataPointValues>
                       <ChartDataLabel>
-                        <Style />
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </ChartDataLabel>
                       <ToolTip>#VALY</ToolTip>
                       <Style />
                       <ChartMarker>
-                        <Style />
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </ChartMarker>
                       <DataElementOutput>Output</DataElementOutput>
                     </ChartDataPoint>
@@ -1770,12 +1987,18 @@ Indicates the number of pages flushed to disk per second by a checkpoint or othe
                   <Type>Line</Type>
                   <Style />
                   <ChartEmptyPoints>
-                    <Style />
+                    <Style>
+                      <Color>=Variables!ReportTextColor.Value</Color>
+                    </Style>
                     <ChartMarker>
-                      <Style />
+                      <Style>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Style>
                     </ChartMarker>
                     <ChartDataLabel>
-                      <Style />
+                      <Style>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Style>
                     </ChartDataLabel>
                   </ChartEmptyPoints>
                   <ValueAxisName>Primary</ValueAxisName>
@@ -1792,30 +2015,42 @@ Indicates the number of pages flushed to disk per second by a checkpoint or othe
                 <ChartCategoryAxes>
                   <ChartAxis Name="Primary">
                     <Style>
+                      <Border>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Border>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                     <ChartAxisTitle>
                       <Caption>Time</Caption>
                       <Style>
                         <FontSize>8pt</FontSize>
+                        <Color>=Variables!ReportTextColor.Value</Color>
                       </Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Enabled>False</Enabled>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Border>
                       </Style>
                     </ChartMajorGridLines>
                     <ChartMinorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                           <Style>Dotted</Style>
                         </Border>
                       </Style>
                     </ChartMinorGridLines>
+                    <ChartMajorTickMarks>
+                      <Style>
+                        <Border>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Border>
+                      </Style>
+                    </ChartMajorTickMarks>
                     <ChartMinorTickMarks>
                       <Length>0.5</Length>
                     </ChartMinorTickMarks>
@@ -1829,25 +2064,27 @@ Indicates the number of pages flushed to disk per second by a checkpoint or othe
                   <ChartAxis Name="Secondary">
                     <Style>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                     <ChartAxisTitle>
                       <Caption>Axis Title</Caption>
                       <Style>
                         <FontSize>8pt</FontSize>
+                        <Color>=Variables!ReportTextColor.Value</Color>
                       </Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Enabled>False</Enabled>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Border>
                       </Style>
                     </ChartMajorGridLines>
                     <ChartMinorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                           <Style>Dotted</Style>
                         </Border>
                       </Style>
@@ -1867,29 +2104,41 @@ Indicates the number of pages flushed to disk per second by a checkpoint or othe
                 <ChartValueAxes>
                   <ChartAxis Name="Primary">
                     <Style>
+                      <Border>
+                        <Color>=Variables!ReportTextColor.Value</Color>
+                      </Border>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                     <ChartAxisTitle>
                       <Caption>Page Life Expectancy</Caption>
                       <Style>
                         <FontSize>8pt</FontSize>
+                        <Color>=Variables!ReportTextColor.Value</Color>
                       </Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Border>
                       </Style>
                     </ChartMajorGridLines>
                     <ChartMinorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                           <Style>Dotted</Style>
                         </Border>
                       </Style>
                     </ChartMinorGridLines>
+                    <ChartMajorTickMarks>
+                      <Style>
+                        <Border>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Border>
+                      </Style>
+                    </ChartMajorTickMarks>
                     <ChartMinorTickMarks>
                       <Length>0.5</Length>
                     </ChartMinorTickMarks>
@@ -1903,24 +2152,26 @@ Indicates the number of pages flushed to disk per second by a checkpoint or othe
                   <ChartAxis Name="Secondary">
                     <Style>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                     <ChartAxisTitle>
                       <Caption>Axis Title</Caption>
                       <Style>
                         <FontSize>8pt</FontSize>
+                        <Color>=Variables!ReportTextColor.Value</Color>
                       </Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Border>
                       </Style>
                     </ChartMajorGridLines>
                     <ChartMinorGridLines>
                       <Style>
                         <Border>
-                          <Color>Gainsboro</Color>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                           <Style>Dotted</Style>
                         </Border>
                       </Style>
@@ -1938,6 +2189,7 @@ Indicates the number of pages flushed to disk per second by a checkpoint or othe
                   </ChartAxis>
                 </ChartValueAxes>
                 <Style>
+                  <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
                   <BackgroundGradientType>None</BackgroundGradientType>
                 </Style>
               </ChartArea>
@@ -1950,6 +2202,7 @@ Indicates the number of pages flushed to disk per second by a checkpoint or othe
                   <FontWeight>Bold</FontWeight>
                   <TextAlign>General</TextAlign>
                   <VerticalAlign>Top</VerticalAlign>
+                  <Color>=Variables!ReportTextColor.Value</Color>
                 </Style>
               </ChartTitle>
             </ChartTitles>
@@ -1980,7 +2233,7 @@ Indicates the number of pages flushed to disk per second by a checkpoint or othe
                 <Color>LightGrey</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
+              <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
               <BackgroundGradientType>None</BackgroundGradientType>
             </Style>
           </Chart>
@@ -1994,6 +2247,7 @@ Indicates the number of pages flushed to disk per second by a checkpoint or othe
                     <Value>Show queries for this report.</Value>
                     <Style>
                       <FontWeight>Bold</FontWeight>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2025,7 +2279,9 @@ Indicates the number of pages flushed to disk per second by a checkpoint or othe
                     <TextRuns>
                       <TextRun>
                         <Value>=DataSets!DataSetMemory.CommandText</Value>
-                        <Style />
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </TextRun>
                     </TextRuns>
                     <Style />
@@ -2057,7 +2313,9 @@ Indicates the number of pages flushed to disk per second by a checkpoint or othe
                     <TextRuns>
                       <TextRun>
                         <Value>=DataSets!DataSetAvailableMBytes.CommandText</Value>
-                        <Style />
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </TextRun>
                     </TextRuns>
                     <Style />
@@ -2089,7 +2347,9 @@ Indicates the number of pages flushed to disk per second by a checkpoint or othe
                     <TextRuns>
                       <TextRun>
                         <Value>=DataSets!DataSetCacheBytes.CommandText</Value>
-                        <Style />
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </TextRun>
                     </TextRuns>
                     <Style />
@@ -2122,7 +2382,9 @@ Indicates the number of pages flushed to disk per second by a checkpoint or othe
                     <TextRuns>
                       <TextRun>
                         <Value>=DataSets!DataSetPLE.CommandText</Value>
-                        <Style />
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </TextRun>
                     </TextRuns>
                     <Style />
@@ -2154,7 +2416,9 @@ Indicates the number of pages flushed to disk per second by a checkpoint or othe
                     <TextRuns>
                       <TextRun>
                         <Value>=DataSets("DataSetCheckPoint").CommandText</Value>
-                        <Style />
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </TextRun>
                     </TextRuns>
                     <Style />
@@ -2187,7 +2451,9 @@ Indicates the number of pages flushed to disk per second by a checkpoint or othe
                     <TextRuns>
                       <TextRun>
                         <Value>=DataSets("DataSetLazyWrites").CommandText</Value>
-                        <Style />
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </TextRun>
                     </TextRuns>
                     <Style />
@@ -2225,6 +2491,7 @@ Indicates the number of pages flushed to disk per second by a checkpoint or othe
             </Visibility>
             <Style>
               <Border>
+                <Color>=Variables!ReportTextColor.Value</Color>
                 <Style>Solid</Style>
               </Border>
             </Style>
@@ -2235,7 +2502,7 @@ Indicates the number of pages flushed to disk per second by a checkpoint or othe
           <Border>
             <Style>None</Style>
           </Border>
-          <BackgroundColor>=Parameters!FmtAmbientBackground.Value</BackgroundColor>
+          <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
         </Style>
       </Body>
       <Width>15.38125in</Width>
@@ -2254,7 +2521,9 @@ Indicates the number of pages flushed to disk per second by a checkpoint or othe
         <RightMargin>1in</RightMargin>
         <TopMargin>1in</TopMargin>
         <BottomMargin>1in</BottomMargin>
-        <Style />
+        <Style>
+          <Color>=Variables!ReportTextColor.Value</Color>
+        </Style>
       </Page>
     </ReportSection>
   </ReportSections>
@@ -2339,11 +2608,36 @@ Indicates the number of pages flushed to disk per second by a checkpoint or othe
         </DataSetReference>
       </ValidValues>
     </ReportParameter>
+    <ReportParameter Name="ContrastTheme">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>None</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>ContrastTheme</Prompt>
+      <ValidValues>
+        <ParameterValues>
+          <ParameterValue>
+            <Value>None</Value>
+            <Label>None</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>Aquatic</Value>
+            <Label>Aquatic</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>Desert</Value>
+            <Label>Desert</Label>
+          </ParameterValue>
+        </ParameterValues>
+      </ValidValues>
+    </ReportParameter>
   </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>
       <NumberOfColumns>4</NumberOfColumns>
-      <NumberOfRows>2</NumberOfRows>
+      <NumberOfRows>3</NumberOfRows>
       <CellDefinitions>
         <CellDefinition>
           <ColumnIndex>0</ColumnIndex>
@@ -2375,9 +2669,44 @@ Indicates the number of pages flushed to disk per second by a checkpoint or othe
           <RowIndex>1</RowIndex>
           <ParameterName>EndTime</ParameterName>
         </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>2</RowIndex>
+          <ParameterName>ContrastTheme</ParameterName>
+        </CellDefinition>
       </CellDefinitions>
     </GridLayoutDefinition>
   </ReportParametersLayout>
+  <Variables>
+    <Variable Name="IsLocalReport">
+      <Value>= (Globals!ReportServerUrl="")</Value>
+    </Variable>
+    <Variable Name="ReportTextColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+Parameters!ContrastTheme.Value="None", "Black")</Value>
+    </Variable>
+    <Variable Name="BodyColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
+Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
+Parameters!ContrastTheme.Value="None", "No Color")</Value>
+    </Variable>
+    <Variable Name="TitleColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+Parameters!ContrastTheme.Value="None", "#1c3a70")</Value>
+    </Variable>
+    <Variable Name="URLColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#75E9FC",
+Parameters!ContrastTheme.Value="Desert", "#1C5E75",
+Parameters!ContrastTheme.Value="None", "Blue")</Value>
+    </Variable>
+    <Variable Name="TableHeadingColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "No Color",
+Parameters!ContrastTheme.Value="Desert", "No Color",
+Parameters!ContrastTheme.Value="None", "Gainsboro")</Value>
+    </Variable>
+  </Variables>
   <rd:ReportUnitType>Inch</rd:ReportUnitType>
   <rd:ReportID>a76e7f4b-33f9-4c5d-b662-abe74d8c86e8</rd:ReportID>
 </Report>

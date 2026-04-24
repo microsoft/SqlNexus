@@ -421,12 +421,14 @@ WHERE text = @QueryText;</CommandText>
                       </Border>
                       <FontFamily>Tahoma</FontFamily>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                     <ChartAxisTitle>
                       <Caption>RunTime</Caption>
                       <Style>
                         <FontFamily>Tahoma</FontFamily>
                         <FontSize>8pt</FontSize>
+                        <Color>=Variables!ReportTextColor.Value</Color>
                       </Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
@@ -530,12 +532,14 @@ WHERE text = @QueryText;</CommandText>
                       </Border>
                       <FontFamily>Tahoma</FontFamily>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                     <ChartAxisTitle>
                       <Caption>Amount of memory requested/granted</Caption>
                       <Style>
                         <FontFamily>Tahoma</FontFamily>
                         <FontSize>8pt</FontSize>
+                        <Color>=Variables!ReportTextColor.Value</Color>
                       </Style>
                     </ChartAxisTitle>
                     <ChartMajorGridLines>
@@ -638,13 +642,14 @@ WHERE text = @QueryText;</CommandText>
               <ChartLegend Name="Default">
                 <Style>
                   <Border>
-                    <Color>#7292cc</Color>
+                    <Color>=Variables!ReportTextColor.Value</Color>
                   </Border>
-                  <BackgroundColor>#e6eefc</BackgroundColor>
-                  <BackgroundGradientType>TopBottom</BackgroundGradientType>
-                  <BackgroundGradientEndColor>#c6daf8</BackgroundGradientEndColor>
+                  <BackgroundColor>=Variables!ChartColor.Value</BackgroundColor>
+                  <BackgroundGradientType>=Variables!ChartGradientStyle.Value</BackgroundGradientType>
+                  <BackgroundGradientEndColor>=Variables!ChartSecondaryColor.Value</BackgroundGradientEndColor>
                   <FontFamily>Tahoma</FontFamily>
                   <FontSize>8pt</FontSize>
+                  <Color>=Variables!ReportTextColor.Value</Color>
                 </Style>
                 <ChartLegendTitle>
                   <Caption />
@@ -653,6 +658,7 @@ WHERE text = @QueryText;</CommandText>
                     <FontSize>8pt</FontSize>
                     <FontWeight>Bold</FontWeight>
                     <TextAlign>Center</TextAlign>
+                    <Color>=Variables!ReportTextColor.Value</Color>
                   </Style>
                 </ChartLegendTitle>
                 <HeaderSeparatorColor>Black</HeaderSeparatorColor>
@@ -667,6 +673,7 @@ WHERE text = @QueryText;</CommandText>
                   <FontFamily>Tahoma</FontFamily>
                   <FontSize>14pt</FontSize>
                   <FontWeight>Bold</FontWeight>
+                  <Color>=Variables!ReportTextColor.Value</Color>
                   <TextAlign>General</TextAlign>
                   <VerticalAlign>Top</VerticalAlign>
                 </Style>
@@ -710,13 +717,13 @@ WHERE text = @QueryText;</CommandText>
             <Width>8.85417in</Width>
             <Style>
               <Border>
-                <Color>#7292cc</Color>
+                <Color>=Variables!ReportTextColor.Value</Color>
                 <Style>Solid</Style>
                 <Width>2pt</Width>
               </Border>
-              <BackgroundColor>#c6daf8</BackgroundColor>
-              <BackgroundGradientType>TopBottom</BackgroundGradientType>
-              <BackgroundGradientEndColor>#e6eefc</BackgroundGradientEndColor>
+              <BackgroundColor>=Variables!ChartColor.Value</BackgroundColor>
+              <BackgroundGradientType>=Variables!ChartGradientStyle.Value</BackgroundGradientType>
+              <BackgroundGradientEndColor>=Variables!ChartSecondaryColor.Value</BackgroundGradientEndColor>
             </Style>
           </Chart>
           <Textbox Name="textbox16">
@@ -730,6 +737,7 @@ WHERE text = @QueryText;</CommandText>
                     <Style>
                       <FontSize>14pt</FontSize>
                       <FontWeight>Bold</FontWeight>
+                      <Color>=Variables!TitleColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -760,6 +768,7 @@ WHERE text = @QueryText;</CommandText>
                         <Style>
                           <FontSize>8pt</FontSize>
                           <FontWeight>Bold</FontWeight>
+                          <Color>=Variables!TableHeadingFontColor.Value</Color>
                         </Style>
                       </TextRun>
                     </TextRuns>
@@ -773,10 +782,10 @@ WHERE text = @QueryText;</CommandText>
                 <Width>1in</Width>
                 <Style>
                   <Border>
-                    <Color>DarkGray</Color>
+                    <Color>=Variables!ReportTextColor.Value</Color>
                     <Style>Solid</Style>
                   </Border>
-                  <BackgroundColor>=Parameters!FmtChartBackground.Value</BackgroundColor>
+                  <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                   <VerticalAlign>Middle</VerticalAlign>
                   <PaddingLeft>2pt</PaddingLeft>
                   <PaddingRight>2pt</PaddingRight>
@@ -794,6 +803,7 @@ WHERE text = @QueryText;</CommandText>
                         <Value>=Parameters!StartTime.Value</Value>
                         <Style>
                           <FontSize>8pt</FontSize>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Style>
                       </TextRun>
                     </TextRuns>
@@ -806,10 +816,10 @@ WHERE text = @QueryText;</CommandText>
                 <ZIndex>1</ZIndex>
                 <Style>
                   <Border>
-                    <Color>DarkGray</Color>
+                    <Color>=Variables!ReportTextColor.Value</Color>
                     <Style>Solid</Style>
                   </Border>
-                  <BackgroundColor>White</BackgroundColor>
+                  <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
                   <VerticalAlign>Middle</VerticalAlign>
                   <PaddingLeft>2pt</PaddingLeft>
                   <PaddingRight>2pt</PaddingRight>
@@ -828,6 +838,7 @@ WHERE text = @QueryText;</CommandText>
                         <Style>
                           <FontSize>8pt</FontSize>
                           <FontWeight>Bold</FontWeight>
+                          <Color>=Variables!TableHeadingFontColor.Value</Color>
                         </Style>
                       </TextRun>
                     </TextRuns>
@@ -843,10 +854,10 @@ WHERE text = @QueryText;</CommandText>
                 <ZIndex>2</ZIndex>
                 <Style>
                   <Border>
-                    <Color>DarkGray</Color>
+                    <Color>=Variables!ReportTextColor.Value</Color>
                     <Style>Solid</Style>
                   </Border>
-                  <BackgroundColor>=Parameters!FmtChartBackground.Value</BackgroundColor>
+                  <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                   <VerticalAlign>Middle</VerticalAlign>
                   <PaddingLeft>2pt</PaddingLeft>
                   <PaddingRight>2pt</PaddingRight>
@@ -864,6 +875,7 @@ WHERE text = @QueryText;</CommandText>
                         <Value>=Parameters!EndTime.Value</Value>
                         <Style>
                           <FontSize>8pt</FontSize>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Style>
                       </TextRun>
                     </TextRuns>
@@ -877,10 +889,10 @@ WHERE text = @QueryText;</CommandText>
                 <ZIndex>3</ZIndex>
                 <Style>
                   <Border>
-                    <Color>DarkGray</Color>
+                    <Color>=Variables!ReportTextColor.Value</Color>
                     <Style>Solid</Style>
                   </Border>
-                  <BackgroundColor>White</BackgroundColor>
+                  <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
                   <VerticalAlign>Middle</VerticalAlign>
                   <PaddingLeft>2pt</PaddingLeft>
                   <PaddingRight>2pt</PaddingRight>
@@ -899,6 +911,7 @@ WHERE text = @QueryText;</CommandText>
                         <Style>
                           <FontSize>8pt</FontSize>
                           <FontWeight>Bold</FontWeight>
+                          <Color>=Variables!TableHeadingFontColor.Value</Color>
                         </Style>
                       </TextRun>
                     </TextRuns>
@@ -912,10 +925,10 @@ WHERE text = @QueryText;</CommandText>
                 <ZIndex>4</ZIndex>
                 <Style>
                   <Border>
-                    <Color>DarkGray</Color>
+                    <Color>=Variables!ReportTextColor.Value</Color>
                     <Style>Solid</Style>
                   </Border>
-                  <BackgroundColor>=Parameters!FmtChartBackground.Value</BackgroundColor>
+                  <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                   <VerticalAlign>Middle</VerticalAlign>
                   <PaddingLeft>2pt</PaddingLeft>
                   <PaddingRight>2pt</PaddingRight>
@@ -933,6 +946,7 @@ WHERE text = @QueryText;</CommandText>
                         <Value>=First(Fields!value.Value, "DataSet_Shared_SQLServerName")</Value>
                         <Style>
                           <FontSize>8pt</FontSize>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Style>
                       </TextRun>
                     </TextRuns>
@@ -945,10 +959,10 @@ WHERE text = @QueryText;</CommandText>
                 <ZIndex>5</ZIndex>
                 <Style>
                   <Border>
-                    <Color>DarkGray</Color>
+                    <Color>=Variables!ReportTextColor.Value</Color>
                     <Style>Solid</Style>
                   </Border>
-                  <BackgroundColor>White</BackgroundColor>
+                  <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
                   <VerticalAlign>Middle</VerticalAlign>
                   <PaddingLeft>2pt</PaddingLeft>
                   <PaddingRight>2pt</PaddingRight>
@@ -967,6 +981,7 @@ WHERE text = @QueryText;</CommandText>
                         <Style>
                           <FontSize>8pt</FontSize>
                           <FontWeight>Bold</FontWeight>
+                          <Color>=Variables!TableHeadingFontColor.Value</Color>
                         </Style>
                       </TextRun>
                     </TextRuns>
@@ -981,10 +996,10 @@ WHERE text = @QueryText;</CommandText>
                 <ZIndex>6</ZIndex>
                 <Style>
                   <Border>
-                    <Color>DarkGray</Color>
+                    <Color>=Variables!ReportTextColor.Value</Color>
                     <Style>Solid</Style>
                   </Border>
-                  <BackgroundColor>=Parameters!FmtChartBackground.Value</BackgroundColor>
+                  <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                   <VerticalAlign>Middle</VerticalAlign>
                   <PaddingLeft>2pt</PaddingLeft>
                   <PaddingRight>2pt</PaddingRight>
@@ -1002,6 +1017,7 @@ WHERE text = @QueryText;</CommandText>
                         <Value>=First(Fields!value.Value, "DataSet_Shared_SQLVersion")</Value>
                         <Style>
                           <FontSize>8pt</FontSize>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Style>
                       </TextRun>
                     </TextRuns>
@@ -1015,10 +1031,10 @@ WHERE text = @QueryText;</CommandText>
                 <ZIndex>7</ZIndex>
                 <Style>
                   <Border>
-                    <Color>DarkGray</Color>
+                    <Color>=Variables!ReportTextColor.Value</Color>
                     <Style>Solid</Style>
                   </Border>
-                  <BackgroundColor>White</BackgroundColor>
+                  <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
                   <VerticalAlign>Middle</VerticalAlign>
                   <PaddingLeft>2pt</PaddingLeft>
                   <PaddingRight>2pt</PaddingRight>
@@ -1043,7 +1059,9 @@ WHERE text = @QueryText;</CommandText>
                 <TextRuns>
                   <TextRun>
                     <Value>=Parameters!QueryText.Value</Value>
-                    <Style />
+                    <Style>
+                      <Color>=Variables!ReportTextColor.Value</Color>
+                    </Style>
                   </TextRun>
                 </TextRuns>
                 <Style />
@@ -1075,7 +1093,9 @@ WHERE text = @QueryText;</CommandText>
                     <TextRuns>
                       <TextRun>
                         <Value>=DataSets!DataSet_QE_Memory_by_text.CommandText</Value>
-                        <Style />
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </TextRun>
                     </TextRuns>
                     <Style />
@@ -1112,6 +1132,7 @@ WHERE text = @QueryText;</CommandText>
             </Visibility>
             <Style>
               <Border>
+                <Color>=Variables!ReportTextColor.Value</Color>
                 <Style>Solid</Style>
               </Border>
             </Style>
@@ -1126,6 +1147,7 @@ WHERE text = @QueryText;</CommandText>
                     <Value>Show queries for this report.</Value>
                     <Style>
                       <FontWeight>Bold</FontWeight>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1149,7 +1171,9 @@ WHERE text = @QueryText;</CommandText>
           </Textbox>
         </ReportItems>
         <Height>8.56945in</Height>
-        <Style />
+        <Style>
+          <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
+        </Style>
       </Body>
       <Width>13.39584in</Width>
       <Page>
@@ -1266,11 +1290,36 @@ WHERE text = @QueryText;</CommandText>
       <AllowBlank>true</AllowBlank>
       <Prompt>Query Text</Prompt>
     </ReportParameter>
+    <ReportParameter Name="ContrastTheme">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>None</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>ContrastTheme</Prompt>
+      <ValidValues>
+        <ParameterValues>
+          <ParameterValue>
+            <Value>None</Value>
+            <Label>None</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>Aquatic</Value>
+            <Label>Aquatic</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>Desert</Value>
+            <Label>Desert</Label>
+          </ParameterValue>
+        </ParameterValues>
+      </ValidValues>
+    </ReportParameter>
   </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>
       <NumberOfColumns>2</NumberOfColumns>
-      <NumberOfRows>4</NumberOfRows>
+      <NumberOfRows>5</NumberOfRows>
       <CellDefinitions>
         <CellDefinition>
           <ColumnIndex>0</ColumnIndex>
@@ -1312,10 +1361,68 @@ WHERE text = @QueryText;</CommandText>
           <RowIndex>3</RowIndex>
           <ParameterName>QueryText</ParameterName>
         </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>4</RowIndex>
+          <ParameterName>ContrastTheme</ParameterName>
+        </CellDefinition>
       </CellDefinitions>
     </GridLayoutDefinition>
   </ReportParametersLayout>
   <Language>en-US</Language>
+  <Variables>
+    <Variable Name="ReportTextColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+Parameters!ContrastTheme.Value="None", "Black")</Value>
+    </Variable>
+    <Variable Name="BodyBackgroundColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
+Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
+Parameters!ContrastTheme.Value="None", "#FAFDFF")</Value>
+    </Variable>
+    <Variable Name="TitleColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+Parameters!ContrastTheme.Value="None", "SteelBlue")</Value>
+    </Variable>
+    <Variable Name="TableHeadingColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
+Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
+Parameters!ContrastTheme.Value="None", "SteelBlue")</Value>
+    </Variable>
+    <Variable Name="ChartColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
+Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
+Parameters!ContrastTheme.Value="None", "LightSteelBlue")</Value>
+    </Variable>
+    <Variable Name="ChartSecondaryColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "No Color",
+Parameters!ContrastTheme.Value="Desert", "No Color",
+Parameters!ContrastTheme.Value="None", "Automatic")</Value>
+    </Variable>
+    <Variable Name="ChartGradientStyle">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "None",
+Parameters!ContrastTheme.Value="Desert", "None",
+Parameters!ContrastTheme.Value="None", "TopBottom")</Value>
+    </Variable>
+    <Variable Name="TableShowCell">
+      <Value>"Red"</Value>
+    </Variable>
+    <Variable Name="TableHidcell">
+      <Value>"Green"</Value>
+    </Variable>
+    <Variable Name="TableHeadingFontColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+Parameters!ContrastTheme.Value="None", "#FFFFFF")</Value>
+    </Variable>
+    <Variable Name="URILinkFontColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#75E9FC",
+Parameters!ContrastTheme.Value="Desert", "#1C5E75",
+Parameters!ContrastTheme.Value="None", "Blue")</Value>
+    </Variable>
+  </Variables>
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
   <rd:ReportUnitType>Inch</rd:ReportUnitType>
   <rd:ReportID>d307f978-9c11-4047-a5fd-f12c22be445c</rd:ReportID>

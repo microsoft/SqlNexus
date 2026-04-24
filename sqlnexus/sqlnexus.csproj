@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
   <Import Project="..\packages\Microsoft.SqlServer.Types.160.1000.6\build\net462\Microsoft.SqlServer.Types.props" Condition="Exists('..\packages\Microsoft.SqlServer.Types.160.1000.6\build\net462\Microsoft.SqlServer.Types.props')" />
   <PropertyGroup>
@@ -46,8 +46,8 @@
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>25</ApplicationRevision>
-    <ApplicationVersion>7.25.04.25</ApplicationVersion>
+    <ApplicationRevision>24</ApplicationRevision>
+    <ApplicationVersion>7.26.04.24</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -269,6 +269,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccessibleControls.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="ClickOnce\ClickOnce.cs" />
     <Compile Include="CredentialManager.cs" />
     <Compile Include="CustomXELImporter.cs" />
@@ -558,6 +561,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SQLScripts.resx</DependentUpon>
     </Compile>
+    <Compile Include="ThemeManager.cs" />
     <Compile Include="UserInstruction.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -635,6 +639,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Reports\ReadTrace_Warnings_C.rdlC">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\TopN_Resources_By_QDS_C.rdlC">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="SqlNexus.snk" />
@@ -855,16 +862,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <COMReference Include="VBIDE">
-      <Guid>{0002E157-0000-0000-C000-000000000046}</Guid>
-      <VersionMajor>5</VersionMajor>
-      <VersionMinor>3</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>primary</WrapperTool>
-      <Isolated>False</Isolated>
-    </COMReference>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\BulkLoadEx\BulkLoadEx.csproj">
       <Project>{F9069C48-39A6-4FB9-B4B8-D8D0034709A3}</Project>
       <Name>BulkLoadEx</Name>
@@ -934,16 +931,6 @@
       <FileType>File</FileType>
     </PublishFile>
     <PublishFile Include="Microsoft.SqlServer.Types">
-      <Visible>False</Visible>
-      <Group>
-      </Group>
-      <TargetPath>
-      </TargetPath>
-      <PublishState>Include</PublishState>
-      <IncludeHash>True</IncludeHash>
-      <FileType>Assembly</FileType>
-    </PublishFile>
-    <PublishFile Include="Microsoft.Vbe.Interop">
       <Visible>False</Visible>
       <Group>
       </Group>
@@ -1524,6 +1511,16 @@
       <FileType>File</FileType>
     </PublishFile>
     <PublishFile Include="Reports\Tempdb_Space_Use_C.rdlC">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>File</FileType>
+    </PublishFile>
+    <PublishFile Include="Reports\TopN_Resources_By_QDS_C.rdlC">
       <Visible>False</Visible>
       <Group>
       </Group>
