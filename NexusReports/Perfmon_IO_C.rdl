@@ -9,7 +9,7 @@
       <am:Name>SSDTRS</am:Name>
       <am:Version>17.14.37203.1</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2026-04-22T20:01:55.1502048Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2026-04-24T15:57:39.0025501Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
@@ -335,9 +335,7 @@ ORDER BY dat.CounterDateTime;</CommandText>
                         </Style>
                       </ChartDataLabel>
                       <ToolTip>#VALY</ToolTip>
-                      <Style>
-                        <Color>=Variables!ReportTextColor.Value</Color>
-                      </Style>
+                      <Style />
                       <ChartMarker>
                         <Style>
                           <Color>=Variables!ReportTextColor.Value</Color>
@@ -684,9 +682,7 @@ ORDER BY dat.CounterDateTime;</CommandText>
                         </Style>
                       </ChartDataLabel>
                       <ToolTip>#VALY</ToolTip>
-                      <Style>
-                        <Color>=Variables!ReportTextColor.Value</Color>
-                      </Style>
+                      <Style />
                       <ChartMarker>
                         <Style>
                           <Color>=Variables!ReportTextColor.Value</Color>
@@ -999,9 +995,7 @@ ORDER BY dat.CounterDateTime;</CommandText>
                         </Style>
                       </ChartDataLabel>
                       <ToolTip>#VALY</ToolTip>
-                      <Style>
-                        <Color>=Variables!ReportTextColor.Value</Color>
-                      </Style>
+                      <Style />
                       <ChartMarker>
                         <Style>
                           <Color>=Variables!ReportTextColor.Value</Color>
@@ -1311,9 +1305,7 @@ ORDER BY dat.CounterDateTime;</CommandText>
                         </Style>
                       </ChartDataLabel>
                       <ToolTip>#VALY</ToolTip>
-                      <Style>
-                        <Color>=Variables!ReportTextColor.Value</Color>
-                      </Style>
+                      <Style />
                       <ChartMarker>
                         <Style>
                           <Color>=Variables!ReportTextColor.Value</Color>
@@ -1967,27 +1959,27 @@ ORDER BY dat.CounterDateTime;</CommandText>
     <Variable Name="ReportTextColor">
       <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
 Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
-Parameters!ContrastTheme.Value="Default", "Black")</Value>
+Parameters!ContrastTheme.Value="None", "Black")</Value>
     </Variable>
     <Variable Name="BodyColor">
       <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
 Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
-Parameters!ContrastTheme.Value="Default", "No Color")</Value>
+Parameters!ContrastTheme.Value="None", "No Color")</Value>
     </Variable>
     <Variable Name="TitleColor">
       <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
 Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
-Parameters!ContrastTheme.Value="Default", "#1c3a70")</Value>
+Parameters!ContrastTheme.Value="None", "#1c3a70")</Value>
     </Variable>
     <Variable Name="URLColor">
       <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#75E9FC",
 Parameters!ContrastTheme.Value="Desert", "#1C5E75",
-Parameters!ContrastTheme.Value="Default", "Blue")</Value>
+Parameters!ContrastTheme.Value="None", "Blue")</Value>
     </Variable>
     <Variable Name="TableHeadingColor">
       <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "No Color",
 Parameters!ContrastTheme.Value="Desert", "No Color",
-Parameters!ContrastTheme.Value="Default", "Gainsboro")</Value>
+Parameters!ContrastTheme.Value="None", "Gainsboro")</Value>
     </Variable>
   </Variables>
   <rd:ReportUnitType>Inch</rd:ReportUnitType>
