@@ -4860,7 +4860,7 @@ BEGIN
         UPDATE dbo.tbl_AnalysisSummary
         SET Status = 1,
             [Description] = [Description]
-                            + ' use query select *   from tbl_dm_db_stats_properties where (rows_sampled * 100.00)/ [rows] < 5.0 to identify tables with small sample sizes'
+                            + ' use query select *   from tbl_dm_db_stats_properties where (rows_sampled * 100.00)/ NULLIF([rows], 0) < 5.0 to identify tables with small sample sizes'
         WHERE Name = 'usp_SmallSampledStats';
     END;
 END;
