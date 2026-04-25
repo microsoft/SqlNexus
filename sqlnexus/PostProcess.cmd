@@ -20,9 +20,9 @@ if "%filepath%"=="" goto usage
 
 @echo %date% %time% SQL Nexus PostProcessing +++
 
-rem Build optional sqlcmd encryption options for SQL Server 2025 and later
+rem Build optional sqlcmd encryption options (compatible with all sqlcmd versions)
 set "SQLCMD_ENCRYPTION_OPTS="
-if /i "%EncryptConnection%"=="true" set "SQLCMD_ENCRYPTION_OPTS=%SQLCMD_ENCRYPTION_OPTS% -Nm"
+if /i "%EncryptConnection%"=="true" set "SQLCMD_ENCRYPTION_OPTS=%SQLCMD_ENCRYPTION_OPTS% -N"
 if /i "%TrustServerCertificate%"=="true" set "SQLCMD_ENCRYPTION_OPTS=%SQLCMD_ENCRYPTION_OPTS% -C"
 
 @echo %date% %time% Creating tblPlansTemp +++
