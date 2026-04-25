@@ -1149,7 +1149,7 @@ SELECT w_end.wait_category,
                                                   ELSE
                                                       w_start.wait_time_ms
                                               END
-       ) / (DATEDIFF(s, @StartTime, @EndTime) + 1)
+       ) / NULLIF(DATEDIFF(s, @StartTime, @EndTime) + 1, 0)
        END AS wait_time_ms_per_sec
 INTO #waitstats_categories
 FROM dbo.vw_WAIT_CATEGORY_STATS w_end
