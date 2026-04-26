@@ -597,11 +597,11 @@ namespace sqlnexus
                                 subtsi.Tag = prod;
                                 subtsi.CheckOnClick = true;
 
-                                bool UserSaved = ImportOptions.IsEnabled(String.Format("{0}.{1}", prod.Name, subtsi.Text));
+                                string savedKey = String.Format("{0}.{1}", prod.Name, subtsi.Text);
                                 MainForm.LogMessage("load: " + String.Format("{0}->{1}", prod.Name, option), MessageOptions.Silent);
 
-                                if (ImportOptions.IsEnabled("SaveImportOptions"))
-                                    subtsi.Checked = UserSaved;
+                                if (ImportOptions.IsEnabled("SaveImportOptions") && ImportOptions.HasOption(savedKey))
+                                    subtsi.Checked = ImportOptions.IsEnabled(savedKey);
                                 else
                                     subtsi.Checked = (bool)prod.Options[option];
 
