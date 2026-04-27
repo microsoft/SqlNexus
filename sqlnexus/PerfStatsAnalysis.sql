@@ -652,6 +652,32 @@ BEGIN
     FROM dbo.vw_HEAD_BLOCKER_SUMMARY b
     WHERE runtime IS NOT NULL;
 
+    --filling this early to ensure that any runtime referenced in head blocker summary is present
+   INSERT INTO dbo.tbl_PERF_STATS_SCRIPT_RUNTIMES
+   SELECT DISTINCT
+          runtime
+   FROM tbl_requests
+   WHERE runtime NOT IN
+         (
+             SELECT runtime FROM dbo.tbl_PERF_STATS_SCRIPT_RUNTIMES
+         );   
+   INSERT INTO dbo.tbl_PERF_STATS_SCRIPT_RUNTIMES
+   SELECT DISTINCT
+          runtime
+   FROM dbo.tbl_OS_WAIT_STATS
+   WHERE runtime NOT IN
+         (
+             SELECT runtime FROM dbo.tbl_PERF_STATS_SCRIPT_RUNTIMES
+         );   
+   INSERT INTO dbo.tbl_PERF_STATS_SCRIPT_RUNTIMES
+   SELECT DISTINCT
+          runtime
+   FROM dbo.tbl_NOTABLEACTIVEQUERIES
+   WHERE runtime NOT IN
+          (
+              SELECT runtime FROM dbo.tbl_PERF_STATS_SCRIPT_RUNTIMES
+          );
+          
     -- Set blocking end time to end-of-data-collection for any blocking chains that were still active when data collection stopped
     UPDATE #head_blk_sum
     SET blocking_end =
