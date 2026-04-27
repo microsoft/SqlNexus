@@ -78,7 +78,20 @@ namespace BulkLoadEx
             if (null == dataTableBuffer)
             {
                 // Get a DataTable w/no rows that captures the schema of the destination table
-                SqlDataAdapter schemaAdapter = new SqlDataAdapter("select * from [" + targetTable + "] where 1=0", cn);
+                // Handle schema-qualified names (e.g. "ReadTrace.tblTraceFiles") by bracketing each part separately
+                string quotedName;
+                int dotIndex = targetTable.IndexOf('.');
+                if (dotIndex >= 0)
+                {
+                    string schema = targetTable.Substring(0, dotIndex);
+                    string table = targetTable.Substring(dotIndex + 1);
+                    quotedName = "[" + schema + "].[" + table + "]";
+                }
+                else
+                {
+                    quotedName = "[" + targetTable + "]";
+                }
+                SqlDataAdapter schemaAdapter = new SqlDataAdapter("select * from " + quotedName + " where 1=0", cn);
                 dataTableBuffer = new DataTable();
                 dataTableBuffer.TableName = targetTable;
                 schemaAdapter.Fill(this.dataTableBuffer);
