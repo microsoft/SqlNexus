@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using Microsoft.Data.SqlClient;
@@ -35,8 +36,8 @@ namespace ErrorLogImporter
         private long fileSize = 0;
         private long currentPosition = 0;
         private bool hasDroppedTable = false;
-        private ArrayList knownRowsets = new ArrayList();
-        private Dictionary<string, object> options = new Dictionary<string, object>();
+        private readonly ArrayList knownRowsets = new ArrayList();
+        private readonly Dictionary<string, object> options = new Dictionary<string, object>();
 
         public ErrorLogImporter()
         {
@@ -282,7 +283,7 @@ namespace ErrorLogImporter
             {
                 DateTime? pendingDateTime = null;
                 string pendingProcess = null;
-                string pendingMessage = null;
+                StringBuilder pendingMessageBuilder = null;
 
                 using (StreamReader reader = new StreamReader(filePath))
                 {
@@ -302,30 +303,29 @@ namespace ErrorLogImporter
                             // Flush the previous pending entry
                             if (pendingDateTime.HasValue)
                             {
-                                InsertRow(bulkLoad, pendingDateTime.Value, pendingProcess, pendingMessage, shortFileName);
+                                InsertRow(bulkLoad, pendingDateTime.Value, pendingProcess, pendingMessageBuilder?.ToString(), shortFileName);
                             }
+                        
 
                             // Parse the new entry
                             string dateStr = match.Groups[1].Value;
                             pendingProcess = match.Groups[2].Value;
-                            pendingMessage = match.Groups[3].Value;
+                            pendingMessageBuilder = new StringBuilder(match.Groups[3].Value);
 
-                            if (DateTime.TryParseExact(dateStr, "yyyy-MM-dd HH:mm:ss.ff",
-                                CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime parsedDate))
-                            {
-                                pendingDateTime = parsedDate;
-                            }
-                            else
-                            {
-                                pendingDateTime = null;
-                            }
+
+                            pendingDateTime = DateTime.TryParseExact(dateStr, "yyyy-MM-dd HH:mm:ss.ff",
+                                CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime parsedDate)
+                                ? parsedDate
+                                : (DateTime?)null;
+                            
                         }
                         else
                         {
                             // Continuation line - append to current message
-                            if (pendingMessage != null)
+                            if (pendingMessageBuilder != null)
                             {
-                                pendingMessage += Environment.NewLine + line;
+                                pendingMessageBuilder.Append(Environment.NewLine);
+                                pendingMessageBuilder.Append(line);
                             }
                         }
                     }
@@ -333,7 +333,7 @@ namespace ErrorLogImporter
                     // Flush the last pending entry
                     if (pendingDateTime.HasValue)
                     {
-                        InsertRow(bulkLoad, pendingDateTime.Value, pendingProcess, pendingMessage, shortFileName);
+                        InsertRow(bulkLoad, pendingDateTime.Value, pendingProcess, pendingMessageBuilder?.ToString(), shortFileName);
                     }
                 }
             }
