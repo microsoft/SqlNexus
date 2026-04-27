@@ -35,7 +35,7 @@ namespace ErrorLogImporter
         private long fileSize = 0;
         private long currentPosition = 0;
         private bool hasDroppedTable = false;
-        private ArrayList knownRowsets = new ArrayList();
+        private readonly ArrayList knownRowsets = new ArrayList();
         private Dictionary<string, object> options = new Dictionary<string, object>();
 
         public ErrorLogImporter()
