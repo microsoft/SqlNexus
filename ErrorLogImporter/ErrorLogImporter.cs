@@ -26,11 +26,6 @@ namespace ErrorLogImporter
 
         private string fileMask = "";
         private string connStr = "";
-        private string server = "";
-        private string database = "";
-        private bool useWindowsAuth = true;
-        private string sqlLogin = "";
-        private string sqlPassword = "";
         private ILogger logger;
 
         private ImportState state = ImportState.Idle;
@@ -68,11 +63,6 @@ namespace ErrorLogImporter
         {
             this.fileMask = Filemask;
             this.connStr = connString;
-            this.server = Server;
-            this.useWindowsAuth = UseWindowsAuth;
-            this.sqlLogin = SQLLogin;
-            this.sqlPassword = SQLPassword;
-            this.database = DatabaseName;
             this.logger = Logger;
             this.state = ImportState.Idle;
             this.cancelled = false;
@@ -266,11 +256,13 @@ namespace ErrorLogImporter
                         IF OBJECT_ID ('" + TABLE_NAME + @"', 'U') IS NULL
                         BEGIN
                             CREATE TABLE [" + TABLE_NAME + @"] (
+                                [RowNum] bigint IDENTITY(1,1) NOT NULL,
                                 [LogDateTime] datetime NULL,
                                 [Process] varchar(50) NULL,
                                 [Message] varchar(max) NULL,
                                 [FileName] varchar(256) NULL
                             )
+                            CREATE NONCLUSTERED INDEX [IX_" + TABLE_NAME + @"_LogDateTime_RowNum] ON [" + TABLE_NAME + @"] ([LogDateTime], [RowNum])
                         END";
                     cmd.ExecuteNonQuery();
                 }
