@@ -25,17 +25,25 @@ namespace TraceEventImporter.Database
         public void WriteMiscInfo(string attribute, string value)
         {
             var bl = new BulkLoadRowset("ReadTrace.tblMiscInfo", _connStr);
+            try
+            {
                 DataRow row = bl.GetNewRow();
                 row["Attribute"] = attribute;
                 row["Value"] = (object)value ?? DBNull.Value;
                 bl.InsertRow(row);
                 TotalRowsInserted++;
+            }
+            finally
+            {
                 bl.Close();
+            }
         }
 
         public void WriteTraceFile(long firstSeq, long lastSeq, DateTime? firstTime, DateTime? lastTime, long eventsRead, string fileName)
         {
             var bl = new BulkLoadRowset("ReadTrace.tblTraceFiles", _connStr);
+            try
+            {
                 DataRow row = bl.GetNewRow();
                 row["FirstSeqNumber"] = firstSeq;
                 row["LastSeqNumber"] = lastSeq;
@@ -45,12 +53,18 @@ namespace TraceEventImporter.Database
                 row["TraceFileName"] = fileName;
                 bl.InsertRow(row);
                 TotalRowsInserted++;
+            }
+            finally
+            {
                 bl.Close();
+            }
         }
 
         public void WriteTracedEvents(IEnumerable<int> eventIds)
         {
             var bl = new BulkLoadRowset("ReadTrace.tblTracedEvents", _connStr);
+            try
+            {
                 foreach (int id in eventIds)
                 {
                     DataRow row = bl.GetNewRow();
@@ -58,12 +72,18 @@ namespace TraceEventImporter.Database
                     bl.InsertRow(row);
                     TotalRowsInserted++;
                 }
+            }
+            finally
+            {
                 bl.Close();
+            }
         }
 
         public void WriteUniqueAppNames(IEnumerable<KeyValuePair<string, int>> appNames)
         {
             var bl = new BulkLoadRowset("ReadTrace.tblUniqueAppNames", _connStr);
+            try
+            {
                 foreach (var kvp in appNames)
                 {
                     DataRow row = bl.GetNewRow();
@@ -72,12 +92,18 @@ namespace TraceEventImporter.Database
                     bl.InsertRow(row);
                     TotalRowsInserted++;
                 }
+            }
+            finally
+            {
                 bl.Close();
+            }
         }
 
         public void WriteUniqueLoginNames(IEnumerable<KeyValuePair<string, int>> loginNames)
         {
             var bl = new BulkLoadRowset("ReadTrace.tblUniqueLoginNames", _connStr);
+            try
+            {
                 foreach (var kvp in loginNames)
                 {
                     DataRow row = bl.GetNewRow();
@@ -85,12 +111,18 @@ namespace TraceEventImporter.Database
                     bl.InsertRow(row);
                     TotalRowsInserted++;
                 }
+            }
+            finally
+            {
                 bl.Close();
+            }
         }
 
         public void WriteProcedureNames(IEnumerable<ProcedureInfo> procs)
         {
             var bl = new BulkLoadRowset("ReadTrace.tblProcedureNames", _connStr);
+            try
+            {
                 foreach (var proc in procs)
                 {
                     DataRow row = bl.GetNewRow();
@@ -101,12 +133,18 @@ namespace TraceEventImporter.Database
                     bl.InsertRow(row);
                     TotalRowsInserted++;
                 }
+            }
+            finally
+            {
                 bl.Close();
+            }
         }
 
         public void WriteUniqueBatches(IEnumerable<UniqueBatch> batches)
         {
             var bl = new BulkLoadRowset("ReadTrace.tblUniqueBatches", _connStr);
+            try
+            {
                 foreach (var b in batches)
                 {
                     DataRow row = bl.GetNewRow();
@@ -118,12 +156,18 @@ namespace TraceEventImporter.Database
                     bl.InsertRow(row);
                     TotalRowsInserted++;
                 }
+            }
+            finally
+            {
                 bl.Close();
+            }
         }
 
         public void WriteUniqueStatements(IEnumerable<UniqueStatement> stmts)
         {
             var bl = new BulkLoadRowset("ReadTrace.tblUniqueStatements", _connStr);
+            try
+            {
                 foreach (var s in stmts)
                 {
                     DataRow row = bl.GetNewRow();
@@ -134,12 +178,18 @@ namespace TraceEventImporter.Database
                     bl.InsertRow(row);
                     TotalRowsInserted++;
                 }
+            }
+            finally
+            {
                 bl.Close();
+            }
         }
 
         public void WriteBatches(List<BatchRow> batches)
         {
             var bl = new BulkLoadRowset("ReadTrace.tblBatches", _connStr);
+            try
+            {
                 foreach (var b in batches)
                 {
                     DataRow row = bl.GetNewRow();
@@ -165,12 +215,18 @@ namespace TraceEventImporter.Database
                     bl.InsertRow(row);
                     TotalRowsInserted++;
                 }
+            }
+            finally
+            {
                 bl.Close();
+            }
         }
 
         public void WriteStatements(List<StatementRow> stmts)
         {
             var bl = new BulkLoadRowset("ReadTrace.tblStatements", _connStr);
+            try
+            {
                 foreach (var s in stmts)
                 {
                     DataRow row = bl.GetNewRow();
@@ -200,12 +256,18 @@ namespace TraceEventImporter.Database
                     bl.InsertRow(row);
                     TotalRowsInserted++;
                 }
+            }
+            finally
+            {
                 bl.Close();
+            }
         }
 
         public void WriteConnections(List<ConnectionRow> conns)
         {
             var bl = new BulkLoadRowset("ReadTrace.tblConnections", _connStr);
+            try
+            {
                 foreach (var c in conns)
                 {
                     DataRow row = bl.GetNewRow();
@@ -228,12 +290,18 @@ namespace TraceEventImporter.Database
                     bl.InsertRow(row);
                     TotalRowsInserted++;
                 }
+            }
+            finally
+            {
                 bl.Close();
+            }
         }
 
         public void WriteInterestingEvents(List<InterestingEventRow> events)
         {
             var bl = new BulkLoadRowset("ReadTrace.tblInterestingEvents", _connStr);
+            try
+            {
                 foreach (var e in events)
                 {
                     DataRow row = bl.GetNewRow();
@@ -257,14 +325,18 @@ namespace TraceEventImporter.Database
                     bl.InsertRow(row);
                     TotalRowsInserted++;
                 }
+            }
+            finally
+            {
                 bl.Close();
+            }
         }
 
         public void WriteTimeIntervals(List<TimeIntervalRow> intervals)
         {
-            // tblTimeIntervals has IDENTITY — use SqlBulkCopy with KEEP_IDENTITY off
-            // We insert without the TimeInterval column; SQL generates it
             var bl = new BulkLoadRowset("ReadTrace.tblTimeIntervals", _connStr);
+            try
+            {
                 foreach (var ti in intervals)
                 {
                     DataRow row = bl.GetNewRow();
@@ -273,12 +345,18 @@ namespace TraceEventImporter.Database
                     bl.InsertRow(row);
                     TotalRowsInserted++;
                 }
+            }
+            finally
+            {
                 bl.Close();
+            }
         }
 
         public void WriteBatchPartialAggs(List<BatchPartialAggRow> aggs)
         {
             var bl = new BulkLoadRowset("ReadTrace.tblBatchPartialAggs", _connStr);
+            try
+            {
                 foreach (var a in aggs)
                 {
                     DataRow row = bl.GetNewRow();
@@ -305,12 +383,18 @@ namespace TraceEventImporter.Database
                     bl.InsertRow(row);
                     TotalRowsInserted++;
                 }
+            }
+            finally
+            {
                 bl.Close();
+            }
         }
 
         public void WriteStmtPartialAggs(List<StmtPartialAggRow> aggs)
         {
             var bl = new BulkLoadRowset("ReadTrace.tblStmtPartialAggs", _connStr);
+            try
+            {
                 foreach (var a in aggs)
                 {
                     DataRow row = bl.GetNewRow();
@@ -338,7 +422,11 @@ namespace TraceEventImporter.Database
                     bl.InsertRow(row);
                     TotalRowsInserted++;
                 }
+            }
+            finally
+            {
                 bl.Close();
+            }
         }
 
         public void Dispose()

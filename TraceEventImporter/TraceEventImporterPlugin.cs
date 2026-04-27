@@ -228,14 +228,20 @@ namespace TraceEventImporter
                     writer.WriteMiscInfo("ImporterVersion", "TraceEventImporter 1.0");
 
                     // Reference data
-                    writer.WriteTracedEvents(store.GetTracedEventIds());
-                    writer.WriteUniqueAppNames(store.GetUniqueAppNames());
-                    writer.WriteUniqueLoginNames(store.GetUniqueLoginNames());
-                    writer.WriteProcedureNames(store.GetProcedureNames());
+                    var tracedEvents = store.GetTracedEventIds();
+                    writer.WriteTracedEvents(tracedEvents);
+                    var uniqueAppNames = store.GetUniqueAppNames();
+                    writer.WriteUniqueAppNames(uniqueAppNames);
+                    var uniqueLoginNames = store.GetUniqueLoginNames();
+                    writer.WriteUniqueLoginNames(uniqueLoginNames);
+                    var procedureNames = store.GetProcedureNames();
+                    writer.WriteProcedureNames(procedureNames);
 
                     // Unique text
-                    writer.WriteUniqueBatches(store.GetUniqueBatches());
-                    writer.WriteUniqueStatements(store.GetUniqueStatements());
+                    var uniqueBatches = store.GetUniqueBatches();
+                    writer.WriteUniqueBatches(uniqueBatches);
+                    var uniqueStatements = store.GetUniqueStatements();
+                    writer.WriteUniqueStatements(uniqueStatements);
 
                     // Fact data
                     writer.WriteConnections(processor.Connections);
@@ -253,6 +259,23 @@ namespace TraceEventImporter
                     writer.WriteStmtPartialAggs(aggregator.StmtAggs);
 
                     _totalRowsInserted = writer.TotalRowsInserted;
+
+                    // Log per-table row counts
+                    LogMessage("TraceEventImporter: --- Row counts per table ---");
+                    LogMessage($"TraceEventImporter:   tblTracedEvents:      {tracedEvents.Count()}");
+                    LogMessage($"TraceEventImporter:   tblUniqueAppNames:    {uniqueAppNames.Count()}");
+                    LogMessage($"TraceEventImporter:   tblUniqueLoginNames:  {uniqueLoginNames.Count()}");
+                    LogMessage($"TraceEventImporter:   tblProcedureNames:    {procedureNames.Count()}");
+                    LogMessage($"TraceEventImporter:   tblUniqueBatches:     {uniqueBatches.Count()}");
+                    LogMessage($"TraceEventImporter:   tblUniqueStatements:  {uniqueStatements.Count()}");
+                    LogMessage($"TraceEventImporter:   tblConnections:       {processor.Connections.Count}");
+                    LogMessage($"TraceEventImporter:   tblBatches:           {processor.Batches.Count}");
+                    LogMessage($"TraceEventImporter:   tblStatements:        {processor.Statements.Count}");
+                    LogMessage($"TraceEventImporter:   tblInterestingEvents: {processor.InterestingEvents.Count}");
+                    LogMessage($"TraceEventImporter:   tblTimeIntervals:     {aggregator.TimeIntervals.Count}");
+                    LogMessage($"TraceEventImporter:   tblBatchPartialAggs:  {aggregator.BatchAggs.Count}");
+                    LogMessage($"TraceEventImporter:   tblStmtPartialAggs:   {aggregator.StmtAggs.Count}");
+                    LogMessage($"TraceEventImporter:   Total rows inserted:  {_totalRowsInserted}");
                 }
 
                 // 7. Post-load fixups (indexes, ConnSeq linking, ParentStmtSeq)

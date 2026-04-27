@@ -194,7 +194,10 @@ namespace TraceEventImporter.Readers
 
         private void MapPerformanceFields(IXEvent xe, TraceEvent evt)
         {
-            evt.CPU = GetFieldInt64Nullable(xe, "cpu_time");
+            // XE reports cpu_time in microseconds; ReadTrace schema stores CPU in milliseconds
+            long? cpuMicroseconds = GetFieldInt64Nullable(xe, "cpu_time");
+            evt.CPU = cpuMicroseconds.HasValue ? cpuMicroseconds.Value / 1000 : (long?)null;
+
             evt.Duration = GetFieldInt64Nullable(xe, "duration");
             evt.Writes = GetFieldInt64Nullable(xe, "writes");
             evt.RowCount = GetFieldInt64Nullable(xe, "row_count");

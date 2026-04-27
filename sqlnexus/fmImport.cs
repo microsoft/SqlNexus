@@ -1654,12 +1654,15 @@ namespace sqlnexus
                 if (otherImporterName != null)
                 {
                     DisableImporterByName(otherImporterName);
-                    MessageBox.Show(
+
+                    // Close all dropdown menus so the MessageBox isn't hidden behind them
+                    cmOptions.Close();
+
+                    MessageBox.Show(this,
                         string.Format("You have enabled '{0}'.\nThe '{1}' importer has been automatically disabled to prevent both from writing to the same tables.", prod.Name, otherImporterName),
                         "Importer Conflict",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Information);
-                    EnumFiles();
                 }
             }
         }
