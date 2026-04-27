@@ -25,6 +25,11 @@ namespace ErrorLogImporter
             @"^(\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2}\.\d{2})\s+(\S+)\s+(.*)",
             RegexOptions.Compiled);
 
+        // Regex to extract Error number and State from messages like "Error: 18456, Severity: 14, State: 38."
+        private static readonly Regex ErrorStateRegex = new Regex(
+            @"Error:\s*(\d+),\s*Severity:\s*\d+,\s*State:\s*(\d+)",
+            RegexOptions.Compiled);
+
         private string fileMask = "";
         private string connStr = "";
         private ILogger logger;
@@ -262,6 +267,8 @@ namespace ErrorLogImporter
                                 [LogDateTime] datetime NULL,
                                 [Process] varchar(50) NULL,
                                 [Message] varchar(max) NULL,
+                                [ErrorNumber] int NULL,
+                                [State] int NULL,
                                 [FileName] varchar(256) NULL
                             )
                             CREATE NONCLUSTERED INDEX [IX_" + TABLE_NAME + @"_LogDateTime_RowNum] ON [" + TABLE_NAME + @"] ([LogDateTime], [RowNum])
@@ -350,6 +357,18 @@ namespace ErrorLogImporter
             row["LogDateTime"] = logDateTime;
             row["Process"] = process != null && process.Length > 50 ? process.Substring(0, 50) : process;
             row["Message"] = message ?? "";
+
+            // Extract Error number and State from message if present
+            if (message != null)
+            {
+                Match errorMatch = ErrorStateRegex.Match(message);
+                if (errorMatch.Success)
+                {
+                    row["ErrorNumber"] = int.Parse(errorMatch.Groups[1].Value);
+                    row["State"] = int.Parse(errorMatch.Groups[2].Value);
+                }
+            }
+
             row["FileName"] = fileName != null && fileName.Length > 256 ? fileName.Substring(0, 256) : fileName;
             bulkLoad.InsertRow(row);
             totalRowsInserted++;
