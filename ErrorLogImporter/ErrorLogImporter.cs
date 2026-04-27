@@ -179,7 +179,7 @@ namespace ErrorLogImporter
             }
             catch (Exception ex)
             {
-                LogMessage("ErrorLogImporter: Error - " + ex.ToString());
+                LogMessage("ErrorLogImporter: Error - " + ex);
                 State = ImportState.Idle;
                 return false;
             }
