@@ -39,6 +39,7 @@ namespace ErrorLogImporter
         private readonly ArrayList knownRowsets = new ArrayList();
         private readonly Dictionary<string, object> options = new Dictionary<string, object>();
 
+
         public ErrorLogImporter()
         {
             options.Add(OPTION_DROP_EXISTING, true);
@@ -180,7 +181,7 @@ namespace ErrorLogImporter
             }
             catch (Exception ex)
             {
-                LogMessage("ErrorLogImporter: Error - " + ex.ToString());
+                LogMessage("ErrorLogImporter: Error - " + ex);
                 State = ImportState.Idle;
                 return false;
             }
