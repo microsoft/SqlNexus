@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
   <Import Project="..\packages\Microsoft.SqlServer.Types.160.1000.6\build\net462\Microsoft.SqlServer.Types.props" Condition="Exists('..\packages\Microsoft.SqlServer.Types.160.1000.6\build\net462\Microsoft.SqlServer.Types.props')" />
   <PropertyGroup>
@@ -885,6 +885,10 @@
     <ProjectReference Include="..\RowsetImportEngine\RowsetImportEngine.csproj">
       <Project>{8DB02D0C-68F3-4762-9BC9-AA3DF2B91F4B}</Project>
       <Name>RowsetImportEngine</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TraceEventImporter\TraceEventImporter.csproj">
+      <Project>{B7A3C2D1-E4F5-4A6B-8C9D-0E1F2A3B4C5D}</Project>
+      <Name>TraceEventImporter</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
