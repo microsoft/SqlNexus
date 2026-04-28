@@ -27,41 +27,42 @@ namespace TraceEventImporter.Readers
         public IEnumerable<TraceEvent> ReadEvents(string filePath)
         {
             // XELite uses async callbacks; bridge to synchronous IEnumerable via BlockingCollection
-            var collection = new BlockingCollection<TraceEvent>(boundedCapacity: 1000);
-
-            Task readerTask = Task.Run(() =>
+            using (BlockingCollection<TraceEvent> collection = new BlockingCollection<TraceEvent>(boundedCapacity: 1000))
             {
-                try
+                Task readerTask = Task.Run(() =>
                 {
-                    var streamer = new XEFileEventStreamer(filePath);
-                    streamer.ReadEventStream(
-                        () => Task.CompletedTask,
-                        xevent =>
-                        {
-                            TraceEvent evt = MapEvent(xevent);
-                            if (evt != null)
+                    try
+                    {
+                        var streamer = new XEFileEventStreamer(filePath);
+                        streamer.ReadEventStream(
+                            () => Task.CompletedTask,
+                            xevent =>
                             {
-                                if (evt.Seq == 0)
-                                    evt.Seq = Interlocked.Increment(ref _globalSeq);
-                                collection.Add(evt);
-                            }
-                            return Task.CompletedTask;
-                        },
-                        CancellationToken.None).Wait();
-                }
-                finally
+                                TraceEvent evt = MapEvent(xevent);
+                                if (evt != null)
+                                {
+                                    if (evt.Seq == 0)
+                                        evt.Seq = Interlocked.Increment(ref _globalSeq);
+                                    collection.Add(evt);
+                                }
+                                return Task.CompletedTask;
+                            },
+                            CancellationToken.None).Wait();
+                    }
+                    finally
+                    {
+                        collection.CompleteAdding();
+                    }
+                });
+
+                foreach (TraceEvent evt in collection.GetConsumingEnumerable())
                 {
-                    collection.CompleteAdding();
+                    yield return evt;
                 }
-            });
 
-            foreach (TraceEvent evt in collection.GetConsumingEnumerable())
-            {
-                yield return evt;
+                // Propagate any exception from the reader task
+                readerTask.GetAwaiter().GetResult();
             }
-
-            // Propagate any exception from the reader task
-            readerTask.GetAwaiter().GetResult();
         }
 
         private TraceEvent MapEvent(IXEvent xe)

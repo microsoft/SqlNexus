@@ -91,10 +91,12 @@ namespace BulkLoadEx
                 {
                     quotedName = "[" + targetTable + "]";
                 }
-                SqlDataAdapter schemaAdapter = new SqlDataAdapter("select * from " + quotedName + " where 1=0", cn);
-                dataTableBuffer = new DataTable();
-                dataTableBuffer.TableName = targetTable;
-                schemaAdapter.Fill(this.dataTableBuffer);
+                using (SqlDataAdapter schemaAdapter = new SqlDataAdapter("select * from " + quotedName + " where 1=0", cn))
+                {
+                    dataTableBuffer = new DataTable();
+                    dataTableBuffer.TableName = targetTable;
+                    schemaAdapter.Fill(this.dataTableBuffer);
+                }
             }
             return this.dataTableBuffer.NewRow();
         }

@@ -38,7 +38,7 @@ namespace TraceEventImporter
         private string _database;
         private string _fileMask;
         private ImportState _state = ImportState.Idle;
-        private bool _cancelled;
+        private volatile bool _cancelled;
         private long _totalRowsInserted;
         private long _totalLinesProcessed;
         private long _currentPosition;

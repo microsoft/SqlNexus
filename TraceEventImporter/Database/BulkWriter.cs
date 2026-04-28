@@ -126,9 +126,9 @@ namespace TraceEventImporter.Database
                 foreach (var proc in procs)
                 {
                     DataRow row = bl.GetNewRow();
-                    row["DBID"] = (object)proc.DBID ?? DBNull.Value;
-                    row["ObjectID"] = (object)proc.ObjectID ?? DBNull.Value;
-                    row["SpecialProcID"] = (object)proc.SpecialProcID ?? DBNull.Value;
+                    row["DBID"] = proc.DBID;
+                    row["ObjectID"] = proc.ObjectID;
+                    row["SpecialProcID"] = proc.SpecialProcID;
                     row["Name"] = proc.Name ?? "";
                     bl.InsertRow(row);
                     TotalRowsInserted++;
@@ -152,7 +152,7 @@ namespace TraceEventImporter.Database
                     row["HashID"] = b.HashID;
                     row["OrigText"] = b.OrigText ?? "";
                     row["NormText"] = b.NormText ?? "";
-                    row["SpecialProcID"] = (object)b.SpecialProcID ?? DBNull.Value;
+                    row["SpecialProcID"] = b.SpecialProcID;
                     bl.InsertRow(row);
                     TotalRowsInserted++;
                 }
@@ -205,7 +205,7 @@ namespace TraceEventImporter.Database
                     row["Writes"] = (object)b.Writes ?? DBNull.Value;
                     row["CPU"] = (object)b.CPU ?? DBNull.Value;
                     row["fRPCEvent"] = b.fRPCEvent;
-                    row["DBID"] = (object)b.DBID ?? DBNull.Value;
+                    row["DBID"] = b.DBID;
                     row["StartSeq"] = (object)b.StartSeq ?? DBNull.Value;
                     row["EndSeq"] = (object)b.EndSeq ?? DBNull.Value;
                     row["AttnSeq"] = (object)b.AttnSeq ?? DBNull.Value;
@@ -242,7 +242,7 @@ namespace TraceEventImporter.Database
                     row["Writes"] = (object)s.Writes ?? DBNull.Value;
                     row["CPU"] = (object)s.CPU ?? DBNull.Value;
                     row["Rows"] = (object)s.Rows ?? DBNull.Value;
-                    row["DBID"] = (object)s.DBID ?? DBNull.Value;
+                    row["DBID"] = s.DBID;
                     row["ObjectID"] = (object)s.ObjectID ?? DBNull.Value;
                     row["NestLevel"] = s.NestLevel.HasValue ? (object)(byte)s.NestLevel.Value : DBNull.Value;
                     row["fDynamicSQL"] = s.fDynamicSQL;
@@ -313,7 +313,7 @@ namespace TraceEventImporter.Database
                     row["StartTime"] = (object)e.StartTime ?? DBNull.Value;
                     row["EndTime"] = (object)e.EndTime ?? DBNull.Value;
                     row["Duration"] = (object)e.Duration ?? DBNull.Value;
-                    row["DBID"] = (object)e.DBID ?? DBNull.Value;
+                    row["DBID"] = e.DBID;
                     row["IntegerData"] = (object)e.IntegerData ?? DBNull.Value;
                     row["EventSubclass"] = (object)e.EventSubclass ?? DBNull.Value;
                     row["TextData"] = (object)e.TextData ?? DBNull.Value;
