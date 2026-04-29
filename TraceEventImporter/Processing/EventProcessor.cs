@@ -172,10 +172,24 @@ namespace TraceEventImporter.Processing
 
             // Determine special proc and normalize
             byte specialProcId = isRpc ? SpecialProcDetector.GetSpecialProcId(objectName) : (byte)0;
-            string normText = SqlTextNormalizer.Normalize(textData);
+
+            // For sp_executesql, sp_prepexec, sp_prepare, etc.: extract the inner SQL
+            // query text and use that for normalization/hashing (matches ReadTrace.exe
+            // which calls GetRPCParamText to get the actual query from the first parameter).
+            string textForNormalization = textData;
+            if (SpExecuteSqlExtractor.ShouldExtractInnerSql(specialProcId))
+            {
+                string innerSql = SpExecuteSqlExtractor.TryExtractInnerSql(textData);
+                if (innerSql != null)
+                {
+                    textForNormalization = innerSql;
+                }
+            }
+
+            string normText = SqlTextNormalizer.Normalize(textForNormalization);
             long hashId = HashComputer.ComputeHash(normText, specialProcId);
 
-            // Add to unique store
+            // Add to unique store — store original textData but normalized inner SQL
             _store.TryAddBatch(hashId, textData, normText, specialProcId);
 
             // Track procedure name
