@@ -26,10 +26,20 @@ namespace TraceEventImporter.Processing
         private readonly Dictionary<int, ConnectionInfo> _connections =
             new Dictionary<int, ConnectionInfo>();
 
-        // Sequence counters
-        private long _batchSeq;
-        private long _stmtSeq;
-        private long _connSeq;
+        // Per session+request: the StartSeq of the current in-flight batch.
+        // This is how ReadTrace links statements to their parent batch.
+        private readonly Dictionary<SessionRequestKey, long> _curBatchStartSeq =
+            new Dictionary<SessionRequestKey, long>();
+
+        // Sessions that have had a connection event (login/existing connection).
+        // Used to detect sessions that were "connected before trace" started.
+        // Value is the ConnSeq assigned to that session's connection row.
+        private readonly Dictionary<int, long> _sessionConnSeq =
+            new Dictionary<int, long>();
+
+        // All sequence values (ConnSeq, BatchSeq, StmtSeq) are derived from the
+        // global event sequence (evt.Seq), aligned with ReadTrace.exe which uses
+        // pEvent->GetGlobalSeq() for all of them. No separate counters needed.
 
         // Collected rows for bulk insert
         public List<BatchRow> Batches { get; } = new List<BatchRow>();
@@ -124,6 +134,11 @@ namespace TraceEventImporter.Processing
         private void HandleBatchStarting(TraceEvent evt)
         {
             var key = new SessionRequestKey(evt.SessionId, evt.RequestId);
+
+            // Track the starting sequence for this session+request so statements
+            // processed during batch execution can reference it (ReadTrace pattern).
+            _curBatchStartSeq[key] = evt.Seq;
+
             _pendingBatches[key] = new PendingBatch
             {
                 StartSeq = evt.Seq,
@@ -140,12 +155,15 @@ namespace TraceEventImporter.Processing
         private void HandleBatchCompleted(TraceEvent evt)
         {
             var key = new SessionRequestKey(evt.SessionId, evt.RequestId);
-            long batchSeq = ++_batchSeq;
 
             PendingBatch pending = null;
             _pendingBatches.TryGetValue(key, out pending);
             if (pending != null)
                 _pendingBatches.Remove(key);
+
+            // BatchSeq = StartSeq if available, otherwise EndSeq (matches ReadTrace.exe:
+            // Row.BatchSeq_Value = (StartSeq_Status == OK) ? StartSeq : EndSeq)
+            long batchSeq = pending?.StartSeq ?? evt.Seq;
 
             // Use completed event's text, fall back to starting event's text
             string textData = evt.TextData ?? pending?.TextData;
@@ -173,6 +191,10 @@ namespace TraceEventImporter.Processing
             int appNameId = _store.GetOrAddAppName(evt.ApplicationName ?? pending?.ApplicationName);
             int loginNameId = _store.GetOrAddLoginName(evt.LoginName ?? pending?.LoginName);
 
+            // Determine ConnSeq for this batch. If the session has no connection event,
+            // create a "connected before trace" placeholder (matches ReadTrace.exe behavior).
+            long connSeq = EnsureConnectionForSession(evt);
+
             var row = new BatchRow
             {
                 BatchSeq = batchSeq,
@@ -191,7 +213,7 @@ namespace TraceEventImporter.Processing
                 StartSeq = pending?.StartSeq,
                 EndSeq = evt.Seq,
                 AttnSeq = null,
-                ConnSeq = null,
+                ConnSeq = connSeq,
                 TextData = textData,
                 OrigRowCount = evt.RowCount,
                 AppNameID = appNameId,
@@ -199,6 +221,10 @@ namespace TraceEventImporter.Processing
             };
 
             Batches.Add(row);
+
+            // Clear the in-flight batch sequence now that the batch has completed
+            // (matches ReadTrace: pStateInfo->CurBatchStartSeq = 0)
+            _curBatchStartSeq.Remove(key);
         }
 
         #endregion
@@ -224,7 +250,6 @@ namespace TraceEventImporter.Processing
         private void HandleStatementCompleted(TraceEvent evt)
         {
             var key = new SessionRequestKey(evt.SessionId, evt.RequestId);
-            long stmtSeq = ++_stmtSeq;
 
             PendingStatement pending = null;
             if (_pendingStatements.TryGetValue(key, out var stack) && stack.Count > 0)
@@ -236,19 +261,29 @@ namespace TraceEventImporter.Processing
 
             _store.TryAddStatement(hashId, textData, normText);
 
-            // Find the parent batch
+            // StmtSeq = StartSeq if available, otherwise EndSeq (matches ReadTrace.exe:
+            // Row.StmtSeq_Value = (StartSeq_Status == OK) ? StartSeq : EndSeq)
+            long stmtSeq = pending?.StartSeq ?? evt.Seq;
+
+            // Find the parent batch using the in-flight batch's starting sequence.
+            // This is the key difference from the old approach: ReadTrace maintains
+            // CurBatchStartSeq as live session state set when BatchStarting arrives,
+            // so statements that complete *during* batch execution get linked.
             long? batchSeq = null;
-            if (Batches.Count > 0)
+            _curBatchStartSeq.TryGetValue(key, out long curBatchStart);
+            if (curBatchStart > 0)
             {
-                // Find the most recent batch for this session+request
-                for (int i = Batches.Count - 1; i >= 0; i--)
-                {
-                    if (Batches[i].Session == evt.SessionId && Batches[i].Request == evt.RequestId)
-                    {
-                        batchSeq = Batches[i].BatchSeq;
-                        break;
-                    }
-                }
+                batchSeq = curBatchStart;
+            }
+
+            // Get ConnSeq for this statement's session. Unlike batches, statements
+            // do NOT create fake "CONNECTED BEFORE TRACE" rows — they just reference
+            // the existing ConnSeq if available (matches ReadTrace.exe: InsertStmt
+            // uses CurConnectSeq directly, only InsertBatch calls InsertConnectEvent).
+            long? connSeq = null;
+            if (_sessionConnSeq.TryGetValue(evt.SessionId, out long existingConnSeq))
+            {
+                connSeq = existingConnSeq;
             }
 
             int appNameId = _store.GetOrAddAppName(evt.ApplicationName);
@@ -274,7 +309,7 @@ namespace TraceEventImporter.Processing
                 fDynamicSQL = false,
                 StartSeq = pending?.StartSeq,
                 EndSeq = evt.Seq,
-                ConnSeq = null,
+                ConnSeq = connSeq,
                 BatchSeq = batchSeq,
                 ParentStmtSeq = null, // Filled in post-load fixups
                 AttnSeq = null,
@@ -290,9 +325,58 @@ namespace TraceEventImporter.Processing
 
         #region Connection Handling
 
+        /// <summary>
+        /// Ensures a connection row exists for the given event's session.
+        /// If no login/existing-connection event was seen for this session,
+        /// creates a "CONNECTED BEFORE TRACE" placeholder row using the event's
+        /// global sequence as ConnSeq (matches ReadTrace.exe: CurConnectSeq = BatchSeq_Value).
+        /// All ConnSeq values come from the global sequence space, ensuring uniqueness.
+        /// Returns the ConnSeq for the session.
+        /// </summary>
+        private long EnsureConnectionForSession(TraceEvent evt)
+        {
+            if (_sessionConnSeq.TryGetValue(evt.SessionId, out long existingConnSeq))
+            {
+                return existingConnSeq;
+            }
+
+            // No login event seen for this session — create a placeholder.
+            // ReadTrace.exe uses the batch's BatchSeq (which equals its StartSeq global
+            // sequence) as ConnSeq for fake connection rows. Since we call this from
+            // HandleBatchCompleted/HandleStatementCompleted, evt.Seq is the triggering
+            // event's unique global sequence — guaranteed unique per event.
+            long fakeConnSeq = evt.Seq;
+
+            Connections.Add(new ConnectionRow
+            {
+                ConnSeq = fakeConnSeq,
+                Session = evt.SessionId,
+                StartTime = null,
+                EndTime = null,
+                Duration = null,
+                Reads = null,
+                Writes = null,
+                CPU = null,
+                ApplicationName = "CONNECTED BEFORE TRACE",
+                LoginName = "CONNECTED BEFORE TRACE",
+                HostName = null,
+                NTDomainName = null,
+                NTUserName = null,
+                StartSeq = null,
+                EndSeq = null,
+                TextData = null
+            });
+
+            _sessionConnSeq[evt.SessionId] = fakeConnSeq;
+            return fakeConnSeq;
+        }
+
         private void HandleLogin(TraceEvent evt)
         {
-            long connSeq = ++_connSeq;
+            // ConnSeq = the login event's global sequence (matches ReadTrace.exe:
+            // pStateInfo->CurConnectSeq = pEvent->GetGlobalSeq())
+            long connSeq = evt.Seq;
+
             _connections[evt.SessionId] = new ConnectionInfo
             {
                 ConnSeq = connSeq,
@@ -306,6 +390,9 @@ namespace TraceEventImporter.Processing
                 NTUserName = evt.NTUserName,
                 TextData = evt.TextData
             };
+
+            // Track that this session now has a real connection event
+            _sessionConnSeq[evt.SessionId] = connSeq;
         }
 
         private void HandleLogout(TraceEvent evt)
@@ -332,6 +419,15 @@ namespace TraceEventImporter.Processing
                     TextData = conn.TextData
                 });
                 _connections.Remove(evt.SessionId);
+
+                // Do NOT clear _sessionConnSeq here. ReadTrace.exe clears
+                // CurConnectSeq = 0 on logout, but then creates only ONE fake
+                // connection per session gap. Our EnsureConnectionForSession
+                // already caches per-session, so keeping the last known ConnSeq
+                // prevents creating duplicate fake connection rows for every
+                // batch that arrives between logout and the next login.
+                // The next HandleLogin will overwrite _sessionConnSeq with the
+                // new login's global sequence anyway.
             }
         }
 
@@ -354,15 +450,13 @@ namespace TraceEventImporter.Processing
 
         private void HandleInterestingEvent(TraceEvent evt)
         {
-            // Find parent batch
+            // Find parent batch using in-flight batch sequence (matches ReadTrace)
+            var key = new SessionRequestKey(evt.SessionId, evt.RequestId);
             long? batchSeq = null;
-            for (int i = Batches.Count - 1; i >= 0; i--)
+            _curBatchStartSeq.TryGetValue(key, out long curBatchStart);
+            if (curBatchStart > 0)
             {
-                if (Batches[i].Session == evt.SessionId)
-                {
-                    batchSeq = Batches[i].BatchSeq;
-                    break;
-                }
+                batchSeq = curBatchStart;
             }
 
             InterestingEvents.Add(new InterestingEventRow
