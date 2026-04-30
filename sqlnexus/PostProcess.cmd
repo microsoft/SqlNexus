@@ -22,8 +22,8 @@ if "%filepath%"=="" goto usage
 
 rem Build optional sqlcmd encryption options (compatible with all sqlcmd versions)
 set "SQLCMD_ENCRYPTION_OPTS="
-if /i "%EncryptConnection%"=="true" set "SQLCMD_ENCRYPTION_OPTS=%SQLCMD_ENCRYPTION_OPTS% -N"
-if /i "%TrustServerCertificate%"=="true" set "SQLCMD_ENCRYPTION_OPTS=%SQLCMD_ENCRYPTION_OPTS% -C"
+if /i %EncryptConnection%=="true" set "SQLCMD_ENCRYPTION_OPTS=%SQLCMD_ENCRYPTION_OPTS% -N"
+if /i %TrustServerCertificate%=="true" set "SQLCMD_ENCRYPTION_OPTS=%SQLCMD_ENCRYPTION_OPTS% -C"
 
 @echo %date% %time% Creating tblPlansTemp +++
 sqlcmd.exe -S%SQLServer% -E -d%Database% %SQLCMD_ENCRYPTION_OPTS% -Q"create table tblPlansTemp (sqlplan xml)"
@@ -33,11 +33,14 @@ for /f %%j in ('dir /b "%ImportPath%\*.sqlplan"') do sqlcmd.exe -S%SQLServer%  -
 
 @echo %date% %time% Calling SQLNexus_PostProcessing.sql +++
 
+@echo sqlcmd parameters: %SQLServer% %Database% %SQLCMD_ENCRYPTION_OPTS%
+
 sqlcmd.exe -S%SQLServer% -E -d%Database% %SQLCMD_ENCRYPTION_OPTS% -iSQLNexus_PostProcessing.sql 
 
 rem sqlcmd.exe -S%SQLServer% -E -otoptables.out -Q"set QUOTED_IDENTIFIER on; WITH XMLNAMESPACES ('http://schemas.microsoft.com/sqlserver/2004/07/showplan' AS sp)  select distinct  stmt.stmt_details.value ('@Database', 'varchar(max)') 'Database' ,  stmt.stmt_details.value ('@Schema', 'varchar(max)') 'Schema' ,   stmt.stmt_details.value ('@Table', 'varchar(max)') 'table'  from (  select sqlplan from tempdb.dbo.tblPlansTemp) as p       cross apply sqlplan.nodes('//sp:Object') as stmt (stmt_details) "
 
 
+@echo.
 @echo %date% %time% SQL Nexus PostProcessing complete +++
 
 
