@@ -33,7 +33,7 @@ for /f %%j in ('dir /b "%ImportPath%\*.sqlplan"') do sqlcmd.exe -S%SQLServer%  -
 
 @echo %date% %time% Calling SQLNexus_PostProcessing.sql +++
 
-@echo sqlcmd parameters: %SQLServer% %Database% %SQLCMD_ENCRYPTION_OPTS% +++
+@echo %date% %time% sqlcmd parameters: %SQLServer% %Database% %SQLCMD_ENCRYPTION_OPTS% +++
 
 sqlcmd.exe -S%SQLServer% -E -d%Database% %SQLCMD_ENCRYPTION_OPTS% -iSQLNexus_PostProcessing.sql
 

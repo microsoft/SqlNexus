@@ -36,7 +36,7 @@ namespace sqlnexus
          { Application.StartupPath + "\\" + "SQLNexus_PostProcessing.sql", "BA659CE90DD602AD16C5A8F131D95C1A7D86AA00D764C68C3DE176C5AD0A4139" },
          { Application.StartupPath + "\\" + "SQLNexus_PreProcessing.sql", "81465871D11C26E93329C5F60CBACED1311E97205B29CD8E5526273018168FF6" },
          { Application.StartupPath + "\\" + "PostBuild.cmd", "741ABE8E8750EE4F010268B29C08B645EAB3EAE4E805D46CD5CA100926E00A48" },
-         { Application.StartupPath + "\\" + "PostProcess.cmd", "ADC35D6AD27A69F95CAD895F4F8D9D7B8E06C585C4132B52C9E00BA9425F06FD" },
+         { Application.StartupPath + "\\" + "PostProcess.cmd", "652A277F51640BC6AADCD47D88493B11BC17FF4B62DB470BE0A623BC32280A69" },
          { Application.StartupPath + "\\" + "PreBuild.cmd", "9C706DD338C5A3743C176E43F2C35FE765CF4719FBF33AF6FDAA811418B01187" }
      };
 
