@@ -16,9 +16,10 @@ using TraceEventImporter.Readers;
 namespace TraceEventImporter
 {
     /// <summary>
-    /// SqlNexus importer plugin that reads .trc and .xel trace files, normalizes SQL text,
+    /// SqlNexus importer plugin that reads .xel trace files, normalizes SQL text,
     /// computes HashIDs, and bulk-loads data into the ReadTrace schema.
-    /// Coexists with the existing ReadTraceNexusImporter (which shells out to ReadTrace.exe).
+    /// Coexists with the existing ReadTraceNexusImporter (which handles .trc files
+    /// by shelling out to ReadTrace.exe).
     /// Discovered automatically by SqlNexus via DLL reflection.
     /// </summary>
     public class TraceEventImporterPlugin : INexusImporter, INexusProgressReporter
@@ -58,7 +59,9 @@ namespace TraceEventImporter
 
         public string Name => "Trace Event Importer (Managed)";
 
-        public string[] SupportedMasks => new[] { "*.trc", "*pssdiag*.xel", "*LogScout*.xel" };
+        // .trc files are handled by ReadTraceNexusImporter (ReadTrace.exe).
+        // This importer handles XEL files only.
+        public string[] SupportedMasks => new[] { "*pssdiag*.xel", "*LogScout*.xel" };
 
         public Dictionary<string, object> Options => _options;
 
@@ -125,8 +128,7 @@ namespace TraceEventImporter
                     return false;
                 }
 
-                string[] allFiles = Directory.GetFiles(dir, mask);
-                string[] files = allFiles.Where(f => !SkipFile(f)).OrderBy(f => f).ToArray();
+                string[] files = Directory.GetFiles(dir, mask).OrderBy(f => f).ToArray();
 
                 if (files.Length == 0)
                 {
@@ -135,13 +137,9 @@ namespace TraceEventImporter
                     return false;
                 }
 
-                int excluded = allFiles.Length - files.Length;
-                if (excluded > 0)
-                    LogMessage($"TraceEventImporter: Excluded {excluded} file(s) (log_NNN.trc / *_blk.trc).");
-
                 LogMessage($"TraceEventImporter: Processing {files.Length} file(s)...");
 
-                // 2. Deploy schema (always ensure tables exist; option controls whether to drop first)
+                // 2. Deploy schema
                 LogMessage("TraceEventImporter: Creating ReadTrace schema and tables...");
                 DeploySchema();
 
@@ -157,14 +155,9 @@ namespace TraceEventImporter
                     {
                         if (_cancelled) break;
 
-                        string ext = Path.GetExtension(file).ToLowerInvariant();
                         LogMessage($"TraceEventImporter: Reading {Path.GetFileName(file)}...");
 
-                        ITraceEventReader reader;
-                        if (ext == ".xel")
-                            reader = new XelFileReader(globalSeq);
-                        else
-                            reader = new TrcFileReader(globalSeq);
+                        ITraceEventReader reader = new XelFileReader(globalSeq);
 
                         long fileFirstSeq = long.MaxValue;
                         long fileLastSeq = 0;
@@ -192,7 +185,6 @@ namespace TraceEventImporter
                                     fileLastTime = evt.StartTime;
                             }
 
-                            // Report progress periodically
                             if (fileEventsRead % 10000 == 0)
                             {
                                 _currentPosition = fileEventsRead;
@@ -200,7 +192,6 @@ namespace TraceEventImporter
                             }
                         }
 
-                        // Record trace file info
                         if (fileEventsRead > 0)
                         {
                             writer.WriteTraceFile(fileFirstSeq, fileLastSeq, fileFirstTime, fileLastTime, fileEventsRead, Path.GetFileName(file));
@@ -222,12 +213,10 @@ namespace TraceEventImporter
                     // 5. Write all data
                     LogMessage("TraceEventImporter: Writing data to database...");
 
-                    // Metadata
                     writer.WriteMiscInfo("SchemaVersion", "3.0");
                     writer.WriteMiscInfo("LoadDateTime", DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"));
                     writer.WriteMiscInfo("ImporterVersion", "TraceEventImporter 1.0");
 
-                    // Reference data
                     var tracedEvents = store.GetTracedEventIds();
                     writer.WriteTracedEvents(tracedEvents);
                     var uniqueAppNames = store.GetUniqueAppNames();
@@ -237,13 +226,11 @@ namespace TraceEventImporter
                     var procedureNames = store.GetProcedureNames();
                     writer.WriteProcedureNames(procedureNames);
 
-                    // Unique text
                     var uniqueBatches = store.GetUniqueBatches();
                     writer.WriteUniqueBatches(uniqueBatches);
                     var uniqueStatements = store.GetUniqueStatements();
                     writer.WriteUniqueStatements(uniqueStatements);
 
-                    // Fact data
                     writer.WriteConnections(processor.Connections);
                     writer.WriteBatches(processor.Batches);
                     writer.WriteStatements(processor.Statements);
@@ -260,7 +247,6 @@ namespace TraceEventImporter
 
                     _totalRowsInserted = writer.TotalRowsInserted;
 
-                    // Log per-table row counts
                     LogMessage("TraceEventImporter: --- Row counts per table ---");
                     LogMessage($"TraceEventImporter:   tblTracedEvents:      {tracedEvents.Count()}");
                     LogMessage($"TraceEventImporter:   tblUniqueAppNames:    {uniqueAppNames.Count()}");
@@ -278,7 +264,7 @@ namespace TraceEventImporter
                     LogMessage($"TraceEventImporter:   Total rows inserted:  {_totalRowsInserted}");
                 }
 
-                // 7. Post-load fixups (indexes, ConnSeq linking, ParentStmtSeq)
+                // 7. Post-load fixups
                 LogMessage("TraceEventImporter: Running post-load fixups...");
                 RunPostLoadFixups();
 
@@ -342,7 +328,6 @@ namespace TraceEventImporter
 
         private void ExecuteSqlScript(string script)
         {
-            // Split on GO statements (same approach as CSql in NexusInterfaces)
             string[] batches = Regex.Split(script, @"^\s*GO\s*$", RegexOptions.Multiline | RegexOptions.IgnoreCase);
 
             int executedCount = 0;
@@ -378,22 +363,6 @@ namespace TraceEventImporter
                     return reader.ReadToEnd();
                 }
             }
-        }
-
-        private bool SkipFile(string fullFileName)
-        {
-            string name = Path.GetFileName(fullFileName);
-            if (string.IsNullOrEmpty(name)) return false;
-
-            // Skip blocked trace files
-            if (name.EndsWith("_blk.trc", StringComparison.OrdinalIgnoreCase))
-                return true;
-
-            // Skip internal log trace files
-            if (Regex.IsMatch(name, @"^log_\d+\.trc$", RegexOptions.IgnoreCase))
-                return true;
-
-            return false;
         }
 
         private void LogMessage(string msg)
