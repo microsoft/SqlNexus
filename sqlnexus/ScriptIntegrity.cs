@@ -29,17 +29,16 @@ namespace sqlnexus
         }
 
         // Store expected hashes for each allowed script
-
         private static readonly Dictionary<string, string> ScriptHashes = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) {
-            { Application.StartupPath + "\\" + "PerfStatsAnalysis.sql", "37111E6F2052A2A7B15E26329475738B4E543FE66AFB7BA426639C062D9E81A1" },
-            { Application.StartupPath + "\\" + "ReadTracePostProcessing.sql", "770DE7883BEFFA30C81C5BF45433EFF4C121EF92796047C49AC459103517BB68" },
-            { Application.StartupPath + "\\" + "ReadTraceReportValidate.sql", "92A575503905D2CABEE18D1804D1DCDCACD12FACD912B16E1040C923AB168E02" },
-            { Application.StartupPath + "\\" + "SQLNexus_PostProcessing.sql", "BA659CE90DD602AD16C5A8F131D95C1A7D86AA00D764C68C3DE176C5AD0A4139" },
-            { Application.StartupPath + "\\" + "SQLNexus_PreProcessing.sql", "81465871D11C26E93329C5F60CBACED1311E97205B29CD8E5526273018168FF6" },
-            { Application.StartupPath + "\\" + "PostBuild.cmd", "741ABE8E8750EE4F010268B29C08B645EAB3EAE4E805D46CD5CA100926E00A48" },
-            { Application.StartupPath + "\\" + "PostProcess.cmd", "3ABD30BB0AA44F4D3E3C565F749B7CA2FB8E18EE5013A2087CD4D623C956A657" },
-            { Application.StartupPath + "\\" + "PreBuild.cmd", "9C706DD338C5A3743C176E43F2C35FE765CF4719FBF33AF6FDAA811418B01187" }
-        };
+         { Application.StartupPath + "\\" + "PerfStatsAnalysis.sql", "37111E6F2052A2A7B15E26329475738B4E543FE66AFB7BA426639C062D9E81A1" },
+         { Application.StartupPath + "\\" + "ReadTracePostProcessing.sql", "770DE7883BEFFA30C81C5BF45433EFF4C121EF92796047C49AC459103517BB68" },
+         { Application.StartupPath + "\\" + "ReadTraceReportValidate.sql", "92A575503905D2CABEE18D1804D1DCDCACD12FACD912B16E1040C923AB168E02" },
+         { Application.StartupPath + "\\" + "SQLNexus_PostProcessing.sql", "BA659CE90DD602AD16C5A8F131D95C1A7D86AA00D764C68C3DE176C5AD0A4139" },
+         { Application.StartupPath + "\\" + "SQLNexus_PreProcessing.sql", "81465871D11C26E93329C5F60CBACED1311E97205B29CD8E5526273018168FF6" },
+         { Application.StartupPath + "\\" + "PostBuild.cmd", "741ABE8E8750EE4F010268B29C08B645EAB3EAE4E805D46CD5CA100926E00A48" },
+         { Application.StartupPath + "\\" + "PostProcess.cmd", "ADC35D6AD27A69F95CAD895F4F8D9D7B8E06C585C4132B52C9E00BA9425F06FD" },
+         { Application.StartupPath + "\\" + "PreBuild.cmd", "9C706DD338C5A3743C176E43F2C35FE765CF4719FBF33AF6FDAA811418B01187" }
+     };
 
 
         // Returns true only if the file is listed and the hash matches
