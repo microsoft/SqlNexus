@@ -7,7 +7,7 @@ namespace TraceEventImporter.Processing
 {
     /// <summary>
     /// Correlates Starting↔Completed events per session+request, normalizes SQL text,
-    /// computes HashIDs, and produces rows for tblBatches, tblStatements, tblConnections,
+    /// computes HashID, and produces rows for tblBatches, tblStatements, tblConnections,
     /// and tblInterestingEvents.
     /// </summary>
     public class EventProcessor
@@ -190,7 +190,7 @@ namespace TraceEventImporter.Processing
             long hashId = HashComputer.ComputeHash(normText, specialProcId);
 
             // Add to unique store — store original textData but normalized inner SQL
-            _store.TryAddBatch(hashId, textData, normText, specialProcId);
+            _store.TryAddBatch(batchSeq, hashId, textData, normText, specialProcId);
 
             // Track procedure name
             if (isRpc && !string.IsNullOrEmpty(objectName))
@@ -273,11 +273,11 @@ namespace TraceEventImporter.Processing
             string normText = SqlTextNormalizer.Normalize(textData);
             long hashId = HashComputer.ComputeHash(normText);
 
-            _store.TryAddStatement(hashId, textData, normText);
-
             // StmtSeq = StartSeq if available, otherwise EndSeq (matches ReadTrace.exe:
             // Row.StmtSeq_Value = (StartSeq_Status == OK) ? StartSeq : EndSeq)
             long stmtSeq = pending?.StartSeq ?? evt.Seq;
+
+            _store.TryAddStatement(stmtSeq, hashId, textData, normText);
 
             // Find the parent batch using the in-flight batch's starting sequence.
             // This is the key difference from the old approach: ReadTrace maintains

@@ -23,14 +23,14 @@ namespace TraceEventImporter.Processing
 
         #region Unique Batches
 
-        public bool TryAddBatch(long hashId, string origText, string normText, byte specialProcId)
+        public bool TryAddBatch(long batchSeq, long hashId, string origText, string normText, byte specialProcId)
         {
             if (_uniqueBatches.ContainsKey(hashId))
                 return false;
 
             _uniqueBatches[hashId] = new UniqueBatch
             {
-                Seq = ++_uniqueBatchSeq,
+                Seq = batchSeq,          // first-occurrence BatchSeq (matches tblBatches.BatchSeq)
                 HashID = hashId,
                 OrigText = origText ?? "",
                 NormText = normText ?? "",
@@ -45,14 +45,14 @@ namespace TraceEventImporter.Processing
 
         #region Unique Statements
 
-        public bool TryAddStatement(long hashId, string origText, string normText)
+        public bool TryAddStatement(long stmtSeq, long hashId, string origText, string normText)
         {
             if (_uniqueStatements.ContainsKey(hashId))
                 return false;
 
             _uniqueStatements[hashId] = new UniqueStatement
             {
-                Seq = ++_uniqueStmtSeq,
+                Seq = stmtSeq,           // first-occurrence StmtSeq (matches tblStatements.StmtSeq)
                 HashID = hashId,
                 OrigText = origText,
                 NormText = normText
