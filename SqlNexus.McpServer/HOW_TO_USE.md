@@ -31,7 +31,7 @@ This opens `mcp.json`. Add:
 ```json
 {
   "mcpServers": {
-    "sqlnexus": {
+    "sqlnexus_MCP": {
       "command": "C:\\GitRepos\\SqlNexus\\SqlNexus.McpServer\\bin\\Release\\SqlNexus.McpServer.exe",
       "args": [],
       "env": {

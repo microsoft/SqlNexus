@@ -35,7 +35,7 @@ Edit `SqlNexus.McpServer\appsettings.json`:
 ```json
 {
   "mcpServers": {
-    "sqlnexus": {
+    "sqlnexus_MCP": {
       "command": "C:\\GitRepos\\SqlNexus\\SqlNexus.McpServer\\bin\\Release\\SqlNexus.McpServer.exe",
       "args": [],
       "env": {
@@ -57,7 +57,7 @@ Already configured in `.vscode\settings.json`. Update the path:
   "github.copilot.advanced": {
     "mcp": {
       "servers": {
-        "sqlnexus": {
+        "sqlnexus_MCP": {
           "command": "C:\\GitRepos\\SqlNexus\\SqlNexus.McpServer\\bin\\Release\\SqlNexus.McpServer.exe",
           "env": {
             "SqlNexus__Server": "localhost",

@@ -59,7 +59,7 @@ The `.vscode\settings.json` file is already configured. Update the paths if need
   "github.copilot.advanced": {
     "mcp": {
       "servers": {
-        "sqlnexus": {
+        "sqlnexus_MCP": {
           "command": "C:\\GitRepos\\SqlNexus\\SqlNexus.McpServer\\bin\\Release\\SqlNexus.McpServer.exe",
           "env": {
             "SqlNexus__Server": "localhost",
