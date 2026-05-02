@@ -78,17 +78,35 @@ namespace SqlNexus.McpServer
         public string GetTopCpuQueries(int topN = 20)
         {
             string query = $@"
-                SELECT TOP {topN}
-                    MAX(ISNULL(plan_total_exec_count, 0)) AS exec_count,
-                    MAX(ISNULL(plan_total_cpu_ms, 0)) AS total_cpu_ms,
-                    MAX(ISNULL(plan_total_duration_ms, 0)) AS total_duration_ms,
-                    MAX(ISNULL(plan_total_physical_reads, 0)) AS total_physical_reads,
-                    MAX(ISNULL(plan_total_logical_writes, 0)) AS total_writes,
-                    CAST(ISNULL(stmt_text, '') AS VARCHAR(500)) AS stmt_text
-                FROM dbo.tbl_NOTABLEACTIVEQUERIES
-                WHERE stmt_text IS NOT NULL
-                GROUP BY stmt_text
-                ORDER BY MAX(ISNULL(plan_total_cpu_ms, 0)) DESC";
+                IF OBJECT_ID('ReadTrace.tblBatches') IS NOT NULL  
+                BEGIN
+                    SELECT TOP {topN}
+                        SUM(CPU) AS total_cpu_ms,
+                        SUM(Duration)/1000 AS total_duration_ms,
+                        SUM(Reads) AS total_physical_reads,
+                        SUM(Writes) AS total_writes,
+                        SUBSTRING(NormText, 1, 500) AS stmt_text
+                    FROM ReadTrace.tblBatches b 
+                    JOIN ReadTrace.tblUniqueBatches ub ON b.HashID = ub.HashID
+                    WHERE b.CPU IS NOT NULL AND b.Duration IS NOT NULL
+                    GROUP BY ub.NormText
+                    ORDER BY total_cpu_ms DESC
+                END
+                ELSE IF OBJECT_ID('dbo.tbl_NOTABLEACTIVEQUERIES') IS NOT NULL
+                BEGIN
+                    SELECT TOP {topN}
+                        MAX(ISNULL(plan_total_exec_count, 0)) AS exec_count,
+                        MAX(ISNULL(plan_total_cpu_ms, 0)) AS total_cpu_ms,
+                        MAX(ISNULL(plan_total_duration_ms, 0)) AS total_duration_ms,
+                        MAX(ISNULL(plan_total_physical_reads, 0)) AS total_physical_reads,
+                        MAX(ISNULL(plan_total_logical_writes, 0)) AS total_writes,
+                        CAST(ISNULL(stmt_text, '') AS VARCHAR(500)) AS stmt_text
+                    FROM dbo.tbl_NOTABLEACTIVEQUERIES
+                    WHERE stmt_text IS NOT NULL
+                    GROUP BY stmt_text
+                    ORDER BY MAX(ISNULL(plan_total_cpu_ms, 0)) DESC
+                END
+        ";
 
             return ExecuteQueryAndReturnJson(query, $"Top {topN} CPU Consuming Queries");
         }

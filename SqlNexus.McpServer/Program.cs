@@ -71,7 +71,9 @@ namespace SqlNexus.McpServer
                 try
                 {
                     var line = reader.ReadLine();
-                    if (string.IsNullOrEmpty(line))
+                    if (line == null)
+                        break;
+                    if (line.Length == 0)
                         continue;
 
                     var request = JsonConvert.DeserializeObject<JsonRpcRequest>(line);
