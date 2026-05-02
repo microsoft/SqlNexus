@@ -1280,7 +1280,12 @@ namespace sqlnexus
             psi.RedirectStandardOutput = true;
             psi.RedirectStandardError = true;
             psi.UseShellExecute = false;
-            psi.Arguments = string.Format("\"{0}\" \"{1}\" \"{2}\"", Globals.credentialMgr.Server, Globals.credentialMgr.Database, sourcePath);
+            psi.Arguments = string.Format("\"{0}\" \"{1}\" \"{2}\" \"{3}\" \"{4}\"",
+                Globals.credentialMgr.Server,
+                Globals.credentialMgr.Database,
+                sourcePath,
+                Globals.credentialMgr.EncryptConnection.ToString().ToLower(),
+                Globals.credentialMgr.TrustServerCertificate.ToString().ToLower());
 
             MainForm.LogMessage("Executing: PostProcess.cmd " + psi.Arguments);
             psi.FileName = Application.StartupPath + "\\PostProcess.cmd";
