@@ -1,101 +1,88 @@
-# ? SQL Nexus MCP Server - Build Complete!
+﻿# SQL Nexus MCP Server - Build Complete!
 
 ## What's Ready
 
 Your **SQL Nexus MCP Server** is built and ready for testing!
 
-**Location**: `C:\GitRepos\SqlNexus\SqlNexus.McpServer\bin\Release\SqlNexus.McpServer.exe`
+**Location**: `bin\Release\SqlNexus.McpServer.exe`
 **Framework**: .NET Framework 4.8 (matches SQL Nexus solution)
 
 ---
 
-## ?? IMPORTANT: Where to Use It
+## IMPORTANT: Where to Use It
 
-### ? You CANNOT Ask Questions Here
+### You CANNOT Ask Questions Here
 This GitHub Copilot Workspace chat does **NOT** have the MCP server loaded.
 
-### ? Use VS Code Copilot Chat Instead
+### Use VS Code Copilot Chat Instead
 
-1. **Configure MCP**: Press `Ctrl+Shift+P` ? "MCP: Open User Configuration"
-2. **Add Configuration** (see HOW_TO_USE.md)
+1. **Configure MCP**: Press `Ctrl+Shift+P` → "MCP: Open User Configuration"
+2. **Add Configuration** (see below)
 3. **Restart VS Code**
 4. **Open Copilot Chat**: `Ctrl+Shift+I`
 5. **Ask Questions**: "Is there high CPU on this system?"
 
 ---
 
-## ?? Documentation Guide
+## Quick Start Checklist
 
-| File | When to Read It |
-|------|-----------------|
-| **HOW_TO_USE.md** | ? **Start here** - Complete setup instructions |
-| **README.md** | Feature overview and quick reference |
-| **SETUP.md** | Detailed configuration examples |
-| **BUILD_SUMMARY.md** | Architecture and technical details |
-
----
-
-## ?? Quick Start Checklist
-
-- [x] MCP Server built ?
-- [x] Documentation created ?
-- [ ] Configure in VS Code: `Ctrl+Shift+P` ? "MCP: Open User Configuration"
-- [ ] Update server/database in configuration
+- [x] MCP Server built
+- [ ] Configure in VS Code: `Ctrl+Shift+P` → "MCP: Open User Configuration"
+- [ ] Update `--server` and `--database` args to match your environment
 - [ ] Import PSSDiag/SQLLogScout data into SQL Nexus database
 - [ ] Restart VS Code
 - [ ] Test in Copilot Chat: "Is there high CPU?"
 
 ---
 
-## ?? MCP Configuration Template
+## MCP Configuration Template
 
-Press `Ctrl+Shift+P` ? "MCP: Open User Configuration" ? Add:
+Press `Ctrl+Shift+P` → "MCP: Open User Configuration" → Add:
+
+> Replace `C:\path\to\SqlNexus.McpServer` with the actual path where your SQL Nexus repository is located.
 
 ```json
 {
   "mcpServers": {
     "sqlnexus_MCP": {
-      "command": "C:\\GitRepos\\SqlNexus\\SqlNexus.McpServer\\bin\\Release\\SqlNexus.McpServer.exe",
-      "args": [],
+      "command": "C:\\path\\to\\SqlNexus.McpServer\\bin\\Release\\SqlNexus.McpServer.exe",
+      "args": ["--server", "localhost", "--database", "SqlNexus", "--trusted-connection", "true"]
+    }
+  }
+}
+```
+
+**SQL Authentication** — add credentials in `env` (keep passwords out of `args`):
+```json
+{
+  "mcpServers": {
+    "sqlnexus_MCP": {
+      "command": "C:\\path\\to\\SqlNexus.McpServer\\bin\\Release\\SqlNexus.McpServer.exe",
+      "args": ["--server", "localhost", "--database", "SqlNexus", "--trusted-connection", "false"],
       "env": {
-        "SqlNexus__Server": "localhost",
-        "SqlNexus__Database": "SqlNexus",
-        "SqlNexus__TrustedConnection": "true"
+        "SqlNexus__UserId": "sa",
+        "SqlNexus__Password": "YourPassword"
       }
     }
   }
 }
 ```
 
-**Note**: Update `command` path if your repo is in a different location.
+---
+
+## What You Can Ask (in VS Code Copilot Chat)
+
+**CPU**: "Is there high CPU?" / "Which queries are consuming CPU?"
+
+**I/O**: "Is I/O slow?" / "Is SQL Server causing slow I/O?"
+
+**Blocking**: "Show me blocking chains" / "What queries are blocked?"
+
+**Performance**: "Give me a performance summary" / "Show me the slowest queries" / "What indexes are missing?"
 
 ---
 
-## ?? What You Can Ask (in VS Code Copilot Chat)
+## Documentation
 
-**CPU**:
-- "Is there high CPU?"
-- "Which queries are consuming CPU?"
+See **README.md** for full setup, testing, architecture, and troubleshooting.
 
-**I/O**:
-- "Is I/O slow?"
-- "Is SQL Server causing slow I/O?"
-
-**Blocking**:
-- "Show me blocking chains"
-- "What queries are blocked?"
-
-**Performance**:
-- "Give me a performance summary"
-- "Show me the slowest queries"
-- "What indexes are missing?"
-
----
-
-## ?? Next Steps
-
-1. **Read**: Open `HOW_TO_USE.md` for complete instructions
-2. **Configure**: Add MCP config in VS Code (`Ctrl+Shift+P`)
-3. **Test**: Import diagnostic data and ask Copilot questions!
-
-**You're ready to go!** ??

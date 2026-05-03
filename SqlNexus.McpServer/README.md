@@ -72,12 +72,12 @@ copilot
 
 Copilot CLI will list all registered MCP servers and show a line at the bottom pointing to the configuration file like:
 ```
-Config: C:\path\to\.copilot\mcp_config.json
+Config: C:\path\to\.copilot\mcp-config.json
 ```
 
 **3. Open that config file in VS Code or any text editor:**
 ```bash
-code "C:\path\to\.copilot\mcp_config.json"
+code "C:\path\to\.copilot\mcp-config.json"
 ```
 
 **4. Add the same entry as Option A** — the JSON format is identical:
