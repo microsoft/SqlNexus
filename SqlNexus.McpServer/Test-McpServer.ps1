@@ -19,39 +19,43 @@ Write-Host ""
 
 # Check if MCP Server executable exists
 Write-Host "Checking MCP Server executable..." -ForegroundColor Yellow
-$exePath = "C:\GitRepos\SqlNexus\SqlNexus.McpServer\bin\Release\SqlNexus.McpServer.exe"
+$scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
+$exePath = Join-Path $scriptDir "bin\Release\SqlNexus.McpServer.exe"
 if (Test-Path $exePath) {
     Write-Host "  MCP Server found: $exePath" -ForegroundColor Green
 } else {
-    Write-Host "  MCP Server not found. Run 'dotnet build' first" -ForegroundColor Red
+    Write-Host "  MCP Server not found. Run 'dotnet build -c Release' first" -ForegroundColor Red
     exit 1
 }
 Write-Host ""
 
-# Check configuration
-Write-Host "Checking configuration..." -ForegroundColor Yellow
-$configPath = "C:\GitRepos\SqlNexus\SqlNexus.McpServer\appsettings.json"
+# Prompt for server and database with defaults from appsettings.json
+$configPath = Join-Path $scriptDir "appsettings.json"
+$defaultServer = "localhost"
+$defaultDatabase = "SqlNexus"
+$defaultTrusted = $true
+
 if (Test-Path $configPath) {
     $config = Get-Content $configPath | ConvertFrom-Json
-    Write-Host "  Configuration file found" -ForegroundColor Green
-    Write-Host "    Server: $($config.SqlNexus.Server)" -ForegroundColor Gray
-    Write-Host "    Database: $($config.SqlNexus.Database)" -ForegroundColor Gray
-    Write-Host "    TrustedConnection: $($config.SqlNexus.TrustedConnection)" -ForegroundColor Gray
-} else {
-    Write-Host "  Configuration file not found" -ForegroundColor Red
-    exit 1
+    if ($config.SqlNexus.Server)   { $defaultServer   = $config.SqlNexus.Server }
+    if ($config.SqlNexus.Database) { $defaultDatabase = $config.SqlNexus.Database }
+    $defaultTrusted = $config.SqlNexus.TrustedConnection
 }
+
+Write-Host "Connection Settings (press Enter to accept defaults):" -ForegroundColor Yellow
+$inputServer = Read-Host "  SQL Server instance [$defaultServer]"
+$inputDatabase = Read-Host "  SQL Nexus database  [$defaultDatabase]"
+$serverName   = if ($inputServer)   { $inputServer }   else { $defaultServer }
+$databaseName = if ($inputDatabase) { $inputDatabase } else { $defaultDatabase }
+$trustedConnection = $defaultTrusted
+Write-Host "  Using: $serverName / $databaseName" -ForegroundColor Green
 Write-Host ""
 
 
 # Attempt to test SQL connection
 Write-Host "Testing SQL Server connection..." -ForegroundColor Yellow
 try {
-    $serverName = $config.SqlNexus.Server
-    $databaseName = $config.SqlNexus.Database
-
-    # Build connection string
-    if ($config.SqlNexus.TrustedConnection) {
+    if ($trustedConnection) {
         $connString = "Server=$serverName;Database=$databaseName;Integrated Security=true;TrustServerCertificate=true;Connect Timeout=5"
     } else {
         Write-Host "  SQL Authentication configured - skipping connection test" -ForegroundColor Cyan
@@ -74,7 +78,7 @@ Write-Host ""
 function Invoke-McpTool {
     param([string[]]$Messages)
 
-    $rawLines = $Messages -join "`n" | & $exePath
+    $rawLines = $Messages -join "`n" | & $exePath --server $serverName --database $databaseName
 
     foreach ($line in $rawLines) {
         try {
@@ -145,14 +149,11 @@ Write-Host "==================================================" -ForegroundColor
 Write-Host ""
 Write-Host "MCP Server is built and ready to use!" -ForegroundColor Green
 Write-Host ""
-Write-Host "Next T-shooting Steps:" -ForegroundColor Yellow
-Write-Host "  1. Check or update appsettings.json with your SQL Server details" -ForegroundColor White
-Write-Host "  2. Import SQLLogScout data into SQL Nexus database" -ForegroundColor White
+Write-Host "Next Steps:" -ForegroundColor Yellow
+Write-Host "  1. Import SQLLogScout data into SQL Nexus database" -ForegroundColor White
+Write-Host "  2. Configure mcp.json in VS Code or Copilot CLI" -ForegroundColor White
 Write-Host "  3. Restart VS Code to load MCP server configuration" -ForegroundColor White
 Write-Host "  4. Ask Copilot: 'Is there high CPU on this system?'" -ForegroundColor White
 Write-Host ""
-Write-Host "Documentation:" -ForegroundColor Yellow
-Write-Host "  * README.md - Full documentation" -ForegroundColor White
-Write-Host "  * GETTING_STARTED.md - Quick start guide" -ForegroundColor White
-Write-Host "  * BUILD_SUMMARY.md - Project overview" -ForegroundColor White
+Write-Host "Documentation: README.md" -ForegroundColor Yellow
 Write-Host ""

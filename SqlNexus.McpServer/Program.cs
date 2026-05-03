@@ -24,9 +24,17 @@ namespace SqlNexus.McpServer
                     .AddEnvironmentVariables()
                     .Build();
 
-                var server = config["SqlNexus:Server"] ?? "localhost";
-                var database = config["SqlNexus:Database"] ?? "SqlNexus";
-                var trustedConnectionStr = config["SqlNexus:TrustedConnection"];
+                // Command-line args take priority: --server <name> --database <name> --trusted-connection <true|false>
+                var server = GetArgValue(args, "--server")
+                    ?? config["SqlNexus:Server"]
+                    ?? "localhost";
+
+                var database = GetArgValue(args, "--database")
+                    ?? config["SqlNexus:Database"]
+                    ?? "SqlNexus";
+
+                var trustedConnectionStr = GetArgValue(args, "--trusted-connection")
+                    ?? config["SqlNexus:TrustedConnection"];
                 var trustedConnection = string.IsNullOrEmpty(trustedConnectionStr) || bool.Parse(trustedConnectionStr);
 
                 var builder = new SqlConnectionStringBuilder
@@ -59,6 +67,16 @@ namespace SqlNexus.McpServer
                 Console.Error.WriteLine(ex.StackTrace);
                 Environment.Exit(1);
             }
+        }
+
+        static string? GetArgValue(string[] args, string flag)
+        {
+            for (int i = 0; i < args.Length - 1; i++)
+            {
+                if (string.Equals(args[i], flag, StringComparison.OrdinalIgnoreCase))
+                    return args[i + 1];
+            }
+            return null;
         }
 
         static void ProcessRequests()
@@ -95,13 +113,21 @@ namespace SqlNexus.McpServer
         {
             try
             {
-                var result = request.Method switch
+                object result;
+                switch (request.Method)
                 {
-                    "initialize" => HandleInitialize(),
-                    "tools/list" => HandleListTools(),
-                    "tools/call" => HandleToolCall(request.Params),
-                    _ => throw new NotSupportedException($"Method not supported: {request.Method}")
-                };
+                    case "initialize":
+                        result = HandleInitialize();
+                        break;
+                    case "tools/list":
+                        result = HandleListTools();
+                        break;
+                    case "tools/call":
+                        result = HandleToolCall(request.Params);
+                        break;
+                    default:
+                        throw new NotSupportedException($"Method not supported: {request.Method}");
+                }
 
                 return new JsonRpcResponse
                 {
@@ -306,50 +332,64 @@ namespace SqlNexus.McpServer
                 ? JObject.FromObject(parameters["arguments"]) 
                 : new JObject();
 
-            string resultText = toolName switch
+            string resultText;
+            switch (toolName)
             {
-                "get_top_queries_by_duration" => _analyzer!.GetTopQueriesByDuration(
-                    arguments.Value<int?>("top_n") ?? 50),
-
-                "analyze_cpu_usage" => _analyzer!.AnalyzeCpuUsage(),
-
-                "get_top_cpu_queries" => _analyzer!.GetTopCpuQueries(
-                    arguments.Value<int?>("top_n") ?? 20),
-
-                "analyze_io_performance" => _analyzer!.AnalyzeIoPerformance(
-                    arguments.Value<decimal?>("threshold_ms") ?? 20.0m),
-
-                "analyze_io_waits" => _analyzer!.AnalyzeIoWaits(),
-
-                "analyze_wait_stats" => _analyzer!.AnalyzeWaitStats(),
-
-                "analyze_blocking" => _analyzer!.AnalyzeBlocking(),
-
-                "get_blocked_sessions" => _analyzer!.GetBlockedSessions(),
-
-                "analyze_spinlocks" => _analyzer!.AnalyzeSpinlocks(),
-
-                "get_collection_time_range" => _analyzer!.GetCollectionTimeRange(),
-
-                "get_waits_for_query" => _analyzer!.GetWaitsForQuery(
-                    arguments.Value<long>("hash_id")),
-
-                "get_aggregate_waits_and_queries" => _analyzer!.GetAggregateWaitsAndQueries(),
-
-                "get_missing_indexes" => _analyzer!.GetMissingIndexes(
-                    arguments.Value<int?>("top_n") ?? 30),
-
-                "get_sql_cpu_usage_over_time" => _analyzer!.GetSqlCpuUsageOverTime(),
-
-                "get_memory_clerk_distribution" => _analyzer!.GetMemoryClerkDistribution(),
-
-                "get_performance_summary" => _analyzer!.GetPerformanceSummary(),
-
-                "query_nexus_database" => _analyzer!.ExecuteCustomQuery(
-                    arguments.Value<string>("query") ?? throw new ArgumentException("Query parameter required")),
-
-                _ => throw new NotSupportedException($"Tool not supported: {toolName}")
-            };
+                case "get_top_queries_by_duration":
+                    resultText = _analyzer!.GetTopQueriesByDuration(arguments.Value<int?>("top_n") ?? 50);
+                    break;
+                case "analyze_cpu_usage":
+                    resultText = _analyzer!.AnalyzeCpuUsage();
+                    break;
+                case "get_top_cpu_queries":
+                    resultText = _analyzer!.GetTopCpuQueries(arguments.Value<int?>("top_n") ?? 20);
+                    break;
+                case "analyze_io_performance":
+                    resultText = _analyzer!.AnalyzeIoPerformance(arguments.Value<decimal?>("threshold_ms") ?? 20.0m);
+                    break;
+                case "analyze_io_waits":
+                    resultText = _analyzer!.AnalyzeIoWaits();
+                    break;
+                case "analyze_wait_stats":
+                    resultText = _analyzer!.AnalyzeWaitStats();
+                    break;
+                case "analyze_blocking":
+                    resultText = _analyzer!.AnalyzeBlocking();
+                    break;
+                case "get_blocked_sessions":
+                    resultText = _analyzer!.GetBlockedSessions();
+                    break;
+                case "analyze_spinlocks":
+                    resultText = _analyzer!.AnalyzeSpinlocks();
+                    break;
+                case "get_collection_time_range":
+                    resultText = _analyzer!.GetCollectionTimeRange();
+                    break;
+                case "get_waits_for_query":
+                    resultText = _analyzer!.GetWaitsForQuery(arguments.Value<long>("hash_id"));
+                    break;
+                case "get_aggregate_waits_and_queries":
+                    resultText = _analyzer!.GetAggregateWaitsAndQueries();
+                    break;
+                case "get_missing_indexes":
+                    resultText = _analyzer!.GetMissingIndexes(arguments.Value<int?>("top_n") ?? 30);
+                    break;
+                case "get_sql_cpu_usage_over_time":
+                    resultText = _analyzer!.GetSqlCpuUsageOverTime();
+                    break;
+                case "get_memory_clerk_distribution":
+                    resultText = _analyzer!.GetMemoryClerkDistribution();
+                    break;
+                case "get_performance_summary":
+                    resultText = _analyzer!.GetPerformanceSummary();
+                    break;
+                case "query_nexus_database":
+                    resultText = _analyzer!.ExecuteCustomQuery(
+                        arguments.Value<string>("query") ?? throw new ArgumentException("Query parameter required"));
+                    break;
+                default:
+                    throw new NotSupportedException($"Tool not supported: {toolName}");
+            }
 
             return new McpToolResult
             {
