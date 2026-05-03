@@ -16,7 +16,7 @@ Enables **AI-assisted SQL Server performance diagnostics** through natural langu
 
 And get **instant, data-driven answers** from your PSSDiag/SQLLogScout diagnostic collections.
 
-> **Note**: Use **VS Code Copilot Chat** (`Ctrl+Shift+I`) to interact with the MCP server — not GitHub Copilot Workspace.
+> **Note**: Use **VS Code Copilot Chat** (`Ctrl+Shift+I`) or **GitHub Copilot CLI** (`copilot`) to interact with the MCP server — not GitHub Copilot Workspace.
 
 ---
 
@@ -80,11 +80,12 @@ Config: C:\path\to\.copilot\mcp-config.json
 code "C:\path\to\.copilot\mcp-config.json"
 ```
 
-**4. Add the same entry as Option A** — the JSON format is identical:
+**4. Add the following entry** — note the Copilot CLI config uses `"type": "stdio"` (VS Code does not):
 ```json
 {
   "mcpServers": {
     "sqlnexus_MCP": {
+      "type": "stdio",
       "command": "C:\\path\\to\\SqlNexus.McpServer\\bin\\Release\\SqlNexus.McpServer.exe",
       "args": ["--server", "localhost", "--database", "SqlNexus", "--trusted-connection", "true"]
     }
@@ -229,11 +230,15 @@ SQL Nexus Database
 ┌─────────────────────────────────────────────────────┐
 │                  STARTUP (once)                     │
 │                                                     │
-│  Copilot ──── initialize ────────────────► Server  │
+│  Copilot ──── initialize ────────────────► Server   │
 │           ◄─── {protocolVersion,                    │
 │                 serverInfo, capabilities} ───────── │
+│           (version echoed back from request)        │
 │                                                     │
-│  Copilot ──── tools/list ────────────────► Server  │
+│  Copilot ──── notifications/initialized ──► Server  │
+│               (notification — no response)          │
+│                                                     │
+│  Copilot ──── tools/list ────────────────► Server   │
 │           ◄─── {tools: [{name, description,         │
 │                          inputSchema}, ...]} ─────  │
 │                (Copilot caches all 17 tools)        │
@@ -250,10 +255,10 @@ SQL Nexus Database
 │     │                                               │
 │     ▼                                               │
 │  Copilot extracts parameters → inputSchema          │
-│  ("top 5" → top_n: 5)                              │
+│  ("top 5" → top_n: 5)                               │
 │     │                                               │
 │     ▼                                               │
-│  Copilot ──── tools/call ────────────────► Server  │
+│  Copilot ──── tools/call ────────────────► Server   │
 │               {name: "analyze_cpu_usage",           │
 │                arguments: {}}                       │
 │     │                                               │
@@ -277,6 +282,12 @@ SQL Nexus Database
 ---
 
 ## Troubleshooting
+
+### `sqlnexus_MCP` shows ✗ in Copilot CLI `/mcp`
+1. Rebuild to ensure the latest binary is in `bin\Release\`
+2. Verify the config file has `"type": "stdio"` — required by CLI, not by VS Code
+3. Check the `command` path in the CLI config file is correct
+4. Restart Copilot CLI after any config or binary change
 
 ### "MCP: Open User Configuration" not found
 - Update VS Code to the latest version

@@ -11,6 +11,7 @@ namespace SqlNexus.McpServer
     class Program
     {
         private static DiagnosticAnalyzer? _analyzer;
+        private static string _connectionString = string.Empty;
         private static readonly string ServerName = "sqlnexus-mcp-server";
         private static readonly string ServerVersion = "1.0.0";
 
@@ -53,7 +54,8 @@ namespace SqlNexus.McpServer
                     builder.Password = config["SqlNexus:Password"];
                 }
 
-                _analyzer = new DiagnosticAnalyzer(builder.ConnectionString);
+                // Store connection string — defer actual SQL connection until first tool call
+                _connectionString = builder.ConnectionString;
 
                 Console.Error.WriteLine($"{ServerName} v{ServerVersion} started");
                 Console.Error.WriteLine($"Connected to: {server}/{database}");
@@ -94,13 +96,19 @@ namespace SqlNexus.McpServer
                     if (line.Length == 0)
                         continue;
 
-                    var request = JsonConvert.DeserializeObject<JsonRpcRequest>(line);
-                    if (request == null)
-                        continue;
-
-                    var response = HandleRequest(request);
-                    var responseJson = JsonConvert.SerializeObject(response);
-                    writer.WriteLine(responseJson);
+                    // Handle JSON-RPC batch (array) or single request
+                    if (line.TrimStart().StartsWith("["))
+                    {
+                        var batch = JArray.Parse(line);
+                        foreach (var token in batch)
+                        {
+                            ProcessSingleMessage(token.ToString(), writer);
+                        }
+                    }
+                    else
+                    {
+                        ProcessSingleMessage(line, writer);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -109,15 +117,37 @@ namespace SqlNexus.McpServer
             }
         }
 
-        static JsonRpcResponse HandleRequest(JsonRpcRequest request)
+        static void ProcessSingleMessage(string json, StreamWriter writer)
+        {
+            var request = JsonConvert.DeserializeObject<JsonRpcRequest>(json);
+            if (request == null)
+                return;
+
+            // Notifications have no id — handle but never write a response
+            bool isNotification = request.Id == null;
+            var response = HandleRequest(request, isNotification);
+            if (!isNotification && response != null)
+            {
+                writer.WriteLine(JsonConvert.SerializeObject(response));
+            }
+        }
+
+        static JsonRpcResponse? HandleRequest(JsonRpcRequest request, bool isNotification = false)
         {
             try
             {
+                // Notifications (no id) must never receive a response
+                if (isNotification)
+                {
+                    HandleNotification(request.Method);
+                    return null;
+                }
+
                 object result;
                 switch (request.Method)
                 {
                     case "initialize":
-                        result = HandleInitialize();
+                        result = HandleInitialize(request.Params);
                         break;
                     case "tools/list":
                         result = HandleListTools();
@@ -150,11 +180,35 @@ namespace SqlNexus.McpServer
             }
         }
 
-        static object HandleInitialize()
+        static DiagnosticAnalyzer GetAnalyzer()
         {
+            if (_analyzer == null)
+            {
+                Console.Error.WriteLine("Initializing SQL connection...");
+                _analyzer = new DiagnosticAnalyzer(_connectionString);
+                Console.Error.WriteLine("SQL connection initialized.");
+            }
+            return _analyzer;
+        }
+
+        static void HandleNotification(string method)
+        {
+            // notifications/initialized signals client is ready — no response required
+            // Log other unexpected notifications for diagnostics only
+            if (!string.Equals(method, "notifications/initialized", StringComparison.OrdinalIgnoreCase))
+                Console.Error.WriteLine($"Notification received: {method}");
+        }
+
+        static object HandleInitialize(Dictionary<string, object>? parameters)
+        {
+            // Echo back the client's requested protocolVersion if provided (MCP version negotiation)
+            string protocolVersion = "2024-11-05";
+            if (parameters != null && parameters.TryGetValue("protocolVersion", out var clientVersion))
+                protocolVersion = clientVersion?.ToString() ?? protocolVersion;
+
             return new InitializeResult
             {
-                ProtocolVersion = "2024-11-05",
+                ProtocolVersion = protocolVersion,
                 ServerInfo = new ServerInfo
                 {
                     Name = ServerName,
@@ -336,55 +390,55 @@ namespace SqlNexus.McpServer
             switch (toolName)
             {
                 case "get_top_queries_by_duration":
-                    resultText = _analyzer!.GetTopQueriesByDuration(arguments.Value<int?>("top_n") ?? 50);
+                    resultText = GetAnalyzer().GetTopQueriesByDuration(arguments.Value<int?>("top_n") ?? 50);
                     break;
                 case "analyze_cpu_usage":
-                    resultText = _analyzer!.AnalyzeCpuUsage();
+                    resultText = GetAnalyzer().AnalyzeCpuUsage();
                     break;
                 case "get_top_cpu_queries":
-                    resultText = _analyzer!.GetTopCpuQueries(arguments.Value<int?>("top_n") ?? 20);
+                    resultText = GetAnalyzer().GetTopCpuQueries(arguments.Value<int?>("top_n") ?? 20);
                     break;
                 case "analyze_io_performance":
-                    resultText = _analyzer!.AnalyzeIoPerformance(arguments.Value<decimal?>("threshold_ms") ?? 20.0m);
+                    resultText = GetAnalyzer().AnalyzeIoPerformance(arguments.Value<decimal?>("threshold_ms") ?? 20.0m);
                     break;
                 case "analyze_io_waits":
-                    resultText = _analyzer!.AnalyzeIoWaits();
+                    resultText = GetAnalyzer().AnalyzeIoWaits();
                     break;
                 case "analyze_wait_stats":
-                    resultText = _analyzer!.AnalyzeWaitStats();
+                    resultText = GetAnalyzer().AnalyzeWaitStats();
                     break;
                 case "analyze_blocking":
-                    resultText = _analyzer!.AnalyzeBlocking();
+                    resultText = GetAnalyzer().AnalyzeBlocking();
                     break;
                 case "get_blocked_sessions":
-                    resultText = _analyzer!.GetBlockedSessions();
+                    resultText = GetAnalyzer().GetBlockedSessions();
                     break;
                 case "analyze_spinlocks":
-                    resultText = _analyzer!.AnalyzeSpinlocks();
+                    resultText = GetAnalyzer().AnalyzeSpinlocks();
                     break;
                 case "get_collection_time_range":
-                    resultText = _analyzer!.GetCollectionTimeRange();
+                    resultText = GetAnalyzer().GetCollectionTimeRange();
                     break;
                 case "get_waits_for_query":
-                    resultText = _analyzer!.GetWaitsForQuery(arguments.Value<long>("hash_id"));
+                    resultText = GetAnalyzer().GetWaitsForQuery(arguments.Value<long>("hash_id"));
                     break;
                 case "get_aggregate_waits_and_queries":
-                    resultText = _analyzer!.GetAggregateWaitsAndQueries();
+                    resultText = GetAnalyzer().GetAggregateWaitsAndQueries();
                     break;
                 case "get_missing_indexes":
-                    resultText = _analyzer!.GetMissingIndexes(arguments.Value<int?>("top_n") ?? 30);
+                    resultText = GetAnalyzer().GetMissingIndexes(arguments.Value<int?>("top_n") ?? 30);
                     break;
                 case "get_sql_cpu_usage_over_time":
-                    resultText = _analyzer!.GetSqlCpuUsageOverTime();
+                    resultText = GetAnalyzer().GetSqlCpuUsageOverTime();
                     break;
                 case "get_memory_clerk_distribution":
-                    resultText = _analyzer!.GetMemoryClerkDistribution();
+                    resultText = GetAnalyzer().GetMemoryClerkDistribution();
                     break;
                 case "get_performance_summary":
-                    resultText = _analyzer!.GetPerformanceSummary();
+                    resultText = GetAnalyzer().GetPerformanceSummary();
                     break;
                 case "query_nexus_database":
-                    resultText = _analyzer!.ExecuteCustomQuery(
+                    resultText = GetAnalyzer().ExecuteCustomQuery(
                         arguments.Value<string>("query") ?? throw new ArgumentException("Query parameter required"));
                     break;
                 default:

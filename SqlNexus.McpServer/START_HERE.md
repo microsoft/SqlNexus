@@ -57,6 +57,7 @@ Press `Ctrl+Shift+P` → "MCP: Open User Configuration" → Add:
 {
   "mcpServers": {
     "sqlnexus_MCP": {
+      "type": "stdio",
       "command": "C:\\path\\to\\SqlNexus.McpServer\\bin\\Release\\SqlNexus.McpServer.exe",
       "args": ["--server", "localhost", "--database", "SqlNexus", "--trusted-connection", "false"],
       "env": {
@@ -67,6 +68,8 @@ Press `Ctrl+Shift+P` → "MCP: Open User Configuration" → Add:
   }
 }
 ```
+
+> **Note**: `"type": "stdio"` is required for Copilot CLI. VS Code's `mcp.json` does not use the `type` field.
 
 ---
 

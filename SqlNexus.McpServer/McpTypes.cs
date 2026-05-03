@@ -27,10 +27,10 @@ namespace SqlNexus.McpServer
         [JsonProperty("id")]
         public object? Id { get; set; }
 
-        [JsonProperty("result")]
+        [JsonProperty("result", NullValueHandling = NullValueHandling.Ignore)]
         public object? Result { get; set; }
 
-        [JsonProperty("error")]
+        [JsonProperty("error", NullValueHandling = NullValueHandling.Ignore)]
         public JsonRpcError? Error { get; set; }
     }
 
