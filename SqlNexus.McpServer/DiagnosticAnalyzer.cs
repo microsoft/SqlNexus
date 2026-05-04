@@ -43,73 +43,227 @@ namespace SqlNexus.McpServer
 
         /// <summary>
         /// Get CPU usage - is there high CPU on this system?
-        /// From: Reports-via-SQL-Queries.md - Find the waits for SQL Server
+        /// Queries per-sample CPU rows from CounterData (or tbl_SQL_CPU_HEALTH fallback),
+        /// then computes aggregate summary in C# from the same rows.
         /// </summary>
         public string AnalyzeCpuUsage()
         {
-            const string query = @"
-                DECLARE @minruntime DATETIME, @maxruntime DATETIME, @cpu_count INT;
+            // SET ANSI_NULLS OFF: if @inst_index is NULL, the join on det.InstanceIndex = @inst_index
+            // would match nothing under standard ANSI nulls — this matches the RDL DataSet behaviour.
+            const string samplesQuery = @"
+                SET ANSI_NULLS OFF;
 
-                SELECT @minruntime = MIN(runtime), @maxruntime = MAX(runtime) 
-                FROM tbl_OS_WAIT_STATS;
+                IF OBJECT_ID('dbo.tbl_ServerProperties') IS NOT NULL AND OBJECT_ID('dbo.CounterData') IS NOT NULL
+                BEGIN
+                    DECLARE @process_id INT = 0, @cpu_count INT = 1, @inst_name VARCHAR(64), @inst_index INT;
 
-                SELECT @cpu_count = PropertyValue 
-                FROM tbl_ServerProperties 
-                WHERE PropertyName = 'cpu_count';
+                    SELECT @process_id = sp.PropertyValue FROM dbo.tbl_ServerProperties sp WHERE sp.PropertyName = 'ProcessID';
+                    SELECT @cpu_count  = CASE WHEN sp.PropertyValue = 0 THEN 1 ELSE sp.PropertyValue END
+                    FROM dbo.tbl_ServerProperties sp WHERE sp.PropertyName = 'cpu_count';
 
-                SELECT 
-                    a.wait_type, 
-                    (b.wait_time_ms - a.wait_time_ms) AS TotalWait_ms_AcrossAllCPUs, 
-                    DATEDIFF(SECOND, a.runtime, b.runtime) AS CollectionTime_sec, 
-                    (b.wait_time_ms - a.wait_time_ms) / (DATEDIFF(SECOND, a.runtime, b.runtime) * @cpu_count) AS WaitTime_ms_per_second_per_cpu,
-                    CASE WHEN a.wait_type IN ('SOS_SCHEDULER_YIELD', 'CXPACKET', 'CXCONSUMER') THEN 'CPU_RELATED' END AS CPUIndicator
-                FROM (SELECT * FROM tbl_OS_WAIT_STATS WHERE runtime = @minruntime) AS a
-                INNER JOIN (SELECT * FROM tbl_OS_WAIT_STATS WHERE runtime = @maxruntime) AS b ON a.wait_type = b.wait_type
-                WHERE a.wait_type IN ('SOS_SCHEDULER_YIELD', 'CXPACKET', 'CXCONSUMER')
-                ORDER BY TotalWait_ms_AcrossAllCPUs DESC";
+                    SELECT TOP 1 @inst_name = cdet.InstanceName, @inst_index = cdet.InstanceIndex
+                    FROM dbo.CounterData ctr JOIN dbo.CounterDetails cdet ON ctr.CounterID = cdet.CounterID
+                    WHERE cdet.ObjectName = 'Process' AND cdet.CounterName LIKE 'ID Process'
+                        AND cdet.InstanceName LIKE 'sqlservr%' AND ctr.CounterValue = @process_id;
 
-            return ExecuteQueryAndReturnJson(query, "CPU Wait Analysis - Is CPU High?");
+                    SELECT
+                        CONVERT(DATETIME, sql_cpu.CounterDateTime)                                                                               AS sample_time,
+                        CASE WHEN sql_cpu.sql_cpu_pct > os_cpu.total_cpu_pct THEN os_cpu.total_cpu_pct ELSE sql_cpu.sql_cpu_pct END              AS sql_cpu_pct,
+                        os_cpu.total_cpu_pct
+                            - CASE WHEN sql_cpu.sql_cpu_pct > os_cpu.total_cpu_pct THEN os_cpu.total_cpu_pct ELSE sql_cpu.sql_cpu_pct END        AS nonsql_cpu_pct,
+                        os_cpu.system_idle_pct
+                    FROM (
+                        SELECT ctr.CounterDateTime, ctr.RecordIndex,
+                               CONVERT(INT, (FLOOR(ctr.CounterValue) / (100 * @cpu_count)) * 100) AS sql_cpu_pct
+                        FROM dbo.CounterData ctr JOIN dbo.CounterDetails det ON ctr.CounterID = det.CounterID
+                        WHERE det.ObjectName = 'Process' AND det.CounterName LIKE '[%] Processor Time'
+                              AND det.InstanceName = @inst_name AND det.InstanceIndex = @inst_index
+                    ) AS sql_cpu
+                    INNER JOIN (
+                        SELECT ctr.CounterDateTime, ctr.RecordIndex,
+                               FLOOR(ctr.CounterValue)        AS total_cpu_pct,
+                               100 - FLOOR(ctr.CounterValue)  AS system_idle_pct
+                        FROM dbo.CounterData ctr JOIN dbo.CounterDetails det ON ctr.CounterID = det.CounterID
+                        WHERE det.ObjectName = 'Processor Information' AND det.CounterName LIKE '[%] Processor Time'
+                              AND det.InstanceName = '_Total'
+                    ) AS os_cpu ON sql_cpu.RecordIndex = os_cpu.RecordIndex
+                    ORDER BY sql_cpu.CounterDateTime;
+                END
+                ELSE IF OBJECT_ID('dbo.tbl_SQL_CPU_HEALTH') IS NOT NULL
+                BEGIN
+                    SELECT
+                        EventTime                                                                    AS sample_time,
+                        sql_cpu_utilization                                                          AS sql_cpu_pct,
+                        100 - sql_cpu_utilization - ISNULL(system_idle_cpu, 0)                     AS nonsql_cpu_pct,
+                        ISNULL(system_idle_cpu, 0)                                                  AS system_idle_pct
+                    FROM dbo.tbl_SQL_CPU_HEALTH
+                    WHERE EventTime IS NOT NULL
+                    ORDER BY EventTime;
+                END";
+
+            var samplesTable = ExecuteQueryToDataTable(samplesQuery);
+            var samples      = ConvertDataTableToList(samplesTable);
+
+            // Compute aggregate stats from the per-sample rows
+            object perfmonSummary;
+            if (samples.Count > 0)
+            {
+                double maxSql = 0, sumSql = 0, maxTotal = 0, sumTotal = 0;
+                int aboveSql70 = 0, aboveTotal70 = 0;
+                DateTime? start = null, end = null;
+
+                // Consecutive high-CPU run detection (threshold: 70%, minimum run: 3 samples)
+                const int    highCpuThreshold   = 70;
+                const int    minConsecutive      = 3;
+                var          highCpuRuns         = new List<object>();
+                int          currentRunLen       = 0;
+                DateTime?    currentRunStart     = null;
+                double       currentRunPeak      = 0;
+
+                foreach (var row in samples)
+                {
+                    double sqlPct   = row["sql_cpu_pct"]    != null ? Convert.ToDouble(row["sql_cpu_pct"])     : 0;
+                    double idlePct  = row["system_idle_pct"]!= null ? Convert.ToDouble(row["system_idle_pct"]) : 0;
+                    double totalPct = 100 - idlePct;
+
+                    if (sqlPct   > maxSql)   maxSql   = sqlPct;
+                    if (totalPct > maxTotal) maxTotal = totalPct;
+                    sumSql   += sqlPct;
+                    sumTotal += totalPct;
+                    if (sqlPct   > highCpuThreshold) aboveSql70++;
+                    if (totalPct > highCpuThreshold) aboveTotal70++;
+
+                    DateTime? sampleTime = row["sample_time"] != null ? Convert.ToDateTime(row["sample_time"]) : (DateTime?)null;
+                    if (sampleTime != null)
+                    {
+                        if (start == null || sampleTime < start) start = sampleTime;
+                        if (end   == null || sampleTime > end)   end   = sampleTime;
+                    }
+
+                    // Track consecutive SQL CPU above threshold
+                    if (sqlPct > highCpuThreshold)
+                    {
+                        currentRunLen++;
+                        if (currentRunLen == 1) currentRunStart = sampleTime;
+                        if (sqlPct > currentRunPeak) currentRunPeak = sqlPct;
+                    }
+                    else
+                    {
+                        if (currentRunLen >= minConsecutive)
+                        {
+                            highCpuRuns.Add(new
+                            {
+                                run_start        = currentRunStart,
+                                run_end          = sampleTime,   // first sample that broke the run
+                                consecutive_samples = currentRunLen,
+                                peak_sql_cpu_pct = (int)currentRunPeak
+                            });
+                        }
+                        currentRunLen  = 0;
+                        currentRunPeak = 0;
+                        currentRunStart = null;
+                    }
+                }
+                // Flush any run that extends to the last sample
+                if (currentRunLen >= minConsecutive)
+                {
+                    highCpuRuns.Add(new
+                    {
+                        run_start           = currentRunStart,
+                        run_end             = end,
+                        consecutive_samples = currentRunLen,
+                        peak_sql_cpu_pct    = (int)currentRunPeak
+                    });
+                }
+
+                perfmonSummary = new
+                {
+                    max_sql_cpu_pct               = (int)maxSql,
+                    avg_sql_cpu_pct               = Math.Round(sumSql   / samples.Count, 1),
+                    max_total_cpu_pct             = (int)maxTotal,
+                    avg_total_cpu_pct             = Math.Round(sumTotal / samples.Count, 1),
+                    samples_sql_above_70pct       = aboveSql70,
+                    samples_total_above_70pct     = aboveTotal70,
+                    total_samples                 = samples.Count,
+                    sample_start                  = start,
+                    sample_end                    = end,
+                    sustained_high_cpu_runs       = highCpuRuns,   // runs of 3+ consecutive samples above 70%
+                    sustained_high_cpu_detected   = highCpuRuns.Count > 0
+                };
+            }
+            else
+            {
+                perfmonSummary = new { message = "No Perfmon or ring buffer CPU data available" };
+            }
+
+            var result = new
+            {
+                summary             = "CPU Analysis - Is CPU High?",
+                perfmon_cpu_summary = perfmonSummary,
+                cpu_samples         = samples
+            };
+
+            return JsonConvert.SerializeObject(result, Formatting.Indented);
         }
 
         /// <summary>
         /// Top CPU consuming queries
         /// From: Reports-via-SQL-Queries.md
         /// </summary>
-        public string GetTopCpuQueries(int topN = 20)
-        {
-            string query = $@"
-                IF OBJECT_ID('ReadTrace.tblBatches') IS NOT NULL  
-                BEGIN
-                    SELECT TOP {topN}
-                        SUM(CPU) AS total_cpu_ms,
-                        SUM(Duration)/1000 AS total_duration_ms,
-                        SUM(Reads) AS total_physical_reads,
-                        SUM(Writes) AS total_writes,
-                        SUBSTRING(NormText, 1, 500) AS stmt_text
-                    FROM ReadTrace.tblBatches b 
-                    JOIN ReadTrace.tblUniqueBatches ub ON b.HashID = ub.HashID
-                    WHERE b.CPU IS NOT NULL AND b.Duration IS NOT NULL
-                    GROUP BY ub.NormText
-                    ORDER BY total_cpu_ms DESC
-                END
-                ELSE IF OBJECT_ID('dbo.tbl_NOTABLEACTIVEQUERIES') IS NOT NULL
-                BEGIN
-                    SELECT TOP {topN}
-                        MAX(ISNULL(plan_total_exec_count, 0)) AS exec_count,
-                        MAX(ISNULL(plan_total_cpu_ms, 0)) AS total_cpu_ms,
-                        MAX(ISNULL(plan_total_duration_ms, 0)) AS total_duration_ms,
-                        MAX(ISNULL(plan_total_physical_reads, 0)) AS total_physical_reads,
-                        MAX(ISNULL(plan_total_logical_writes, 0)) AS total_writes,
-                        CAST(ISNULL(stmt_text, '') AS VARCHAR(500)) AS stmt_text
-                    FROM dbo.tbl_NOTABLEACTIVEQUERIES
-                    WHERE stmt_text IS NOT NULL
-                    GROUP BY stmt_text
-                    ORDER BY MAX(ISNULL(plan_total_cpu_ms, 0)) DESC
-                END
-        ";
+		public string GetTopCpuQueries(int topN = 20)
+		{
+			string query = $@"
+				IF OBJECT_ID('ReadTrace.tblBatches') IS NOT NULL
+				BEGIN
+					DECLARE @cap_ms decimal(19,4) =
+						CAST(COALESCE((SELECT TRY_CONVERT(int, PropertyValue) FROM tbl_ServerProperties WHERE PropertyName = 'cpu_count'), 1) AS decimal(19,4))
+						* CAST(COALESCE(DATEDIFF(MILLISECOND, (SELECT MIN(StartTime) FROM ReadTrace.tblBatches), (SELECT MAX(EndTime) FROM ReadTrace.tblBatches)), 0) AS decimal(19,4));
 
-            return ExecuteQueryAndReturnJson(query, $"Top {topN} CPU Consuming Queries");
-        }
+					SELECT TOP {topN}
+						SUM(b.CPU)                                                                       AS total_cpu_ms,
+						CONVERT(decimal(5,2), COALESCE((SUM(b.CPU) * 100.0) / NULLIF(@cap_ms, 0), 0))  AS pct_of_cpu_capacity,
+						SUM(b.Duration)/1000                                                             AS total_duration_ms,
+						SUM(b.Reads)                                                                     AS total_physical_reads,
+						SUM(b.Writes)                                                                    AS total_writes,
+						COUNT(*)                                                                         AS executions,
+						SUM(b.CPU) / NULLIF(COUNT(*), 0)                                                 AS avg_cpu_ms,
+						SUBSTRING(ub.NormText, 1, 500)                                                   AS stmt_text
+					FROM ReadTrace.tblBatches b
+					JOIN ReadTrace.tblUniqueBatches ub ON b.HashID = ub.HashID
+					WHERE b.CPU IS NOT NULL AND b.Duration IS NOT NULL
+					GROUP BY ub.NormText, b.HashID
+					ORDER BY total_cpu_ms DESC
+				END
+				ELSE IF OBJECT_ID('dbo.tbl_Hist_Top10_CPU_Queries_ByQueryHash') IS NOT NULL
+				BEGIN
+					DECLARE @cap_ms2 decimal(19,4) =
+							CAST(COALESCE((SELECT TRY_CONVERT(int, PropertyValue) FROM tbl_ServerProperties WHERE PropertyName = 'cpu_count'), 1) AS decimal(19,4))
+							* CAST(COALESCE(
+								CASE WHEN OBJECT_ID('dbo.tbl_RUNTIMES') IS NOT NULL
+									THEN DATEDIFF(MILLISECOND, (SELECT MIN(runtime) FROM tbl_RUNTIMES), (SELECT MAX(runtime) FROM tbl_RUNTIMES))
+									ELSE 0
+								END, 0) AS decimal(19,4));
+
+					-- Delta between first and last snapshot isolates CPU used only during the collection window,
+					-- rather than cumulative totals since SQL Server startup.
+					WITH
+						first_snap AS (SELECT * FROM tbl_Hist_Top10_CPU_Queries_ByQueryHash WHERE runtime = (SELECT MIN(runtime) FROM tbl_Hist_Top10_CPU_Queries_ByQueryHash)),
+						last_snap  AS (SELECT * FROM tbl_Hist_Top10_CPU_Queries_ByQueryHash WHERE runtime = (SELECT MAX(runtime) FROM tbl_Hist_Top10_CPU_Queries_ByQueryHash))
+					SELECT
+						(l.total_worker_time - COALESCE(f.total_worker_time, 0)) / 1000                                                                          AS delta_cpu_ms,
+						CONVERT(decimal(5,2), COALESCE(((l.total_worker_time - COALESCE(f.total_worker_time, 0)) / 1000.0 * 100.0) / NULLIF(@cap_ms2, 0), 0))   AS pct_of_cpu_capacity,
+						(l.total_worker_time - COALESCE(f.total_worker_time, 0)) / 1000
+							/ NULLIF(l.execution_count - COALESCE(f.execution_count, 0), 0)                                                                      AS avg_cpu_ms,
+						l.execution_count - COALESCE(f.execution_count, 0)                                                                                       AS delta_executions,
+						l.total_logical_reads - COALESCE(f.total_logical_reads, 0)                                                                               AS delta_logical_reads,
+						l.sample_statement_text
+					FROM last_snap l
+					LEFT JOIN first_snap f ON l.query_hash = f.query_hash
+					ORDER BY delta_cpu_ms DESC
+				END";
+
+			return ExecuteQueryAndReturnJson(query, $"Top {topN} CPU Consuming Queries");
+		}
 
         /// <summary>
         /// Find I/O delays - is I/O slow?
@@ -466,6 +620,20 @@ namespace SqlNexus.McpServer
             }
 
             return ExecuteQueryAndReturnJson(query, "Custom Query Results");
+        }
+
+        /// <summary>
+        /// Helper method to execute query and return DataTable (used when composing multi-section JSON)
+        /// </summary>
+        private DataTable ExecuteQueryToDataTable(string query)
+        {
+            using var connection = new SqlConnection(_connectionString);
+            using var command = new SqlCommand(query, connection) { CommandTimeout = 120 };
+            connection.Open();
+            var dataTable = new DataTable();
+            using var adapter = new SqlDataAdapter(command);
+            adapter.Fill(dataTable);
+            return dataTable;
         }
 
         /// <summary>

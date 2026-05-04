@@ -241,7 +241,7 @@ namespace SqlNexus.McpServer
                 new McpTool
                 {
                     Name = "analyze_cpu_usage",
-                    Description = "Answer: 'Is there high CPU on this system?' Analyzes CPU-related wait types (SOS_SCHEDULER_YIELD, CXPACKET) from sys.dm_os_wait_stats.",
+                    Description = "Answer: 'Is there high CPU on this system?' Returns two sections: (1) CPU-related wait types (SOS_SCHEDULER_YIELD, CXPACKET, CXCONSUMER) from tbl_OS_WAIT_STATS, and (2) Perfmon CPU summary from CounterData including max SQL CPU %, average SQL CPU %, max total system CPU %, and how many Perfmon samples exceeded 70% CPU threshold.",
                     InputSchema = new { type = "object", properties = new { } }
                 },
                 new McpTool
