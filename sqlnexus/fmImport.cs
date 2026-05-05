@@ -412,6 +412,43 @@ namespace sqlnexus
             tsiImporters.DropDownItems.Clear();
             EnumImportersFromDirectory(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\SqlNexus\Importers");
             EnumImportersFromDirectory(Application.StartupPath);
+            EnforceTraceImporterExclusivity();
+        }
+
+        /// <summary>
+        /// If both ReadTrace and TraceEventImporter are enabled, disable ReadTrace
+        /// (TraceEventImporter is the preferred/modern one).
+        /// </summary>
+        private void EnforceTraceImporterExclusivity()
+        {
+            bool readTraceEnabled = IsImporterEnabled(READTRACE_IMPORTER_NAME);
+            bool traceEventEnabled = IsImporterEnabled(TRACEEVENT_IMPORTER_NAME);
+
+            if (readTraceEnabled && traceEventEnabled)
+            {
+                DisableImporterByName(READTRACE_IMPORTER_NAME);
+                MainForm.LogMessage(string.Format("Both '{0}' and '{1}' were enabled. Automatically disabled '{1}' to prevent conflicts.", TRACEEVENT_IMPORTER_NAME, READTRACE_IMPORTER_NAME), MessageOptions.Silent);
+            }
+        }
+
+        /// <summary>
+        /// Checks whether the specified importer's Enabled option is checked.
+        /// </summary>
+        private bool IsImporterEnabled(string importerName)
+        {
+            foreach (ToolStripMenuItem importerTsi in tsiImporters.DropDownItems)
+            {
+                INexusImporter prod = importerTsi.Tag as INexusImporter;
+                if (prod == null || prod.Name != importerName)
+                    continue;
+
+                foreach (ToolStripMenuItem optionTsi in importerTsi.DropDownItems)
+                {
+                    if (optionTsi.Text == "Enabled")
+                        return optionTsi.Checked;
+                }
+            }
+            return false;
         }
         private String FileVersions(String file)
         {
@@ -560,7 +597,8 @@ namespace sqlnexus
                             "Ignore events associated with PSSDIAG activity",
                             "Disable event requirement checks",
                             "Import to SQL (Linux Perf)",
-                            "Drop existing tables (Linux Perf)"
+                            "Drop existing tables (Linux Perf)",
+                            "Drop existing ReadTrace tables"
                         };
 
                         foreach (string optionName in optionNames)
@@ -570,10 +608,12 @@ namespace sqlnexus
                             {
                                 // Construct the userSavedKey using the product name and option name
                                 string userSavedKey = string.Format("{0}.{1}", prod.Name, optionName);
-                                // Get the userSavedValue using ImportOptions
-                                bool userSavedValue = ImportOptions.IsEnabled(userSavedKey);
-                                // Update the option with the userSavedValue
-                                prod.Options[optionName] = userSavedValue;
+                                // Only restore saved value if it was actually saved before
+                                if (ImportOptions.HasOption(userSavedKey))
+                                {
+                                    bool userSavedValue = ImportOptions.IsEnabled(userSavedKey);
+                                    prod.Options[optionName] = userSavedValue;
+                                }
                             }
                         }
                         
@@ -590,22 +630,27 @@ namespace sqlnexus
                                 subtsi.Tag = prod.OptionsDialog;
                                 subtsi.Click += new System.EventHandler(this.tsiDialog_Click);
                             }
-                            else // boolean
+                            else if (prod.Options[option] is bool) // boolean
                             {
                                 m_OptionList.Add(subtsi);
 
                                 subtsi.Tag = prod;
                                 subtsi.CheckOnClick = true;
 
-                                bool UserSaved = ImportOptions.IsEnabled(String.Format("{0}.{1}", prod.Name, subtsi.Text));
+                                string savedKey = String.Format("{0}.{1}", prod.Name, subtsi.Text);
                                 MainForm.LogMessage("load: " + String.Format("{0}->{1}", prod.Name, option), MessageOptions.Silent);
 
-                                if (ImportOptions.IsEnabled("SaveImportOptions"))
-                                    subtsi.Checked = UserSaved;
+                                if (ImportOptions.IsEnabled("SaveImportOptions") && ImportOptions.HasOption(savedKey))
+                                    subtsi.Checked = ImportOptions.IsEnabled(savedKey);
                                 else
                                     subtsi.Checked = (bool)prod.Options[option];
 
                                 subtsi.Click += new System.EventHandler(this.tsiBool_Click);
+                            }
+                            else
+                            {
+                                // Non-boolean, non-dialog options (e.g. int) are not shown in the menu
+                                continue;
                             }
 
                             tsi.DropDownItems.Add(subtsi);
@@ -1392,8 +1437,9 @@ namespace sqlnexus
             if (string.IsNullOrEmpty(importerName))
                 return;
 
-            // Only execute ReadTracePostProcessing.sql when the current importer is the ReadTrace importer.
-            bool isReadTraceImporter = importerName.Equals("ReadTrace (SQL XEL/TRC files)", StringComparison.OrdinalIgnoreCase);
+            // Only execute ReadTracePostProcessing.sql when the current importer is ReadTrace or TraceEventImporter (both use the ReadTrace schema).
+            bool isReadTraceImporter = importerName.Equals("ReadTrace (SQL XEL/TRC files)", StringComparison.OrdinalIgnoreCase)
+                                    || importerName.Equals(TRACEEVENT_IMPORTER_NAME, StringComparison.OrdinalIgnoreCase);
 
             // If nothing to run, skip executing the post scripts.
             if (!PostScripts.TryGetValue(importerName, out var scripts) || scripts == null || scripts.Length == 0)
@@ -1587,6 +1633,10 @@ namespace sqlnexus
 
 
         }
+        // Importer names used for mutual exclusivity
+        private const string READTRACE_IMPORTER_NAME = "ReadTrace (SQL XEL/TRC Files)";
+        private const string TRACEEVENT_IMPORTER_NAME = "Trace Event Importer (Managed)";
+
         private void tsiBool_Click(object sender, EventArgs e)
         {
             ToolStripMenuItem tsi = (sender as ToolStripMenuItem);
@@ -1594,12 +1644,60 @@ namespace sqlnexus
             prod.Options[tsi.Text] = tsi.Checked;
             if (ImportOptions.IsEnabled("SaveImportOptions"))
             {
-
                 ImportOptions.Set(string.Format("{0}.{1}", prod.Name, tsi.Text), tsi.Checked);
-                //LogMessage("strip: " + string.Format("{0}.{1}", prod.Name, tsi.Name), MessageOptions.Silent);
-
             }
 
+            // Mutual exclusivity: enabling one trace importer disables the other
+            if (tsi.Text == "Enabled" && tsi.Checked)
+            {
+                string otherImporterName = null;
+                if (prod.Name == TRACEEVENT_IMPORTER_NAME)
+                    otherImporterName = READTRACE_IMPORTER_NAME;
+                else if (prod.Name == READTRACE_IMPORTER_NAME)
+                    otherImporterName = TRACEEVENT_IMPORTER_NAME;
+
+                if (otherImporterName != null)
+                {
+                    DisableImporterByName(otherImporterName);
+
+                    // Close all dropdown menus so the MessageBox isn't hidden behind them
+                    cmOptions.Close();
+
+                    MessageBox.Show(this,
+                        string.Format("You have enabled '{0}'.\nThe '{1}' importer has been automatically disabled to prevent both from writing to the same tables.", prod.Name, otherImporterName),
+                        "Importer Conflict",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Finds the importer menu item by name and unchecks its Enabled option.
+        /// </summary>
+        private void DisableImporterByName(string importerName)
+        {
+            foreach (ToolStripMenuItem importerTsi in tsiImporters.DropDownItems)
+            {
+                INexusImporter otherProd = importerTsi.Tag as INexusImporter;
+                if (otherProd == null || otherProd.Name != importerName)
+                    continue;
+
+                foreach (ToolStripMenuItem optionTsi in importerTsi.DropDownItems)
+                {
+                    if (optionTsi.Text == "Enabled")
+                    {
+                        optionTsi.Checked = false;
+                        otherProd.Options["Enabled"] = false;
+                        if (ImportOptions.IsEnabled("SaveImportOptions"))
+                        {
+                            ImportOptions.Set(string.Format("{0}.Enabled", importerName), false);
+                        }
+                        break;
+                    }
+                }
+                break;
+            }
         }
 
         private void tsiDialog_Click(object sender, EventArgs e)
