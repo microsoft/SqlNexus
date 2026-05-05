@@ -29,7 +29,7 @@ namespace sqlnexus
         }
 
         // Store expected hashes for each allowed script
-        private static readonly Dictionary<string, string> ScriptHashes = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) 
+        private static readonly Dictionary<string, string> ScriptHashes = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
         {
             { Application.StartupPath + "\\" + "PerfStatsAnalysis.sql", "04BB7D6D1F843020105893AB58333D4168DD5460F116F5CBBE153A6C7B092A77" },
             { Application.StartupPath + "\\" + "ReadTracePostProcessing.sql", "770DE7883BEFFA30C81C5BF45433EFF4C121EF92796047C49AC459103517BB68" },
@@ -40,13 +40,12 @@ namespace sqlnexus
             { Application.StartupPath + "\\" + "PostProcess.cmd", "652A277F51640BC6AADCD47D88493B11BC17FF4B62DB470BE0A623BC32280A69" },
             { Application.StartupPath + "\\" + "PreBuild.cmd", "9C706DD338C5A3743C176E43F2C35FE765CF4719FBF33AF6FDAA811418B01187" }
         };
-     };
 
 
         // Returns true only if the file is listed and the hash matches
         public static bool VerifyScript(string filePath)
         {
-            
+
             Log($"Computing hash for file: {filePath}");
 
             // Check if file is in the allowed list and get expected hash
@@ -103,5 +102,6 @@ namespace sqlnexus
                 return null;
             }
         }
+
     }
 }
