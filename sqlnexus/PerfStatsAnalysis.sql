@@ -16,9 +16,9 @@ BEGIN
     PRINT '==============================================';
     PRINT '        Perf Stats Script Analysis            ';
     PRINT '==============================================';
-    PRINT ' Script Exec Duration: ' + CONVERT(VARCHAR, DATEDIFF(mi, @firstruntime, @lastruntime)) + ' minutes';
-    PRINT '    Script Start Time: ' + CONVERT(VARCHAR, @firstruntime, 120);
-    PRINT '      Script End Time: ' + CONVERT(VARCHAR, @lastruntime, 120);
+    PRINT ' PerfStatsScript Exec Duration: ' + CONVERT(VARCHAR, DATEDIFF(mi, @firstruntime, @lastruntime)) + ' minutes';
+    PRINT '   PerfStatsScript Begin Time: ' + CONVERT(VARCHAR, @firstruntime, 120);
+    PRINT '     PerfStatsScript End Time: ' + CONVERT(VARCHAR, @lastruntime, 120);
     IF OBJECT_ID('tbl_SCRIPT_ENVIRONMENT_DETAILS') IS NOT NULL
         SELECT RIGHT(REPLICATE(' ', 24) + LEFT([Name], 20), 21) + ':',
                LEFT([Value], 60)
@@ -622,6 +622,38 @@ BEGIN
     -- Create tbl_BLOCKING_CHAINS (postmortem analysis mode only -- the realtime data capture proc populates this on-the-fly)
     IF OBJECT_ID('tempdb.dbo.#head_blk_sum') IS NOT NULL
         DROP TABLE #head_blk_sum;
+
+    -- Fill tbl_PERF_STATS_SCRIPT_RUNTIMES from all data sources before building #head_blk_sum
+    -- so that the blocking_end correlated subquery and the MAX(runtime) fallback both see
+    -- the full set of captured runtimes, including those only present in tbl_requests or
+    -- tbl_NOTABLEACTIVEQUERIES (e.g. when blocking occurred but wait stats were not captured).
+   INSERT INTO dbo.tbl_PERF_STATS_SCRIPT_RUNTIMES
+   SELECT DISTINCT
+          runtime
+   FROM dbo.tbl_REQUESTS src
+   WHERE src.runtime IS NOT NULL
+         AND NOT EXISTS
+         (
+             SELECT 1 FROM dbo.tbl_PERF_STATS_SCRIPT_RUNTIMES t WHERE t.runtime = src.runtime
+         );
+   INSERT INTO dbo.tbl_PERF_STATS_SCRIPT_RUNTIMES
+   SELECT DISTINCT
+          runtime
+   FROM dbo.tbl_OS_WAIT_STATS src
+   WHERE src.runtime IS NOT NULL
+         AND NOT EXISTS
+         (
+             SELECT 1 FROM dbo.tbl_PERF_STATS_SCRIPT_RUNTIMES t WHERE t.runtime = src.runtime
+         );
+   INSERT INTO dbo.tbl_PERF_STATS_SCRIPT_RUNTIMES
+   SELECT DISTINCT
+          runtime
+   FROM dbo.tbl_NOTABLEACTIVEQUERIES src
+   WHERE src.runtime IS NOT NULL
+         AND NOT EXISTS
+         (
+             SELECT 1 FROM dbo.tbl_PERF_STATS_SCRIPT_RUNTIMES t WHERE t.runtime = src.runtime
+         );
 
     SELECT rownum,
            runtime AS blocking_start,
@@ -1696,28 +1728,31 @@ GO
 INSERT INTO dbo.tbl_PERF_STATS_SCRIPT_RUNTIMES
 SELECT DISTINCT
        runtime
-FROM tbl_requests
-WHERE runtime NOT IN
+FROM tbl_requests src
+WHERE src.runtime IS NOT NULL
+      AND NOT EXISTS
       (
-          SELECT runtime FROM dbo.tbl_PERF_STATS_SCRIPT_RUNTIMES
+          SELECT 1 FROM dbo.tbl_PERF_STATS_SCRIPT_RUNTIMES t WHERE t.runtime = src.runtime
       );
 GO
 INSERT INTO dbo.tbl_PERF_STATS_SCRIPT_RUNTIMES
 SELECT DISTINCT
        runtime
-FROM dbo.tbl_OS_WAIT_STATS
-WHERE runtime NOT IN
+FROM dbo.tbl_OS_WAIT_STATS src
+WHERE src.runtime IS NOT NULL
+      AND NOT EXISTS
       (
-          SELECT runtime FROM dbo.tbl_PERF_STATS_SCRIPT_RUNTIMES
+          SELECT 1 FROM dbo.tbl_PERF_STATS_SCRIPT_RUNTIMES t WHERE t.runtime = src.runtime
       );
 GO
 INSERT INTO dbo.tbl_PERF_STATS_SCRIPT_RUNTIMES
 SELECT DISTINCT
        runtime
-FROM dbo.tbl_NOTABLEACTIVEQUERIES
-WHERE runtime NOT IN
+FROM dbo.tbl_NOTABLEACTIVEQUERIES src
+WHERE src.runtime IS NOT NULL
+      AND NOT EXISTS
       (
-          SELECT runtime FROM dbo.tbl_PERF_STATS_SCRIPT_RUNTIMES
+          SELECT 1 FROM dbo.tbl_PERF_STATS_SCRIPT_RUNTIMES t WHERE t.runtime = src.runtime
       );
 GO
 /* ============ End Nexus Reporting DataSet Queries ============ */
