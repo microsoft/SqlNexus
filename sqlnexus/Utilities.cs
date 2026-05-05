@@ -35,6 +35,10 @@ namespace sqlnexus
         {
             return m_options.ContainsKey(option) && m_options[option];
         }
+        public static bool HasOption(String option)
+        {
+            return m_options.ContainsKey(option);
+        }
         public static void Set(String option, bool Enable )
         {
             if (m_options.ContainsKey(option))

@@ -724,16 +724,6 @@
     </Rowset>
 
 
-    <Rowset name="tblErrorlog" enabled="true" identifier="-- ERRORLOG ROWSET" type="RowsetImportEngine.TextRowset">
-      <KnownColumns>
-        <Column name="rownum" type="RowsetImportEngine.BigIntColumn"  valuetoken="ROWNUMBER" />
-        <Column name="C" type="RowsetImportEngine.IntColumn" />
-        <Column name="LogDate" type="RowsetImportEngine.DateTimeColumn" />
-        <Column name="ProcessInfo"       type="RowsetImportEngine.VarCharColumn" />
-        <Column name="Text"  type="RowsetImportEngine.VarCharColumn" />
-      </KnownColumns>
-    </Rowset>
-
     <Rowset name="tbl_FileStats" enabled="true" identifier="-- File Stats (full)" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
         <Column name="rownum" type="RowsetImportEngine.BigIntColumn"  valuetoken="ROWNUMBER" />
