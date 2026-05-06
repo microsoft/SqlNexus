@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -413,6 +413,34 @@ namespace sqlnexus
             EnumImportersFromDirectory(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\SqlNexus\Importers");
             EnumImportersFromDirectory(Application.StartupPath);
             EnforceTraceImporterExclusivity();
+
+            // Final check: warn for any expected importer that never made it into the menu,
+            // regardless of which directory was scanned. This is the most user-visible signal.
+            var registeredNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            foreach (ToolStripMenuItem item in tsiImporters.DropDownItems)
+            {
+                INexusImporter prod = item.Tag as INexusImporter;
+                if (prod != null)
+                    registeredNames.Add(prod.Name);
+            }
+
+            // Map DLL base name → the Name the importer registers itself under
+            var expectedDllToName = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                { "TraceEventImporter",     TRACEEVENT_IMPORTER_NAME },
+                { "ReadTraceNexusImporter", READTRACE_IMPORTER_NAME },
+            };
+
+            foreach (var kvp in expectedDllToName)
+            {
+                if (!registeredNames.Contains(kvp.Value))
+                {
+                    MainForm.LogMessage(string.Format(
+                        "WARNING: Importer '{0}' (from {1}.dll) did not register in the Import menu. " +
+                        "Check the application log for load errors, or verify that {1}.dll is present in '{2}'.",
+                        kvp.Value, kvp.Key, Application.StartupPath), MessageOptions.Both);
+                }
+            }
         }
 
         /// <summary>
@@ -509,15 +537,29 @@ namespace sqlnexus
 
             return OrderedImporters;
         }
+        // The set of assembly names that sqlnexus.exe directly references at compile time.
+        // Built once from the executing assembly's manifest so it stays in sync automatically:
+        // any new importer added as a ProjectReference to sqlnexus.csproj is immediately
+        // included without any code change here.
+        private static readonly Lazy<HashSet<string>> _referencedByHost = new Lazy<HashSet<string>>(() =>
+        {
+            var names = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            foreach (AssemblyName asmName in Assembly.GetExecutingAssembly().GetReferencedAssemblies())
+                names.Add(asmName.Name);
+            return names;
+        });
+
         private void EnumImportersFromDirectory(string importerDirectory)
         {
             if (!Directory.Exists(importerDirectory))
                 return;
-            
+
             string[] Files = Directory.GetFiles(importerDirectory, "*.DLL");
             List<string> OrderedFiles = OrderedImporterFiles(Files);
 
-            // List of option names
+            // Track which expected DLL names were actually seen in this directory so that
+            // EnumImporters() can warn about any that are present on disk but failed to register.
+            var seenExpected = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
             foreach (string file in OrderedFiles)
             {
@@ -529,20 +571,55 @@ namespace sqlnexus
                     MainForm.LogMessage(String.Format(Properties.Resources.Msg_NativeImage, file));
                     continue;
                 }
+
+                string dllBaseName = Path.GetFileNameWithoutExtension(file);
+                // A DLL is "expected" if sqlnexus.exe directly references it at compile time
+                // (i.e. it was added as a ProjectReference). No list to maintain here.
+                bool isExpected = _referencedByHost.Value.Contains(dllBaseName);
+
                 Assembly Assem;
                 try
                 {
                     Assem = Assembly.LoadFile(file);
-
-
                 }
                 catch (Exception ex)
                 {
-                    MainForm.LogMessage("Assembly " + file + " could not be used as an importer: " + ex.Message, MessageOptions.Silent);
+                    string msg = string.Format("Assembly '{0}' could not be loaded: {1}", Path.GetFileName(file), ex.Message);
+                    // Use a visible log level when a known importer DLL fails to load
+                    MainForm.LogMessage(msg, isExpected ? MessageOptions.Both : MessageOptions.Silent);
                     continue;
                 }
 
-                Type[] typs = Assem.GetExportedTypes();
+                Type[] typs;
+                try
+                {
+                    typs = Assem.GetExportedTypes();
+                }
+                catch (ReflectionTypeLoadException rtle)
+                {
+                    // Log the loader exceptions — these reveal exactly which dependency is missing
+                    var loaderMsgs = rtle.LoaderExceptions != null
+                        ? string.Join("; ", rtle.LoaderExceptions
+                            .Where(le => le != null)
+                            .Select(le => le.Message))
+                        : rtle.Message;
+                    string msg = string.Format(
+                        "Assembly '{0}' loaded but type inspection failed (missing dependency?): {1}",
+                        Path.GetFileName(file), loaderMsgs);
+                    MainForm.LogMessage(msg, isExpected ? MessageOptions.Both : MessageOptions.Silent);
+                    continue;
+                }
+                catch (Exception ex)
+                {
+                    string msg = string.Format(
+                        "Assembly '{0}' loaded but GetExportedTypes() failed: {1}",
+                        Path.GetFileName(file), ex.Message);
+                    MainForm.LogMessage(msg, isExpected ? MessageOptions.Both : MessageOptions.Silent);
+                    continue;
+                }
+
+                int importersRegisteredFromThisDll = 0;
+
                 foreach (Type typ in typs)
                 {
                     //Ignore abstract classes
@@ -560,7 +637,23 @@ namespace sqlnexus
 
                         //If we get in here, the Class implements the interface, so add it to the list
                         //and bail
-                        INexusImporter prod = (INexusImporter)Assem.CreateInstance(typ.FullName, true);
+                        INexusImporter prod;
+                        try
+                        {
+                            prod = (INexusImporter)Assem.CreateInstance(typ.FullName, true);
+                        }
+                        catch (Exception ex)
+                        {
+                            MainForm.LogMessage(string.Format(
+                                "Failed to instantiate or cast '{0}' from '{1}': {2}",
+                                typ.FullName, Path.GetFileName(file), ex.Message),
+                                isExpected ? MessageOptions.Both : MessageOptions.Silent);
+                            continue;
+                        }
+
+                        importersRegisteredFromThisDll++;
+                        if (isExpected)
+                            seenExpected.Add(dllBaseName);
 
                         prod.StatusChanged += new System.EventHandler(this.ImportStatusChanged);
                         if (prod is INexusProgressReporter)
@@ -663,6 +756,46 @@ namespace sqlnexus
                                 ev.Cancel = true;
                         };
                     }
+                }
+
+                // Log if a DLL that looks like an importer loaded and reflected cleanly but
+                // registered nothing — this catches mismatched interface versions, wrong SNK, etc.
+                if (importersRegisteredFromThisDll == 0 && isExpected)
+                {
+                    MainForm.LogMessage(string.Format(
+                        "WARNING: '{0}' loaded successfully but registered no INexusImporter entries. " +
+                        "The importer will not appear in the Import menu. " +
+                        "Check that the DLL targets the correct NexusInterfaces version.",
+                        Path.GetFileName(file)), MessageOptions.Both);
+                }
+                else if (importersRegisteredFromThisDll > 0)
+                {
+                    MainForm.LogMessage(string.Format(
+                        "'{0}' registered {1} importer(s).", Path.GetFileName(file), importersRegisteredFromThisDll),
+                        MessageOptions.Silent);
+                }
+            }
+
+            // After scanning, log any compile-time-referenced DLL that wasn't even found on
+            // disk in this directory. Only check DLLs that are both referenced AND absent;
+            // support libraries (Azure.Core, System.Memory, etc.) are expected not to be here
+            // when scanning the AppData importers directory, so we limit to DLLs whose names
+            // suggest they are importers (contain "Import") to avoid log noise.
+            var foundOnDiskNames = new HashSet<string>(
+                OrderedFiles.Select(f => Path.GetFileNameWithoutExtension(f)),
+                StringComparer.OrdinalIgnoreCase);
+
+            foreach (string refName in _referencedByHost.Value)
+            {
+                if (refName.IndexOf("Import", StringComparison.OrdinalIgnoreCase) < 0)
+                    continue; // skip non-importer support libraries
+
+                if (!foundOnDiskNames.Contains(refName))
+                {
+                    MainForm.LogMessage(string.Format(
+                        "Referenced importer DLL '{0}.dll' was not found in '{1}'. " +
+                        "The importer will not appear in the Import menu.",
+                        refName, importerDirectory), MessageOptions.Silent);
                 }
             }
 
