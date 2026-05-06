@@ -7,9 +7,9 @@
     </am:CreatedBy>
     <am:UpdatedBy>
       <am:Name>SSDTRS</am:Name>
-      <am:Version>17.14.36705.20</am:Version>
+      <am:Version>17.14.37111.16</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2025-11-20T22:12:05.8272941Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2026-04-02T19:10:07.2985039Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
@@ -1321,6 +1321,7 @@ END;</CommandText>
                                     <FontFamily>Tahoma</FontFamily>
                                     <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1334,7 +1335,7 @@ END;</CommandText>
                               <Color>LightGrey</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>=Parameters!FmtAmbientBackground.Value</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -1357,6 +1358,7 @@ END;</CommandText>
                                     <FontFamily>Tahoma</FontFamily>
                                     <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1370,7 +1372,7 @@ END;</CommandText>
                               <Color>LightGrey</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>=Parameters!FmtAmbientBackground.Value</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -1393,6 +1395,7 @@ END;</CommandText>
                                     <FontFamily>Tahoma</FontFamily>
                                     <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1405,7 +1408,7 @@ END;</CommandText>
                               <Color>LightGrey</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>=Parameters!FmtAmbientBackground.Value</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -1432,7 +1435,8 @@ END;</CommandText>
                                   <Style>
                                     <FontFamily>Tahoma</FontFamily>
                                     <FontSize>9pt</FontSize>
-                                    <Color>=IIF(Fields!ReportAvailable.Value=0 and Parameters!ShowAllReports.Value=false,  "Black",Parameters!FmtHyperLinkTextColor.Value )</Color>
+                                    <TextDecoration>Underline</TextDecoration>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1486,6 +1490,7 @@ END;</CommandText>
                                   <Style>
                                     <FontFamily>Tahoma</FontFamily>
                                     <FontSize>9pt</FontSize>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1520,6 +1525,7 @@ END;</CommandText>
                                   <Style>
                                     <FontFamily>Tahoma</FontFamily>
                                     <FontSize>9pt</FontSize>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1569,6 +1575,7 @@ END;</CommandText>
                                   <FontFamily>Tahoma</FontFamily>
                                   <FontSize>11pt</FontSize>
                                   <FontWeight>Bold</FontWeight>
+                                  <Color>=Variables!TableHeadingFontColor.Value</Color>
                                 </Style>
                               </TextRun>
                             </TextRuns>
@@ -1581,7 +1588,7 @@ END;</CommandText>
                             <Color>LightGrey</Color>
                             <Style>Solid</Style>
                           </Border>
-                          <BackgroundColor>=Parameters!FmtAmbientBackground.Value</BackgroundColor>
+                          <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                           <PaddingLeft>2pt</PaddingLeft>
                           <PaddingRight>2pt</PaddingRight>
                           <PaddingTop>2pt</PaddingTop>
@@ -1628,6 +1635,7 @@ END;</CommandText>
                                   <FontFamily>Tahoma</FontFamily>
                                   <FontSize>11pt</FontSize>
                                   <FontWeight>Bold</FontWeight>
+                                  <Color>=Variables!ReportTextColor.Value</Color>
                                 </Style>
                               </TextRun>
                             </TextRuns>
@@ -1693,6 +1701,7 @@ END;</CommandText>
                     <Style>
                       <FontFamily>Tahoma</FontFamily>
                       <FontSize>18pt</FontSize>
+                      <Color>=Variables!TitleColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1707,7 +1716,7 @@ END;</CommandText>
             <ZIndex>1</ZIndex>
             <Style>
               <Border>
-                <Color>DimGray</Color>
+                <Color>=Variables!ReportTextColor.Value</Color>
                 <Style>Solid</Style>
               </Border>
               <PaddingLeft>2pt</PaddingLeft>
@@ -1759,7 +1768,9 @@ END;</CommandText>
                 <TextRuns>
                   <TextRun>
                     <Value>This main page displays report based on data availability.  If the data is not available, the report won't be displayed. Following are some of reasons why a report is not avaiable:</Value>
-                    <Style />
+                    <Style>
+                      <Color>=Variables!ReportTextColor.Value</Color>
+                    </Style>
                   </TextRun>
                 </TextRuns>
                 <Style />
@@ -1767,73 +1778,78 @@ END;</CommandText>
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>The report doesn't apply to the SQL Server version.</Value>
-                    <Style />
+                    <Value>  1. The report doesn't apply to the SQL Server version.</Value>
+                    <Style>
+                      <Color>=Variables!ReportTextColor.Value</Color>
+                    </Style>
                   </TextRun>
                 </TextRuns>
-                <ListStyle>Numbered</ListStyle>
-                <ListLevel>1</ListLevel>
                 <Style />
               </Paragraph>
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>The data needed for the report is still being loaded.  Wait for a few minutes and refresh the report.  This can happen if load happens with different process.</Value>
-                    <Style />
+                    <Value>  2. The data needed for the report is still being loaded.  Wait for a few minutes and refresh the report.  This can happen if load happens with different process.</Value>
+                    <Style>
+                      <Color>=Variables!ReportTextColor.Value</Color>
+                    </Style>
                   </TextRun>
                 </TextRuns>
-                <ListStyle>Numbered</ListStyle>
-                <ListLevel>1</ListLevel>
                 <Style />
               </Paragraph>
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>Data was not captured.  For example, most memory reports will require SQL Server Memory Error collector to be enabled explicitly.</Value>
-                    <Style />
+                    <Value>  3. Data was not captured.  For example, most memory reports will require SQL Server Memory Error collector to be enabled explicitly.</Value>
+                    <Style>
+                      <Color>=Variables!ReportTextColor.Value</Color>
+                    </Style>
                   </TextRun>
                 </TextRuns>
-                <ListStyle>Numbered</ListStyle>
-                <ListLevel>1</ListLevel>
                 <Style />
               </Paragraph>
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>You have disabled certain importers from SQL Nexus when importing.</Value>
-                    <Style />
+                    <Value>  4. You have disabled certain importers from SQL Nexus when importing.</Value>
+                    <Style>
+                      <Color>=Variables!ReportTextColor.Value</Color>
+                    </Style>
                   </TextRun>
                 </TextRuns>
-                <ListStyle>Numbered</ListStyle>
-                <ListLevel>1</ListLevel>
                 <Style />
               </Paragraph>
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>If you want to show all reports regardless, you can change the report parameter "</Value>
-                    <Style />
+                    <Value>  5. If you want to show all reports regardless, you can change the report parameter "</Value>
+                    <Style>
+                      <Color>=Variables!ReportTextColor.Value</Color>
+                    </Style>
                   </TextRun>
                   <TextRun>
                     <Value>Show All Reports</Value>
                     <Style>
                       <FontWeight>Bold</FontWeight>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                   <TextRun>
                     <Value>" to allow you click on any reports.  Note that it will error out if the report doesn't have data.</Value>
-                    <Style />
+                    <Style>
+                      <Color>=Variables!ReportTextColor.Value</Color>
+                    </Style>
                   </TextRun>
                 </TextRuns>
-                <ListStyle>Numbered</ListStyle>
-                <ListLevel>1</ListLevel>
                 <Style />
               </Paragraph>
               <Paragraph>
                 <TextRuns>
                   <TextRun>
                     <Value />
-                    <Style />
+                    <Style>
+                      <Color>=Variables!ReportTextColor.Value</Color>
+                    </Style>
                   </TextRun>
                 </TextRuns>
                 <ListLevel>1</ListLevel>
@@ -1846,7 +1862,7 @@ END;</CommandText>
                     <Style>
                       <FontWeight>Bold</FontWeight>
                       <TextDecoration>Underline</TextDecoration>
-                      <Color>Blue</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1856,7 +1872,9 @@ END;</CommandText>
                 <TextRuns>
                   <TextRun>
                     <Value>For more detaild instructions visit the </Value>
-                    <Style />
+                    <Style>
+                      <Color>=Variables!ReportTextColor.Value</Color>
+                    </Style>
                   </TextRun>
                   <TextRun>
                     <Value>Wiki web page</Value>
@@ -1870,7 +1888,7 @@ END;</CommandText>
                     <Style>
                       <FontWeight>Bold</FontWeight>
                       <TextDecoration>Underline</TextDecoration>
-                      <Color>Blue</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1880,7 +1898,9 @@ END;</CommandText>
                 <TextRuns>
                   <TextRun>
                     <Value>If you prefer to query Nexus database you can use </Value>
-                    <Style />
+                    <Style>
+                      <Color>=Variables!ReportTextColor.Value</Color>
+                    </Style>
                   </TextRun>
                   <TextRun>
                     <Value>sample queries</Value>
@@ -1894,7 +1914,7 @@ END;</CommandText>
                     <Style>
                       <FontWeight>Bold</FontWeight>
                       <TextDecoration>Underline</TextDecoration>
-                      <Color>Blue</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                   <TextRun>
@@ -1902,23 +1922,13 @@ END;</CommandText>
                     <Style>
                       <FontWeight>Bold</FontWeight>
                       <TextDecoration>Underline</TextDecoration>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                   <TextRun>
                     <Value>on our Wiki</Value>
-                    <Style />
-                  </TextRun>
-                </TextRuns>
-                <Style />
-              </Paragraph>
-              <Paragraph>
-                <TextRuns>
-                  <TextRun>
-                    <Value />
                     <Style>
-                      <FontWeight>Bold</FontWeight>
-                      <TextDecoration>Underline</TextDecoration>
-                      <Color>Blue</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1931,7 +1941,20 @@ END;</CommandText>
                     <Style>
                       <FontWeight>Bold</FontWeight>
                       <TextDecoration>Underline</TextDecoration>
-                      <Color>Blue</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style />
+              </Paragraph>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value />
+                    <Style>
+                      <FontWeight>Bold</FontWeight>
+                      <TextDecoration>Underline</TextDecoration>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1947,6 +1970,7 @@ END;</CommandText>
               <Border>
                 <Style>None</Style>
               </Border>
+              <Color>=Variables!ReportTextColor.Value</Color>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
               <PaddingTop>2pt</PaddingTop>
@@ -1955,7 +1979,9 @@ END;</CommandText>
           </Textbox>
         </ReportItems>
         <Height>3.38556in</Height>
-        <Style />
+        <Style>
+          <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
+        </Style>
       </Body>
       <Width>14.0625in</Width>
       <Page>
@@ -2123,6 +2149,15 @@ END;</CommandText>
       </DefaultValue>
       <Prompt>Show all reports even data is not available</Prompt>
     </ReportParameter>
+    <ReportParameter Name="ContrastTheme">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>Default</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>Enter theme name here</Prompt>
+    </ReportParameter>
   </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>
@@ -2159,6 +2194,11 @@ END;</CommandText>
           <RowIndex>2</RowIndex>
           <ParameterName>ShowAllReports</ParameterName>
         </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>1</ColumnIndex>
+          <RowIndex>2</RowIndex>
+          <ParameterName>ContrastTheme</ParameterName>
+        </CellDefinition>
       </CellDefinitions>
     </GridLayoutDefinition>
   </ReportParametersLayout>
@@ -2166,6 +2206,57 @@ END;</CommandText>
   <Variables>
     <Variable Name="IsLocalReport">
       <Value>= (Globals!ReportServerUrl="")</Value>
+    </Variable>
+    <Variable Name="ReportTextColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+Parameters!ContrastTheme.Value="None", "Black")</Value>
+    </Variable>
+    <Variable Name="BodyBackgroundColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
+Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
+Parameters!ContrastTheme.Value="None", "#FAFDFF")</Value>
+    </Variable>
+    <Variable Name="TitleColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+Parameters!ContrastTheme.Value="None", "SteelBlue")</Value>
+    </Variable>
+    <Variable Name="TableHeadingColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
+Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
+Parameters!ContrastTheme.Value="None", "SteelBlue")</Value>
+    </Variable>
+    <Variable Name="ChartColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
+Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
+Parameters!ContrastTheme.Value="None", "LightSteelBlue")</Value>
+    </Variable>
+    <Variable Name="ChartSecondaryColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "No Color",
+Parameters!ContrastTheme.Value="Desert", "No Color",
+Parameters!ContrastTheme.Value="None", "Automatic")</Value>
+    </Variable>
+    <Variable Name="ChartGradientStyle">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "None",
+Parameters!ContrastTheme.Value="Desert", "None",
+Parameters!ContrastTheme.Value="None", "TopBottom")</Value>
+    </Variable>
+    <Variable Name="TableShowCell">
+      <Value>"Red"</Value>
+    </Variable>
+    <Variable Name="TableHidcell">
+      <Value>"Green"</Value>
+    </Variable>
+    <Variable Name="TableHeadingFontColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+Parameters!ContrastTheme.Value="None", "#FFFFFF")</Value>
+    </Variable>
+    <Variable Name="URILinkFontColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#75E9FC",
+Parameters!ContrastTheme.Value="Desert", "#1C5E75",
+Parameters!ContrastTheme.Value="None", "Blue")</Value>
     </Variable>
   </Variables>
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>

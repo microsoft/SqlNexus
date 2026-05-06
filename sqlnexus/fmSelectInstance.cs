@@ -13,6 +13,7 @@ namespace sqlnexus
         public fmSelectInstance()
         {
             InitializeComponent();
+            ThemeManager.ApplyTheme(this);
         }
 
         private void fmSelectInstance_Load(object sender, EventArgs e)

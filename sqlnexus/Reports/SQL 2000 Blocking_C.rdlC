@@ -1,5 +1,16 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:am="http://schemas.microsoft.com/sqlserver/reporting/authoringmetadata">
+  <am:AuthoringMetadata>
+    <am:CreatedBy>
+      <am:Name>SSDTRS</am:Name>
+      <am:Version>17.14.37111.16</am:Version>
+    </am:CreatedBy>
+    <am:UpdatedBy>
+      <am:Name>SSDTRS</am:Name>
+      <am:Version>17.14.37111.16</am:Version>
+    </am:UpdatedBy>
+    <am:LastModifiedTimestamp>2026-04-10T17:43:09.7748627Z</am:LastModifiedTimestamp>
+  </am:AuthoringMetadata>
   <Author>Amit Banerjee</Author>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
@@ -413,7 +424,7 @@ END;</CommandText>
                       <FontFamily>Tahoma</FontFamily>
                       <FontSize>20pt</FontSize>
                       <FontWeight>Bold</FontWeight>
-                      <Color>SteelBlue</Color>
+                      <Color>=Variables!TitleColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -442,7 +453,7 @@ END;</CommandText>
                     <Style>
                       <FontSize>12pt</FontSize>
                       <FontWeight>Bold</FontWeight>
-                      <Color>SteelBlue</Color>
+                      <Color>=Variables!TitleColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -504,7 +515,7 @@ END;</CommandText>
                                   <Style>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -519,7 +530,7 @@ END;</CommandText>
                             <Border>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>SteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -541,7 +552,7 @@ END;</CommandText>
                                   <Style>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -556,7 +567,7 @@ END;</CommandText>
                             <Border>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>SteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -581,7 +592,7 @@ END;</CommandText>
                                   <Style>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -596,7 +607,7 @@ END;</CommandText>
                             <Border>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>SteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -621,7 +632,7 @@ END;</CommandText>
                                   <Style>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -634,7 +645,7 @@ END;</CommandText>
                             <Border>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>SteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -659,7 +670,7 @@ END;</CommandText>
                                   <Style>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -674,7 +685,7 @@ END;</CommandText>
                             <Border>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>SteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -696,7 +707,7 @@ END;</CommandText>
                                   <Style>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -714,7 +725,7 @@ END;</CommandText>
                             <Border>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>SteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -740,6 +751,7 @@ END;</CommandText>
                                   <Value>=Fields!waitresource.Value</Value>
                                   <Style>
                                     <FontSize>9pt</FontSize>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -776,7 +788,7 @@ END;</CommandText>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                     <Format>P0</Format>
-                                    <Color>=iif((Fields!sum_waittime.Value/Sum(Fields!sum_waittime.Value, "DataSet_Sum_HighConcurrency")) &gt; 0.5 ,"Maroon","Black")</Color>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -811,7 +823,7 @@ END;</CommandText>
                                   <Value>=Fields!count.Value</Value>
                                   <Style>
                                     <FontSize>9pt</FontSize>
-                                    <Color>=iif(Fields!count.Value&gt;10,"Maroon","Black")</Color>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -847,7 +859,7 @@ END;</CommandText>
                                   <Style>
                                     <FontSize>9pt</FontSize>
                                     <Format>F</Format>
-                                    <Color>=iif(Fields!count.Value&gt;10,"Maroon","Black")</Color>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -883,6 +895,7 @@ END;</CommandText>
                                   <Style>
                                     <FontSize>9pt</FontSize>
                                     <Format>F</Format>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -918,6 +931,7 @@ END;</CommandText>
                                   <Style>
                                     <FontSize>9pt</FontSize>
                                     <Format>F</Format>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1011,7 +1025,7 @@ END;</CommandText>
             </Paragraphs>
             <rd:DefaultName>starting_time</rd:DefaultName>
             <Top>0.5in</Top>
-            <Left>0.85937in</Left>
+            <Left>0.86979in</Left>
             <Height>0.25in</Height>
             <Width>6.75in</Width>
             <ZIndex>3</ZIndex>
@@ -1056,7 +1070,7 @@ END;</CommandText>
                                     <FontFamily>Tahoma</FontFamily>
                                     <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1071,7 +1085,7 @@ END;</CommandText>
                             <Border>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>SteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -1094,7 +1108,7 @@ END;</CommandText>
                                     <FontFamily>Tahoma</FontFamily>
                                     <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1109,7 +1123,7 @@ END;</CommandText>
                             <Border>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>SteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -1132,7 +1146,7 @@ END;</CommandText>
                                     <FontFamily>Tahoma</FontFamily>
                                     <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1147,7 +1161,7 @@ END;</CommandText>
                             <Border>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>SteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -1173,6 +1187,7 @@ END;</CommandText>
                                   <Value>=Fields!starting_time.Value</Value>
                                   <Style>
                                     <FontWeight>Bold</FontWeight>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1208,6 +1223,7 @@ END;</CommandText>
                                   <Style>
                                     <FontFamily>Tahoma</FontFamily>
                                     <FontWeight>Bold</FontWeight>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1243,7 +1259,7 @@ END;</CommandText>
                                   <Style>
                                     <FontFamily>Tahoma</FontFamily>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>Maroon</Color>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1320,7 +1336,7 @@ END;</CommandText>
                     <Style>
                       <FontSize>12pt</FontSize>
                       <FontWeight>Bold</FontWeight>
-                      <Color>SteelBlue</Color>
+                      <Color>=Variables!TitleColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1382,7 +1398,7 @@ END;</CommandText>
                                   <Style>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1397,7 +1413,7 @@ END;</CommandText>
                             <Border>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>SteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -1419,7 +1435,7 @@ END;</CommandText>
                                   <Style>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1434,7 +1450,7 @@ END;</CommandText>
                             <Border>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>SteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -1459,7 +1475,7 @@ END;</CommandText>
                                   <Style>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1474,7 +1490,7 @@ END;</CommandText>
                             <Border>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>SteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -1499,7 +1515,7 @@ END;</CommandText>
                                   <Style>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1514,7 +1530,7 @@ END;</CommandText>
                             <Border>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>SteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -1539,7 +1555,7 @@ END;</CommandText>
                                   <Style>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1554,7 +1570,7 @@ END;</CommandText>
                             <Border>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>SteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -1576,7 +1592,7 @@ END;</CommandText>
                                   <Style>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1594,7 +1610,7 @@ END;</CommandText>
                             <Border>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>SteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -1620,6 +1636,7 @@ END;</CommandText>
                                   <Value>=Fields!Type_Description.Value</Value>
                                   <Style>
                                     <FontSize>9pt</FontSize>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1656,7 +1673,7 @@ END;</CommandText>
                                     <FontSize>9pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
                                     <Format>P0</Format>
-                                    <Color>=iif((Fields!sum_waittime.Value/Sum(Fields!sum_waittime.Value, "DataSet_Sum_WaittypeSummary"))&gt;0.5,"Maroon","Black")</Color>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1689,7 +1706,9 @@ END;</CommandText>
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!count.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style>
@@ -1723,6 +1742,7 @@ END;</CommandText>
                                   <Value>=Fields!avg_waittime.Value/1000</Value>
                                   <Style>
                                     <Format>F</Format>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1757,6 +1777,7 @@ END;</CommandText>
                                   <Value>=Fields!sum_waittime.Value/1000</Value>
                                   <Style>
                                     <Format>F</Format>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1791,6 +1812,7 @@ END;</CommandText>
                                   <Value>=Sum(Fields!sum_waittime.Value, "DataSet_Sum_WaittypeSummary")</Value>
                                   <Style>
                                     <Format>F</Format>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1957,7 +1979,7 @@ END;</CommandText>
                                   <Value>Runtime</Value>
                                   <Style>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1971,7 +1993,7 @@ END;</CommandText>
                             <Border>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>SteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -1995,7 +2017,7 @@ END;</CommandText>
                                   <Value>Blocked Sessions</Value>
                                   <Style>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -2009,7 +2031,7 @@ END;</CommandText>
                             <Border>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>SteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -2033,7 +2055,7 @@ END;</CommandText>
                                   <Value>Max Waittime (sec)</Value>
                                   <Style>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
+                                    <Color>=Variables!TableHeadingFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -2047,7 +2069,7 @@ END;</CommandText>
                             <Border>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>SteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -2074,7 +2096,7 @@ END;</CommandText>
                                   <Style>
                                     <FontWeight>Bold</FontWeight>
                                     <TextDecoration>Underline</TextDecoration>
-                                    <Color>Blue</Color>
+                                    <Color>=Variables!URILinkFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -2129,7 +2151,7 @@ END;</CommandText>
                                   <Value>=Fields!blocked_sessions.Value</Value>
                                   <Style>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>=iif(Fields!blocked_sessions.Value&gt;5,"Maroon","Black")</Color>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -2162,7 +2184,9 @@ END;</CommandText>
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!max_waittime.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style>
@@ -2234,7 +2258,7 @@ END;</CommandText>
                   <TextRun>
                     <Value>* Click on the above value to drill down into the runtime snapshot. (Shows blocking chains &gt; 1 second)</Value>
                     <Style>
-                      <Color>Maroon</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2289,6 +2313,7 @@ END;</CommandText>
                         <Style>
                           <FontSize>9pt</FontSize>
                           <FontWeight>Bold</FontWeight>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Style>
                         <Label>=CStr(Floor((((Fields!sum_waittime.Value)/(Sum(Fields!sum_waittime.Value, "DataSet_Sum_WaittypeSummary")))*100)))+"%"</Label>
                         <Visible>true</Visible>
@@ -2343,14 +2368,14 @@ END;</CommandText>
                         <Style>None</Style>
                         <Width>0.75pt</Width>
                       </Border>
-                      <FontSize>8pt</FontSize>
-                      <Color>Navy</Color>
+                      <FontSize>9pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                     <ChartAxisTitle>
                       <Caption>Wait Type</Caption>
                       <Style>
-                        <FontSize>8pt</FontSize>
                         <FontWeight>Bold</FontWeight>
+                        <Color>=Variables!ReportTextColor.Value</Color>
                       </Style>
                     </ChartAxisTitle>
                     <Margin>False</Margin>
@@ -2394,6 +2419,7 @@ END;</CommandText>
                     <PreventFontShrink>true</PreventFontShrink>
                     <PreventFontGrow>true</PreventFontGrow>
                     <IncludeZero>false</IncludeZero>
+                    <LabelsAutoFitDisabled>true</LabelsAutoFitDisabled>
                     <ChartAxisScaleBreak>
                       <Style />
                     </ChartAxisScaleBreak>
@@ -2429,6 +2455,7 @@ END;</CommandText>
                       <Caption>Sum Waittime (sec)</Caption>
                       <Style>
                         <FontWeight>Bold</FontWeight>
+                        <Color>=Variables!ReportTextColor.Value</Color>
                       </Style>
                     </ChartAxisTitle>
                     <Margin>True</Margin>
@@ -2506,7 +2533,7 @@ END;</CommandText>
                     <Style>Solid</Style>
                     <Width>0.75pt</Width>
                   </Border>
-                  <BackgroundColor>LightSteelBlue</BackgroundColor>
+                  <BackgroundColor>=Variables!ChartColor.Value</BackgroundColor>
                 </Style>
               </ChartArea>
             </ChartAreas>
@@ -2518,6 +2545,7 @@ END;</CommandText>
                     <Style>Solid</Style>
                     <Width>0.75pt</Width>
                   </Border>
+                  <Color>=Variables!ReportTextColor.Value</Color>
                 </Style>
                 <Position>BottomCenter</Position>
                 <Layout>Column</Layout>
@@ -2537,15 +2565,16 @@ END;</CommandText>
                 <Caption>Waittype Summary Graph</Caption>
                 <Style>
                   <FontWeight>Bold</FontWeight>
+                  <Color>=Variables!ReportTextColor.Value</Color>
                 </Style>
               </ChartTitle>
             </ChartTitles>
             <ChartBorderSkin>
               <ChartBorderSkinType>Emboss</ChartBorderSkinType>
               <Style>
-                <BackgroundColor>Gray</BackgroundColor>
+                <BackgroundColor>=Variables!ChartColor.Value</BackgroundColor>
                 <BackgroundGradientType>None</BackgroundGradientType>
-                <Color>White</Color>
+                <Color>=Variables!ReportTextColor.Value</Color>
               </Style>
             </ChartBorderSkin>
             <ChartNoDataMessage Name="NoDataMessage">
@@ -2570,9 +2599,10 @@ END;</CommandText>
             </CustomProperties>
             <Style>
               <Border>
+                <Color>=Variables!ReportTextColor.Value</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
+              <BackgroundColor>=Variables!ChartFrameColor.Value</BackgroundColor>
             </Style>
           </Chart>
           <Textbox Name="tb_ReportQueryHeader">
@@ -2585,6 +2615,7 @@ END;</CommandText>
                     <Value>Show queries for this report.</Value>
                     <Style>
                       <FontWeight>Bold</FontWeight>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2616,7 +2647,9 @@ END;</CommandText>
                     <TextRuns>
                       <TextRun>
                         <Value>=DataSets!DataSet_Sum_WaittypeSummary.CommandText</Value>
-                        <Style />
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </TextRun>
                     </TextRuns>
                     <Style />
@@ -2648,7 +2681,9 @@ END;</CommandText>
                     <TextRuns>
                       <TextRun>
                         <Value>=DataSets!DataSet_HighConcurrency.CommandText</Value>
-                        <Style />
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </TextRun>
                     </TextRuns>
                     <Style />
@@ -2680,7 +2715,9 @@ END;</CommandText>
                     <TextRuns>
                       <TextRun>
                         <Value>=DataSets!DataSet_WaittypeSummary.CommandText</Value>
-                        <Style />
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </TextRun>
                     </TextRuns>
                     <Style />
@@ -2713,7 +2750,9 @@ END;</CommandText>
                     <TextRuns>
                       <TextRun>
                         <Value>=DataSets!DataSet_Runtimes.CommandText</Value>
-                        <Style />
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </TextRun>
                     </TextRuns>
                     <Style />
@@ -2750,13 +2789,19 @@ END;</CommandText>
             </Visibility>
             <Style>
               <Border>
+                <Color>=Variables!ReportTextColor.Value</Color>
                 <Style>Solid</Style>
               </Border>
             </Style>
           </Rectangle>
         </ReportItems>
         <Height>10.89584in</Height>
-        <Style />
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
+        </Style>
       </Body>
       <Width>11.08505in</Width>
       <Page>
@@ -2800,6 +2845,31 @@ END;</CommandText>
       <Prompt>FmtAmbientBackground</Prompt>
       <Hidden>true</Hidden>
     </ReportParameter>
+    <ReportParameter Name="ContrastTheme">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>None</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>ContrastTheme</Prompt>
+      <ValidValues>
+        <ParameterValues>
+          <ParameterValue>
+            <Value>None</Value>
+            <Label>None</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>Aquatic</Value>
+            <Label>Aquatic</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>Desert</Value>
+            <Label>Desert</Label>
+          </ParameterValue>
+        </ParameterValues>
+      </ValidValues>
+    </ReportParameter>
   </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>
@@ -2821,10 +2891,73 @@ END;</CommandText>
           <RowIndex>1</RowIndex>
           <ParameterName>FmtAmbientBackground</ParameterName>
         </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>1</ColumnIndex>
+          <RowIndex>1</RowIndex>
+          <ParameterName>ContrastTheme</ParameterName>
+        </CellDefinition>
       </CellDefinitions>
     </GridLayoutDefinition>
   </ReportParametersLayout>
   <Language>en-US</Language>
+  <Variables>
+    <Variable Name="ReportTextColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+Parameters!ContrastTheme.Value="None", "Black")</Value>
+    </Variable>
+    <Variable Name="BodyBackgroundColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
+Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
+Parameters!ContrastTheme.Value="None", "#FAFDFF")</Value>
+    </Variable>
+    <Variable Name="TitleColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+Parameters!ContrastTheme.Value="None", "SteelBlue")</Value>
+    </Variable>
+    <Variable Name="TableHeadingColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
+Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
+Parameters!ContrastTheme.Value="None", "SteelBlue")</Value>
+    </Variable>
+    <Variable Name="ChartColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
+Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
+Parameters!ContrastTheme.Value="None", "LightSteelBlue")</Value>
+    </Variable>
+    <Variable Name="ChartSecondaryColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "No Color",
+Parameters!ContrastTheme.Value="Desert", "No Color",
+Parameters!ContrastTheme.Value="None", "Automatic")</Value>
+    </Variable>
+    <Variable Name="ChartGradientStyle">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "None",
+Parameters!ContrastTheme.Value="Desert", "None",
+Parameters!ContrastTheme.Value="None", "TopBottom")</Value>
+    </Variable>
+    <Variable Name="TableShowCell">
+      <Value>"Red"</Value>
+    </Variable>
+    <Variable Name="TableHidcell">
+      <Value>"Green"</Value>
+    </Variable>
+    <Variable Name="TableHeadingFontColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+Parameters!ContrastTheme.Value="None", "#FFFFFF")</Value>
+    </Variable>
+    <Variable Name="URILinkFontColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#75E9FC",
+Parameters!ContrastTheme.Value="Desert", "#1C5E75",
+Parameters!ContrastTheme.Value="None", "Blue")</Value>
+    </Variable>
+    <Variable Name="ChartFrameColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
+Parameters!ContrastTheme.Value="Desert", "#c6daf8",
+Parameters!ContrastTheme.Value="None", "#c6daf8")</Value>
+    </Variable>
+  </Variables>
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
   <rd:ReportUnitType>Inch</rd:ReportUnitType>
   <rd:ReportID>3c7b8720-ebc1-4c2f-ac50-8354dfccd15b</rd:ReportID>

@@ -35,6 +35,7 @@ namespace sqlnexus
             this.cmOptions = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tsiImporters = new System.Windows.Forms.ToolStripMenuItem();
             this.tsiDropDBBeforeImporting = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsiSQLDiagAlwaysOnXEL = new System.Windows.Forms.ToolStripMenuItem();
             this.tsiSaveOptions = new System.Windows.Forms.ToolStripMenuItem();
             this.tsiUseDefaultOptions = new System.Windows.Forms.ToolStripMenuItem();
             this.btnClose = new System.Windows.Forms.Button();
@@ -323,6 +324,7 @@ namespace sqlnexus
         private System.Windows.Forms.ToolStripMenuItem tsiSaveOptions;
         private System.Windows.Forms.ToolStripMenuItem tsiUseDefaultOptions;
         private System.Windows.Forms.ToolStripMenuItem tsiDropDBBeforeImporting;
+        private System.Windows.Forms.ToolStripMenuItem tsiSQLDiagAlwaysOnXEL;
         private System.Windows.Forms.Button btnClose;
     }
 }

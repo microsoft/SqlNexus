@@ -1,3 +1,5 @@
+
+
 #define TRACE
 
 using System;
@@ -23,6 +25,7 @@ using System.ServiceProcess;
 //using Microsoft.Office.Interop;
 using System.Globalization;
 using NexusInterfaces;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Threading;
@@ -54,6 +57,106 @@ namespace sqlnexus
         protected const int HH_DISPLAY_TOC      = 0x0001;
         protected const int HH_DISPLAY_INDEX    = 0x0002;
         public static fmNexus singleton;
+
+        #endregion
+
+        #region Keyboard toolbar accessibility
+
+        /// <summary>
+        /// Enables F6 to cycle focus between toolbars and the content area for keyboard-only users.
+        /// This follows the standard Windows convention for pane cycling (WCAG 2.1.1, 2.4.3).
+        /// </summary>
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == Keys.F6 || keyData == (Keys.F6 | Keys.Shift))
+            {
+                bool reverse = (keyData & Keys.Shift) == Keys.Shift;
+                CycleFocusBetweenPanes(reverse);
+                return true;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        private void CycleFocusBetweenPanes(bool reverse)
+        {
+            // Build the list of focusable panes in order:
+            // 1. Report toolbar (page nav, zoom, find, Current DB, Theme)
+            // 2. Standard toolbar (Connect, Open, Run All, Help)
+            // 3. Service toolbar (Start, Stop - only when visible)
+            // 4. Content area (left nav + report viewer)
+            var panes = new System.Collections.Generic.List<Control>();
+
+            if (toolbarReport.Visible)
+                panes.Add(toolbarReport);
+            if (toolbarMain.Visible)
+                panes.Add(toolbarMain);
+            if (toolbarService.Visible)
+                panes.Add(toolbarService);
+
+            // Content area: left nav panel or report viewer
+            if (splClient.Visible)
+                panes.Add(splClient);
+
+            if (panes.Count == 0)
+                return;
+
+            // Find which pane currently has focus
+            Control focused = this.ActiveControl;
+            int currentIndex = -1;
+            for (int i = 0; i < panes.Count; i++)
+            {
+                if (panes[i].ContainsFocus || panes[i] == focused)
+                {
+                    currentIndex = i;
+                    break;
+                }
+                // Check if focused control is a child of a toolbar
+                if (focused != null)
+                {
+                    Control parent = focused.Parent;
+                    while (parent != null)
+                    {
+                        if (parent == panes[i])
+                        {
+                            currentIndex = i;
+                            break;
+                        }
+                        parent = parent.Parent;
+                    }
+                    if (currentIndex >= 0) break;
+                }
+            }
+
+            // Move to next/previous pane
+            int nextIndex;
+            if (currentIndex < 0)
+                nextIndex = 0;
+            else if (reverse)
+                nextIndex = (currentIndex - 1 + panes.Count) % panes.Count;
+            else
+                nextIndex = (currentIndex + 1) % panes.Count;
+
+            Control target = panes[nextIndex];
+            if (target is ToolStrip toolStrip)
+            {
+                // Focus the first visible, enabled item in the toolbar
+                foreach (ToolStripItem item in toolStrip.Items)
+                {
+                    if (item.Visible && item.Enabled && item.CanSelect)
+                    {
+                        toolStrip.Focus();
+                        item.Select();
+                        return;
+                    }
+                }
+            }
+            else
+            {
+                target.Focus();
+                if (target.Controls.Count > 0)
+                    target.SelectNextControl(null, true, true, true, true);
+            }
+        }
 
         #endregion
 
@@ -190,6 +293,13 @@ namespace sqlnexus
             if ((options & MessageOptions.StatusBar) == MessageOptions.StatusBar)
             {
                 ssText.Text = msg;
+
+                // Raise automation notification for screen readers (accessibility)
+                this.AccessibilityObject.RaiseAutomationNotification(
+                    System.Windows.Forms.Automation.AutomationNotificationKind.ActionCompleted,
+                    System.Windows.Forms.Automation.AutomationNotificationProcessing.ImportantMostRecent,
+                    msg);
+
                 Application.DoEvents();
             }
             Trace.Flush();
@@ -255,12 +365,56 @@ namespace sqlnexus
 
         #region Form methods
 
+        private bool _suppressThemeChange = false;
+
         public fmNexus()
         {
             InitializeComponent();
+            ThemeManager.ChangeCurrentTheme(Properties.Settings.Default.Theme);
+
+            // Initialize theme combo to match saved setting.
+            // Suppress the SelectedIndexChanged handler to avoid side effects
+            // (e.g., ApplyTheme during construction breaks toolbar visibility bindings).
+            _suppressThemeChange = true;
+            string savedTheme = Properties.Settings.Default.Theme ?? "Default";
+            int themeIndex = tscTheme.FindStringExact(savedTheme);
+            if (themeIndex >= 0)
+                tscTheme.SelectedIndex = themeIndex;
+            else if (tscTheme.Items.Count > 0)
+                tscTheme.SelectedIndex = 0;
+            _suppressThemeChange = false;
+
+            ThemeManager.ApplyTheme(this);
             singleton = this;
         }
+        // treeview hottracking is forcing color as blue , overriding its drawing to stick our own color
+        private void tvReports_DrawMode(object sender, DrawTreeNodeEventArgs e)
+        {
+            // Use system colors when Windows High Contrast mode is enabled
+            Color foreColor = ThemeManager.IsHighContrastEnabled ? SystemColors.WindowText : ThemeManager.CurrentForeColor;
+            Color backColor = ThemeManager.IsHighContrastEnabled ? SystemColors.Window : ThemeManager.CurrentBackColor;
 
+            // Handle selected/focused state for High Contrast
+            if (ThemeManager.IsHighContrastEnabled && (e.State & TreeNodeStates.Selected) != 0)
+            {
+                foreColor = SystemColors.HighlightText;
+                backColor = SystemColors.Highlight;
+            }
+
+            if (e.State == TreeNodeStates.Hot)
+            {
+                using (Font font = new Font(e.Node.NodeFont ?? e.Node.TreeView.Font, FontStyle.Underline))
+                {
+                    TextRenderer.DrawText(e.Graphics, e.Node.Text, font, e.Bounds, ThemeManager.CurrentForeColor, ThemeManager.CurrentBackColor, TextFormatFlags.GlyphOverhangPadding);
+                }
+            }
+            else
+            {
+                Font font = e.Node.NodeFont ?? e.Node.TreeView.Font;
+                TextRenderer.DrawText(e.Graphics, e.Node.Text, font, e.Bounds, ThemeManager.CurrentForeColor, ThemeManager.CurrentBackColor, TextFormatFlags.GlyphOverhangPadding);
+            }
+
+        }
         public Cursor StartWaiting()
         {
             Cursor save = Cursor;
@@ -309,6 +463,10 @@ namespace sqlnexus
             DialogResult dr = connect.ShowDialog();
             if (dr == DialogResult.OK)
             {
+                // Apply the theme selected in the Connect dialog to the main form
+                ThemeManager.ChangeCurrentTheme(Properties.Settings.Default.Theme);
+                ThemeManager.ApplyTheme(this);
+
                 if (!CreateDB("sqlnexus"))
                 {
                     dr = DialogResult.Abort;
@@ -519,13 +677,16 @@ namespace sqlnexus
                     {
                         //Select the first report if there is one
                         if (0 != tvReports.Nodes.Count)
+                        {
                             tvReports.SelectedNode = tvReports.Nodes[0];
+                            // Explicitly load the first report since AfterSelect won't trigger due to accessibility fix
+                            SelectLoadReport(tvReports.Nodes[0].Text, true, null);
+                        }
 
                         ShowHideUIElements();
 
                         Application.DoEvents();
 
-////                        UpdateServiceButtons();
                     }
                 }
                 catch (Exception ex)
@@ -548,13 +709,13 @@ namespace sqlnexus
             string instrep = Application.StartupPath + @"\Reports\SQL Perf Main" + RDL_EXT;
             if (File.Exists(instrep))
             {
-                LogMessage("Instructions report found: " + instrep);
+                LogMessage("SQL Perf Main report found: " + instrep);
                 instrep = ExtractReportName(instrep);
                 AddFindReportNode(instrep, null);
             }
             else
             {
-                LogMessage("Instructions report not found: " + instrep);
+                LogMessage("SQL Perf Main report not found: " + instrep);
             }
             // Enum all reports in <exedir>\Reports
             EnumReportDirectory(Application.StartupPath + @"\Reports");
@@ -604,7 +765,7 @@ namespace sqlnexus
                 if (0 == string.Compare(Path.GetExtension(f), RDLC_EXT, true, CultureInfo.InvariantCulture))
                     continue;
                 string filename = ExtractReportName(f);
-                if (0 == string.Compare(Path.GetFileName(filename), "Instructions.rdl", true, CultureInfo.InvariantCulture))
+                if (0 == string.Compare(Path.GetFileName(filename), "SQL Perf Main.rdl", true, CultureInfo.InvariantCulture))
                     continue;
                 LogMessage(sqlnexus.Properties.Resources.Msg_FoundReport + f, MessageOptions.Silent);
                 AddFindReportNode(filename, null);
@@ -623,6 +784,11 @@ namespace sqlnexus
             this.askWhetherToStopTheSQLDiagCollectionServiceWhenExitingToolStripMenuItem.Checked = sqlnexus.Properties.Settings.Default.SQLDiagStopDontAsk;
             this.tsiShowReportTabs.Checked = sqlnexus.Properties.Settings.Default.ShowReportTabs;
             ToggleTabs(this.tsiShowReportTabs.Checked);
+
+            // Explicitly sync toolbar visibility with settings.
+            // The DataBinding on toolbarMain.Visible can get out of sync
+            // when resources.ApplyResources runs during InitializeComponent.
+            this.toolbarMain.Visible = sqlnexus.Properties.Settings.Default.ShowStandardToolbar;
         }
 
 
@@ -764,18 +930,14 @@ namespace sqlnexus
 
         private void fmNexus_FormClosing(object sender, FormClosingEventArgs e)
         {
-            /*
-            if (false)
-            {
-                //PromptStopCollector();
-            }*/
 
             //Save settings to app.config
             sqlnexus.Properties.Settings.Default.ShowReportTabs = tsiShowReportTabs.Checked;
+            sqlnexus.Properties.Settings.Default.ShowStandardToolbar = toolbarMain.Visible;
+            sqlnexus.Properties.Settings.Default.ShowReportToolbar = toolbarReport.Visible;
+            sqlnexus.Properties.Settings.Default.ShowDataCollectionToolbar = toolbarService.Visible;
             sqlnexus.Properties.Settings.Default.Save();
-            //workaround http://connect.microsoft.com/VisualStudio/feedback/details/522208/wpf-app-with-reportviewer-gets-error-while-unloading-appdomain-exception-on-termination
             CloseAllReports();
-            //Thread.Sleep(1000);
         }
 
         private void PromptStopCollector()
@@ -802,6 +964,9 @@ namespace sqlnexus
             }
         }
 
+        // Add a flag to track if selection change was user-initiated via Enter/Space
+        private bool _treeViewActivatedByKey = false;
+
         private void tvReports_AfterSelect(object sender, TreeViewEventArgs e)
         {
             if ((e == null) || (e.Node == null) || (e.Node.Text == null))
@@ -809,30 +974,41 @@ namespace sqlnexus
                 return;
             }
 
-            if (!CanRunReport(e.Node.Text + ".rdl"))
+            // Only load report if triggered by mouse click or Enter/Space key
+            // TreeViewAction.ByMouse indicates mouse click
+            // _treeViewActivatedByKey indicates Enter/Space was pressed
+            if (e.Action != TreeViewAction.ByMouse && !_treeViewActivatedByKey)
             {
-            //    this.LogMessage("The database doesn't have necessary data to run this report", MessageOptions.All);
                 return;
             }
+            
+            _treeViewActivatedByKey = false; // Reset flag
+            
+
+
             SelectLoadReport(e.Node.Text, true, null);
         }
-        private bool CanRunReport(string ReportName)
-        {
-            //we can add some logic in the future. for now removing older and unused code
-            return true;
-        }
+
         private void tvReports_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
-            if (!CanRunReport(e.Node.Text + ".rdl"))
-            {
-                this.LogMessage("The database doesn't have necessary data to run this report", MessageOptions.All);
-                return;
-            }
-
-
             if (e.Node == tvReports.SelectedNode)
             {
                 SelectLoadReport(e.Node.Text, true, null);
+            }
+        }
+
+        // Add KeyDown handler for tvReports
+        private void tvReports_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Space)
+            {
+                _treeViewActivatedByKey = true;
+                if (tvReports.SelectedNode != null)
+                {
+                    // Trigger the AfterSelect logic
+                    tvReports_AfterSelect(sender, new TreeViewEventArgs(tvReports.SelectedNode, TreeViewAction.ByKeyboard));
+                }
+                e.Handled = true;
             }
         }
 
@@ -863,7 +1039,7 @@ namespace sqlnexus
         public static void CopyToClipboard(string text)
         {
             // We have to decode the text passed in from the form b/c our method invocation mechanism passes params as part of a URL
-            Clipboard.SetDataObject(HttpUtility.UrlDecode(text), true, 5, 100);
+            Clipboard.SetDataObject(HttpUtility.UrlDecode(text), true, 5, 100);            
         }
 
 
@@ -959,7 +1135,10 @@ namespace sqlnexus
             tvReports.SelectedNode = null;
             if (0 == tcReports.TabCount)
             {
+                // Hide the report toolbar when no reports are open, but preserve
+                // the user's preference so it can be restored when a report loads.
                 toolbarReport.Visible = false;
+                Properties.Settings.Default.ShowReportToolbar = reportToolStripMenuItem.Checked;
                 this.editToolStripMenuItem.Enabled = false;
                 //disable the panel with all the logs - Nexus, RML, copy to clipboard. For now we don't want this functionality
                 //paTasksBody.Enabled = false;
@@ -988,6 +1167,56 @@ namespace sqlnexus
         #endregion Tab mgmt
 
         #region Report mgmt
+
+        /// <summary>
+        /// Updates the ContrastTheme parameter on the currently visible report and refreshes it.
+        /// Called from fmLoginEx when the user changes the theme in the combobox so the report
+        /// reflects the new theme immediately without closing the dialog.
+        /// Non-active tabs are intentionally skipped here because they may have unresolved
+        /// parameters that cause InvalidOperationException. They pick up the correct theme
+        /// via the existing ContrastTheme logic in RefreshReport() and SelectLoadReport()
+        /// whenever they are next refreshed or navigated to.
+        /// </summary>
+        public void RefreshCurrentReportTheme()
+        {
+            try
+            {
+                if (CurrentReport == null || CurrentReportViewer == null)
+                    return;
+
+                string currentTheme = Properties.Settings.Default.Theme;
+                string contrastThemeValue = (string.IsNullOrEmpty(currentTheme) || currentTheme == "Default") ? "None" : currentTheme;
+
+                var parameters = CurrentReport.GetParameters();
+
+                if (!parameters.Any(x => x.Name == "ContrastTheme"))
+                    return;
+
+                CurrentReport.SetParameters(new ReportParameter("ContrastTheme", contrastThemeValue));
+                CurrentReportViewer.RefreshReport();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Exception while refreshing report theme: " + ex.Message);
+            }
+        }
+
+        private void tscTheme_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (_suppressThemeChange)
+                return;
+
+            string selectedTheme = tscTheme.SelectedItem?.ToString() ?? "Default";
+            ThemeManager.ChangeCurrentTheme(selectedTheme);
+            ThemeManager.ApplyTheme(this);
+
+            // Persist the theme setting
+            Properties.Settings.Default.Theme = selectedTheme;
+            Properties.Settings.Default.Save();
+
+            // Refresh the current report with the new ContrastTheme
+            RefreshCurrentReportTheme();
+        }
 
         public ReportViewer CurrentReportViewer
         {
@@ -1027,7 +1256,22 @@ namespace sqlnexus
             {
                 try
                 {
-                    
+                    // Update ContrastTheme parameter to reflect any theme change before refreshing
+                    try
+                    {
+                        if (report.GetParameters().Any(x => x.Name == "ContrastTheme"))
+                        {
+                            string currentTheme = Properties.Settings.Default.Theme;
+                            string contrastThemeValue = (string.IsNullOrEmpty(currentTheme) || currentTheme == "Default") ? "None" : currentTheme;
+                            report.SetParameters(new ReportParameter("ContrastTheme", contrastThemeValue));
+                        }
+                    }
+                    catch (Exception ex) 
+                    {
+                        /* Report may not have ContrastTheme parameter */
+                        LogMessage("RefreshReport: unable to set ContrastTheme: " + ex.Message, MessageOptions.Silent);
+                    }
+
                     string reportname = (0 == report.DisplayName.Length) ? Path.GetFileNameWithoutExtension(report.ReportPath) : report.DisplayName;
                     LogMessage(sqlnexus.Properties.Resources.Msg_RefreshingReport+reportname, MessageOptions.Silent);
                     LogMessage(sqlnexus.Properties.Resources.Msg_Refreshing);
@@ -1344,8 +1588,30 @@ namespace sqlnexus
         /// <param name="report">File name (.RDL)</param>
         /// <param name="master">true for top-level reports (.RDL), false for child reports (.RDLC)</param>
         /// <param name="parameters">Report parameter collection (can be null)</param>
-        public void SelectLoadReport(string report, bool master, ReportParameter[] parameters)
+        /// 
+        public void SelectLoadReport(string report, bool master, ReportParameter[] _parameters)
         {
+            // ContrastTheme is a standard parameter that must exist in all reports for accessibility/TrIP compliance.
+            // ThemeManager uses "Default" but the RDL reports expect "None".
+            string currentTheme = Properties.Settings.Default.Theme;
+            string contrastThemeValue = (string.IsNullOrEmpty(currentTheme) || currentTheme == "Default") ? "None" : currentTheme;
+            ReportParameter paramTheme = new ReportParameter("ContrastTheme", contrastThemeValue);
+
+            ReportParameter[] parameters;
+            if (_parameters != null)
+            {
+                parameters = new ReportParameter[_parameters.Length + 1];
+                parameters[0] = paramTheme;
+                for (int idx = 0; idx < _parameters.Length; idx++)
+                {
+                    if (_parameters[idx] != null && _parameters[idx].Name != "ContrastTheme")
+                        parameters[idx + 1] = _parameters[idx];
+                }
+            }
+            else
+            {
+                parameters = new ReportParameter[] { paramTheme };
+            }
 
             NexusInfo nInfo = new NexusInfo(Globals.credentialMgr.ConnectionString, this);
             nInfo.SetAttribute("Nexus Report Version", Application.ProductVersion);
@@ -1420,6 +1686,10 @@ namespace sqlnexus
                         tcReports.TabPages.Add(p);
                         tcReports.SelectTab(tcReports.TabPages.Count - 1);
 
+                        // Apply the current theme to the new ReportViewer so its
+                        // background matches the rest of the UI on first launch.
+                        ThemeManager.ApplyTheme(rv);
+
                         //Hide the damned tabs!
                         if (!this.tsiShowReportTabs.Checked)
                         {
@@ -1443,7 +1713,12 @@ namespace sqlnexus
                             fmNexus.GetReportParameters(false,"");
 
                         rv.RefreshReport();
-                        toolbarReport.Visible = reportToolStripMenuItem.Checked;
+                        // Only show the report toolbar if the user hasn't explicitly hidden it.
+                        // Use the persisted setting rather than the menu Checked state, because
+                        // CloseTab sets Visible=false when the last tab closes which can desync
+                        // the menu state from the user's actual preference.
+                        toolbarReport.Visible = Properties.Settings.Default.ShowReportToolbar;
+                        reportToolStripMenuItem.Checked = toolbarReport.Visible;
                         TreeNode n = AddFindReportNode(report, null);
                         n.ImageIndex = 1;
                         n.SelectedImageIndex = 1;
@@ -1514,8 +1789,41 @@ namespace sqlnexus
         /// <param name="report">RS report</param>
         private static void SetReportQueryParameters(LocalReport report)
         {
+            // Always propagate ContrastTheme to every report for accessibility/TrIP compliance.
+            // ThemeManager uses "Default" but the RDL reports expect "None".
+            string currentTheme = Properties.Settings.Default.Theme;
+            string contrastThemeValue = (string.IsNullOrEmpty(currentTheme) || currentTheme == "Default") ? "None" : currentTheme;
+            try
+            {
+                report.SetParameters(new ReportParameter[] { new ReportParameter("ContrastTheme", contrastThemeValue) });
+            }
+            catch (Exception ex)
+            {
+                // Report may not have a ContrastTheme parameter; ignore.
+                Util.Logger?.LogMessage("SetReportQueryParameters: unable to set ContrastTheme: " + ex.Message, MessageOptions.Silent);
+            }
+
+            // During native drillthrough the child report's ReportPath may be
+            // empty, null, or point to a temporary/invalid file.  Guard against
+            // that so we don't crash on XmlDocument.Load().
+            string reportPath = report.ReportPath;
+            if (string.IsNullOrEmpty(reportPath) || !File.Exists(reportPath))
+            {
+                return;
+            }
+
             XmlDocument doc = new XmlDocument();
-            doc.Load(report.ReportPath);
+            try
+            {
+                doc.Load(reportPath);
+            }
+            catch (XmlException ex)
+            {
+                // ReportPath may point to a temp file with invalid XML content
+                // (e.g. during native drillthrough).  Nothing more we can do.
+                Util.Logger?.LogMessage("SetReportQueryParameters: failed to load report XML from '" + reportPath + "': " + ex.Message, MessageOptions.Silent);
+                return;
+            }
             //MessageBox.Show("name space" + ReportUtil.GetReportNameSpace(doc));
             XmlNamespaceManager nsmgr = new XmlNamespaceManager(doc.NameTable);
             //nsmgr.AddNamespace("rds", "http://schemas.microsoft.com/sqlserver/reporting/2008/01/reportdefinition");
@@ -1534,19 +1842,18 @@ namespace sqlnexus
             // Retrieve all report parameters that have a default value bound to a DataSet
             XmlNodeList nodes = doc.DocumentElement.SelectNodes("//rds:Report//rds:ReportParameters/rds:ReportParameter[rds:DefaultValue/rds:DataSetReference]", nsmgr);
 
-            //If no params, bail
+            //If no dataset-bound params, bail
             if ((null == nodes) || (0 == nodes.Count))
             {
                 return;
             }
 
-            ReportParameter[] rparameters = new ReportParameter[nodes.Count];
-            int i = 0;
+            List<ReportParameter> rparametersList = new List<ReportParameter>();
             foreach (XmlNode node in nodes)
             {
                 // Get the name of the DataSet associated with this param default
                 XmlNode dsetnode = node.SelectSingleNode("rds:DefaultValue/rds:DataSetReference/rds:DataSetName", nsmgr);
-                
+
                 if (null != dsetnode)  //value from dataset
                 {
                     // Get the name of the DataSet field/column to use for the default value
@@ -1558,12 +1865,13 @@ namespace sqlnexus
                     SqlDataAdapter da = new SqlDataAdapter(fmNexus.GetQueryText(report.ReportPath, report.GetParameters(), dsetnode.InnerText), Globals.credentialMgr.ConnectionString);
                     da.Fill(dt);
                     // Add a new param to our param array
-                    if (dt.Rows.Count > 0)
-                        rparameters[i++] = new ReportParameter(node.Attributes["Name"].Value, dt.Rows[0][vfnode.InnerText].ToString());
+                    String paramName = node.Attributes["Name"].Value;
+                    if ((dt.Rows.Count > 0) && (!paramName.Equals("ContrastTheme")))
+                        rparametersList.Add(new ReportParameter(paramName, dt.Rows[0][vfnode.InnerText].ToString()));
                 }
             }
-            if (0!=i)
-                report.SetParameters(rparameters);
+            if (rparametersList.Count > 0)
+                report.SetParameters(rparametersList.ToArray());
         }
 
         /// <summary>
@@ -1640,11 +1948,24 @@ namespace sqlnexus
                         n.SelectedImageIndex = 1;
 
                         ReportParameterInfoCollection paramc = report.GetParameters();
-                        ReportParameter[] parameters = new ReportParameter[paramc.Count];
-                        int i = 0;
+
+                        List<ReportParameter> parameters = new List<ReportParameter>();
+                        // ThemeManager uses "Default" but the RDL reports expect "None".
+                        string currentTheme = Properties.Settings.Default.Theme;
+                        string contrastThemeValue = (string.IsNullOrEmpty(currentTheme) || currentTheme == "Default") ? "None" : currentTheme;
+                        ReportParameter contrastThemeParam = new ReportParameter("ContrastTheme", contrastThemeValue);
+
                         foreach (ReportParameterInfo p in paramc)
                         {
-                            parameters[i++] = new ReportParameter(p.Name, p.Values[0]);
+                            if (p.Name == "ContrastTheme")
+                            {
+                                parameters.Add(contrastThemeParam);
+                            }
+                            else
+                            {
+                                if (p.Values.Count > 0)
+                                    parameters.Add(new ReportParameter(p.Name, p.Values[0]));
+                            }
                         }
                         // First check for a child report (.RDLC) with the specified name in the same dir as the parent report
                         string filename = Path.GetDirectoryName(report.ReportPath) + @"\" + reportpath + RDLC_EXT;
@@ -1652,7 +1973,7 @@ namespace sqlnexus
                         {   // If not found, use our own reports dirs
                             filename = GetFullReportPath(reportpath, RDLC_EXT);
                         }
-                        SelectLoadReport(filename, false, parameters);
+                        SelectLoadReport(filename, false, parameters.ToArray());
                         return true;
                     }
                     else
@@ -2228,6 +2549,22 @@ namespace sqlnexus
             {
                 CurrentReportViewer.PerformBack();
                 tsbBack.Enabled = CurrentReport.IsDrillthroughReport;
+
+                // After navigating back, the parent report is rendered from cache
+                // with its original ContrastTheme.  If the theme changed while a
+                // child was displayed, update the parameter and force a re-render.
+                try
+                {
+                    string currentTheme = Properties.Settings.Default.Theme;
+                    string contrastThemeValue = (string.IsNullOrEmpty(currentTheme) || currentTheme == "Default") ? "None" : currentTheme;
+                    CurrentReport.SetParameters(new ReportParameter("ContrastTheme", contrastThemeValue));
+                    CurrentReportViewer.RefreshReport();
+                }
+                catch (Exception ex) 
+                { 
+                    // Report may not have ContrastTheme parameter; log and continue.
+                    LogMessage("tsbBack_Click: unable to set ContrastTheme: " + ex.Message, MessageOptions.Silent);
+                }
             }
             catch (Exception ex)
             {
@@ -2735,40 +3072,9 @@ namespace sqlnexus
         #region Mail methods
 
         private void CreateEmail(string[] ReportFiles)
-        {/*
-            Cursor save = StartWaiting();
-            try
-            {
-                try
-                {
-                    Microsoft.Office.Interop.Word.Application app = new Microsoft.Office.Interop.Word.Application();
-
-                    object FileName = Application.StartupPath + @"\Docs\Analysis.Doc";
-                    System.Diagnostics.Debug.Assert(File.Exists((string)FileName));
-
-                    app.Visible = true;
-                    object m = Missing.Value;
-                    app.Documents.Open(ref FileName, ref m, ref m, ref m, ref m,
-                        ref m, ref m, ref m, ref m, ref m,
-                        ref m, ref m, ref m, ref m,
-                        ref m, ref m);
-                    app.ActiveWindow.EnvelopeVisible = true;
-                    foreach (string f in ReportFiles)
-                    {
-                        object bFalse = false;
-                        object bTrue = true;
-                        app.Selection.InsertFile(f, ref m, ref bFalse, ref bFalse, ref bTrue);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Globals.HandleException(ex, this, this);
-                }
-            }
-            finally
-            {
-                StopWaiting(save);
-            }*/
+        {
+            // No-op: mailto: does not support attachments reliably.
+            // Use the Copy to Clipboard functionality instead.
         }
 
         private void mailCurrentReportToolStripMenuItem_Click(object sender, EventArgs e)
@@ -3053,8 +3359,26 @@ namespace sqlnexus
             {
                 try
                 {
-                    //TODO:  Put Back code here
                     LogMessage(sqlnexus.Properties.Resources.Msg_RVSyncBack, MessageOptions.Silent);
+
+                    // Propagate the current ContrastTheme to the parent report so
+                    // it is available when the ReportViewer renders it.
+                    string currentTheme = Properties.Settings.Default.Theme;
+                    string contrastThemeValue = (string.IsNullOrEmpty(currentTheme) || currentTheme == "Default") ? "None" : currentTheme;
+
+                    try
+                    {
+                        if (e.ParentReport != null)
+                        {
+                            e.ParentReport.SetParameters(new ReportParameter[] { new ReportParameter("ContrastTheme", contrastThemeValue) });
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        // Parent report may not have a ContrastTheme parameter; ignore.
+                        LogMessage($@"Parent report does not have ContrastTheme parameter. Exception: {ex.Message}", MessageOptions.Silent);
+
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -3271,26 +3595,99 @@ bool CreateDB(String dbName)
             
         }
 
+        // Add a flag to track if selection was committed by user action
+        private bool _databaseSelectionCommitted = false;
+        private int _previousDatabaseIndex = -1;
+        private bool _dropDownOpen = false;
+
         private void tscCurrentDatabase_SelectedIndexChanged(object sender, EventArgs e)
         {
-            
+            // Only process if selection was explicitly committed (Enter/Space pressed or mouse click in dropdown)
+            if (!_databaseSelectionCommitted)
+            {
+                return;
+            }
+
+            _databaseSelectionCommitted = false; // Reset flag
+
+            if (tscCurrentDatabase.SelectedItem == null)
+                return;
+
             if (tscCurrentDatabase.SelectedItem.ToString() == "<New Database>")
             {
                 String CurrentDatabase = Globals.credentialMgr.Database;
 
-                String NewDBName =Microsoft.VisualBasic.Interaction.InputBox("Enter your database name", "Database Name", "", this.Location.X + this.Size.Width / 2, this.Location.Y + this.Size.Height / 2);
-                if (NewDBName.Trim().Length == 0)
+                // Create a form for better accessibility
+                using (Form inputForm = new Form())
                 {
-                    PopulateDatabaseList(CurrentDatabase);
-                    return;
+                    inputForm.Text = "Database Name";
+                    inputForm.Width = 400;
+                    inputForm.Height = 150;
+                    inputForm.StartPosition = FormStartPosition.CenterParent;
+                    inputForm.FormBorderStyle = FormBorderStyle.FixedDialog;
+                    inputForm.MaximizeBox = false;
+                    inputForm.MinimizeBox = false;
+                    inputForm.AccessibleName = "New Database Form";
+                    inputForm.AccessibleDescription = "Form to enter the name of the new database to create";
+
+                    Label lblPrompt = new Label();
+                    lblPrompt.Text = "Enter your database name:";
+                    lblPrompt.Left = 10;
+                    lblPrompt.Top = 20;
+                    lblPrompt.Width = 360;
+                    lblPrompt.TabIndex = 0;
+                    inputForm.Controls.Add(lblPrompt);
+
+                    TextBox txtInput = new TextBox();
+                    txtInput.Left = 10;
+                    txtInput.Top = 45;
+                    txtInput.Width = 360;
+                    txtInput.TabIndex = 1;
+                    txtInput.AccessibleName = "Enter Database Name";
+                    txtInput.AccessibleDescription = "Enter the name for the new database";
+                    inputForm.Controls.Add(txtInput);
+
+                    Button btnOK = new Button();
+                    btnOK.Text = "OK";
+                    btnOK.Left = 210;
+                    btnOK.Top = 75;
+                    btnOK.Width = 75;
+                    btnOK.TabIndex = 2;
+                    btnOK.DialogResult = DialogResult.OK;
+                    inputForm.Controls.Add(btnOK);
+
+                    Button btnCancel = new Button();
+                    btnCancel.Text = "Cancel";
+                    btnCancel.Left = 295;
+                    btnCancel.Top = 75;
+                    btnCancel.Width = 75;
+                    btnCancel.TabIndex = 3;
+                    btnCancel.DialogResult = DialogResult.Cancel;
+                    inputForm.Controls.Add(btnCancel);
+
+                    inputForm.AcceptButton = btnOK;
+                    inputForm.CancelButton = btnCancel;
+
+                    if (inputForm.ShowDialog(this) == DialogResult.OK)
+                    {
+                        String NewDBName = txtInput.Text.Trim();
+                        if (NewDBName.Length == 0)
+                        {
+                            PopulateDatabaseList(CurrentDatabase);
+                            return;
+                        }
+                        bool createDB = CreateDB(NewDBName);
+
+                        if (createDB)
+                            PopulateDatabaseList(NewDBName);
+                        else
+                            PopulateDatabaseList("sqlnexus");
+                    }
+                    else
+                    {
+                        PopulateDatabaseList(CurrentDatabase);
+                    }
                 }
-                bool createDB = CreateDB(NewDBName);
-                
-                if (createDB)
-                    PopulateDatabaseList(NewDBName);
-                else
-                    PopulateDatabaseList("sqlnexus");
-                 
             }
             else
             {
@@ -3298,15 +3695,94 @@ bool CreateDB(String dbName)
             }
         }
 
+        // Add KeyDown handler for the ComboBox
+        private void tscCurrentDatabase_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Space)
+            {
+                _databaseSelectionCommitted = true;
+                // Manually trigger the selection change logic
+                tscCurrentDatabase_SelectedIndexChanged(sender, EventArgs.Empty);
+                e.Handled = true;
+            }
+            else if (e.KeyCode == Keys.Escape)
+            {
+                // Restore previous selection on Escape
+                if (_previousDatabaseIndex >= 0 && _previousDatabaseIndex < tscCurrentDatabase.Items.Count)
+                {
+                    tscCurrentDatabase.SelectedIndex = _previousDatabaseIndex;
+                }
+                e.Handled = true;
+            }
+        }
+
+        // Track when dropdown opens to save current selection
+        private void tscCurrentDatabase_DropDown(object sender, EventArgs e)
+        {
+            _previousDatabaseIndex = tscCurrentDatabase.SelectedIndex;
+            _dropDownOpen = true;
+        }
+
+        // Handle mouse selection when dropdown closes
+        private void tscCurrentDatabase_DropDownClosed(object sender, EventArgs e)
+        {
+            // If dropdown was open and selection changed, commit the selection (mouse click)
+            if (_dropDownOpen && tscCurrentDatabase.SelectedIndex != _previousDatabaseIndex)
+            {
+                _databaseSelectionCommitted = true;
+                tscCurrentDatabase_SelectedIndexChanged(sender, EventArgs.Empty);
+            }
+            _dropDownOpen = false;
+        }
+
         private void refreshAfterDBChange()
         {
+            // Save toolbar row positions.  SelectLoadReport() sets toolbarReport.Visible
+            // which triggers a TopToolStripPanel layout pass that can collapse toolbars
+            // from separate rows into one row.
+            int toolbarMainRow = toolStripContainer1.TopToolStripPanel.Rows.Length > 0
+                ? GetToolStripRow(toolbarMain) : -1;
+
             Globals.credentialMgr.Database = tscCurrentDatabase.SelectedItem.ToString();
             CloseAll();
             EnumReports();
             if (0 != tvReports.Nodes.Count)
+            {
                 tvReports.SelectedNode = tvReports.Nodes[0];
+                // Explicitly load the first report since AfterSelect won't trigger due to accessibility fix
+                SelectLoadReport(tvReports.Nodes[0].Text, true, null);
+            }
             ShowHideUIElements();
             Application.DoEvents();
+            ThemeManager.ApplyTheme(fmNexus.singleton);
+
+            // If the Standard toolbar was on its own row before the refresh,
+            // re-join it on that row to undo any layout collapsing.
+            if (toolbarMainRow >= 0 && toolbarMain.Visible)
+            {
+                int currentRow = GetToolStripRow(toolbarMain);
+                if (currentRow != toolbarMainRow)
+                {
+                    toolStripContainer1.TopToolStripPanel.Join(toolbarMain, toolbarMainRow);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Returns the row index of a ToolStrip within the TopToolStripPanel, or -1 if not found.
+        /// </summary>
+        private int GetToolStripRow(ToolStrip ts)
+        {
+            var rows = toolStripContainer1.TopToolStripPanel.Rows;
+            for (int i = 0; i < rows.Length; i++)
+            {
+                foreach (Control c in rows[i].Controls)
+                {
+                    if (c == ts)
+                        return i;
+                }
+            }
+            return -1;
         }
 
         private void tsb_CustomRowset_Click(object sender, EventArgs e)
@@ -3436,7 +3912,7 @@ bool CreateDB(String dbName)
 
         private void llData_LinkClicked_1(object sender, LinkLabelLinkClickedEventArgs e)
         {
-
+            CollapseExpandPanel(paLogBody, btnCollapseData, btnExpandData);
         }
 
         private void btnexpandReports_Click(object sender, EventArgs e)

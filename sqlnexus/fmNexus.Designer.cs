@@ -1,3 +1,4 @@
+    
 namespace sqlnexus
 {
     partial class fmNexus
@@ -155,6 +156,9 @@ namespace sqlnexus
             this.tsbFindNext = new System.Windows.Forms.ToolStripButton();
             this.tsLabelCurDB = new System.Windows.Forms.ToolStripLabel();
             this.tscCurrentDatabase = new System.Windows.Forms.ToolStripComboBox();
+            this.toolStripSeparatorTheme = new System.Windows.Forms.ToolStripSeparator();
+            this.tsLabelTheme = new System.Windows.Forms.ToolStripLabel();
+            this.tscTheme = new System.Windows.Forms.ToolStripComboBox();
             this.toolbarMain = new System.Windows.Forms.ToolStrip();
             this.tspUnpin = new System.Windows.Forms.ToolStripButton();
             this.tstbConnect = new System.Windows.Forms.ToolStripButton();
@@ -192,7 +196,7 @@ namespace sqlnexus
             ((System.ComponentModel.ISupportInitialize)(this.pbEditCustRowset)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbCopy)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbExport)).BeginInit();
-            this.paTasksHeader.SuspendLayout();          
+            this.paTasksHeader.SuspendLayout();
             this.paData.SuspendLayout();
             this.paDataHeader.SuspendLayout();
             this.paLogBody.SuspendLayout();
@@ -201,10 +205,10 @@ namespace sqlnexus
             this.paReports.SuspendLayout();
             this.paReportsBody.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bpPowerBIrpt)).BeginInit();
-            this.paReportsHeader.SuspendLayout();                
-this.menuBarMain.SuspendLayout();
+            this.paReportsHeader.SuspendLayout();
+            this.menuBarMain.SuspendLayout();
             this.toolbarService.SuspendLayout();
-            this.toolbarReport.SuspendLayout();        
+            this.toolbarReport.SuspendLayout();
             this.toolbarMain.SuspendLayout();
             this.cmReport.SuspendLayout();
             this.SuspendLayout();
@@ -229,7 +233,7 @@ this.menuBarMain.SuspendLayout();
             // 
             this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.menuBarMain);
             this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.toolbarService);
-            this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.toolbarReport);           
+            this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.toolbarReport);
             this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.toolbarMain);
             // 
             // ssStatus
@@ -338,7 +342,7 @@ this.menuBarMain.SuspendLayout();
             // 
             this.llPrint.ActiveLinkColor = System.Drawing.Color.LightSkyBlue;
             resources.ApplyResources(this.llPrint, "llPrint");
-            this.llPrint.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+            this.llPrint.LinkBehavior = System.Windows.Forms.LinkBehavior.AlwaysUnderline;
             this.llPrint.LinkColor = System.Drawing.Color.DarkBlue;
             this.llPrint.Name = "llPrint";
             this.llPrint.TabStop = true;
@@ -348,7 +352,7 @@ this.menuBarMain.SuspendLayout();
             // 
             this.ll_CustomRowset.ActiveLinkColor = System.Drawing.Color.LightSkyBlue;
             resources.ApplyResources(this.ll_CustomRowset, "ll_CustomRowset");
-            this.ll_CustomRowset.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+            this.ll_CustomRowset.LinkBehavior = System.Windows.Forms.LinkBehavior.AlwaysUnderline;
             this.ll_CustomRowset.LinkColor = System.Drawing.Color.DarkBlue;
             this.ll_CustomRowset.Name = "ll_CustomRowset";
             this.ll_CustomRowset.TabStop = true;
@@ -375,9 +379,9 @@ this.menuBarMain.SuspendLayout();
             // 
             // linkLabel1
             // 
-            this.linkLabel1.ActiveLinkColor = System.Drawing.Color.LightSkyBlue;
             resources.ApplyResources(this.linkLabel1, "linkLabel1");
-            this.linkLabel1.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+            this.linkLabel1.ActiveLinkColor = System.Drawing.Color.LightSkyBlue;
+            this.linkLabel1.LinkBehavior = System.Windows.Forms.LinkBehavior.AlwaysUnderline;
             this.linkLabel1.LinkColor = System.Drawing.Color.DarkBlue;
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.TabStop = true;
@@ -387,7 +391,7 @@ this.menuBarMain.SuspendLayout();
             // 
             this.linkLabel8.ActiveLinkColor = System.Drawing.Color.LightSkyBlue;
             resources.ApplyResources(this.linkLabel8, "linkLabel8");
-            this.linkLabel8.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+            this.linkLabel8.LinkBehavior = System.Windows.Forms.LinkBehavior.AlwaysUnderline;
             this.linkLabel8.LinkColor = System.Drawing.Color.DarkBlue;
             this.linkLabel8.Name = "linkLabel8";
             this.linkLabel8.TabStop = true;
@@ -417,13 +421,12 @@ this.menuBarMain.SuspendLayout();
             // 
             this.linkLabelImport.ActiveLinkColor = System.Drawing.Color.LightSkyBlue;
             resources.ApplyResources(this.linkLabelImport, "linkLabelImport");
-            this.linkLabelImport.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+            this.linkLabelImport.LinkBehavior = System.Windows.Forms.LinkBehavior.AlwaysUnderline;
             this.linkLabelImport.LinkColor = System.Drawing.Color.DarkBlue;
             this.linkLabelImport.Name = "linkLabelImport";
             this.linkLabelImport.TabStop = true;
-            this.linkLabelImport.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelImport_LinkClicked);
-            this.linkLabelImport.LocationChanged += new System.EventHandler(this.linkLabelImport_LocationChanged);
             this.linkLabelImport.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.importToolStripMenuItem_Click);
+            this.linkLabelImport.LocationChanged += new System.EventHandler(this.linkLabelImport_LocationChanged);
             // 
             // paTasksHeader
             // 
@@ -441,6 +444,7 @@ this.menuBarMain.SuspendLayout();
             this.btnExpandTasks.BackColor = System.Drawing.Color.Transparent;
             this.btnExpandTasks.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.btnExpandTasks.Name = "btnExpandTasks";
+            this.btnExpandTasks.TabStop = false;
             this.btnExpandTasks.UseVisualStyleBackColor = false;
             this.btnExpandTasks.Click += new System.EventHandler(this.btnExpandTasks_Click);
             // 
@@ -450,6 +454,7 @@ this.menuBarMain.SuspendLayout();
             this.btnCollapseTasks.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
             this.btnCollapseTasks.BackColor = System.Drawing.Color.Transparent;
             this.btnCollapseTasks.Name = "btnCollapseTasks";
+            this.btnCollapseTasks.TabStop = false;
             this.btnCollapseTasks.UseVisualStyleBackColor = false;
             this.btnCollapseTasks.Click += new System.EventHandler(this.btnExpandTasks_Click);
             // 
@@ -458,7 +463,7 @@ this.menuBarMain.SuspendLayout();
             this.llTasks.ActiveLinkColor = System.Drawing.Color.LightSkyBlue;
             resources.ApplyResources(this.llTasks, "llTasks");
             this.llTasks.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.llTasks.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+            this.llTasks.LinkBehavior = System.Windows.Forms.LinkBehavior.AlwaysUnderline;
             this.llTasks.LinkColor = System.Drawing.SystemColors.ButtonFace;
             this.llTasks.Name = "llTasks";
             this.llTasks.TabStop = true;
@@ -485,7 +490,7 @@ this.menuBarMain.SuspendLayout();
             this.llData.ActiveLinkColor = System.Drawing.Color.LightSkyBlue;
             resources.ApplyResources(this.llData, "llData");
             this.llData.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.llData.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+            this.llData.LinkBehavior = System.Windows.Forms.LinkBehavior.AlwaysUnderline;
             this.llData.LinkColor = System.Drawing.SystemColors.ButtonFace;
             this.llData.Name = "llData";
             this.llData.TabStop = true;
@@ -498,6 +503,7 @@ this.menuBarMain.SuspendLayout();
             this.btnExpandData.BackColor = System.Drawing.Color.Transparent;
             this.btnExpandData.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.btnExpandData.Name = "btnExpandData";
+            this.btnExpandData.TabStop = false;
             this.btnExpandData.UseVisualStyleBackColor = false;
             this.btnExpandData.Click += new System.EventHandler(this.btnExpandData_Click);
             // 
@@ -507,6 +513,7 @@ this.menuBarMain.SuspendLayout();
             this.btnCollapseData.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
             this.btnCollapseData.BackColor = System.Drawing.Color.Transparent;
             this.btnCollapseData.Name = "btnCollapseData";
+            this.btnCollapseData.TabStop = false;
             this.btnCollapseData.UseVisualStyleBackColor = false;
             this.btnCollapseData.Click += new System.EventHandler(this.btnExpandData_Click);
             // 
@@ -523,7 +530,7 @@ this.menuBarMain.SuspendLayout();
             // llOpenNexusLog
             // 
             resources.ApplyResources(this.llOpenNexusLog, "llOpenNexusLog");
-            this.llOpenNexusLog.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+            this.llOpenNexusLog.LinkBehavior = System.Windows.Forms.LinkBehavior.AlwaysUnderline;
             this.llOpenNexusLog.LinkColor = System.Drawing.Color.DarkBlue;
             this.llOpenNexusLog.Name = "llOpenNexusLog";
             this.llOpenNexusLog.TabStop = true;
@@ -542,7 +549,7 @@ this.menuBarMain.SuspendLayout();
             // llOpenReadTraceLog
             // 
             resources.ApplyResources(this.llOpenReadTraceLog, "llOpenReadTraceLog");
-            this.llOpenReadTraceLog.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+            this.llOpenReadTraceLog.LinkBehavior = System.Windows.Forms.LinkBehavior.AlwaysUnderline;
             this.llOpenReadTraceLog.LinkColor = System.Drawing.Color.DarkBlue;
             this.llOpenReadTraceLog.Name = "llOpenReadTraceLog";
             this.llOpenReadTraceLog.TabStop = true;
@@ -575,7 +582,7 @@ this.menuBarMain.SuspendLayout();
             // linkLabelPowerBI
             // 
             resources.ApplyResources(this.linkLabelPowerBI, "linkLabelPowerBI");
-            this.linkLabelPowerBI.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+            this.linkLabelPowerBI.LinkBehavior = System.Windows.Forms.LinkBehavior.AlwaysUnderline;
             this.linkLabelPowerBI.LinkColor = System.Drawing.Color.DarkBlue;
             this.linkLabelPowerBI.Name = "linkLabelPowerBI";
             this.linkLabelPowerBI.TabStop = true;
@@ -591,17 +598,20 @@ this.menuBarMain.SuspendLayout();
             // 
             // tvReports
             // 
+            resources.ApplyResources(this.tvReports, "tvReports");
             this.tvReports.BackColor = System.Drawing.Color.AliceBlue;
             this.tvReports.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.tvReports.Cursor = System.Windows.Forms.Cursors.Hand;
-            resources.ApplyResources(this.tvReports, "tvReports");
+            this.tvReports.DrawMode = System.Windows.Forms.TreeViewDrawMode.OwnerDrawText;
             this.tvReports.HideSelection = false;
             this.tvReports.HotTracking = true;
             this.tvReports.ImageList = this.imGlyphs;
             this.tvReports.Name = "tvReports";
             this.tvReports.ShowRootLines = false;
+            this.tvReports.DrawNode += new System.Windows.Forms.DrawTreeNodeEventHandler(this.tvReports_DrawMode);
             this.tvReports.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvReports_AfterSelect);
             this.tvReports.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvReports_NodeMouseClick);
+            this.tvReports.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tvReports_KeyDown);
             // 
             // imGlyphs
             // 
@@ -633,7 +643,7 @@ this.menuBarMain.SuspendLayout();
             this.llReports.ActiveLinkColor = System.Drawing.Color.LightSkyBlue;
             resources.ApplyResources(this.llReports, "llReports");
             this.llReports.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.llReports.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+            this.llReports.LinkBehavior = System.Windows.Forms.LinkBehavior.AlwaysUnderline;
             this.llReports.LinkColor = System.Drawing.SystemColors.ButtonFace;
             this.llReports.Name = "llReports";
             this.llReports.TabStop = true;
@@ -646,6 +656,7 @@ this.menuBarMain.SuspendLayout();
             this.btnexpandReports.BackColor = System.Drawing.Color.Transparent;
             this.btnexpandReports.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.btnexpandReports.Name = "btnexpandReports";
+            this.btnexpandReports.TabStop = false;
             this.btnexpandReports.UseVisualStyleBackColor = false;
             this.btnexpandReports.Click += new System.EventHandler(this.btnexpandReports_Click);
             // 
@@ -655,13 +666,15 @@ this.menuBarMain.SuspendLayout();
             this.btncollapsReports.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
             this.btncollapsReports.BackColor = System.Drawing.Color.Transparent;
             this.btncollapsReports.Name = "btncollapsReports";
+            this.btncollapsReports.TabStop = false;
             this.btncollapsReports.UseVisualStyleBackColor = false;
             this.btncollapsReports.Click += new System.EventHandler(this.btnexpandReports_Click);
             // 
             // rvTemplate
             // 
             resources.ApplyResources(this.rvTemplate, "rvTemplate");
-            this.rvTemplate.Name = "rvTemplate";          
+            this.rvTemplate.Name = "rvTemplate";
+            this.rvTemplate.ServerReport.BearerToken = null;
             // 
             // tcReports
             // 
@@ -1008,7 +1021,10 @@ this.menuBarMain.SuspendLayout();
             this.toolStripSeparator5,
             this.tsbFindNext,
             this.tsLabelCurDB,
-            this.tscCurrentDatabase});
+            this.tscCurrentDatabase,
+            this.toolStripSeparatorTheme,
+            this.tsLabelTheme,
+            this.tscTheme});
             this.toolbarReport.Name = "toolbarReport";
             this.toolbarReport.Visible = global::sqlnexus.Properties.Settings.Default.ShowReportToolbar;
             this.toolbarReport.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.toolbarReport_ItemClicked);
@@ -1174,6 +1190,7 @@ this.menuBarMain.SuspendLayout();
             // 
             this.excelToolStripMenuItem.MergeIndex = 1;
             this.excelToolStripMenuItem.Name = "excelToolStripMenuItem";
+            this.excelToolStripMenuItem.AccessibleDescription = "1 of 8";
             resources.ApplyResources(this.excelToolStripMenuItem, "excelToolStripMenuItem");
             this.excelToolStripMenuItem.Click += new System.EventHandler(this.excelToolStripMenuItem_Click);
             // 
@@ -1181,6 +1198,7 @@ this.menuBarMain.SuspendLayout();
             // 
             this.acrobatPDFFileToolStripMenuItem.MergeIndex = 2;
             this.acrobatPDFFileToolStripMenuItem.Name = "acrobatPDFFileToolStripMenuItem";
+            this.acrobatPDFFileToolStripMenuItem.AccessibleDescription = "2 of 8";
             resources.ApplyResources(this.acrobatPDFFileToolStripMenuItem, "acrobatPDFFileToolStripMenuItem");
             this.acrobatPDFFileToolStripMenuItem.Click += new System.EventHandler(this.excelToolStripMenuItem_Click);
             // 
@@ -1188,6 +1206,7 @@ this.menuBarMain.SuspendLayout();
             // 
             this.jPEGToolStripMenuItem.MergeIndex = 3;
             this.jPEGToolStripMenuItem.Name = "jPEGToolStripMenuItem";
+            this.jPEGToolStripMenuItem.AccessibleDescription = "3 of 8";
             resources.ApplyResources(this.jPEGToolStripMenuItem, "jPEGToolStripMenuItem");
             this.jPEGToolStripMenuItem.Click += new System.EventHandler(this.excelToolStripMenuItem_Click);
             // 
@@ -1195,6 +1214,7 @@ this.menuBarMain.SuspendLayout();
             // 
             this.bitmapToolStripMenuItem.MergeIndex = 4;
             this.bitmapToolStripMenuItem.Name = "bitmapToolStripMenuItem";
+            this.bitmapToolStripMenuItem.AccessibleDescription = "4 of 8";
             resources.ApplyResources(this.bitmapToolStripMenuItem, "bitmapToolStripMenuItem");
             this.bitmapToolStripMenuItem.Click += new System.EventHandler(this.excelToolStripMenuItem_Click);
             // 
@@ -1202,6 +1222,7 @@ this.menuBarMain.SuspendLayout();
             // 
             this.windowsEMFToolStripMenuItem.MergeIndex = 5;
             this.windowsEMFToolStripMenuItem.Name = "windowsEMFToolStripMenuItem";
+            this.windowsEMFToolStripMenuItem.AccessibleDescription = "5 of 8";
             resources.ApplyResources(this.windowsEMFToolStripMenuItem, "windowsEMFToolStripMenuItem");
             this.windowsEMFToolStripMenuItem.Click += new System.EventHandler(this.excelToolStripMenuItem_Click);
             // 
@@ -1209,6 +1230,7 @@ this.menuBarMain.SuspendLayout();
             // 
             this.GIFToolStripMenuItem.MergeIndex = 6;
             this.GIFToolStripMenuItem.Name = "GIFToolStripMenuItem";
+            this.GIFToolStripMenuItem.AccessibleDescription = "6 of 8";
             resources.ApplyResources(this.GIFToolStripMenuItem, "GIFToolStripMenuItem");
             this.GIFToolStripMenuItem.Click += new System.EventHandler(this.excelToolStripMenuItem_Click);
             // 
@@ -1216,6 +1238,7 @@ this.menuBarMain.SuspendLayout();
             // 
             this.PNGToolStripMenuItem.MergeIndex = 7;
             this.PNGToolStripMenuItem.Name = "PNGToolStripMenuItem";
+            this.PNGToolStripMenuItem.AccessibleDescription = "7 of 8";
             resources.ApplyResources(this.PNGToolStripMenuItem, "PNGToolStripMenuItem");
             this.PNGToolStripMenuItem.Click += new System.EventHandler(this.excelToolStripMenuItem_Click);
             // 
@@ -1223,6 +1246,7 @@ this.menuBarMain.SuspendLayout();
             // 
             this.TIFFToolStripMenuItem.MergeIndex = 8;
             this.TIFFToolStripMenuItem.Name = "TIFFToolStripMenuItem";
+            this.TIFFToolStripMenuItem.AccessibleDescription = "8 of 8";
             resources.ApplyResources(this.TIFFToolStripMenuItem, "TIFFToolStripMenuItem");
             this.TIFFToolStripMenuItem.Click += new System.EventHandler(this.excelToolStripMenuItem_Click);
             // 
@@ -1272,8 +1296,8 @@ this.menuBarMain.SuspendLayout();
             // 
             // tstbFind
             // 
-            resources.ApplyResources(this.tstbFind, "tstbFind");
             this.tstbFind.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            resources.ApplyResources(this.tstbFind, "tstbFind");
             this.tstbFind.Margin = new System.Windows.Forms.Padding(10, 0, 1, 0);
             this.tstbFind.Name = "tstbFind";
             this.tstbFind.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tstbFind_KeyPress);
@@ -1309,13 +1333,38 @@ this.menuBarMain.SuspendLayout();
             resources.ApplyResources(this.tscCurrentDatabase, "tscCurrentDatabase");
             this.tscCurrentDatabase.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.tscCurrentDatabase.Name = "tscCurrentDatabase";
+            this.tscCurrentDatabase.DropDown += new System.EventHandler(this.tscCurrentDatabase_DropDown);
+            this.tscCurrentDatabase.DropDownClosed += new System.EventHandler(this.tscCurrentDatabase_DropDownClosed);
             this.tscCurrentDatabase.SelectedIndexChanged += new System.EventHandler(this.tscCurrentDatabase_SelectedIndexChanged);
             this.tscCurrentDatabase.TextUpdate += new System.EventHandler(this.tscCurrentDatabase_TextUpdate);
+            this.tscCurrentDatabase.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tscCurrentDatabase_KeyDown);
             this.tscCurrentDatabase.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tscCurrentDatabase_KeyPress);
             this.tscCurrentDatabase.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tscCurrentDatabase_KeyUp);
             this.tscCurrentDatabase.Click += new System.EventHandler(this.tscCurrentDatabase_Click);
             this.tscCurrentDatabase.TextChanged += new System.EventHandler(this.tscCurrentDatabase_TextChanged);
-            //             
+            // 
+            // toolStripSeparatorTheme
+            // 
+            this.toolStripSeparatorTheme.Name = "toolStripSeparatorTheme";
+            resources.ApplyResources(this.toolStripSeparatorTheme, "toolStripSeparatorTheme");
+            // 
+            // tsLabelTheme
+            // 
+            this.tsLabelTheme.Margin = new System.Windows.Forms.Padding(12, 1, 0, 2);
+            this.tsLabelTheme.Name = "tsLabelTheme";
+            resources.ApplyResources(this.tsLabelTheme, "tsLabelTheme");
+            // 
+            // tscTheme
+            // 
+            resources.ApplyResources(this.tscTheme, "tscTheme");
+            this.tscTheme.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.tscTheme.Items.AddRange(new object[] {
+            resources.GetString("tscTheme.Items"),
+            resources.GetString("tscTheme.Items1"),
+            resources.GetString("tscTheme.Items2")});
+            this.tscTheme.Name = "tscTheme";
+            this.tscTheme.SelectedIndexChanged += new System.EventHandler(this.tscTheme_SelectedIndexChanged);
+            // 
             // toolbarMain
             // 
             this.toolbarMain.DataBindings.Add(new System.Windows.Forms.Binding("Visible", global::sqlnexus.Properties.Settings.Default, "ShowStandardToolbar", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
@@ -1391,7 +1440,7 @@ this.menuBarMain.SuspendLayout();
             resources.ApplyResources(this.tspHelp, "tspHelp");
             this.tspHelp.Name = "tspHelp";
             this.tspHelp.Click += new System.EventHandler(this.indexToolStripMenuItem_Click);
-            //            
+            // 
             // cmReport
             // 
             this.cmReport.ImageScalingSize = new System.Drawing.Size(20, 20);
@@ -1503,8 +1552,6 @@ this.menuBarMain.SuspendLayout();
             this.paReportsBody.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bpPowerBIrpt)).EndInit();
             this.paReportsHeader.ResumeLayout(false);
-            this.paReportsHeader.ResumeLayout(false);
-            this.paReportsHeader.PerformLayout();                        
             this.menuBarMain.ResumeLayout(false);
             this.menuBarMain.PerformLayout();
             this.toolbarService.ResumeLayout(false);
@@ -1671,6 +1718,9 @@ this.menuBarMain.SuspendLayout();
         private System.Windows.Forms.Button btncollapsReports;
         private System.Windows.Forms.Button btnExpandData;
         private System.Windows.Forms.Button btnCollapseData;
+        private System.Windows.Forms.ToolStripLabel tsLabelTheme;
+        private System.Windows.Forms.ToolStripComboBox tscTheme;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparatorTheme;
 
     }
 }
