@@ -120,6 +120,9 @@ namespace sqlnexus
             else
                 txtServerName.Text = Environment.MachineName;
 
+            chkEncryptConnection.Checked = Properties.Settings.Default.EncryptConnection;
+            chkTrustServerCertificate.Checked = Properties.Settings.Default.TrustCertificate;
+            chkTrustServerCertificate.Enabled = chkEncryptConnection.Checked;
         }
 
         private void chkEncryptConnection_CheckedChanged(object sender, EventArgs e)

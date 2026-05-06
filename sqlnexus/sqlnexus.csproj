@@ -889,6 +889,9 @@
     <ProjectReference Include="..\TraceEventImporter\TraceEventImporter.csproj">
       <Project>{B7A3C2D1-E4F5-4A6B-8C9D-0E1F2A3B4C5D}</Project>
       <Name>TraceEventImporter</Name>
+    <ProjectReference Include="..\ErrorLogImporter\ErrorLogImporter.csproj">
+      <Project>{B3A4C5D6-E7F8-4A9B-0C1D-2E3F4A5B6C7D}</Project>
+      <Name>ErrorLogImporter</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -16,9 +16,9 @@ BEGIN
     PRINT '==============================================';
     PRINT '        Perf Stats Script Analysis            ';
     PRINT '==============================================';
-    PRINT ' Script Exec Duration: ' + CONVERT(VARCHAR, DATEDIFF(mi, @firstruntime, @lastruntime)) + ' minutes';
-    PRINT '    Script Start Time: ' + CONVERT(VARCHAR, @firstruntime, 120);
-    PRINT '      Script End Time: ' + CONVERT(VARCHAR, @lastruntime, 120);
+    PRINT ' PerfStatsScript Exec Duration: ' + CONVERT(VARCHAR, DATEDIFF(mi, @firstruntime, @lastruntime)) + ' minutes';
+    PRINT '   PerfStatsScript Begin Time: ' + CONVERT(VARCHAR, @firstruntime, 120);
+    PRINT '     PerfStatsScript End Time: ' + CONVERT(VARCHAR, @lastruntime, 120);
     IF OBJECT_ID('tbl_SCRIPT_ENVIRONMENT_DETAILS') IS NOT NULL
         SELECT RIGHT(REPLICATE(' ', 24) + LEFT([Name], 20), 21) + ':',
                LEFT([Value], 60)
@@ -623,6 +623,38 @@ BEGIN
     IF OBJECT_ID('tempdb.dbo.#head_blk_sum') IS NOT NULL
         DROP TABLE #head_blk_sum;
 
+    -- Fill tbl_PERF_STATS_SCRIPT_RUNTIMES from all data sources before building #head_blk_sum
+    -- so that the blocking_end correlated subquery and the MAX(runtime) fallback both see
+    -- the full set of captured runtimes, including those only present in tbl_requests or
+    -- tbl_NOTABLEACTIVEQUERIES (e.g. when blocking occurred but wait stats were not captured).
+   INSERT INTO dbo.tbl_PERF_STATS_SCRIPT_RUNTIMES
+   SELECT DISTINCT
+          runtime
+   FROM dbo.tbl_REQUESTS src
+   WHERE src.runtime IS NOT NULL
+         AND NOT EXISTS
+         (
+             SELECT 1 FROM dbo.tbl_PERF_STATS_SCRIPT_RUNTIMES t WHERE t.runtime = src.runtime
+         );
+   INSERT INTO dbo.tbl_PERF_STATS_SCRIPT_RUNTIMES
+   SELECT DISTINCT
+          runtime
+   FROM dbo.tbl_OS_WAIT_STATS src
+   WHERE src.runtime IS NOT NULL
+         AND NOT EXISTS
+         (
+             SELECT 1 FROM dbo.tbl_PERF_STATS_SCRIPT_RUNTIMES t WHERE t.runtime = src.runtime
+         );
+   INSERT INTO dbo.tbl_PERF_STATS_SCRIPT_RUNTIMES
+   SELECT DISTINCT
+          runtime
+   FROM dbo.tbl_NOTABLEACTIVEQUERIES src
+   WHERE src.runtime IS NOT NULL
+         AND NOT EXISTS
+         (
+             SELECT 1 FROM dbo.tbl_PERF_STATS_SCRIPT_RUNTIMES t WHERE t.runtime = src.runtime
+         );
+
     SELECT rownum,
            runtime AS blocking_start,
            (
@@ -1133,13 +1165,24 @@ SELECT w_end.wait_category,
                                               END
        )
        END AS total_wait_time_ms,
+       CASE
+           WHEN (CONVERT(BIGINT, w_end.wait_time_ms) - CASE
+                                                           WHEN w_start.wait_time_ms IS NULL THEN
+                                                               0
+                                                           ELSE
+                                                               w_start.wait_time_ms
+                                                       END
+                ) <= 0 THEN
+               0
+           ELSE
        (CONVERT(BIGINT, w_end.wait_time_ms) - CASE
                                                   WHEN w_start.wait_time_ms IS NULL THEN
                                                       0
                                                   ELSE
                                                       w_start.wait_time_ms
                                               END
-       ) / (DATEDIFF(s, @StartTime, @EndTime) + 1) AS wait_time_ms_per_sec
+       ) / NULLIF(DATEDIFF(s, @StartTime, @EndTime) + 1, 0)
+       END AS wait_time_ms_per_sec
 INTO #waitstats_categories
 FROM dbo.vw_WAIT_CATEGORY_STATS w_end
     LEFT OUTER JOIN dbo.vw_WAIT_CATEGORY_STATS w_start
@@ -1160,7 +1203,7 @@ ORDER BY (w_end.wait_time_ms - CASE
          ) DESC;
 
 -- Get number of available "CPU seconds" in the specified interval (seconds in collection interval times # CPUs on the system)
-DECLARE @avail_cpu_time_sec INT;
+DECLARE @avail_cpu_time_sec BIGINT;
 SELECT @avail_cpu_time_sec =
 (
     SELECT TOP 1 [PropertyValue] FROM [dbo].[tbl_ServerProperties] WHERE PropertyName = 'cpu_count'
@@ -1252,8 +1295,13 @@ FROM
           AND cat.wait_category NOT IN
               (
                   SELECT TOP 5
-                         cat.wait_category
-                  FROM #waitstats_categories cat
+                         cat2.wait_category
+                  FROM #waitstats_categories cat2 
+                  WHERE (
+                            cat2.wait_time_ms_per_sec > 0
+                            OR cat2.total_wait_time_ms > 0
+                        )
+                        AND cat2.wait_category != 'SOS_SCHEDULER_YIELD'
                   ORDER BY wait_time_ms_per_sec DESC
               )
 ) AS t
@@ -1262,8 +1310,9 @@ ORDER BY wait_time_ms_per_sec DESC;
 
 GO
 
-
-
+IF OBJECT_ID('DataSet_WaitStats_WaitStatsTopCategoriesOther') IS NOT NULL
+    DROP PROC DataSet_WaitStats_WaitStatsTopCategoriesOther;
+GO
 CREATE PROC DataSet_WaitStats_WaitStatsTopCategoriesOther
     @StartTime DATETIME = '19000101',
     @EndTime DATETIME = '29990101',
@@ -1324,7 +1373,7 @@ ORDER BY (w_end.wait_time_ms - CASE
          ) DESC;
 
 -- Get number of available "CPU seconds" in the specified interval (seconds in collection interval times # CPUs on the system)
-DECLARE @avail_cpu_time_sec INT;
+DECLARE @avail_cpu_time_sec BIGINT;
 SELECT @avail_cpu_time_sec =
 (
     SELECT TOP 1 [PropertyValue] FROM [dbo].[tbl_ServerProperties] WHERE PropertyName = 'cpu_count'
@@ -1412,8 +1461,13 @@ WHERE (
       AND cat.wait_category NOT IN
           (
               SELECT TOP 5
-                     cat.wait_category
-              FROM #waitstats_categories cat
+                     cat2.wait_category
+              FROM #waitstats_categories cat2 
+              WHERE (
+                        cat2.wait_time_ms_per_sec > 0
+                        OR cat2.total_wait_time_ms > 0
+                    )
+                    AND cat2.wait_category != 'SOS_SCHEDULER_YIELD'
               ORDER BY wait_time_ms_per_sec DESC
           )
       AND cat.wait_category != 'SOS_SCHEDULER_YIELD'
@@ -1443,12 +1497,8 @@ IF @EndTime IS NULL
 SELECT *
 FROM dbo.vw_BLOCKING_CHAINS
 WHERE blocking_duration_sec > 0
-      AND (blocking_start
-      BETWEEN @StartTime AND @EndTime
-          )
-      OR (blocking_end
-      BETWEEN @StartTime AND @EndTime
-         );
+      AND (blocking_start BETWEEN @StartTime AND @EndTime
+          OR blocking_end BETWEEN @StartTime AND @EndTime);
 GO
 
 SELECT CONVERT(VARCHAR, GETDATE(), 126);
@@ -1548,7 +1598,7 @@ INTO @runtime,
      @blocked_tasks,
      @command,
      @query;
-WHILE (@@FETCH_STATUS <> -1)
+WHILE (@@FETCH_STATUS = 0)
 BEGIN
     SET @txtout
         = @txtout + '  ' + @runtime + @task_state + @wait_category + @wait_duration_ms + @request_elapsed_time
@@ -1696,28 +1746,31 @@ GO
 INSERT INTO dbo.tbl_PERF_STATS_SCRIPT_RUNTIMES
 SELECT DISTINCT
        runtime
-FROM tbl_requests
-WHERE runtime NOT IN
+FROM tbl_requests src
+WHERE src.runtime IS NOT NULL
+      AND NOT EXISTS
       (
-          SELECT runtime FROM dbo.tbl_PERF_STATS_SCRIPT_RUNTIMES
+          SELECT 1 FROM dbo.tbl_PERF_STATS_SCRIPT_RUNTIMES t WHERE t.runtime = src.runtime
       );
 GO
 INSERT INTO dbo.tbl_PERF_STATS_SCRIPT_RUNTIMES
 SELECT DISTINCT
        runtime
-FROM dbo.tbl_OS_WAIT_STATS
-WHERE runtime NOT IN
+FROM dbo.tbl_OS_WAIT_STATS src
+WHERE src.runtime IS NOT NULL
+      AND NOT EXISTS
       (
-          SELECT runtime FROM dbo.tbl_PERF_STATS_SCRIPT_RUNTIMES
+          SELECT 1 FROM dbo.tbl_PERF_STATS_SCRIPT_RUNTIMES t WHERE t.runtime = src.runtime
       );
 GO
 INSERT INTO dbo.tbl_PERF_STATS_SCRIPT_RUNTIMES
 SELECT DISTINCT
        runtime
-FROM dbo.tbl_NOTABLEACTIVEQUERIES
-WHERE runtime NOT IN
+FROM dbo.tbl_NOTABLEACTIVEQUERIES src
+WHERE src.runtime IS NOT NULL
+      AND NOT EXISTS
       (
-          SELECT runtime FROM dbo.tbl_PERF_STATS_SCRIPT_RUNTIMES
+          SELECT 1 FROM dbo.tbl_PERF_STATS_SCRIPT_RUNTIMES t WHERE t.runtime = src.runtime
       );
 GO
 /* ============ End Nexus Reporting DataSet Queries ============ */
@@ -4836,13 +4889,13 @@ BEGIN
     (
         SELECT *
         FROM dbo.tbl_dm_db_stats_properties
-        WHERE (rows_sampled * 100.00) / [rows] < 5.0
+        WHERE (rows_sampled * 100.00) / NULLIF([rows], 0) < 5.0
     )
     BEGIN
         UPDATE dbo.tbl_AnalysisSummary
         SET Status = 1,
             [Description] = [Description]
-                            + ' use query select *   from tbl_dm_db_stats_properties where (rows_sampled * 100.00)/ [rows] < 5.0 to identify tables with small sample sizes'
+                            + ' use query select *   from tbl_dm_db_stats_properties where (rows_sampled * 100.00)/ NULLIF([rows], 0) < 5.0 to identify tables with small sample sizes'
         WHERE Name = 'usp_SmallSampledStats';
     END;
 END;
@@ -4855,7 +4908,7 @@ DECLARE @FileName NVARCHAR(MAX),
         @SqlStmt VARCHAR(MAX);
 
 --if xml_plan column is in the table, the the file name (only) of the file that contains the query plan with optimized batch sort
-IF (COL_LENGTH('dbo.tblTopSqlPlan', 'xml_plan') IS NULL)
+IF (COL_LENGTH('dbo.tblTopSqlPlan', 'xml_plan') IS NOT NULL)
 BEGIN
     SELECT TOP 1
            @FileName = RIGHT([FileName], CHARINDEX('\', REVERSE([FileName])) - 1),
@@ -5256,8 +5309,7 @@ BEGIN
     UPDATE dbo.tbl_SysDatabases
     SET is_auto_update_stats_on = 0
     WHERE name = 'notexist';
-    SELECT *
-    FROM dbo.tbl_AnalysisSummary;
+    
     IF EXISTS
     (
         SELECT *
