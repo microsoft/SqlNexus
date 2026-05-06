@@ -148,8 +148,16 @@ namespace TraceEventImporter.Normalization
                     continue;
                 }
 
+                // --- Currency-prefixed numeric literal: $380, \u00A5100, \u20AC50, \u00A320, etc. ---
+                if (IsCurrencySymbol(c) && i + 1 < len && char.IsDigit(sql[i + 1]))
+                {
+                    i++; // skip the currency symbol
+                    c = sql[i];
+                    // fall through to numeric literal handling below
+                }
+
                 // --- Numeric literal ---
-                if (char.IsDigit(c) && (i == 0 || !IsIdentChar(sql[i - 1])))
+                if (char.IsDigit(c) && (i == 0 || !IsIdentChar(sql[i - 1]) || IsCurrencySymbol(sql[i - 1])))
                 {
                     bool hasDecimal = false;
                     while (i < len && char.IsDigit(sql[i]))
@@ -270,6 +278,55 @@ namespace TraceEventImporter.Normalization
         private static bool IsIdentChar(char c)
         {
             return char.IsLetterOrDigit(c) || c == '_' || c == '#' || c == '$';
+        }
+
+        /// <summary>
+        /// Returns true if the character is a currency symbol (dollar, yen/yuan, euro, pound, etc.)
+        /// that can appear as a prefix before a numeric value in SQL parameters.
+        /// </summary>
+        private static bool IsCurrencySymbol(char c)
+        {
+            // \u0024  $   dollar (USD, CAD, AUD, ...)
+            // \u00A2  ¢   cent
+            // \u00A3  £   pound sterling (GBP)
+            // \u00A4  ¤   generic currency sign
+            // \u00A5  ¥   yen / yuan (JPY, CNY)
+            // \u20A0-\u20CF  Unicode Currency Symbols block:
+            //   \u20A0  ₠  euro-currency sign
+            //   \u20A1  ₡  colón (CRC)
+            //   \u20A2  ₢  cruzeiro (BRL legacy)
+            //   \u20A3  ₣  franc (CHF legacy)
+            //   \u20A4  ₤  lira sign
+            //   \u20A5  ₥  mill sign
+            //   \u20A6  ₦  naira (NGN)
+            //   \u20A7  ₧  peseta (ESP)
+            //   \u20A8  ₨  rupee sign
+            //   \u20A9  ₩  won (KRW)
+            //   \u20AA  ₪  shekel (ILS)
+            //   \u20AB  ₫  dong (VND)
+            //   \u20AC  €  euro (EUR)
+            //   \u20AD  ₭  kip (LAK)
+            //   \u20AE  ₮  tögrög (MNT)
+            //   \u20AF  ₯  drachma (GRD)
+            //   \u20B0  ₰  pfennig
+            //   \u20B1  ₱  peso (PHP)
+            //   \u20B2  ₲  guaraní (PYG)
+            //   \u20B3  ₳  austral (ARS legacy)
+            //   \u20B4  ₴  hryvnia (UAH)
+            //   \u20B5  ₵  cedi (GHS)
+            //   \u20B6  ₶  livre tournois
+            //   \u20B7  ₷  spesmilo
+            //   \u20B8  ₸  tenge (KZT)
+            //   \u20B9  ₹  rupee (INR)
+            //   \u20BA  ₺  lira (TRY)
+            //   \u20BB  ₻  nordic mark
+            //   \u20BC  ₼  manat (AZN)
+            //   \u20BD  ₽  ruble (RUB)
+            //   \u20BE  ₾  lari (GEL)
+            //   \u20BF  ₿  bitcoin
+            //   \u20C0-\u20CF  reserved for future currency symbols
+            return c == '\u0024' || c == '\u00A2' || c == '\u00A3' || c == '\u00A4' || c == '\u00A5' ||
+                   (c >= '\u20A0' && c <= '\u20CF');
         }
 
         private static bool IsGuidLiteral(string sql, int pos)
