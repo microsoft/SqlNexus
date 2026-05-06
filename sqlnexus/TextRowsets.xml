@@ -2354,6 +2354,25 @@
       </KnownColumns>
     </Rowset>
 
+    <Rowset name="tbl_neverending_query" enabled="true" identifier="-- neverending_query --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="runtime_utc" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="session_id" type="RowsetImportEngine.IntColumn" />
+        <Column name="physical_operator_name" type="RowsetImportEngine.NVarCharColumn" length="256" />
+        <Column name="row_count" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="estimate_row_count" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="node_id" type="RowsetImportEngine.IntColumn" />
+        <Column name="cpu_time" type="RowsetImportEngine.IntColumn" />
+        <Column name="total_elapsed_time" type="RowsetImportEngine.IntColumn" />
+        <Column name="active_statement_text" type="RowsetImportEngine.NVarCharColumn" length="512" />
+        <Column name="rewind_count" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="rebind_count" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="end_of_scan_count" type="RowsetImportEngine.BigIntColumn" />
+        <Column name="batch_text" type="RowsetImportEngine.NVarCharColumn" length="256" />
+      </KnownColumns>
+    </Rowset>
+
     <Rowset name="tbl_CPU_bound_query_never_completes" enabled="true" identifier="-- neverending_query --" type="RowsetImportEngine.TextRowset">
       <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
       <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
