@@ -359,6 +359,12 @@ namespace SqlNexus.McpServer
                 },
                 new McpTool
                 {
+                    Name = "list_nexus_tables",
+                    Description = "Returns a curated catalog of the most analytically significant SQL Nexus tables with plain-English descriptions and a flag indicating whether each table is present in the connected database. IMPORTANT: this is a known-good subset, not a complete list — the database may contain additional tables not covered here. To discover every table actually present, use query_nexus_database with: SELECT TABLE_SCHEMA, TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE' ORDER BY TABLE_SCHEMA, TABLE_NAME",
+                    InputSchema = new { type = "object", properties = new { } }
+                },
+                new McpTool
+                {
                     Name = "query_nexus_database",
                     Description = "Execute custom SQL queries against SQL Nexus database. Supports SELECT, WITH (CTE), DECLARE, and IF statements.",
                     InputSchema = new
@@ -436,6 +442,9 @@ namespace SqlNexus.McpServer
                     break;
                 case "get_performance_summary":
                     resultText = GetAnalyzer().GetPerformanceSummary();
+                    break;
+                case "list_nexus_tables":
+                    resultText = GetAnalyzer().ListNexusTables();
                     break;
                 case "query_nexus_database":
                     resultText = GetAnalyzer().ExecuteCustomQuery(
