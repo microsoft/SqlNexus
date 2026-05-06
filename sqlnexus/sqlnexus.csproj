@@ -886,6 +886,10 @@
       <Project>{8DB02D0C-68F3-4762-9BC9-AA3DF2B91F4B}</Project>
       <Name>RowsetImportEngine</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ErrorLogImporter\ErrorLogImporter.csproj">
+      <Project>{B3A4C5D6-E7F8-4A9B-0C1D-2E3F4A5B6C7D}</Project>
+      <Name>ErrorLogImporter</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">
