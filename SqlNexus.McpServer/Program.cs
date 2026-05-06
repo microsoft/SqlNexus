@@ -241,13 +241,13 @@ namespace SqlNexus.McpServer
                 new McpTool
                 {
                     Name = "analyze_cpu_usage",
-                    Description = "Answer: 'Is there high CPU on this system?' Returns two sections: (1) CPU-related wait types (SOS_SCHEDULER_YIELD, CXPACKET, CXCONSUMER) from tbl_OS_WAIT_STATS, and (2) Perfmon CPU summary from CounterData including max SQL CPU %, average SQL CPU %, max total system CPU %, and how many Perfmon samples exceeded 70% CPU threshold.",
+                    Description = "Answer: 'Is there high CPU on this system?' Queries per-sample CPU data from CounterData (Perfmon) if available, falling back to tbl_SQL_CPU_HEALTH ring-buffer data. Returns: (1) a perfmon_cpu_summary with max/avg SQL CPU %, max/avg total CPU %, sample counts above 70%, and any sustained high-CPU runs (3 or more consecutive samples above 70% SQL CPU); (2) the raw per-sample breakdown of sql_cpu_pct, nonsql_cpu_pct, and system_idle_pct.",
                     InputSchema = new { type = "object", properties = new { } }
                 },
                 new McpTool
                 {
                     Name = "get_top_cpu_queries",
-                    Description = "Get top CPU-consuming queries from tbl_NOTABLEACTIVEQUERIES. Answer: 'Which queries are causing high CPU?'",
+                    Description = "Answer: 'Which queries are causing high CPU?' If ReadTrace.tblBatches is present, aggregates total_cpu_ms, pct_of_cpu_capacity, avg_cpu_ms, executions, reads, writes, and statement text from tblBatches/tblUniqueBatches. Otherwise falls back to tbl_Hist_Top10_CPU_Queries_ByQueryHash using a delta between the first and last snapshot to isolate CPU consumed only during the collection window.",
                     InputSchema = new
                     {
                         type = "object",
@@ -273,7 +273,7 @@ namespace SqlNexus.McpServer
                 new McpTool
                 {
                     Name = "analyze_io_waits",
-                    Description = "Answer: 'Is SQL Server the contributing factor to slow I/O?' Shows PAGEIOLATCH, WRITELOG, IO_COMPLETION waits.",
+                    Description = "Answer: 'Is SQL Server the contributing factor to slow I/O?' Shows delta wait time and wait-time-per-second-per-CPU for PAGEIOLATCH_*, WRITELOG, LOGBUFFER, IO_COMPLETION, and ASYNC_IO_COMPLETION wait types between the first and last tbl_OS_WAIT_STATS snapshots.",
                     InputSchema = new { type = "object", properties = new { } }
                 },
                 new McpTool
@@ -303,7 +303,7 @@ namespace SqlNexus.McpServer
                 new McpTool
                 {
                     Name = "get_collection_time_range",
-                    Description = "Get the overall PSSDiag/SQLLogScout data collection time range.",
+                    Description = "Get the overall data collection time range (start, end, duration in minutes) from ReadTrace.tblBatches. Returns no data if ReadTrace was not part of the collection (e.g., SQLLogScout-only captures without a trace/XEvent session).",
                     InputSchema = new { type = "object", properties = new { } }
                 },
                 new McpTool
