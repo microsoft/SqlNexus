@@ -82,18 +82,16 @@ namespace TraceEventImporter.Normalization
                     continue;
                 }
 
-                // --- Binary literal: 0xHEX ---
-                if (c == '0' && i + 1 < len && (sql[i + 1] == 'x' || sql[i + 1] == 'X'))
+                // --- Binary literal: 0xHEX — only when not part of an identifier ---
+                if (c == '0' && i + 1 < len
+                    && (sql[i + 1] == 'x' || sql[i + 1] == 'X')
+                    && (i == 0 || !IsIdentChar(sql[i - 1])))
                 {
-                    // Ensure it's not part of an identifier
-                    if (i == 0 || !IsIdentChar(sql[i - 1]))
-                    {
-                        i += 2;
-                        while (i < len && IsHexDigit(sql[i]))
-                            i++;
-                        AppendWithSpace(result, "{BS}");
-                        continue;
-                    }
+                    i += 2;
+                    while (i < len && IsHexDigit(sql[i]))
+                        i++;
+                    AppendWithSpace(result, "{BS}");
+                    continue;
                 }
 
                 // --- GUID literal: {xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx} ---
@@ -272,7 +270,9 @@ namespace TraceEventImporter.Normalization
 
         private static bool IsHexDigit(char c)
         {
-            return (c >= '0' && c <= '9') || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F');
+            return (c >= '0' && c <= '9')
+                || (c >= 'a' && c <= 'f')
+                || (c >= 'A' && c <= 'F');
         }
 
         private static bool IsIdentChar(char c)
@@ -346,21 +346,23 @@ namespace TraceEventImporter.Normalization
             // Matches [ExprNNNN] or [BMKNNNN] patterns
             if (pos + 5 >= sql.Length) return false;
             int i = pos + 1;
-            string prefix = "";
+            var prefixBuilder = new StringBuilder();
             while (i < sql.Length && char.IsLetter(sql[i]))
             {
-                prefix += sql[i];
+                prefixBuilder.Append(sql[i]);
                 i++;
             }
 
-            if (prefix.Length == 0) return false;
+            if (prefixBuilder.Length == 0) 
+                return false;
 
-            string upper = prefix.ToUpperInvariant();
+            string upper = prefixBuilder.ToString().ToUpperInvariant();
             if (upper != "EXPR" && upper != "BMK" && upper != "UNION" && upper != "CONST")
                 return false;
 
             // Must be followed by digits then ']'
-            if (i >= sql.Length || !char.IsDigit(sql[i])) return false;
+            if (i >= sql.Length || !char.IsDigit(sql[i])) 
+                return false;
             while (i < sql.Length && char.IsDigit(sql[i])) i++;
             return (i < sql.Length && sql[i] == ']');
         }

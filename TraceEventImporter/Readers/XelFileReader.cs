@@ -223,7 +223,10 @@ namespace TraceEventImporter.Readers
                 if (xe.Fields != null && xe.Fields.TryGetValue(fieldName, out object val) && val != null)
                     return val.ToString();
             }
-            catch { }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"[XelFileReader] GetFieldString('{fieldName}'): {ex.Message}");
+            }
             return null;
         }
 
@@ -234,7 +237,10 @@ namespace TraceEventImporter.Readers
                 if (xe.Fields != null && xe.Fields.TryGetValue(fieldName, out object val) && val != null)
                     return Convert.ToInt64(val);
             }
-            catch { }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"[XelFileReader] GetFieldInt64Nullable('{fieldName}'): {ex.Message}");
+            }
             return null;
         }
 
@@ -245,7 +251,10 @@ namespace TraceEventImporter.Readers
                 if (xe.Actions != null && xe.Actions.TryGetValue(actionName, out object val) && val != null)
                     return val.ToString();
             }
-            catch { }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"[XelFileReader] GetActionString('{actionName}'): {ex.Message}");
+            }
             return null;
         }
 
@@ -256,7 +265,10 @@ namespace TraceEventImporter.Readers
                 if (xe.Actions != null && xe.Actions.TryGetValue(actionName, out object val) && val != null)
                     return Convert.ToInt64(val);
             }
-            catch { }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"[XelFileReader] GetActionInt64('{actionName}'): {ex.Message}");
+            }
             return 0;
         }
 

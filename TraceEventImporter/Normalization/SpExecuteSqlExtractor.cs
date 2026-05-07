@@ -52,15 +52,14 @@ namespace TraceEventImporter.Normalization
             // Look for N'...' or '...' pattern
             while (i < len)
             {
-                // N'...' unicode string literal
-                if (i < len - 1 && (textData[i] == 'N' || textData[i] == 'n') && textData[i + 1] == '\'')
+                // N'...' unicode string literal — check we're past the proc name
+                if (i < len - 1
+                    && (textData[i] == 'N' || textData[i] == 'n')
+                    && textData[i + 1] == '\''
+                    && i > 0
+                    && IsAfterProcName(textData, i))
                 {
-                    // Check if this is after the proc name (not part of it)
-                    // by verifying we've passed at least one space/comma
-                    if (i > 0 && IsAfterProcName(textData, i))
-                    {
-                        return ExtractQuotedString(textData, i + 2);
-                    }
+                    return ExtractQuotedString(textData, i + 2);
                 }
 
                 // '...' regular string literal

@@ -188,7 +188,8 @@ namespace TraceEventImporter.Processing
 
         private int FindTimeInterval(DateTime? time)
         {
-            if (!time.HasValue || TimeIntervals.Count == 0) return 0;
+            if (!time.HasValue || TimeIntervals.Count == 0) 
+                return 0;
             DateTime t = time.Value;
             foreach (var ti in TimeIntervals)
             {
