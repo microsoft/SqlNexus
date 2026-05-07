@@ -400,7 +400,8 @@ namespace SqlNexus.McpServer
                     CAST(CAST(t2.spins AS FLOAT) - CAST(t1.spins AS FLOAT) AS BIGINT) delta_spins,  
                     CAST(CAST(t2.Backoffs AS FLOAT) - CAST(t1.Backoffs AS FLOAT) AS BIGINT) delta_backoff, 
                     DATEDIFF(MI, t1.runtime, t2.runtime) delta_minutes,
-                    (CAST(CAST(t2.spins AS FLOAT) - CAST(t1.spins AS FLOAT) AS BIGINT)) / DATEDIFF(MILLISECOND, t1.runtime, t2.runtime) / @cpus AS spins_per_millisecond_per_CPU
+                    (CAST(CAST(t2.spins AS FLOAT) - CAST(t1.spins AS FLOAT) AS BIGINT)) / DATEDIFF(MILLISECOND, t1.runtime, t2.runtime) / @cpus AS spins_per_millisecond_per_CPU,
+                    CASE WHEN (CAST(CAST(t2.spins AS FLOAT) - CAST(t1.spins AS FLOAT) AS BIGINT)) / DATEDIFF(MILLISECOND, t1.runtime, t2.runtime) / @cpus > 20000 THEN 1 ELSE 0 END AS is_high_cpu_driver
                 FROM  
                     (SELECT ROW_NUMBER() OVER (PARTITION BY [name] ORDER BY runtime) row, *  
                      FROM [tbl_SPINLOCKSTATS] 
@@ -422,11 +423,22 @@ namespace SqlNexus.McpServer
         public string GetCollectionTimeRange()
         {
             const string query = @"
-                SELECT 
-                    MIN(tb.StartTime) AS CollectionStartTime, 
-                    MAX(tb.EndTime) AS CollectionEndTime, 
-                    DATEDIFF(MINUTE, MIN(tb.starttime), MAX(tb.EndTime)) AS CollectionDuration_min
-                FROM ReadTrace.tblBatches tb";
+                IF OBJECT_ID('dbo.tbl_RUNTIMES') IS NOT NULL
+                BEGIN
+                    SELECT
+                        MIN(runtime) AS CollectionStartTime,
+                        MAX(runtime) AS CollectionEndTime,
+                        DATEDIFF(MINUTE, MIN(runtime), MAX(runtime)) AS CollectionDuration_min
+                    FROM dbo.tbl_RUNTIMES
+                END
+                ELSE IF OBJECT_ID('ReadTrace.tblBatches') IS NOT NULL
+                BEGIN
+                    SELECT 
+                        MIN(tb.StartTime) AS CollectionStartTime, 
+                        MAX(tb.EndTime) AS CollectionEndTime, 
+                        DATEDIFF(MINUTE, MIN(tb.StartTime), MAX(tb.EndTime)) AS CollectionDuration_min
+                    FROM ReadTrace.tblBatches tb
+                END";
 
             return ExecuteQueryAndReturnJson(query, "PSSDiag/SQLLogScout Collection Time Range");
         }
