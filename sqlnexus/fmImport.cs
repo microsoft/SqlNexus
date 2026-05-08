@@ -809,9 +809,9 @@ namespace sqlnexus
 
             // Add the SQLDiag/AlwaysOn XEL option under Importers with sub-items
             tsiSQLDiagAlwaysOnXEL.Name = "tsiSQLDiagAlwaysOnXEL";
-            tsiSQLDiagAlwaysOnXEL.Text = "Import SQLDiag/AlwaysOn XEL";
-            tsiSQLDiagAlwaysOnXEL.AccessibleName = "Import SQLDiag AlwaysOn XEL";
-            tsiSQLDiagAlwaysOnXEL.AccessibleDescription = "Submenu for importing SQLDiag and AlwaysOn Extended Events XEL files";
+            tsiSQLDiagAlwaysOnXEL.Text = "Import SQLDiag / AlwaysOn / System Health XEL";
+            tsiSQLDiagAlwaysOnXEL.AccessibleName = "Import SQLDiag AlwaysOn System Health XEL";
+            tsiSQLDiagAlwaysOnXEL.AccessibleDescription = "Submenu for importing SQLDiag, AlwaysOn, and System Health Extended Events XEL files";
             tsiSQLDiagAlwaysOnXEL.DropDownItems.Clear();
 
             // "Drop existing tables" sub-item
