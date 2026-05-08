@@ -28,6 +28,7 @@ namespace TraceEventImporter
         private const string OPTION_ENABLED = "Enabled";
         private const string OPTION_DROP_EXISTING = "Drop existing ReadTrace tables";
         private const string OPTION_INTERVAL_SECONDS = "Aggregation interval (seconds)";
+        private const string OPTION_USE_LOCAL_SERVER_TIME = "Import events using local server time (not UTC)";
 
         // Private state
         private ILogger _logger;
@@ -51,6 +52,7 @@ namespace TraceEventImporter
             _options.Add(OPTION_DROP_EXISTING, true);
             _options.Add(OPTION_INTERVAL_SECONDS, 60);
             _options.Add(OPTION_ENABLED, true);
+            _options.Add(OPTION_USE_LOCAL_SERVER_TIME, false);
         }
 
         #region INexusImporter
@@ -149,6 +151,17 @@ namespace TraceEventImporter
                 int intervalSeconds = Convert.ToInt32(_options[OPTION_INTERVAL_SECONDS]);
                 long globalSeq = 0;
 
+                // When importing with local server time, shift every event timestamp by the
+                // UTC-to-local offset so StartTime/EndTime are stored in local time, matching
+                // the behaviour of ReadTraceNexusImporter's -B flag passed to ReadTrace.exe.
+                TimeSpan localTimeOffset = TimeSpan.Zero;
+                if ((bool)_options[OPTION_USE_LOCAL_SERVER_TIME])
+                {
+                    decimal offsetHours = GetLocalServerTimeOffset();
+                    localTimeOffset = TimeSpan.FromHours((double)offsetHours);
+                    LogMessage($"TraceEventImporter: Local server time offset = {offsetHours} hours; timestamps will be shifted accordingly.");
+                }
+
                 using (var writer = new BulkWriter(_connStr))
                 {
                     foreach (string file in files)
@@ -168,6 +181,14 @@ namespace TraceEventImporter
                         foreach (TraceEvent evt in reader.ReadEvents(file))
                         {
                             if (_cancelled) break;
+
+                            if (localTimeOffset != TimeSpan.Zero)
+                            {
+                                if (evt.StartTime.HasValue)
+                                    evt.StartTime = evt.StartTime.Value.Add(localTimeOffset);
+                                if (evt.EndTime.HasValue)
+                                    evt.EndTime = evt.EndTime.Value.Add(localTimeOffset);
+                            }
 
                             processor.ProcessEvent(evt);
                             _totalLinesProcessed++;
@@ -269,6 +290,8 @@ namespace TraceEventImporter
                 RunPostLoadFixups();
 
                 LogMessage($"TraceEventImporter: Import complete. {_totalRowsInserted} total rows inserted.");
+                if ((bool)_options[OPTION_USE_LOCAL_SERVER_TIME])
+                    WriteLocalTimeFlag();
                 State = ImportState.Idle;
                 return true;
             }
@@ -324,6 +347,131 @@ namespace TraceEventImporter
         {
             string sql = LoadEmbeddedResource("TraceEventImporter.Schema.PostLoadFixups.sql");
             ExecuteSqlScript(sql);
+        }
+
+        private const string LOCAL_SRV_TIME_QUERY =
+            "SELECT ISNULL(CONVERT(decimal, PropertyValue), 0) UtcToLocalOffset " +
+            "FROM tbl_ServerProperties " +
+            "WHERE PropertyName = 'UTCOffset_in_Hours'";
+
+        /// <summary>
+        /// Reads the UTC-to-local offset (in hours) from the database.
+        /// Returns 0 if the value cannot be determined.
+        /// </summary>
+        private decimal GetLocalServerTimeOffset()
+        {
+            // Primary: tbl_ServerProperties
+            try
+            {
+                using (var cn = new SqlConnection(_connStr))
+                {
+                    cn.Open();
+                    using (var cmd = new SqlCommand(LOCAL_SRV_TIME_QUERY, cn))
+                    {
+                        cmd.CommandTimeout = 0;
+                        object result = cmd.ExecuteScalar();
+                        if (result != null && result != DBNull.Value)
+                        {
+                            decimal offset = Convert.ToDecimal(result);
+                            LogMessage("TraceEventImporter: UTC_Offset from tbl_ServerProperties: " + offset);
+                            return offset;
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                LogMessage("TraceEventImporter: Could not read UTC offset from tbl_ServerProperties: " + e.Message);
+            }
+
+            // Fallback: tbl_server_times (Log Scout captures without PSSDIAG)
+            try
+            {
+                using (var cn = new SqlConnection(_connStr))
+                {
+                    cn.Open();
+                    using (var cmd = new SqlCommand(
+                        "SELECT TOP 1 ISNULL(time_delta_hours * -1, 0) FROM dbo.tbl_server_times", cn))
+                    {
+                        cmd.CommandTimeout = 0;
+                        object result = cmd.ExecuteScalar();
+                        if (result != null && result != DBNull.Value)
+                        {
+                            decimal offset = Convert.ToDecimal(result);
+                            LogMessage("TraceEventImporter: UTC_Offset from tbl_server_times: " + offset);
+                            return offset;
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                LogMessage("TraceEventImporter: Could not read UTC offset from tbl_server_times: " + e.Message);
+            }
+
+            LogMessage("TraceEventImporter: UTC offset not found; defaulting to 0.");
+            return 0;
+        }
+
+        /// <summary>
+        /// Writes a flag to <c>tbl_ServerProperties</c> (when it exists) indicating that
+        /// timestamps in the ReadTrace tables are already in local server time.
+        /// <c>SQLNexus_PostProcessing.sql</c> reads this flag to skip the UTC offset conversion
+        /// when populating <c>StartTime_local</c> / <c>EndTime_local</c>.
+        /// </summary>
+        private void WriteLocalTimeFlag()
+        {
+            const string flagName = "TimestampsAreLocalTime";
+            const string sql =
+                // --- tbl_ServerProperties (primary) ---
+                "IF OBJECT_ID('dbo.tbl_ServerProperties') IS NOT NULL " +
+                "BEGIN " +
+                "    IF EXISTS (SELECT 1 FROM dbo.tbl_ServerProperties WHERE PropertyName = '" + flagName + "') " +
+                "        UPDATE dbo.tbl_ServerProperties SET PropertyValue = '1' WHERE PropertyName = '" + flagName + "'; " +
+                "    ELSE " +
+                "        INSERT INTO dbo.tbl_ServerProperties (PropertyName, PropertyValue) VALUES ('" + flagName + "', '1'); " +
+                "END " +
+                // --- tbl_server_times (fallback) ---
+                // NOTE: the ALTER TABLE and the UPDATE must NOT be in the same batch because SQL
+                // Server compiles the whole batch before execution and would fail to resolve the
+                // new column at parse time. sp_executesql defers compilation of the UPDATE to
+                // after the ALTER TABLE has already run and the column is visible in the catalog.
+                "IF OBJECT_ID('dbo.tbl_server_times') IS NOT NULL " +
+                "BEGIN " +
+                "    IF COL_LENGTH('dbo.tbl_server_times', '" + flagName + "') IS NULL " +
+                "        ALTER TABLE dbo.tbl_server_times ADD [" + flagName + "] BIT NULL; " +
+                "    IF COL_LENGTH('dbo.tbl_server_times', '" + flagName + "') IS NOT NULL " +
+                "        EXEC sp_executesql N'UPDATE dbo.tbl_server_times SET [" + flagName + "] = 1'; " +
+                "END " +
+                // --- ReadTrace.tblMiscInfo (guaranteed fallback) ---
+                // This table is always created by the managed importer schema, so the flag is
+                // stored reliably even when PSSDIAG / Log Scout diagnostic tables are absent
+                // (e.g. when only the Trace Event Importer is enabled without the Rowset Importer).
+                "IF OBJECT_ID('ReadTrace.tblMiscInfo') IS NOT NULL " +
+                "BEGIN " +
+                "    IF EXISTS (SELECT 1 FROM ReadTrace.tblMiscInfo WHERE Attribute = '" + flagName + "') " +
+                "        UPDATE ReadTrace.tblMiscInfo SET Value = '1' WHERE Attribute = '" + flagName + "'; " +
+                "    ELSE " +
+                "        INSERT INTO ReadTrace.tblMiscInfo (Attribute, Value) VALUES ('" + flagName + "', '1'); " +
+                "END";
+
+            using (var cn = new SqlConnection(_connStr))
+            {
+                try
+                {
+                    cn.Open();
+                    using (var cmd = new SqlCommand(sql, cn))
+                    {
+                        cmd.CommandTimeout = 0;
+                        cmd.ExecuteNonQuery();
+                    }
+                    LogMessage("TraceEventImporter: Wrote '" + flagName + "' flag to tbl_ServerProperties, tbl_server_times, and/or ReadTrace.tblMiscInfo.");
+                }
+                catch (Exception e)
+                {
+                    LogMessage("TraceEventImporter: Could not write local time flag: " + e.Message);
+                }
+            }
         }
 
         private void ExecuteSqlScript(string script)

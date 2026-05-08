@@ -506,7 +506,15 @@ namespace sqlnexus
                 else if (file.ToUpper().Contains("READTRACE"))
                 {
                     ImporterList.Add(200, file);
-
+                }
+                else if (file.ToUpper().Contains("TRACEEVENTIMPORTER"))
+                {
+                    // TraceEventImporter must run after RowsetImportEngine (100) so that
+                    // tbl_ServerProperties already exists when GetLocalServerTimeOffset()
+                    // and WriteLocalTimeFlag() are called.  Place it between Rowset (100)
+                    // and ReadTrace (200); ReadTrace and TraceEventImporter are mutually
+                    // exclusive so they will never both be present at the same time.
+                    ImporterList.Add(150, file);
                 }
                 else
                 {

@@ -50,6 +50,10 @@ namespace ReadTrace
                                             "tbl_ServerProperties " +
                                             "WHERE PropertyName = 'UTCOffset_in_Hours'";
 
+        // Flag written to the DB when timestamps are already in local server time.
+        // SQLNexus_PostProcessing.sql reads this to skip the UTC-to-local offset conversion.
+        internal const string LOCAL_TIME_FLAG_PROPERTY = "TimestampsAreLocalTime";
+
 
         // Private members
         private ArrayList knownRowsets = new ArrayList();	// List of the rowsets we know how to interpret
@@ -186,6 +190,67 @@ namespace ReadTrace
             }
         }
 
+        /// <summary>
+        /// Writes a flag indicating that timestamps in the ReadTrace tables are already in local
+        /// server time. Writes to tbl_ServerProperties</c> when it exists, and also sets a
+        /// TimestampsAreLocalTime</c> column on tbl_server_times</c> (adding the column
+        /// first if necessary) as a fallback for environments where tbl_ServerProperties</c>
+        /// is not present. SQLNexus_PostProcessing.sql</c> reads either location to skip the
+        /// UTC offset conversion when populating StartTime_local</c> / EndTime_local</c>.
+        /// </summary>
+        private void WriteLocalTimeFlag()
+        {
+            const string sql =
+                // --- tbl_ServerProperties (primary) ---
+                "IF OBJECT_ID('dbo.tbl_ServerProperties') IS NOT NULL " +
+                "BEGIN " +
+                "    IF EXISTS (SELECT 1 FROM dbo.tbl_ServerProperties WHERE PropertyName = '" + LOCAL_TIME_FLAG_PROPERTY + "') " +
+                "        UPDATE dbo.tbl_ServerProperties SET PropertyValue = '1' WHERE PropertyName = '" + LOCAL_TIME_FLAG_PROPERTY + "'; " +
+                "    ELSE " +
+                "        INSERT INTO dbo.tbl_ServerProperties (PropertyName, PropertyValue) VALUES ('" + LOCAL_TIME_FLAG_PROPERTY + "', '1'); " +
+                "END " +
+                // --- tbl_server_times (fallback) ---
+                // NOTE: the ALTER TABLE and the UPDATE must NOT be in the same batch because SQL
+                // Server compiles the whole batch before execution and would fail to resolve the
+                // new column at parse time. sp_executesql defers compilation of the UPDATE to
+                // after the ALTER TABLE has already run and the column is visible in the catalog.
+                "IF OBJECT_ID('dbo.tbl_server_times') IS NOT NULL " +
+                "BEGIN " +
+                "    IF COL_LENGTH('dbo.tbl_server_times', '" + LOCAL_TIME_FLAG_PROPERTY + "') IS NULL " +
+                "        ALTER TABLE dbo.tbl_server_times ADD [" + LOCAL_TIME_FLAG_PROPERTY + "] BIT NULL; " +
+                "    IF COL_LENGTH('dbo.tbl_server_times', '" + LOCAL_TIME_FLAG_PROPERTY + "') IS NOT NULL " +
+                "        EXEC sp_executesql N'UPDATE dbo.tbl_server_times SET [" + LOCAL_TIME_FLAG_PROPERTY + "] = 1'; " +
+                "END " +
+                // --- ReadTrace.tblMiscInfo (guaranteed fallback) ---
+                // This table is always created by the managed importer schema, so the flag is
+                // stored reliably even when PSSDIAG / Log Scout diagnostic tables are absent.
+                "IF OBJECT_ID('ReadTrace.tblMiscInfo') IS NOT NULL " +
+                "BEGIN " +
+                "    IF EXISTS (SELECT 1 FROM ReadTrace.tblMiscInfo WHERE Attribute = '" + LOCAL_TIME_FLAG_PROPERTY + "') " +
+                "        UPDATE ReadTrace.tblMiscInfo SET Value = '1' WHERE Attribute = '" + LOCAL_TIME_FLAG_PROPERTY + "'; " +
+                "    ELSE " +
+                "        INSERT INTO ReadTrace.tblMiscInfo (Attribute, Value) VALUES ('" + LOCAL_TIME_FLAG_PROPERTY + "', '1'); " +
+                "END";
+
+            using (SqlConnection cn = new SqlConnection(connStr))
+            {
+                try
+                {
+                    cn.Open();
+                    using (SqlCommand cmd = new SqlCommand(sql, cn))
+                    {
+                        cmd.CommandTimeout = 0;
+                        cmd.ExecuteNonQuery();
+                    }
+                    Util.Logger.LogMessage("ReadTraceNexusImporter: Wrote '" + LOCAL_TIME_FLAG_PROPERTY + "' flag to tbl_ServerProperties, tbl_server_times, and/or ReadTrace.tblMiscInfo.");
+                }
+                catch (Exception e)
+                {
+                    Util.Logger.LogMessage("ReadTraceNexusImporter: Could not write local time flag: " + e.Message);
+                }
+            }
+        }
+
         private decimal GetLocalServerTimeOffset()
         {
             using (SqlConnection cn = new SqlConnection(connStr))
@@ -292,7 +357,7 @@ namespace ReadTrace
 
         /// <summary>Cancel an in-progress load</summary>
         /// <remarks>Called by host to ask in importer abort an in-progress load.  Can return before abort is complete; 
-        /// the host will wait until <c>DoImport()</c> returns.</remarks>
+        /// the host will wait until DoImport()</c> returns.</remarks>
         public void Cancel()
         {
             Cancelled = true;
@@ -312,7 +377,7 @@ namespace ReadTrace
             State = ImportState.Idle;
         }
 
-        /// <summary>True if the import has been asked to cancel an in-progress load. Set by the <c>Cancel</c> method.</summary>
+        /// <summary>True if the import has been asked to cancel an in-progress load. Set by the Cancel</c> method.</summary>
         public bool Cancelled
         {
             get { return canceled; }
@@ -320,7 +385,7 @@ namespace ReadTrace
         }
 
         /// <summary>Start import</summary>
-        /// <remarks><c>Initialize()</c> will be called prior to <c>DoImport()</c></remarks>
+        /// <remarks>Initialize()</c> will be called prior to DoImport()</c></remarks>
         /// <returns>true if import succeeds, false otherwise</returns>
         public bool DoImport()
         {
@@ -451,7 +516,11 @@ namespace ReadTrace
             State = ImportState.Idle;
 
             if (0 == processReadTrace.ExitCode)
+            {
+                if ((bool)this.options[OPTION_USE_LOCAL_SERVER_TIME])
+                    WriteLocalTimeFlag();
                 return true;
+            }
             else
                 return false;
         }
