@@ -50,9 +50,8 @@ namespace ReadTrace
                                             "tbl_ServerProperties " +
                                             "WHERE PropertyName = 'UTCOffset_in_Hours'";
 
-        // Flag written to the DB when timestamps are already in local server time.
-        // SQLNexus_PostProcessing.sql reads this to skip the UTC-to-local offset conversion.
-        internal const string LOCAL_TIME_FLAG_PROPERTY = "TimestampsAreLocalTime";
+        // Flag name written to the DB to record whether timestamps are in local time or UTC.
+        // SQLNexus_PostProcessing.sql reads this value to choose the correct time conversion.
 
 
         // Private members
@@ -191,45 +190,48 @@ namespace ReadTrace
         }
 
         /// <summary>
-        /// Writes a flag indicating that timestamps in the ReadTrace tables are already in local
-        /// server time. Writes to tbl_ServerProperties</c> when it exists, and also sets a
-        /// TimestampsAreLocalTime</c> column on tbl_server_times</c> (adding the column
-        /// first if necessary) as a fallback for environments where tbl_ServerProperties</c>
-        /// is not present. SQLNexus_PostProcessing.sql</c> reads either location to skip the
-        /// UTC offset conversion when populating StartTime_local</c> / EndTime_local</c>.
+        /// Writes a flag recording whether timestamps in the ReadTrace tables are already in local
+        /// server time (<paramref name="isLocalTime"/> = true, value '1') or in UTC (false, '0').
+        /// Writes to <c>tbl_ServerProperties</c> when it exists, and also sets a
+        /// <c>ImportedTraceTimestampsInLocalTime</c> column on <c>tbl_server_times</c> (adding the column
+        /// first if necessary) as a fallback for environments where <c>tbl_ServerProperties</c>
+        /// is not present. <c>SQLNexus_PostProcessing.sql</c> reads either location to choose
+        /// the correct UTC offset conversion when populating <c>StartTime_local</c> /
+        /// <c>EndTime_local</c>.
         /// </summary>
-        private void WriteLocalTimeFlag()
+        private void WriteLocalTimeFlag(bool isLocalTime)
         {
+            // @flagStr = '1' or '0' for VARCHAR columns (tbl_ServerProperties, tblMiscInfo).
+            // @flagBit = 1 or 0 for the BIT column on tbl_server_times.
+            // sp_executesql's own @val parameter is fed from the outer @flagBit so the BIT
+            // update is also fully parameterised with no runtime concatenation.
             const string sql =
                 // --- tbl_ServerProperties (primary) ---
                 "IF OBJECT_ID('dbo.tbl_ServerProperties') IS NOT NULL " +
                 "BEGIN " +
-                "    IF EXISTS (SELECT 1 FROM dbo.tbl_ServerProperties WHERE PropertyName = '" + LOCAL_TIME_FLAG_PROPERTY + "') " +
-                "        UPDATE dbo.tbl_ServerProperties SET PropertyValue = '1' WHERE PropertyName = '" + LOCAL_TIME_FLAG_PROPERTY + "'; " +
+                "    IF EXISTS (SELECT 1 FROM dbo.tbl_ServerProperties WHERE PropertyName = 'ImportedTraceTimestampsInLocalTime') " +
+                "        UPDATE dbo.tbl_ServerProperties SET PropertyValue = @flagStr WHERE PropertyName = 'ImportedTraceTimestampsInLocalTime'; " +
                 "    ELSE " +
-                "        INSERT INTO dbo.tbl_ServerProperties (PropertyName, PropertyValue) VALUES ('" + LOCAL_TIME_FLAG_PROPERTY + "', '1'); " +
+                "        INSERT INTO dbo.tbl_ServerProperties (PropertyName, PropertyValue) VALUES ('ImportedTraceTimestampsInLocalTime', @flagStr); " +
                 "END " +
                 // --- tbl_server_times (fallback) ---
-                // NOTE: the ALTER TABLE and the UPDATE must NOT be in the same batch because SQL
-                // Server compiles the whole batch before execution and would fail to resolve the
-                // new column at parse time. sp_executesql defers compilation of the UPDATE to
-                // after the ALTER TABLE has already run and the column is visible in the catalog.
+                // NOTE: ALTER TABLE and UPDATE must be in different batches; sp_executesql is
+                // used here so the UPDATE is compiled only after the column is already visible.
+                // The outer @flagBit parameter is forwarded into sp_executesql's own @val.
                 "IF OBJECT_ID('dbo.tbl_server_times') IS NOT NULL " +
                 "BEGIN " +
-                "    IF COL_LENGTH('dbo.tbl_server_times', '" + LOCAL_TIME_FLAG_PROPERTY + "') IS NULL " +
-                "        ALTER TABLE dbo.tbl_server_times ADD [" + LOCAL_TIME_FLAG_PROPERTY + "] BIT NULL; " +
-                "    IF COL_LENGTH('dbo.tbl_server_times', '" + LOCAL_TIME_FLAG_PROPERTY + "') IS NOT NULL " +
-                "        EXEC sp_executesql N'UPDATE dbo.tbl_server_times SET [" + LOCAL_TIME_FLAG_PROPERTY + "] = 1'; " +
+                "    IF COL_LENGTH('dbo.tbl_server_times', 'ImportedTraceTimestampsInLocalTime') IS NULL " +
+                "        ALTER TABLE dbo.tbl_server_times ADD [ImportedTraceTimestampsInLocalTime] BIT NULL; " +
+                "    IF COL_LENGTH('dbo.tbl_server_times', 'ImportedTraceTimestampsInLocalTime') IS NOT NULL " +
+                "        EXEC sp_executesql N'UPDATE dbo.tbl_server_times SET [ImportedTraceTimestampsInLocalTime] = @val', N'@val BIT', @val = @flagBit; " +
                 "END " +
                 // --- ReadTrace.tblMiscInfo (guaranteed fallback) ---
-                // This table is always created by the managed importer schema, so the flag is
-                // stored reliably even when PSSDIAG / Log Scout diagnostic tables are absent.
                 "IF OBJECT_ID('ReadTrace.tblMiscInfo') IS NOT NULL " +
                 "BEGIN " +
-                "    IF EXISTS (SELECT 1 FROM ReadTrace.tblMiscInfo WHERE Attribute = '" + LOCAL_TIME_FLAG_PROPERTY + "') " +
-                "        UPDATE ReadTrace.tblMiscInfo SET Value = '1' WHERE Attribute = '" + LOCAL_TIME_FLAG_PROPERTY + "'; " +
+                "    IF EXISTS (SELECT 1 FROM ReadTrace.tblMiscInfo WHERE Attribute = 'ImportedTraceTimestampsInLocalTime') " +
+                "        UPDATE ReadTrace.tblMiscInfo SET Value = @flagStr WHERE Attribute = 'ImportedTraceTimestampsInLocalTime'; " +
                 "    ELSE " +
-                "        INSERT INTO ReadTrace.tblMiscInfo (Attribute, Value) VALUES ('" + LOCAL_TIME_FLAG_PROPERTY + "', '1'); " +
+                "        INSERT INTO ReadTrace.tblMiscInfo (Attribute, Value) VALUES ('ImportedTraceTimestampsInLocalTime', @flagStr); " +
                 "END";
 
             using (SqlConnection cn = new SqlConnection(connStr))
@@ -240,9 +242,11 @@ namespace ReadTrace
                     using (SqlCommand cmd = new SqlCommand(sql, cn))
                     {
                         cmd.CommandTimeout = 0;
+                        cmd.Parameters.Add("@flagStr", SqlDbType.VarChar, 1).Value = isLocalTime ? "1" : "0";
+                        cmd.Parameters.Add("@flagBit", SqlDbType.Bit).Value = isLocalTime;
                         cmd.ExecuteNonQuery();
                     }
-                    Util.Logger.LogMessage("ReadTraceNexusImporter: Wrote '" + LOCAL_TIME_FLAG_PROPERTY + "' flag to tbl_ServerProperties, tbl_server_times, and/or ReadTrace.tblMiscInfo.");
+                    Util.Logger.LogMessage("ReadTraceNexusImporter: Wrote 'ImportedTraceTimestampsInLocalTime'=" + (isLocalTime ? "1" : "0") + " to tbl_ServerProperties, tbl_server_times, and/or ReadTrace.tblMiscInfo.");
                 }
                 catch (Exception e)
                 {
@@ -517,8 +521,9 @@ namespace ReadTrace
 
             if (0 == processReadTrace.ExitCode)
             {
-                if ((bool)this.options[OPTION_USE_LOCAL_SERVER_TIME])
-                    WriteLocalTimeFlag();
+                // Always write the flag ('1' = already local time, '0' = UTC) so that
+                // SQLNexus_PostProcessing.sql always has an explicit value to act on.
+                WriteLocalTimeFlag((bool)this.options[OPTION_USE_LOCAL_SERVER_TIME]);
                 return true;
             }
             else

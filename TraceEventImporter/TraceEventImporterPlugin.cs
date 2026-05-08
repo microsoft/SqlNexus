@@ -290,8 +290,12 @@ namespace TraceEventImporter
                 RunPostLoadFixups();
 
                 LogMessage($"TraceEventImporter: Import complete. {_totalRowsInserted} total rows inserted.");
-                if ((bool)_options[OPTION_USE_LOCAL_SERVER_TIME])
-                    WriteLocalTimeFlag();
+
+                // Always write the flag ('1' = timestamps already in local time, '0' = timestamps
+                // are UTC). SQLNexus_PostProcessing.sql reads this value to choose between a direct
+                // copy and a DATEADD offset conversion when populating StartTime_local/EndTime_local.
+                WriteLocalTimeFlag((bool)_options[OPTION_USE_LOCAL_SERVER_TIME]);
+
                 State = ImportState.Idle;
                 return true;
             }
@@ -414,45 +418,47 @@ namespace TraceEventImporter
         }
 
         /// <summary>
-        /// Writes a flag to <c>tbl_ServerProperties</c> (when it exists) indicating that
-        /// timestamps in the ReadTrace tables are already in local server time.
-        /// <c>SQLNexus_PostProcessing.sql</c> reads this flag to skip the UTC offset conversion
-        /// when populating <c>StartTime_local</c> / <c>EndTime_local</c>.
+        /// Writes a flag to <c>ReadTrace.tblMiscInfo</c> (and to <c>tbl_ServerProperties</c> /
+        /// <c>tbl_server_times</c> when present) that records whether timestamps in the ReadTrace
+        /// tables are already in local server time (<paramref name="isLocalTime"/> = true, value
+        /// '1') or in UTC (false, value '0').
+        /// <c>SQLNexus_PostProcessing.sql</c> reads this flag to choose between a direct copy
+        /// and a DATEADD offset conversion when populating
+        /// <c>StartTime_local</c> / <c>EndTime_local</c>.
         /// </summary>
-        private void WriteLocalTimeFlag()
+        private void WriteLocalTimeFlag(bool isLocalTime)
         {
-            const string flagName = "TimestampsAreLocalTime";
+            // @flagStr = '1' or '0' for VARCHAR columns (tbl_ServerProperties, tblMiscInfo).
+            // @flagBit = 1 or 0 for the BIT column on tbl_server_times.
+            // sp_executesql's own @val parameter is fed from the outer @flagBit so the BIT
+            // update is also fully parameterised with no runtime concatenation.
             const string sql =
                 // --- tbl_ServerProperties (primary) ---
                 "IF OBJECT_ID('dbo.tbl_ServerProperties') IS NOT NULL " +
                 "BEGIN " +
-                "    IF EXISTS (SELECT 1 FROM dbo.tbl_ServerProperties WHERE PropertyName = '" + flagName + "') " +
-                "        UPDATE dbo.tbl_ServerProperties SET PropertyValue = '1' WHERE PropertyName = '" + flagName + "'; " +
+                "    IF EXISTS (SELECT 1 FROM dbo.tbl_ServerProperties WHERE PropertyName = 'ImportedTraceTimestampsInLocalTime') " +
+                "        UPDATE dbo.tbl_ServerProperties SET PropertyValue = @flagStr WHERE PropertyName = 'ImportedTraceTimestampsInLocalTime'; " +
                 "    ELSE " +
-                "        INSERT INTO dbo.tbl_ServerProperties (PropertyName, PropertyValue) VALUES ('" + flagName + "', '1'); " +
+                "        INSERT INTO dbo.tbl_ServerProperties (PropertyName, PropertyValue) VALUES ('ImportedTraceTimestampsInLocalTime', @flagStr); " +
                 "END " +
                 // --- tbl_server_times (fallback) ---
-                // NOTE: the ALTER TABLE and the UPDATE must NOT be in the same batch because SQL
-                // Server compiles the whole batch before execution and would fail to resolve the
-                // new column at parse time. sp_executesql defers compilation of the UPDATE to
-                // after the ALTER TABLE has already run and the column is visible in the catalog.
+                // NOTE: ALTER TABLE and UPDATE must be in different batches; sp_executesql is
+                // used here so the UPDATE is compiled only after the column is already visible.
+                // The outer @flagBit parameter is forwarded into sp_executesql's own @val.
                 "IF OBJECT_ID('dbo.tbl_server_times') IS NOT NULL " +
                 "BEGIN " +
-                "    IF COL_LENGTH('dbo.tbl_server_times', '" + flagName + "') IS NULL " +
-                "        ALTER TABLE dbo.tbl_server_times ADD [" + flagName + "] BIT NULL; " +
-                "    IF COL_LENGTH('dbo.tbl_server_times', '" + flagName + "') IS NOT NULL " +
-                "        EXEC sp_executesql N'UPDATE dbo.tbl_server_times SET [" + flagName + "] = 1'; " +
+                "    IF COL_LENGTH('dbo.tbl_server_times', 'ImportedTraceTimestampsInLocalTime') IS NULL " +
+                "        ALTER TABLE dbo.tbl_server_times ADD [ImportedTraceTimestampsInLocalTime] BIT NULL; " +
+                "    IF COL_LENGTH('dbo.tbl_server_times', 'ImportedTraceTimestampsInLocalTime') IS NOT NULL " +
+                "        EXEC sp_executesql N'UPDATE dbo.tbl_server_times SET [ImportedTraceTimestampsInLocalTime] = @val', N'@val BIT', @val = @flagBit; " +
                 "END " +
                 // --- ReadTrace.tblMiscInfo (guaranteed fallback) ---
-                // This table is always created by the managed importer schema, so the flag is
-                // stored reliably even when PSSDIAG / Log Scout diagnostic tables are absent
-                // (e.g. when only the Trace Event Importer is enabled without the Rowset Importer).
                 "IF OBJECT_ID('ReadTrace.tblMiscInfo') IS NOT NULL " +
                 "BEGIN " +
-                "    IF EXISTS (SELECT 1 FROM ReadTrace.tblMiscInfo WHERE Attribute = '" + flagName + "') " +
-                "        UPDATE ReadTrace.tblMiscInfo SET Value = '1' WHERE Attribute = '" + flagName + "'; " +
+                "    IF EXISTS (SELECT 1 FROM ReadTrace.tblMiscInfo WHERE Attribute = 'ImportedTraceTimestampsInLocalTime') " +
+                "        UPDATE ReadTrace.tblMiscInfo SET Value = @flagStr WHERE Attribute = 'ImportedTraceTimestampsInLocalTime'; " +
                 "    ELSE " +
-                "        INSERT INTO ReadTrace.tblMiscInfo (Attribute, Value) VALUES ('" + flagName + "', '1'); " +
+                "        INSERT INTO ReadTrace.tblMiscInfo (Attribute, Value) VALUES ('ImportedTraceTimestampsInLocalTime', @flagStr); " +
                 "END";
 
             using (var cn = new SqlConnection(_connStr))
@@ -463,9 +469,11 @@ namespace TraceEventImporter
                     using (var cmd = new SqlCommand(sql, cn))
                     {
                         cmd.CommandTimeout = 0;
+                        cmd.Parameters.AddWithValue("@flagStr", isLocalTime ? "1" : "0");
+                        cmd.Parameters.AddWithValue("@flagBit", isLocalTime);
                         cmd.ExecuteNonQuery();
                     }
-                    LogMessage("TraceEventImporter: Wrote '" + flagName + "' flag to tbl_ServerProperties, tbl_server_times, and/or ReadTrace.tblMiscInfo.");
+                    LogMessage("TraceEventImporter: Wrote 'ImportedTraceTimestampsInLocalTime'=" + (isLocalTime ? "1" : "0") + " to tbl_ServerProperties, tbl_server_times, and/or ReadTrace.tblMiscInfo.");
                 }
                 catch (Exception e)
                 {

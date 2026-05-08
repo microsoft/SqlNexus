@@ -62,16 +62,16 @@ BEGIN
     BEGIN
         IF EXISTS (
             SELECT 1 FROM dbo.tbl_ServerProperties
-            WHERE PropertyName = 'TimestampsAreLocalTime' AND PropertyValue = '1'
+            WHERE PropertyName = 'ImportedTraceTimestampsInLocalTime' AND PropertyValue = '1'
         )
             SET @timestamps_are_local = 1;
     END;
     ELSE IF OBJECT_ID('dbo.tbl_server_times') IS NOT NULL
-        AND COL_LENGTH('dbo.tbl_server_times', 'TimestampsAreLocalTime') IS NOT NULL
+        AND COL_LENGTH('dbo.tbl_server_times', 'ImportedTraceTimestampsInLocalTime') IS NOT NULL
     BEGIN
         IF EXISTS (
             SELECT 1 FROM dbo.tbl_server_times
-            WHERE [TimestampsAreLocalTime] = 1
+            WHERE [ImportedTraceTimestampsInLocalTime] = 1
         )
             SET @timestamps_are_local = 1;
     END;
@@ -83,7 +83,7 @@ BEGIN
     BEGIN
         IF EXISTS (
             SELECT 1 FROM ReadTrace.tblMiscInfo
-            WHERE Attribute = 'TimestampsAreLocalTime' AND Value = '1'
+            WHERE Attribute = 'ImportedTraceTimestampsInLocalTime' AND Value = '1'
         )
             SET @timestamps_are_local = 1;
     END;
