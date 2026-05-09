@@ -1,0 +1,14 @@
+{
+  "solution": {
+    "path": "../sqlnexus.sln",
+    "projects": [
+      "BulkLoadEx\\BulkLoadEx.csproj",
+      "LinuxPerfImporter\\LinuxPerfImporter.csproj",
+      "NexusInterfaces\\NexusInterfaces.csproj",
+      "PerfmonImporter\\PerfmonImporter.csproj",
+      "ReadTraceNexusImporter\\ReadTraceNexusImporter.csproj",
+      "RowsetImportEngine\\RowsetImportEngine.csproj",
+      "sqlnexus\\sqlnexus.csproj"
+    ]
+  }
+}

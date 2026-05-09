@@ -1,5 +1,16 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:am="http://schemas.microsoft.com/sqlserver/reporting/authoringmetadata">
+  <am:AuthoringMetadata>
+    <am:CreatedBy>
+      <am:Name>SSDTRS</am:Name>
+      <am:Version>17.14.37111.16</am:Version>
+    </am:CreatedBy>
+    <am:UpdatedBy>
+      <am:Name>SSDTRS</am:Name>
+      <am:Version>17.14.37203.1</am:Version>
+    </am:UpdatedBy>
+    <am:LastModifiedTimestamp>2026-04-20T19:23:41.7142368Z</am:LastModifiedTimestamp>
+  </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
     <DataSource Name="DataSource_Private">
@@ -972,6 +983,7 @@ ELSE
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -985,7 +997,7 @@ ELSE
                               <Color>DarkGray</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>LightSteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
                             <VerticalAlign>Bottom</VerticalAlign>
                             <PaddingLeft>1pt</PaddingLeft>
                           </Style>
@@ -1005,6 +1017,7 @@ ELSE
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1018,7 +1031,7 @@ ELSE
                               <Color>DarkGray</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>LightSteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
                             <VerticalAlign>Bottom</VerticalAlign>
                             <PaddingLeft>1pt</PaddingLeft>
                           </Style>
@@ -1038,6 +1051,7 @@ ELSE
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1051,7 +1065,7 @@ ELSE
                               <Color>DarkGray</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>LightSteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
                             <VerticalAlign>Bottom</VerticalAlign>
                             <PaddingLeft>1pt</PaddingLeft>
                           </Style>
@@ -1074,6 +1088,7 @@ ELSE
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1087,7 +1102,7 @@ ELSE
                               <Color>DarkGray</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>LightSteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
                             <VerticalAlign>Bottom</VerticalAlign>
                             <PaddingLeft>1pt</PaddingLeft>
                           </Style>
@@ -1110,6 +1125,7 @@ ELSE
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1123,7 +1139,7 @@ ELSE
                               <Color>DarkGray</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>LightSteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
                             <VerticalAlign>Bottom</VerticalAlign>
                             <PaddingLeft>1pt</PaddingLeft>
                           </Style>
@@ -1146,6 +1162,7 @@ ELSE
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1159,7 +1176,7 @@ ELSE
                               <Color>DarkGray</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>LightSteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
                             <VerticalAlign>Bottom</VerticalAlign>
                             <PaddingLeft>1pt</PaddingLeft>
                           </Style>
@@ -1179,6 +1196,7 @@ ELSE
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1192,7 +1210,7 @@ ELSE
                               <Color>DarkGray</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>LightSteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
                             <VerticalAlign>Bottom</VerticalAlign>
                             <PaddingLeft>1pt</PaddingLeft>
                           </Style>
@@ -1212,6 +1230,7 @@ ELSE
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1225,7 +1244,7 @@ ELSE
                               <Color>DarkGray</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>LightSteelBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
                             <VerticalAlign>Bottom</VerticalAlign>
                             <PaddingLeft>1pt</PaddingLeft>
                           </Style>
@@ -1250,7 +1269,7 @@ ELSE
                                   <Style>
                                     <FontSize>8pt</FontSize>
                                     <TextDecoration>Underline</TextDecoration>
-                                    <Color>Blue</Color>
+                                    <Color>=Variables!URILinkFontColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1278,6 +1297,9 @@ ELSE
                                     <Parameter Name="dsDatabaseName">
                                       <Value>=Parameters!dsDatabaseName.Value</Value>
                                     </Parameter>
+                                    <Parameter Name="ContrastTheme">
+                                      <Value>=Parameters!ContrastTheme.Value</Value>
+                                    </Parameter>
                                   </Parameters>
                                 </Drillthrough>
                               </Action>
@@ -1285,7 +1307,7 @@ ELSE
                           </ActionInfo>
                           <ZIndex>7</ZIndex>
                           <Style>
-                            <BackgroundColor>=iif(RowNumber(nothing) Mod 2, "", "AliceBlue")</BackgroundColor>
+                            <BackgroundColor>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020", Parameters!ContrastTheme.Value="Desert", "#FFFAEF", RowNumber(Nothing) Mod 2 = 0, "AliceBlue", True, "")</BackgroundColor>
                           </Style>
                         </Textbox>
                       </CellContents>
@@ -1302,6 +1324,7 @@ ELSE
                                   <Value>=IIf (IsNothing (Fields!task_state.Value) Or Fields!task_state.Value="NULL", "not running", Fields!task_state.Value)</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1313,7 +1336,7 @@ ELSE
                           <rd:DefaultName>task_state</rd:DefaultName>
                           <ZIndex>6</ZIndex>
                           <Style>
-                            <BackgroundColor>=iif(RowNumber(nothing) Mod 2, "", "AliceBlue")</BackgroundColor>
+                            <BackgroundColor>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020", Parameters!ContrastTheme.Value="Desert", "#FFFAEF", RowNumber(Nothing) Mod 2 = 0, "AliceBlue", True, "")</BackgroundColor>
                           </Style>
                         </Textbox>
                       </CellContents>
@@ -1330,6 +1353,7 @@ ELSE
                                   <Value>=IIf (IsNothing(Fields!wait_category.Value), "Not waiting", Fields!wait_category.Value)</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1341,7 +1365,7 @@ ELSE
                           <rd:DefaultName>command</rd:DefaultName>
                           <ZIndex>5</ZIndex>
                           <Style>
-                            <BackgroundColor>=iif(RowNumber(nothing) Mod 2, "", "AliceBlue")</BackgroundColor>
+                            <BackgroundColor>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020", Parameters!ContrastTheme.Value="Desert", "#FFFAEF", RowNumber(Nothing) Mod 2 = 0, "AliceBlue", True, "")</BackgroundColor>
                           </Style>
                         </Textbox>
                       </CellContents>
@@ -1358,6 +1382,7 @@ ELSE
                                   <Value>=Fields!wait_duration_ms.Value</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1369,7 +1394,7 @@ ELSE
                           <rd:DefaultName>textbox9</rd:DefaultName>
                           <ZIndex>4</ZIndex>
                           <Style>
-                            <BackgroundColor>=iif(RowNumber(nothing) Mod 2, "", "AliceBlue")</BackgroundColor>
+                            <BackgroundColor>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020", Parameters!ContrastTheme.Value="Desert", "#FFFAEF", RowNumber(Nothing) Mod 2 = 0, "AliceBlue", True, "")</BackgroundColor>
                           </Style>
                         </Textbox>
                       </CellContents>
@@ -1386,6 +1411,7 @@ ELSE
                                   <Value>=Fields!request_elapsed_time.Value</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1397,7 +1423,7 @@ ELSE
                           <rd:DefaultName>blocking_session_id</rd:DefaultName>
                           <ZIndex>3</ZIndex>
                           <Style>
-                            <BackgroundColor>=iif(RowNumber(nothing) Mod 2, "", "AliceBlue")</BackgroundColor>
+                            <BackgroundColor>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020", Parameters!ContrastTheme.Value="Desert", "#FFFAEF", RowNumber(Nothing) Mod 2 = 0, "AliceBlue", True, "")</BackgroundColor>
                           </Style>
                         </Textbox>
                       </CellContents>
@@ -1414,6 +1440,7 @@ ELSE
                                   <Value>=Fields!blocked_tasks.Value</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1425,7 +1452,7 @@ ELSE
                           <rd:DefaultName>wait_duration_ms_1</rd:DefaultName>
                           <ZIndex>2</ZIndex>
                           <Style>
-                            <BackgroundColor>=iif(RowNumber(nothing) Mod 2, "", "AliceBlue")</BackgroundColor>
+                            <BackgroundColor>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020", Parameters!ContrastTheme.Value="Desert", "#FFFAEF", RowNumber(Nothing) Mod 2 = 0, "AliceBlue", True, "")</BackgroundColor>
                           </Style>
                         </Textbox>
                       </CellContents>
@@ -1442,6 +1469,7 @@ ELSE
                                   <Value>=IIf (IsNothing (Fields!command.Value) Or Fields!command.Value="NULL", "AWAITING CMD", Fields!command.Value)</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1453,7 +1481,7 @@ ELSE
                           <rd:DefaultName>wait_type_1</rd:DefaultName>
                           <ZIndex>1</ZIndex>
                           <Style>
-                            <BackgroundColor>=iif(RowNumber(nothing) Mod 2, "", "AliceBlue")</BackgroundColor>
+                            <BackgroundColor>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020", Parameters!ContrastTheme.Value="Desert", "#FFFAEF", RowNumber(Nothing) Mod 2 = 0, "AliceBlue", True, "")</BackgroundColor>
                           </Style>
                         </Textbox>
                       </CellContents>
@@ -1470,6 +1498,7 @@ ELSE
                                   <Value>=IIf (IsNothing (Fields!query.Value), "", Left(Fields!query.Value, 100) &amp; "...")</Value>
                                   <Style>
                                     <FontSize>8pt</FontSize>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1480,7 +1509,7 @@ ELSE
                           </Paragraphs>
                           <rd:DefaultName>wait_resource_1</rd:DefaultName>
                           <Style>
-                            <BackgroundColor>=iif(RowNumber(nothing) Mod 2, "", "AliceBlue")</BackgroundColor>
+                            <BackgroundColor>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020", Parameters!ContrastTheme.Value="Desert", "#FFFAEF", RowNumber(Nothing) Mod 2 = 0, "AliceBlue", True, "")</BackgroundColor>
                           </Style>
                         </Textbox>
                       </CellContents>
@@ -1788,6 +1817,7 @@ ELSE
                     <Style>
                       <FontSize>8pt</FontSize>
                       <FontWeight>SemiBold</FontWeight>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1807,7 +1837,7 @@ ELSE
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>LightSteelBlue</BackgroundColor>
+              <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -1826,6 +1856,7 @@ ELSE
                     <Style>
                       <FontSize>8pt</FontSize>
                       <FontWeight>SemiBold</FontWeight>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1844,7 +1875,7 @@ ELSE
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>LightSteelBlue</BackgroundColor>
+              <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -1863,6 +1894,7 @@ ELSE
                     <Style>
                       <FontSize>8pt</FontSize>
                       <FontWeight>SemiBold</FontWeight>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1881,7 +1913,7 @@ ELSE
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>LightSteelBlue</BackgroundColor>
+              <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -1900,6 +1932,7 @@ ELSE
                     <Style>
                       <FontSize>8pt</FontSize>
                       <FontWeight>SemiBold</FontWeight>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1918,7 +1951,7 @@ ELSE
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>LightSteelBlue</BackgroundColor>
+              <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -1937,6 +1970,7 @@ ELSE
                     <Style>
                       <FontSize>8pt</FontSize>
                       <FontWeight>SemiBold</FontWeight>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1955,7 +1989,7 @@ ELSE
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>LightSteelBlue</BackgroundColor>
+              <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -1974,6 +2008,7 @@ ELSE
                     <Style>
                       <FontSize>8pt</FontSize>
                       <FontWeight>SemiBold</FontWeight>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1992,7 +2027,7 @@ ELSE
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>LightSteelBlue</BackgroundColor>
+              <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2011,6 +2046,7 @@ ELSE
                     <Style>
                       <FontSize>8pt</FontSize>
                       <FontWeight>SemiBold</FontWeight>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2029,7 +2065,7 @@ ELSE
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>LightSteelBlue</BackgroundColor>
+              <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2047,6 +2083,7 @@ ELSE
                     <Value>=First(Fields!head_blocker_session_id.Value, "DataSet_BlockingChain_BlockingChainDetails")</Value>
                     <Style>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2065,7 +2102,7 @@ ELSE
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
+              <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2083,6 +2120,7 @@ ELSE
                     <Value>=Sum(Fields!blocking_duration_sec.Value, "DataSet_BlockingChain_BlockingChainDetails")</Value>
                     <Style>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2101,7 +2139,7 @@ ELSE
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
+              <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2119,6 +2157,7 @@ ELSE
                     <Value>=First(Fields!login_name.Value, "DataSet_BlockingChain_HeadBlockerSampleRuntime")</Value>
                     <Style>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2137,7 +2176,7 @@ ELSE
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
+              <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2155,6 +2194,7 @@ ELSE
                     <Value>=First(Fields!nt_domain.Value, "DataSet_BlockingChain_HeadBlockerSampleRuntime") &amp; "\" &amp; First(Fields!nt_user_name.Value, "DataSet_BlockingChain_HeadBlockerSampleRuntime")</Value>
                     <Style>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2171,7 +2211,7 @@ ELSE
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
+              <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2189,6 +2229,7 @@ ELSE
                     <Value>=First(Fields!host_name.Value, "DataSet_BlockingChain_HeadBlockerSampleRuntime")</Value>
                     <Style>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2205,7 +2246,7 @@ ELSE
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
+              <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2222,6 +2263,7 @@ ELSE
                     <Value>=First(Fields!program_name.Value, "DataSet_BlockingChain_HeadBlockerSampleRuntime")</Value>
                     <Style>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2238,7 +2280,7 @@ ELSE
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
+              <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2256,6 +2298,7 @@ ELSE
                     <Value>=Sum(Fields!max_blocked_task_count.Value, "DataSet_BlockingChain_BlockingChainDetails")</Value>
                     <Style>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2264,7 +2307,7 @@ ELSE
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <Top>1.125in</Top>
+            <Top>1.11806in</Top>
             <Left>6.25in</Left>
             <Height>0.25in</Height>
             <Width>2.625in</Width>
@@ -2274,7 +2317,7 @@ ELSE
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
+              <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2293,6 +2336,7 @@ ELSE
                     <Style>
                       <FontSize>8pt</FontSize>
                       <FontWeight>SemiBold</FontWeight>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2311,7 +2355,7 @@ ELSE
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>LightSteelBlue</BackgroundColor>
+              <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2330,6 +2374,7 @@ ELSE
                     <Style>
                       <FontSize>8pt</FontSize>
                       <FontWeight>SemiBold</FontWeight>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2348,7 +2393,7 @@ ELSE
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>LightSteelBlue</BackgroundColor>
+              <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2366,6 +2411,7 @@ ELSE
                     <Value>=First(Fields!blocking_start.Value, "DataSet_BlockingChain_BlockingChainDetails")</Value>
                     <Style>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2374,7 +2420,7 @@ ELSE
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <Top>1.125in</Top>
+            <Top>1.11111in</Top>
             <Left>1.75in</Left>
             <Height>0.25in</Height>
             <Width>2.75in</Width>
@@ -2384,7 +2430,7 @@ ELSE
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
+              <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2402,6 +2448,7 @@ ELSE
                     <Value>=First(Fields!blocking_end.Value, "DataSet_BlockingChain_BlockingChainDetails")</Value>
                     <Style>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2410,7 +2457,7 @@ ELSE
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <Top>1.375in</Top>
+            <Top>1.36111in</Top>
             <Left>1.75in</Left>
             <Height>0.25in</Height>
             <Width>2.75in</Width>
@@ -2420,7 +2467,7 @@ ELSE
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
+              <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2439,6 +2486,7 @@ ELSE
                     <Style>
                       <FontSize>8pt</FontSize>
                       <FontWeight>SemiBold</FontWeight>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2457,7 +2505,7 @@ ELSE
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>LightSteelBlue</BackgroundColor>
+              <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2475,6 +2523,7 @@ ELSE
                     <Value>=First(Fields!tran_name.Value, "DataSet_BlockingChain_HeadBlockerSampleRuntime")</Value>
                     <Style>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2491,7 +2540,7 @@ ELSE
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
+              <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2510,6 +2559,7 @@ ELSE
                     <Style>
                       <FontSize>8pt</FontSize>
                       <FontWeight>SemiBold</FontWeight>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2528,7 +2578,7 @@ ELSE
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>LightSteelBlue</BackgroundColor>
+              <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2546,6 +2596,7 @@ ELSE
                     <Value>=IIF(IsNothing (First(Fields!transaction_begin_time.Value, "DataSet_BlockingChain_HeadBlockerSampleRuntime")), "Unknown",  First(Fields!transaction_begin_time.Value, "DataSet_BlockingChain_HeadBlockerSampleRuntime") &amp; " ("   &amp; IIF(DateDiff ("s", First(Fields!transaction_begin_time.Value, "DataSet_BlockingChain_HeadBlockerSampleRuntime"), First(Fields!runtime.Value, "DataSet_BlockingChain_HeadBlockerSampleRuntime"))&lt;0, "unknown", DateDiff ("s", First(Fields!transaction_begin_time.Value, "DataSet_BlockingChain_HeadBlockerSampleRuntime"), First(Fields!runtime.Value, "DataSet_BlockingChain_HeadBlockerSampleRuntime"))) &amp; " sec)")</Value>
                     <Style>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2555,7 +2606,7 @@ ELSE
               </Paragraph>
             </Paragraphs>
             <Top>2.625in</Top>
-            <Left>6.25in</Left>
+            <Left>6.26389in</Left>
             <Height>0.25in</Height>
             <Width>2.625in</Width>
             <ZIndex>22</ZIndex>
@@ -2564,7 +2615,7 @@ ELSE
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
+              <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2583,6 +2634,7 @@ ELSE
                     <Style>
                       <FontSize>8pt</FontSize>
                       <FontWeight>SemiBold</FontWeight>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2601,7 +2653,7 @@ ELSE
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>LightSteelBlue</BackgroundColor>
+              <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2619,6 +2671,7 @@ ELSE
                     <Value>=Sum(Fields!open_trans.Value, "DataSet_BlockingChain_HeadBlockerSampleRuntime")</Value>
                     <Style>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2637,7 +2690,7 @@ ELSE
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
+              <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -2657,6 +2710,7 @@ ELSE
                       <FontFamily>Trebuchet MS</FontFamily>
                       <FontSize>12pt</FontSize>
                       <FontWeight>Bold</FontWeight>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2690,6 +2744,7 @@ ELSE
                       <FontFamily>Trebuchet MS</FontFamily>
                       <FontSize>12pt</FontSize>
                       <FontWeight>Bold</FontWeight>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2722,6 +2777,7 @@ ELSE
                     <Style>
                       <FontSize>14pt</FontSize>
                       <FontWeight>Bold</FontWeight>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -2753,6 +2809,7 @@ ELSE
                         <Style>
                           <FontSize>8pt</FontSize>
                           <FontWeight>Bold</FontWeight>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Style>
                       </TextRun>
                     </TextRuns>
@@ -2762,13 +2819,13 @@ ELSE
                   </Paragraph>
                 </Paragraphs>
                 <Height>0.25in</Height>
-                <Width>1in</Width>
+                <Width>0.86806in</Width>
                 <Style>
                   <Border>
                     <Color>DarkGray</Color>
                     <Style>Solid</Style>
                   </Border>
-                  <BackgroundColor>LightSteelBlue</BackgroundColor>
+                  <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
                   <VerticalAlign>Middle</VerticalAlign>
                   <PaddingLeft>2pt</PaddingLeft>
                   <PaddingRight>2pt</PaddingRight>
@@ -2786,22 +2843,23 @@ ELSE
                         <Value>=First(Fields!value.Value, "DataSet_Shared_SQLServerName")</Value>
                         <Style>
                           <FontSize>8pt</FontSize>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Style>
                       </TextRun>
                     </TextRuns>
                     <Style />
                   </Paragraph>
                 </Paragraphs>
-                <Left>1in</Left>
+                <Left>0.90972in</Left>
                 <Height>0.25in</Height>
-                <Width>1.125in</Width>
+                <Width>1.37611in</Width>
                 <ZIndex>1</ZIndex>
                 <Style>
                   <Border>
                     <Color>DarkGray</Color>
                     <Style>Solid</Style>
                   </Border>
-                  <BackgroundColor>White</BackgroundColor>
+                  <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
                   <VerticalAlign>Middle</VerticalAlign>
                   <PaddingLeft>2pt</PaddingLeft>
                   <PaddingRight>2pt</PaddingRight>
@@ -2820,6 +2878,7 @@ ELSE
                         <Style>
                           <FontSize>8pt</FontSize>
                           <FontWeight>Bold</FontWeight>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Style>
                       </TextRun>
                     </TextRuns>
@@ -2830,14 +2889,14 @@ ELSE
                 </Paragraphs>
                 <Top>0.25in</Top>
                 <Height>0.25in</Height>
-                <Width>1in</Width>
+                <Width>0.86806in</Width>
                 <ZIndex>2</ZIndex>
                 <Style>
                   <Border>
                     <Color>DarkGray</Color>
                     <Style>Solid</Style>
                   </Border>
-                  <BackgroundColor>LightSteelBlue</BackgroundColor>
+                  <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
                   <VerticalAlign>Middle</VerticalAlign>
                   <PaddingLeft>2pt</PaddingLeft>
                   <PaddingRight>2pt</PaddingRight>
@@ -2855,6 +2914,7 @@ ELSE
                         <Value>=First(Fields!value.Value, "DataSet_Shared_SQLVersion")</Value>
                         <Style>
                           <FontSize>8pt</FontSize>
+                          <Color>=Variables!ReportTextColor.Value</Color>
                         </Style>
                       </TextRun>
                     </TextRuns>
@@ -2862,16 +2922,16 @@ ELSE
                   </Paragraph>
                 </Paragraphs>
                 <Top>0.25in</Top>
-                <Left>1in</Left>
+                <Left>0.90972in</Left>
                 <Height>0.25in</Height>
-                <Width>1.125in</Width>
+                <Width>1.37611in</Width>
                 <ZIndex>3</ZIndex>
                 <Style>
                   <Border>
                     <Color>DarkGray</Color>
                     <Style>Solid</Style>
                   </Border>
-                  <BackgroundColor>White</BackgroundColor>
+                  <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
                   <VerticalAlign>Middle</VerticalAlign>
                   <PaddingLeft>2pt</PaddingLeft>
                   <PaddingRight>2pt</PaddingRight>
@@ -2884,7 +2944,7 @@ ELSE
             <Top>0.125in</Top>
             <Left>6.75in</Left>
             <Height>0.5in</Height>
-            <Width>2.125in</Width>
+            <Width>2.28583in</Width>
             <ZIndex>28</ZIndex>
             <Style />
           </Rectangle>
@@ -3075,6 +3135,7 @@ ELSE
                     <Style>
                       <FontSize>8pt</FontSize>
                       <FontWeight>SemiBold</FontWeight>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -3093,7 +3154,7 @@ ELSE
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>LightSteelBlue</BackgroundColor>
+              <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -3111,6 +3172,7 @@ ELSE
                     <Value>=First(Fields!transaction_isolation_level.Value, "DataSet_BlockingChain_HeadBlockerSampleRuntime")</Value>
                     <Style>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -3127,7 +3189,7 @@ ELSE
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
+              <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -3146,6 +3208,7 @@ ELSE
                     <Style>
                       <FontSize>8pt</FontSize>
                       <FontWeight>SemiBold</FontWeight>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -3164,7 +3227,7 @@ ELSE
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>LightSteelBlue</BackgroundColor>
+              <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -3182,6 +3245,7 @@ ELSE
                     <Value>=First(Fields!tran_type.Value, "DataSet_BlockingChain_HeadBlockerSampleRuntime")</Value>
                     <Style>
                       <FontSize>8pt</FontSize>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -3198,7 +3262,7 @@ ELSE
                 <Color>DarkGray</Color>
                 <Style>Solid</Style>
               </Border>
-              <BackgroundColor>White</BackgroundColor>
+              <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
               <VerticalAlign>Middle</VerticalAlign>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -3220,6 +3284,7 @@ ELSE
                       <FontFamily>Trebuchet MS</FontFamily>
                       <FontSize>12pt</FontSize>
                       <FontWeight>Bold</FontWeight>
+                      <Color>=Variables!TableHeadingFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -3252,7 +3317,7 @@ ELSE
                     <Style>
                       <FontSize>8pt</FontSize>
                       <TextDecoration>Underline</TextDecoration>
-                      <Color>Blue</Color>
+                      <Color>=Variables!URILinkFontColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -3308,6 +3373,7 @@ ELSE
                     <Value>Show queries for this report.</Value>
                     <Style>
                       <FontWeight>Bold</FontWeight>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -3339,13 +3405,15 @@ ELSE
                     <TextRuns>
                       <TextRun>
                         <Value>=DataSets!DataSet_BlockingChain_BlockingChainAllRuntimes.CommandText</Value>
-                        <Style />
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </TextRun>
                     </TextRuns>
                     <Style />
                   </Paragraph>
                 </Paragraphs>
-                <Top>0.2257in</Top>
+                <Top>0.21181in</Top>
                 <Left>0.01042in</Left>
                 <Height>0.25in</Height>
                 <Width>9.81249in</Width>
@@ -3355,8 +3423,21 @@ ELSE
                 </Visibility>
                 <Style>
                   <Border>
+                    <Color>=Variables!ReportTextColor.Value</Color>
                     <Style>None</Style>
                   </Border>
+                  <TopBorder>
+                    <Color>=Variables!ReportTextColor.Value</Color>
+                  </TopBorder>
+                  <BottomBorder>
+                    <Color>=Variables!ReportTextColor.Value</Color>
+                  </BottomBorder>
+                  <LeftBorder>
+                    <Color>=Variables!ReportTextColor.Value</Color>
+                  </LeftBorder>
+                  <RightBorder>
+                    <Color>=Variables!ReportTextColor.Value</Color>
+                  </RightBorder>
                   <PaddingLeft>2pt</PaddingLeft>
                   <PaddingRight>2pt</PaddingRight>
                   <PaddingTop>2pt</PaddingTop>
@@ -3371,7 +3452,9 @@ ELSE
                     <TextRuns>
                       <TextRun>
                         <Value>=DataSets!DataSet_BlockingChain_BlockingChainSampleRuntime.CommandText</Value>
-                        <Style />
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </TextRun>
                     </TextRuns>
                     <Style />
@@ -3387,8 +3470,21 @@ ELSE
                 </Visibility>
                 <Style>
                   <Border>
+                    <Color>=Variables!ReportTextColor.Value</Color>
                     <Style>None</Style>
                   </Border>
+                  <TopBorder>
+                    <Color>=Variables!ReportTextColor.Value</Color>
+                  </TopBorder>
+                  <BottomBorder>
+                    <Color>=Variables!ReportTextColor.Value</Color>
+                  </BottomBorder>
+                  <LeftBorder>
+                    <Color>=Variables!ReportTextColor.Value</Color>
+                  </LeftBorder>
+                  <RightBorder>
+                    <Color>=Variables!ReportTextColor.Value</Color>
+                  </RightBorder>
                   <PaddingLeft>2pt</PaddingLeft>
                   <PaddingRight>2pt</PaddingRight>
                   <PaddingTop>2pt</PaddingTop>
@@ -3403,7 +3499,9 @@ ELSE
                     <TextRuns>
                       <TextRun>
                         <Value>=DataSets!DataSet_BlockingChain_BlockingChainDetails.CommandText</Value>
-                        <Style />
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </TextRun>
                     </TextRuns>
                     <Style />
@@ -3420,8 +3518,21 @@ ELSE
                 </Visibility>
                 <Style>
                   <Border>
+                    <Color>=Variables!ReportTextColor.Value</Color>
                     <Style>None</Style>
                   </Border>
+                  <TopBorder>
+                    <Color>=Variables!ReportTextColor.Value</Color>
+                  </TopBorder>
+                  <BottomBorder>
+                    <Color>=Variables!ReportTextColor.Value</Color>
+                  </BottomBorder>
+                  <LeftBorder>
+                    <Color>=Variables!ReportTextColor.Value</Color>
+                  </LeftBorder>
+                  <RightBorder>
+                    <Color>=Variables!ReportTextColor.Value</Color>
+                  </RightBorder>
                   <PaddingLeft>2pt</PaddingLeft>
                   <PaddingRight>2pt</PaddingRight>
                   <PaddingTop>2pt</PaddingTop>
@@ -3436,7 +3547,9 @@ ELSE
                     <TextRuns>
                       <TextRun>
                         <Value>=DataSets!DataSet_BlockingChain_HeadBlockerSampleRuntime.CommandText</Value>
-                        <Style />
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </TextRun>
                     </TextRuns>
                     <Style />
@@ -3452,8 +3565,21 @@ ELSE
                 </Visibility>
                 <Style>
                   <Border>
+                    <Color>=Variables!ReportTextColor.Value</Color>
                     <Style>None</Style>
                   </Border>
+                  <TopBorder>
+                    <Color>=Variables!ReportTextColor.Value</Color>
+                  </TopBorder>
+                  <BottomBorder>
+                    <Color>=Variables!ReportTextColor.Value</Color>
+                  </BottomBorder>
+                  <LeftBorder>
+                    <Color>=Variables!ReportTextColor.Value</Color>
+                  </LeftBorder>
+                  <RightBorder>
+                    <Color>=Variables!ReportTextColor.Value</Color>
+                  </RightBorder>
                   <PaddingLeft>2pt</PaddingLeft>
                   <PaddingRight>2pt</PaddingRight>
                   <PaddingTop>2pt</PaddingTop>
@@ -3468,7 +3594,9 @@ ELSE
                     <TextRuns>
                       <TextRun>
                         <Value>=DataSets("DataSet_BlockingChain_BlockingChainAllRuntimes").CommandText</Value>
-                        <Style />
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </TextRun>
                     </TextRuns>
                     <Style />
@@ -3485,8 +3613,21 @@ ELSE
                 </Visibility>
                 <Style>
                   <Border>
+                    <Color>=Variables!ReportTextColor.Value</Color>
                     <Style>None</Style>
                   </Border>
+                  <TopBorder>
+                    <Color>=Variables!ReportTextColor.Value</Color>
+                  </TopBorder>
+                  <BottomBorder>
+                    <Color>=Variables!ReportTextColor.Value</Color>
+                  </BottomBorder>
+                  <LeftBorder>
+                    <Color>=Variables!ReportTextColor.Value</Color>
+                  </LeftBorder>
+                  <RightBorder>
+                    <Color>=Variables!ReportTextColor.Value</Color>
+                  </RightBorder>
                   <PaddingLeft>2pt</PaddingLeft>
                   <PaddingRight>2pt</PaddingRight>
                   <PaddingTop>2pt</PaddingTop>
@@ -3501,7 +3642,9 @@ ELSE
                     <TextRuns>
                       <TextRun>
                         <Value>=DataSets("DataSet_BlockingChain_BlockingChainTextSummary").CommandText</Value>
-                        <Style />
+                        <Style>
+                          <Color>=Variables!ReportTextColor.Value</Color>
+                        </Style>
                       </TextRun>
                     </TextRuns>
                     <Style />
@@ -3518,8 +3661,21 @@ ELSE
                 </Visibility>
                 <Style>
                   <Border>
+                    <Color>=Variables!ReportTextColor.Value</Color>
                     <Style>None</Style>
                   </Border>
+                  <TopBorder>
+                    <Color>=Variables!ReportTextColor.Value</Color>
+                  </TopBorder>
+                  <BottomBorder>
+                    <Color>=Variables!ReportTextColor.Value</Color>
+                  </BottomBorder>
+                  <LeftBorder>
+                    <Color>=Variables!ReportTextColor.Value</Color>
+                  </LeftBorder>
+                  <RightBorder>
+                    <Color>=Variables!ReportTextColor.Value</Color>
+                  </RightBorder>
                   <PaddingLeft>2pt</PaddingLeft>
                   <PaddingRight>2pt</PaddingRight>
                   <PaddingTop>2pt</PaddingTop>
@@ -3539,8 +3695,21 @@ ELSE
             </Visibility>
             <Style>
               <Border>
+                <Color>=Variables!ReportTextColor.Value</Color>
                 <Style>Solid</Style>
               </Border>
+              <TopBorder>
+                <Color>=Variables!ReportTextColor.Value</Color>
+              </TopBorder>
+              <BottomBorder>
+                <Color>=Variables!ReportTextColor.Value</Color>
+              </BottomBorder>
+              <LeftBorder>
+                <Color>=Variables!ReportTextColor.Value</Color>
+              </LeftBorder>
+              <RightBorder>
+                <Color>=Variables!ReportTextColor.Value</Color>
+              </RightBorder>
             </Style>
           </Rectangle>
         </ReportItems>
@@ -3549,7 +3718,7 @@ ELSE
           <Border>
             <Color>DarkGray</Color>
           </Border>
-          <BackgroundColor>=Parameters!FmtAmbientBackground.Value</BackgroundColor>
+          <BackgroundColor>=Variables!BodyBackgroundColor.Value</BackgroundColor>
         </Style>
       </Body>
       <Width>13.61458in</Width>
@@ -3601,11 +3770,36 @@ ELSE
       <AllowBlank>true</AllowBlank>
       <Prompt>Database Name</Prompt>
     </ReportParameter>
+    <ReportParameter Name="ContrastTheme">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>None</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>ContrastTheme</Prompt>
+      <ValidValues>
+        <ParameterValues>
+          <ParameterValue>
+            <Value>None</Value>
+            <Label>None</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>Aquatic</Value>
+            <Label>Aquatic</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>Desert</Value>
+            <Label>Desert</Label>
+          </ParameterValue>
+        </ParameterValues>
+      </ValidValues>
+    </ReportParameter>
   </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>
       <NumberOfColumns>3</NumberOfColumns>
-      <NumberOfRows>2</NumberOfRows>
+      <NumberOfRows>3</NumberOfRows>
       <CellDefinitions>
         <CellDefinition>
           <ColumnIndex>0</ColumnIndex>
@@ -3627,6 +3821,11 @@ ELSE
           <RowIndex>1</RowIndex>
           <ParameterName>dsDatabaseName</ParameterName>
         </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>2</RowIndex>
+          <ParameterName>ContrastTheme</ParameterName>
+        </CellDefinition>
       </CellDefinitions>
     </GridLayoutDefinition>
   </ReportParametersLayout>
@@ -3641,6 +3840,79 @@ ELSE
     </EmbeddedImage>
   </EmbeddedImages>
   <Language>en-US</Language>
+  <Variables>
+    <Variable Name="IsLocalReport">
+      <Value>= (Globals!ReportServerUrl="")</Value>
+    </Variable>
+    <Variable Name="FLocalMode">
+      <Value>=Globals!ReportServerUrl = ""</Value>
+    </Variable>
+    <Variable Name="ReportTextColor">
+      <Value>
+        =Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+        Parameters!ContrastTheme.Value="Default", "Black")
+      </Value>
+    </Variable>
+    <Variable Name="BodyBackgroundColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
+Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
+        Parameters!ContrastTheme.Value="Default", "#FAFDFF")</Value>
+    </Variable>
+    <Variable Name="TitleColor">
+      <Value>
+        =Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+        Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+        Parameters!ContrastTheme.Value="Default", "SteelBlue")
+      </Value>
+    </Variable>
+    <Variable Name="TableHeadingColor">
+      <Value>
+        =Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
+        Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
+        Parameters!ContrastTheme.Value="Default", "SteelBlue")
+      </Value>
+    </Variable>
+    <Variable Name="ChartColor">
+      <Value>
+        =Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
+        Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
+        Parameters!ContrastTheme.Value="Default", "LightSteelBlue")
+      </Value>
+    </Variable>
+    <Variable Name="ChartSecondaryColor">
+      <Value>
+        =Switch(Parameters!ContrastTheme.Value="Aquatic", "No Color",
+        Parameters!ContrastTheme.Value="Desert", "No Color",
+        Parameters!ContrastTheme.Value="Default", "Automatic")
+      </Value>
+    </Variable>
+    <Variable Name="ChartGradientStyle">
+      <Value>
+        =Switch(Parameters!ContrastTheme.Value="Aquatic", "None",
+        Parameters!ContrastTheme.Value="Desert", "None",
+        Parameters!ContrastTheme.Value="Default", "TopBottom")
+      </Value>
+    </Variable>
+    <Variable Name="TableShowCell">
+      <Value>"Red"</Value>
+    </Variable>
+    <Variable Name="TableHidcell">
+      <Value>"Green"</Value>
+    </Variable>
+    <Variable Name="TableHeadingFontColor">
+      <Value>
+        =Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+        Parameters!ContrastTheme.Value="Default", "#FFFFFF")
+      </Value>
+    </Variable>
+    <Variable Name="URILinkFontColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#75E9FC",
+Parameters!ContrastTheme.Value="Desert", "#1C5E75",
+Parameters!ContrastTheme.Value="Default", "Blue")</Value>
+    </Variable>
+  </Variables>
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
   <rd:ReportUnitType>Inch</rd:ReportUnitType>
   <rd:ReportID>7e6c1a85-c19e-48ee-84bd-8d94d5d48c23</rd:ReportID>

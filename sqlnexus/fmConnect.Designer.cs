@@ -29,7 +29,7 @@ namespace sqlnexus
         private void InitializeComponent()
         {
             this.label1 = new System.Windows.Forms.Label();
-            this.txtSqlServer = new System.Windows.Forms.TextBox();
+            this.txtSqlServer = new sqlnexus.AccessibleTextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.rbWindowsAuth = new System.Windows.Forms.RadioButton();
             this.btnCancel = new System.Windows.Forms.Button();
@@ -49,6 +49,7 @@ namespace sqlnexus
             // 
             // txtSqlServer
             // 
+            this.txtSqlServer.AccessibleName = "Server Name";
             this.txtSqlServer.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.txtSqlServer.Location = new System.Drawing.Point(83, 12);
@@ -136,7 +137,7 @@ namespace sqlnexus
         #endregion
 
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox txtSqlServer;
+        private sqlnexus.AccessibleTextBox txtSqlServer;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.RadioButton rbWindowsAuth;
         private System.Windows.Forms.Button btnCancel;

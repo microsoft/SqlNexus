@@ -1,11 +1,13 @@
+using Microsoft.Data.SqlClient;
+using NexusInterfaces;
 using System;
 using System.Collections.Generic;
-using System.Windows.Forms;
+using System.Drawing;
+using System.Globalization;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
-using System.Globalization;
-using NexusInterfaces;
-using Microsoft.Data.SqlClient;
+using System.Windows.Forms;
 //App can be run as a console or GUI app.  Passing parameters causes console mode.
 //Sample cmd line for running as a console app
 //  "/Cserver='.\ss2k5_rtm';Trusted_Connection=true;database='sqlnexus';Application Name=' ';Pooling=false;Packet Size=4096;multipleactiveresultsets=false" "/XD:\_data\src\Nexus\sqlnexus\sqlnexus\bin\Debug\Reports\Profiler Trace Analysis_M.rdlc"
@@ -37,15 +39,19 @@ namespace sqlnexus
                     try
                     {
                         if (ex.Message.Contains("Could not load file or assembly"))
-                        { 
-
+                        {
+                            string errorMsg = string.Format("Assembly load failure during exception handling: {0}", ex.Message);
+                            System.Diagnostics.Trace.TraceError(errorMsg);
+                            Console.Error.WriteLine(errorMsg);
                         }
                         else
+                        {
                             MessageBox.Show("Fatal Error", "Fatal Error", MessageBoxButtons.AbortRetryIgnore, MessageBoxIcon.Stop);
+                        }
                     }
                     finally
                     {
-                        Application.Exit(); 
+                        Application.Exit();
                     }
                 }
             }
@@ -64,6 +70,7 @@ namespace sqlnexus
         }
     }
 
+    
     enum ProgramExitCodes
     {
         UserCancel = -1,
@@ -115,14 +122,14 @@ namespace sqlnexus
             // TODO: print out command line params as they are processed
             // TODO: exit if -? passed
             //Special case usage info
-            if ((1 == args.Length) && (("/?" == args[0]) || ("-?" == args[0]) || ("--help" == args[0]) ))
+            if ((1 == args.Length) && (("/?" == args[0]) || ("-?" == args[0]) || ("--help" == args[0])))
             {
                 ShowUsage();
                 return false;
             }
 
             //logger.LogMessage(sqlnexus.Properties.Resources.Msg_ProcessParams);
-            Console.WriteLine (sqlnexus.Properties.Resources.Msg_ProcessParams);
+            Console.WriteLine(sqlnexus.Properties.Resources.Msg_ProcessParams);
             Console.WriteLine("");
 
             //Loop through the cmd line args
@@ -138,7 +145,7 @@ namespace sqlnexus
 
                 // Some switches require a string to immediately follow the switch
                 char switchChar = arg.ToUpper(CultureInfo.InvariantCulture)[1];
-                if (('C'==switchChar) || ('S'==switchChar) || ('U'==switchChar) || ('P'==switchChar) || ('R'==switchChar)
+                if (('C' == switchChar) || ('S' == switchChar) || ('U' == switchChar) || ('P' == switchChar) || ('R' == switchChar)
                     || ('O' == switchChar) || ('I' == switchChar) || ('V' == switchChar) || ('D' == switchChar))
                 {
                     if (arg.Length < 3)
@@ -149,11 +156,11 @@ namespace sqlnexus
                     }
                 }
 
-                string arg_slash_validation = arg.Replace("/","");
+                string arg_slash_validation = arg.Replace("/", "");
 
                 if (arg.Length - arg_slash_validation.Length > 1)
                 {
-                    Console.WriteLine(sqlnexus.Properties.Resources.Msg_InvalidSwitch + arg.Substring(0,2));
+                    Console.WriteLine(sqlnexus.Properties.Resources.Msg_InvalidSwitch + arg.Substring(0, 2));
                     Console.WriteLine("Possible reason: An extra backslash exists at the end of " + arg.Substring(0, 2) + " parameter in your command");
                     return false;
                 }
@@ -176,7 +183,7 @@ namespace sqlnexus
                                 Console.WriteLine($"Error: Database name must contain only basic letters, numbers, underscores, and cannot be 'master', 'tempdb', 'model', or 'msdb'. Length must be 1-128 characters. Invalid database name: '{dbName}'. Try again");
                                 return false;
                             }
-                         
+
 
                             Globals.credentialMgr.Database = dbName;
                             break;
@@ -227,7 +234,7 @@ namespace sqlnexus
                     case 'O':
                         {
                             Console.WriteLine(@"Command Line Arg (/O): OutputPath=" + arg.Substring(2));
-                            Globals.ReportExportPath = arg.Substring(2).Trim().Replace("\"","");
+                            Globals.ReportExportPath = arg.Substring(2).Trim().Replace("\"", "");
                             // Path is assumed to be terminated by a backslash
                             if (@"\" != Globals.ReportExportPath.Substring(Globals.ReportExportPath.Length - 1))
                                 Globals.ReportExportPath += @"\";
@@ -236,13 +243,13 @@ namespace sqlnexus
                     case 'I':
                         {
                             Console.WriteLine(@"Command Line Arg (/I): InputPath=" + arg.Substring(2));
-                            
+
                             String ipath = arg.Substring(2).Replace("\"", "").Trim();
                             if (ipath.EndsWith(@"\"))
-                                ipath =  ipath.Substring(0, ipath.Length-1);
+                                ipath = ipath.Substring(0, ipath.Length - 1);
 
                             Globals.PathsToImport.Enqueue(ipath);
-                            Globals.QuietNonInteractiveMode = true; 
+                            Globals.QuietNonInteractiveMode = true;
                             break;
                         }
                     case 'V':
@@ -250,7 +257,7 @@ namespace sqlnexus
                             Console.WriteLine(@"Command Line Arg (/V): Parameter " + arg.Substring(2));
                             string tmpStr = arg.Substring(2);
                             string param = tmpStr.Substring(0, tmpStr.IndexOf('='));
-                            string val = tmpStr.Substring(tmpStr.IndexOf('=')+1);
+                            string val = tmpStr.Substring(tmpStr.IndexOf('=') + 1);
                             Globals.UserSuppliedReportParameters.Add(param, val);
                             break;
                         }
@@ -267,7 +274,7 @@ namespace sqlnexus
                         }
                 }
 
-                
+
             }
             //create a database
 
@@ -299,9 +306,9 @@ namespace sqlnexus
         [STAThread]
         static int Main(string[] args)
         {
-           
+
             try
-            {   
+            {
 
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
@@ -310,8 +317,8 @@ namespace sqlnexus
 
                 //initialize the main form
                 fmNexus fmN = new fmNexus();
-            
-                
+
+
 
                 if (0 != args.Length)
                 {
@@ -327,7 +334,7 @@ namespace sqlnexus
                 }
                 Application.Run(fmN);
             }
-            
+
             catch (Exception ex)
             {
                 Console.WriteLine(string.Format("Exception encountered in Main(): [{0}]", ex.Message));

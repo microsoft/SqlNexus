@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
@@ -152,7 +152,7 @@ END</CommandText>
                                     <FontFamily>Tahoma</FontFamily>
                                     <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -166,7 +166,7 @@ END</CommandText>
                               <Color>LightGrey</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>Indigo</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -189,7 +189,7 @@ END</CommandText>
                                     <FontFamily>Tahoma</FontFamily>
                                     <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -205,7 +205,7 @@ END</CommandText>
                               <Color>LightGrey</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>Indigo</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -228,7 +228,7 @@ END</CommandText>
                                     <FontFamily>Tahoma</FontFamily>
                                     <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -244,7 +244,7 @@ END</CommandText>
                               <Color>LightGrey</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>Indigo</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -267,7 +267,7 @@ END</CommandText>
                                     <FontFamily>Tahoma</FontFamily>
                                     <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -283,7 +283,7 @@ END</CommandText>
                               <Color>LightGrey</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>Indigo</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -306,7 +306,7 @@ END</CommandText>
                                     <FontFamily>Tahoma</FontFamily>
                                     <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -321,7 +321,7 @@ END</CommandText>
                               <Color>LightGrey</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>Indigo</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -347,7 +347,7 @@ END</CommandText>
                                   <Value>=Fields!create_index_statement.Value</Value>
                                   <Style>
                                     <FontFamily>Tahoma</FontFamily>
-                                  </Style>
+                                  <Color>=Variables!ReportTextColor.Value</Color></Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -360,7 +360,7 @@ END</CommandText>
                               <Color>LightGrey</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>=IIF(ROWNUMBER(NOTHING) MOD 2, "White", "Gainsboro")</BackgroundColor>
+                            <BackgroundColor>=Code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(Nothing))</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -381,7 +381,7 @@ END</CommandText>
                                   <Value>=Fields!improvement_measure.Value</Value>
                                   <Style>
                                     <FontFamily>Tahoma</FontFamily>
-                                  </Style>
+                                  <Color>=Variables!ReportTextColor.Value</Color></Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -394,7 +394,7 @@ END</CommandText>
                               <Color>LightGrey</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>=IIF(ROWNUMBER(NOTHING) MOD 2, "White", "Gainsboro")</BackgroundColor>
+                            <BackgroundColor>=Code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(Nothing))</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -415,7 +415,7 @@ END</CommandText>
                                   <Value>=Fields!user_seeks.Value</Value>
                                   <Style>
                                     <FontFamily>Tahoma</FontFamily>
-                                  </Style>
+                                  <Color>=Variables!ReportTextColor.Value</Color></Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -428,7 +428,7 @@ END</CommandText>
                               <Color>LightGrey</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>=IIF(ROWNUMBER(NOTHING) MOD 2, "White", "Gainsboro")</BackgroundColor>
+                            <BackgroundColor>=Code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(Nothing))</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -449,7 +449,7 @@ END</CommandText>
                                   <Value>=Fields!user_scans.Value</Value>
                                   <Style>
                                     <FontFamily>Tahoma</FontFamily>
-                                  </Style>
+                                  <Color>=Variables!ReportTextColor.Value</Color></Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -461,7 +461,7 @@ END</CommandText>
                               <Color>LightGrey</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>=IIF(ROWNUMBER(NOTHING) MOD 2, "White", "Gainsboro")</BackgroundColor>
+                            <BackgroundColor>=Code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(Nothing))</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -482,7 +482,7 @@ END</CommandText>
                                   <Value>=Fields!object_id.Value</Value>
                                   <Style>
                                     <FontFamily>Tahoma</FontFamily>
-                                  </Style>
+                                  <Color>=Variables!ReportTextColor.Value</Color></Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -494,7 +494,7 @@ END</CommandText>
                               <Color>LightGrey</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>=IIF(ROWNUMBER(NOTHING) MOD 2, "White", "Gainsboro")</BackgroundColor>
+                            <BackgroundColor>=Code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(Nothing))</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -544,7 +544,7 @@ END</CommandText>
             <Width>13.13542in</Width>
             <Style>
               <Border>
-                <Color>Indigo</Color>
+                <Color>=Variables!ReportTextColor.Value</Color>
                 <Style>Solid</Style>
               </Border>
             </Style>
@@ -561,7 +561,7 @@ END</CommandText>
                       <FontFamily>Tahoma</FontFamily>
                       <FontSize>20pt</FontSize>
                       <FontWeight>Bold</FontWeight>
-                    </Style>
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                   </TextRun>
                 </TextRuns>
                 <Style>
@@ -589,7 +589,7 @@ END</CommandText>
                 <TextRuns>
                   <TextRun>
                     <Value>The information presented here comes from missing indexes DMV's.    They are ranked based on improvement measures which is calculated based on avg_total_user_cost, avg_user_impact, user_seeks, and user_scans columns in sys.dm_db_missing_index_group_stats. The top rows in the reports mean they provide the highest positive performance impactful.</Value>
-                    <Style />
+                    <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
                   </TextRun>
                 </TextRuns>
                 <Style />
@@ -598,7 +598,7 @@ END</CommandText>
                 <TextRuns>
                   <TextRun>
                     <Value />
-                    <Style />
+                    <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
                   </TextRun>
                 </TextRuns>
                 <Style />
@@ -607,18 +607,18 @@ END</CommandText>
                 <TextRuns>
                   <TextRun>
                     <Value>There are </Value>
-                    <Style />
+                    <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
                   </TextRun>
                   <TextRun>
                     <Value>two reports </Value>
                     <Style>
                       <FontWeight>Bold</FontWeight>
                       <TextDecoration>Underline</TextDecoration>
-                    </Style>
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                   </TextRun>
                   <TextRun>
                     <Value>below:</Value>
-                    <Style />
+                    <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
                   </TextRun>
                 </TextRuns>
                 <Style />
@@ -627,7 +627,7 @@ END</CommandText>
                 <TextRuns>
                   <TextRun>
                     <Value />
-                    <Style />
+                    <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
                   </TextRun>
                 </TextRuns>
                 <Style />
@@ -638,7 +638,7 @@ END</CommandText>
                     <Value>1. Missing Indexes since the start of SQL Server </Value>
                     <Style>
                       <FontWeight>Bold</FontWeight>
-                    </Style>
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                   </TextRun>
                 </TextRuns>
                 <Style />
@@ -649,7 +649,7 @@ END</CommandText>
                     <Value>2. Missing indexes affected only during the log collection (SQL LogScout or PSSDIAG)</Value>
                     <Style>
                       <FontWeight>Bold</FontWeight>
-                    </Style>
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                   </TextRun>
                 </TextRuns>
                 <Style />
@@ -660,7 +660,7 @@ END</CommandText>
                     <Value />
                     <Style>
                       <FontWeight>Bold</FontWeight>
-                    </Style>
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                   </TextRun>
                 </TextRuns>
                 <Style />
@@ -669,7 +669,7 @@ END</CommandText>
                 <TextRuns>
                   <TextRun>
                     <Value>The second report shows missing indexes affected during log collection of SQL LogScout or PSSDIAG/SQLDIAG. The delta columns are computed between values from shutdown and startup log captures. </Value>
-                    <Style />
+                    <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
                   </TextRun>
                 </TextRuns>
                 <Style />
@@ -680,7 +680,7 @@ END</CommandText>
                     <Value>If you see any entries here, especially ones with high improvement values, start by creating those indexes first.</Value>
                     <Style>
                       <FontWeight>Bold</FontWeight>
-                    </Style>
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                   </TextRun>
                 </TextRuns>
                 <Style />
@@ -691,7 +691,7 @@ END</CommandText>
                     <Value />
                     <Style>
                       <FontWeight>Bold</FontWeight>
-                    </Style>
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                   </TextRun>
                 </TextRuns>
                 <Style />
@@ -703,7 +703,7 @@ END</CommandText>
                     <Style>
                       <FontWeight>Bold</FontWeight>
                       <TextDecoration>Underline</TextDecoration>
-                    </Style>
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                   </TextRun>
                 </TextRuns>
                 <Style />
@@ -715,7 +715,7 @@ END</CommandText>
                     <Style>
                       <FontWeight>Bold</FontWeight>
                       <TextDecoration>Underline</TextDecoration>
-                    </Style>
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                   </TextRun>
                 </TextRuns>
                 <Style />
@@ -726,7 +726,7 @@ END</CommandText>
                     <Value>1. Create indexes that are related to slow-running queries. Combine this criterion with the points below</Value>
                     <Style>
                       <FontWeight>Normal</FontWeight>
-                    </Style>
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                   </TextRun>
                 </TextRuns>
                 <Style />
@@ -737,7 +737,7 @@ END</CommandText>
                     <Value>2. Start with the top entries in the reports as those are the indexes with largest potential for positive performance impact. </Value>
                     <Style>
                       <FontWeight>Normal</FontWeight>
-                    </Style>
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                   </TextRun>
                 </TextRuns>
                 <Style />
@@ -748,7 +748,7 @@ END</CommandText>
                     <Value>3. If you are not sure where to start, look at improvement measure over 100,000 in the second report first (from log collection) and create those indexes. If none with such high values, still start at the top of the list</Value>
                     <Style>
                       <FontWeight>Normal</FontWeight>
-                    </Style>
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                   </TextRun>
                 </TextRuns>
                 <Style />
@@ -759,7 +759,7 @@ END</CommandText>
                     <Value>4. Then look at high values over 100,000 in the first report (since SQL Server restart) and create those indexes</Value>
                     <Style>
                       <FontWeight>Normal</FontWeight>
-                    </Style>
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                   </TextRun>
                 </TextRuns>
                 <Style />
@@ -770,7 +770,7 @@ END</CommandText>
                     <Value />
                     <Style>
                       <FontWeight>Normal</FontWeight>
-                    </Style>
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                   </TextRun>
                 </TextRuns>
                 <Style />
@@ -781,7 +781,7 @@ END</CommandText>
                     <Value />
                     <Style>
                       <FontWeight>Bold</FontWeight>
-                    </Style>
+                    <Color>=Variables!ReportTextColor.Value</Color></Style>
                   </TextRun>
                 </TextRuns>
                 <Style />
@@ -811,7 +811,7 @@ END</CommandText>
                     <Style>
                       <FontSize>14pt</FontSize>
                       <FontWeight>Bold</FontWeight>
-                      <Color>Indigo</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -828,6 +828,7 @@ END</CommandText>
             <ZIndex>3</ZIndex>
             <Style>
               <Border>
+                <Color>=Variables!ReportTextColor.Value</Color>
                 <Style>Solid</Style>
               </Border>
               <PaddingLeft>2pt</PaddingLeft>
@@ -847,7 +848,7 @@ END</CommandText>
                     <Style>
                       <FontSize>14pt</FontSize>
                       <FontWeight>Bold</FontWeight>
-                      <Color>SlateBlue</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -862,7 +863,7 @@ END</CommandText>
                     <Style>
                       <FontSize>14pt</FontSize>
                       <FontWeight>Bold</FontWeight>
-                      <Color>SlateBlue</Color>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -879,6 +880,7 @@ END</CommandText>
             <ZIndex>4</ZIndex>
             <Style>
               <Border>
+                <Color>=Variables!ReportTextColor.Value</Color>
                 <Style>Solid</Style>
               </Border>
               <PaddingLeft>2pt</PaddingLeft>
@@ -912,7 +914,7 @@ END</CommandText>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="textbox7">
+                        <Textbox Name="textbox7_query">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -924,7 +926,7 @@ END</CommandText>
                                     <FontFamily>Tahoma</FontFamily>
                                     <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -938,7 +940,7 @@ END</CommandText>
                               <Color>LightGrey</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>SlateBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -961,7 +963,7 @@ END</CommandText>
                                     <FontFamily>Tahoma</FontFamily>
                                     <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -977,7 +979,7 @@ END</CommandText>
                               <Color>LightGrey</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>SlateBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -988,7 +990,7 @@ END</CommandText>
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="textbox9">
+                        <Textbox Name="textbox9_seeks">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -1000,7 +1002,7 @@ END</CommandText>
                                     <FontFamily>Tahoma</FontFamily>
                                     <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1016,7 +1018,7 @@ END</CommandText>
                                     <FontFamily>Tahoma</FontFamily>
                                     <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1032,7 +1034,7 @@ END</CommandText>
                               <Color>LightGrey</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>SlateBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -1043,7 +1045,7 @@ END</CommandText>
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="textbox10">
+                        <Textbox Name="textbox10_scans">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -1055,7 +1057,7 @@ END</CommandText>
                                     <FontFamily>Tahoma</FontFamily>
                                     <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1071,7 +1073,7 @@ END</CommandText>
                                     <FontFamily>Tahoma</FontFamily>
                                     <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1087,7 +1089,7 @@ END</CommandText>
                               <Color>LightGrey</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>SlateBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -1098,7 +1100,7 @@ END</CommandText>
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox8">
+                        <Textbox Name="Textbox8_objid2">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -1110,7 +1112,7 @@ END</CommandText>
                                     <FontFamily>Tahoma</FontFamily>
                                     <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
+                                    <Color>=Variables!ReportTextColor.Value</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1125,7 +1127,7 @@ END</CommandText>
                               <Color>LightGrey</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>SlateBlue</BackgroundColor>
+                            <BackgroundColor>=Variables!TableHeadingColor.Value</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -1151,7 +1153,7 @@ END</CommandText>
                                   <Value>=Fields!create_index_statement.Value</Value>
                                   <Style>
                                     <FontFamily>Tahoma</FontFamily>
-                                  </Style>
+                                  <Color>=Variables!ReportTextColor.Value</Color></Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -1164,7 +1166,7 @@ END</CommandText>
                               <Color>LightGrey</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>=IIF(ROWNUMBER(NOTHING) MOD 2, "White", "Gainsboro")</BackgroundColor>
+                            <BackgroundColor>=Code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(Nothing))</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -1185,7 +1187,7 @@ END</CommandText>
                                   <Value>=Fields!delta_improvement_measure.Value</Value>
                                   <Style>
                                     <FontFamily>Tahoma</FontFamily>
-                                  </Style>
+                                  <Color>=Variables!ReportTextColor.Value</Color></Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -1198,7 +1200,7 @@ END</CommandText>
                               <Color>LightGrey</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>=IIF(ROWNUMBER(NOTHING) MOD 2, "White", "Gainsboro")</BackgroundColor>
+                            <BackgroundColor>=Code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(Nothing))</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -1219,7 +1221,7 @@ END</CommandText>
                                   <Value>=Fields!delta_user_seeks.Value</Value>
                                   <Style>
                                     <FontFamily>Tahoma</FontFamily>
-                                  </Style>
+                                  <Color>=Variables!ReportTextColor.Value</Color></Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -1232,7 +1234,7 @@ END</CommandText>
                               <Color>LightGrey</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>=IIF(ROWNUMBER(NOTHING) MOD 2, "White", "Gainsboro")</BackgroundColor>
+                            <BackgroundColor>=Code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(Nothing))</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -1253,7 +1255,7 @@ END</CommandText>
                                   <Value>=Fields!delta_user_scans.Value</Value>
                                   <Style>
                                     <FontFamily>Tahoma</FontFamily>
-                                  </Style>
+                                  <Color>=Variables!ReportTextColor.Value</Color></Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -1265,7 +1267,7 @@ END</CommandText>
                               <Color>LightGrey</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>=IIF(ROWNUMBER(NOTHING) MOD 2, "White", "Gainsboro")</BackgroundColor>
+                            <BackgroundColor>=Code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(Nothing))</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -1286,7 +1288,7 @@ END</CommandText>
                                   <Value>=Fields!object_id.Value</Value>
                                   <Style>
                                     <FontFamily>Tahoma</FontFamily>
-                                  </Style>
+                                  <Color>=Variables!ReportTextColor.Value</Color></Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -1298,7 +1300,7 @@ END</CommandText>
                               <Color>LightGrey</Color>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>=IIF(ROWNUMBER(NOTHING) MOD 2, "White", "Gainsboro")</BackgroundColor>
+                            <BackgroundColor>=Code.GetTableRowFillColor(Parameters!ContrastTheme.Value, RowNumber(Nothing))</BackgroundColor>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -1349,7 +1351,7 @@ END</CommandText>
             <ZIndex>5</ZIndex>
             <Style>
               <Border>
-                <Color>SlateBlue</Color>
+                <Color>=Variables!ReportTextColor.Value</Color>
                 <Style>Solid</Style>
               </Border>
             </Style>
@@ -1362,6 +1364,7 @@ END</CommandText>
             <ZIndex>6</ZIndex>
             <Style>
               <Border>
+                <Color>=Variables!ReportTextColor.Value</Color>
                 <Style>Solid</Style>
                 <Width>2pt</Width>
               </Border>
@@ -1377,6 +1380,7 @@ END</CommandText>
                     <Value>Show queries for this report.</Value>
                     <Style>
                       <FontWeight>Bold</FontWeight>
+                      <Color>=Variables!ReportTextColor.Value</Color>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -1408,7 +1412,7 @@ END</CommandText>
                     <TextRuns>
                       <TextRun>
                         <Value>=DataSets!DataSet_MissingIndexes.CommandText</Value>
-                        <Style />
+                        <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
                       </TextRun>
                     </TextRuns>
                     <Style />
@@ -1440,7 +1444,7 @@ END</CommandText>
                     <TextRuns>
                       <TextRun>
                         <Value>=DataSets!DataSet_MissingIndexesDelta_DuringLogCollection.CommandText</Value>
-                        <Style />
+                        <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
                       </TextRun>
                     </TextRuns>
                     <Style />
@@ -1477,6 +1481,7 @@ END</CommandText>
             </Visibility>
             <Style>
               <Border>
+                <Color>=Variables!ReportTextColor.Value</Color>
                 <Style>Solid</Style>
               </Border>
             </Style>
@@ -1485,7 +1490,7 @@ END</CommandText>
         <Height>6.41319in</Height>
         <Style>
           <Border />
-          <BackgroundColor>White</BackgroundColor>
+          <BackgroundColor>=Variables!BodyColor.Value</BackgroundColor>
         </Style>
       </Body>
       <Width>13.76042in</Width>
@@ -1494,7 +1499,7 @@ END</CommandText>
         <RightMargin>1in</RightMargin>
         <TopMargin>1in</TopMargin>
         <BottomMargin>1in</BottomMargin>
-        <Style />
+        <Style><Color>=Variables!ReportTextColor.Value</Color></Style>
       </Page>
     </ReportSection>
   </ReportSections>
@@ -1541,11 +1546,36 @@ END</CommandText>
       <Prompt>FmtAmbientBackground</Prompt>
       <Hidden>true</Hidden>
     </ReportParameter>
+    <ReportParameter Name="ContrastTheme">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>None</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>ContrastTheme</Prompt>
+      <ValidValues>
+        <ParameterValues>
+          <ParameterValue>
+            <Value>None</Value>
+            <Label>None</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>Aquatic</Value>
+            <Label>Aquatic</Label>
+          </ParameterValue>
+          <ParameterValue>
+            <Value>Desert</Value>
+            <Label>Desert</Label>
+          </ParameterValue>
+        </ParameterValues>
+      </ValidValues>
+    </ReportParameter>
   </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>
       <NumberOfColumns>4</NumberOfColumns>
-      <NumberOfRows>1</NumberOfRows>
+      <NumberOfRows>3</NumberOfRows>
       <CellDefinitions>
         <CellDefinition>
           <ColumnIndex>0</ColumnIndex>
@@ -1567,11 +1597,58 @@ END</CommandText>
           <RowIndex>0</RowIndex>
           <ParameterName>FmtAmbientBackground</ParameterName>
         </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>2</RowIndex>
+          <ParameterName>ContrastTheme</ParameterName>
+        </CellDefinition>
       </CellDefinitions>
     </GridLayoutDefinition>
   </ReportParametersLayout>
   <Language>en-US</Language>
+  <Variables>
+    <Variable Name="IsLocalReport">
+      <Value>= (Globals!ReportServerUrl="")</Value>
+    </Variable>
+    <Variable Name="ReportTextColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+Parameters!ContrastTheme.Value="None", "Black")</Value>
+    </Variable>
+    <Variable Name="BodyColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#202020",
+Parameters!ContrastTheme.Value="Desert", "#FFFAEF",
+Parameters!ContrastTheme.Value="None", "No Color")</Value>
+    </Variable>
+    <Variable Name="TitleColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#FFFFFF",
+Parameters!ContrastTheme.Value="Desert", "#3D3D3D",
+Parameters!ContrastTheme.Value="None", "#1c3a70")</Value>
+    </Variable>
+    <Variable Name="URLColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "#75E9FC",
+Parameters!ContrastTheme.Value="Desert", "#1C5E75",
+Parameters!ContrastTheme.Value="None", "Blue")</Value>
+    </Variable>
+    <Variable Name="TableHeadingColor">
+      <Value>=Switch(Parameters!ContrastTheme.Value="Aquatic", "No Color",
+Parameters!ContrastTheme.Value="Desert", "No Color",
+Parameters!ContrastTheme.Value="None", "Gainsboro")</Value>
+    </Variable>
+  </Variables>
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
   <rd:ReportUnitType>Inch</rd:ReportUnitType>
   <rd:ReportID>179ff240-1915-4135-83f8-2101a2b5c10b</rd:ReportID>
+  <Code>Function GetTableRowFillColor(Theme as String, RowNumber As Integer) As String
+If Theme ="Aquatic" Then 
+    return "#202020"
+ElseIf Theme ="Desert" Then 
+    return "#FFFAEF"
+Elseif RowNumber Mod 2 &lt;&gt; 0 Then
+        return "White"
+Else 
+        Return "#c7d7ff"
+End If
+End Function
+</Code>
 </Report>
