@@ -24,6 +24,22 @@ tools:
   - mcp_sqlnexus_mcp_get_collection_time_range
   - mcp_sqlnexus_mcp_list_nexus_tables
   - mcp_sqlnexus_mcp_query_nexus_database
+  - mcp_sqlnexus_mcp_get_query_execution_details
+  - mcp_sqlnexus_mcp_get_wait_type_distribution
+  - mcp_sqlnexus_mcp_get_wait_resource_hotspots
+  - mcp_sqlnexus_mcp_get_wait_heavy_queries
+  - mcp_sqlnexus_mcp_get_statements_in_batch
+  - mcp_sqlnexus_mcp_get_blocking_chain_tree
+  - mcp_sqlnexus_mcp_get_lock_summary_by_object
+  - mcp_sqlnexus_mcp_get_queries_by_application
+  - mcp_sqlnexus_mcp_get_performance_by_application
+  - mcp_sqlnexus_mcp_get_cpu_by_database
+  - mcp_sqlnexus_mcp_get_top_queries_by_reads
+  - mcp_sqlnexus_mcp_get_top_queries_by_writes
+  - mcp_sqlnexus_mcp_get_sql_file_io_stats
+  - mcp_sqlnexus_mcp_get_compilation_stats
+  - mcp_sqlnexus_mcp_get_plan_cache_analysis
+  - mcp_sqlnexus_mcp_get_table_statistics_health
 ---
 
 # SQL Nexus Diagnostic Agent

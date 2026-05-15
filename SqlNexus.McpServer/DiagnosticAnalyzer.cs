@@ -764,6 +764,635 @@ namespace SqlNexus.McpServer
         }
 
         /// <summary>
+        /// Query #2: Detailed execution history for a specific query by HashID.
+        /// Shows each individual execution: duration, CPU, reads, writes, row counts, start/end time.
+        /// </summary>
+        public string GetQueryExecutionDetails(long hashId)
+        {
+            string query = $@"
+                IF OBJECT_ID('ReadTrace.tblBatches') IS NOT NULL
+                BEGIN
+                    SELECT TOP 200
+                        b.StartTime,
+                        b.EndTime,
+                        b.Duration / 1000 AS Duration_ms,
+                        b.CPU            AS CPU_ms,
+                        b.Duration / 1000 - b.CPU AS WaitTime_ms,
+                        CONVERT(DECIMAL(5,2),
+                            CASE WHEN b.Duration = 0 THEN 0
+                                 ELSE 100.0 * (b.Duration / 1000.0 - b.CPU) / (b.Duration / 1000.0)
+                            END) AS WaitPct,
+                        b.Reads,
+                        b.Writes,
+                        b.RowCounts,
+                        SUBSTRING(ub.NormText, 1, 500) AS NormText
+                    FROM ReadTrace.tblBatches b
+                    JOIN ReadTrace.tblUniqueBatches ub ON b.HashID = ub.HashID
+                    WHERE b.HashID = {hashId}
+                    ORDER BY b.StartTime DESC;
+                END";
+
+            return ExecuteQueryAndReturnJson(query, $"Execution Details for HashID: {hashId}");
+        }
+
+        /// <summary>
+        /// Query #7: Wait resource hot spots — which specific pages, rows, objects are most contended.
+        /// Groups by wait_resource to find the hot table/page/key causing blocking or latch contention.
+        /// </summary>
+        public string GetWaitResourceHotspots()
+        {
+            const string query = @"
+                IF OBJECT_ID('dbo.tbl_REQUESTS') IS NOT NULL
+                BEGIN
+                    SELECT TOP 50
+                        COUNT(*)                    AS occurrences,
+                        wait_resource,
+                        wait_type,
+                        MAX(wait_duration_ms)       AS max_wait_ms,
+                        AVG(wait_duration_ms)       AS avg_wait_ms,
+                        SUM(wait_duration_ms)       AS total_wait_ms
+                    FROM tbl_REQUESTS r
+                    WHERE wait_type IS NOT NULL
+                        AND wait_resource IS NOT NULL
+                        AND wait_resource <> ''
+                        AND wait_type NOT IN (
+                            'BACKUPIO','BROKER_RECEIVE_WAITFOR','CXPACKET','XE_DISPATCHER_WAIT',
+                            'XE_TIMER_EVENT','REQUEST_FOR_DEADLOCK_SEARCH','WAITFOR','LOGMGR_QUEUE',
+                            'CHECKPOINT_QUEUE','SLEEP_TASK','FT_IFTS_SCHEDULER_IDLE_WAIT',
+                            'SLEEP_SYSTEMTASK','PREEMPTIVE_XE_DISPATCHER','SP_SERVER_DIAGNOSTICS_SLEEP',
+                            'LAZYWRITER_SLEEP')
+                    GROUP BY wait_resource, wait_type
+                    ORDER BY total_wait_ms DESC;
+                END";
+
+            return ExecuteQueryAndReturnJson(query, "Wait Resource Hot Spots");
+        }
+
+        /// <summary>
+        /// Query #8: Wait type frequency distribution from tbl_REQUESTS (request-level, more granular than tbl_OS_WAIT_STATS).
+        /// Shows occurrence count, average/max/total wait ms, and % of total wait per wait type.
+        /// </summary>
+        public string GetWaitTypeDistribution()
+        {
+            const string query = @"
+                IF OBJECT_ID('dbo.tbl_REQUESTS') IS NOT NULL
+                BEGIN
+                    SELECT TOP 30
+                        COUNT(*)                    AS occurrences,
+                        wait_type,
+                        MAX(wait_duration_ms)       AS max_wait_ms,
+                        AVG(wait_duration_ms)       AS avg_wait_ms,
+                        SUM(wait_duration_ms)       AS total_wait_ms,
+                        CAST(100.0 * SUM(wait_duration_ms)
+                             / NULLIF(SUM(SUM(wait_duration_ms)) OVER(), 0)
+                             AS DECIMAL(5,2))       AS pct_total_wait
+                    FROM tbl_REQUESTS r
+                    WHERE wait_type IS NOT NULL
+                        AND wait_type NOT IN (
+                            'BACKUPIO','BROKER_RECEIVE_WAITFOR','CXPACKET','XE_DISPATCHER_WAIT',
+                            'XE_TIMER_EVENT','REQUEST_FOR_DEADLOCK_SEARCH','WAITFOR','LOGMGR_QUEUE',
+                            'CHECKPOINT_QUEUE','SLEEP_TASK','FT_IFTS_SCHEDULER_IDLE_WAIT',
+                            'SLEEP_SYSTEMTASK','PREEMPTIVE_XE_DISPATCHER','SP_SERVER_DIAGNOSTICS_SLEEP',
+                            'LAZYWRITER_SLEEP')
+                    GROUP BY wait_type
+                    ORDER BY total_wait_ms DESC;
+                END";
+
+            return ExecuteQueryAndReturnJson(query, "Wait Type Frequency Distribution (Request-Level)");
+        }
+
+        /// <summary>
+        /// Query #14: Find queries spending most time waiting (wait-bound queries).
+        /// Returns queries where CPU is less than 80% of total duration, sorted by total wait time.
+        /// </summary>
+        public string GetWaitHeavyQueries()
+        {
+            const string query = @"
+                IF OBJECT_ID('ReadTrace.tblBatches') IS NOT NULL
+                   AND OBJECT_ID('dbo.tbl_REQUESTS') IS NOT NULL
+                   AND OBJECT_ID('ReadTrace.tblUniqueBatches') IS NOT NULL
+                BEGIN
+                    WITH BatchesData AS (
+                        SELECT
+                            b.Session,
+                            b.StartTime, b.EndTime,
+                            b.HashID,
+                            b.CPU,
+                            b.Duration,
+                            CAST(b.CPU AS FLOAT) / NULLIF(CAST(b.Duration AS FLOAT), 0) AS CpuFraction,
+                            SUBSTRING(ub.NormText, 1, 500) AS NormText
+                        FROM ReadTrace.tblBatches b
+                        JOIN ReadTrace.tblUniqueBatches ub ON b.HashID = ub.HashID
+                        WHERE b.Duration > 0
+                    )
+                    SELECT TOP 50
+                        MAX(r.wait_duration_ms)                     AS MaxWaitDuration_ms,
+                        SUM(r.wait_duration_ms)                     AS TotalWaitDuration_ms,
+                        COUNT(*)                                     AS WaitOccurrences,
+                        CAST(AVG(t.Duration) / 1000.0 AS DECIMAL(18,2)) AS AvgQueryDuration_ms,
+                        CAST(AVG(t.CpuFraction * 100) AS DECIMAL(5,2))  AS AvgCpuPct,
+                        CAST(100 - AVG(t.CpuFraction * 100) AS DECIMAL(5,2)) AS AvgWaitPct,
+                        r.wait_type,
+                        t.NormText AS Query,
+                        t.HashID
+                    FROM tbl_REQUESTS r
+                    JOIN BatchesData t
+                        ON r.runtime BETWEEN t.StartTime AND t.EndTime
+                        AND r.session_id = t.Session
+                    WHERE t.CpuFraction < 0.80
+                        AND r.task_state NOT IN ('running','runnable')
+                        AND r.wait_type IS NOT NULL
+                    GROUP BY r.wait_type, t.NormText, t.HashID
+                    ORDER BY TotalWaitDuration_ms DESC;
+                END";
+
+            return ExecuteQueryAndReturnJson(query, "Wait-Heavy Queries (CPU < 80% of Duration)");
+        }
+
+        /// <summary>
+        /// Query #11 (deepdive): Break down a batch into individual statements.
+        /// Requires DetailedPerf collection with statement-level trace (ReadTrace.tblStatements).
+        /// </summary>
+        public string GetStatementsInBatch(long batchSeq)
+        {
+            string query = $@"
+                IF OBJECT_ID('ReadTrace.tblStatements') IS NOT NULL
+                   AND OBJECT_ID('ReadTrace.tblUniqueStatements') IS NOT NULL
+                BEGIN
+                    SELECT
+                        SUM(b.CPU)            AS CPU_ms,
+                        SUM(b.Duration)/1000.0 AS Duration_ms,
+                        COUNT(*)               AS Occurrences,
+                        AVG(b.Duration)/1000.0 AS AvgDuration_ms,
+                        MAX(b.Duration)/1000.0 AS MaxDuration_ms,
+                        SUM(b.Reads)           AS TotalReads,
+                        AVG(b.Reads)           AS AvgReads,
+                        SUBSTRING(ub.NormText, 1, 500) AS Statement,
+                        b.HashID               AS StatementHashID
+                    FROM ReadTrace.tblStatements b
+                    JOIN ReadTrace.tblUniqueStatements ub ON b.HashID = ub.HashID
+                    WHERE b.BatchSeq = {batchSeq}
+                    GROUP BY ub.NormText, b.HashID
+                    ORDER BY Duration_ms DESC;
+                END";
+
+            return ExecuteQueryAndReturnJson(query, $"Statements in Batch (BatchSeq: {batchSeq})");
+        }
+
+        /// <summary>
+        /// Query #11 (blocking): Recursive blocking chain tree showing full hierarchy.
+        /// Shows root blocker (level 0) through all downstream blocked sessions.
+        /// </summary>
+        public string GetBlockingChainTree()
+        {
+            const string query = @"
+                IF OBJECT_ID('dbo.tbl_BLOCKING_CHAINS') IS NOT NULL
+                BEGIN
+                    WITH BlockingChain AS (
+                        SELECT
+                            session_id,
+                            blocking_session_id,
+                            wait_type,
+                            wait_duration_ms,
+                            wait_resource,
+                            0 AS level
+                        FROM tbl_BLOCKING_CHAINS
+                        WHERE blocking_session_id = 0
+
+                        UNION ALL
+
+                        SELECT
+                            bc.session_id,
+                            bc.blocking_session_id,
+                            bc.wait_type,
+                            bc.wait_duration_ms,
+                            bc.wait_resource,
+                            chain.level + 1
+                        FROM tbl_BLOCKING_CHAINS bc
+                        INNER JOIN BlockingChain chain ON bc.blocking_session_id = chain.session_id
+                    )
+                    SELECT TOP 200
+                        level,
+                        session_id,
+                        blocking_session_id,
+                        wait_type,
+                        wait_duration_ms,
+                        wait_resource,
+                        REPLICATE('  ', level) + CAST(session_id AS VARCHAR(10)) AS blocking_hierarchy
+                    FROM BlockingChain
+                    ORDER BY level, session_id;
+                END
+                ELSE IF OBJECT_ID('dbo.tbl_REQUESTS') IS NOT NULL
+                BEGIN
+                    -- Fallback: derive chain from tbl_REQUESTS snapshots
+                    SELECT TOP 100
+                        r.runtime,
+                        r.session_id,
+                        r.blocking_session_id,
+                        r.wait_type,
+                        r.wait_duration_ms,
+                        r.wait_resource
+                    FROM tbl_REQUESTS r
+                    WHERE r.blocking_session_id <> 0
+                      AND r.blocking_session_id IS NOT NULL
+                    ORDER BY r.wait_duration_ms DESC;
+                END";
+
+            return ExecuteQueryAndReturnJson(query, "Blocking Chain Tree (Full Hierarchy)");
+        }
+
+        /// <summary>
+        /// Query #12 (blocking): Lock summary by object — which tables/resources have most lock contention.
+        /// </summary>
+        public string GetLockSummaryByObject()
+        {
+            const string query = @"
+                IF OBJECT_ID('dbo.tbl_BLOCKING_CHAINS') IS NOT NULL
+                BEGIN
+                    SELECT TOP 50
+                        database_name,
+                        wait_resource,
+                        COUNT(*)                AS lock_count,
+                        SUM(wait_duration_ms)   AS total_wait_ms,
+                        AVG(wait_duration_ms)   AS avg_wait_ms,
+                        MAX(wait_duration_ms)   AS max_wait_ms
+                    FROM tbl_BLOCKING_CHAINS
+                    WHERE wait_resource IS NOT NULL
+                    GROUP BY database_name, wait_resource
+                    ORDER BY total_wait_ms DESC;
+                END
+                ELSE IF OBJECT_ID('dbo.tbl_REQUESTS') IS NOT NULL
+                BEGIN
+                    SELECT TOP 50
+                        wait_resource,
+                        wait_type,
+                        COUNT(*)                AS lock_count,
+                        SUM(wait_duration_ms)   AS total_wait_ms,
+                        AVG(wait_duration_ms)   AS avg_wait_ms,
+                        MAX(wait_duration_ms)   AS max_wait_ms
+                    FROM tbl_REQUESTS
+                    WHERE wait_resource IS NOT NULL
+                      AND wait_type LIKE 'LCK_%'
+                    GROUP BY wait_resource, wait_type
+                    ORDER BY total_wait_ms DESC;
+                END";
+
+            return ExecuteQueryAndReturnJson(query, "Lock Summary by Object/Resource");
+        }
+
+        /// <summary>
+        /// Query #12 (application): Find all queries executed by a specific application name.
+        /// Pass null or empty appName to get aggregate stats across ALL applications.
+        /// </summary>
+        public string GetQueriesByApplication(string? appName = null)
+        {
+            bool filterByApp = !string.IsNullOrWhiteSpace(appName);
+            // Sanitize: escape single quotes to prevent SQL injection
+            string safeAppName = (appName ?? "").Replace("'", "''");
+
+            string query = filterByApp
+                ? $@"
+                IF OBJECT_ID('ReadTrace.tblBatches') IS NOT NULL
+                   AND OBJECT_ID('ReadTrace.tblConnections') IS NOT NULL
+                BEGIN
+                    SELECT TOP 100
+                        COUNT(*)                                                AS Executions,
+                        SUM(b.Duration) / 1000                                  AS Total_Duration_ms,
+                        AVG(b.Duration) / 1000                                  AS Avg_Duration_ms,
+                        MIN(b.Duration) / 1000                                  AS Min_Duration_ms,
+                        MAX(b.Duration) / 1000                                  AS Max_Duration_ms,
+                        SUM(b.CPU)                                              AS Total_CPU_ms,
+                        AVG(b.CPU)                                              AS Avg_CPU_ms,
+                        SUM(b.Reads)                                            AS Total_Reads,
+                        AVG(b.Reads)                                            AS Avg_Reads,
+                        SUM(b.Writes)                                           AS Total_Writes,
+                        SUBSTRING(ub.NormText, 1, 400)                          AS Query,
+                        b.HashID
+                    FROM ReadTrace.tblBatches b
+                    JOIN ReadTrace.tblConnections c
+                        ON b.ConnSeq = c.ConnSeq AND b.session = c.session
+                    JOIN ReadTrace.tblUniqueBatches ub ON b.HashID = ub.HashID
+                    WHERE c.ApplicationName = '{safeAppName}'
+                    GROUP BY ub.NormText, b.HashID
+                    ORDER BY Total_Duration_ms DESC;
+                END"
+                : @"
+                IF OBJECT_ID('ReadTrace.tblBatches') IS NOT NULL
+                   AND OBJECT_ID('ReadTrace.tblConnections') IS NOT NULL
+                BEGIN
+                    SELECT TOP 100
+                        COUNT(*)                                                AS Executions,
+                        SUM(b.Duration) / 1000                                  AS Total_Duration_ms,
+                        AVG(b.Duration) / 1000                                  AS Avg_Duration_ms,
+                        SUM(b.CPU)                                              AS Total_CPU_ms,
+                        SUM(b.Reads)                                            AS Total_Reads,
+                        c.ApplicationName,
+                        SUBSTRING(ub.NormText, 1, 400)                          AS Query,
+                        b.HashID
+                    FROM ReadTrace.tblBatches b
+                    JOIN ReadTrace.tblConnections c
+                        ON b.ConnSeq = c.ConnSeq AND b.session = c.session
+                    JOIN ReadTrace.tblUniqueBatches ub ON b.HashID = ub.HashID
+                    GROUP BY ub.NormText, b.HashID, c.ApplicationName
+                    ORDER BY Total_Duration_ms DESC;
+                END";
+
+            string title = filterByApp
+                ? $"Queries by Application: {appName}"
+                : "Top Queries Across All Applications";
+            return ExecuteQueryAndReturnJson(query, title);
+        }
+
+        /// <summary>
+        /// Query #13: Aggregate performance metrics grouped by application name.
+        /// Shows which application is consuming the most duration, CPU, reads, and writes.
+        /// </summary>
+        public string GetPerformanceByApplication()
+        {
+            const string query = @"
+                IF OBJECT_ID('ReadTrace.tblBatchPartialAggs') IS NOT NULL
+                   AND OBJECT_ID('ReadTrace.tblUniqueAppNames') IS NOT NULL
+                BEGIN
+                    SELECT
+                        SUM(TotalDuration)                                              AS Duration_ms,
+                        SUM(TotalCPU)                                                   AS CPU_ms,
+                        SUM(TotalReads)                                                 AS Reads,
+                        SUM(TotalWrites)                                                AS Writes,
+                        COUNT(DISTINCT HashID)                                          AS Unique_Queries,
+                        AppName,
+                        CAST(100.0 * SUM(TotalDuration)
+                             / NULLIF(SUM(SUM(TotalDuration)) OVER(), 0)
+                             AS DECIMAL(5,2))                                           AS Pct_Total_Duration,
+                        CAST(100.0 * SUM(TotalCPU)
+                             / NULLIF(SUM(SUM(TotalCPU)) OVER(), 0)
+                             AS DECIMAL(5,2))                                           AS Pct_Total_CPU,
+                        CAST(100.0 * SUM(TotalReads)
+                             / NULLIF(SUM(SUM(TotalReads)) OVER(), 0)
+                             AS DECIMAL(5,2))                                           AS Pct_Total_Reads
+                    FROM ReadTrace.tblBatchPartialAggs b
+                    INNER JOIN ReadTrace.tblUniqueAppNames a ON a.iID = b.AppNameID
+                    GROUP BY AppName
+                    ORDER BY Duration_ms DESC;
+                END
+                ELSE IF OBJECT_ID('ReadTrace.tblBatches') IS NOT NULL
+                   AND OBJECT_ID('ReadTrace.tblConnections') IS NOT NULL
+                BEGIN
+                    -- Fallback: compute directly from tblBatches + tblConnections
+                    SELECT TOP 30
+                        c.ApplicationName                           AS AppName,
+                        SUM(b.Duration) / 1000                     AS Duration_ms,
+                        SUM(b.CPU)                                 AS CPU_ms,
+                        SUM(b.Reads)                               AS Reads,
+                        SUM(b.Writes)                              AS Writes,
+                        COUNT(DISTINCT b.HashID)                   AS Unique_Queries,
+                        COUNT(*)                                   AS Executions,
+                        CAST(100.0 * SUM(b.Duration)
+                             / NULLIF(SUM(SUM(b.Duration)) OVER(), 0)
+                             AS DECIMAL(5,2))                      AS Pct_Total_Duration,
+                        CAST(100.0 * SUM(b.CPU)
+                             / NULLIF(SUM(SUM(b.CPU)) OVER(), 0)
+                             AS DECIMAL(5,2))                      AS Pct_Total_CPU
+                    FROM ReadTrace.tblBatches b
+                    JOIN ReadTrace.tblConnections c
+                        ON b.ConnSeq = c.ConnSeq AND b.session = c.session
+                    GROUP BY c.ApplicationName
+                    ORDER BY Duration_ms DESC;
+                END";
+
+            return ExecuteQueryAndReturnJson(query, "Performance by Application Name");
+        }
+
+        /// <summary>
+        /// Query #19: CPU breakdown by database — which database on the instance uses the most CPU.
+        /// </summary>
+        public string GetCpuByDatabase()
+        {
+            const string query = @"
+                IF OBJECT_ID('ReadTrace.tblBatches') IS NOT NULL
+                BEGIN
+                    SELECT
+                        DB_NAME(b.DatabaseID)   AS database_name,
+                        b.DatabaseID,
+                        SUM(b.CPU)              AS Total_CPU_ms,
+                        COUNT(*)                AS Executions,
+                        SUM(b.CPU) / NULLIF(COUNT(*), 0) AS Avg_CPU_ms,
+                        CAST(100.0 * SUM(b.CPU)
+                             / NULLIF(SUM(SUM(b.CPU)) OVER(), 0)
+                             AS DECIMAL(5,2))   AS CPU_Pct
+                    FROM ReadTrace.tblBatches b
+                    WHERE b.DatabaseID IS NOT NULL
+                    GROUP BY b.DatabaseID
+                    ORDER BY Total_CPU_ms DESC;
+                END";
+
+            return ExecuteQueryAndReturnJson(query, "CPU Consumption by Database");
+        }
+
+        /// <summary>
+        /// Query #26 (I/O): Top queries sorted by physical reads — identifies I/O-intensive queries.
+        /// </summary>
+        public string GetTopQueriesByReads(int topN = 50)
+        {
+            string query = $@"
+                IF OBJECT_ID('ReadTrace.tblBatches') IS NOT NULL
+                BEGIN
+                    SELECT TOP {topN}
+                        SUM(b.Reads)            AS Total_Reads,
+                        COUNT(*)                AS Executions,
+                        SUM(b.Reads) / NULLIF(COUNT(*), 0) AS Avg_Reads,
+                        SUM(b.Duration) / 1000  AS Total_Duration_ms,
+                        SUM(b.CPU)              AS Total_CPU_ms,
+                        SUBSTRING(ub.NormText, 1, 400) AS Query,
+                        b.HashID
+                    FROM ReadTrace.tblBatches b
+                    JOIN ReadTrace.tblUniqueBatches ub ON b.HashID = ub.HashID
+                    GROUP BY ub.NormText, b.HashID
+                    ORDER BY Total_Reads DESC;
+                END
+                ELSE IF OBJECT_ID('dbo.tbl_Hist_Top10_LogicalReads_Queries_ByQueryHash') IS NOT NULL
+                BEGIN
+                    WITH
+                        first_snap AS (SELECT * FROM tbl_Hist_Top10_LogicalReads_Queries_ByQueryHash
+                                       WHERE runtime = (SELECT MIN(runtime) FROM tbl_Hist_Top10_LogicalReads_Queries_ByQueryHash)),
+                        last_snap  AS (SELECT * FROM tbl_Hist_Top10_LogicalReads_Queries_ByQueryHash
+                                       WHERE runtime = (SELECT MAX(runtime) FROM tbl_Hist_Top10_LogicalReads_Queries_ByQueryHash))
+                    SELECT TOP {topN}
+                        l.total_logical_reads - COALESCE(f.total_logical_reads, 0)  AS delta_logical_reads,
+                        l.execution_count     - COALESCE(f.execution_count, 0)       AS delta_executions,
+                        l.sample_statement_text
+                    FROM last_snap l
+                    LEFT JOIN first_snap f ON l.query_hash = f.query_hash
+                    ORDER BY delta_logical_reads DESC;
+                END";
+
+            return ExecuteQueryAndReturnJson(query, $"Top {topN} Queries by Physical Reads");
+        }
+
+        /// <summary>
+        /// Query #27 (I/O): Top queries sorted by writes — identifies write-heavy / log-intensive queries.
+        /// </summary>
+        public string GetTopQueriesByWrites(int topN = 50)
+        {
+            string query = $@"
+                IF OBJECT_ID('ReadTrace.tblBatches') IS NOT NULL
+                BEGIN
+                    SELECT TOP {topN}
+                        SUM(b.Writes)           AS Total_Writes,
+                        COUNT(*)                AS Executions,
+                        SUM(b.Writes) / NULLIF(COUNT(*), 0) AS Avg_Writes,
+                        SUM(b.RowCounts)        AS Total_Rows_Affected,
+                        SUM(b.Duration) / 1000  AS Total_Duration_ms,
+                        SUBSTRING(ub.NormText, 1, 400) AS Query,
+                        b.HashID
+                    FROM ReadTrace.tblBatches b
+                    JOIN ReadTrace.tblUniqueBatches ub ON b.HashID = ub.HashID
+                    WHERE b.Writes > 0
+                    GROUP BY ub.NormText, b.HashID
+                    ORDER BY Total_Writes DESC;
+                END";
+
+            return ExecuteQueryAndReturnJson(query, $"Top {topN} Queries by Writes");
+        }
+
+        /// <summary>
+        /// Query #16 (SQL file stats): Per-database-file I/O latency from tbl_FILE_STATS.
+        /// Reports avg read/write latency per .mdf/.ldf/.ndf file — distinct from Perfmon disk counters.
+        /// </summary>
+        public string GetSqlFileIoStats()
+        {
+            const string query = @"
+                IF OBJECT_ID('dbo.tbl_FILE_STATS') IS NOT NULL
+                BEGIN
+                    SELECT
+                        database_name,
+                        file_type,
+                        num_of_reads,
+                        num_of_writes,
+                        io_stall_read_ms,
+                        io_stall_write_ms,
+                        CASE WHEN num_of_reads  = 0 THEN 0
+                             ELSE io_stall_read_ms  / num_of_reads  END AS avg_read_latency_ms,
+                        CASE WHEN num_of_writes = 0 THEN 0
+                             ELSE io_stall_write_ms / num_of_writes END AS avg_write_latency_ms,
+                        size_on_disk_bytes / 1024 / 1024 AS file_size_mb,
+                        physical_name
+                    FROM tbl_FILE_STATS
+                    ORDER BY io_stall_read_ms + io_stall_write_ms DESC;
+                END";
+
+            return ExecuteQueryAndReturnJson(query, "SQL Server File I/O Statistics (per file latency)");
+        }
+
+        /// <summary>
+        /// Query #28: Compilation and recompilation rates from Perfmon CounterData.
+        /// High SQL Compilations/sec indicates ad-hoc query workload or plan cache pressure.
+        /// Also checks plan cache composition from tbl_CACHEOBJECTS if available.
+        /// </summary>
+        public string GetCompilationStats()
+        {
+            const string query = @"
+                IF OBJECT_ID('dbo.CounterData') IS NOT NULL
+                   AND OBJECT_ID('dbo.CounterDetails') IS NOT NULL
+                BEGIN
+                    SELECT
+                        CONVERT(DATETIME, ctr.CounterDateTime)  AS CounterDateTime,
+                        det.CounterName,
+                        ctr.CounterValue                        AS Value_Per_Second
+                    FROM dbo.CounterData ctr
+                    JOIN dbo.CounterDetails det ON ctr.CounterID = det.CounterID
+                    WHERE det.CounterName IN ('SQL Compilations/sec','SQL Re-Compilations/sec')
+                      AND det.ObjectName LIKE '%SQL Statistics%'
+                    ORDER BY ctr.CounterDateTime, det.CounterName;
+                END
+
+                IF OBJECT_ID('dbo.tbl_CACHEOBJECTS') IS NOT NULL
+                BEGIN
+                    SELECT
+                        objtype,
+                        cacheobjtype,
+                        COUNT(*)                        AS plan_count,
+                        SUM(size_in_bytes) / 1024 / 1024 AS cache_size_mb,
+                        SUM(usecounts)                  AS total_use_count,
+                        AVG(usecounts)                  AS avg_use_count,
+                        MIN(usecounts)                  AS min_use_count,
+                        MAX(usecounts)                  AS max_use_count
+                    FROM tbl_CACHEOBJECTS
+                    GROUP BY objtype, cacheobjtype
+                    ORDER BY plan_count DESC;
+                END";
+
+            return ExecuteQueryAndReturnJson(query, "Compilation Stats and Plan Cache Analysis");
+        }
+
+        /// <summary>
+        /// Query #21 (CPU): Plan cache composition analysis — identifies ad-hoc query bloat.
+        /// avg_use_count ≈ 1 means plans are compiled once and discarded (compilation CPU waste).
+        /// </summary>
+        public string GetPlanCacheAnalysis()
+        {
+            const string query = @"
+                IF OBJECT_ID('dbo.tbl_CACHEOBJECTS') IS NOT NULL
+                BEGIN
+                    SELECT
+                        objtype,
+                        cacheobjtype,
+                        COUNT(*)                         AS plan_count,
+                        SUM(size_in_bytes) / 1024 / 1024 AS cache_size_mb,
+                        SUM(usecounts)                   AS total_use_count,
+                        AVG(usecounts)                   AS avg_use_count,
+                        MIN(usecounts)                   AS min_use_count,
+                        MAX(usecounts)                   AS max_use_count,
+                        SUM(CASE WHEN usecounts = 1 THEN 1 ELSE 0 END) AS single_use_plans,
+                        CAST(100.0 * SUM(CASE WHEN usecounts = 1 THEN 1 ELSE 0 END)
+                             / NULLIF(COUNT(*), 0) AS DECIMAL(5,2))    AS single_use_pct
+                    FROM tbl_CACHEOBJECTS
+                    GROUP BY objtype, cacheobjtype
+                    ORDER BY plan_count DESC;
+                END";
+
+            return ExecuteQueryAndReturnJson(query, "Plan Cache Composition Analysis");
+        }
+
+        /// <summary>
+        /// Query #27 (index): Table statistics health — last updated date, row counts, modification counters.
+        /// Stale statistics (high modification_percent, old last_updated) cause bad query plans.
+        /// Pass null dbName to return stats for all user databases.
+        /// </summary>
+        public string GetTableStatisticsHealth(string? dbName = null)
+        {
+            bool filterByDb = !string.IsNullOrWhiteSpace(dbName);
+            string safeDbName = (dbName ?? "").Replace("'", "''");
+
+            string whereClause = filterByDb
+                ? $"WHERE Database_Name NOT IN ('msdb','master','model','tempdb') AND Database_Name = '{safeDbName}'"
+                : "WHERE Database_Name NOT IN ('msdb','master','model','tempdb')";
+
+            string query = $@"
+                IF OBJECT_ID('dbo.tbl_dm_db_stats_properties') IS NOT NULL
+                BEGIN
+                    SELECT TOP 200
+                        Database_Name,
+                        Object_Name,
+                        stats_id,
+                        last_updated,
+                        rows,
+                        rows_sampled,
+                        CAST(100.0 * rows_sampled / NULLIF(rows, 0) AS DECIMAL(5,2)) AS sample_percent,
+                        modification_counter,
+                        CAST(100.0 * modification_counter / NULLIF(rows, 0) AS DECIMAL(5,2)) AS modification_percent,
+                        persisted_sample_percent
+                    FROM dbo.tbl_dm_db_stats_properties
+                    {whereClause}
+                    ORDER BY last_updated ASC;
+                END";
+
+            string title = filterByDb
+                ? $"Table Statistics Health: {dbName}"
+                : "Table Statistics Health (All User Databases)";
+            return ExecuteQueryAndReturnJson(query, title);
+        }
+
+        /// <summary>
         /// Execute custom query with validation
         /// </summary>
         public string ExecuteCustomQuery(string query)

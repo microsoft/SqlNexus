@@ -54,7 +54,7 @@ namespace SqlNexus.McpServer
                     builder.Password = config["SqlNexus:Password"];
                 }
 
-                // Store connection string � defer actual SQL connection until first tool call
+                // Store connection string � defer actual SQL connection until first tool call
                 _connectionString = builder.ConnectionString;
 
                 Console.Error.WriteLine($"{ServerName} v{ServerVersion} started");
@@ -123,7 +123,7 @@ namespace SqlNexus.McpServer
             if (request == null)
                 return;
 
-            // Notifications have no id � handle but never write a response
+            // Notifications have no id � handle but never write a response
             bool isNotification = request.Id == null;
             var response = HandleRequest(request, isNotification);
             if (!isNotification && response != null)
@@ -193,7 +193,7 @@ namespace SqlNexus.McpServer
 
         static void HandleNotification(string method)
         {
-            // notifications/initialized signals client is ready � no response required
+            // notifications/initialized signals client is ready � no response required
             // Log other unexpected notifications for diagnostics only
             if (!string.Equals(method, "notifications/initialized", StringComparison.OrdinalIgnoreCase))
                 Console.Error.WriteLine($"Notification received: {method}");
@@ -360,7 +360,7 @@ namespace SqlNexus.McpServer
                 new McpTool
                 {
                     Name = "list_nexus_tables",
-                    Description = "Returns a curated catalog of the most analytically significant SQL Nexus tables with plain-English descriptions and a flag indicating whether each table is present in the connected database. IMPORTANT: this is a known-good subset, not a complete list � the database may contain additional tables not covered here. To discover every table actually present, use query_nexus_database with: SELECT TABLE_SCHEMA, TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE' ORDER BY TABLE_SCHEMA, TABLE_NAME",
+                    Description = "Returns a curated catalog of the most analytically significant SQL Nexus tables with plain-English descriptions and a flag indicating whether each table is present in the connected database. IMPORTANT: this is a known-good subset, not a complete list � the database may contain additional tables not covered here. To discover every table actually present, use query_nexus_database with: SELECT TABLE_SCHEMA, TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE' ORDER BY TABLE_SCHEMA, TABLE_NAME",
                     InputSchema = new { type = "object", properties = new { } }
                 },
                 new McpTool
@@ -375,6 +375,147 @@ namespace SqlNexus.McpServer
                             query = new { type = "string", description = "SQL query to execute" }
                         },
                         required = new[] { "query" }
+                    }
+                },
+                // ── New tools covering previously missing skill queries ─────────────
+                new McpTool
+                {
+                    Name = "get_query_execution_details",
+                    Description = "Drill into a specific query by HashID — shows each individual execution with Duration_ms, CPU_ms, WaitTime_ms, WaitPct, Reads, Writes, RowCounts. Use after get_top_queries_by_duration or get_top_cpu_queries to investigate a specific slow query.",
+                    InputSchema = new
+                    {
+                        type = "object",
+                        properties = new
+                        {
+                            hash_id = new { type = "number", description = "HashID from ReadTrace.tblBatches (from get_top_queries_by_duration or get_top_cpu_queries)" }
+                        },
+                        required = new[] { "hash_id" }
+                    }
+                },
+                new McpTool
+                {
+                    Name = "get_wait_type_distribution",
+                    Description = "Request-level wait type frequency distribution from tbl_REQUESTS. Complements analyze_wait_stats (which is system-level). Shows occurrences, avg/max/total wait ms, and % of total wait per wait type across all captured requests.",
+                    InputSchema = new { type = "object", properties = new { } }
+                },
+                new McpTool
+                {
+                    Name = "get_wait_resource_hotspots",
+                    Description = "Find specific resources (pages, rows, objects, keys) with highest lock/latch contention. Groups tbl_REQUESTS by wait_resource to identify the hot table, page, or row. wait_resource format: PAGE: dbid:fileid:pageid, KEY: ..., OBJECT: ..., RID: ...",
+                    InputSchema = new { type = "object", properties = new { } }
+                },
+                new McpTool
+                {
+                    Name = "get_wait_heavy_queries",
+                    Description = "Find queries spending most time waiting vs executing (wait-bound queries, CPU < 80% of duration). Sorted by total wait time. Shows AvgWaitPct, wait_type, and query text. Use to identify queries bottlenecked by I/O, locks, or memory grants.",
+                    InputSchema = new { type = "object", properties = new { } }
+                },
+                new McpTool
+                {
+                    Name = "get_statements_in_batch",
+                    Description = "Break down a batch into individual statements for statement-level performance analysis. Requires DetailedPerf collection (ReadTrace.tblStatements). Use after get_top_queries_by_duration to find the slow statement inside a stored procedure.",
+                    InputSchema = new
+                    {
+                        type = "object",
+                        properties = new
+                        {
+                            batch_seq = new { type = "number", description = "BatchSeq value from ReadTrace.tblBatches (the row identifier of the specific batch execution)" }
+                        },
+                        required = new[] { "batch_seq" }
+                    }
+                },
+                new McpTool
+                {
+                    Name = "get_blocking_chain_tree",
+                    Description = "Full recursive blocking chain hierarchy: root blocker (level 0) through all downstream blocked sessions. Shows blocking_hierarchy with indentation. Use for complex multi-level blocking scenarios where analyze_blocking shows many blocked sessions.",
+                    InputSchema = new { type = "object", properties = new { } }
+                },
+                new McpTool
+                {
+                    Name = "get_lock_summary_by_object",
+                    Description = "Lock contention summary grouped by database object/resource. Shows which specific tables, pages, or rows have the most lock_count and total_wait_ms. Use to find hotspot tables driving blocking.",
+                    InputSchema = new { type = "object", properties = new { } }
+                },
+                new McpTool
+                {
+                    Name = "get_queries_by_application",
+                    Description = "Find queries executed by a specific application name (from connection string ApplicationName). Returns aggregate stats per query: Executions, Total/Avg Duration_ms, CPU_ms, Reads, Writes. Pass null/empty app_name to get top queries across all applications with AppName column.",
+                    InputSchema = new
+                    {
+                        type = "object",
+                        properties = new
+                        {
+                            app_name = new { type = "string", description = "Application name to filter by (e.g. '.Net SqlClient Data Provider', 'SSMS'). Leave empty for all applications." }
+                        }
+                    }
+                },
+                new McpTool
+                {
+                    Name = "get_performance_by_application",
+                    Description = "Aggregate performance metrics grouped by application name: Duration_ms, CPU_ms, Reads, Writes, Unique_Queries, and percentage of total server resources (Pct_Total_Duration, Pct_Total_CPU, Pct_Total_Reads). Use to identify which application is the biggest resource consumer.",
+                    InputSchema = new { type = "object", properties = new { } }
+                },
+                new McpTool
+                {
+                    Name = "get_cpu_by_database",
+                    Description = "CPU consumption breakdown by database on the SQL Server instance. Shows Total_CPU_ms, Executions, Avg_CPU_ms, and CPU_Pct per database. Use when multiple databases share an instance and you need to narrow focus to a specific database.",
+                    InputSchema = new { type = "object", properties = new { } }
+                },
+                new McpTool
+                {
+                    Name = "get_top_queries_by_reads",
+                    Description = "Top queries sorted by physical/logical reads — identifies I/O-intensive queries causing PAGEIOLATCH_* waits. Shows Total_Reads, Avg_Reads, Executions, Total_Duration_ms. Use when analyze_io_waits shows high PAGEIOLATCH_SH waits.",
+                    InputSchema = new
+                    {
+                        type = "object",
+                        properties = new
+                        {
+                            top_n = new { type = "number", description = "Number of top queries to return (default: 50)", @default = 50 }
+                        }
+                    }
+                },
+                new McpTool
+                {
+                    Name = "get_top_queries_by_writes",
+                    Description = "Top queries sorted by writes — identifies write-heavy queries causing WRITELOG waits or log file pressure. Shows Total_Writes, Avg_Writes, Total_Rows_Affected, Total_Duration_ms. Use when analyze_io_waits shows high WRITELOG waits.",
+                    InputSchema = new
+                    {
+                        type = "object",
+                        properties = new
+                        {
+                            top_n = new { type = "number", description = "Number of top queries to return (default: 50)", @default = 50 }
+                        }
+                    }
+                },
+                new McpTool
+                {
+                    Name = "get_sql_file_io_stats",
+                    Description = "Per-database-file I/O statistics from tbl_FILE_STATS: avg_read_latency_ms, avg_write_latency_ms, io_stall_read_ms, io_stall_write_ms per .mdf/.ldf/.ndf file. Thresholds: reads >20ms = slow, writes >10ms = slow for log. Distinct from analyze_io_performance (which uses Perfmon disk counters).",
+                    InputSchema = new { type = "object", properties = new { } }
+                },
+                new McpTool
+                {
+                    Name = "get_compilation_stats",
+                    Description = "SQL compilations and recompilations per second from Perfmon CounterData, plus plan cache composition from tbl_CACHEOBJECTS. High compilations/sec (>100) indicates ad-hoc queries or plan cache pressure. avg_use_count ≈ 1 = plans used once and discarded.",
+                    InputSchema = new { type = "object", properties = new { } }
+                },
+                new McpTool
+                {
+                    Name = "get_plan_cache_analysis",
+                    Description = "Plan cache composition from tbl_CACHEOBJECTS: plan_count, cache_size_mb, avg_use_count, single_use_plans, single_use_pct per objtype/cacheobjtype. High single_use_pct indicates ad-hoc query workload causing compilation CPU overhead.",
+                    InputSchema = new { type = "object", properties = new { } }
+                },
+                new McpTool
+                {
+                    Name = "get_table_statistics_health",
+                    Description = "Table statistics health from tbl_dm_db_stats_properties: last_updated, rows, sample_percent, modification_counter, modification_percent. Stale statistics (modification_percent > 20%, last_updated > 7 days) cause bad query plans. Optionally filter by database name.",
+                    InputSchema = new
+                    {
+                        type = "object",
+                        properties = new
+                        {
+                            db_name = new { type = "string", description = "Database name to filter (optional, leave empty for all user databases)" }
+                        }
                     }
                 }
             };
@@ -449,6 +590,55 @@ namespace SqlNexus.McpServer
                 case "query_nexus_database":
                     resultText = GetAnalyzer().ExecuteCustomQuery(
                         arguments.Value<string>("query") ?? throw new ArgumentException("Query parameter required"));
+                    break;
+                // ── New tools ────────────────────────────────────────────────────
+                case "get_query_execution_details":
+                    resultText = GetAnalyzer().GetQueryExecutionDetails(arguments.Value<long>("hash_id"));
+                    break;
+                case "get_wait_type_distribution":
+                    resultText = GetAnalyzer().GetWaitTypeDistribution();
+                    break;
+                case "get_wait_resource_hotspots":
+                    resultText = GetAnalyzer().GetWaitResourceHotspots();
+                    break;
+                case "get_wait_heavy_queries":
+                    resultText = GetAnalyzer().GetWaitHeavyQueries();
+                    break;
+                case "get_statements_in_batch":
+                    resultText = GetAnalyzer().GetStatementsInBatch(arguments.Value<long>("batch_seq"));
+                    break;
+                case "get_blocking_chain_tree":
+                    resultText = GetAnalyzer().GetBlockingChainTree();
+                    break;
+                case "get_lock_summary_by_object":
+                    resultText = GetAnalyzer().GetLockSummaryByObject();
+                    break;
+                case "get_queries_by_application":
+                    resultText = GetAnalyzer().GetQueriesByApplication(arguments.Value<string?>("app_name"));
+                    break;
+                case "get_performance_by_application":
+                    resultText = GetAnalyzer().GetPerformanceByApplication();
+                    break;
+                case "get_cpu_by_database":
+                    resultText = GetAnalyzer().GetCpuByDatabase();
+                    break;
+                case "get_top_queries_by_reads":
+                    resultText = GetAnalyzer().GetTopQueriesByReads(arguments.Value<int?>("top_n") ?? 50);
+                    break;
+                case "get_top_queries_by_writes":
+                    resultText = GetAnalyzer().GetTopQueriesByWrites(arguments.Value<int?>("top_n") ?? 50);
+                    break;
+                case "get_sql_file_io_stats":
+                    resultText = GetAnalyzer().GetSqlFileIoStats();
+                    break;
+                case "get_compilation_stats":
+                    resultText = GetAnalyzer().GetCompilationStats();
+                    break;
+                case "get_plan_cache_analysis":
+                    resultText = GetAnalyzer().GetPlanCacheAnalysis();
+                    break;
+                case "get_table_statistics_health":
+                    resultText = GetAnalyzer().GetTableStatisticsHealth(arguments.Value<string?>("db_name"));
                     break;
                 default:
                     throw new NotSupportedException($"Tool not supported: {toolName}");
