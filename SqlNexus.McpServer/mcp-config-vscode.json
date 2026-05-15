@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "sqlnexus_MCP": {
+      "command": "c:\\Users\\nishamohan\\OneDrive - Microsoft\\Desktop\\STAC\\SqlNexus\\SqlNexus.McpServer\\bin\\Release\\SqlNexus.McpServer.exe",
+      "args": [
+        "--server",
+        "localhost\\SQLEXPRESS",
+        "--database",
+        "NexusDiagnosticsTest",
+        "--trusted-connection",
+        "true"
+      ]
+    }
+  }
+}
