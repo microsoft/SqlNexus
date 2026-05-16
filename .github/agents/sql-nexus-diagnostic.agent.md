@@ -6,40 +6,42 @@ description: >
   to identify root causes. Can compare findings across Claude, GPT-4o, and local
   models to validate diagnostic quality.
 tools:
-  - mcp_sqlnexus_mcp_analyze_cpu_usage
-  - mcp_sqlnexus_mcp_analyze_wait_stats
-  - mcp_sqlnexus_mcp_analyze_blocking
-  - mcp_sqlnexus_mcp_analyze_io_performance
-  - mcp_sqlnexus_mcp_analyze_io_waits
-  - mcp_sqlnexus_mcp_analyze_spinlocks
-  - mcp_sqlnexus_mcp_get_performance_summary
-  - mcp_sqlnexus_mcp_get_top_cpu_queries
-  - mcp_sqlnexus_mcp_get_top_queries_by_duration
-  - mcp_sqlnexus_mcp_get_blocked_sessions
-  - mcp_sqlnexus_mcp_get_memory_clerk_distribution
-  - mcp_sqlnexus_mcp_get_missing_indexes
-  - mcp_sqlnexus_mcp_get_sql_cpu_usage_over_time
-  - mcp_sqlnexus_mcp_get_aggregate_waits_and_queries
-  - mcp_sqlnexus_mcp_get_waits_for_query
-  - mcp_sqlnexus_mcp_get_collection_time_range
-  - mcp_sqlnexus_mcp_list_nexus_tables
-  - mcp_sqlnexus_mcp_query_nexus_database
-  - mcp_sqlnexus_mcp_get_query_execution_details
-  - mcp_sqlnexus_mcp_get_wait_type_distribution
-  - mcp_sqlnexus_mcp_get_wait_resource_hotspots
-  - mcp_sqlnexus_mcp_get_wait_heavy_queries
-  - mcp_sqlnexus_mcp_get_statements_in_batch
-  - mcp_sqlnexus_mcp_get_blocking_chain_tree
-  - mcp_sqlnexus_mcp_get_lock_summary_by_object
-  - mcp_sqlnexus_mcp_get_queries_by_application
-  - mcp_sqlnexus_mcp_get_performance_by_application
-  - mcp_sqlnexus_mcp_get_cpu_by_database
-  - mcp_sqlnexus_mcp_get_top_queries_by_reads
-  - mcp_sqlnexus_mcp_get_top_queries_by_writes
-  - mcp_sqlnexus_mcp_get_sql_file_io_stats
-  - mcp_sqlnexus_mcp_get_compilation_stats
-  - mcp_sqlnexus_mcp_get_plan_cache_analysis
-  - mcp_sqlnexus_mcp_get_table_statistics_health
+  - read
+  - search
+  - sqlnexus_mcp/analyze_blocking
+  - sqlnexus_mcp/analyze_cpu_usage
+  - sqlnexus_mcp/analyze_io_performance
+  - sqlnexus_mcp/analyze_io_waits
+  - sqlnexus_mcp/analyze_spinlocks
+  - sqlnexus_mcp/analyze_wait_stats
+  - sqlnexus_mcp/get_aggregate_waits_and_queries
+  - sqlnexus_mcp/get_blocked_sessions
+  - sqlnexus_mcp/get_blocking_chain_tree
+  - sqlnexus_mcp/get_collection_time_range
+  - sqlnexus_mcp/get_compilation_stats
+  - sqlnexus_mcp/get_cpu_by_database
+  - sqlnexus_mcp/get_lock_summary_by_object
+  - sqlnexus_mcp/get_memory_clerk_distribution
+  - sqlnexus_mcp/get_missing_indexes
+  - sqlnexus_mcp/get_performance_by_application
+  - sqlnexus_mcp/get_performance_summary
+  - sqlnexus_mcp/get_plan_cache_analysis
+  - sqlnexus_mcp/get_queries_by_application
+  - sqlnexus_mcp/get_query_execution_details
+  - sqlnexus_mcp/get_sql_cpu_usage_over_time
+  - sqlnexus_mcp/get_sql_file_io_stats
+  - sqlnexus_mcp/get_statements_in_batch
+  - sqlnexus_mcp/get_table_statistics_health
+  - sqlnexus_mcp/get_top_cpu_queries
+  - sqlnexus_mcp/get_top_queries_by_duration
+  - sqlnexus_mcp/get_top_queries_by_reads
+  - sqlnexus_mcp/get_top_queries_by_writes
+  - sqlnexus_mcp/get_wait_heavy_queries
+  - sqlnexus_mcp/get_wait_resource_hotspots
+  - sqlnexus_mcp/get_wait_type_distribution
+  - sqlnexus_mcp/get_waits_for_query
+  - sqlnexus_mcp/list_nexus_tables
+  - sqlnexus_mcp/query_nexus_database
 ---
 
 # SQL Nexus Diagnostic Agent
