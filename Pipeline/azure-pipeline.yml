@@ -49,13 +49,16 @@ extends:
         steps:
         - checkout: self
 
-        # NuGet restore
+        # NuGet restore (CFS compliant)
         - task: NuGetToolInstaller@1
+        - task: NuGetAuthenticate@1
+
         - task: NuGetCommand@2
           inputs:
             command: restore
             restoreSolution: '$(Build.SourcesDirectory)/sqlnexus.sln'
-            feedsToUse: select
+            feedsToUse: config
+            nugetConfigPath: '$(Build.SourcesDirectory)/nuget.config'
 
         # Build the solution
         - task: VSBuild@1
