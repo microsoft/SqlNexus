@@ -51,56 +51,44 @@ data that has been collected by SQL LogScout and imported into a SQL Nexus datab
 
 ---
 
-## Mandatory Startup Procedure
+## Diagnostic Approach
 
-Every session MUST follow these steps in order before calling any diagnostic MCP tool:
+**Investigate freely first.** Use your own judgment to decide which MCP tools to call and in what order, based on the symptom and what the data tells you at each step. Think like a senior DBA: form a hypothesis, test it with tools, refine, repeat.
 
-### STEP 0 — Understand Intent
-Read the user's message and identify:
-- **Primary symptom** (e.g. slow, high CPU, blocking, I/O, memory, specific query slow)
-- **Scope** (entire server? specific database? specific application? specific query?)
-- **Urgency** (active incident vs post-mortem analysis)
+Skill files are available as a **cross-check and completeness check** — consult them after your initial analysis round, or whenever you feel stuck or want to validate a finding against known diagnostic patterns.
 
-If the symptom is vague (e.g. just "slow"), proceed with general performance triage — do NOT ask the user clarifying questions first. Infer and proceed.
+### Phase 1 — Free-Form Analysis (always do this first)
 
-### STEP 1 — Load the Matching Skill File
-Based on the symptom, immediately read the matching skill file using the `read` tool **before calling any MCP diagnostic tool**:
+1. Call `get_collection_time_range` to orient the time window
+2. Choose tools that best match the symptom based on the tool descriptions
+3. At each result, reason about what the data means and which tool to call next
+4. Keep drilling until you reach a confident root cause or feel the analysis is complete
+5. No fixed sequence required — follow the data
 
-| Symptom | Skill file to read |
-|---------|--------------------|
-| General slowness / unknown | `Skills/scenario-performance.md` |
-| High CPU / CPU 100% / compilation | `Skills/scenario-cpu.md` |
-| Blocking / deadlock / locking / waiting on locks | `Skills/scenario-blocking.md` |
-| Memory / out of memory / memory grants | `Skills/scenario-memory.md` |
-| I/O slow / disk latency / PAGEIOLATCH | `Skills/scenario-io.md` |
-| Specific query slow / query deep dive | `Skills/scenario-query-deepdive-wait-analysis.md` |
-| Application performance / per-app breakdown | `Skills/scenario-application-analysis.md` |
-| Missing indexes / statistics / plan cache | `Skills/scenario-index-optimization.md` |
-| Server config / data collection validation | `Skills/scenario-utility-diagnostics.md` |
-| Comparative / before-after analysis | `Skills/scenario-comparative-analysis.md` |
+### Phase 2 — Skill File Cross-Check (when stuck or after Phase 1)
 
-If the symptom matches multiple scenarios, read the primary skill file first, then read secondary ones as you encounter relevant decision points.
+If you want to validate a finding, check for missed angles, or need deeper guidance on a specific scenario, read the relevant skill file and run any queries it suggests you haven't already run. Tell the user: *"Checking the [scenario] skill file to see if I missed any diagnostic angles."*
 
-Always also check `Skills/symptom-quick-reference.md` if the symptom is ambiguous — it maps symptoms to scenarios quickly.
+| Symptom / Situation | Skill file |
+|---------------------|------------|
+| General slowness / unknown bottleneck | `Skills/scenario-performance.md` |
+| High CPU / SOS_SCHEDULER_YIELD / compilations | `Skills/scenario-cpu.md` |
+| Blocking / deadlocks / LCK_M_* waits | `Skills/scenario-blocking.md` |
+| Memory pressure / RESOURCE_SEMAPHORE | `Skills/scenario-memory.md` |
+| I/O latency / PAGEIOLATCH / WRITELOG | `Skills/scenario-io.md` |
+| Specific slow query / per-execution drill-down | `Skills/scenario-query-deepdive-wait-analysis.md` |
+| Per-application performance breakdown | `Skills/scenario-application-analysis.md` |
+| Missing indexes / stale stats / plan cache | `Skills/scenario-index-optimization.md` |
+| Server config / LogScout scenario validation | `Skills/scenario-utility-diagnostics.md` |
+| Before/after or multi-period comparison | `Skills/scenario-comparative-analysis.md` |
+| Quick symptom → scenario mapping | `Skills/symptom-quick-reference.md` |
 
-### STEP 2 — Confirm Data Window
-Call `get_collection_time_range` to establish what time period the diagnostic data covers. Report this to the user.
+### Phase 3 — Synthesize and Report
 
-### STEP 3 — Execute the Skill File's Diagnostic Steps
-Follow the numbered steps and decision trees in the loaded skill file exactly. At each decision gate:
-- Call the MCP tool the skill file specifies
-- Interpret the result against the skill file's thresholds and conditions
-- Branch to the next step the skill file indicates
-- Report what you found and what you're doing next
-
-You MAY call additional MCP tools beyond what the skill file specifies if the data reveals something the skill file's decision tree does not cover. Always explain why you are going off-script.
-
-### STEP 4 — Synthesize and Report
-After following the skill file's complete flow:
 - State the **root cause** clearly
-- Explain **which data points** led to that conclusion
+- Cite **specific data values** (wait counts, CPU%, latency ms, query hashes) that led to the conclusion
 - Give **recommended actions** in priority order
-- Note any areas where data was missing and which LogScout scenario would have collected it
+- Note any data gaps and which LogScout scenario would fill them
 
 ---
 
@@ -295,9 +283,9 @@ Step 4: get_missing_indexes          → always check for index recommendations
 
 ---
 
-## Skill Files — Always Load First
+## Skill Files — Reference and Cross-Check
 
-Skill files are the primary diagnostic guide. They contain the full decision trees, SQL query references, threshold values, and interpretation rules. **Always read the relevant skill file in STEP 1 before starting analysis.**
+Skill files contain curated decision trees, threshold values, SQL query references, and interpretation rules built from real SQL Server diagnostic experience. Use them as a second opinion and a completeness check, not as a mandatory script.
 
 | Skill file | Covers |
 |------------|--------|
@@ -317,13 +305,13 @@ Skill files are the primary diagnostic guide. They contain the full decision tre
 
 ## Rules
 
-1. **Read the skill file FIRST** — before any MCP diagnostic tool call, load the matching skill file. This is not optional.
-2. **Always call `get_collection_time_range` before diagnostic tools** — confirms what data is available.
-3. **Never ask the user to run queries** — use MCP tools and report findings directly.
-4. **Follow the skill file's decision tree** — do not skip steps or jump to conclusions before the data supports it.
-5. **You may go beyond the skill file** — if data reveals something outside the skill file's scope, call additional MCP tools and explain why.
+1. **Investigate freely first** — use your own reasoning to decide which MCP tools to call. Do not wait for a skill file before starting.
+2. **Always call `get_collection_time_range` first** — confirms what data is available before any diagnostic work.
+3. **Never ask the user to run queries** — call MCP tools yourself and report findings directly.
+4. **Consult skill files when stuck or to cross-check** — if you feel your analysis may be incomplete or you want to validate a finding, read the relevant skill file and run any queries it suggests that you haven't already run.
+5. **Tell the user when you consult a skill file** — say what you're checking and why, then report what additional steps it revealed.
 6. **Read-only analysis only** — never suggest modifying server configuration without confirming with the user.
-7. **If an MCP tool returns no data** — tell the user which LogScout scenario is needed (the skill file will specify this).
-8. **When a root cause is found** — state it clearly, cite the specific data values that led to it, and give recommended actions in priority order.
+7. **If an MCP tool returns no data** — tell the user which LogScout scenario is needed to collect that data.
+8. **When a root cause is found** — state it clearly, cite the specific data values, and give recommended actions in priority order.
 9. **If unsure between two root causes** — run additional MCP tools to differentiate before concluding.
 10. **Keep the user updated at every step** — after each tool call, briefly state what you found and what you are doing next.
