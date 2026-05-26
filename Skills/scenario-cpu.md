@@ -89,6 +89,15 @@
 
 ## EMBEDDED QUERIES
 
+### Query #17a: CPU Utilization — Comprehensive Perfmon Analysis
+**MCP Tool**: `analyze_cpu_usage`  
+**Purpose**: Full CPU analysis combining Perfmon counter data with SQL ring-buffer. Returns a perfmon_cpu_summary (max/avg SQL CPU%, sustained high-CPU runs ≥3 consecutive samples >70%) plus raw per-sample SQL/non-SQL/idle breakdown. Preferred over Query #17 when Perfmon CounterData is available — automatically falls back to ring buffer if absent.  
+**Use When**: First step in any CPU investigation; provides the complete picture before drilling into specific queries
+
+> Call `analyze_cpu_usage` MCP tool directly. No manual SQL needed.
+
+---
+
 ### Query #17: CPU Utilization Over Time
 **MCP Tool**: `get_sql_cpu_usage_over_time`  
 **Purpose**: Track CPU usage trends and identify if SQL Server is the CPU consumer  
@@ -297,6 +306,32 @@ ORDER BY plan_count DESC;
 sp_configure 'optimize for ad hoc workloads', 1;
 RECONFIGURE;
 ```
+
+---
+
+### Query #22: CPU Consumption by Database
+**MCP Tool**: `get_cpu_by_database`  
+**Purpose**: Break down CPU consumption by database — Total_CPU_ms, Executions, Avg_CPU_ms, CPU_Pct per database. Useful when multiple databases share the instance and you need to narrow the CPU investigation before running Query #18.  
+**Use When**: Multiple databases on instance; determine which database to focus on first
+
+```sql
+SELECT
+    DB_NAME(DatabaseID) AS DatabaseName,
+    SUM(CPU) AS Total_CPU_ms,
+    COUNT(*) AS Executions,
+    AVG(CPU) AS Avg_CPU_ms,
+    CAST(100.0 * SUM(CPU) / SUM(SUM(CPU)) OVER() AS DECIMAL(5,2)) AS CPU_Pct
+FROM ReadTrace.tblBatches
+WHERE DatabaseID IS NOT NULL
+GROUP BY DatabaseID
+ORDER BY Total_CPU_ms DESC;
+```
+
+**Output Interpretation**:
+- **CPU_Pct**: Percentage of total SQL CPU consumed by this database
+- Focus subsequent Query #18 and Query #2 analysis on the highest-CPU database
+- Very high single-database CPU (>80%) = isolated workload issue
+- CPU spread across many databases = instance-wide pressure
 
 ---
 

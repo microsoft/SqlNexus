@@ -226,6 +226,7 @@ ORDER BY wait_duration_ms DESC;
 ---
 
 ### Query #11: Blocking Chain Tree (Advanced)
+**MCP Tool**: `get_blocking_chain_tree`  
 **Purpose**: Visualize full blocking chain hierarchy  
 **Use When**: Complex multi-level blocking scenarios
 
@@ -274,6 +275,7 @@ ORDER BY level, session_id;
 ---
 
 ### Query #12: Lock Summary by Object
+**MCP Tool**: `get_lock_summary_by_object`  
 **Purpose**: Identify which tables/objects have most lock contention  
 **Use When**: Finding hotspot tables for blocking
 

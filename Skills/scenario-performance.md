@@ -79,6 +79,15 @@
 
 ## EMBEDDED QUERIES
 
+### Query #0: Performance Health Summary (One-Stop Triage)
+**MCP Tool**: `get_performance_summary`  
+**Purpose**: Comprehensive health snapshot covering CPU, top waits, blocking count, spinlock contention, and memory clerk distribution in a single call. Returns the most important metrics across all categories so you can identify which scenario file to open next.  
+**Use When**: Starting a cold investigation with no prior context — use this first, then jump to the matching scenario (cpu/io/blocking/memory)
+
+> Call `get_performance_summary` MCP tool directly. No manual SQL needed.
+
+---
+
 ### Query #1: Top 50 Longest-Running Queries by Duration
 **MCP Tool**: `get_top_queries_by_duration`  
 **Purpose**: Identify the slowest queries by total duration  

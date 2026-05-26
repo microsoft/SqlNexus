@@ -204,7 +204,26 @@ ORDER BY io_stall_read_ms + io_stall_write_ms DESC;
 
 ---
 
+### Query #16a: SQL-Level I/O Wait Analysis
+**MCP Tool**: `analyze_io_waits`  
+**Purpose**: Confirm SQL Server is the I/O contributor — shows delta wait-time between first/last tbl_OS_WAIT_STATS snapshot for PAGEIOLATCH_*, WRITELOG, LOGBUFFER, IO_COMPLETION, ASYNC_IO_COMPLETION. Distinct from Query #16 (per-file latency) and Query #16b (Perfmon disk counters).  
+**Use When**: Correlating SQL-level IO waits with file-level latency from Query #16; confirms the bottleneck is inside SQL Server's I/O path
+
+> Call `analyze_io_waits` MCP tool directly. No manual SQL needed.
+
+---
+
+### Query #16b: Disk I/O Latency from Perfmon Counters
+**MCP Tool**: `analyze_io_performance`  
+**Purpose**: OS/disk-level I/O latency from Windows Perfmon Avg. Disk sec/Transfer counters. Identifies which physical disks exceed a configurable latency threshold (default: 20ms). Covers the storage stack outside SQL Server — useful for distinguishing SQL-internal waits (Query #16a) from hardware-level bottlenecks.  
+**Use When**: Diagnosing whether slow I/O is at the storage layer vs. inside SQL Server; use alongside Query #16 and Query #16a for a complete I/O picture
+
+> Call `analyze_io_performance` MCP tool directly with optional `threshold_ms` parameter (default: 20ms).
+
+---
+
 ### Query #26: Top Queries by Logical Reads
+**MCP Tool**: `get_top_queries_by_reads`  
 **Purpose**: Find queries doing excessive reads (causing I/O pressure)  
 **Use When**: PAGEIOLATCH_SH waits are high
 
@@ -247,6 +266,7 @@ ORDER BY Total_Reads DESC;
 ---
 
 ### Query #27: Top Queries by Writes
+**MCP Tool**: `get_top_queries_by_writes`  
 **Purpose**: Find queries writing most data (log file pressure)  
 **Use When**: WRITELOG waits are high
 
@@ -286,6 +306,7 @@ ORDER BY Total_Writes DESC;
 ---
 
 ### Query #28: TempDB File Stats
+**MCP Tool**: `get_sql_file_io_stats`  
 **Purpose**: Identify TempDB I/O bottleneck  
 **Use When**: PAGEIOLATCH_* on tempdb files
 
@@ -322,6 +343,7 @@ ORDER BY io_stall_read_ms + io_stall_write_ms DESC;
 ---
 
 ### Query #29: I/O by Database
+**MCP Tool**: `query_nexus_database`  
 **Purpose**: Identify which database is driving I/O  
 **Use When**: Multiple databases on instance
 
