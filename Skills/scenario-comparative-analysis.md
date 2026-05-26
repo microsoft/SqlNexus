@@ -46,6 +46,7 @@ After identifying differences:
 ## EMBEDDED QUERIES
 
 ### Query #21: Compare Two Collections (Slow vs Fast Analysis)
+**MCP Tool**: `query_nexus_database`  
 **Purpose**: Side-by-side comparison of two data collections to identify what changed  
 **Use When**: Performance regression, before/after analysis, environment comparison
 

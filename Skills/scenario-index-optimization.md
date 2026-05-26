@@ -48,6 +48,7 @@
 ## EMBEDDED QUERIES
 
 ### Query #26: Missing Indexes on the System
+**MCP Tool**: `get_missing_indexes`  
 **Purpose**: Get SQL Server's missing index recommendations  
 **Use When**: Slow queries, high I/O, or proactive optimization
 
@@ -154,6 +155,7 @@ Action: HIGH PRIORITY - Frequently-used query, high impact
 ---
 
 ### Query #26a: Missing Index Details with Query Context
+**MCP Tool**: `get_missing_indexes`  
 **Purpose**: See which queries would benefit from each missing index  
 **Use When**: Need to understand query patterns for index decision
 
@@ -193,6 +195,7 @@ END
 ---
 
 ### Query #27: Table Statistics for Query Optimizer
+**MCP Tool**: `get_table_statistics_health`  
 **Purpose**: Check statistics health - when last updated, sample rates, modifications  
 **Use When**: Bad execution plans, parameter sniffing, performance degradation
 
@@ -294,6 +297,7 @@ UPDATE STATISTICS dbo.CriticalTable3 WITH FULLSCAN;
 ---
 
 ### Query #27a: Find Tables with Stale Statistics Causing Performance Issues
+**MCP Tool**: `get_table_statistics_health`  
 **Purpose**: Correlate stale statistics with slow queries  
 **Use When**: Investigating if statistics are root cause
 
@@ -339,6 +343,7 @@ ORDER BY TotalQueryDuration_ms DESC;
 ---
 
 ### Query #28: Compilations and Recompilations in SQL Server
+**MCP Tool**: `get_compilation_stats`  
 **Purpose**: Track compilation rates to identify plan cache issues  
 **Use When**: High CPU, plan cache churn, or "optimize for ad hoc" assessment
 

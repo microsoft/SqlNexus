@@ -80,6 +80,7 @@
 ## EMBEDDED QUERIES
 
 ### Query #1: Top 50 Longest-Running Queries by Duration
+**MCP Tool**: `get_top_queries_by_duration`  
 **Purpose**: Identify the slowest queries by total duration  
 **Use When**: General performance investigation  
 
@@ -114,6 +115,7 @@ ORDER BY Duration_ms DESC;
 ---
 
 ### Query #2: Stats for Specific Query (by HashID)
+**MCP Tool**: `get_query_execution_details`  
 **Purpose**: Detailed execution history for a specific query  
 **Use When**: Drilling into a specific slow query from Query #1
 
@@ -140,6 +142,7 @@ ORDER BY b.StartTime DESC;
 ---
 
 ### Query #3: Collection Time Window
+**MCP Tool**: `get_collection_time_range`  
 **Purpose**: Identify when diagnostics were collected  
 **Use When**: Starting analysis to understand data coverage
 
@@ -154,6 +157,7 @@ FROM tbl_RUNTIMES;
 ---
 
 ### Query #4: Overall Wait Statistics
+**MCP Tool**: `analyze_wait_stats`  
 **Purpose**: Identify primary bottleneck categories  
 **Use When**: First step in performance analysis
 
@@ -208,6 +212,7 @@ ORDER BY total_wait_ms DESC;
 ---
 
 ### Query #5: Find Waits for Specific Query
+**MCP Tool**: `get_waits_for_query`  
 **Purpose**: Identify what a specific query is waiting on  
 **Use When**: Drilling into why a specific query is slow
 
@@ -230,6 +235,7 @@ ORDER BY total_wait_ms DESC;
 ---
 
 ### Query #17: CPU Utilization Over Time
+**MCP Tool**: `get_sql_cpu_usage_over_time`  
 **Purpose**: Track CPU usage trends  
 **Use When**: Investigating high CPU or performance degradation
 

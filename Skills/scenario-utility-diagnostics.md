@@ -17,6 +17,7 @@ Quick reference queries for system diagnostics, configuration checks, data valid
 ## EMBEDDED QUERIES
 
 ### Query #19: Bottleneck SP (Stored Procedure Analysis)
+**MCP Tool**: `query_nexus_database`  
 **Purpose**: Identify stored procedures causing performance issues  
 **Use When**: Need to find which stored procedures are slowest or most resource-intensive
 
@@ -136,6 +137,7 @@ Action:
 ---
 
 ### Query #22: Check Tables in Collection
+**MCP Tool**: `list_nexus_tables`  
 **Purpose**: Validate which tables/objects were captured in the diagnostic collection  
 **Use When**: Verifying data collection completeness, checking if specific tables were monitored
 

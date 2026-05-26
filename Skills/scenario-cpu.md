@@ -90,6 +90,7 @@
 ## EMBEDDED QUERIES
 
 ### Query #17: CPU Utilization Over Time
+**MCP Tool**: `get_sql_cpu_usage_over_time`  
 **Purpose**: Track CPU usage trends and identify if SQL Server is the CPU consumer  
 **Use When**: First step in CPU investigation
 
@@ -113,6 +114,7 @@ ORDER BY runtime;
 ---
 
 ### Query #18: Top Queries by CPU Time
+**MCP Tool**: `get_top_cpu_queries`  
 **Purpose**: Find most CPU-intensive queries  
 **Use When**: SQL_CPU_Pct is high from Query #17
 
@@ -150,6 +152,7 @@ ORDER BY Total_CPU_ms DESC;
 ---
 
 ### Query #4: Overall Wait Statistics (Filter for CPU-Related Waits)
+**MCP Tool**: `analyze_wait_stats`  
 **Purpose**: Identify CPU pressure waits  
 **Use When**: Confirming CPU is the bottleneck
 
@@ -230,6 +233,7 @@ ORDER BY Total_CPU_ms DESC;
 ---
 
 ### Query #20: Spinlock Statistics (Advanced)
+**MCP Tool**: `analyze_spinlocks`  
 **Purpose**: Identify spinlock (internal latch) contention  
 **Use When**: High CPU but low query CPU (internal SQL Server contention)
 
@@ -265,6 +269,7 @@ ORDER BY spins DESC;
 ---
 
 ### Query #21: Plan Cache Analysis (Compilation CPU)
+**MCP Tool**: `get_plan_cache_analysis`  
 **Purpose**: Check if CPU is being consumed by query compilation  
 **Use When**: High CPU but queries in Query #18 don't account for it
 

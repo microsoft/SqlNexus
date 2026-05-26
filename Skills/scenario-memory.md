@@ -84,6 +84,7 @@
 ## EMBEDDED QUERIES
 
 ### Query #15: Memory Clerks Analysis
+**MCP Tool**: `get_memory_clerk_distribution`  
 **Purpose**: Identify memory consumers within SQL Server  
 **Use When**: Understanding where SQL Server memory is allocated
 
@@ -121,6 +122,7 @@ ORDER BY memory_mb DESC;
 ---
 
 ### Query #24: Server Configuration Properties
+**MCP Tool**: `query_nexus_database`  
 **Purpose**: Check max server memory and other memory-related settings  
 **Use When**: First step in memory analysis
 
@@ -164,6 +166,7 @@ RECONFIGURE;
 ---
 
 ### Query #4: Overall Wait Statistics (Filter for Memory Waits)
+**MCP Tool**: `analyze_wait_stats`  
 **Purpose**: Identify memory grant waits  
 **Use When**: Confirming memory pressure is affecting queries
 

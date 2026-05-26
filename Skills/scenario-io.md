@@ -97,6 +97,7 @@
 ## EMBEDDED QUERIES
 
 ### Query #4: Overall Wait Statistics (Filter for I/O Waits)
+**MCP Tool**: `analyze_wait_stats`  
 **Purpose**: Identify I/O as bottleneck and type of I/O  
 **Use When**: First step in I/O analysis
 
@@ -157,6 +158,7 @@ ORDER BY total_wait_ms DESC;
 ---
 
 ### Query #16: File I/O Statistics
+**MCP Tool**: `get_sql_file_io_stats`  
 **Purpose**: Identify I/O bottlenecks by specific files  
 **Use When**: Confirming which files have high latency
 

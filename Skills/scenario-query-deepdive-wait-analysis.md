@@ -47,6 +47,7 @@
 ## EMBEDDED QUERIES
 
 ### Query #6: Aggregate Waits and Waiting Queries
+**MCP Tool**: `get_aggregate_waits_and_queries`  
 **Purpose**: Correlate wait types with specific queries/procedures  
 **Use When**: Need to see which queries encounter which waits most frequently
 
@@ -110,6 +111,7 @@ occurrences | WaitDensity_ms | wait_type        | procname           | stmt_text
 ---
 
 ### Query #7: Waits Aggregated by Wait Resource and Type
+**MCP Tool**: `get_wait_resource_hotspots`  
 **Purpose**: Identify specific resources (pages, objects, keys) causing contention  
 **Use When**: Need to pinpoint hot spots in the database
 
@@ -186,6 +188,7 @@ FROM sys.dm_db_page_info(@dbid, @fileid, @pageid, 'DETAILED');
 ---
 
 ### Query #8: Count Per Wait Type
+**MCP Tool**: `get_wait_type_distribution`  
 **Purpose**: Frequency distribution of all wait types  
 **Use When**: Understanding overall wait patterns and prevalence
 
@@ -247,6 +250,7 @@ occurrences | wait_type          | max_wait_ms | avg_wait_ms | total_wait_ms | p
 ---
 
 ### Query #11: Find All Statements in a Batch
+**MCP Tool**: `get_statements_in_batch`  
 **Purpose**: Break down batch into individual statements for statement-level analysis  
 **Use When**: DetailedPerf collection, need to identify slow statement in a batch
 
@@ -322,6 +326,7 @@ Action: Focus on Statement 2 (UPDATE OrderStatus)
 ---
 
 ### Query #14: Queries with High Wait Percentage
+**MCP Tool**: `get_wait_heavy_queries`  
 **Purpose**: Find queries spending most time waiting vs executing (wait-bound queries)  
 **Use When**: Identifying queries bottlenecked by waits rather than CPU
 

@@ -50,6 +50,7 @@
 ## EMBEDDED QUERIES
 
 ### Query #12: Find Queries by Application Name
+**MCP Tool**: `get_queries_by_application`  
 **Purpose**: Identify all queries executed by a specific application  
 **Use When**: Need to see what a specific app is doing
 
@@ -97,6 +98,7 @@ ORDER BY b.Duration DESC;
 ---
 
 ### Query #12a: Find Queries by Application with Aggregation
+**MCP Tool**: `get_queries_by_application`  
 **Purpose**: Get aggregate stats per query for specific application  
 **Use When**: Want to see query patterns, not individual executions
 
@@ -141,6 +143,7 @@ ORDER BY Total_Duration_ms DESC;
 ---
 
 ### Query #13: Performance by Application Name
+**MCP Tool**: `get_performance_by_application`  
 **Purpose**: Aggregate performance metrics across all applications  
 **Use When**: Comparing application performance or identifying noisy neighbors
 
@@ -194,6 +197,7 @@ ORDER BY Duration_ms DESC;
 ---
 
 ### Query #13a: Application Performance Comparison Over Time
+**MCP Tool**: `query_nexus_database`  
 **Purpose**: Track application performance trends  
 **Use When**: Monitoring application behavior changes
 

@@ -100,6 +100,7 @@
 ## EMBEDDED QUERIES
 
 ### Query #4: Overall Wait Statistics
+**MCP Tool**: `analyze_wait_stats`  
 **Purpose**: Confirm blocking via LCK_* waits  
 **Use When**: First step to verify blocking is the issue
 
@@ -153,6 +154,7 @@ High percentages of LCK_M_* waits confirm blocking is the primary bottleneck.
 ---
 
 ### Query #9: Head Blockers Summary
+**MCP Tool**: `analyze_blocking`  
 **Purpose**: Identify sessions causing the most blocking  
 **Use When**: Finding the root blocker in blocking chains
 
@@ -180,6 +182,7 @@ ORDER BY total_blocking_instances DESC;
 ---
 
 ### Query #10: Blocked Sessions Detail
+**MCP Tool**: `get_blocked_sessions`  
 **Purpose**: Show all blocked sessions with blocker info  
 **Use When**: Investigating specific blocking incident details
 
