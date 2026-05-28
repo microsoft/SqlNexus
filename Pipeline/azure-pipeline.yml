@@ -34,6 +34,8 @@ extends:
       name: ${{ parameters.poolName }}
       image: ${{ parameters.image }}
       os: ${{ parameters.os }}
+    settings:
+      networkIsolationPolicy: Permissive,CFSClean
 
     stages:
     - stage: BuildAndScan
