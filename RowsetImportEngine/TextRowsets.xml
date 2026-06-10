@@ -878,7 +878,7 @@
       </KnownColumns>
     </Rowset>
 
-    <Rowset name="tbl_DM_EXEC_CONNECTIONS" enabled="true" identifier="-- dm_exec_connections" type="RowsetImportEngine.TextRowset">
+    <Rowset name="tbl_dm_exec_connections" enabled="true" identifier="-- exec_connections --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
         <Column name="rownum" type="RowsetImportEngine.BigIntColumn" length="24" valuetoken="ROWNUMBER" />
         <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
