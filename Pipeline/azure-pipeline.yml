@@ -1,6 +1,14 @@
 name: BuildAndSecurePipeline
 trigger: none
 
+schedules:
+- cron: '0 3 */3 * *'
+  displayName: 'Run every 3 days at 3 AM UTC'
+  branches:
+    include:
+    - master
+  always: true
+
 parameters:
 - name: poolName
   type: string
