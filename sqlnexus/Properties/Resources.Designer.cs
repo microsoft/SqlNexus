@@ -19,7 +19,7 @@ namespace sqlnexus.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -440,7 +440,7 @@ namespace sqlnexus.Properties {
                 return ResourceManager.GetString("Drop_Existing_Database", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
@@ -2101,6 +2101,15 @@ namespace sqlnexus.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to /M&lt;importers&gt;\tEnable specific importers for this run. Use &apos;+&apos; to combine tokens, or &apos;All&apos; to enable every importer.\n\t\tTokens: ReadTrace, Perfmon, Linux, Errorlog, CustomXEL, TraceImp\n\t\tExample: /MReadTrace+Perfmon+Errorlog   or   /MAll\n\t\tOverrides saved UI settings for this run only; user.config is never modified..
+        /// </summary>
+        internal static string Usage_Importers {
+            get {
+                return ResourceManager.GetString("Usage_Importers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to /I&quot;path&quot;\tImport SQL diagnostic data from this path.
         /// </summary>
         internal static string Usage_InputPath {
@@ -2164,7 +2173,7 @@ namespace sqlnexus.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to sqlnexus.exe [ [ /S [ /E | /Uuser /Ppwd ] [/D&quot;database&quot;] ] | [/C&quot;connstr&quot;] ] [/I&quot;inputpath&quot;] [/O&quot;outputpath&quot;] [/Rreport] [/X] [/Q] [/N].
+        ///   Looks up a localized string similar to sqlnexus.exe [ [ /S [ /E | /Uuser /Ppwd ] [/D&quot;database&quot;] ] | [/C&quot;connstr&quot;] ] [/I&quot;inputpath&quot;] [/O&quot;outputpath&quot;] [/Rreport] [/X] [/Q] [/N] [/M&lt;importers&gt;].
         /// </summary>
         internal static string Usage_Summary {
             get {

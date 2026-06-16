@@ -104,6 +104,7 @@ namespace sqlnexus
             Console.WriteLine(Util.ExpandEscapeStrings(sqlnexus.Properties.Resources.Usage_Parameter));
             Console.WriteLine(Util.ExpandEscapeStrings(sqlnexus.Properties.Resources.Usage_Quiet));
             Console.WriteLine(Util.ExpandEscapeStrings(sqlnexus.Properties.Resources.Drop_Existing_Database));
+            Console.WriteLine(Util.ExpandEscapeStrings(sqlnexus.Properties.Resources.Usage_Importers));
         }
 
         public static bool IsDbNameValid(string dbName)
@@ -146,7 +147,7 @@ namespace sqlnexus
                 // Some switches require a string to immediately follow the switch
                 char switchChar = arg.ToUpper(CultureInfo.InvariantCulture)[1];
                 if (('C' == switchChar) || ('S' == switchChar) || ('U' == switchChar) || ('P' == switchChar) || ('R' == switchChar)
-                    || ('O' == switchChar) || ('I' == switchChar) || ('V' == switchChar) || ('D' == switchChar))
+                    || ('O' == switchChar) || ('I' == switchChar) || ('V' == switchChar) || ('D' == switchChar) || ('M' == switchChar))
                 {
                     if (arg.Length < 3)
                     {
@@ -259,6 +260,28 @@ namespace sqlnexus
                             string param = tmpStr.Substring(0, tmpStr.IndexOf('='));
                             string val = tmpStr.Substring(tmpStr.IndexOf('=') + 1);
                             Globals.UserSuppliedReportParameters.Add(param, val);
+                            break;
+                        }
+                    case 'M':
+                        {
+                            string mVal = arg.Substring(2).Trim();
+                            Console.WriteLine(@"Command Line Arg (/M): Importers=" + mVal);
+
+                            if (string.Equals(mVal, "All", StringComparison.OrdinalIgnoreCase))
+                            {
+                                Globals.EnabledImporters = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+                                    { "ReadTrace", "Perfmon", "Linux", "Errorlog", "CustomXEL", "TraceImp", "All" };
+                            }
+                            else
+                            {
+                                string[] tokens = mVal.Split(new char[] { '+' }, StringSplitOptions.RemoveEmptyEntries);
+                                if (tokens.Length == 0)
+                                {
+                                    Console.WriteLine(sqlnexus.Properties.Resources.Msg_InvalidSwitch + arg);
+                                    return false;
+                                }
+                                Globals.EnabledImporters = new HashSet<string>(tokens, StringComparer.OrdinalIgnoreCase);
+                            }
                             break;
                         }
                     case 'N':
