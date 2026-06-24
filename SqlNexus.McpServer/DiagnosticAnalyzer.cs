@@ -221,14 +221,42 @@ namespace SqlNexus.McpServer
 						* CAST(COALESCE(DATEDIFF(MILLISECOND, (SELECT MIN(StartTime) FROM ReadTrace.tblBatches), (SELECT MAX(EndTime) FROM ReadTrace.tblBatches)), 0) AS decimal(19,4));
 
 					SELECT TOP {topN}
-						SUM(b.CPU)                                                                       AS total_cpu_ms,
-						CONVERT(decimal(5,2), COALESCE((SUM(b.CPU) * 100.0) / NULLIF(@cap_ms, 0), 0))  AS pct_of_cpu_capacity,
-						SUM(b.Duration)/1000                                                             AS total_duration_ms,
-						SUM(b.Reads)                                                                     AS total_physical_reads,
-						SUM(b.Writes)                                                                    AS total_writes,
-						COUNT(*)                                                                         AS executions,
-						SUM(b.CPU) / NULLIF(COUNT(*), 0)                                                 AS avg_cpu_ms,
-						SUBSTRING(ub.NormText, 1, 500)                                                   AS stmt_text
+						SUM(b.CPU)                                                                                  AS total_cpu_ms,
+						CONVERT(decimal(5,2), COALESCE((SUM(b.CPU) * 100.0) / NULLIF(@cap_ms, 0), 0))             AS pct_of_cpu_capacity,
+						SUM(b.Duration)/1000                                                                        AS total_duration_ms,
+						SUM(b.Reads)                                                                                AS total_physical_reads,
+						SUM(b.Writes)                                                                               AS total_writes,
+						COUNT(*)                                                                                    AS executions,
+						SUM(b.CPU) / NULLIF(COUNT(*), 0)                                                            AS avg_cpu_ms,
+						-- Duration spread: large gap between max and min on the same normalized query
+						-- is a key signal for parameter-sensitive plan (PSP) / parameter sniffing issues.
+						MAX(b.Duration)/1000                                                                        AS max_duration_ms,
+						MIN(b.Duration)/1000                                                                        AS min_duration_ms,
+						-- Read spread: a sniffed plan cached for a low-cardinality param uses a seek
+						-- (few reads); the same plan called with a high-cardinality param keeps doing
+						-- that seek at huge cost. Max/min read divergence on one HashID is the
+						-- strongest PSP indicator available in ReadTrace data.
+						MAX(b.Reads)                                                                                AS max_reads_exec,
+						MIN(b.Reads)                                                                                AS min_reads_exec,
+						-- Ratio of slowest to fastest execution: values > 1 indicate high variability.
+						-- NULL when min duration is 0 (sub-millisecond executions).
+						CONVERT(decimal(10,2), CAST(MAX(b.Duration) AS float) / NULLIF(MIN(b.Duration), 0))        AS duration_max_min_ratio,
+						-- Coefficient of variation (stddev/mean * 100): normalises variance relative to
+						-- average duration. A consistently slow query scores low; an intermittently slow
+						-- one (classic PSP behaviour) scores high.
+						CONVERT(decimal(10,2), STDEV(b.Duration) / NULLIF(AVG(b.Duration * 1.0), 0) * 100)         AS duration_cv_pct,
+						-- Compiled-object flag: NormText starting with EXEC indicates a stored procedure,
+						-- function, or trigger call — the primary PSP candidates because SQL Server caches
+						-- one plan per object and reuses it for all subsequent parameter values.
+						CASE WHEN UPPER(LTRIM(ub.NormText)) LIKE 'EXEC%' THEN 1 ELSE 0 END                         AS is_compiled_object,
+						-- Composite PSP candidate flag: compiled object with >= 2 executions, slowest
+						-- run >= 1000 ms, and max/min ratio >= 10x. Use as a quick triage filter.
+						CASE WHEN COUNT(*) >= 2
+								  AND MAX(b.Duration/1000) >= 1000
+								  AND CAST(MAX(b.Duration) AS float) / NULLIF(MIN(b.Duration), 0) >= 10
+								  AND UPPER(LTRIM(ub.NormText)) LIKE 'EXEC%'
+							 THEN 1 ELSE 0 END                                                                      AS psp_issue_candidate,
+						SUBSTRING(ub.NormText, 1, 500)                                                              AS stmt_text
 					FROM ReadTrace.tblBatches b
 					JOIN ReadTrace.tblUniqueBatches ub ON b.HashID = ub.HashID
 					WHERE b.CPU IS NOT NULL AND b.Duration IS NOT NULL
@@ -311,7 +339,7 @@ namespace SqlNexus.McpServer
                     a.wait_type, 
                     (b.wait_time_ms - a.wait_time_ms) AS TotalWait_ms_AcrossAllCPUs, 
                     DATEDIFF(SECOND, a.runtime, b.runtime) AS CollectionTime_sec, 
-                    (b.wait_time_ms - a.wait_time_ms) / (DATEDIFF(SECOND, a.runtime, b.runtime) * @cpu_count) AS WaitTime_ms_per_second_per_cpu
+                    (b.wait_time_ms - a.wait_time_ms) / NULLIF(DATEDIFF(SECOND, a.runtime, b.runtime) * NULLIF(@cpu_count, 0), 0) AS WaitTime_ms_per_second_per_cpu
                 FROM (SELECT * FROM tbl_OS_WAIT_STATS WHERE runtime = @minruntime) AS a
                 INNER JOIN (SELECT * FROM tbl_OS_WAIT_STATS WHERE runtime = @maxruntime) AS b ON a.wait_type = b.wait_type
                 WHERE a.wait_type LIKE 'PAGEIOLATCH_%' 
@@ -400,8 +428,8 @@ namespace SqlNexus.McpServer
                     CAST(CAST(t2.spins AS FLOAT) - CAST(t1.spins AS FLOAT) AS BIGINT) delta_spins,  
                     CAST(CAST(t2.Backoffs AS FLOAT) - CAST(t1.Backoffs AS FLOAT) AS BIGINT) delta_backoff, 
                     DATEDIFF(MI, t1.runtime, t2.runtime) delta_minutes,
-                    (CAST(CAST(t2.spins AS FLOAT) - CAST(t1.spins AS FLOAT) AS BIGINT)) / DATEDIFF(MILLISECOND, t1.runtime, t2.runtime) / @cpus AS spins_per_millisecond_per_CPU,
-                    CASE WHEN (CAST(CAST(t2.spins AS FLOAT) - CAST(t1.spins AS FLOAT) AS BIGINT)) / DATEDIFF(MILLISECOND, t1.runtime, t2.runtime) / @cpus > 20000 THEN 1 ELSE 0 END AS is_high_cpu_driver
+                    (CAST(CAST(t2.spins AS FLOAT) - CAST(t1.spins AS FLOAT) AS BIGINT)) / NULLIF(DATEDIFF(MILLISECOND, t1.runtime, t2.runtime), 0) / NULLIF(@cpus, 0) AS spins_per_millisecond_per_CPU,
+                    CASE WHEN (CAST(CAST(t2.spins AS FLOAT) - CAST(t1.spins AS FLOAT) AS BIGINT)) / NULLIF(DATEDIFF(MILLISECOND, t1.runtime, t2.runtime), 0) / NULLIF(@cpus, 0) > 20000 THEN 1 ELSE 0 END AS is_high_cpu_driver
                 FROM  
                     (SELECT ROW_NUMBER() OVER (PARTITION BY [name] ORDER BY runtime) row, *  
                      FROM [tbl_SPINLOCKSTATS] 
@@ -528,7 +556,7 @@ namespace SqlNexus.McpServer
 
                 IF ((OBJECT_ID('dbo.tbl_ServerProperties') IS NOT NULL) AND (OBJECT_ID('dbo.CounterData') IS NOT NULL))
                 BEGIN
-                    DECLARE @process_id INT = 0, @cpu_count INT, @inst_name VARCHAR(64), @inst_index INT;
+                    DECLARE @process_id INT = 0, @cpu_count INT = 1, @inst_name VARCHAR(64), @inst_index INT;
 
                     SELECT @process_id = sp.PropertyValue FROM dbo.tbl_ServerProperties sp WHERE sp.PropertyName = 'ProcessID';
                     SELECT @cpu_count = CASE WHEN sp.PropertyValue = 0 THEN 1 ELSE sp.PropertyValue END 
