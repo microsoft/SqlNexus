@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
   <Import Project="..\packages\Microsoft.SqlServer.Types.160.1000.6\build\net462\Microsoft.SqlServer.Types.props" Condition="Exists('..\packages\Microsoft.SqlServer.Types.160.1000.6\build\net462\Microsoft.SqlServer.Types.props')" />
   <PropertyGroup>
@@ -869,6 +869,10 @@
     <ProjectReference Include="..\LinuxPerfImporter\LinuxPerfImporter.csproj">
       <Project>{ccf72846-1645-4548-8e66-a2ffce83692d}</Project>
       <Name>LinuxPerfImporter</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TraceEventImporter\TraceEventImporter.csproj">
+      <Project>{08FCB9FF-C633-4B28-947B-39D553091600}</Project>
+      <Name>TraceEventImporter</Name>
     </ProjectReference>
     <ProjectReference Include="..\NexusInterfaces\NexusInterfaces.csproj">
       <Project>{2217E9CA-442E-46C5-AB6C-7A46AE41A22C}</Project>

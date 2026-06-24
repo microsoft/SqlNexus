@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -412,6 +412,71 @@ namespace sqlnexus
             tsiImporters.DropDownItems.Clear();
             EnumImportersFromDirectory(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\SqlNexus\Importers");
             EnumImportersFromDirectory(Application.StartupPath);
+            EnforceTraceImporterExclusivity();
+
+            // Final check: warn for any expected importer that never made it into the menu,
+            // regardless of which directory was scanned. This is the most user-visible signal.
+            var registeredNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            foreach (ToolStripMenuItem item in tsiImporters.DropDownItems)
+            {
+                INexusImporter prod = item.Tag as INexusImporter;
+                if (prod != null)
+                    registeredNames.Add(prod.Name);
+            }
+
+            // Map DLL base name → the Name the importer registers itself under
+            var expectedDllToName = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                { "TraceEventImporter",     TRACEEVENT_IMPORTER_NAME },
+                { "ReadTraceNexusImporter", READTRACE_IMPORTER_NAME },
+            };
+
+            foreach (var kvp in expectedDllToName)
+            {
+                if (!registeredNames.Contains(kvp.Value))
+                {
+                    MainForm.LogMessage(string.Format(
+                        "WARNING: Importer '{0}' (from {1}.dll) did not register in the Import menu. " +
+                        "Check the application log for load errors, or verify that {1}.dll is present in '{2}'.",
+                        kvp.Value, kvp.Key, Application.StartupPath), MessageOptions.Both);
+                }
+            }
+        }
+
+        /// <summary>
+        /// If both ReadTrace and TraceEventImporter are enabled, disable ReadTrace
+        /// (TraceEventImporter is the preferred/modern one).
+        /// </summary>
+        private void EnforceTraceImporterExclusivity()
+        {
+            bool readTraceEnabled = IsImporterEnabled(READTRACE_IMPORTER_NAME);
+            bool traceEventEnabled = IsImporterEnabled(TRACEEVENT_IMPORTER_NAME);
+
+            if (readTraceEnabled && traceEventEnabled)
+            {
+                DisableImporterByName(READTRACE_IMPORTER_NAME);
+                MainForm.LogMessage(string.Format("Both '{0}' and '{1}' were enabled. Automatically disabled '{1}' to prevent conflicts.", TRACEEVENT_IMPORTER_NAME, READTRACE_IMPORTER_NAME), MessageOptions.Silent);
+            }
+        }
+
+        /// <summary>
+        /// Checks whether the specified importer's Enabled option is checked.
+        /// </summary>
+        private bool IsImporterEnabled(string importerName)
+        {
+            foreach (ToolStripMenuItem importerTsi in tsiImporters.DropDownItems)
+            {
+                INexusImporter prod = importerTsi.Tag as INexusImporter;
+                if (prod == null || prod.Name != importerName)
+                    continue;
+
+                foreach (ToolStripMenuItem optionTsi in importerTsi.DropDownItems)
+                {
+                    if (optionTsi.Text == "Enabled")
+                        return optionTsi.Checked;
+                }
+            }
+            return false;
         }
         private String FileVersions(String file)
         {
@@ -441,7 +506,15 @@ namespace sqlnexus
                 else if (file.ToUpper().Contains("READTRACE"))
                 {
                     ImporterList.Add(200, file);
-
+                }
+                else if (file.ToUpper().Contains("TRACEEVENTIMPORTER"))
+                {
+                    // TraceEventImporter must run after RowsetImportEngine (100) so that
+                    // tbl_ServerProperties already exists when GetLocalServerTimeOffset()
+                    // and WriteLocalTimeFlag() are called.  Place it between Rowset (100)
+                    // and ReadTrace (200); ReadTrace and TraceEventImporter are mutually
+                    // exclusive so they will never both be present at the same time.
+                    ImporterList.Add(150, file);
                 }
                 else
                 {
@@ -472,15 +545,29 @@ namespace sqlnexus
 
             return OrderedImporters;
         }
+        // The set of assembly names that sqlnexus.exe directly references at compile time.
+        // Built once from the executing assembly's manifest so it stays in sync automatically:
+        // any new importer added as a ProjectReference to sqlnexus.csproj is immediately
+        // included without any code change here.
+        private static readonly Lazy<HashSet<string>> _referencedByHost = new Lazy<HashSet<string>>(() =>
+        {
+            var names = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            foreach (AssemblyName asmName in Assembly.GetExecutingAssembly().GetReferencedAssemblies())
+                names.Add(asmName.Name);
+            return names;
+        });
+
         private void EnumImportersFromDirectory(string importerDirectory)
         {
             if (!Directory.Exists(importerDirectory))
                 return;
-            
+
             string[] Files = Directory.GetFiles(importerDirectory, "*.DLL");
             List<string> OrderedFiles = OrderedImporterFiles(Files);
 
-            // List of option names
+            // Track which expected DLL names were actually seen in this directory so that
+            // EnumImporters() can warn about any that are present on disk but failed to register.
+            var seenExpected = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
             foreach (string file in OrderedFiles)
             {
@@ -492,20 +579,55 @@ namespace sqlnexus
                     MainForm.LogMessage(String.Format(Properties.Resources.Msg_NativeImage, file));
                     continue;
                 }
+
+                string dllBaseName = Path.GetFileNameWithoutExtension(file);
+                // A DLL is "expected" if sqlnexus.exe directly references it at compile time
+                // (i.e. it was added as a ProjectReference). No list to maintain here.
+                bool isExpected = _referencedByHost.Value.Contains(dllBaseName);
+
                 Assembly Assem;
                 try
                 {
                     Assem = Assembly.LoadFile(file);
-
-
                 }
                 catch (Exception ex)
                 {
-                    MainForm.LogMessage("Assembly " + file + " could not be used as an importer: " + ex.Message, MessageOptions.Silent);
+                    string msg = string.Format("Assembly '{0}' could not be loaded: {1}", Path.GetFileName(file), ex.Message);
+                    // Use a visible log level when a known importer DLL fails to load
+                    MainForm.LogMessage(msg, isExpected ? MessageOptions.Both : MessageOptions.Silent);
                     continue;
                 }
 
-                Type[] typs = Assem.GetExportedTypes();
+                Type[] typs;
+                try
+                {
+                    typs = Assem.GetExportedTypes();
+                }
+                catch (ReflectionTypeLoadException rtle)
+                {
+                    // Log the loader exceptions — these reveal exactly which dependency is missing
+                    var loaderMsgs = rtle.LoaderExceptions != null
+                        ? string.Join("; ", rtle.LoaderExceptions
+                            .Where(le => le != null)
+                            .Select(le => le.Message))
+                        : rtle.Message;
+                    string msg = string.Format(
+                        "Assembly '{0}' loaded but type inspection failed (missing dependency?): {1}",
+                        Path.GetFileName(file), loaderMsgs);
+                    MainForm.LogMessage(msg, isExpected ? MessageOptions.Both : MessageOptions.Silent);
+                    continue;
+                }
+                catch (Exception ex)
+                {
+                    string msg = string.Format(
+                        "Assembly '{0}' loaded but GetExportedTypes() failed: {1}",
+                        Path.GetFileName(file), ex.Message);
+                    MainForm.LogMessage(msg, isExpected ? MessageOptions.Both : MessageOptions.Silent);
+                    continue;
+                }
+
+                int importersRegisteredFromThisDll = 0;
+
                 foreach (Type typ in typs)
                 {
                     //Ignore abstract classes
@@ -523,7 +645,23 @@ namespace sqlnexus
 
                         //If we get in here, the Class implements the interface, so add it to the list
                         //and bail
-                        INexusImporter prod = (INexusImporter)Assem.CreateInstance(typ.FullName, true);
+                        INexusImporter prod;
+                        try
+                        {
+                            prod = (INexusImporter)Assem.CreateInstance(typ.FullName, true);
+                        }
+                        catch (Exception ex)
+                        {
+                            MainForm.LogMessage(string.Format(
+                                "Failed to instantiate or cast '{0}' from '{1}': {2}",
+                                typ.FullName, Path.GetFileName(file), ex.Message),
+                                isExpected ? MessageOptions.Both : MessageOptions.Silent);
+                            continue;
+                        }
+
+                        importersRegisteredFromThisDll++;
+                        if (isExpected)
+                            seenExpected.Add(dllBaseName);
 
                         prod.StatusChanged += new System.EventHandler(this.ImportStatusChanged);
                         if (prod is INexusProgressReporter)
@@ -560,7 +698,8 @@ namespace sqlnexus
                             "Ignore events associated with PSSDIAG activity",
                             "Disable event requirement checks",
                             "Import to SQL (Linux Perf)",
-                            "Drop existing tables (Linux Perf)"
+                            "Drop existing tables (Linux Perf)",
+                            "Drop existing ReadTrace tables"
                         };
 
                         foreach (string optionName in optionNames)
@@ -570,10 +709,12 @@ namespace sqlnexus
                             {
                                 // Construct the userSavedKey using the product name and option name
                                 string userSavedKey = string.Format("{0}.{1}", prod.Name, optionName);
-                                // Get the userSavedValue using ImportOptions
-                                bool userSavedValue = ImportOptions.IsEnabled(userSavedKey);
-                                // Update the option with the userSavedValue
-                                prod.Options[optionName] = userSavedValue;
+                                // Only restore saved value if it was actually saved before
+                                if (ImportOptions.HasOption(userSavedKey))
+                                {
+                                    bool userSavedValue = ImportOptions.IsEnabled(userSavedKey);
+                                    prod.Options[optionName] = userSavedValue;
+                                }
                             }
                         }
                         
@@ -590,7 +731,7 @@ namespace sqlnexus
                                 subtsi.Tag = prod.OptionsDialog;
                                 subtsi.Click += new System.EventHandler(this.tsiDialog_Click);
                             }
-                            else // boolean
+                            else if (prod.Options[option] is bool) // boolean
                             {
                                 m_OptionList.Add(subtsi);
 
@@ -607,6 +748,11 @@ namespace sqlnexus
 
                                 subtsi.Click += new System.EventHandler(this.tsiBool_Click);
                             }
+                            else
+                            {
+                                // Non-boolean, non-dialog options (e.g. int) are not shown in the menu
+                                continue;
+                            }
 
                             tsi.DropDownItems.Add(subtsi);
                         }
@@ -619,13 +765,53 @@ namespace sqlnexus
                         };
                     }
                 }
+
+                // Log if a DLL that looks like an importer loaded and reflected cleanly but
+                // registered nothing — this catches mismatched interface versions, wrong SNK, etc.
+                if (importersRegisteredFromThisDll == 0 && isExpected)
+                {
+                    MainForm.LogMessage(string.Format(
+                        "WARNING: '{0}' loaded successfully but registered no INexusImporter entries. " +
+                        "The importer will not appear in the Import menu. " +
+                        "Check that the DLL targets the correct NexusInterfaces version.",
+                        Path.GetFileName(file)), MessageOptions.Both);
+                }
+                else if (importersRegisteredFromThisDll > 0)
+                {
+                    MainForm.LogMessage(string.Format(
+                        "'{0}' registered {1} importer(s).", Path.GetFileName(file), importersRegisteredFromThisDll),
+                        MessageOptions.Silent);
+                }
+            }
+
+            // After scanning, log any compile-time-referenced DLL that wasn't even found on
+            // disk in this directory. Only check DLLs that are both referenced AND absent;
+            // support libraries (Azure.Core, System.Memory, etc.) are expected not to be here
+            // when scanning the AppData importers directory, so we limit to DLLs whose names
+            // suggest they are importers (contain "Import") to avoid log noise.
+            var foundOnDiskNames = new HashSet<string>(
+                OrderedFiles.Select(f => Path.GetFileNameWithoutExtension(f)),
+                StringComparer.OrdinalIgnoreCase);
+
+            foreach (string refName in _referencedByHost.Value)
+            {
+                if (refName.IndexOf("Import", StringComparison.OrdinalIgnoreCase) < 0)
+                    continue; // skip non-importer support libraries
+
+                if (!foundOnDiskNames.Contains(refName))
+                {
+                    MainForm.LogMessage(string.Format(
+                        "Referenced importer DLL '{0}.dll' was not found in '{1}'. " +
+                        "The importer will not appear in the Import menu.",
+                        refName, importerDirectory), MessageOptions.Silent);
+                }
             }
 
             // Add the SQLDiag/AlwaysOn XEL option under Importers with sub-items
             tsiSQLDiagAlwaysOnXEL.Name = "tsiSQLDiagAlwaysOnXEL";
-            tsiSQLDiagAlwaysOnXEL.Text = "Import SQLDiag/AlwaysOn XEL";
-            tsiSQLDiagAlwaysOnXEL.AccessibleName = "Import SQLDiag AlwaysOn XEL";
-            tsiSQLDiagAlwaysOnXEL.AccessibleDescription = "Submenu for importing SQLDiag and AlwaysOn Extended Events XEL files";
+            tsiSQLDiagAlwaysOnXEL.Text = "Import SQLDiag / AlwaysOn / System Health XEL";
+            tsiSQLDiagAlwaysOnXEL.AccessibleName = "Import SQLDiag AlwaysOn System Health XEL";
+            tsiSQLDiagAlwaysOnXEL.AccessibleDescription = "Submenu for importing SQLDiag, AlwaysOn, and System Health Extended Events XEL files";
             tsiSQLDiagAlwaysOnXEL.DropDownItems.Clear();
 
             // "Drop existing tables" sub-item
@@ -1392,8 +1578,9 @@ namespace sqlnexus
             if (string.IsNullOrEmpty(importerName))
                 return;
 
-            // Only execute ReadTracePostProcessing.sql when the current importer is the ReadTrace importer.
-            bool isReadTraceImporter = importerName.Equals("ReadTrace (SQL XEL/TRC files)", StringComparison.OrdinalIgnoreCase);
+            // Only execute ReadTracePostProcessing.sql when the current importer is ReadTrace or TraceEventImporter (both use the ReadTrace schema).
+            bool isReadTraceImporter = importerName.Equals("ReadTrace (SQL XEL/TRC files)", StringComparison.OrdinalIgnoreCase)
+                                    || importerName.Equals(TRACEEVENT_IMPORTER_NAME, StringComparison.OrdinalIgnoreCase);
 
             // If nothing to run, skip executing the post scripts.
             if (!PostScripts.TryGetValue(importerName, out var scripts) || scripts == null || scripts.Length == 0)
@@ -1587,6 +1774,10 @@ namespace sqlnexus
 
 
         }
+        // Importer names used for mutual exclusivity
+        private const string READTRACE_IMPORTER_NAME = "ReadTrace (SQL XEL/TRC Files)";
+        private const string TRACEEVENT_IMPORTER_NAME = "Trace Event Importer (Managed)";
+
         private void tsiBool_Click(object sender, EventArgs e)
         {
             ToolStripMenuItem tsi = (sender as ToolStripMenuItem);
@@ -1594,12 +1785,60 @@ namespace sqlnexus
             prod.Options[tsi.Text] = tsi.Checked;
             if (ImportOptions.IsEnabled("SaveImportOptions"))
             {
-
                 ImportOptions.Set(string.Format("{0}.{1}", prod.Name, tsi.Text), tsi.Checked);
-                //LogMessage("strip: " + string.Format("{0}.{1}", prod.Name, tsi.Name), MessageOptions.Silent);
-
             }
 
+            // Mutual exclusivity: enabling one trace importer disables the other
+            if (tsi.Text == "Enabled" && tsi.Checked)
+            {
+                string otherImporterName = null;
+                if (prod.Name == TRACEEVENT_IMPORTER_NAME)
+                    otherImporterName = READTRACE_IMPORTER_NAME;
+                else if (prod.Name == READTRACE_IMPORTER_NAME)
+                    otherImporterName = TRACEEVENT_IMPORTER_NAME;
+
+                if (otherImporterName != null)
+                {
+                    DisableImporterByName(otherImporterName);
+
+                    // Close all dropdown menus so the MessageBox isn't hidden behind them
+                    cmOptions.Close();
+
+                    MessageBox.Show(this,
+                        string.Format("You have enabled '{0}'.\nThe '{1}' importer has been automatically disabled to prevent both from writing to the same tables.", prod.Name, otherImporterName),
+                        "Importer Conflict",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Finds the importer menu item by name and unchecks its Enabled option.
+        /// </summary>
+        private void DisableImporterByName(string importerName)
+        {
+            foreach (ToolStripMenuItem importerTsi in tsiImporters.DropDownItems)
+            {
+                INexusImporter otherProd = importerTsi.Tag as INexusImporter;
+                if (otherProd == null || otherProd.Name != importerName)
+                    continue;
+
+                foreach (ToolStripMenuItem optionTsi in importerTsi.DropDownItems)
+                {
+                    if (optionTsi.Text == "Enabled")
+                    {
+                        optionTsi.Checked = false;
+                        otherProd.Options["Enabled"] = false;
+                        if (ImportOptions.IsEnabled("SaveImportOptions"))
+                        {
+                            ImportOptions.Set(string.Format("{0}.Enabled", importerName), false);
+                        }
+                        break;
+                    }
+                }
+                break;
+            }
         }
 
         private void tsiDialog_Click(object sender, EventArgs e)
