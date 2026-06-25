@@ -616,6 +616,228 @@ namespace SqlNexus.McpServer
         }
 
         /// <summary>
+        /// Analyze expensive XEvent sessions and SQL Trace configurations that may be causing
+        /// unexplained high CPU overhead. Covers:
+        ///   - tbl_XEvents: extended event sessions with expensive-event flags
+        ///   - tbl_profiler_trace_event_details: SQL Trace events with expensive-event flags
+        ///   - known high-overhead event names (lock_acquired, showplan, wait_info, statement-level)
+        ///   - concurrent user-session count (overhead is additive)
+        ///   - SQL Trace presence (synchronous, single-threaded - higher baseline cost than XEvents)
+        /// C#-side risk rating and per-item recommendations are appended so the AI can act immediately.
+        /// </summary>
+        public string AnalyzeTracingOverhead()
+        {
+            // ── 1. XEvent sessions ────────────────────────────────────────────────────────
+            const string xeventsQuery = @"
+                IF OBJECT_ID('dbo.tbl_XEvents') IS NOT NULL
+                BEGIN
+                    SELECT
+                        session_name,
+                        event_name,
+                        expensive_event,
+                        CASE
+                            WHEN session_name IN (
+                                'sp_server_diagnostics session','hkenginexesession',
+                                'system_health','alwayson_health','telemetry_xevents')
+                            THEN 1 ELSE 0
+                        END AS is_microsoft_session
+                    FROM dbo.tbl_XEvents
+                    ORDER BY expensive_event DESC, session_name, event_name
+                END";
+
+            // ── 2. SQL Trace (Profiler) event details ─────────────────────────────────────
+            const string traceQuery = @"
+                IF OBJECT_ID('dbo.tbl_profiler_trace_event_details') IS NOT NULL
+                   AND OBJECT_ID('dbo.tbl_profiler_trace_summary') IS NOT NULL
+                BEGIN
+                    SELECT DISTINCT
+                        det.trace_id,
+                        sm.value                                                        AS trace_file_path,
+                        det.trace_event_name,
+                        det.expensive_event,
+                        CASE
+                            WHEN sm.value LIKE '%\log\log%'
+                              OR sm.value LIKE '%sp_trace%'
+                            THEN 1 ELSE 0
+                        END AS is_microsoft_trace
+                    FROM dbo.tbl_profiler_trace_event_details AS det
+                    INNER JOIN (
+                        SELECT traceid, value, property
+                        FROM dbo.tbl_profiler_trace_summary
+                        WHERE property = 2
+                    ) AS sm ON det.trace_id = sm.traceid
+                    ORDER BY det.expensive_event DESC, det.trace_id, det.trace_event_name
+                END";
+
+            var xeventsTable = ExecuteQueryToDataTable(xeventsQuery);
+            var traceTable   = ExecuteQueryToDataTable(traceQuery);
+
+            var xevents = ConvertDataTableToList(xeventsTable);
+            var traces  = ConvertDataTableToList(traceTable);
+
+            // Event names known to have high per-execution CPU/IO overhead. Matched case-insensitively
+            // as substrings so both XEvent names (lock_acquired) and SQL Trace names (Lock:Acquired) hit.
+            var highOverheadEventPatterns = new[]
+            {
+                "lock_acquired", "lock_released",          // fire on every lock grant/release
+                "Lock:Acquired", "Lock:Released",          // SQL Trace equivalents
+                "showplan",                                 // XML plan generation per statement
+                "query_post_execution_showplan",
+                "Showplan XML", "Showplan All", "Showplan Statistics", "Showplan Text",
+                "sql_statement_completed", "sql_statement_starting",   // statement-level >> batch-level
+                "sp_statement_completed",  "sp_statement_starting",
+                "SQL:StmtCompleted", "SQL:StmtStarting",
+                "SP:StmtCompleted",  "SP:StmtStarting",
+                "wait_info", "wait_info_external",          // fire on every wait start/end
+            };
+
+            bool IsHighOverhead(string eventName)
+            {
+                foreach (var pattern in highOverheadEventPatterns)
+                    if (eventName.IndexOf(pattern, StringComparison.OrdinalIgnoreCase) >= 0)
+                        return true;
+                return false;
+            }
+
+            // ── 3. Annotate XEvent rows ───────────────────────────────────────────────────
+            var annotatedXEvents = new List<object>();
+            var userXEventSessions = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            int criticalXEventCount = 0;
+
+            foreach (var row in xevents)
+            {
+                string sessionName = row["session_name"]?.ToString() ?? "";
+                string eventName   = row["event_name"]?.ToString()   ?? "";
+                bool   isMicrosoft = Convert.ToInt32(row["is_microsoft_session"] ?? 0) == 1;
+                bool   isExpensive = Convert.ToInt32(row["expensive_event"]      ?? 0) != 0;
+                bool   isHighFreq  = IsHighOverhead(eventName);
+
+                if (!isMicrosoft) userXEventSessions.Add(sessionName);
+
+                string risk = "Low";
+                string recommendation = "";
+                if (!isMicrosoft && (isExpensive || isHighFreq))
+                {
+                    if (isHighFreq && isExpensive) 
+                    { 
+                        risk = "Critical"; 
+                        criticalXEventCount++; 
+                    }
+                    else                            
+                        risk = "High";
+
+                    recommendation = isHighFreq
+                        ? $"Event '{eventName}' fires at extremely high frequency under load. Remove it or add a WHERE predicate scoping it to a specific database/spid."
+                        : $"XEvent session '{sessionName}' contains events flagged as expensive. Review and remove any not required for the investigation.";
+                }
+                else if (!isMicrosoft)
+                {
+                    risk = "Medium";
+                    recommendation = $"User XEvent session '{sessionName}' adds baseline overhead. Stop it when not actively needed.";
+                }
+
+                annotatedXEvents.Add(new
+                {
+                    session_name         = sessionName,
+                    event_name           = eventName,
+                    is_microsoft_session = isMicrosoft,
+                    expensive_event_flag = isExpensive,
+                    high_overhead_name   = isHighFreq,
+                    risk_rating          = risk,
+                    recommendation
+                });
+            }
+
+            // ── 4. Annotate SQL Trace rows ────────────────────────────────────────────────
+            var annotatedTraces = new List<object>();
+            var userTraceIds    = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            int criticalTraceCount = 0;
+
+            foreach (var row in traces)
+            {
+                string traceId      = row["trace_id"]        ?.ToString() ?? "";
+                string eventName    = row["trace_event_name"]?.ToString() ?? "";
+                string filePath     = row["trace_file_path"] ?.ToString() ?? "";
+                bool   isMicrosoft  = Convert.ToInt32(row["is_microsoft_trace"] ?? 0) == 1;
+                bool   isExpensive  = Convert.ToInt32(row["expensive_event"]    ?? 0) != 0;
+                bool   isHighFreq   = IsHighOverhead(eventName);
+
+                if (!isMicrosoft) userTraceIds.Add(traceId);
+
+                string risk = "Low";
+                string recommendation = "";
+                if (!isMicrosoft)
+                {
+                    // SQL Trace baseline: synchronous single-threaded write path - always higher than XEvents
+                    if (isHighFreq && isExpensive)
+                    {
+                        risk = "Critical"; criticalTraceCount++;
+                        recommendation = $"SQL Trace #{traceId}: event '{eventName}' is high-frequency AND expensive. Stop this trace immediately - it is very likely contributing to CPU overhead.";
+                    }
+                    else if (isExpensive || isHighFreq)
+                    {
+                        risk = "High";
+                        recommendation = $"SQL Trace #{traceId}: event '{eventName}' carries significant overhead. SQL Trace uses synchronous writes; consider replacing with an XEvent session if monitoring is required.";
+                    }
+                    else
+                    {
+                        risk = "Medium";
+                        recommendation = $"SQL Trace #{traceId} (path: {filePath}) is a user trace. SQL Trace is deprecated since SQL Server 2012 and always carries higher baseline overhead than XEvents. Stop it when not needed.";
+                    }
+                }
+
+                annotatedTraces.Add(new
+                {
+                    trace_id             = traceId,
+                    trace_file_path      = filePath,
+                    trace_event_name     = eventName,
+                    is_microsoft_trace   = isMicrosoft,
+                    expensive_event_flag = isExpensive,
+                    high_overhead_name   = isHighFreq,
+                    risk_rating          = risk,
+                    recommendation
+                });
+            }
+
+            // ── 5. Overall assessment ─────────────────────────────────────────────────────
+            bool hasCritical = criticalXEventCount > 0 || criticalTraceCount > 0;
+            bool hasSqlTrace = userTraceIds.Count > 0;
+
+            string overallRisk = "Low";
+            if (hasCritical)                                            overallRisk = "Critical";
+            else if (userXEventSessions.Count > 1 || hasSqlTrace)       overallRisk = "High";
+            else if (userXEventSessions.Count == 1)                     overallRisk = "Medium";
+
+            var overallNotes = new List<string>();
+            if (hasSqlTrace)
+                overallNotes.Add($"{userTraceIds.Count} user SQL Trace(s) detected. SQL Trace is deprecated, uses synchronous single-threaded writes, and cannot be filtered as precisely as XEvents - stop all user traces when not required for active troubleshooting.");
+            if (userXEventSessions.Count > 1)
+                overallNotes.Add($"{userXEventSessions.Count} concurrent user XEvent sessions detected. Tracing overhead is additive; run only the minimum required sessions during the investigation.");
+            if (hasCritical)
+                overallNotes.Add("One or more CRITICAL-rated events found. High-frequency events (lock_acquired, wait_info, showplan variants, statement-level events) fire thousands to millions of times per second under OLTP load and are a well-known source of unexplained SQL Server CPU elevation.");
+            if (overallNotes.Count == 0)
+                overallNotes.Add("No high-risk tracing overhead detected. Tracing is unlikely to be a significant CPU contributor.");
+
+            var result = new
+            {
+                summary                = "XEvent / SQL Trace Overhead Analysis",
+                data_sources_available = new
+                {
+                    tbl_XEvents                      = xeventsTable.Rows.Count > 0,
+                    tbl_profiler_trace_event_details = traceTable.Rows.Count   > 0
+                },
+                overall_risk_rating       = overallRisk,
+                overall_notes             = overallNotes,
+                user_xevent_session_count = userXEventSessions.Count,
+                user_sql_trace_count      = userTraceIds.Count,
+                xevent_sessions           = annotatedXEvents,
+                sql_trace_events          = annotatedTraces
+            };
+
+            return JsonConvert.SerializeObject(result, Formatting.Indented);
+        }
+
+        /// <summary>
         /// Get performance summary combining multiple analyses
         /// </summary>
         public string GetPerformanceSummary()

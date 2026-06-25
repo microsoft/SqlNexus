@@ -353,6 +353,12 @@ namespace SqlNexus.McpServer
                 },
                 new McpTool
                 {
+                    Name = "analyze_tracing_overhead",
+                    Description = "Answer: 'Could active XEvent sessions or SQL Traces be causing unexplained high CPU?' Inspects tbl_XEvents and tbl_profiler_trace_event_details for: (1) events flagged expensive by SQL Nexus; (2) known high-frequency event names that fire at extreme volume under OLTP load (lock_acquired, wait_info, showplan variants, statement-level events); (3) concurrent user-session count (overhead is additive); (4) SQL Trace presence (deprecated since SQL Server 2012, synchronous single-threaded writes - always higher baseline cost than XEvents). Returns per-event risk ratings (Critical/High/Medium/Low), specific recommendations, and an overall assessment.",
+                    InputSchema = new { type = "object", properties = new { } }
+                },
+                new McpTool
+                {
                     Name = "get_performance_summary",
                     Description = "Comprehensive performance summary: CPU, I/O, blocking, waits, spinlocks, memory. One-stop health check.",
                     InputSchema = new { type = "object", properties = new { } }
@@ -439,6 +445,9 @@ namespace SqlNexus.McpServer
                     break;
                 case "get_memory_clerk_distribution":
                     resultText = GetAnalyzer().GetMemoryClerkDistribution();
+                    break;
+                case "analyze_tracing_overhead":
+                    resultText = GetAnalyzer().AnalyzeTracingOverhead();
                     break;
                 case "get_performance_summary":
                     resultText = GetAnalyzer().GetPerformanceSummary();
