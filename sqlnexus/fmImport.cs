@@ -22,6 +22,25 @@ namespace sqlnexus
         private ToolStripMenuItem tsiSQLDiagAlwaysOnXEL_Enabled;
         private ToolStripMenuItem tsiSQLDiagAlwaysOnXEL_DropTables;
         private SqlInstances instances;
+
+        // Importer names used for mutual exclusivity and /M token mapping
+        private const string READTRACE_IMPORTER_NAME  = "ReadTrace (SQL XEL/TRC Files)";
+        private const string TRACEEVENT_IMPORTER_NAME = "Trace Event Importer (Managed)";
+
+        /// <summary>
+        /// Maps /M command-line tokens (case-insensitive) to the exact INexusImporter.Name
+        /// values returned at runtime. CustomXEL is handled separately in DoImport.
+        /// </summary>
+        private static readonly Dictionary<string, string> ImporterTokenToName =
+            new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                { "ReadTrace",          READTRACE_IMPORTER_NAME },
+                { "Perfmon",            "BLG Blaster (Perfmon/Sysmon BLG files)" },
+                { "Linux",              "Import Linux Performance Files (.perf)" },
+                { "Errorlog",           "ERRORLOG Importer" },
+                { "TraceEventImporter", TRACEEVENT_IMPORTER_NAME },
+            };
+
         private fmImport()
         {
             InitializeComponent();
@@ -412,6 +431,71 @@ namespace sqlnexus
             tsiImporters.DropDownItems.Clear();
             EnumImportersFromDirectory(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\SqlNexus\Importers");
             EnumImportersFromDirectory(Application.StartupPath);
+            EnforceTraceImporterExclusivity();
+        }
+
+        /// <summary>
+        /// If both ReadTrace and TraceEventImporter are enabled, disable ReadTrace.
+        /// TraceEventImporter is the preferred managed importer.
+        /// </summary>
+        private void EnforceTraceImporterExclusivity()
+        {
+            bool readTraceEnabled  = IsImporterEnabled(READTRACE_IMPORTER_NAME);
+            bool traceEventEnabled = IsImporterEnabled(TRACEEVENT_IMPORTER_NAME);
+
+            if (readTraceEnabled && traceEventEnabled)
+            {
+                DisableImporterByName(READTRACE_IMPORTER_NAME);
+                MainForm.LogMessage(string.Format(
+                    "Both '{0}' and '{1}' were enabled. Automatically disabled '{1}' to prevent conflicts.",
+                    TRACEEVENT_IMPORTER_NAME, READTRACE_IMPORTER_NAME), MessageOptions.Silent);
+            }
+        }
+
+        /// <summary>
+        /// Checks whether the specified importer's Enabled option is checked.
+        /// </summary>
+        private bool IsImporterEnabled(string importerName)
+        {
+            foreach (ToolStripMenuItem importerTsi in tsiImporters.DropDownItems)
+            {
+                INexusImporter prod = importerTsi.Tag as INexusImporter;
+                if (prod == null || prod.Name != importerName)
+                    continue;
+
+                foreach (ToolStripMenuItem optionTsi in importerTsi.DropDownItems)
+                {
+                    if (optionTsi.Text == "Enabled")
+                        return optionTsi.Checked;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Finds the importer menu item by name and unchecks its Enabled option.
+        /// </summary>
+        private void DisableImporterByName(string importerName)
+        {
+            foreach (ToolStripMenuItem importerTsi in tsiImporters.DropDownItems)
+            {
+                INexusImporter otherProd = importerTsi.Tag as INexusImporter;
+                if (otherProd == null || otherProd.Name != importerName)
+                    continue;
+
+                foreach (ToolStripMenuItem optionTsi in importerTsi.DropDownItems)
+                {
+                    if (optionTsi.Text == "Enabled")
+                    {
+                        optionTsi.Checked = false;
+                        otherProd.Options["Enabled"] = false;
+                        if (ImportOptions.IsEnabled("SaveImportOptions"))
+                            ImportOptions.Set(string.Format("{0}.Enabled", importerName), false);
+                        break;
+                    }
+                }
+                break;
+            }
         }
         private String FileVersions(String file)
         {
@@ -441,7 +525,14 @@ namespace sqlnexus
                 else if (file.ToUpper().Contains("READTRACE"))
                 {
                     ImporterList.Add(200, file);
-
+                }
+                else if (file.ToUpper().Contains("TRACEEVENTIMPORTER"))
+                {
+                    // TraceEventImporter must run after RowsetImportEngine (100) so that
+                    // tbl_ServerProperties already exists when it is called.
+                    // Place it between Rowset (100) and ReadTrace (200); the two trace
+                    // importers are mutually exclusive so they will never both be active.
+                    ImporterList.Add(150, file);
                 }
                 else
                 {
@@ -718,6 +809,48 @@ namespace sqlnexus
 
                 }
 
+                // /M command-line override: supersedes both UI saved settings and AppConfig.xml.
+                // user.config is never read or written here — it remains intact for GUI sessions.
+                if (Globals.EnabledImporters != null)
+                {
+                    if (Globals.EnabledImporters.Contains("All"))
+                    {
+                        Enabled = true;
+                    }
+                    else
+                    {
+                        // Rowset Importer always runs — it populates core tables (tbl_ServerProperties,
+                        // tbl_RUNTIMES, etc.) that all other importers and post-processing scripts depend on.
+                        if (string.Equals(prod.Name, "Rowset Importer", StringComparison.OrdinalIgnoreCase))
+                        {
+                            Enabled = true;
+                        }
+                        else
+                        {
+                            Enabled = false;
+                            foreach (var kvp in ImporterTokenToName)
+                            {
+                                if (string.Equals(kvp.Value, prod.Name, StringComparison.OrdinalIgnoreCase)
+                                    && Globals.EnabledImporters.Contains(kvp.Key))
+                                {
+                                    Enabled = true;
+                                    break;
+                                }
+                            }
+                        }
+                            // Mutual exclusivity: if both trace importers end up enabled via /M,
+                            // TraceEventImporter wins and ReadTrace is suppressed.
+                            if (Enabled
+                                && string.Equals(prod.Name, READTRACE_IMPORTER_NAME, StringComparison.OrdinalIgnoreCase)
+                                && Globals.EnabledImporters.Contains("TraceEventImporter"))
+                            {
+                                Enabled = false;
+                                Util.Logger.LogMessage("/M override; both trace importers selected — disabling '" + READTRACE_IMPORTER_NAME + "' in favour of '" + TRACEEVENT_IMPORTER_NAME + "'.");
+                            }
+                        }
+                        Util.Logger.LogMessage("/M override; importer '" + prod.Name + "' enabled = " + Enabled);
+                    }
+
 
                 if (Enabled)
                 {
@@ -929,7 +1062,14 @@ namespace sqlnexus
 
             //add individual rows for each of these so they show up as progress bars in the summary window listview
             string customXELImprtStr = "CustomXELImporter";
-            if (tsiSQLDiagAlwaysOnXEL_Enabled != null && tsiSQLDiagAlwaysOnXEL_Enabled.Checked)
+            bool customXelEnabled = tsiSQLDiagAlwaysOnXEL_Enabled != null && tsiSQLDiagAlwaysOnXEL_Enabled.Checked;
+
+            // /M override for CustomXEL — does not touch tsiSQLDiagAlwaysOnXEL_Enabled.Checked,
+            // so the saved UI setting is preserved unchanged.
+            if (Globals.EnabledImporters != null)
+                customXelEnabled = Globals.EnabledImporters.Contains("All") || Globals.EnabledImporters.Contains("CustomXEL");
+
+            if (customXelEnabled)
             {
                 AddFileRow((tlpFiles.RowCount - 1), "Custom XEL import (SQLDiag, AlwaysOnHealth, System Health)", null, customXELImprtStr);
             }
@@ -1392,8 +1532,10 @@ namespace sqlnexus
             if (string.IsNullOrEmpty(importerName))
                 return;
 
-            // Only execute ReadTracePostProcessing.sql when the current importer is the ReadTrace importer.
-            bool isReadTraceImporter = importerName.Equals("ReadTrace (SQL XEL/TRC files)", StringComparison.OrdinalIgnoreCase);
+            // ReadTracePostProcessing.sql applies to both ReadTrace and TraceEventImporter
+            // because both write to the ReadTrace schema.
+            bool isReadTraceImporter = importerName.Equals(READTRACE_IMPORTER_NAME, StringComparison.OrdinalIgnoreCase)
+                                    || importerName.Equals(TRACEEVENT_IMPORTER_NAME, StringComparison.OrdinalIgnoreCase);
 
             // If nothing to run, skip executing the post scripts.
             if (!PostScripts.TryGetValue(importerName, out var scripts) || scripts == null || scripts.Length == 0)
@@ -1594,12 +1736,32 @@ namespace sqlnexus
             prod.Options[tsi.Text] = tsi.Checked;
             if (ImportOptions.IsEnabled("SaveImportOptions"))
             {
-
                 ImportOptions.Set(string.Format("{0}.{1}", prod.Name, tsi.Text), tsi.Checked);
-                //LogMessage("strip: " + string.Format("{0}.{1}", prod.Name, tsi.Name), MessageOptions.Silent);
-
             }
 
+            // Mutual exclusivity: enabling one trace importer disables the other
+            if (tsi.Text == "Enabled" && tsi.Checked)
+            {
+                string otherImporterName = null;
+                if (prod.Name == TRACEEVENT_IMPORTER_NAME)
+                    otherImporterName = READTRACE_IMPORTER_NAME;
+                else if (prod.Name == READTRACE_IMPORTER_NAME)
+                    otherImporterName = TRACEEVENT_IMPORTER_NAME;
+
+                if (otherImporterName != null)
+                {
+                    DisableImporterByName(otherImporterName);
+
+                    // Close all dropdown menus so the MessageBox isn't hidden behind them
+                    cmOptions.Close();
+
+                    MessageBox.Show(this,
+                        string.Format("You have enabled '{0}'.\nThe '{1}' importer has been automatically disabled to prevent both from writing to the same tables.", prod.Name, otherImporterName),
+                        "Importer Conflict",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+                }
+            }
         }
 
         private void tsiDialog_Click(object sender, EventArgs e)

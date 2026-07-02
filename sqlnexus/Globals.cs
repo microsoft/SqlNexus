@@ -30,6 +30,13 @@ namespace sqlnexus
         public static bool NoWindow = false;
         public static bool DropExistingDb = false;
 
+        /// <summary>
+        /// When set via the /M command-line argument, only the listed importers are activated.
+        /// Tokens (case-insensitive): ReadTrace, Perfmon, Linux, Errorlog, CustomXEL, TraceImp, All.
+        /// Null means no override — use the defaults / saved user.config values unchanged.
+        /// </summary>
+        public static HashSet<string> EnabledImporters = null;
+
         private static readonly string m_StartupPath = Application.StartupPath;
         private static readonly string m_AppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\sqlnexus";
 
