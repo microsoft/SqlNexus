@@ -526,6 +526,12 @@ namespace SqlNexus.McpServer
                             db_name = new { type = "string", description = "Database name to filter (optional, leave empty for all user databases)" }
                         }
                     }
+                },
+                new McpTool
+                {
+                    Name = "analyze_hadr_health",
+                    Description = "Answer: 'Is Always On / HADR healthy?' Inspects the SQL Nexus HADR tables (tbl_hadr_ag_states, tbl_hadr_ag_database_replica_states, tbl_hadr_ag_listeners, tbl_hadr_alwayson_health_availability_group_lease_expired, tbl_hadr_alwayson_health_failovers, tbl_hadr_alwayson_health_availability_replica_state_change, tbl_hadr_dm_os_server_diagnostics_log_configurations) when present. Returns availability group states, per-database/per-replica synchronization states, listener configuration, AlwaysOn health-session events (failovers, lease expirations, replica state changes), and the server diagnostics log configuration. Missing tables are reported under tables_not_present; unhealthy/non-synchronized replicas, suspended data movement, failovers, and lease expirations are surfaced under issues_found.",
+                    InputSchema = new { type = "object", properties = new { } }
                 }
             };
 
@@ -651,6 +657,9 @@ namespace SqlNexus.McpServer
                     break;
                 case "get_table_statistics_health":
                     resultText = GetAnalyzer().GetTableStatisticsHealth(arguments.Value<string?>("db_name"));
+                    break;
+                case "analyze_hadr_health":
+                    resultText = GetAnalyzer().AnalyzeHadrHealth();
                     break;
                 default:
                     throw new NotSupportedException($"Tool not supported: {toolName}");

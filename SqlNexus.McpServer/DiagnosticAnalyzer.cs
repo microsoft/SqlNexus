@@ -963,6 +963,14 @@ namespace SqlNexus.McpServer
                 { "tbl_proccache_pollution",             "Single-use query plans polluting the plan cache: query text, usecounts, size_in_bytes. Indicates ad-hoc workload without parameterization." },
                 { "tbl_proccache_summary",               "Aggregated plan cache summary: object type, number of plans, total size in MB." },
                 { "tbl_QDS_Query_Stats",                 "Query Store runtime statistics snapshot: query_id, plan_id, execution_type_desc, avg_duration, avg_cpu_time, avg_logical_io_reads." },
+                // ── Always On / HADR (High Availability Disaster Recovery) ────────────
+                { "tbl_hadr_ag_states",                  "sys.dm_hadr_availability_group_states snapshot: availability group id, primary replica, synchronization_health, automated_backup_preference. Use analyze_hadr_health tool." },
+                { "tbl_hadr_ag_database_replica_states", "sys.dm_hadr_database_replica_states snapshot: per-database, per-replica synchronization_state, synchronization_health, is_suspended, log send queue / redo queue sizes. Core table for AG database sync analysis." },
+                { "tbl_hadr_ag_listeners",               "sys.availability_group_listeners snapshot: availability group listener DNS name, port, and IP configuration." },
+                { "tbl_hadr_alwayson_health_availability_group_lease_expired", "AlwaysOn extended-events health session: availability group lease-expired events, indicating cluster/health-check timeouts that can trigger failovers." },
+                { "tbl_hadr_alwayson_health_failovers",  "AlwaysOn extended-events health session: availability replica failover events (when and which replica failed over)." },
+                { "tbl_hadr_alwayson_health_availability_replica_state_change", "AlwaysOn extended-events health session: availability replica role/state change events (e.g., RESOLVING, PRIMARY, SECONDARY transitions)." },
+                { "tbl_hadr_dm_os_server_diagnostics_log_configurations", "sys.dm_os_server_diagnostics_log_configurations snapshot: is_enabled, max_size, max_files, and path of the AlwaysOn server diagnostics log." },
             };
 
             // Check which tables actually exist in the connected database
@@ -1647,6 +1655,184 @@ namespace SqlNexus.McpServer
                 ? $"Table Statistics Health: {dbName}"
                 : "Table Statistics Health (All User Databases)";
             return ExecuteQueryAndReturnJson(query, title);
+        }
+
+        /// <summary>
+        /// Analyze Always On / HADR (High Availability Disaster Recovery) health.
+        /// Inspects the SQL Nexus HADR tables (if present) to report availability group states,
+        /// replica and AG-database synchronization states, listener configuration,
+        /// AlwaysOn health-session events (failovers, lease expirations, replica state changes),
+        /// and the server diagnostics log configuration. Tables that are not present are skipped
+        /// and reported under 'tables_not_present'. Issues (unhealthy/non-synchronized/failovers)
+        /// are surfaced under 'issues_found'.
+        /// </summary>
+        public string AnalyzeHadrHealth()
+        {
+            // Curated set of HADR tables this tool understands, keyed by section name.
+            var hadrTables = new (string Section, string Table, string Description)[]
+            {
+                ("ag_states",                       "tbl_hadr_ag_states",
+                    "Availability group states (sys.dm_hadr_availability_group_states): primary replica, synchronization_health, automated_backup_preference."),
+                ("ag_database_replica_states",      "tbl_hadr_ag_database_replica_states",
+                    "Per-database, per-replica states (sys.dm_hadr_database_replica_states): synchronization_state, synchronization_health, is_suspended, log send/redo queue sizes."),
+                ("ag_listeners",                    "tbl_hadr_ag_listeners",
+                    "Availability group listeners (sys.availability_group_listeners): DNS name, port, IP configuration."),
+                ("lease_expired",                   "tbl_hadr_alwayson_health_availability_group_lease_expired",
+                    "AlwaysOn health session: availability group lease-expired events (potential cluster/health-check timeouts)."),
+                ("failovers",                       "tbl_hadr_alwayson_health_failovers",
+                    "AlwaysOn health session: availability replica failover events."),
+                ("replica_state_change",            "tbl_hadr_alwayson_health_availability_replica_state_change",
+                    "AlwaysOn health session: availability replica role/state change events."),
+                ("diagnostics_log_configurations",  "tbl_hadr_dm_os_server_diagnostics_log_configurations",
+                    "Server diagnostics log configuration (sys.dm_os_server_diagnostics_log_configurations): is_enabled, max_size, max_files, log path."),
+            };
+
+            var sections = new Dictionary<string, object>();
+            var tablesNotPresent = new List<string>();
+            var issues = new List<object>();
+
+            foreach (var (section, table, description) in hadrTables)
+            {
+                string query = $@"
+                    IF OBJECT_ID('dbo.{table}') IS NOT NULL
+                        SELECT * FROM dbo.{table};";
+
+                DataTable dataTable;
+                try
+                {
+                    dataTable = ExecuteQueryToDataTable(query);
+                }
+                catch (Exception ex)
+                {
+                    sections[section] = new { table, description, error = ex.Message };
+                    continue;
+                }
+
+                // An empty result with no columns means the table does not exist.
+                if (dataTable.Columns.Count == 0)
+                {
+                    tablesNotPresent.Add(table);
+                    continue;
+                }
+
+                var rows = ConvertDataTableToList(dataTable);
+                sections[section] = new
+                {
+                    table,
+                    description,
+                    row_count = rows.Count,
+                    data = rows
+                };
+
+                // Surface likely problems for quick triage.
+                AppendHadrIssues(section, table, dataTable, rows, issues);
+            }
+
+            var result = new
+            {
+                summary = "Always On / HADR Health Analysis",
+                timestamp = DateTime.Now,
+                issue_count = issues.Count,
+                issues_found = issues,
+                tables_not_present = tablesNotPresent,
+                sections
+            };
+
+            return JsonConvert.SerializeObject(result, Formatting.Indented);
+        }
+
+        /// <summary>
+        /// Inspect HADR rows and record any unhealthy or noteworthy conditions.
+        /// Column names vary by SQL Server version/capture, so lookups are case-insensitive and defensive.
+        /// </summary>
+        private static void AppendHadrIssues(
+            string section,
+            string table,
+            DataTable dataTable,
+            List<Dictionary<string, object>> rows,
+            List<object> issues)
+        {
+            bool HasColumn(string name) => dataTable.Columns.Contains(name);
+
+            object? Get(Dictionary<string, object> row, string name)
+            {
+                foreach (var kvp in row)
+                {
+                    if (string.Equals(kvp.Key, name, StringComparison.OrdinalIgnoreCase))
+                        return kvp.Value;
+                }
+                return null;
+            }
+
+            bool IndicatesUnhealthy(object? value)
+            {
+                if (value == null) return false;
+                var s = value.ToString();
+                if (string.IsNullOrEmpty(s)) return false;
+                // Numeric health: 0 = NOT_HEALTHY, 1 = PARTIALLY_HEALTHY, 2 = HEALTHY
+                if (int.TryParse(s, out int n)) return n < 2;
+                return s.IndexOf("NOT_HEALTHY", StringComparison.OrdinalIgnoreCase) >= 0
+                    || s.IndexOf("PARTIALLY_HEALTHY", StringComparison.OrdinalIgnoreCase) >= 0;
+            }
+
+            switch (section)
+            {
+                case "ag_states":
+                    foreach (var row in rows)
+                    {
+                        var health = Get(row, "synchronization_health_desc") ?? Get(row, "synchronization_health");
+                        if (IndicatesUnhealthy(health))
+                            issues.Add(new { table, severity = "High", issue = "Availability group synchronization is not healthy.", details = row });
+                    }
+                    break;
+
+                case "ag_database_replica_states":
+                    foreach (var row in rows)
+                    {
+                        var syncState = Get(row, "synchronization_state_desc") ?? Get(row, "synchronization_state");
+                        var syncHealth = Get(row, "synchronization_health_desc") ?? Get(row, "synchronization_health");
+                        var suspended = Get(row, "is_suspended");
+
+                        var s = syncState?.ToString();
+                        bool notSynchronized = s != null
+                            && s.IndexOf("SYNCHRON", StringComparison.OrdinalIgnoreCase) < 0
+                            && !(int.TryParse(s, out int st) && st >= 1);
+
+                        if (IndicatesUnhealthy(syncHealth) || notSynchronized)
+                            issues.Add(new { table, severity = "High", issue = "Database replica is not in a healthy/synchronized state.", details = row });
+
+                        if (suspended != null && (suspended.ToString() == "1"
+                            || string.Equals(suspended.ToString(), "true", StringComparison.OrdinalIgnoreCase)))
+                            issues.Add(new { table, severity = "High", issue = "Data movement for a database replica is suspended.", details = row });
+                    }
+                    break;
+
+                case "lease_expired":
+                    if (rows.Count > 0)
+                        issues.Add(new { table, severity = "High", issue = $"{rows.Count} availability group lease-expired event(s) recorded.", details = rows });
+                    break;
+
+                case "failovers":
+                    if (rows.Count > 0)
+                        issues.Add(new { table, severity = "High", issue = $"{rows.Count} availability replica failover event(s) recorded.", details = rows });
+                    break;
+
+                case "replica_state_change":
+                    if (rows.Count > 0)
+                        issues.Add(new { table, severity = "Medium", issue = $"{rows.Count} availability replica state-change event(s) recorded.", details = rows });
+                    break;
+
+                case "diagnostics_log_configurations":
+                    foreach (var row in rows)
+                    {
+                        var enabled = Get(row, "is_enabled");
+                        if (HasColumn("is_enabled") && enabled != null
+                            && (enabled.ToString() == "0"
+                                || string.Equals(enabled.ToString(), "false", StringComparison.OrdinalIgnoreCase)))
+                            issues.Add(new { table, severity = "Low", issue = "Server diagnostics log (AlwaysOn health) is disabled.", details = row });
+                    }
+                    break;
+            }
         }
 
         /// <summary>
