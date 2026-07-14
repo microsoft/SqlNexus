@@ -532,6 +532,12 @@ namespace SqlNexus.McpServer
                     Name = "analyze_hadr_health",
                     Description = "Answer: 'Is Always On / HADR healthy?' Inspects the SQL Nexus HADR tables (tbl_hadr_ag_states, tbl_hadr_ag_database_replica_states, tbl_hadr_ag_listeners, tbl_hadr_alwayson_health_availability_group_lease_expired, tbl_hadr_alwayson_health_failovers, tbl_hadr_alwayson_health_availability_replica_state_change, tbl_hadr_dm_os_server_diagnostics_log_configurations) when present. Returns availability group states, per-database/per-replica synchronization states, listener configuration, AlwaysOn health-session events (failovers, lease expirations, replica state changes), and the server diagnostics log configuration. Missing tables are reported under tables_not_present; unhealthy/non-synchronized replicas, suspended data movement, failovers, and lease expirations are surfaced under issues_found.",
                     InputSchema = new { type = "object", properties = new { } }
+                },
+                new McpTool
+                {
+                    Name = "analyze_setup_health",
+                    Description = "Answer: 'Are there SQL Server Setup / Install / Installation/ Update/ Upgrade problems?' Keywords: setup, install, installation, installed, patching, patch, MSI, MSP, repair, uninstall, components. Inspects the SQL Nexus setup/installation tables when present: tbl_installed_programs (filtered to SQL Server components) to enumerate installed SQL Server components and flag well-known components as present/missing; and tbl_setup_missing_msi_msp_packages, where ANY row indicates a missing Windows Installer MSI/MSP cached package that can block SQL Server patching, repair, or uninstall. Missing tables are reported under tables_not_present; missing MSI/MSP packages are surfaced under issues_found.",
+                    InputSchema = new { type = "object", properties = new { } }
                 }
             };
 
@@ -660,6 +666,9 @@ namespace SqlNexus.McpServer
                     break;
                 case "analyze_hadr_health":
                     resultText = GetAnalyzer().AnalyzeHadrHealth();
+                    break;
+                case "analyze_setup_health":
+                    resultText = GetAnalyzer().AnalyzeSetupHealth();
                     break;
                 default:
                     throw new NotSupportedException($"Tool not supported: {toolName}");

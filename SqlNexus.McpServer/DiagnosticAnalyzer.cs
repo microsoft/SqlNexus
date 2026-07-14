@@ -971,6 +971,8 @@ namespace SqlNexus.McpServer
                 { "tbl_hadr_alwayson_health_failovers",  "AlwaysOn extended-events health session: availability replica failover events (when and which replica failed over)." },
                 { "tbl_hadr_alwayson_health_availability_replica_state_change", "AlwaysOn extended-events health session: availability replica role/state change events (e.g., RESOLVING, PRIMARY, SECONDARY transitions)." },
                 { "tbl_hadr_dm_os_server_diagnostics_log_configurations", "sys.dm_os_server_diagnostics_log_configurations snapshot: is_enabled, max_size, max_files, and path of the AlwaysOn server diagnostics log." },
+                // ── Setup / installation ─────────────────────────────────────────────
+                { "tbl_setup_missing_msi_msp_packages",  "Missing Windows Installer MSI/MSP cached packages detected by setup diagnostics. ANY row indicates a setup/patching problem — missing installer cache files can block SQL Server patching, repair, or uninstall. Use analyze_setup_health tool." },
             };
 
             // Check which tables actually exist in the connected database
@@ -1833,6 +1835,161 @@ namespace SqlNexus.McpServer
                     }
                     break;
             }
+        }
+
+        /// <summary>
+        /// Analyze SQL Server Setup-related health from the SQL Nexus setup tables (if present).
+        ///   - tbl_installed_programs (filtered to SQL Server components): lists installed SQL Server
+        ///     related programs/components and flags which well-known components are present vs. missing.
+        ///   - tbl_setup_missing_msi_msp_packages: any row here indicates a missing MSI/MSP package,
+        ///     which is a genuine setup/patching problem that can block patching or repair operations.
+        /// Tables that are not present are reported under 'tables_not_present'; problems are surfaced
+        /// under 'issues_found'.
+        /// </summary>
+        public string AnalyzeSetupHealth()
+        {
+            var sections = new Dictionary<string, object>();
+            var tablesNotPresent = new List<string>();
+            var issues = new List<object>();
+
+            // ── 1. Installed SQL Server programs/components ──────────────────────────────
+            const string installedQuery = @"
+                IF OBJECT_ID('dbo.tbl_installed_programs') IS NOT NULL
+                    SELECT * FROM dbo.tbl_installed_programs WHERE name LIKE 'sql%';";
+
+            DataTable installedTable;
+            try
+            {
+                installedTable = ExecuteQueryToDataTable(installedQuery);
+            }
+            catch (Exception ex)
+            {
+                installedTable = new DataTable();
+                sections["installed_sql_programs"] = new
+                {
+                    table = "tbl_installed_programs",
+                    error = ex.Message
+                };
+            }
+
+            if (installedTable.Columns.Count == 0)
+            {
+                tablesNotPresent.Add("tbl_installed_programs");
+            }
+            else if (!sections.ContainsKey("installed_sql_programs"))
+            {
+                var installedRows = ConvertDataTableToList(installedTable);
+
+                // Well-known SQL Server components — flagged present/missing so the AI can spot gaps.
+                var knownComponents = new (string Key, string Label)[]
+                {
+                    ("SQL Server",                    "SQL Server Database Engine"),
+                    ("Database Engine Services",      "Database Engine Services"),
+                    ("Analysis Services",             "SQL Server Analysis Services (SSAS)"),
+                    ("Reporting Services",            "SQL Server Reporting Services (SSRS)"),
+                    ("Integration Services",          "SQL Server Integration Services (SSIS)"),
+                    ("Full-Text",                     "Full-Text and Semantic Extractions"),
+                    ("Management Studio",             "SQL Server Management Studio (SSMS)"),
+                    ("Client Tools",                  "SQL Server Client Tools"),
+                    ("Data-Tier Application",         "Data-Tier Application Framework"),
+                    ("Native Client",                 "SQL Server Native Client"),
+                    ("Browser",                       "SQL Server Browser"),
+                    ("Machine Learning",              "SQL Server Machine Learning Services"),
+                    ("PolyBase",                      "PolyBase Query Service"),
+                };
+
+                bool ContainsComponent(string key)
+                {
+                    foreach (var row in installedRows)
+                    {
+                        foreach (var kvp in row)
+                        {
+                            if (kvp.Value == null) continue;
+                            if (kvp.Value.ToString()!.IndexOf(key, StringComparison.OrdinalIgnoreCase) >= 0)
+                                return true;
+                        }
+                    }
+                    return false;
+                }
+
+                var componentStatus = new List<object>();
+                foreach (var (key, label) in knownComponents)
+                {
+                    componentStatus.Add(new
+                    {
+                        component = label,
+                        match_term = key,
+                        installed = ContainsComponent(key)
+                    });
+                }
+
+                sections["installed_sql_programs"] = new
+                {
+                    table = "tbl_installed_programs",
+                    description = "Installed SQL Server related programs/components (name LIKE 'sql%').",
+                    row_count = installedRows.Count,
+                    known_component_status = componentStatus,
+                    data = installedRows
+                };
+            }
+
+            // ── 2. Missing MSI/MSP packages ──────────────────────────────────────────────
+            const string missingMsiQuery = @"
+                IF OBJECT_ID('dbo.tbl_setup_missing_msi_msp_packages') IS NOT NULL
+                    SELECT * FROM dbo.tbl_setup_missing_msi_msp_packages;";
+
+            DataTable missingMsiTable;
+            try
+            {
+                missingMsiTable = ExecuteQueryToDataTable(missingMsiQuery);
+            }
+            catch (Exception ex)
+            {
+                missingMsiTable = new DataTable();
+                sections["missing_msi_msp_packages"] = new
+                {
+                    table = "tbl_setup_missing_msi_msp_packages",
+                    error = ex.Message
+                };
+            }
+
+            if (missingMsiTable.Columns.Count == 0)
+            {
+                tablesNotPresent.Add("tbl_setup_missing_msi_msp_packages");
+            }
+            else if (!sections.ContainsKey("missing_msi_msp_packages"))
+            {
+                var missingRows = ConvertDataTableToList(missingMsiTable);
+                sections["missing_msi_msp_packages"] = new
+                {
+                    table = "tbl_setup_missing_msi_msp_packages",
+                    description = "Missing Windows Installer MSI/MSP packages. ANY row indicates a setup/patching problem.",
+                    row_count = missingRows.Count,
+                    data = missingRows
+                };
+
+                // Any row here is a real problem that can block patching/repair.
+                if (missingRows.Count > 0)
+                    issues.Add(new
+                    {
+                        table = "tbl_setup_missing_msi_msp_packages",
+                        severity = "High",
+                        issue = $"{missingRows.Count} missing MSI/MSP package(s) detected. Missing cached installer packages can block SQL Server patching, repair, or uninstall operations and must be restored to the Windows Installer cache. For full details, review the '*_MissingMsiMsp_Detailed.txt' output file collected by SQL LogScout.",
+                        details = missingRows
+                    });
+            }
+
+            var result = new
+            {
+                summary = "SQL Server Setup Health Analysis",
+                timestamp = DateTime.Now,
+                issue_count = issues.Count,
+                issues_found = issues,
+                tables_not_present = tablesNotPresent,
+                sections
+            };
+
+            return JsonConvert.SerializeObject(result, Formatting.Indented);
         }
 
         /// <summary>
