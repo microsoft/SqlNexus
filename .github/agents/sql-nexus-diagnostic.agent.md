@@ -10,8 +10,10 @@ tools:
   - search
   - sqlnexus_mcp/analyze_blocking
   - sqlnexus_mcp/analyze_cpu_usage
+  - sqlnexus_mcp/analyze_hadr_health
   - sqlnexus_mcp/analyze_io_performance
   - sqlnexus_mcp/analyze_io_waits
+  - sqlnexus_mcp/analyze_setup_health
   - sqlnexus_mcp/analyze_spinlocks
   - sqlnexus_mcp/analyze_wait_stats
   - sqlnexus_mcp/get_aggregate_waits_and_queries
@@ -83,6 +85,8 @@ If you want to validate a finding, check for missed angles, or need deeper guida
 | Specific slow query / per-execution drill-down | `AI/Skills/scenario-query-deepdive-wait-analysis.md` |
 | Per-application performance breakdown | `AI/Skills/scenario-application-analysis.md` |
 | Missing indexes / stale stats / plan cache | `AI/Skills/scenario-index-optimization.md` |
+| Always On / availability groups / replica sync / failovers | `AI/Skills/scenario-hadr.md` |
+| SQL Server setup / install / patching / missing MSI-MSP | `AI/Skills/scenario-setup.md` |
 | Server config / LogScout scenario validation | `AI/Skills/scenario-utility-diagnostics.md` |
 | Before/after or multi-period comparison | `AI/Skills/scenario-comparative-analysis.md` |
 | Quick symptom → scenario mapping | `AI/Skills/symptom-quick-reference.md` |
@@ -116,6 +120,8 @@ If you want to validate a finding, check for missed angles, or need deeper guida
 | `analyze_io_waits` | PAGEIOLATCH / WRITELOG wait analysis | Query #14 |
 | `analyze_spinlocks` | Spinlock contention — internal CPU latches | Query #20 |
 | `get_missing_indexes` | Missing index recommendations | Index DMVs |
+| `analyze_hadr_health` | Always On health: AG states, replica/DB sync, listeners, failovers, lease expirations, diagnostics log | HADR tables |
+| `analyze_setup_health` | SQL Server setup/install health: installed components, missing MSI/MSP packages | Setup tables |
 | `list_nexus_tables` | Discover what tables exist in the Nexus DB | Schema discovery |
 | `query_nexus_database` | Run a custom SQL query (use as last resort) | Ad-hoc |
 
@@ -135,6 +141,8 @@ Skill files contain curated decision trees, threshold values, SQL query referenc
 | `AI/Skills/scenario-query-deepdive-wait-analysis.md` | Single query deep dive, per-execution analysis |
 | `AI/Skills/scenario-application-analysis.md` | Per-application CPU/reads/duration breakdown |
 | `AI/Skills/scenario-index-optimization.md` | Missing indexes, stale statistics, plan cache bloat |
+| `AI/Skills/scenario-hadr.md` | Always On availability groups, replica/database sync health, listeners, failovers, lease expirations |
+| `AI/Skills/scenario-setup.md` | SQL Server setup/installation health, installed components, missing MSI/MSP packages, patching readiness |
 | `AI/Skills/scenario-utility-diagnostics.md` | Server config, LogScout scenario validation |
 | `AI/Skills/scenario-comparative-analysis.md` | Before/after or multi-period comparison |
 | `AI/Skills/symptom-quick-reference.md` | Fast symptom → scenario mapping |
