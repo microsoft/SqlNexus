@@ -220,7 +220,17 @@ namespace SqlNexus.McpServer
                 Capabilities = new ServerCapabilities
                 {
                     Tools = new Dictionary<string, object>()
-                }
+                },
+                // Surfaced by the host to the user/model at connection time to set expectations
+                // that all output is AI-assisted and may be inaccurate.
+                Instructions =
+                    "AI-GENERATED CONTENT NOTICE: This server provides AI-assisted SQL Server diagnostic " +
+                    "analysis over pre-collected, read-only SQL Nexus data. Results are generated with the help " +
+                    "of AI and MAY BE INCOMPLETE OR INACCURATE. Always treat findings as a starting point, not a " +
+                    "definitive conclusion. Review the supporting evidence, validate every finding against the " +
+                    "underlying SQL Nexus tables (each tool response names its source tables and you can inspect " +
+                    "them with the 'query_nexus_database' tool), and review and edit any generated report before " +
+                    "sharing it. No production system is contacted and no data is modified."
             };
         }
 
@@ -677,6 +687,10 @@ namespace SqlNexus.McpServer
             // Scrub PII from tool output before returning to the agent
             resultText = PiiScrubber.Scrub(resultText);
 
+            // Append Responsible AI validation guidance so every answer encourages the user to
+            // review the supporting evidence and inspect the underlying SQL Nexus tables.
+            resultText = AppendValidationGuidance(resultText, toolName);
+
             return new McpToolResult
             {
                 Content = new List<McpContent>
@@ -684,6 +698,159 @@ namespace SqlNexus.McpServer
                     new McpContent { Type = "text", Text = resultText }
                 }
             };
+        }
+
+        // Maps each tool to the primary SQL Nexus table(s) it reads, so the guidance can point the
+        // user at the exact data to validate against.
+        private static readonly Dictionary<string, string[]> ToolSourceTables = new Dictionary<string, string[]>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["get_top_queries_by_duration"]      = new[] { "ReadTrace.tblBatches", "ReadTrace.tblUniqueBatches" },
+            ["analyze_cpu_usage"]                = new[] { "CounterData", "CounterDetails", "tbl_SQL_CPU_HEALTH", "tbl_ServerProperties" },
+            ["get_top_cpu_queries"]              = new[] { "ReadTrace.tblBatches", "ReadTrace.tblUniqueBatches", "tbl_Hist_Top10_CPU_Queries_ByQueryHash" },
+            ["analyze_io_performance"]           = new[] { "CounterData", "CounterDetails" },
+            ["analyze_io_waits"]                 = new[] { "tbl_OS_WAIT_STATS", "tbl_ServerProperties" },
+            ["analyze_wait_stats"]               = new[] { "tbl_OS_WAIT_STATS" },
+            ["analyze_blocking"]                 = new[] { "tbl_HEADBLOCKERSUMMARY" },
+            ["get_blocked_sessions"]             = new[] { "tbl_REQUESTS", "tbl_NOTABLEACTIVEQUERIES" },
+            ["analyze_spinlocks"]                = new[] { "tbl_SPINLOCKSTATS", "tbl_ServerProperties" },
+            ["get_collection_time_range"]        = new[] { "tbl_RUNTIMES", "ReadTrace.tblBatches" },
+            ["get_waits_for_query"]              = new[] { "tbl_REQUESTS", "ReadTrace.tblBatches" },
+            ["get_aggregate_waits_and_queries"]  = new[] { "tbl_REQUESTS", "tbl_NOTABLEACTIVEQUERIES" },
+            ["get_missing_indexes"]              = new[] { "tbl_MissingIndexes" },
+            ["get_sql_cpu_usage_over_time"]      = new[] { "CounterData", "CounterDetails", "tbl_ServerProperties" },
+            ["get_memory_clerk_distribution"]    = new[] { "tbl_DM_OS_MEMORY_CLERKS" },
+            ["analyze_tracing_overhead"]         = new[] { "tbl_XEvents", "tbl_profiler_trace_event_details", "tbl_profiler_trace_summary" },
+            ["get_performance_summary"]          = new[] { "tbl_RUNTIMES", "tbl_OS_WAIT_STATS", "tbl_HEADBLOCKERSUMMARY", "tbl_DM_OS_MEMORY_CLERKS", "CounterData" },
+            ["list_nexus_tables"]                = new[] { "sys.tables (INFORMATION_SCHEMA.TABLES)" },
+            ["query_nexus_database"]             = new string[0],
+            ["get_query_execution_details"]      = new[] { "ReadTrace.tblBatches", "ReadTrace.tblUniqueBatches" },
+            ["get_wait_type_distribution"]       = new[] { "tbl_REQUESTS" },
+            ["get_wait_resource_hotspots"]       = new[] { "tbl_REQUESTS" },
+            ["get_wait_heavy_queries"]           = new[] { "tbl_REQUESTS", "ReadTrace.tblBatches", "ReadTrace.tblUniqueBatches" },
+            ["get_statements_in_batch"]          = new[] { "ReadTrace.tblStatements", "ReadTrace.tblUniqueStatements" },
+            ["get_blocking_chain_tree"]          = new[] { "tbl_BLOCKING_CHAINS", "tbl_REQUESTS" },
+            ["get_lock_summary_by_object"]       = new[] { "tbl_BLOCKING_CHAINS", "tbl_REQUESTS" },
+            ["get_queries_by_application"]       = new[] { "ReadTrace.tblBatches", "ReadTrace.tblConnections", "ReadTrace.tblUniqueBatches" },
+            ["get_performance_by_application"]   = new[] { "ReadTrace.tblBatchPartialAggs", "ReadTrace.tblUniqueAppNames", "ReadTrace.tblBatches", "ReadTrace.tblConnections" },
+            ["get_cpu_by_database"]              = new[] { "ReadTrace.tblBatches" },
+            ["get_top_queries_by_reads"]         = new[] { "ReadTrace.tblBatches", "ReadTrace.tblUniqueBatches", "tbl_Hist_Top10_LogicalReads_Queries_ByQueryHash" },
+            ["get_top_queries_by_writes"]        = new[] { "ReadTrace.tblBatches", "ReadTrace.tblUniqueBatches" },
+            ["get_sql_file_io_stats"]            = new[] { "tbl_FileStats" },
+            ["get_compilation_stats"]            = new[] { "CounterData", "CounterDetails", "tbl_CACHEOBJECTS" },
+            ["get_plan_cache_analysis"]          = new[] { "tbl_CACHEOBJECTS" },
+            ["get_table_statistics_health"]      = new[] { "tbl_dm_db_stats_properties" },
+            ["analyze_hadr_health"]              = new[]
+            {
+                "tbl_hadr_ag_states", "tbl_hadr_ag_database_replica_states", "tbl_hadr_ag_listeners",
+                "tbl_hadr_alwayson_health_availability_group_lease_expired", "tbl_hadr_alwayson_health_failovers",
+                "tbl_hadr_alwayson_health_availability_replica_state_change", "tbl_hadr_dm_os_server_diagnostics_log_configurations"
+            },
+            ["analyze_setup_health"]             = new[] { "tbl_installed_programs", "tbl_setup_missing_msi_msp_packages" },
+        };
+
+        // Short, model-facing disclaimer surfaced with every result.
+        private const string AiGeneratedNotice =
+            "⚠️ AI-GENERATED — MAY BE INACCURATE. This analysis was produced with AI assistance from " +
+            "pre-collected SQL Nexus data and may be incomplete or incorrect. It is a starting point for " +
+            "investigation, not a definitive conclusion. You MUST surface this notice to the user and never " +
+            "omit it when summarizing this result.";
+
+        private static readonly string[] ValidationSteps =
+        {
+            "Review the supporting evidence and the specific data values cited in this result.",
+            "Inspect the underlying SQL Nexus source table(s) directly (see validate_against_tables) using the 'query_nexus_database' tool, e.g. SELECT TOP 100 * FROM <table>.",
+            "Ask follow-up questions, or narrow/broaden the investigation scope if the result looks off.",
+            "Adjust your prompt or the investigation scope to explore alternative root causes.",
+            "Review and edit any generated report before sharing it with others."
+        };
+
+        /// <summary>
+        /// Attaches a Responsible AI validation notice to a tool's result. When the result is JSON,
+        /// the notice is injected as structured, top-level fields (ai_generated_notice,
+        /// validate_against_tables, validation_steps) so it travels with the data and is far less
+        /// likely to be dropped when the model paraphrases the output. For non-JSON payloads, or if
+        /// JSON parsing fails, it falls back to appending the notice as trailing text.
+        /// </summary>
+        private static string AppendValidationGuidance(string resultText, string toolName)
+        {
+            ToolSourceTables.TryGetValue(toolName, out var tables);
+            tables ??= Array.Empty<string>();
+
+            // Preferred path: embed the notice as first-class JSON fields.
+            var trimmed = resultText?.TrimStart();
+            if (!string.IsNullOrEmpty(trimmed) && (trimmed[0] == '{' || trimmed[0] == '['))
+            {
+                try
+                {
+                    var token = JToken.Parse(resultText);
+
+                    // Build a validation object that hosts/models see as part of the data.
+                    var validation = new JObject
+                    {
+                        ["ai_generated_notice"] = AiGeneratedNotice,
+                        ["validate_against_tables"] = new JArray(tables),
+                        ["validation_steps"] = new JArray(ValidationSteps)
+                    };
+
+                    if (token is JObject obj)
+                    {
+                        // Insert the notice at the very top so it is the first thing seen.
+                        var withNotice = new JObject { ["ai_generated_notice"] = AiGeneratedNotice };
+                        foreach (var prop in obj.Properties())
+                            withNotice.Add(prop.Name, prop.Value);
+                        withNotice["responsible_ai_validation"] = validation;
+                        return withNotice.ToString(Formatting.Indented);
+                    }
+
+                    if (token is JArray arr)
+                    {
+                        // Wrap arrays so we can attach the notice without losing the payload.
+                        var wrapper = new JObject
+                        {
+                            ["ai_generated_notice"] = AiGeneratedNotice,
+                            ["data"] = arr,
+                            ["responsible_ai_validation"] = validation
+                        };
+                        return wrapper.ToString(Formatting.Indented);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // Fall through to text append if the payload is not valid JSON.
+                }
+            }
+
+            // Fallback path: append the notice as trailing text.
+            string tablesLine;
+            if (tables.Length > 0)
+            {
+                tablesLine = $"- Inspect the underlying SQL Nexus source table(s) for this analysis: {string.Join(", ", tables)}. "
+                           + "You can query them directly with the 'query_nexus_database' tool (e.g. SELECT TOP 100 * FROM <table>).";
+            }
+            else if (string.Equals(toolName, "query_nexus_database", StringComparison.OrdinalIgnoreCase))
+            {
+                tablesLine = "- Re-run or refine this query, and cross-check results against related SQL Nexus tables. "
+                           + "Use the 'list_nexus_tables' tool to discover other relevant tables.";
+            }
+            else
+            {
+                tablesLine = "- Inspect the relevant SQL Nexus source tables directly with the 'query_nexus_database' tool. "
+                           + "Use the 'list_nexus_tables' tool to discover which tables apply.";
+            }
+
+            var guidance =
+                "\n\n---\n" +
+                "⚠️ AI-GENERATED — MAY BE INACCURATE. VALIDATE THIS ANALYSIS.\n" +
+                "This result was produced with AI assistance from pre-collected SQL Nexus data and may be " +
+                "incomplete or incorrect. It is a starting point for investigation, not a definitive conclusion. " +
+                "Before acting on it or sharing a report, please:\n" +
+                "- Review the supporting evidence and the specific data values cited above.\n" +
+                tablesLine + "\n" +
+                "- Ask follow-up questions, or narrow/broaden the investigation scope if the result looks off.\n" +
+                "- Adjust your prompt or the investigation scope to explore alternative root causes.\n" +
+                "- Review and edit any generated report before sharing it with others.\n";
+
+            return resultText + guidance;
         }
     }
 }

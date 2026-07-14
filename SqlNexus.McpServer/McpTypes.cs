@@ -92,6 +92,12 @@ namespace SqlNexus.McpServer
 
         [JsonProperty("serverInfo")]
         public ServerInfo ServerInfo { get; set; } = new();
+
+        // Optional MCP "instructions" field. Hosts surface this to the user and/or model at
+        // connection time. Used here to make users aware that responses are AI-assisted and
+        // may be inaccurate, and should be validated against the underlying SQL Nexus data.
+        [JsonProperty("instructions", NullValueHandling = NullValueHandling.Ignore)]
+        public string? Instructions { get; set; }
     }
 
     public class ServerCapabilities
