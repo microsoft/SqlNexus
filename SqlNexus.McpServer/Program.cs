@@ -61,6 +61,16 @@ namespace SqlNexus.McpServer
                 Logger.Info($"Connected to: {server}/{database}");
                 Logger.Info("Using Microsoft.Data.SqlClient");
 
+                // Integrity gate: refuse to run if the AI guidance files (skill files + agent
+                // definition) have been tampered with, are missing, or are unreadable.
+                if (!FileIntegrityChecker.VerifyAll(out string integrityError))
+                {
+                    Logger.Error(integrityError);
+                    Console.Error.WriteLine(integrityError);
+                    Environment.Exit(2);
+                    return;
+                }
+
                 ProcessRequests();
             }
             catch (Exception ex)

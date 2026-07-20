@@ -22,4 +22,8 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+
+  <PropertyGroup>
+    <PreBuildEvent>powershell -ExecutionPolicy Bypass -File "$(ProjectDir)GenerateFileHashes.ps1"</PreBuildEvent>
+  </PropertyGroup>
 </Project>
