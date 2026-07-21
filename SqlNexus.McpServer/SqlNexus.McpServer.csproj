@@ -24,6 +24,6 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <PreBuildEvent>powershell -ExecutionPolicy Bypass -File "$(ProjectDir)GenerateFileHashes.ps1"</PreBuildEvent>
+    <PreBuildEvent>powershell -NoProfile -NonInteractive -ExecutionPolicy Bypass -File "$(MSBuildProjectDirectory)\GenerateFileHashes.ps1"</PreBuildEvent>
   </PropertyGroup>
 </Project>
