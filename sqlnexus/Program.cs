@@ -113,10 +113,39 @@ namespace sqlnexus
         }
 
         /// <summary>
-        /// The complete set of importer tokens that "All" expands to.
+        /// The complete set of canonical importer tokens that "All" expands to.
         /// </summary>
         private static readonly string[] AllImporterTokens =
-            { "ReadTrace", "Perfmon", "Linux", "Errorlog", "CustomXEL", "TraceImp" };
+            { "ReadTrace", "Perfmon", "Linux", "Errorlog", "CustomXEL", "TraceEventImporter" };
+
+        /// <summary>
+        /// Maps a user-supplied /M token (case-insensitive) to its canonical importer token.
+        /// The two XEvent trace importers are mutually exclusive and write to the same
+        /// ReadTrace.* schema, so the generic trace synonyms (Trace, TraceImp, TraceImporter)
+        /// collapse to TraceEventImporter (the preferred managed trace importer).
+        /// </summary>
+        private static readonly Dictionary<string, string> ImporterTokenAliases =
+            new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                { "ReadTrace",          "ReadTrace" },
+                { "Perfmon",            "Perfmon" },
+                { "Linux",              "Linux" },
+                { "Errorlog",           "Errorlog" },
+                { "CustomXEL",          "CustomXEL" },
+                { "TraceEventImporter", "TraceEventImporter" },
+                { "TraceImporter",      "TraceEventImporter" },
+                { "TraceImp",           "TraceEventImporter" },
+                { "Trace",              "TraceEventImporter" },
+            };
+
+        /// <summary>
+        /// True if the canonical token is one of the (mutually exclusive) XEvent trace importers.
+        /// </summary>
+        private static bool IsTraceToken(string canonicalToken)
+        {
+            return string.Equals(canonicalToken, "ReadTrace", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(canonicalToken, "TraceEventImporter", StringComparison.OrdinalIgnoreCase);
+        }
 
         /// <summary>
         /// Parses the value of the /M switch into the set of importer tokens to enable.
@@ -125,9 +154,12 @@ namespace sqlnexus
         ///   /MAll                      every importer
         ///   /MAll-ReadTrace            subtractive: every importer except the listed ones
         ///   /MAll-ReadTrace-Perfmon    every importer except the listed ones
+        /// Unknown tokens are rejected. The two XEvent trace importers (ReadTrace and
+        /// TraceEventImporter) are treated as a single logical capability: subtracting either
+        /// one (or the generic "Trace") suppresses BOTH, so no XEvent trace data is imported.
         /// The '+' (add) and '-' (subtract-from-All) forms cannot be mixed in a single value.
         /// </summary>
-        /// <returns>true when parsing succeeds; false for an invalid/empty selection.</returns>
+        /// <returns>true when parsing succeeds; false for an invalid/empty/unknown selection.</returns>
         internal static bool TryParseImporterSelection(string mVal, out HashSet<string> selectedImporters)
         {
             selectedImporters = null;
@@ -152,10 +184,20 @@ namespace sqlnexus
                 HashSet<string> result = BuildAllImporterSet();
                 for (int i = 1; i < parts.Length; i++)
                 {
-                    string token = parts[i].Trim();
-                    if (token.Length == 0)
-                        return false;
-                    result.Remove(token);
+                    string canonical;
+                    if (!ImporterTokenAliases.TryGetValue(parts[i].Trim(), out canonical))
+                        return false; // unknown token
+
+                    if (IsTraceToken(canonical))
+                    {
+                        // Subtracting either trace importer removes both.
+                        result.Remove("ReadTrace");
+                        result.Remove("TraceEventImporter");
+                    }
+                    else
+                    {
+                        result.Remove(canonical);
+                    }
                 }
                 result.Remove("All");
                 selectedImporters = result;
@@ -168,12 +210,20 @@ namespace sqlnexus
                 return true;
             }
 
-            // Additive syntax: '+'-separated list of importer tokens.
+            // Additive syntax: '+'-separated list of importer tokens (canonicalized; unknowns rejected).
             string[] tokens = mVal.Split(new char[] { '+' }, StringSplitOptions.RemoveEmptyEntries);
             if (tokens.Length == 0)
                 return false;
 
-            selectedImporters = new HashSet<string>(tokens.Select(t => t.Trim()), StringComparer.OrdinalIgnoreCase);
+            var set = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            foreach (string token in tokens)
+            {
+                string canonical;
+                if (!ImporterTokenAliases.TryGetValue(token.Trim(), out canonical))
+                    return false; // unknown token
+                set.Add(canonical);
+            }
+            selectedImporters = set;
             return true;
         }
 
@@ -182,6 +232,24 @@ namespace sqlnexus
             var set = new HashSet<string>(AllImporterTokens, StringComparer.OrdinalIgnoreCase);
             set.Add("All");
             return set;
+        }
+
+        /// <summary>
+        /// Prints a helpful error for an invalid /M value: the supported tokens,
+        /// the accepted syntaxes, and concrete examples.
+        /// </summary>
+        private static void ShowImporterTokenHelp(string badArg)
+        {
+            Console.WriteLine("Invalid /M importer selection: " + badArg);
+            Console.WriteLine("Valid tokens (case-insensitive): " + string.Join(", ", AllImporterTokens) + ", All");
+            Console.WriteLine("  Trace synonyms for TraceEventImporter: Trace, TraceImp, TraceImporter");
+            Console.WriteLine("Syntax:");
+            Console.WriteLine("  /M<token>[+<token>...]   additive - only the listed importers");
+            Console.WriteLine("  /MAll                    every importer");
+            Console.WriteLine("  /MAll-<token>[-<token>]  every importer except the listed ones");
+            Console.WriteLine("Notes: '+' (add) and '-' (subtract) cannot be combined; unknown tokens are rejected.");
+            Console.WriteLine("       Subtracting either trace importer (or 'Trace') suppresses both.");
+            Console.WriteLine("Examples: /MReadTrace+Perfmon+Errorlog   |   /MAll   |   /MAll-Trace-Perfmon");
         }
 
         /// <summary>
@@ -231,7 +299,9 @@ namespace sqlnexus
 
                 string arg_slash_validation = arg.Replace("/", "");
 
-                if (arg.Length - arg_slash_validation.Length > 1)
+                // The generic "extra backslash" heuristic doesn't apply to /M, whose value can
+                // legitimately contain characters like '-'. Let the /M case emit a token-specific error.
+                if (('M' != switchChar) && (arg.Length - arg_slash_validation.Length > 1))
                 {
                     Console.WriteLine(sqlnexus.Properties.Resources.Msg_InvalidSwitch + arg.Substring(0, 2));
                     Console.WriteLine("Possible reason: An extra backslash exists at the end of " + arg.Substring(0, 2) + " parameter in your command");
@@ -342,7 +412,7 @@ namespace sqlnexus
                             HashSet<string> selectedImporters;
                             if (!TryParseImporterSelection(mVal, out selectedImporters))
                             {
-                                Console.WriteLine(sqlnexus.Properties.Resources.Msg_InvalidSwitch + arg);
+                                ShowImporterTokenHelp(arg);
                                 return false;
                             }
                             Globals.EnabledImporters = selectedImporters;
