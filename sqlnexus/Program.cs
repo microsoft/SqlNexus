@@ -113,6 +113,78 @@ namespace sqlnexus
         }
 
         /// <summary>
+        /// The complete set of importer tokens that "All" expands to.
+        /// </summary>
+        private static readonly string[] AllImporterTokens =
+            { "ReadTrace", "Perfmon", "Linux", "Errorlog", "CustomXEL", "TraceImp" };
+
+        /// <summary>
+        /// Parses the value of the /M switch into the set of importer tokens to enable.
+        /// Supported syntaxes (tokens are case-insensitive):
+        ///   /MReadTrace+Perfmon        additive: only the listed importers
+        ///   /MAll                      every importer
+        ///   /MAll-ReadTrace            subtractive: every importer except the listed ones
+        ///   /MAll-ReadTrace-Perfmon    every importer except the listed ones
+        /// The '+' (add) and '-' (subtract-from-All) forms cannot be mixed in a single value.
+        /// </summary>
+        /// <returns>true when parsing succeeds; false for an invalid/empty selection.</returns>
+        internal static bool TryParseImporterSelection(string mVal, out HashSet<string> selectedImporters)
+        {
+            selectedImporters = null;
+
+            if (string.IsNullOrWhiteSpace(mVal))
+                return false;
+
+            bool hasPlus = mVal.IndexOf('+') >= 0;
+            bool hasMinus = mVal.IndexOf('-') >= 0;
+
+            // '+' (add) and '-' (subtract) semantics cannot be combined.
+            if (hasPlus && hasMinus)
+                return false;
+
+            if (hasMinus)
+            {
+                // Subtractive syntax: must start with "All", followed by one or more tokens to remove.
+                string[] parts = mVal.Split(new char[] { '-' }, StringSplitOptions.RemoveEmptyEntries);
+                if (parts.Length < 2 || !string.Equals(parts[0].Trim(), "All", StringComparison.OrdinalIgnoreCase))
+                    return false;
+
+                HashSet<string> result = BuildAllImporterSet();
+                for (int i = 1; i < parts.Length; i++)
+                {
+                    string token = parts[i].Trim();
+                    if (token.Length == 0)
+                        return false;
+                    result.Remove(token);
+                }
+                result.Remove("All");
+                selectedImporters = result;
+                return true;
+            }
+
+            if (string.Equals(mVal, "All", StringComparison.OrdinalIgnoreCase))
+            {
+                selectedImporters = BuildAllImporterSet();
+                return true;
+            }
+
+            // Additive syntax: '+'-separated list of importer tokens.
+            string[] tokens = mVal.Split(new char[] { '+' }, StringSplitOptions.RemoveEmptyEntries);
+            if (tokens.Length == 0)
+                return false;
+
+            selectedImporters = new HashSet<string>(tokens.Select(t => t.Trim()), StringComparer.OrdinalIgnoreCase);
+            return true;
+        }
+
+        private static HashSet<string> BuildAllImporterSet()
+        {
+            var set = new HashSet<string>(AllImporterTokens, StringComparer.OrdinalIgnoreCase);
+            set.Add("All");
+            return set;
+        }
+
+        /// <summary>
         /// Process sqlnexus.exe command line parameters. 
         /// </summary>
         /// <remarks>DOES NOT support spaces between an arg switch and its parameter.  For example, 
@@ -267,21 +339,13 @@ namespace sqlnexus
                             string mVal = arg.Substring(2).Trim();
                             Console.WriteLine(@"Command Line Arg (/M): Importers=" + mVal);
 
-                            if (string.Equals(mVal, "All", StringComparison.OrdinalIgnoreCase))
+                            HashSet<string> selectedImporters;
+                            if (!TryParseImporterSelection(mVal, out selectedImporters))
                             {
-                                Globals.EnabledImporters = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
-                                    { "ReadTrace", "Perfmon", "Linux", "Errorlog", "CustomXEL", "TraceImp", "All" };
+                                Console.WriteLine(sqlnexus.Properties.Resources.Msg_InvalidSwitch + arg);
+                                return false;
                             }
-                            else
-                            {
-                                string[] tokens = mVal.Split(new char[] { '+' }, StringSplitOptions.RemoveEmptyEntries);
-                                if (tokens.Length == 0)
-                                {
-                                    Console.WriteLine(sqlnexus.Properties.Resources.Msg_InvalidSwitch + arg);
-                                    return false;
-                                }
-                                Globals.EnabledImporters = new HashSet<string>(tokens, StringComparer.OrdinalIgnoreCase);
-                            }
+                            Globals.EnabledImporters = selectedImporters;
                             break;
                         }
                     case 'N':

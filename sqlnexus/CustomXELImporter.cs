@@ -29,7 +29,7 @@ namespace sqlnexus
 
         bool dropExistingTables = true;
 
-        public string SQLBaseImport(string connString, string Server, bool UseWindowsAuth, string SQLLogin, string SQLPassword, string DatabaseName, string srcpath, bool importSQLDiagAlwaysOnXEL = true, bool dropTables = true)
+        public string ImportCustomXELFiles(string connString, string Server, bool UseWindowsAuth, string SQLLogin, string SQLPassword, string DatabaseName, string srcpath, bool importCustomXEL = true, bool dropTables = true)
         {
 
             connStr = connString;
@@ -44,7 +44,7 @@ namespace sqlnexus
 
             int sqlDiagRowsImported = 0;
             int alwaysOnRowsImported = 0;
-            if (importSQLDiagAlwaysOnXEL)
+            if (importCustomXEL)
             {
                 sqlDiagRowsImported = LoadSQLDiaglFiles();
                 alwaysOnRowsImported = LoadAlwaysonHealthFiles();
@@ -60,7 +60,7 @@ namespace sqlnexus
             }
             else
             {
-                Util.Logger.LogMessage("Skipping SQLDiag and AlwaysOn XEL import (SQLDiagAlwaysOnXEL option is disabled).");
+                Util.Logger.LogMessage("Skipping Custom XEL import (SQLDiag, AlwaysOn Health, and system_health) - CustomXEL option is disabled.");
                 return "Skipped (disabled)";
             }
 

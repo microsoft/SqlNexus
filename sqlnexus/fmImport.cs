@@ -1229,16 +1229,25 @@ namespace sqlnexus
                         Application.DoEvents();
 
 
-                        // do the custom XEL import - system health, Always ON, etc.
+                        // do the custom XEL import - AlwaysOn System Health, Failover Cluster
+                        // Instance Diagnostics Log (SQLDiag), and system_health Extended Events.
                         CustomXELImporter CI = new CustomXELImporter();
-                        bool alwaysOnXelEnabled = tsiSQLDiagAlwaysOnXEL_Enabled != null && tsiSQLDiagAlwaysOnXEL_Enabled.Checked;
+                        bool customXelImportEnabled = tsiSQLDiagAlwaysOnXEL_Enabled != null && tsiSQLDiagAlwaysOnXEL_Enabled.Checked;
+
+                        // /M command-line override: supersedes the saved UI checkbox (which is never
+                        // set in a console/quiet run). Without this, ImportCustomXELFiles is called with
+                        // importCustomXEL = false and returns "Skipped (disabled)", so the
+                        // CustomXEL tables (e.g. tbl_SQL_Base_SystemHealthXEL_Startup) are never created.
+                        if (Globals.EnabledImporters != null)
+                            customXelImportEnabled = Globals.EnabledImporters.Contains("All") || Globals.EnabledImporters.Contains("CustomXEL");
+
                         bool alwaysOnXelDropTables = tsiSQLDiagAlwaysOnXEL_DropTables != null && tsiSQLDiagAlwaysOnXEL_DropTables.Checked;
-                        string XelImprtStatusStr = CI.SQLBaseImport(Globals.credentialMgr.ConnectionString, Globals.credentialMgr.Server,
+                        string XelImprtStatusStr = CI.ImportCustomXELFiles(Globals.credentialMgr.ConnectionString, Globals.credentialMgr.Server,
                                                                 Globals.credentialMgr.WindowsAuth,
                                                                 Globals.credentialMgr.User,
                                                                 Globals.credentialMgr.Password,
                                                                 Globals.credentialMgr.Database, srcPath,
-                                                                alwaysOnXelEnabled,
+                                                                customXelImportEnabled,
                                                                 alwaysOnXelDropTables);
                         
 

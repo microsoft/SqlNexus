@@ -2101,7 +2101,7 @@ namespace sqlnexus.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to /M&lt;importers&gt;\tEnable specific importers for this run. Use &apos;+&apos; to combine tokens, or &apos;All&apos; to enable every importer.\n\t\tTokens: ReadTrace, Perfmon, Linux, Errorlog, CustomXEL, TraceImp\n\t\tExample: /MReadTrace+Perfmon+Errorlog   or   /MAll\n\t\tOverrides saved UI settings for this run only; user.config is never modified..
+        ///   Looks up a localized string similar to /M&lt;importers&gt;\tEnable specific importers for this run. Use &apos;+&apos; to combine tokens, &apos;All&apos; to enable every importer, or &apos;All-&lt;token&gt;&apos; to enable every importer except the listed ones.\n\t\tTokens: ReadTrace, Perfmon, Linux, Errorlog, CustomXEL, TraceImp\n\t\tExamples: /MReadTrace+Perfmon+Errorlog   or   /MAll   or   /MAll-ReadTrace-Perfmon\n\t\tNote: &apos;+&apos; (add) and &apos;-&apos; (subtract from All) cannot be combined in one /M value.\n\t\tOverrides saved UI settings for this run only; user.config is never modified..
         /// </summary>
         internal static string Usage_Importers {
             get {
