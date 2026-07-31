@@ -29,7 +29,7 @@ namespace sqlnexus
 
         bool dropExistingTables = true;
 
-        public string ImportCustomXELFiles(string connString, string Server, bool UseWindowsAuth, string SQLLogin, string SQLPassword, string DatabaseName, string srcpath, bool importCustomXEL = true, bool dropTables = true)
+        public string ImportCustomXELFiles(string connString, string Server, bool UseWindowsAuth, string SQLLogin, string SQLPassword, string DatabaseName, string srcpath, out bool success, bool importCustomXEL = true, bool dropTables = true)
         {
 
             connStr = connString;
@@ -41,6 +41,7 @@ namespace sqlnexus
             srcPath = srcpath;
             dropExistingTables = dropTables;
 
+            success = true;
 
             int sqlDiagRowsImported = 0;
             int alwaysOnRowsImported = 0;
@@ -49,6 +50,18 @@ namespace sqlnexus
                 sqlDiagRowsImported = LoadSQLDiaglFiles();
                 alwaysOnRowsImported = LoadAlwaysonHealthFiles();
                 int systemHealthRowsImported = LoadSystemHealthFiles();
+
+                // Each Load* method returns -1 on failure (and logs the specific error).
+                // Surface any failure so the caller does NOT report a successful "Done" status.
+                bool anyFailed = sqlDiagRowsImported < 0 || alwaysOnRowsImported < 0 || systemHealthRowsImported < 0;
+                success = !anyFailed;
+
+                if (anyFailed)
+                {
+                    Util.Logger.LogMessage("Custom XEL import encountered errors (SqlDiag/AOHealth/SysHealth). See preceding log entries for details.");
+                    return String.Format("FAILED - one or more Custom XEL sources errored (SqlDiag {0}, AOHealth {1}, SysHealth {2}). See log for details.",
+                                    sqlDiagRowsImported, alwaysOnRowsImported, systemHealthRowsImported);
+                }
 
                 string retStr = String.Format("{0} rows imported (SqlDiag {2}, AOHealth {3}, SysHealth {4}) across {1} XEL files.", 
                                     totalRowsAffected, 

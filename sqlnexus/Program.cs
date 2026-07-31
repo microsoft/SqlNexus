@@ -241,9 +241,11 @@ namespace sqlnexus
 
         private static HashSet<string> BuildAllImporterSet()
         {
-            var set = new HashSet<string>(AllImporterTokens, StringComparer.OrdinalIgnoreCase);
-            set.Add("All");
-            return set;
+            // Option B: "/M" governs only the known, explicitly-wired built-in importers.
+            // "All" expands to this fixed canonical token set (no special "All" marker is kept),
+            // so every /M form flows through the same token-based gating. Importers that are not
+            // wired into this set are never enabled by /M - drop-in/unknown assemblies are ignored.
+            return new HashSet<string>(AllImporterTokens, StringComparer.OrdinalIgnoreCase);
         }
 
         /// <summary>
@@ -428,6 +430,14 @@ namespace sqlnexus
                                 return false;
                             }
                             Globals.EnabledImporters = selectedImporters;
+
+                            // Log the effective selection (canonical tokens) so automation logs make
+                            // it unambiguous which built-in importers /M resolved to for this run.
+                            Console.WriteLine("/M effective importer selection: "
+                                + (selectedImporters.Count == 0
+                                    ? "(none)"
+                                    : string.Join(", ", selectedImporters.OrderBy(t => t, StringComparer.OrdinalIgnoreCase)))
+                                + " (Rowset Importer always runs; only explicitly-wired built-in importers are eligible).");
                             break;
                         }
                     case 'N':

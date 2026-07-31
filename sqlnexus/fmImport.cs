@@ -136,7 +136,7 @@ namespace sqlnexus
             return false;
         }
 
-        private void AddFiles(string Mask, INexusImporter Importer)
+        private bool AddFiles(string Mask, INexusImporter Importer)
         {
             string basePath = cbPath.Text.Trim().Replace("\"", "");
             string[] allMatches = Directory.GetFiles(basePath, Mask);
@@ -144,7 +144,7 @@ namespace sqlnexus
 
             //if no file found for this mask, just return
             if (allMatches.Length <= 0)
-                return;
+                return false;
 
             // If this is a trace mask (*.trc) for ReadTrace, filter out excluded files
             bool isReadTrace = Importer != null &&
@@ -168,7 +168,7 @@ namespace sqlnexus
 
             // If after filtering there are NO included files, do NOT add any UI row.
             if (includedFiles.Length == 0)
-                return;
+                return false;
 
             int rowIndex = tlpFiles.RowCount - 1;
 
@@ -177,6 +177,7 @@ namespace sqlnexus
             {
 
                 int blockedCounter = 0;
+                int addedCounter = 0;
                 foreach (string f in includedFiles)
                 {
 
@@ -190,9 +191,11 @@ namespace sqlnexus
 
                     AddFileRow(rowIndex, Path.GetFileName(f), Importer, "");
                     rowIndex++;
+                    addedCounter++;
 
                 }
                 MainForm.LogMessage("Number of files blocked for import (due to multiple instance or unrelated files such as sqldump*: " + blockedCounter, MessageOptions.Silent);
+                return addedCounter > 0;
             }
             else
             {
@@ -212,8 +215,10 @@ namespace sqlnexus
                         AddFileRow(rowIndex, Mask, Importer, "");
                     }
 
+                    return true;
                 }
             }
+            return false;
         }//end of AddFiles
 
         private void AddFileRow(int row, string labelText, INexusImporter Importer, string RowType)
@@ -432,6 +437,33 @@ namespace sqlnexus
             EnumImportersFromDirectory(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\SqlNexus\Importers");
             EnumImportersFromDirectory(Application.StartupPath);
             EnforceTraceImporterExclusivity();
+            LogMissingBuiltInImporters();
+        }
+
+        /// <summary>
+        /// Logs any explicitly-wired built-in importer (from ImporterTokenToName) whose assembly
+        /// was not discovered/loaded. This surfaces missing importer DLLs that would otherwise be
+        /// silently absent - important for /M-driven automation where a token may match nothing.
+        /// </summary>
+        private void LogMissingBuiltInImporters()
+        {
+            var discovered = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            foreach (ToolStripMenuItem importerTsi in tsiImporters.DropDownItems)
+            {
+                INexusImporter prod = importerTsi.Tag as INexusImporter;
+                if (prod != null)
+                    discovered.Add(prod.Name);
+            }
+
+            foreach (var kvp in ImporterTokenToName)
+            {
+                if (!discovered.Contains(kvp.Value))
+                {
+                    MainForm.LogMessage("Built-in importer '" + kvp.Value + "' (/M token '" + kvp.Key
+                        + "') was NOT discovered - its assembly is missing from the Importers folder. "
+                        + "It cannot be enabled by /M for this run.", MessageOptions.All);
+                }
+            }
         }
 
         /// <summary>
@@ -813,40 +845,47 @@ namespace sqlnexus
                 // user.config is never read or written here — it remains intact for GUI sessions.
                 if (Globals.EnabledImporters != null)
                 {
-                    if (Globals.EnabledImporters.Contains("All"))
+                    // Option B: /M governs only explicitly-wired built-in importers. Every selection
+                    // (including "All", which the parser expands to the concrete canonical token set)
+                    // is gated through ImporterTokenToName. Importers with no matching token are never
+                    // enabled by /M — drop-in/unknown assemblies are ignored by design.
+                    if (string.Equals(prod.Name, "Rowset Importer", StringComparison.OrdinalIgnoreCase))
                     {
+                        // Rowset Importer always runs — it populates core tables (tbl_ServerProperties,
+                        // tbl_RUNTIMES, etc.) that all other importers and post-processing scripts depend on.
                         Enabled = true;
                     }
                     else
                     {
-                        // Rowset Importer always runs — it populates core tables (tbl_ServerProperties,
-                        // tbl_RUNTIMES, etc.) that all other importers and post-processing scripts depend on.
-                        if (string.Equals(prod.Name, "Rowset Importer", StringComparison.OrdinalIgnoreCase))
+                        Enabled = false;
+                        bool isWiredImporter = false;
+                        foreach (var kvp in ImporterTokenToName)
                         {
-                            Enabled = true;
-                        }
-                        else
-                        {
-                            Enabled = false;
-                            foreach (var kvp in ImporterTokenToName)
+                            if (string.Equals(kvp.Value, prod.Name, StringComparison.OrdinalIgnoreCase))
                             {
-                                if (string.Equals(kvp.Value, prod.Name, StringComparison.OrdinalIgnoreCase)
-                                    && Globals.EnabledImporters.Contains(kvp.Key))
+                                isWiredImporter = true;
+                                if (Globals.EnabledImporters.Contains(kvp.Key))
                                 {
                                     Enabled = true;
-                                    break;
                                 }
+                                break;
                             }
+                        }
+
+                        // Log discovered importers that /M cannot control (not wired into the token map).
+                        if (!isWiredImporter)
+                        {
+                            Util.Logger.LogMessage("/M override; discovered importer '" + prod.Name
+                                + "' is not wired to a /M token and will NOT be enabled by /M (ignored by design).");
                         }
                     }
 
-                    // Mutual exclusivity (applied after ALL selection paths, including /MAll):
-                    // ReadTrace and TraceEventImporter write to the same ReadTrace.* schema and must
-                    // not run together. TraceEventImporter wins, so suppress ReadTrace whenever the
-                    // managed trace importer is also enabled - whether via "All" or an explicit token.
+                    // Mutual exclusivity (applied after selection): ReadTrace and TraceEventImporter
+                    // write to the same ReadTrace.* schema and must not run together. TraceEventImporter
+                    // wins, so suppress ReadTrace whenever the managed trace importer is also selected.
                     if (Enabled
                         && string.Equals(prod.Name, READTRACE_IMPORTER_NAME, StringComparison.OrdinalIgnoreCase)
-                        && (Globals.EnabledImporters.Contains("All") || Globals.EnabledImporters.Contains("TraceEventImporter")))
+                        && Globals.EnabledImporters.Contains("TraceEventImporter"))
                     {
                         Enabled = false;
                         Util.Logger.LogMessage("/M override; both trace importers selected — disabling '" + READTRACE_IMPORTER_NAME + "' in favour of '" + TRACEEVENT_IMPORTER_NAME + "'.");
@@ -858,9 +897,20 @@ namespace sqlnexus
 
                 if (Enabled)
                 {
+                    bool anyFilesFound = false;
                     foreach (string s in prod.SupportedMasks)
                     {
-                        AddFiles(s, prod);
+                        if (AddFiles(s, prod))
+                            anyFilesFound = true;
+                    }
+
+                    // A selected/enabled importer that matched no input files is worth surfacing:
+                    // in a /M-driven automation run this usually means the expected data is missing.
+                    if (!anyFilesFound)
+                    {
+                        MainForm.LogMessage("Importer '" + prod.Name + "' is enabled but found NO matching files (masks: "
+                            + string.Join(", ", prod.SupportedMasks) + ") in the import path. Nothing to import for this importer.",
+                            MessageOptions.All);
                     }
                 }
             }
@@ -1071,7 +1121,7 @@ namespace sqlnexus
             // /M override for CustomXEL — does not touch tsiSQLDiagAlwaysOnXEL_Enabled.Checked,
             // so the saved UI setting is preserved unchanged.
             if (Globals.EnabledImporters != null)
-                customXelEnabled = Globals.EnabledImporters.Contains("All") || Globals.EnabledImporters.Contains("CustomXEL");
+                customXelEnabled = Globals.EnabledImporters.Contains("CustomXEL");
 
             if (customXelEnabled)
             {
@@ -1243,22 +1293,34 @@ namespace sqlnexus
                         // importCustomXEL = false and returns "Skipped (disabled)", so the
                         // CustomXEL tables (e.g. tbl_SQL_Base_SystemHealthXEL_Startup) are never created.
                         if (Globals.EnabledImporters != null)
-                            customXelImportEnabled = Globals.EnabledImporters.Contains("All") || Globals.EnabledImporters.Contains("CustomXEL");
+                            customXelImportEnabled = Globals.EnabledImporters.Contains("CustomXEL");
 
                         bool alwaysOnXelDropTables = tsiSQLDiagAlwaysOnXEL_DropTables != null && tsiSQLDiagAlwaysOnXEL_DropTables.Checked;
+                        bool customXelSuccess;
                         string XelImprtStatusStr = CI.ImportCustomXELFiles(Globals.credentialMgr.ConnectionString, Globals.credentialMgr.Server,
                                                                 Globals.credentialMgr.WindowsAuth,
                                                                 Globals.credentialMgr.User,
                                                                 Globals.credentialMgr.Password,
                                                                 Globals.credentialMgr.Database, srcPath,
+                                                                out customXelSuccess,
                                                                 customXelImportEnabled,
                                                                 alwaysOnXelDropTables);
-                        
+
 
                         currBar.Value = 100;
-                        MainForm.LogMessage("Custom XEL Importer completed");
 
-                        string rawfileMsg = "(Importer:" + customXELImprtStr + ") " + "Done. (" + (Environment.TickCount - customXELImportStartTicks) / 1000 + " sec), " + XelImprtStatusStr + ".";
+                        string rawfileMsg;
+                        if (customXelSuccess)
+                        {
+                            MainForm.LogMessage("Custom XEL Importer completed");
+                            rawfileMsg = "(Importer:" + customXELImprtStr + ") " + "Done. (" + (Environment.TickCount - customXELImportStartTicks) / 1000 + " sec), " + XelImprtStatusStr + ".";
+                        }
+                        else
+                        {
+                            Success = false;
+                            MainForm.LogMessage("Custom XEL Importer FAILED - see log for details");
+                            rawfileMsg = "(Importer:" + customXELImprtStr + ") " + "FAILED. (" + (Environment.TickCount - customXELImportStartTicks) / 1000 + " sec), " + XelImprtStatusStr;
+                        }
                         currLabel.Text = rawfileMsg;
                         Application.DoEvents();
                     }
