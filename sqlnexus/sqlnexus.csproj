@@ -337,6 +337,7 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Globals.cs" />
+    <Compile Include="ImporterSelectionEvaluator.cs" />
     <Compile Include="NexusInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

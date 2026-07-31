@@ -37,6 +37,14 @@ namespace sqlnexus
         /// </summary>
         public static HashSet<string> EnabledImporters = null;
 
+        /// <summary>
+        /// Set true during a /M run when a requested importer's assembly was missing, or an enabled
+        /// importer matched no input files. Used to return a non-zero exit code so automation does
+        /// not see success when requested data did not arrive. Only meaningful when EnabledImporters
+        /// is non-null (a /M run).
+        /// </summary>
+        public static bool RequestedImporterMissingOrEmpty = false;
+
         private static readonly string m_StartupPath = Application.StartupPath;
         private static readonly string m_AppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\sqlnexus";
 

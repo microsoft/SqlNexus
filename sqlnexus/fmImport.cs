@@ -23,23 +23,17 @@ namespace sqlnexus
         private ToolStripMenuItem tsiSQLDiagAlwaysOnXEL_DropTables;
         private SqlInstances instances;
 
-        // Importer names used for mutual exclusivity and /M token mapping
-        private const string READTRACE_IMPORTER_NAME  = "ReadTrace (SQL XEL/TRC Files)";
-        private const string TRACEEVENT_IMPORTER_NAME = "Trace Event Importer (Managed)";
+        // Importer names used for mutual exclusivity and /M token mapping.
+        // Single source of truth lives in ImporterSelectionEvaluator (also used by unit tests).
+        private const string READTRACE_IMPORTER_NAME  = ImporterSelectionEvaluator.ReadTraceImporterName;
+        private const string TRACEEVENT_IMPORTER_NAME = ImporterSelectionEvaluator.TraceEventImporterName;
 
         /// <summary>
         /// Maps /M command-line tokens (case-insensitive) to the exact INexusImporter.Name
         /// values returned at runtime. CustomXEL is handled separately in DoImport.
         /// </summary>
-        private static readonly Dictionary<string, string> ImporterTokenToName =
-            new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
-            {
-                { "ReadTrace",          READTRACE_IMPORTER_NAME },
-                { "Perfmon",            "BLG Blaster (Perfmon/Sysmon BLG files)" },
-                { "Linux",              "Import Linux Performance Files (.perf)" },
-                { "Errorlog",           "ERRORLOG Importer" },
-                { "TraceEventImporter", TRACEEVENT_IMPORTER_NAME },
-            };
+        private static readonly IDictionary<string, string> ImporterTokenToName =
+            ImporterSelectionEvaluator.ImporterTokenToName;
 
         private fmImport()
         {
@@ -462,6 +456,11 @@ namespace sqlnexus
                     MainForm.LogMessage("Built-in importer '" + kvp.Value + "' (/M token '" + kvp.Key
                         + "') was NOT discovered - its assembly is missing from the Importers folder. "
                         + "It cannot be enabled by /M for this run.", MessageOptions.All);
+
+                    // If this missing importer was explicitly requested via /M, the run cannot deliver
+                    // the requested data; flag it so the process returns a non-zero exit code.
+                    if (Globals.EnabledImporters != null && Globals.EnabledImporters.Contains(kvp.Key))
+                        Globals.RequestedImporterMissingOrEmpty = true;
                 }
             }
         }
@@ -521,7 +520,9 @@ namespace sqlnexus
                     {
                         optionTsi.Checked = false;
                         otherProd.Options["Enabled"] = false;
-                        if (ImportOptions.IsEnabled("SaveImportOptions"))
+                        // Never persist during a /M run: /M is an in-memory-only override for the
+                        // current run and must not modify saved UI settings (user.config).
+                        if (Globals.EnabledImporters == null && ImportOptions.IsEnabled("SaveImportOptions"))
                             ImportOptions.Set(string.Format("{0}.Enabled", importerName), false);
                         break;
                     }
@@ -809,6 +810,8 @@ namespace sqlnexus
             tlpFiles.Controls.Clear();
 
             INexusImporter prod;
+            // Track importers that will actually run so we can log an effective summary (esp. for /M).
+            List<string> effectiveImportersToRun = new List<string>();
             // For each importer listed in the Options menu on the import form
             foreach (ToolStripMenuItem tsi in tsiImporters.DropDownItems)
             {
@@ -845,50 +848,23 @@ namespace sqlnexus
                 // user.config is never read or written here — it remains intact for GUI sessions.
                 if (Globals.EnabledImporters != null)
                 {
-                    // Option B: /M governs only explicitly-wired built-in importers. Every selection
-                    // (including "All", which the parser expands to the concrete canonical token set)
-                    // is gated through ImporterTokenToName. Importers with no matching token are never
-                    // enabled by /M — drop-in/unknown assemblies are ignored by design.
-                    if (string.Equals(prod.Name, "Rowset Importer", StringComparison.OrdinalIgnoreCase))
-                    {
-                        // Rowset Importer always runs — it populates core tables (tbl_ServerProperties,
-                        // tbl_RUNTIMES, etc.) that all other importers and post-processing scripts depend on.
-                        Enabled = true;
-                    }
-                    else
-                    {
-                        Enabled = false;
-                        bool isWiredImporter = false;
-                        foreach (var kvp in ImporterTokenToName)
-                        {
-                            if (string.Equals(kvp.Value, prod.Name, StringComparison.OrdinalIgnoreCase))
-                            {
-                                isWiredImporter = true;
-                                if (Globals.EnabledImporters.Contains(kvp.Key))
-                                {
-                                    Enabled = true;
-                                }
-                                break;
-                            }
-                        }
+                    // Delegate the decision to the pure, unit-tested evaluator so the runtime gating
+                    // logic (mandatory Rowset, token gating, trace exclusivity, unwired importers)
+                    // is the single source of truth shared with the tests. user.config is never
+                    // read or written here - it remains intact for GUI sessions.
+                    ImporterGateResult gate = ImporterSelectionEvaluator.Evaluate(prod.Name, Globals.EnabledImporters);
+                    Enabled = ImporterSelectionEvaluator.WillRun(gate);
 
-                        // Log discovered importers that /M cannot control (not wired into the token map).
-                        if (!isWiredImporter)
-                        {
+                    switch (gate)
+                    {
+                        case ImporterGateResult.SuppressedByTraceExclusivity:
+                            Util.Logger.LogMessage("/M override; both trace importers selected - disabling '"
+                                + READTRACE_IMPORTER_NAME + "' in favour of '" + TRACEEVENT_IMPORTER_NAME + "'.");
+                            break;
+                        case ImporterGateResult.NotWired:
                             Util.Logger.LogMessage("/M override; discovered importer '" + prod.Name
                                 + "' is not wired to a /M token and will NOT be enabled by /M (ignored by design).");
-                        }
-                    }
-
-                    // Mutual exclusivity (applied after selection): ReadTrace and TraceEventImporter
-                    // write to the same ReadTrace.* schema and must not run together. TraceEventImporter
-                    // wins, so suppress ReadTrace whenever the managed trace importer is also selected.
-                    if (Enabled
-                        && string.Equals(prod.Name, READTRACE_IMPORTER_NAME, StringComparison.OrdinalIgnoreCase)
-                        && Globals.EnabledImporters.Contains("TraceEventImporter"))
-                    {
-                        Enabled = false;
-                        Util.Logger.LogMessage("/M override; both trace importers selected — disabling '" + READTRACE_IMPORTER_NAME + "' in favour of '" + TRACEEVENT_IMPORTER_NAME + "'.");
+                            break;
                     }
 
                     Util.Logger.LogMessage("/M override; importer '" + prod.Name + "' enabled = " + Enabled);
@@ -897,6 +873,7 @@ namespace sqlnexus
 
                 if (Enabled)
                 {
+                    effectiveImportersToRun.Add(prod.Name);
                     bool anyFilesFound = false;
                     foreach (string s in prod.SupportedMasks)
                     {
@@ -911,9 +888,26 @@ namespace sqlnexus
                         MainForm.LogMessage("Importer '" + prod.Name + "' is enabled but found NO matching files (masks: "
                             + string.Join(", ", prod.SupportedMasks) + ") in the import path. Nothing to import for this importer.",
                             MessageOptions.All);
+
+                        // Under /M, a requested importer that finds no files means the data automation
+                        // asked for did not arrive; flag it so the process returns a non-zero exit code.
+                        if (Globals.EnabledImporters != null)
+                            Globals.RequestedImporterMissingOrEmpty = true;
                     }
                 }
             }
+
+            // Effective summary of the importers that will actually run this session. For a /M run this
+            // is the authoritative "what ran" list (after mandatory Rowset, token gating and trace
+            // exclusivity), unlike the earlier /M "requested" line printed at command-line parse time.
+            if (Globals.EnabledImporters != null)
+            {
+                MainForm.LogMessage("/M effective importers to run: "
+                    + (effectiveImportersToRun.Count == 0 ? "(none)" : string.Join(", ", effectiveImportersToRun))
+                    + (ImporterSelectionEvaluator.IsCustomXelSelected(Globals.EnabledImporters) ? ", CustomXEL" : "")
+                    + ".", MessageOptions.All);
+            }
+
             tlpFiles.Visible = true;
             Application.DoEvents();
         }
@@ -1121,7 +1115,7 @@ namespace sqlnexus
             // /M override for CustomXEL — does not touch tsiSQLDiagAlwaysOnXEL_Enabled.Checked,
             // so the saved UI setting is preserved unchanged.
             if (Globals.EnabledImporters != null)
-                customXelEnabled = Globals.EnabledImporters.Contains("CustomXEL");
+                customXelEnabled = ImporterSelectionEvaluator.IsCustomXelSelected(Globals.EnabledImporters);
 
             if (customXelEnabled)
             {
@@ -1293,7 +1287,7 @@ namespace sqlnexus
                         // importCustomXEL = false and returns "Skipped (disabled)", so the
                         // CustomXEL tables (e.g. tbl_SQL_Base_SystemHealthXEL_Startup) are never created.
                         if (Globals.EnabledImporters != null)
-                            customXelImportEnabled = Globals.EnabledImporters.Contains("CustomXEL");
+                            customXelImportEnabled = ImporterSelectionEvaluator.IsCustomXelSelected(Globals.EnabledImporters);
 
                         bool alwaysOnXelDropTables = tsiSQLDiagAlwaysOnXEL_DropTables != null && tsiSQLDiagAlwaysOnXEL_DropTables.Checked;
                         bool customXelSuccess;

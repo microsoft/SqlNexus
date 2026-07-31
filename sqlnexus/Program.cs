@@ -75,7 +75,10 @@ namespace sqlnexus
     {
         UserCancel = -1,
         Normal = 0,
-        Exception = 2
+        Exception = 2,
+        // A requested importer (via /M) was missing or imported no data. The core load may have
+        // succeeded, but automation asked for data that did not arrive, so this must not report success.
+        ImportIncomplete = 3
     }
 
     static class Program
@@ -259,10 +262,13 @@ namespace sqlnexus
             Console.WriteLine("  Trace synonyms for TraceEventImporter: Trace, TraceImp, TraceImporter");
             Console.WriteLine("Syntax:");
             Console.WriteLine("  /M<token>[+<token>...]   additive - only the listed importers");
-            Console.WriteLine("  /MAll                    every importer");
+            Console.WriteLine("  /MAll                    every wired built-in importer (see note)");
             Console.WriteLine("  /MAll-<token>[-<token>]  every importer except the listed ones");
             Console.WriteLine("Notes: '+' (add) and '-' (subtract) cannot be combined; unknown tokens are rejected.");
             Console.WriteLine("       Subtracting either trace importer (or 'Trace') suppresses both.");
+            Console.WriteLine("       'All' means all explicitly-wired built-in importers (logical capabilities),");
+            Console.WriteLine("       not arbitrary drop-in assemblies; the two trace importers are one capability.");
+            Console.WriteLine("       /M only affects importer selection - it requires an input path (/I) to import.");
             Console.WriteLine("Examples: /MReadTrace+Perfmon+Errorlog   |   /MAll   |   /MAll-Trace-Perfmon");
         }
 
@@ -431,13 +437,17 @@ namespace sqlnexus
                             }
                             Globals.EnabledImporters = selectedImporters;
 
-                            // Log the effective selection (canonical tokens) so automation logs make
-                            // it unambiguous which built-in importers /M resolved to for this run.
-                            Console.WriteLine("/M effective importer selection: "
+                            // Log the REQUESTED selection (parsed canonical tokens). Note this is the
+                            // requested set, not necessarily what runs: trace mutual-exclusivity may
+                            // suppress ReadTrace, and a token whose importer DLL is missing / finds no
+                            // files cannot run. The EFFECTIVE per-importer decisions and a final
+                            // "importers that ran" summary are logged later during the import (EnumFiles).
+                            Console.WriteLine("/M requested importer selection: "
                                 + (selectedImporters.Count == 0
                                     ? "(none)"
                                     : string.Join(", ", selectedImporters.OrderBy(t => t, StringComparer.OrdinalIgnoreCase)))
-                                + " (Rowset Importer always runs; only explicitly-wired built-in importers are eligible).");
+                                + " (Rowset Importer always runs; only explicitly-wired built-in importers are eligible; "
+                                + "TraceEventImporter is preferred when both trace importers are requested).");
                             break;
                         }
                     case 'N':
@@ -520,7 +530,9 @@ namespace sqlnexus
                 Console.WriteLine(string.Format("{0}", ex.StackTrace));
             }
 
-            return (int)(Globals.IsNexusCoreImporterSuccessful ? ProgramExitCodes.Normal : ProgramExitCodes.Exception);
+            return (int)ImporterSelectionEvaluator.DecideExitCode(
+                Globals.IsNexusCoreImporterSuccessful,
+                Globals.EnabledImporters != null && Globals.RequestedImporterMissingOrEmpty);
         }
     }
 }

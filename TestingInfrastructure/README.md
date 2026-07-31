@@ -27,30 +27,30 @@ TestingInfrastructure/
 
 ## Referencing product code
 
-The example test (`RowsetImportEngine/DateTimeColumnTests.cs`) is currently self-contained
-scaffolding. To test real production code:
+The tests reference real production code via `ProjectReference` entries in
+`SqlNexus.UnitTests.csproj` (currently `RowsetImportEngine` and `sqlnexus`). To test
+additional product code:
 
-1. Add a `ProjectReference` to the product project in `SqlNexus.UnitTests.csproj`
-   (a commented example is included).
+1. Add a `ProjectReference` to the product project in `SqlNexus.UnitTests.csproj`.
 2. If you need to test `internal` members, add to the product project (e.g. in
    `AssemblyInfo.cs` or the csproj):
    `[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("SqlNexus.UnitTests")]`
-3. Replace the local mirror helpers in the example with direct calls into the product type.
+   (the `sqlnexus` project already does this.)
+3. Call directly into the product type from the test.
 
 ## Running tests
 
 - **Visual Studio:** open Test Explorer and run.
 - **Command line:** `dotnet test TestingInfrastructure/UnitTests/SqlNexus.UnitTests/SqlNexus.UnitTests.csproj`
 
-## Adding the project to the solution
+> Note: the legacy WinForms `sqlnexus` project may not build under the `dotnet` SDK
+> toolchain on all machines (non-string WinForms resources). If `dotnet test` fails to
+> build it, build the solution in Visual Studio and run the tests from Test Explorer.
 
-The test project is intentionally not yet added to `sqlnexus.sln` so the product build is
-unaffected. To include it:
+## Solution membership
 
-`dotnet sln sqlnexus.sln add TestingInfrastructure/UnitTests/SqlNexus.UnitTests/SqlNexus.UnitTests.csproj`
-
-Consider a separate solution filter (`.slnf`) for CI test runs if you do not want the test
-project in the main build.
+The test project is included in `sqlnexus.sln`. The product build is unaffected because
+the test project is separate and only references product assemblies.
 
 ## Guiding principles
 
