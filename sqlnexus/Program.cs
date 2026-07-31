@@ -177,15 +177,21 @@ namespace sqlnexus
             if (hasMinus)
             {
                 // Subtractive syntax: must start with "All", followed by one or more tokens to remove.
-                string[] parts = mVal.Split(new char[] { '-' }, StringSplitOptions.RemoveEmptyEntries);
+                // Split with None (not RemoveEmptyEntries) so leading/trailing/repeated '-' separators
+                // produce empty tokens that are rejected below.
+                string[] parts = mVal.Split('-');
                 if (parts.Length < 2 || !string.Equals(parts[0].Trim(), "All", StringComparison.OrdinalIgnoreCase))
                     return false;
 
                 HashSet<string> result = BuildAllImporterSet();
                 for (int i = 1; i < parts.Length; i++)
                 {
+                    string tokenText = parts[i].Trim();
+                    if (tokenText.Length == 0)
+                        return false; // empty token (e.g. "All--Perfmon", "All-Perfmon-")
+
                     string canonical;
-                    if (!ImporterTokenAliases.TryGetValue(parts[i].Trim(), out canonical))
+                    if (!ImporterTokenAliases.TryGetValue(tokenText, out canonical))
                         return false; // unknown token
 
                     if (IsTraceToken(canonical))
@@ -211,15 +217,21 @@ namespace sqlnexus
             }
 
             // Additive syntax: '+'-separated list of importer tokens (canonicalized; unknowns rejected).
-            string[] tokens = mVal.Split(new char[] { '+' }, StringSplitOptions.RemoveEmptyEntries);
+            // Split with None (not RemoveEmptyEntries) so leading/trailing/repeated '+' separators
+            // produce empty tokens that are rejected below.
+            string[] tokens = mVal.Split('+');
             if (tokens.Length == 0)
                 return false;
 
             var set = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             foreach (string token in tokens)
             {
+                string tokenText = token.Trim();
+                if (tokenText.Length == 0)
+                    return false; // empty token (e.g. "+Perfmon", "Perfmon+", "Perfmon++Linux")
+
                 string canonical;
-                if (!ImporterTokenAliases.TryGetValue(token.Trim(), out canonical))
+                if (!ImporterTokenAliases.TryGetValue(tokenText, out canonical))
                     return false; // unknown token
                 set.Add(canonical);
             }
