@@ -838,18 +838,22 @@ namespace sqlnexus
                                 }
                             }
                         }
-                            // Mutual exclusivity: if both trace importers end up enabled via /M,
-                            // TraceEventImporter wins and ReadTrace is suppressed.
-                            if (Enabled
-                                && string.Equals(prod.Name, READTRACE_IMPORTER_NAME, StringComparison.OrdinalIgnoreCase)
-                                && Globals.EnabledImporters.Contains("TraceEventImporter"))
-                            {
-                                Enabled = false;
-                                Util.Logger.LogMessage("/M override; both trace importers selected — disabling '" + READTRACE_IMPORTER_NAME + "' in favour of '" + TRACEEVENT_IMPORTER_NAME + "'.");
-                            }
-                        }
-                        Util.Logger.LogMessage("/M override; importer '" + prod.Name + "' enabled = " + Enabled);
                     }
+
+                    // Mutual exclusivity (applied after ALL selection paths, including /MAll):
+                    // ReadTrace and TraceEventImporter write to the same ReadTrace.* schema and must
+                    // not run together. TraceEventImporter wins, so suppress ReadTrace whenever the
+                    // managed trace importer is also enabled - whether via "All" or an explicit token.
+                    if (Enabled
+                        && string.Equals(prod.Name, READTRACE_IMPORTER_NAME, StringComparison.OrdinalIgnoreCase)
+                        && (Globals.EnabledImporters.Contains("All") || Globals.EnabledImporters.Contains("TraceEventImporter")))
+                    {
+                        Enabled = false;
+                        Util.Logger.LogMessage("/M override; both trace importers selected — disabling '" + READTRACE_IMPORTER_NAME + "' in favour of '" + TRACEEVENT_IMPORTER_NAME + "'.");
+                    }
+
+                    Util.Logger.LogMessage("/M override; importer '" + prod.Name + "' enabled = " + Enabled);
+                }
 
 
                 if (Enabled)
