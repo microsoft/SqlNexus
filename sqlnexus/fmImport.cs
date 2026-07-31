@@ -1390,6 +1390,7 @@ namespace sqlnexus
                         currLabel = (Label)tlpFiles.Controls[i + 2];
                         currLabel.Text = "Please wait for PerfStats analysis step to complete...";
 
+                        MainForm.LogMessage("PerfStats analysis is a mandatory post-import stage (creates derived tables and reporting rules used by reports, including Perfmon reports); it runs regardless of /M selection.");
                         MainForm.LogMessage("Running Perfstats Analysis");
                         Application.DoEvents();
 
