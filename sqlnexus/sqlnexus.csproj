@@ -338,6 +338,7 @@
     </Compile>
     <Compile Include="Globals.cs" />
     <Compile Include="ImporterSelectionEvaluator.cs" />
+    <Compile Include="InlineDateTimeTraceListener.cs" />
     <Compile Include="NexusInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
