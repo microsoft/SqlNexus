@@ -141,6 +141,106 @@ namespace SqlNexus.UnitTests.sqlnexus
             ImporterSelectionEvaluator.Evaluate("ERRORLOG Importer", null);
         }
 
+        // ---- Trace importer fallback -----------------------------------------
+
+        // Helper: builds a discovery predicate from a set of available importer names.
+        private static Func<string, bool> Available(params string[] names)
+        {
+            var set = new HashSet<string>(names, StringComparer.OrdinalIgnoreCase);
+            return n => set.Contains(n);
+        }
+
+        [TestMethod]
+        public void Fallback_PreferredMissing_FallsBackToReadTrace()
+        {
+            var tokens = Tokens("TraceEventImporter", "Perfmon");
+            var result = ImporterSelectionEvaluator.ResolveTraceFallback(
+                tokens, Available(ImporterSelectionEvaluator.ReadTraceImporterName,
+                                  "BLG Blaster (Perfmon/Sysmon BLG files)"));
+
+            Assert.AreEqual(ImporterSelectionEvaluator.TraceFallbackResult.FellBackToReadTrace, result);
+            Assert.IsFalse(tokens.Contains("TraceEventImporter"));
+            Assert.IsTrue(tokens.Contains("ReadTrace"));
+            // Unrelated tokens are untouched.
+            Assert.IsTrue(tokens.Contains("Perfmon"));
+        }
+
+        [TestMethod]
+        public void Fallback_ReadTraceMissing_FallsBackToTraceEvent()
+        {
+            var tokens = Tokens("ReadTrace");
+            var result = ImporterSelectionEvaluator.ResolveTraceFallback(
+                tokens, Available(ImporterSelectionEvaluator.TraceEventImporterName));
+
+            Assert.AreEqual(ImporterSelectionEvaluator.TraceFallbackResult.FellBackToTraceEvent, result);
+            Assert.IsFalse(tokens.Contains("ReadTrace"));
+            Assert.IsTrue(tokens.Contains("TraceEventImporter"));
+        }
+
+        [TestMethod]
+        public void Fallback_PreferredAvailable_NoChange()
+        {
+            var tokens = Tokens("TraceEventImporter");
+            var result = ImporterSelectionEvaluator.ResolveTraceFallback(
+                tokens, Available(ImporterSelectionEvaluator.TraceEventImporterName,
+                                  ImporterSelectionEvaluator.ReadTraceImporterName));
+
+            Assert.AreEqual(ImporterSelectionEvaluator.TraceFallbackResult.None, result);
+            Assert.IsTrue(tokens.Contains("TraceEventImporter"));
+            Assert.IsFalse(tokens.Contains("ReadTrace"));
+        }
+
+        [TestMethod]
+        public void Fallback_NoTraceRequested_NoChange()
+        {
+            var tokens = Tokens("Perfmon", "Errorlog");
+            var result = ImporterSelectionEvaluator.ResolveTraceFallback(
+                tokens, Available()); // nothing installed ? irrelevant, no trace requested
+
+            Assert.AreEqual(ImporterSelectionEvaluator.TraceFallbackResult.None, result);
+            Assert.IsTrue(tokens.Contains("Perfmon"));
+            Assert.IsTrue(tokens.Contains("Errorlog"));
+        }
+
+        [TestMethod]
+        public void Fallback_NeitherTraceImporterAvailable_ReportsUnavailable()
+        {
+            var tokens = Tokens("TraceEventImporter");
+            var result = ImporterSelectionEvaluator.ResolveTraceFallback(
+                tokens, Available("BLG Blaster (Perfmon/Sysmon BLG files)"));
+
+            Assert.AreEqual(ImporterSelectionEvaluator.TraceFallbackResult.NoTraceImporterAvailable, result);
+        }
+
+        [TestMethod]
+        public void Fallback_BothRequestedButOnlyReadTraceAvailable_DropsMissingTraceEventToken()
+        {
+            // Both trace tokens present; only ReadTrace installed. The unavailable TraceEvent token
+            // is dropped and we fall back to ReadTrace so trace data is still imported.
+            var tokens = Tokens("ReadTrace", "TraceEventImporter");
+            var result = ImporterSelectionEvaluator.ResolveTraceFallback(
+                tokens, Available(ImporterSelectionEvaluator.ReadTraceImporterName));
+
+            Assert.AreEqual(ImporterSelectionEvaluator.TraceFallbackResult.FellBackToReadTrace, result);
+            Assert.IsTrue(tokens.Contains("ReadTrace"));
+            Assert.IsFalse(tokens.Contains("TraceEventImporter"));
+        }
+
+        [TestMethod]
+        public void Fallback_NullSelection_NoChange()
+        {
+            var result = ImporterSelectionEvaluator.ResolveTraceFallback(
+                null, Available(ImporterSelectionEvaluator.ReadTraceImporterName));
+            Assert.AreEqual(ImporterSelectionEvaluator.TraceFallbackResult.None, result);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void Fallback_NullPredicate_Throws()
+        {
+            ImporterSelectionEvaluator.ResolveTraceFallback(Tokens("ReadTrace"), null);
+        }
+
         // ---- Exit-code decision ----------------------------------------------
 
         [TestMethod]

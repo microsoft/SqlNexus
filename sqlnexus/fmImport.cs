@@ -431,7 +431,58 @@ namespace sqlnexus
             EnumImportersFromDirectory(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\SqlNexus\Importers");
             EnumImportersFromDirectory(Application.StartupPath);
             EnforceTraceImporterExclusivity();
+            ResolveTraceImporterFallback();
             LogMissingBuiltInImporters();
+        }
+
+        /// <summary>
+        /// The set of importer names actually discovered/loaded from the Importers folder(s).
+        /// </summary>
+        private HashSet<string> GetDiscoveredImporterNames()
+        {
+            var discovered = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            foreach (ToolStripMenuItem importerTsi in tsiImporters.DropDownItems)
+            {
+                INexusImporter prod = importerTsi.Tag as INexusImporter;
+                if (prod != null)
+                    discovered.Add(prod.Name);
+            }
+            return discovered;
+        }
+
+        /// <summary>
+        /// For a /M run, if the requested trace importer is not installed, transparently fall back
+        /// to the other trace importer (they are one logical capability writing to the same
+        /// ReadTrace.* schema). TraceEventImporter is preferred, but if its assembly is missing we
+        /// use ReadTrace (and vice versa) so trace data is still imported. Logged explicitly.
+        /// </summary>
+        private void ResolveTraceImporterFallback()
+        {
+            if (Globals.EnabledImporters == null)
+                return;
+
+            HashSet<string> discovered = GetDiscoveredImporterNames();
+            var outcome = ImporterSelectionEvaluator.ResolveTraceFallback(
+                Globals.EnabledImporters, name => discovered.Contains(name));
+
+            switch (outcome)
+            {
+                case ImporterSelectionEvaluator.TraceFallbackResult.FellBackToReadTrace:
+                    MainForm.LogMessage("/M override; preferred '" + TRACEEVENT_IMPORTER_NAME
+                        + "' was NOT discovered - falling back to '" + READTRACE_IMPORTER_NAME
+                        + "' so trace data is still imported.", MessageOptions.All);
+                    break;
+                case ImporterSelectionEvaluator.TraceFallbackResult.FellBackToTraceEvent:
+                    MainForm.LogMessage("/M override; '" + READTRACE_IMPORTER_NAME
+                        + "' was NOT discovered - using '" + TRACEEVENT_IMPORTER_NAME
+                        + "' instead so trace data is still imported.", MessageOptions.All);
+                    break;
+                case ImporterSelectionEvaluator.TraceFallbackResult.NoTraceImporterAvailable:
+                    MainForm.LogMessage("/M override; trace data was requested but NEITHER '"
+                        + TRACEEVENT_IMPORTER_NAME + "' nor '" + READTRACE_IMPORTER_NAME
+                        + "' was discovered - no trace data will be imported.", MessageOptions.All);
+                    break;
+            }
         }
 
         /// <summary>
@@ -441,13 +492,7 @@ namespace sqlnexus
         /// </summary>
         private void LogMissingBuiltInImporters()
         {
-            var discovered = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-            foreach (ToolStripMenuItem importerTsi in tsiImporters.DropDownItems)
-            {
-                INexusImporter prod = importerTsi.Tag as INexusImporter;
-                if (prod != null)
-                    discovered.Add(prod.Name);
-            }
+            var discovered = GetDiscoveredImporterNames();
 
             foreach (var kvp in ImporterTokenToName)
             {

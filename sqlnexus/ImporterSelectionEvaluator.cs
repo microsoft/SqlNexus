@@ -41,6 +41,9 @@ namespace sqlnexus
         /// <summary>The /M token for the preferred managed trace importer.</summary>
         public const string TraceEventToken = "TraceEventImporter";
 
+        /// <summary>The /M token for the classic ReadTrace importer.</summary>
+        public const string ReadTraceToken = "ReadTrace";
+
         /// <summary>
         /// Maps /M command-line tokens (case-insensitive) to the exact INexusImporter.Name values
         /// returned at runtime. CustomXEL is handled separately (it is not an INexusImporter menu item).
@@ -128,6 +131,83 @@ namespace sqlnexus
         public static bool IsCustomXelSelected(ISet<string> selectedTokens)
         {
             return selectedTokens != null && selectedTokens.Contains(CustomXelToken);
+        }
+
+        /// <summary>
+        /// The outcome of resolving trace-importer availability against the /M selection.
+        /// </summary>
+        public enum TraceFallbackResult
+        {
+            /// <summary>No change needed (not a trace selection, or the preferred importer is available).</summary>
+            None,
+            /// <summary>Preferred TraceEventImporter is missing; fell back to ReadTrace (swapped tokens).</summary>
+            FellBackToReadTrace,
+            /// <summary>ReadTrace is missing; the managed TraceEventImporter will be used instead.</summary>
+            FellBackToTraceEvent,
+            /// <summary>Trace data was requested but no trace importer is installed at all.</summary>
+            NoTraceImporterAvailable
+        }
+
+        /// <summary>
+        /// Resolves trace-importer availability for a /M run so that trace data is imported by
+        /// whichever trace importer is actually installed. The two trace importers are one logical
+        /// capability writing to the same ReadTrace.* schema; TraceEventImporter is preferred, but
+        /// if its assembly is not discovered we transparently fall back to ReadTrace (and vice
+        /// versa). The <paramref name="selectedTokens"/> set is mutated in place to reflect the
+        /// resolved choice so the normal gating in <see cref="Evaluate"/> enables the right one.
+        /// </summary>
+        /// <param name="selectedTokens">The parsed /M token set (mutated in place). May be null (no /M run).</param>
+        /// <param name="isImporterDiscovered">Predicate: is the importer with this INexusImporter.Name available?</param>
+        public static TraceFallbackResult ResolveTraceFallback(
+            ISet<string> selectedTokens, Func<string, bool> isImporterDiscovered)
+        {
+            if (isImporterDiscovered == null)
+                throw new ArgumentNullException(nameof(isImporterDiscovered));
+
+            // No /M selection, or no trace capability requested: nothing to resolve.
+            if (selectedTokens == null)
+                return TraceFallbackResult.None;
+
+            bool wantsTraceEvent = selectedTokens.Contains(TraceEventToken);
+            bool wantsReadTrace = selectedTokens.Contains(ReadTraceToken);
+            if (!wantsTraceEvent && !wantsReadTrace)
+                return TraceFallbackResult.None;
+
+            bool traceEventAvailable = isImporterDiscovered(TraceEventImporterName);
+            bool readTraceAvailable = isImporterDiscovered(ReadTraceImporterName);
+
+            // Preferred managed importer requested but unavailable: fall back to ReadTrace if present.
+            if (wantsTraceEvent && !traceEventAvailable)
+            {
+                if (readTraceAvailable)
+                {
+                    selectedTokens.Remove(TraceEventToken);
+                    selectedTokens.Add(ReadTraceToken);
+                    return TraceFallbackResult.FellBackToReadTrace;
+                }
+                // Neither trace importer available at all.
+                if (!wantsReadTrace)
+                    return TraceFallbackResult.NoTraceImporterAvailable;
+            }
+
+            // ReadTrace requested but unavailable: use the managed importer if present.
+            if (wantsReadTrace && !readTraceAvailable)
+            {
+                if (traceEventAvailable)
+                {
+                    selectedTokens.Remove(ReadTraceToken);
+                    selectedTokens.Add(TraceEventToken);
+                    return TraceFallbackResult.FellBackToTraceEvent;
+                }
+                if (!wantsTraceEvent)
+                    return TraceFallbackResult.NoTraceImporterAvailable;
+            }
+
+            // If both were requested and at least one is available, existing exclusivity handles it.
+            if ((wantsTraceEvent || wantsReadTrace) && !traceEventAvailable && !readTraceAvailable)
+                return TraceFallbackResult.NoTraceImporterAvailable;
+
+            return TraceFallbackResult.None;
         }
 
         /// <summary>
