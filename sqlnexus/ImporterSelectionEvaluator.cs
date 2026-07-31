@@ -213,7 +213,7 @@ namespace sqlnexus
         /// <summary>
         /// Decides the process exit code.
         /// - Core (Rowset) failure  -> Exception (2): the load is unusable.
-        /// - A requested importer was missing or imported nothing -> ImportIncomplete (3):
+        /// - A requested importer was missing, imported nothing, or failed -> ImportIncomplete (3):
         ///   automation asked for data that did not arrive, so it must not see success.
         /// - Otherwise -> Normal (0).
         /// </summary>

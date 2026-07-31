@@ -32,16 +32,17 @@ namespace sqlnexus
 
         /// <summary>
         /// When set via the /M command-line argument, only the listed importers are activated.
-        /// Tokens (case-insensitive): ReadTrace, Perfmon, Linux, Errorlog, CustomXEL, TraceImp, All.
+        /// Tokens (case-insensitive): ReadTrace, TraceEventImporter (synonyms Trace/TraceImp/
+        /// TraceImporter), Perfmon, Linux, Errorlog, CustomXEL, All.
         /// Null means no override — use the defaults / saved user.config values unchanged.
         /// </summary>
         public static HashSet<string> EnabledImporters = null;
 
         /// <summary>
-        /// Set true during a /M run when a requested importer's assembly was missing, or an enabled
-        /// importer matched no input files. Used to return a non-zero exit code so automation does
-        /// not see success when requested data did not arrive. Only meaningful when EnabledImporters
-        /// is non-null (a /M run).
+        /// Set true during a /M run when a requested importer's assembly was missing, an enabled
+        /// importer matched no input files, or an importer failed. Used to return a non-zero exit
+        /// code so automation does not see success when requested data did not arrive. Only
+        /// meaningful when EnabledImporters is non-null (a /M run).
         /// </summary>
         public static bool RequestedImporterMissingOrEmpty = false;
 

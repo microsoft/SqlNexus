@@ -1273,6 +1273,12 @@ namespace sqlnexus
                         else if (!Success)	// set summary msg if import failed
                         {
                             RunScripts = false;
+
+                            // Under /M, a requested importer that FAILED means the data automation
+                            // asked for did not arrive; flag it so the process returns a non-zero exit code.
+                            if (Globals.EnabledImporters != null)
+                                Globals.RequestedImporterMissingOrEmpty = true;
+
                             msg += "Import failed. (" + (Environment.TickCount - ticks) / 1000 + " sec, ";
                             if (ri is INexusFileImporter)
                             {
@@ -1359,6 +1365,11 @@ namespace sqlnexus
                             Success = false;
                             MainForm.LogMessage("Custom XEL Importer FAILED - see log for details");
                             rawfileMsg = "(Importer:" + customXELImprtStr + ") " + "FAILED. (" + (Environment.TickCount - customXELImportStartTicks) / 1000 + " sec), " + XelImprtStatusStr;
+
+                            // Under /M, a failed CustomXEL import means requested data did not arrive;
+                            // flag it so the process returns a non-zero exit code.
+                            if (Globals.EnabledImporters != null)
+                                Globals.RequestedImporterMissingOrEmpty = true;
                         }
                         currLabel.Text = rawfileMsg;
                         Application.DoEvents();
