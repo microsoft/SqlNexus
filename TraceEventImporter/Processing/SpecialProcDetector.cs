@@ -7,6 +7,18 @@ namespace TraceEventImporter.Processing
     /// Detects the 17 special stored procedures that get special handling during
     /// normalization and hash computation. The SpecialProcID is used as a seed
     /// component in the StringHash function.
+    ///
+    /// IMPORTANT: These SpecialProcID values are IMPORTER-LOCAL and intentionally
+    /// differ from the canonical SpecialProcs enum used by native ReadTrace.exe
+    /// (RMLSupp\CommonFiles\CommonDefines.h — e.g. there sp_executesql = 13,
+    /// sp_prepare = 10, sp_prepexec = 14). This importer never needs to match those
+    /// numeric values: the same ID is used consistently as both the StringHash seed
+    /// and the tblUniqueBatches.SpecialProcID stored value (joined to
+    /// tblProcedureNames.SpecialProcID), so the data is internally consistent.
+    /// The resulting HashIDs therefore will NOT match those produced by ReadTrace.exe,
+    /// which is acceptable because the two importers are never mixed within one import.
+    /// If byte-for-byte parity with ReadTrace.exe is ever required, remap the values
+    /// below to the espXxx enum numbering.
     /// </summary>
     public static class SpecialProcDetector
     {

@@ -57,7 +57,12 @@ IF OBJECT_ID('ReadTrace.tblUniqueAppNames', 'U') IS NOT NULL DROP TABLE ReadTrac
 GO
 CREATE TABLE ReadTrace.tblUniqueAppNames
 (
-    [iID]       [int]   NOT NULL PRIMARY KEY IDENTITY(1,1),
+    -- iID is NOT an IDENTITY column: the importer assigns these IDs in memory
+    -- (UniqueStore) and writes them explicitly, so that the value stored here always
+    -- matches the AppNameID recorded in tblBatchPartialAggs / tblStmtPartialAggs.
+    -- Relying on IDENTITY generation order would risk a mismatch if the write order
+    -- ever diverged from the in-memory assignment order.
+    [iID]       [int]   NOT NULL PRIMARY KEY,
     [AppName]   nvarchar(256) NOT NULL
 )
 GO
@@ -66,7 +71,8 @@ IF OBJECT_ID('ReadTrace.tblUniqueLoginNames', 'U') IS NOT NULL DROP TABLE ReadTr
 GO
 CREATE TABLE ReadTrace.tblUniqueLoginNames
 (
-    [iID]       [int]   NOT NULL PRIMARY KEY IDENTITY(1,1),
+    -- iID is NOT an IDENTITY column — see the note on tblUniqueAppNames above.
+    [iID]       [int]   NOT NULL PRIMARY KEY,
     [LoginName] nvarchar(256) NOT NULL
 )
 GO

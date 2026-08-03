@@ -87,7 +87,9 @@ namespace TraceEventImporter.Database
                 foreach (var kvp in appNames)
                 {
                     DataRow row = bl.GetNewRow();
-                    // iID is identity — don't set it; SQL Server generates it
+                    // iID is written explicitly (not IDENTITY-generated) so it always
+                    // matches the AppNameID stored on the aggregate rows.
+                    row["iID"] = kvp.Value;
                     row["AppName"] = kvp.Key ?? "";
                     bl.InsertRow(row);
                     TotalRowsInserted++;
@@ -107,6 +109,9 @@ namespace TraceEventImporter.Database
                 foreach (var kvp in loginNames)
                 {
                     DataRow row = bl.GetNewRow();
+                    // iID is written explicitly (not IDENTITY-generated) so it always
+                    // matches the LoginNameID stored on the aggregate rows.
+                    row["iID"] = kvp.Value;
                     row["LoginName"] = kvp.Key ?? "";
                     bl.InsertRow(row);
                     TotalRowsInserted++;
