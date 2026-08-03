@@ -270,9 +270,7 @@ namespace TraceEventImporter.Normalization
 
         private static bool IsHexDigit(char c)
         {
-            return (c >= '0' && c <= '9')
-                || (c >= 'a' && c <= 'f')
-                || (c >= 'A' && c <= 'F');
+            return Uri.IsHexDigit(c);
         }
 
         private static bool IsIdentChar(char c)

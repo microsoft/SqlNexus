@@ -565,10 +565,6 @@ namespace sqlnexus
             string[] Files = Directory.GetFiles(importerDirectory, "*.DLL");
             List<string> OrderedFiles = OrderedImporterFiles(Files);
 
-            // Track which expected DLL names were actually seen in this directory so that
-            // EnumImporters() can warn about any that are present on disk but failed to register.
-            var seenExpected = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-
             foreach (string file in OrderedFiles)
             {
                 //we know this is a native image
@@ -660,8 +656,6 @@ namespace sqlnexus
                         }
 
                         importersRegisteredFromThisDll++;
-                        if (isExpected)
-                            seenExpected.Add(dllBaseName);
 
                         prod.StatusChanged += new System.EventHandler(this.ImportStatusChanged);
                         if (prod is INexusProgressReporter)
