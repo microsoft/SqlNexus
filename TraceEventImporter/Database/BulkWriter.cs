@@ -431,6 +431,11 @@ namespace TraceEventImporter.Database
 
         public void Dispose()
         {
+            // NOTE: There is intentionally no unmanaged/aggregate resource to release here.
+            // Each Write* method creates its own BulkLoadRowset and closes it (and its
+            // SqlConnection) in a finally block before returning, so nothing is held open
+            // between calls. IDisposable is implemented only so callers can use a `using`
+            // block for symmetry/readability; the flag simply guards against double-dispose.
             if (!_disposed)
             {
                 _disposed = true;

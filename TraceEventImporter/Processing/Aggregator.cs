@@ -41,6 +41,10 @@ namespace TraceEventImporter.Processing
             if (minTime >= maxTime)
                 return;
 
+            // Remember the range start so FindTimeInterval can compute the interval
+            // index directly (O(1)) instead of scanning the interval list.
+            _minTime = minTime;
+
             // Build time intervals
             BuildTimeIntervals(minTime, maxTime);
 
@@ -188,17 +192,29 @@ namespace TraceEventImporter.Processing
 
         private int FindTimeInterval(DateTime? time)
         {
-            if (!time.HasValue || TimeIntervals.Count == 0) 
+            if (!time.HasValue || TimeIntervals.Count == 0)
                 return 0;
-            DateTime t = time.Value;
-            foreach (var ti in TimeIntervals)
-            {
-                if (t >= ti.StartTime && t < ti.EndTime)
-                    return ti.TimeInterval;
-            }
-            // If after last interval, use the last one
-            return TimeIntervals[TimeIntervals.Count - 1].TimeInterval;
+
+            // Intervals are uniform width (_intervalSeconds) and contiguous starting at
+            // _minTime, and TimeInterval IDs are assigned 1..N in order. So the interval
+            // for a timestamp can be computed directly in O(1) rather than scanning.
+            double secondsFromStart = (time.Value - _minTime).TotalSeconds;
+
+            // Before the first interval (shouldn't normally happen) -> clamp to first.
+            if (secondsFromStart < 0)
+                return TimeIntervals[0].TimeInterval;
+
+            int index = (int)(secondsFromStart / _intervalSeconds);
+
+            // At/after the last interval (e.g., timestamp == maxTime, or the final
+            // interval was truncated) -> clamp to the last interval.
+            if (index >= TimeIntervals.Count)
+                return TimeIntervals[TimeIntervals.Count - 1].TimeInterval;
+
+            return TimeIntervals[index].TimeInterval;
         }
+
+        private DateTime _minTime;
 
         private readonly Dictionary<AggKey, BatchPartialAggRow> _batchAggDict = new Dictionary<AggKey, BatchPartialAggRow>();
         private readonly Dictionary<AggKey, StmtPartialAggRow> _stmtAggDict = new Dictionary<AggKey, StmtPartialAggRow>();

@@ -109,6 +109,28 @@ CREATE TABLE ReadTrace.tblUniqueStatements
 )
 GO
 
+-- ===========================================
+-- Query Plan Tables
+--
+-- NOTE: These four plan tables (tblUniquePlans, tblUniquePlanRows, tblPlans,
+-- tblPlanRows) are created for schema compatibility with the native ReadTrace.exe
+-- layout, but the managed TraceEventImporter does NOT currently populate them.
+--
+-- Why: ReadTrace.exe built these tables from the classic Profiler "Showplan
+-- Statistics Profile / Showplan All" trace events (event classes 97/98), which SQL
+-- Server delivered as a per-operator binary rowset that mapped almost 1:1 onto
+-- tblUniquePlanRows. Modern Extended Events do not emit that rowset — the equivalent
+-- event (query_post_execution_showplan) provides a single showplan_xml blob instead,
+-- which would require an XML parser to shred into operator rows.
+--
+-- Populating these tables from XEL is therefore a separate, self-contained feature.
+-- If/when implemented, the intended design is:
+--   * Read only post-execution plans (query_post_execution_showplan); compile-time
+--     plans (query_post_compilation_showplan) are intentionally out of scope.
+--   * Use SQL Server's native QueryPlanHash attribute (from the showplan XML) as
+--     PlanHashID rather than a custom normalized-text hash.
+-- ===========================================
+
 IF OBJECT_ID('ReadTrace.tblUniquePlans', 'U') IS NOT NULL DROP TABLE ReadTrace.tblUniquePlans
 GO
 CREATE TABLE ReadTrace.tblUniquePlans

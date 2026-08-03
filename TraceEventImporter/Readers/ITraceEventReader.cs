@@ -20,5 +20,16 @@ namespace TraceEventImporter.Readers
         /// File extensions supported by this reader (e.g., ".trc", ".xel").
         /// </summary>
         string[] SupportedExtensions { get; }
+
+        /// <summary>
+        /// Number of non-fatal field/action extraction failures encountered during the
+        /// most recent read. A high count indicates a schema/mapping mismatch.
+        /// </summary>
+        long MappingErrorCount { get; }
+
+        /// <summary>
+        /// A capped, de-duplicated sample of mapping-failure messages for diagnostics.
+        /// </summary>
+        IEnumerable<string> MappingErrorSamples { get; }
     }
 }

@@ -17,6 +17,30 @@ namespace TraceEventImporter.Readers
     {
         private long _globalSeq;
 
+        // Count of field/action extraction failures encountered while reading the current
+        // file. Individual failures are non-fatal (the value becomes null), but a high count
+        // signals a schema/mapping mismatch worth surfacing to the user.
+        private long _mappingErrorCount;
+
+        // A small, de-duplicated sample of failure messages for diagnostics. Capped so a
+        // pathological file cannot balloon memory.
+        private const int MaxSampleMessages = 10;
+        private readonly HashSet<string> _mappingErrorSamples =
+            new HashSet<string>(StringComparer.Ordinal);
+
+        /// <summary>Number of field/action extraction failures seen so far.</summary>
+        public long MappingErrorCount => System.Threading.Interlocked.Read(ref _mappingErrorCount);
+
+        /// <summary>A capped, de-duplicated sample of mapping-failure messages for logging.</summary>
+        public IEnumerable<string> MappingErrorSamples
+        {
+            get
+            {
+                lock (_mappingErrorSamples)
+                    return new List<string>(_mappingErrorSamples);
+            }
+        }
+
         public XelFileReader(long startingSeq = 0)
         {
             _globalSeq = startingSeq;
@@ -41,8 +65,12 @@ namespace TraceEventImporter.Readers
                                 TraceEvent evt = MapEvent(xevent);
                                 if (evt != null)
                                 {
-                                    if (evt.Seq == 0)
-                                        evt.Seq = Interlocked.Increment(ref _globalSeq);
+                                    // Always assign a globally monotonic sequence. The XEL
+                                    // event_sequence action only resets per file, so relying on
+                                    // it would cause BatchSeq/StmtSeq/ConnSeq collisions across
+                                    // multiple .xel files in the same import. A single shared,
+                                    // ever-increasing counter guarantees uniqueness across files.
+                                    evt.Seq = Interlocked.Increment(ref _globalSeq);
                                     collection.Add(evt);
                                 }
                                 return Task.CompletedTask;
@@ -126,8 +154,10 @@ namespace TraceEventImporter.Readers
             // Common timestamp
             evt.StartTime = xe.Timestamp.UtcDateTime;
 
-            // Common actions (global fields attached to all events)
-            evt.Seq = GetActionInt64(xe, "event_sequence");
+            // Common actions (global fields attached to all events).
+            // NOTE: evt.Seq is intentionally NOT read from the "event_sequence" action here —
+            // it is assigned by ReadEvents() from a single global counter so that sequence
+            // values stay unique and monotonic across multiple .xel files.
             evt.DatabaseId = (int)GetActionInt64(xe, "database_id");
             evt.SessionId = (int)GetActionInt64(xe, "session_id");
             evt.RequestId = (int)GetActionInt64(xe, "request_id");
@@ -216,7 +246,19 @@ namespace TraceEventImporter.Readers
 
         #region Field/Action Helpers
 
-        private static string GetFieldString(IXEvent xe, string fieldName)
+        private void RecordMappingError(string context, string message)
+        {
+            System.Threading.Interlocked.Increment(ref _mappingErrorCount);
+            string entry = context + ": " + message;
+            System.Diagnostics.Debug.WriteLine("[XelFileReader] " + entry);
+            lock (_mappingErrorSamples)
+            {
+                if (_mappingErrorSamples.Count < MaxSampleMessages)
+                    _mappingErrorSamples.Add(entry);
+            }
+        }
+
+        private string GetFieldString(IXEvent xe, string fieldName)
         {
             try
             {
@@ -225,12 +267,12 @@ namespace TraceEventImporter.Readers
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"[XelFileReader] GetFieldString('{fieldName}'): {ex.Message}");
+                RecordMappingError($"GetFieldString('{fieldName}')", ex.Message);
             }
             return null;
         }
 
-        private static long? GetFieldInt64Nullable(IXEvent xe, string fieldName)
+        private long? GetFieldInt64Nullable(IXEvent xe, string fieldName)
         {
             try
             {
@@ -239,12 +281,12 @@ namespace TraceEventImporter.Readers
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"[XelFileReader] GetFieldInt64Nullable('{fieldName}'): {ex.Message}");
+                RecordMappingError($"GetFieldInt64Nullable('{fieldName}')", ex.Message);
             }
             return null;
         }
 
-        private static string GetActionString(IXEvent xe, string actionName)
+        private string GetActionString(IXEvent xe, string actionName)
         {
             try
             {
@@ -253,12 +295,12 @@ namespace TraceEventImporter.Readers
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"[XelFileReader] GetActionString('{actionName}'): {ex.Message}");
+                RecordMappingError($"GetActionString('{actionName}')", ex.Message);
             }
             return null;
         }
 
-        private static long GetActionInt64(IXEvent xe, string actionName)
+        private long GetActionInt64(IXEvent xe, string actionName)
         {
             try
             {
@@ -267,7 +309,7 @@ namespace TraceEventImporter.Readers
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"[XelFileReader] GetActionInt64('{actionName}'): {ex.Message}");
+                RecordMappingError($"GetActionInt64('{actionName}')", ex.Message);
             }
             return 0;
         }

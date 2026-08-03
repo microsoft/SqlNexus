@@ -16,8 +16,6 @@ namespace TraceEventImporter.Processing
         private readonly Dictionary<string, ProcedureInfo> _procedureNames = new Dictionary<string, ProcedureInfo>(StringComparer.OrdinalIgnoreCase);
         private readonly HashSet<int> _tracedEventIds = new HashSet<int>();
 
-        private long _uniqueBatchSeq;
-        private long _uniqueStmtSeq;
         private int _appNameIdSeq;
         private int _loginNameIdSeq;
 

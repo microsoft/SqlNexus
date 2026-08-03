@@ -1573,7 +1573,7 @@ namespace sqlnexus
                 return;
 
             // Only execute ReadTracePostProcessing.sql when the current importer is ReadTrace or TraceEventImporter (both use the ReadTrace schema).
-            bool isReadTraceImporter = importerName.Equals("ReadTrace (SQL XEL/TRC files)", StringComparison.OrdinalIgnoreCase)
+            bool isReadTraceImporter = importerName.Equals(READTRACE_IMPORTER_NAME, StringComparison.OrdinalIgnoreCase)
                                     || importerName.Equals(TRACEEVENT_IMPORTER_NAME, StringComparison.OrdinalIgnoreCase);
 
             // If nothing to run, skip executing the post scripts.
@@ -1786,9 +1786,9 @@ namespace sqlnexus
             if (tsi.Text == "Enabled" && tsi.Checked)
             {
                 string otherImporterName = null;
-                if (prod.Name == TRACEEVENT_IMPORTER_NAME)
+                if (string.Equals(prod.Name, TRACEEVENT_IMPORTER_NAME, StringComparison.OrdinalIgnoreCase))
                     otherImporterName = READTRACE_IMPORTER_NAME;
-                else if (prod.Name == READTRACE_IMPORTER_NAME)
+                else if (string.Equals(prod.Name, READTRACE_IMPORTER_NAME, StringComparison.OrdinalIgnoreCase))
                     otherImporterName = TRACEEVENT_IMPORTER_NAME;
 
                 if (otherImporterName != null)
@@ -1815,7 +1815,7 @@ namespace sqlnexus
             foreach (ToolStripMenuItem importerTsi in tsiImporters.DropDownItems)
             {
                 INexusImporter otherProd = importerTsi.Tag as INexusImporter;
-                if (otherProd == null || otherProd.Name != importerName)
+                if (otherProd == null || !string.Equals(otherProd.Name, importerName, StringComparison.OrdinalIgnoreCase))
                     continue;
 
                 foreach (ToolStripMenuItem optionTsi in importerTsi.DropDownItems)

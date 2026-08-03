@@ -41,6 +41,12 @@ namespace TraceEventImporter.Processing
         // global event sequence (evt.Seq), aligned with ReadTrace.exe which uses
         // pEvent->GetGlobalSeq() for all of them. No separate counters needed.
 
+        // Per-session index into Batches of the most recently added batch row.
+        // Lets HandleAttention locate the batch to mark in O(1) instead of scanning
+        // the whole Batches list backward for every Attention event.
+        private readonly Dictionary<int, int> _lastBatchIndexBySession =
+            new Dictionary<int, int>();
+
         // Collected rows for bulk insert
         public List<BatchRow> Batches { get; } = new List<BatchRow>();
         public List<StatementRow> Statements { get; } = new List<StatementRow>();
@@ -91,6 +97,11 @@ namespace TraceEventImporter.Processing
                     HandleAttention(evt);
                     break;
 
+                // NOTE: Query plan events are intentionally not handled here. The
+                // ReadTrace plan tables (tblPlans/tblPlanRows/tblUniquePlans*) are left
+                // empty by this importer — see the "Query Plan Tables" note in
+                // CreateSchema.sql for the rationale (XEL emits showplan_xml, not the
+                // per-operator rowset ReadTrace.exe consumed).
                 default:
                     // Interesting events (recompile, autogrow, etc.)
                     if (evt.EventType != TraceEventType.Unknown)
@@ -100,9 +111,10 @@ namespace TraceEventImporter.Processing
         }
 
         /// <summary>
-        /// Finalize: flush any pending connections that never got a logout event.
+        /// Flush any pending connections that never got a logout event.
+        /// Call once after all events have been processed.
         /// </summary>
-        public void Finalize()
+        public void FlushPendingConnections()
         {
             foreach (var conn in _connections.Values)
             {
@@ -226,7 +238,7 @@ namespace TraceEventImporter.Processing
                 DBID = evt.DatabaseId,
                 StartSeq = pending?.StartSeq,
                 EndSeq = evt.Seq,
-                AttnSeq = null,
+                AttnSeq = pending?.AttnSeq,
                 ConnSeq = connSeq,
                 TextData = textData,
                 OrigRowCount = evt.RowCount,
@@ -235,6 +247,10 @@ namespace TraceEventImporter.Processing
             };
 
             Batches.Add(row);
+
+            // Remember this batch's position so an Attention event for the same
+            // session can find it in O(1) without scanning the whole list.
+            _lastBatchIndexBySession[evt.SessionId] = Batches.Count - 1;
 
             // Clear the in-flight batch sequence now that the batch has completed
             // (matches ReadTrace: pStateInfo->CurBatchStartSeq = 0)
@@ -451,14 +467,29 @@ namespace TraceEventImporter.Processing
 
         private void HandleAttention(TraceEvent evt)
         {
-            // Find the most recent batch for this session and mark it with AttnSeq
-            for (int i = Batches.Count - 1; i >= 0; i--)
+            // An Attention aborts the batch/RPC that is currently executing on the
+            // session+request. ReadTrace.exe records the attention against the live
+            // in-flight batch (its CurBatchStartSeq state) so that AttnSeq is written
+            // onto that batch's row when its Completed event arrives.
+            //
+            // Primary case: the batch is still in flight (Starting seen, Completed not
+            // yet). Mark the pending batch; HandleBatchCompleted carries AttnSeq to the row.
+            var key = new SessionRequestKey(evt.SessionId, evt.RequestId);
+            if (_pendingBatches.TryGetValue(key, out PendingBatch pending))
             {
-                if (Batches[i].Session == evt.SessionId && Batches[i].AttnSeq == null)
-                {
-                    Batches[i].AttnSeq = evt.Seq;
-                    break;
-                }
+                if (pending.AttnSeq == null)
+                    pending.AttnSeq = evt.Seq;
+                return;
+            }
+
+            // Fallback: no batch is in flight for this session+request (e.g., the
+            // Completed event was already processed, or Starting was missing). Attach
+            // to the most recently completed batch for the session — O(1) via the index.
+            if (_lastBatchIndexBySession.TryGetValue(evt.SessionId, out int idx)
+                && idx >= 0 && idx < Batches.Count
+                && Batches[idx].AttnSeq == null)
+            {
+                Batches[idx].AttnSeq = evt.Seq;
             }
         }
 
@@ -625,6 +656,9 @@ namespace TraceEventImporter.Processing
         public int DatabaseId;
         public string ApplicationName;
         public string LoginName;
+        // Set when an Attention aborts this batch while it is still in flight
+        // (Starting seen, Completed not yet seen). Carried into the row on completion.
+        public long? AttnSeq;
     }
 
     internal class PendingStatement

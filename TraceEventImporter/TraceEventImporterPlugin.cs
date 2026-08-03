@@ -219,6 +219,16 @@ namespace TraceEventImporter
                         }
 
                         LogMessage($"TraceEventImporter: {Path.GetFileName(file)} - {fileEventsRead} events read.");
+
+                        // Surface any non-fatal field/action mapping failures so that a
+                        // schema/mapping mismatch does not go unnoticed (previously these were
+                        // only written to Debug output, invisible in Release builds).
+                        if (reader.MappingErrorCount > 0)
+                        {
+                            LogMessage($"TraceEventImporter: WARNING - {reader.MappingErrorCount} field/action mapping failure(s) while reading {Path.GetFileName(file)}. Some column values may be missing.");
+                            foreach (string sample in reader.MappingErrorSamples)
+                                LogMessage($"TraceEventImporter:   sample: {sample}");
+                        }
                     }
 
                     if (_cancelled)
@@ -229,7 +239,7 @@ namespace TraceEventImporter
                     }
 
                     // 4. Finalize processor (flush pending connections)
-                    processor.Finalize();
+                    processor.FlushPendingConnections();
 
                     // 5. Write all data
                     LogMessage("TraceEventImporter: Writing data to database...");
