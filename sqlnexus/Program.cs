@@ -467,6 +467,16 @@ namespace sqlnexus
             }
             //create a database
 
+            // /M only controls importer selection; it has no effect without an input path to import.
+            // Fail closed rather than silently launching the GUI with the override active (as the
+            // /M help text states, /M requires /I).
+            if (Globals.EnabledImporters != null && Globals.PathsToImport.Count == 0)
+            {
+                Console.WriteLine("Error: /M (importer selection) requires an input path. "
+                    + "Specify the folder to import with /I<path> (for example: /IC:\\Data /MPerfmon).");
+                return false;
+            }
+
             if (!string.IsNullOrEmpty(Globals.credentialMgr.Database))
             {
                 String currentDb = Globals.credentialMgr.Database;
@@ -528,6 +538,11 @@ namespace sqlnexus
             {
                 Console.WriteLine(string.Format("Exception encountered in Main(): [{0}]", ex.Message));
                 Console.WriteLine(string.Format("{0}", ex.StackTrace));
+
+                // A fatal, unhandled error must never be reported as success to automation.
+                Globals.IsNexusCoreImporterSuccessful = false;
+                if (Globals.EnabledImporters != null)
+                    Globals.RequestedImporterMissingOrEmpty = true;
             }
 
             return (int)ImporterSelectionEvaluator.DecideExitCode(

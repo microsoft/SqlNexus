@@ -27,6 +27,13 @@ namespace sqlnexus
         int countTotalFilesFound = 0;
         int totalRowsAffected = 0;
 
+        /// <summary>
+        /// Total number of Custom XEL files (SqlDiag/AlwaysOn Health/system_health) discovered and
+        /// imported by the last <see cref="ImportCustomXELFiles"/> call. Zero means nothing matched,
+        /// which a /M-driven run treats as "requested data did not arrive".
+        /// </summary>
+        public int TotalFilesFound { get { return countTotalFilesFound; } }
+
         bool dropExistingTables = true;
 
         public string ImportCustomXELFiles(string connString, string Server, bool UseWindowsAuth, string SQLLogin, string SQLPassword, string DatabaseName, string srcpath, out bool success, bool importCustomXEL = true, bool dropTables = true)

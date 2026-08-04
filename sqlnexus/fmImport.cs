@@ -857,6 +857,9 @@ namespace sqlnexus
             INexusImporter prod;
             // Track importers that will actually run so we can log an effective summary (esp. for /M).
             List<string> effectiveImportersToRun = new List<string>();
+            // Enabled importers that matched NO input files (nothing to import) - surfaced separately
+            // so the /M effective summary does not claim an importer "ran" when it found nothing.
+            List<string> enabledButEmptyImporters = new List<string>();
             // For each importer listed in the Options menu on the import form
             foreach (ToolStripMenuItem tsi in tsiImporters.DropDownItems)
             {
@@ -918,7 +921,6 @@ namespace sqlnexus
 
                 if (Enabled)
                 {
-                    effectiveImportersToRun.Add(prod.Name);
                     bool anyFilesFound = false;
                     foreach (string s in prod.SupportedMasks)
                     {
@@ -926,10 +928,17 @@ namespace sqlnexus
                             anyFilesFound = true;
                     }
 
-                    // A selected/enabled importer that matched no input files is worth surfacing:
-                    // in a /M-driven automation run this usually means the expected data is missing.
-                    if (!anyFilesFound)
+                    // Only importers that actually matched files are reported as "will run"; ones that
+                    // matched nothing are tracked separately so the summary is not misleading.
+                    if (anyFilesFound)
                     {
+                        effectiveImportersToRun.Add(prod.Name);
+                    }
+                    else
+                    {
+                        // A selected/enabled importer that matched no input files is worth surfacing:
+                        // in a /M-driven automation run this usually means the expected data is missing.
+                        enabledButEmptyImporters.Add(prod.Name);
                         MainForm.LogMessage("Importer '" + prod.Name + "' is enabled but found NO matching files (masks: "
                             + string.Join(", ", prod.SupportedMasks) + ") in the import path. Nothing to import for this importer.",
                             MessageOptions.All);
@@ -950,6 +959,16 @@ namespace sqlnexus
                 MainForm.LogMessage("/M effective importers to run: "
                     + (effectiveImportersToRun.Count == 0 ? "(none)" : string.Join(", ", effectiveImportersToRun))
                     + (ImporterSelectionEvaluator.IsCustomXelSelected(Globals.EnabledImporters) ? ", CustomXEL" : "")
+                    + ".", MessageOptions.All);
+
+                // Authoritative single-line summary: what will run, what was enabled but empty, and the
+                // resulting exit-code intent. (Per-importer failures/cancellation are added at runtime.)
+                MainForm.LogMessage("/M selection summary: will-run="
+                    + (effectiveImportersToRun.Count == 0 ? "(none)" : string.Join(", ", effectiveImportersToRun))
+                    + "; enabled-but-empty="
+                    + (enabledButEmptyImporters.Count == 0 ? "(none)" : string.Join(", ", enabledButEmptyImporters))
+                    + "; exit-code intent="
+                    + (Globals.RequestedImporterMissingOrEmpty ? "ImportIncomplete (requested data missing/empty)" : "Normal (so far)")
                     + ".", MessageOptions.All);
             }
 
@@ -1237,8 +1256,12 @@ namespace sqlnexus
 
 
                             RunPostScripts(ri.Name);
-                        
-                            Globals.IsNexusCoreImporterSuccessful = true;
+
+                            // Only the mandatory Rowset (core) importer determines core success. Do NOT
+                            // set this true for other importers: doing so would overwrite a prior Rowset
+                            // failure and mask it from the exit-code decision (DecideExitCode).
+                            if (ri.Name == ImporterSelectionEvaluator.RowsetImporterName)
+                                Globals.IsNexusCoreImporterSuccessful = Success;
                             //ll.LinkBehavior = LinkBehavior.HoverUnderline;
                         }
                         catch (Exception ex)
@@ -1257,6 +1280,12 @@ namespace sqlnexus
                         if (ri.Cancelled)	// different msg if import was canceled.
                         {
                             RunScripts = false;
+
+                            // A cancelled /M run did not complete the requested import; flag it so the
+                            // process returns a non-zero (ImportIncomplete) exit code instead of success.
+                            if (Globals.EnabledImporters != null)
+                                Globals.RequestedImporterMissingOrEmpty = true;
+
                             msg += "Cancelled. (" + (Environment.TickCount - ticks) / 1000 + " sec, ";
                             if (ri is INexusFileImporter)
                             {
@@ -1359,6 +1388,19 @@ namespace sqlnexus
                         {
                             MainForm.LogMessage("Custom XEL Importer completed");
                             rawfileMsg = "(Importer:" + customXELImprtStr + ") " + "Done. (" + (Environment.TickCount - customXELImportStartTicks) / 1000 + " sec), " + XelImprtStatusStr + ".";
+
+                            // A /M-selected CustomXEL import that matched NO files imported nothing:
+                            // the requested data did not arrive, so flag it for a non-zero exit code
+                            // (other importers surface this via the "found NO matching files" path).
+                            if (customXelImportEnabled && CI.TotalFilesFound == 0)
+                            {
+                                MainForm.LogMessage("Custom XEL import is enabled but found NO matching files "
+                                    + "(SQLDiag/AlwaysOn Health/system_health) in the import path. Nothing to import.",
+                                    MessageOptions.All);
+
+                                if (Globals.EnabledImporters != null)
+                                    Globals.RequestedImporterMissingOrEmpty = true;
+                            }
                         }
                         else
                         {
@@ -1516,6 +1558,13 @@ namespace sqlnexus
             catch (Exception ex)
             {
                 MainForm.LogMessage("Import failed.");
+
+                // A fatal error aborted the import. Record failure so a /M automation run does NOT
+                // report success: treat the core load as failed and the requested import as incomplete.
+                Globals.IsNexusCoreImporterSuccessful = false;
+                if (Globals.EnabledImporters != null)
+                    Globals.RequestedImporterMissingOrEmpty = true;
+
                 Globals.HandleException(ex, this, MainForm);
             }
             finally
