@@ -481,6 +481,11 @@ namespace sqlnexus
                     MainForm.LogMessage("/M override; trace data was requested but NEITHER '"
                         + TRACEEVENT_IMPORTER_NAME + "' nor '" + READTRACE_IMPORTER_NAME
                         + "' was discovered - no trace data will be imported.", MessageOptions.All);
+
+                    // Requested trace data cannot arrive: flag directly so the exit code is
+                    // ImportIncomplete regardless of downstream call ordering or token swapping
+                    // (do not rely on LogMissingBuiltInImporters to catch this).
+                    Globals.RequestedImporterMissingOrEmpty = true;
                     break;
             }
         }
@@ -894,6 +899,10 @@ namespace sqlnexus
 
                 // /M command-line override: supersedes both UI saved settings and AppConfig.xml.
                 // user.config is never read or written here — it remains intact for GUI sessions.
+                // Tracks whether this importer runs because a /M token explicitly requested it
+                // (EnabledByToken) versus because it is mandatory (ForcedOn Rowset). Only a
+                // token-requested importer that finds no files signals "requested data missing".
+                bool enabledByToken = false;
                 if (Globals.EnabledImporters != null)
                 {
                     // Delegate the decision to the pure, unit-tested evaluator so the runtime gating
@@ -902,6 +911,7 @@ namespace sqlnexus
                     // read or written here - it remains intact for GUI sessions.
                     ImporterGateResult gate = ImporterSelectionEvaluator.Evaluate(prod.Name, Globals.EnabledImporters);
                     Enabled = ImporterSelectionEvaluator.WillRun(gate);
+                    enabledByToken = gate == ImporterGateResult.EnabledByToken;
 
                     switch (gate)
                     {
@@ -945,7 +955,10 @@ namespace sqlnexus
 
                         // Under /M, a requested importer that finds no files means the data automation
                         // asked for did not arrive; flag it so the process returns a non-zero exit code.
-                        if (Globals.EnabledImporters != null)
+                        // Only flag importers explicitly requested by a /M token: the mandatory Rowset
+                        // (ForcedOn) importer runs regardless of selection, so its masks (*.OUT/*.TXT)
+                        // matching nothing must NOT mark the requested import as incomplete.
+                        if (Globals.EnabledImporters != null && enabledByToken)
                             Globals.RequestedImporterMissingOrEmpty = true;
                     }
                 }

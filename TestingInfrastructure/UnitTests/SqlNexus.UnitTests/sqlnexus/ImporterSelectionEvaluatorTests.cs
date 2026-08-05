@@ -37,6 +37,21 @@ namespace SqlNexus.UnitTests.sqlnexus
             Assert.AreEqual(ImporterGateResult.ForcedOn, result);
         }
 
+        [TestMethod]
+        public void Rowset_IsForcedOn_NotEnabledByToken_SoEmptyRowsetDoesNotSignalIncomplete()
+        {
+            // Regression guard: the fmImport EnumFiles empty-file path only marks a /M run
+            // "incomplete" for EnabledByToken importers. The mandatory Rowset importer must
+            // therefore report ForcedOn (never EnabledByToken) so that a folder without
+            // *.OUT/*.TXT files (e.g. /MPerfmon against a .blg-only folder) does not wrongly
+            // return exit code 3 (ImportIncomplete).
+            var result = ImporterSelectionEvaluator.Evaluate(
+                ImporterSelectionEvaluator.RowsetImporterName, Tokens("Perfmon"));
+            Assert.AreEqual(ImporterGateResult.ForcedOn, result);
+            Assert.AreNotEqual(ImporterGateResult.EnabledByToken, result);
+            Assert.IsTrue(ImporterSelectionEvaluator.WillRun(result));
+        }
+
         // ---- Token gating ----------------------------------------------------
 
         [TestMethod]
