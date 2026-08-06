@@ -103,6 +103,7 @@ All non-sensitive settings go in `args`. Passwords go in `env`:
 |----------|-------------|--------|
 | `--server` | SQL Server instance name | `localhost` |
 | `--database` | SQL Nexus database name | `SqlNexus` |
+| `--database2` | Second SQL Nexus database used by the `compare_nexus_databases` tool (aliases: `--database-for-comparison`, `--database_for_comparison`) | *(none)* |
 | `--trusted-connection` | `true` = Windows Auth, `false` = SQL Auth | `true` |
 
 **SQL Authentication** — add credentials in `env` (keep passwords out of `args`):
@@ -125,6 +126,12 @@ All non-sensitive settings go in `args`. Passwords go in `env`:
 ```json
 "args": ["--server", "SERVERNAME\\INSTANCE", "--database", "SqlNexus_Production", "--trusted-connection", "true"]
 ```
+
+**Comparing two databases** (two captures, servers, or runs) — supply a second database with `--database2`:
+```json
+"args": ["--server", "localhost", "--database", "sqlnexus_setup1", "--database2", "sqlnexus_setup2", "--trusted-connection", "true"]
+```
+Then invoke the `compare_nexus_databases` tool to get a side-by-side comparison of server properties, database options, database scoped configurations, and (when ReadTrace is present in both) query performance.
 
 ### 4. Restart VS Code
 

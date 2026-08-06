@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
@@ -12,6 +13,8 @@ namespace SqlNexus.McpServer
     {
         private static DiagnosticAnalyzer? _analyzer;
         private static string _connectionString = string.Empty;
+        private static string _database = string.Empty;
+        private static string? _database2;
         private static readonly string ServerName = "sqlnexus-mcp-server";
         private static readonly string ServerVersion = "1.0.0";
 
@@ -33,6 +36,14 @@ namespace SqlNexus.McpServer
                 var database = GetArgValue(args, "--database")
                     ?? config["SqlNexus:Database"]
                     ?? "SqlNexus";
+
+                // Optional second SQL Nexus database used by the comparison tool. Accepts several
+                // flag spellings for convenience: --database2, --database-for-comparison,
+                // --database_for_comparison.
+                var database2 = GetArgValue(args, "--database2")
+                    ?? GetArgValue(args, "--database-for-comparison")
+                    ?? GetArgValue(args, "--database_for_comparison")
+                    ?? config["SqlNexus:Database2"];
 
                 var trustedConnectionStr = GetArgValue(args, "--trusted-connection")
                     ?? config["SqlNexus:TrustedConnection"];
@@ -57,8 +68,13 @@ namespace SqlNexus.McpServer
                 // Store connection string � defer actual SQL connection until first tool call
                 _connectionString = builder.ConnectionString;
 
+                _database = database;
+                _database2 = string.IsNullOrWhiteSpace(database2) ? null : database2.Trim();
+
                 Logger.Initialize($"{ServerName} v{ServerVersion} started");
                 Logger.Info($"Connected to: {server}/{database}");
+                if (_database2 != null)
+                    Logger.Info($"Comparison database: {_database2}");
                 Logger.Info("Using Microsoft.Data.SqlClient");
 
                 // Integrity gate: refuse to run if the AI guidance files (skill files + agent
@@ -198,7 +214,7 @@ namespace SqlNexus.McpServer
             if (_analyzer == null)
             {
                 Logger.Info("Initializing SQL connection...");
-                _analyzer = new DiagnosticAnalyzer(_connectionString);
+                _analyzer = new DiagnosticAnalyzer(_connectionString, _database, _database2);
                 Logger.Info("SQL connection initialized.");
             }
             return _analyzer;
@@ -219,6 +235,31 @@ namespace SqlNexus.McpServer
             if (parameters != null && parameters.TryGetValue("protocolVersion", out var clientVersion))
                 protocolVersion = clientVersion?.ToString() ?? protocolVersion;
 
+            string instructions =
+                "AI-GENERATED CONTENT NOTICE: This server provides AI-assisted SQL Server diagnostic " +
+                "analysis over pre-collected, read-only SQL Nexus data. Results are generated with the help " +
+                "of AI and MAY BE INCOMPLETE OR INACCURATE. Always treat findings as a starting point, not a " +
+                "definitive conclusion. Review the supporting evidence, validate every finding against the " +
+                "underlying SQL Nexus tables (each tool response names its source tables and you can inspect " +
+                "them with the 'query_nexus_database' tool), and review and edit any generated report before " +
+                "sharing it. No production system is contacted and no data is modified.";
+
+            // When a second database is configured, strongly steer the agent toward the dedicated
+            // comparison tool. (An MCP server cannot force a tool call — invocation is the client's
+            // decision — but announcing the configured comparison database here makes the agent
+            // reliably choose 'compare_nexus_databases' for any comparison request.)
+            if (!string.IsNullOrWhiteSpace(_database2))
+            {
+                instructions +=
+                    $"\n\nCOMPARISON MODE ENABLED: A second SQL Nexus database ('{_database2}') is configured " +
+                    $"alongside the primary database ('{_database}'). For ANY request to compare, diff, or contrast " +
+                    "two databases, servers, captures, environments, or runs, you MUST call the " +
+                    "'compare_nexus_databases' tool and base your answer on its returned result. Do NOT hand-write " +
+                    "cross-database SQL through 'query_nexus_database' for these comparisons, and do NOT rely on " +
+                    "prior conversation context for the database names — the authoritative names are " +
+                    $"'{_database}' and '{_database2}'.";
+            }
+
             return new InitializeResult
             {
                 ProtocolVersion = protocolVersion,
@@ -233,14 +274,7 @@ namespace SqlNexus.McpServer
                 },
                 // Surfaced by the host to the user/model at connection time to set expectations
                 // that all output is AI-assisted and may be inaccurate.
-                Instructions =
-                    "AI-GENERATED CONTENT NOTICE: This server provides AI-assisted SQL Server diagnostic " +
-                    "analysis over pre-collected, read-only SQL Nexus data. Results are generated with the help " +
-                    "of AI and MAY BE INCOMPLETE OR INACCURATE. Always treat findings as a starting point, not a " +
-                    "definitive conclusion. Review the supporting evidence, validate every finding against the " +
-                    "underlying SQL Nexus tables (each tool response names its source tables and you can inspect " +
-                    "them with the 'query_nexus_database' tool), and review and edit any generated report before " +
-                    "sharing it. No production system is contacted and no data is modified."
+                Instructions = instructions
             };
         }
 
@@ -558,8 +592,37 @@ namespace SqlNexus.McpServer
                     Name = "analyze_setup_health",
                     Description = "Answer: 'Are there SQL Server Setup / Install / Installation/ Update/ Upgrade problems?' Keywords: setup, install, installation, installed, patching, patch, MSI, MSP, repair, uninstall, components. Inspects the SQL Nexus setup/installation tables when present: tbl_installed_programs (filtered to SQL Server components) to enumerate installed SQL Server components and flag well-known components as present/missing; and tbl_setup_missing_msi_msp_packages, where ANY row indicates a missing Windows Installer MSI/MSP cached package that can block SQL Server patching, repair, or uninstall. Missing tables are reported under tables_not_present; missing MSI/MSP packages are surfaced under issues_found.",
                     InputSchema = new { type = "object", properties = new { } }
+                },
+                new McpTool
+                {
+                    Name = "compare_nexus_databases",
+                    Description = "Answer: 'What is different between two SQL Nexus captures/servers/runs?' Compares the primary SQL Nexus database against a second one (configured via --database2 / --database-for-comparison). Produces side-by-side sections: (1) server_properties from tbl_ServerProperties with a Different flag; (2) database_options from tbl_database_options (name, compatibility level, status); (3) database_scoped_configurations from tbl_database_scoped_configurations with a Different flag; (4) sys_configurations from tbl_Sys_Configurations comparing value_in_use per sp_configure setting (differences only); and (5) query_performance comparison from ReadTrace.tblBatches/tblUniqueBatches (avg duration/CPU deltas per normalized query) when ReadTrace tables are present in both databases. Requires a second database to be configured at startup.",
+                    InputSchema = new { type = "object", properties = new { } }
                 }
             };
+
+            // Log the authoritative catalog the server advertises so it can be searched in the
+            // MCP server log for future troubleshooting. NOTE: the server always exposes every tool
+            // here; the enable/disable checkboxes are a CLIENT-side UI setting the server never sees,
+            // so a tool being unchecked in the host cannot be detected or logged server-side. To help
+            // diagnose "missing tool" reports we log the full list and explicitly flag the presence of
+            // the comparison tool and whether comparison mode is active.
+            var toolNames = tools.Select(t => t.Name).ToList();
+            var sortedToolNames = toolNames.OrderBy(n => n, StringComparer.OrdinalIgnoreCase).ToList();
+            var toolList = string.Join(Environment.NewLine, sortedToolNames.Select((n, i) => $"  {i + 1,2}. {n}"));
+            Logger.Info($"Advertised {toolNames.Count} tools (sorted):{Environment.NewLine}{toolList}");
+
+            bool comparisonToolPresent = toolNames.Contains("compare_nexus_databases", StringComparer.OrdinalIgnoreCase);
+            bool comparisonModeEnabled = !string.IsNullOrWhiteSpace(_database2);
+            Logger.Info($"Comparison tool 'compare_nexus_databases' advertised: {comparisonToolPresent}; " +
+                        $"comparison mode enabled (database2 configured): {comparisonModeEnabled}" +
+                        (comparisonModeEnabled ? $" (database2='{_database2}')" : string.Empty));
+
+            // Defensive: surface any tool that failed to be advertised (e.g., accidentally left with
+            // an empty name) so it is easy to spot in the log.
+            var unnamedTools = tools.Count(t => string.IsNullOrWhiteSpace(t.Name));
+            if (unnamedTools > 0)
+                Logger.Warn($"{unnamedTools} tool(s) were advertised without a name and may not be usable by the client.");
 
             return new { tools };
         }
@@ -690,6 +753,9 @@ namespace SqlNexus.McpServer
                 case "analyze_setup_health":
                     resultText = GetAnalyzer().AnalyzeSetupHealth();
                     break;
+                case "compare_nexus_databases":
+                    resultText = GetAnalyzer().CompareNexusDatabases();
+                    break;
                 default:
                     throw new NotSupportedException($"Tool not supported: {toolName}");
             }
@@ -756,6 +822,7 @@ namespace SqlNexus.McpServer
                 "tbl_hadr_alwayson_health_availability_replica_state_change", "tbl_hadr_dm_os_server_diagnostics_log_configurations"
             },
             ["analyze_setup_health"]             = new[] { "tbl_installed_programs", "tbl_setup_missing_msi_msp_packages" },
+            ["compare_nexus_databases"]          = new[] { "tbl_ServerProperties", "tbl_database_options", "tbl_database_scoped_configurations", "tbl_Sys_Configurations", "ReadTrace.tblBatches", "ReadTrace.tblUniqueBatches" },
         };
 
         // Short, model-facing disclaimer surfaced with every result.

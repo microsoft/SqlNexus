@@ -1,49 +1,15 @@
 ---
+---
 name: SQL Nexus Diagnostic Agent
 description: >
   Expert SQL Server performance diagnostic agent. Uses SqlNexus MCP tools to
   read pre-collected, offline diagnostic data and identify root causes of SQL Server
   performance issues. All tool calls are read-only; no data is written or modified.
   The AI model used is selected by the engineer; the agent performs analysis only.
-tools:
-  - read
-  - search
-  - sqlnexus_mcp/analyze_blocking
-  - sqlnexus_mcp/analyze_cpu_usage
-  - sqlnexus_mcp/analyze_hadr_health
-  - sqlnexus_mcp/analyze_io_performance
-  - sqlnexus_mcp/analyze_io_waits
-  - sqlnexus_mcp/analyze_setup_health
-  - sqlnexus_mcp/analyze_spinlocks
-  - sqlnexus_mcp/analyze_wait_stats
-  - sqlnexus_mcp/get_aggregate_waits_and_queries
-  - sqlnexus_mcp/get_blocked_sessions
-  - sqlnexus_mcp/get_blocking_chain_tree
-  - sqlnexus_mcp/get_collection_time_range
-  - sqlnexus_mcp/get_compilation_stats
-  - sqlnexus_mcp/get_cpu_by_database
-  - sqlnexus_mcp/get_lock_summary_by_object
-  - sqlnexus_mcp/get_memory_clerk_distribution
-  - sqlnexus_mcp/get_missing_indexes
-  - sqlnexus_mcp/get_performance_by_application
-  - sqlnexus_mcp/get_performance_summary
-  - sqlnexus_mcp/get_plan_cache_analysis
-  - sqlnexus_mcp/get_queries_by_application
-  - sqlnexus_mcp/get_query_execution_details
-  - sqlnexus_mcp/get_sql_cpu_usage_over_time
-  - sqlnexus_mcp/get_sql_file_io_stats
-  - sqlnexus_mcp/get_statements_in_batch
-  - sqlnexus_mcp/get_table_statistics_health
-  - sqlnexus_mcp/get_top_cpu_queries
-  - sqlnexus_mcp/get_top_queries_by_duration
-  - sqlnexus_mcp/get_top_queries_by_reads
-  - sqlnexus_mcp/get_top_queries_by_writes
-  - sqlnexus_mcp/get_wait_heavy_queries
-  - sqlnexus_mcp/get_wait_resource_hotspots
-  - sqlnexus_mcp/get_wait_type_distribution
-  - sqlnexus_mcp/get_waits_for_query
-  - sqlnexus_mcp/list_nexus_tables
-  - sqlnexus_mcp/query_nexus_database
+# Enable every SQL Nexus MCP tool by default (wildcard) plus the built-in read/search tools.
+# The 'sqlnexus_mcp/*' wildcard turns on all tools the SQL Nexus MCP server exposes,
+# including compare_nexus_databases, so no manual per-tool checkbox toggling is required.
+tools: [read, search, 'sqlnexus_mcp/*', azure-mcp/search]
 ---
 
 # SQL Nexus Diagnostic Agent
@@ -183,6 +149,7 @@ Skill files contain curated decision trees, threshold values, SQL query referenc
 | `AI/Skills/scenario-setup.md` | SQL Server setup/installation health, installed components, missing MSI/MSP packages, patching readiness |
 | `AI/Skills/scenario-utility-diagnostics.md` | Server config, LogScout scenario validation |
 | `AI/Skills/scenario-comparative-analysis.md` | Before/after or multi-period comparison |
+| `AI/Skills/scenario-database-comparison.md` | Compare two SQL Nexus databases/servers/runs via the `compare_nexus_databases` tool (server properties, database options, scoped configs, ReadTrace workload) |
 | `AI/Skills/symptom-quick-reference.md` | Fast symptom → scenario mapping |
 
 ---

@@ -26,8 +26,13 @@ namespace SqlNexus.McpServer
         // the platform separator at verification time.
         private static readonly Dictionary<string, string> ProtectedFileHashes = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
         {
-            // Diagnostic agent definition (under .github/agents).
-            { ".github/agents/sql-nexus-diagnostic.agent.md",   "1D063FD9A93419F16D2F65B025B53D6456EC0B3FD5CA924BD9DF1BD7347307DB" },
+            // NOTE: The diagnostic agent definition (.github/agents/sql-nexus-diagnostic.agent.md) is
+            // intentionally NOT hash-protected. VS Code (and other MCP hosts) REWRITE that file's
+            // frontmatter 'tools:' list whenever the user toggles a tool's enable/disable checkbox, so
+            // a fixed-hash check on it is unworkable — every checkbox change would fail startup. The
+            // repository root is still located via the .github/agents *directory* (see ResolveRepositoryRoot),
+            // so removing the file hash does not affect root resolution. The AI skill files below are
+            // never edited by the client and remain protected.
 
             // AI skill files (under AI/Skills).
             { "AI/Skills/analysis-summary-queries.md",              "C0891753FDB44D207BCAAD88F42522D7C0AE04ECF1AEA6EFA11EC8B2E82E2C97" },
@@ -37,6 +42,7 @@ namespace SqlNexus.McpServer
             { "AI/Skills/scenario-application-analysis.md",         "38C12E100BEB5B857857D54DFED8726618EB0821890DA0571C86F2C0B37B042A" },
             { "AI/Skills/scenario-blocking.md",                     "642D27A3BEDFD8A3FC23F090D5ABD7E694BB69B4E8E0F27E486770D0FB2F9BFC" },
             { "AI/Skills/scenario-comparative-analysis.md",         "CC94F27A38681249B305DD95A85FF0A9392CE1FC6CC8E2A6323FC46EEBD23D56" },
+            { "AI/Skills/scenario-database-comparison.md",          "4B9333EF92F4ED157219FEA70870150654B93049016AC5510E24E25391B76321" },
             { "AI/Skills/scenario-cpu.md",                          "159FE9EB4C7E8707598A4283D45E349C82831144AE36988971D8851D720D53B8" },
             { "AI/Skills/scenario-hadr.md",                         "883C905E611ACD804C60E835D8EB544B88A1A4DA7EE82C7CED2430BBC44ED4D5" },
             { "AI/Skills/scenario-index-optimization.md",           "2713DD9918950FA3CDD7D495687DDE8C652E029F2FA692C7BCA93988B693101A" },

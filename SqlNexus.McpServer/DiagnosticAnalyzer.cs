@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Microsoft.Data.SqlClient;
 using Newtonsoft.Json;
 
@@ -10,10 +11,19 @@ namespace SqlNexus.McpServer
     public class DiagnosticAnalyzer
     {
         private readonly string _connectionString;
+        private readonly string _database;
+        private readonly string? _database2;
 
         public DiagnosticAnalyzer(string connectionString)
+            : this(connectionString, "SqlNexus", null)
+        {
+        }
+
+        public DiagnosticAnalyzer(string connectionString, string database, string? database2)
         {
             _connectionString = connectionString;
+            _database = string.IsNullOrWhiteSpace(database) ? "SqlNexus" : database.Trim();
+            _database2 = string.IsNullOrWhiteSpace(database2) ? null : database2.Trim();
         }
 
         /// <summary>
@@ -1993,6 +2003,308 @@ namespace SqlNexus.McpServer
         }
 
         /// <summary>
+        /// Compare two SQL Nexus databases side-by-side (server config, database options,
+        /// database scoped configurations, and � when ReadTrace is available in both � query
+        /// performance). The second database is supplied at startup via --database2.
+        /// </summary>
+        public string CompareNexusDatabases()
+        {
+            if (string.IsNullOrWhiteSpace(_database2))
+            {
+                throw new InvalidOperationException(
+                    "No comparison database configured. Start the server with a second database using " +
+                    "--database2 <name> (aliases: --database-for-comparison, --database_for_comparison) " +
+                    "or the SqlNexus:Database2 configuration setting.");
+            }
+
+            // Validate both databases actually exist on the server before building any
+            // three-part-name queries. This both surfaces a clear error (instead of a cryptic
+            // SQL failure) and confirms the identifier resolves to a real database.
+            if (!DatabaseExists(_database))
+            {
+                throw new InvalidOperationException($"Primary database '{_database}' was not found on the server.");
+            }
+            if (!DatabaseExists(_database2!))
+            {
+                throw new InvalidOperationException($"Comparison database '{_database2}' was not found on the server.");
+            }
+
+            string a = BracketQuote(_database);
+            string b = BracketQuote(_database2!);
+            string aLabel = _database;
+            string bLabel = _database2!;
+
+            var sections = new Dictionary<string, object>();
+
+            // 1) Server properties comparison
+            try
+            {
+                string serverPropsQuery = $@"
+                    SELECT a.PropertyName,
+                           a.PropertyValue AS [{aLabel}],
+                           b.PropertyValue AS [{bLabel}],
+                           CASE WHEN NOT EXISTS (SELECT a.PropertyValue INTERSECT SELECT b.PropertyValue)
+                                THEN 'Yes' ELSE '' END AS Different
+                    FROM {a}.dbo.tbl_ServerProperties a
+                    INNER JOIN {b}.dbo.tbl_ServerProperties b
+                        ON a.PropertyName = b.PropertyName
+                    ORDER BY a.PropertyName";
+                var t = ExecuteQueryToDataTable(serverPropsQuery);
+                sections["server_properties"] = new
+                {
+                    row_count = t.Rows.Count,
+                    data = ConvertDataTableToList(t)
+                };
+            }
+            catch (Exception ex)
+            {
+                sections["server_properties"] = new { error = ex.Message };
+            }
+
+            // 2) Database options comparison
+            try
+            {
+                string dbOptionsQuery = $@"
+                    SELECT a.name,
+                           a.cmptlevel AS [{aLabel}_cmptlevel],
+                           b.cmptlevel AS [{bLabel}_cmptlevel],
+                           a.status   AS [{aLabel}_status],
+                           b.status   AS [{bLabel}_status],
+                           CASE WHEN NOT EXISTS (SELECT a.cmptlevel INTERSECT SELECT b.cmptlevel)
+                                THEN 'Yes' ELSE '' END AS CmptLevel_Different,
+                           CASE WHEN NOT EXISTS (SELECT a.status INTERSECT SELECT b.status)
+                                THEN 'Yes' ELSE '' END AS Status_Different
+                    FROM {a}.dbo.tbl_database_options a
+                    INNER JOIN {b}.dbo.tbl_database_options b
+                        ON a.name = b.name
+                    WHERE NOT EXISTS (SELECT a.cmptlevel INTERSECT SELECT b.cmptlevel)
+                       OR NOT EXISTS (SELECT a.status INTERSECT SELECT b.status)
+                    ORDER BY a.name";
+                var t = ExecuteQueryToDataTable(dbOptionsQuery);
+                sections["database_options"] = new
+                {
+                    note = "Only databases whose compatibility level or status differs are listed; identical databases are omitted to reduce output.",
+                    row_count = t.Rows.Count,
+                    data = ConvertDataTableToList(t)
+                };
+            }
+            catch (Exception ex)
+            {
+                sections["database_options"] = new { error = ex.Message };
+            }
+
+            // 3) Database scoped configurations comparison
+            try
+            {
+                string dbScopedQuery = $@"
+                    SELECT a.dbname, a.name,
+                           a.value AS [{aLabel}],
+                           b.value AS [{bLabel}],
+                           CASE WHEN NOT EXISTS (SELECT a.value INTERSECT SELECT b.value)
+                                THEN 'Yes' ELSE '' END AS Different
+                    FROM {a}.dbo.tbl_database_scoped_configurations a
+                    INNER JOIN {b}.dbo.tbl_database_scoped_configurations b
+                        ON a.dbname = b.dbname AND a.name = b.name
+                    WHERE NOT EXISTS (SELECT a.value INTERSECT SELECT b.value)
+                    ORDER BY a.dbname, a.name";
+                var t = ExecuteQueryToDataTable(dbScopedQuery);
+                sections["database_scoped_configurations"] = new
+                {
+                    note = "Only scoped configurations whose value differs are listed; identical settings are omitted to reduce output.",
+                    row_count = t.Rows.Count,
+                    data = ConvertDataTableToList(t)
+                };
+            }
+            catch (Exception ex)
+            {
+                sections["database_scoped_configurations"] = new { error = ex.Message };
+            }
+
+            // 4) Server-level sys.configurations comparison (compares value_in_use by name)
+            try
+            {
+                string sysConfigQuery = $@"
+                    SELECT a.name,
+                           a.value_in_use AS [{aLabel}],
+                           b.value_in_use AS [{bLabel}],
+                           CASE WHEN NOT EXISTS (SELECT a.value_in_use INTERSECT SELECT b.value_in_use)
+                                THEN 'Yes' ELSE '' END AS Different
+                    FROM {a}.dbo.tbl_Sys_Configurations a
+                    INNER JOIN {b}.dbo.tbl_Sys_Configurations b
+                        ON a.name = b.name
+                    WHERE NOT EXISTS (SELECT a.value_in_use INTERSECT SELECT b.value_in_use)
+                    ORDER BY a.name";
+                var t = ExecuteQueryToDataTable(sysConfigQuery);
+                sections["sys_configurations"] = new
+                {
+                    note = "Server-level sp_configure settings from tbl_Sys_Configurations compared by name on value_in_use. Only settings whose value_in_use differs are listed; identical settings are omitted to reduce output.",
+                    row_count = t.Rows.Count,
+                    data = ConvertDataTableToList(t)
+                };
+            }
+            catch (Exception ex)
+            {
+                sections["sys_configurations"] = new { error = ex.Message };
+            }
+
+            // 5) Query performance comparison (only when ReadTrace exists in both databases)
+            if (ReadTraceAvailable(_database) && ReadTraceAvailable(_database2!))
+            {
+                try
+                {
+                    string queryPerfQuery = $@"
+                        SELECT db1.AvgDuration_ms AS [{aLabel}_AvgDuration_ms],
+                               db2.AvgDuration_ms AS [{bLabel}_AvgDuration_ms],
+                               db1.AvgDuration_ms - db2.AvgDuration_ms AS Delta_AvgDuration_ms,
+                               db1.AvgCPU_ms AS [{aLabel}_AvgCPU_ms],
+                               db2.AvgCPU_ms AS [{bLabel}_AvgCPU_ms],
+                               db1.AvgCPU_ms - db2.AvgCPU_ms AS Delta_AvgCPU_ms,
+                               db1.Executions AS [{aLabel}_Executions],
+                               db2.Executions AS [{bLabel}_Executions],
+                               db2.NormText
+                        FROM (
+                            SELECT TOP 30
+                                COUNT(*) AS Executions,
+                                (SUM(t.Duration)/1000)/COUNT(*) AS AvgDuration_ms,
+                                SUM(t.CPU)/COUNT(*) AS AvgCPU_ms,
+                                t.HashID
+                            FROM {a}.ReadTrace.tblBatches t
+                            JOIN {a}.ReadTrace.tblUniqueBatches u ON t.HashID = u.HashID
+                            {ReadTraceFilterPredicate}
+                            GROUP BY u.NormText, t.HashID
+                            ORDER BY SUM(t.Duration) DESC
+                        ) db1
+                        JOIN (
+                            SELECT TOP 30
+                                COUNT(*) AS Executions,
+                                (SUM(t.Duration)/1000)/COUNT(*) AS AvgDuration_ms,
+                                SUM(t.CPU)/COUNT(*) AS AvgCPU_ms,
+                                SUBSTRING(u.NormText, 1, 200) AS NormText,
+                                t.HashID
+                            FROM {b}.ReadTrace.tblBatches t
+                            JOIN {b}.ReadTrace.tblUniqueBatches u ON t.HashID = u.HashID
+                            {ReadTraceFilterPredicate}
+                            GROUP BY u.NormText, t.HashID
+                            ORDER BY SUM(t.Duration) DESC
+                        ) db2
+                        ON db1.HashID = db2.HashID
+                        ORDER BY Delta_AvgDuration_ms ASC";
+                    var t = ExecuteQueryToDataTable(queryPerfQuery);
+                    sections["query_performance"] = new
+                    {
+                        row_count = t.Rows.Count,
+                        data = ConvertDataTableToList(t)
+                    };
+                }
+                catch (Exception ex)
+                {
+                    sections["query_performance"] = new { error = ex.Message };
+                }
+            }
+            else
+            {
+                sections["query_performance"] = new
+                {
+                    note = "ReadTrace tables not present in both databases � query performance comparison skipped."
+                };
+            }
+
+            var result = new
+            {
+                summary = $"Comparison of SQL Nexus databases '{aLabel}' vs '{bLabel}'",
+                database_1 = aLabel,
+                database_2 = bLabel,
+                sections
+            };
+
+            return JsonConvert.SerializeObject(result, Formatting.Indented);
+        }
+
+        /// <summary>
+        /// Common WHERE predicate that filters out SQL Nexus / diagnostic collector noise queries
+        /// so the comparison focuses on real application workload.
+        /// </summary>
+        private const string ReadTraceFilterPredicate = @"
+                            WHERE u.NormText NOT LIKE '%SP_MSFOREACHDB%'
+                              AND u.NormText NOT LIKE 'EXEC TEMPDB.DBO.SP_SQLDIAG%'
+                              AND u.NormText NOT LIKE '%repl%'
+                              AND u.NormText NOT LIKE '%distribution%'
+                              AND u.NormText NOT LIKE 'EXECUTE MSDB.DBO.SP_SQLAGENT_LOG_JOBHISTORY%'
+                              AND u.NormText NOT LIKE 'EXECUTE MSDB.DBO.SP_SQLAGENT_GET_PERF_COUNTERS%'
+                              AND u.NormText NOT LIKE 'EXECUTE MSDB.DBO.SP_HELP_JOBSTEP%'
+                              AND u.NormText NOT LIKE 'EXEC TEMPDB.DBO.SP_TRACE%'
+                              AND u.NormText NOT LIKE 'EXEC TEMPDB.DBO.SP_SET_BLK_THRESHOLD09%'
+                              AND u.NormText NOT LIKE '%SP_HELPDB%'
+                              AND u.NormText NOT LIKE '%SP_DIAG_TRACE_FLAG%'
+                              AND u.NormText NOT LIKE 'MASTER.DBO.XP_MSVER%'
+                              AND u.NormText NOT LIKE 'EXEC TEMPDB.DBO.SP_CODE_RUNNER%'
+                              AND u.NormText NOT LIKE '%DBCC SQLPERF%'
+                              AND u.NormText NOT LIKE '%XP_MSVER%'
+                              AND u.NormText NOT LIKE '%DBCC TRACESTATUS%'
+                              AND u.NormText NOT LIKE 'EXEC TEMPDB.DBO.SP_BLOCKER_PSS%'
+                              AND u.NormText NOT LIKE '%TEMPDB.DBO.TRACEFLAGORIGINALSTATUS%'
+                              AND u.NormText NOT LIKE 'SELECT VALUE FROM MASTER.DBO.SYSCONFIGURES WHERE CONFIG%'
+                              AND u.NormText NOT LIKE '%PRINT {STR}%'
+                              AND u.NormText NOT LIKE '%SP_GET_DISTRIBUTOR%'
+                              AND u.NormText NOT LIKE '%MSGETVERSION%'
+                              AND u.NormText NOT LIKE '%SP_GET_DTSPACKAGE%'
+                              AND u.NormText NOT LIKE '%BACKUPSET%'
+                              AND u.NormText NOT LIKE '%#MSDBFILELIST%'
+                              AND u.NormText NOT LIKE '%SYSALTFILES%'
+                              AND u.NormText NOT LIKE '%SYSDATABASES%'
+                              AND u.NormText NOT LIKE '%SP_MSSQLDMO%'
+                              AND u.NormText NOT LIKE '%CREATE TABLE #ERRORLOG%'
+                              AND u.NormText NOT LIKE '%HASMEMORYSCRIBBLERISSUE%'
+                              AND u.NormText NOT LIKE '%SYSCURCONFIGS%'
+                              AND u.NormText NOT LIKE '%SP_PERF_STATS%'
+                              AND u.NormText NOT LIKE '%FN_TRACE_GETINFO%'
+                              AND u.NormText NOT LIKE '%##MAXNAMEWIDTH%'";
+
+        /// <summary>
+        /// Returns true when the ReadTrace.tblBatches table exists in the given database.
+        /// </summary>
+        private bool ReadTraceAvailable(string database)
+        {
+            try
+            {
+                string query = $@"
+                    SELECT CASE WHEN OBJECT_ID('{BracketQuote(database)}.ReadTrace.tblBatches') IS NOT NULL 
+                                 AND OBJECT_ID('{BracketQuote(database)}.ReadTrace.tblUniqueBatches') IS NOT NULL 
+                                THEN 1 ELSE 0 END AS HasReadTrace";
+                var t = ExecuteQueryToDataTable(query);
+                return t.Rows.Count > 0 && Convert.ToInt32(t.Rows[0]["HasReadTrace"]) == 1;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Safely wraps a database name in brackets for use as a three-part-name qualifier,
+        /// escaping any embedded closing brackets.
+        /// </summary>
+        private static string BracketQuote(string identifier)
+        {
+            return "[" + identifier.Replace("]", "]]") + "]";
+        }
+
+        /// <summary>
+        /// Returns true when a database with the given name exists on the connected server.
+        /// The name is passed as a parameter (not concatenated) so this check cannot be used
+        /// as a SQL-injection vector.
+        /// </summary>
+        private bool DatabaseExists(string database)
+        {
+            using var connection = new SqlConnection(_connectionString);
+            using var command = new SqlCommand(
+                "SELECT 1 FROM sys.databases WHERE name = @db", connection) { CommandTimeout = 30 };
+            command.Parameters.Add(new SqlParameter("@db", SqlDbType.NVarChar, 128) { Value = database });
+            connection.Open();
+            return command.ExecuteScalar() != null;
+        }
+
+        /// <summary>
         /// Execute custom query with validation
         /// </summary>
         public string ExecuteCustomQuery(string query)
@@ -2007,9 +2319,17 @@ namespace SqlNexus.McpServer
             }
 
             var dangerousKeywords = new[] { "DROP", "DELETE", "INSERT", "UPDATE", "TRUNCATE", "ALTER", "CREATE" };
+
+            // Strip single-quoted string literals before scanning so that legitimate data values
+            // (e.g. a server-property label like 'CreateDate' or 'IsUpdateable') are not mistaken
+            // for DDL/DML keywords. Escaped quotes ('') inside a literal are handled by the pattern.
+            var queryWithoutLiterals = Regex.Replace(trimmedQuery, "'(?:[^']|'')*'", " ");
+
             foreach (var keyword in dangerousKeywords)
             {
-                if (trimmedQuery.IndexOf(keyword, StringComparison.OrdinalIgnoreCase) >= 0)
+                // Match the keyword only as a whole word (word boundaries), so identifiers that merely
+                // contain the keyword as a substring (e.g. CreateDate, sysaltfiles) are not rejected.
+                if (Regex.IsMatch(queryWithoutLiterals, $@"\b{keyword}\b", RegexOptions.IgnoreCase))
                 {
                     throw new InvalidOperationException($"Query contains disallowed keyword: {keyword}");
                 }
