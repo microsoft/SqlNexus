@@ -89,6 +89,26 @@ namespace sqlnexus
         /// </summary>
         public static bool IsHighContrastEnabled => SystemInformation.HighContrast;
 
+        #region Modern Fluent palette (shared by the refreshed Default nav)
+        // Central place for the modern accent colors so the sidebar matches the flat
+        // toolbars/menus rendered by ModernColorTable.
+        internal static readonly Color ModernSurface = ColorTranslator.FromHtml("#F3F3F3"); // nav column
+        internal static readonly Color ModernBody = ColorTranslator.FromHtml("#FFFFFF");    // body panels
+        internal static readonly Color ModernAccent = ColorTranslator.FromHtml("#0078D4");  // headers / links
+        internal static readonly Color ModernDivider = ColorTranslator.FromHtml("#E0E0E0"); // panel borders
+        internal static readonly Color ModernText = ColorTranslator.FromHtml("#1B1B1B");    // primary text
+        internal static readonly Color ModernButtonBorder = ColorTranslator.FromHtml("#8A8886"); // flat button outline
+        internal static readonly Color SidebarBorder = ColorTranslator.FromHtml("#3B3B3B");   // dark gray box outline
+        #endregion
+
+        /// <summary>
+        /// Border color for the sidebar container boxes and header strips. Uses a dark
+        /// gray for strong, accessible contrast against the light surroundings.
+        /// </summary>
+        public static Color SidebarBorderColor =>
+            IsHighContrastEnabled ? SystemColors.WindowText : SidebarBorder;
+
+
         /// <summary>
         /// The modern Windows UI font (Segoe UI). Replacing the legacy default of
         /// Microsoft Sans Serif 8.25pt instantly gives the whole app a current look
@@ -151,6 +171,18 @@ namespace sqlnexus
                         BackColor = System.Drawing.ColorTranslator.FromHtml("#FFFAEF"),
                         ForeColor = System.Drawing.ColorTranslator.FromHtml("#3D3D3D"),
                         OtherColor = System.Drawing.ColorTranslator.FromHtml("#1C5E75")
+                       },
+            new Theme {
+                        Name = "Fluent Light",
+                        BackColor = System.Drawing.ColorTranslator.FromHtml("#FFFFFF"),
+                        ForeColor = System.Drawing.ColorTranslator.FromHtml("#1B1B1B"),
+                        OtherColor = System.Drawing.ColorTranslator.FromHtml("#0078D4")
+                       },
+            new Theme {
+                        Name = "Fluent Dark",
+                        BackColor = System.Drawing.ColorTranslator.FromHtml("#1F1F1F"),
+                        ForeColor = System.Drawing.ColorTranslator.FromHtml("#F3F3F3"),
+                        OtherColor = System.Drawing.ColorTranslator.FromHtml("#4CC2FF")
                        }
             //if we want to add more themes, add here with the preffered colors, this will automatically populate in the theme selection combobox
         };
@@ -171,8 +203,8 @@ namespace sqlnexus
             {               
                 if (control.Name == "tableLayoutPanel1")
                 {
-                    control.BackColor = Color.LightSkyBlue;
-                    control.ForeColor = Color.Black;
+                    control.BackColor = ModernSurface;
+                    control.ForeColor = ModernText;
                     leftMenu = true; // setting this for the iterations as we are in the hierarchy for the left hand menu
                 }
                 else
@@ -182,21 +214,21 @@ namespace sqlnexus
                         if (control.Name == "llTasks" || control.Name == "llData" || control.Name == "llReports")
                         {
                             var linkLabel = (LinkLabel)control;
-                            linkLabel.BackColor = Color.DarkBlue;
+                            linkLabel.BackColor = ModernAccent;
                             linkLabel.ForeColor = Color.White;
                             linkLabel.ActiveLinkColor = Color.White;
                             linkLabel.LinkColor = Color.White;
-                            linkLabel.DisabledLinkColor = Color.Gray;
+                            linkLabel.DisabledLinkColor = Color.Gainsboro;
                             linkLabel.LinkBehavior = LinkBehavior.AlwaysUnderline;
                         }
                         else
                         {
                             var linkLabel = (LinkLabel)control;
-                            linkLabel.BackColor = Color.AliceBlue;
-                            linkLabel.ForeColor = Color.Black;
-                            linkLabel.ActiveLinkColor = Color.DarkBlue;
-                            linkLabel.LinkColor = Color.DarkBlue;
-                            linkLabel.DisabledLinkColor = Color.DarkBlue;
+                            linkLabel.BackColor = ModernBody;
+                            linkLabel.ForeColor = ModernText;
+                            linkLabel.ActiveLinkColor = ModernAccent;
+                            linkLabel.LinkColor = ModernAccent;
+                            linkLabel.DisabledLinkColor = ModernAccent;
                             linkLabel.LinkBehavior = LinkBehavior.AlwaysUnderline;
                         }
                     }
@@ -204,17 +236,17 @@ namespace sqlnexus
                     {
                         if (control.Name == "paReportsHeader" || control.Name == "paTasksHeader" || control.Name == "paDataHeader")
                         {
-                            control.BackColor = Color.DarkBlue;
+                            control.BackColor = ModernAccent;
                             control.ForeColor = Color.White;
                         }
                         else
                         {
-                            control.BackColor = Color.AliceBlue;
-                            control.ForeColor = Color.Black;
+                            control.BackColor = ModernBody;
+                            control.ForeColor = ModernText;
                         }
                     }
                 }
-                
+
             }
             #endregion  
             else
@@ -235,6 +267,18 @@ namespace sqlnexus
                 {
                     ((Panel)control).BorderStyle = BorderStyle.FixedSingle;
                 }
+            }
+
+            // 5. Cross-theme polish: give buttons a flat, modern look instead of the
+            // raised 3D chrome, but keep a subtle border so they remain clearly visible.
+            if (control is Button button)
+            {
+                button.FlatStyle = FlatStyle.Flat;
+                button.FlatAppearance.BorderSize = 1;
+                button.FlatAppearance.BorderColor = IsHighContrastEnabled
+                    ? SystemColors.WindowText
+                    : ModernButtonBorder;
+                button.UseVisualStyleBackColor = false;
             }
 
             if (control.HasChildren)

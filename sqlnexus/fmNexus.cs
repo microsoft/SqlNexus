@@ -420,6 +420,115 @@ namespace sqlnexus
             }
         }
 
+        #region Sidebar container styling (rounded, high-contrast borders)
+
+        // Radius (in pixels) used for the rounded corners of the sidebar boxes.
+        private const int SidebarCornerRadius = 8;
+
+        /// <summary>
+        /// Draws a rounded, higher-contrast border around each sidebar container box
+        /// (Reports, Tasks, Logs) and their header strips to improve visual separation
+        /// and accessibility contrast. Panels do not support rounded corners natively, so
+        /// we render them in a Paint handler. Layout is unaffected.
+        /// </summary>
+        private void StyleSidebarContainers()
+        {
+            // Outer container boxes.
+            foreach (var panel in new[] { paReports, paTasks, paData })
+            {
+                if (panel == null)
+                    continue;
+
+                // Remove the flat 1px border so it doesn't show through the rounded one.
+                panel.BorderStyle = BorderStyle.None;
+                panel.Paint -= SidebarContainer_Paint;
+                panel.Paint += SidebarContainer_Paint;
+                panel.Invalidate();
+            }
+
+            // Inner header strips (Reports / Tasks / Logs title bars).
+            foreach (var header in new[] { paReportsHeader, paTasksHeader, paDataHeader })
+            {
+                if (header == null)
+                    continue;
+
+                header.BorderStyle = BorderStyle.None;
+                header.Paint -= SidebarContainer_Paint;
+                header.Paint += SidebarContainer_Paint;
+                header.Invalidate();
+            }
+        }
+
+        private void SidebarContainer_Paint(object sender, PaintEventArgs e)
+        {
+            var panel = sender as Panel;
+            if (panel == null)
+                return;
+
+            // Use the theme accent for a clearly visible, accessible border.
+            Color borderColor = ThemeManager.IsHighContrastEnabled
+                ? SystemColors.WindowText
+                : ThemeManager.SidebarBorderColor;
+
+            var rect = new Rectangle(0, 0, panel.Width - 1, panel.Height - 1);
+
+            // Keep the radius sensible for short header strips.
+            int radius = Math.Min(SidebarCornerRadius, Math.Max(2, panel.Height / 3));
+
+            e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+            using (var path = CreateRoundedRectangle(rect, radius))
+            using (var pen = new Pen(borderColor, 1.5f))
+            {
+                e.Graphics.DrawPath(pen, path);
+            }
+        }
+
+        private static System.Drawing.Drawing2D.GraphicsPath CreateRoundedRectangle(Rectangle rect, int radius)
+        {
+            int d = radius * 2;
+            var path = new System.Drawing.Drawing2D.GraphicsPath();
+            path.AddArc(rect.X, rect.Y, d, d, 180, 90);
+            path.AddArc(rect.Right - d, rect.Y, d, d, 270, 90);
+            path.AddArc(rect.Right - d, rect.Bottom - d, d, d, 0, 90);
+            path.AddArc(rect.X, rect.Bottom - d, d, d, 90, 90);
+            path.CloseFigure();
+            return path;
+        }
+
+        #endregion
+
+        #region Rounded window corners (Windows 11)
+
+        private enum DwmWindowCornerPreference
+        {
+            Default = 0,
+            DoNotRound = 1,
+            Round = 2,
+            RoundSmall = 3
+        }
+
+        private const int DWMWA_WINDOW_CORNER_PREFERENCE = 33;
+
+        [DllImport("dwmapi.dll", PreserveSig = true)]
+        private static extern int DwmSetWindowAttribute(IntPtr hwnd, int attribute, ref int pvAttribute, int cbAttribute);
+
+        /// <summary>
+        /// Requests rounded window corners on Windows 11. On earlier Windows versions the
+        /// DWM call simply fails and is ignored, leaving the default square corners.
+        /// </summary>
+        private void EnableRoundedWindowCorners()
+        {
+            try
+            {
+                int preference = (int)DwmWindowCornerPreference.Round;
+                DwmSetWindowAttribute(this.Handle, DWMWA_WINDOW_CORNER_PREFERENCE, ref preference, sizeof(int));
+            }
+            catch (DllNotFoundException) { }
+            catch (EntryPointNotFoundException) { }
+        }
+
+        #endregion
+
         // treeview hottracking is forcing color as blue , overriding its drawing to stick our own color
         private void tvReports_DrawMode(object sender, DrawTreeNodeEventArgs e)
         {
@@ -592,6 +701,11 @@ namespace sqlnexus
             // Re-position the sidebar header buttons now that the form has been laid out
             // and font auto-scaling has been applied, so they sit at the right edge.
             AdjustSidebarHeaderButtons();
+
+            // Add rounded, high-contrast borders to the sidebar boxes and request
+            // rounded window corners (Windows 11; ignored on older Windows).
+            StyleSidebarContainers();
+            EnableRoundedWindowCorners();
 
             MakeTaskPaneImagesTransparent();
 
