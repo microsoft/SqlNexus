@@ -370,6 +370,7 @@ namespace sqlnexus
         public fmNexus()
         {
             InitializeComponent();
+            ThemeManager.ApplyModernAppearance(this);
             ThemeManager.ChangeCurrentTheme(Properties.Settings.Default.Theme);
 
             // Initialize theme combo to match saved setting.
@@ -387,6 +388,38 @@ namespace sqlnexus
             ThemeManager.ApplyTheme(this);
             singleton = this;
         }
+
+        /// <summary>
+        /// Places each sidebar header's collapse/expand button at the right edge of its
+        /// panel. The larger modern font can shift the panels slightly, so we anchor the
+        /// buttons to the right and compute their position from the panel's actual width,
+        /// keeping them fully visible instead of being clipped by the splitter.
+        /// </summary>
+        private void AdjustSidebarHeaderButtons()
+        {
+            const int rightMargin = 6;
+
+            PositionHeaderButtons(paReportsHeader, btnexpandReports, btncollapsReports, rightMargin);
+            PositionHeaderButtons(paTasksHeader, btnExpandTasks, btnCollapseTasks, rightMargin);
+            PositionHeaderButtons(paDataHeader, btnExpandData, btnCollapseData, rightMargin);
+        }
+
+        private static void PositionHeaderButtons(Control panel, Control buttonA, Control buttonB, int rightMargin)
+        {
+            if (panel == null)
+                return;
+
+            foreach (var button in new[] { buttonA, buttonB })
+            {
+                if (button == null)
+                    continue;
+
+                button.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+                button.Left = Math.Max(0, panel.ClientSize.Width - button.Width - rightMargin);
+                button.BringToFront();
+            }
+        }
+
         // treeview hottracking is forcing color as blue , overriding its drawing to stick our own color
         private void tvReports_DrawMode(object sender, DrawTreeNodeEventArgs e)
         {
@@ -539,10 +572,10 @@ namespace sqlnexus
         }
         private void fmNexus_Load(object sender, EventArgs e)
         {
-            
 
-            // Write our location to the registry so ReadTrace.exe can find us. 
-            Registry.SetValue(REG_HKCU_APP_KEY, "InstallPath", 
+
+            // Write our location to the registry so ReadTrace.exe can find us.
+            Registry.SetValue(REG_HKCU_APP_KEY, "InstallPath",
                 Path.GetDirectoryName(Application.ExecutablePath));
             Registry.SetValue(REG_HKCU_APP_KEY2, "InstallPath",
                 Path.GetDirectoryName(Application.ExecutablePath)); 
@@ -555,6 +588,10 @@ namespace sqlnexus
             Application.DoEvents();
             if (!Globals.NoWindow && !Globals.ConsoleMode)
                 this.WindowState = FormWindowState.Maximized;
+
+            // Re-position the sidebar header buttons now that the form has been laid out
+            // and font auto-scaling has been applied, so they sit at the right edge.
+            AdjustSidebarHeaderButtons();
 
             MakeTaskPaneImagesTransparent();
 

@@ -85,6 +85,52 @@ namespace sqlnexus
            CallingConvention = CallingConvention.StdCall)]
         public static extern bool FreeConsole();
 
+        // Per-Monitor V2 DPI awareness context (Windows 10 1703+)
+        private static readonly IntPtr DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2 = new IntPtr(-4);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern bool SetProcessDpiAwarenessContext(IntPtr dpiContext);
+
+        [DllImport("shcore.dll", SetLastError = true)]
+        private static extern int SetProcessDpiAwareness(int value); // 2 = Per-Monitor DPI aware
+
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern bool SetProcessDPIAware();
+
+        /// <summary>
+        /// Opts the process into modern high-DPI (Per-Monitor V2) rendering so the UI stays
+        /// crisp on high-resolution displays. Falls back gracefully on older Windows versions.
+        /// </summary>
+        private static void EnableModernDpiAwareness()
+        {
+            try
+            {
+                // Windows 10 1703+ : best experience, per-monitor V2.
+                if (SetProcessDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2))
+                    return;
+            }
+            catch (EntryPointNotFoundException) { }
+            catch (DllNotFoundException) { }
+
+            try
+            {
+                // Windows 8.1+ : per-monitor aware.
+                if (SetProcessDpiAwareness(2) == 0)
+                    return;
+            }
+            catch (EntryPointNotFoundException) { }
+            catch (DllNotFoundException) { }
+
+            try
+            {
+                // Windows Vista+ : system DPI aware.
+                SetProcessDPIAware();
+            }
+            catch (EntryPointNotFoundException) { }
+            catch (DllNotFoundException) { }
+        }
+
+
         public static void ShowUsage()
         {
             // logger isn't hooked up to log file at this point and we're definitely running from the command line...
@@ -309,6 +355,10 @@ namespace sqlnexus
 
             try
             {
+
+                // Enable modern high-DPI (Per-Monitor V2) rendering before any window is
+                // created so the UI renders crisply on high-resolution / high-DPI displays.
+                EnableModernDpiAwareness();
 
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);

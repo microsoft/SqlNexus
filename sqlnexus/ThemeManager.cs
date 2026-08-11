@@ -20,6 +20,63 @@ namespace sqlnexus
         }
     }
 
+    /// <summary>
+    /// A flat, Fluent-inspired color table used to render menus and toolbars without
+    /// the legacy glossy gradients. Provides a subtle light-gray surface with a modern
+    /// blue accent for hover/selection.
+    /// </summary>
+    public class ModernColorTable : ProfessionalColorTable
+    {
+        private static readonly Color Surface = ColorTranslator.FromHtml("#F3F3F3");
+        private static readonly Color Accent = ColorTranslator.FromHtml("#0078D4");
+        private static readonly Color AccentLight = ColorTranslator.FromHtml("#CCE4F7");
+        private static readonly Color AccentBorder = ColorTranslator.FromHtml("#99CAEF");
+        private static readonly Color Divider = ColorTranslator.FromHtml("#E0E0E0");
+
+        public override Color ToolStripGradientBegin => Surface;
+        public override Color ToolStripGradientMiddle => Surface;
+        public override Color ToolStripGradientEnd => Surface;
+        public override Color ToolStripBorder => Divider;
+
+        public override Color MenuStripGradientBegin => Surface;
+        public override Color MenuStripGradientEnd => Surface;
+        public override Color MenuBorder => Divider;
+        public override Color MenuItemBorder => AccentBorder;
+
+        public override Color MenuItemSelected => AccentLight;
+        public override Color MenuItemSelectedGradientBegin => AccentLight;
+        public override Color MenuItemSelectedGradientEnd => AccentLight;
+        public override Color MenuItemPressedGradientBegin => Surface;
+        public override Color MenuItemPressedGradientEnd => Surface;
+
+        public override Color ButtonSelectedHighlight => AccentLight;
+        public override Color ButtonSelectedGradientBegin => AccentLight;
+        public override Color ButtonSelectedGradientMiddle => AccentLight;
+        public override Color ButtonSelectedGradientEnd => AccentLight;
+        public override Color ButtonSelectedBorder => AccentBorder;
+
+        public override Color ButtonPressedGradientBegin => AccentBorder;
+        public override Color ButtonPressedGradientMiddle => AccentBorder;
+        public override Color ButtonPressedGradientEnd => AccentBorder;
+        public override Color ButtonPressedBorder => Accent;
+
+        public override Color ButtonCheckedGradientBegin => AccentLight;
+        public override Color ButtonCheckedGradientMiddle => AccentLight;
+        public override Color ButtonCheckedGradientEnd => AccentLight;
+
+        public override Color ImageMarginGradientBegin => Surface;
+        public override Color ImageMarginGradientMiddle => Surface;
+        public override Color ImageMarginGradientEnd => Surface;
+
+        public override Color SeparatorDark => Divider;
+        public override Color SeparatorLight => Color.White;
+
+        public override Color ToolStripContentPanelGradientBegin => Surface;
+        public override Color ToolStripContentPanelGradientEnd => Surface;
+        public override Color ToolStripPanelGradientBegin => Surface;
+        public override Color ToolStripPanelGradientEnd => Surface;
+    }
+
     public static class ThemeManager
     {
         public static string CurrentThemeName;
@@ -31,6 +88,47 @@ namespace sqlnexus
         /// Returns true if Windows High Contrast mode is enabled
         /// </summary>
         public static bool IsHighContrastEnabled => SystemInformation.HighContrast;
+
+        /// <summary>
+        /// The modern Windows UI font (Segoe UI). Replacing the legacy default of
+        /// Microsoft Sans Serif 8.25pt instantly gives the whole app a current look
+        /// because child controls inherit the container font.
+        /// </summary>
+        public static Font GetModernFont()
+        {
+            try
+            {
+                return new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            }
+            catch
+            {
+                // Fall back to the system default if Segoe UI is unavailable.
+                return Control.DefaultFont;
+            }
+        }
+
+        /// <summary>
+        /// Applies modern, low-risk cosmetic polish to a form: the Segoe UI system font
+        /// and a flat (non-glossy) renderer for its menus and toolbars. No layout changes.
+        /// </summary>
+        public static void ApplyModernAppearance(Form form)
+        {
+            if (form == null)
+                return;
+
+            // 1. Modern font. High Contrast users keep the system-provided font.
+            if (!IsHighContrastEnabled)
+            {
+                form.Font = GetModernFont();
+            }
+
+            // 3. Flat, Fluent-style menus and toolbars instead of the dated 2007 gradients.
+            ToolStripManager.Renderer = new ToolStripProfessionalRenderer(new ModernColorTable())
+            {
+                RoundedEdges = false
+            };
+        }
+
 
         #region Theme Definitions
         public static List<Theme> Themes = new List<Theme>
