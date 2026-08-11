@@ -550,7 +550,7 @@ END;</CommandText>
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.25in</Height>
+                  <Height>0.5in</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -646,32 +646,62 @@ END;</CommandText>
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Image Name="StatusImage">
-                          <Source>Embedded</Source>
-                          <Value>=IIF(Fields!Status.Value=0, "ProgressSuccess", "ProgressWarn")</Value>
+                        <Rectangle Name="StatusRectangle">
+                          <ReportItems>
+                            <Image Name="StatusImage">
+                              <Source>Embedded</Source>
+                              <Value>=IIF(Fields!Status.Value=0, "ProgressSuccess", "ProgressWarn")</Value>
+                              <Top>2pt</Top>
+                              <Left>18pt</Left>
+                              <Height>16pt</Height>
+                              <Width>16pt</Width>
+                              <Style />
+                              <ToolTip>=IIF(Fields!Status.Value=0, "Passed", "Warning")</ToolTip>
+                            </Image>
+                            <Textbox Name="StatusText">
+                              <CanGrow>true</CanGrow>
+                              <KeepTogether>true</KeepTogether>
+                              <Paragraphs>
+                                <Paragraph>
+                                  <TextRuns>
+                                    <TextRun>
+                                      <Value>=IIF(Fields!Status.Value=0, "Passed", "Warning")</Value>
+                                      <Style>
+                                        <Color>=Variables!ReportTextColor.Value</Color>
+                                      </Style>
+                                    </TextRun>
+                                  </TextRuns>
+                                  <Style>
+                                    <TextAlign>Center</TextAlign>
+                                  </Style>
+                                </Paragraph>
+                              </Paragraphs>
+                              <rd:DefaultName>StatusText</rd:DefaultName>
+                              <Top>20pt</Top>
+                              <Height>14pt</Height>
+                              <Width>41pt</Width>
+                              <Style>
+                                <Border>
+                                  <Style>None</Style>
+                                </Border>
+                              </Style>
+                            </Textbox>
+                          </ReportItems>
                           <Style>
                             <Border>
                               <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>None</Style>
                             </Border>
-                            <TopBorder>
-                              <Color>=Variables!ReportTextColor.Value</Color>
-                            </TopBorder>
                             <BottomBorder>
                               <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>Solid</Style>
                             </BottomBorder>
-                            <LeftBorder>
-                              <Color>=Variables!ReportTextColor.Value</Color>
-                            </LeftBorder>
                             <RightBorder>
                               <Color>=Variables!ReportTextColor.Value</Color>
                               <Style>Solid</Style>
                             </RightBorder>
-                            <PaddingLeft>15pt</PaddingLeft>
-                            <PaddingTop>10pt</PaddingTop>
                           </Style>
-                        </Image>
+                        </Rectangle>
                       </CellContents>
                     </TablixCell>
                     <TablixCell>

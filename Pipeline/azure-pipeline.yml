@@ -1,6 +1,14 @@
 name: BuildAndSecurePipeline
 trigger: none
 
+schedules:
+- cron: '0 3 */3 * *'
+  displayName: 'Run every 3 days at 3 AM UTC'
+  branches:
+    include:
+    - master
+  always: true
+
 parameters:
 - name: poolName
   type: string
@@ -34,6 +42,8 @@ extends:
       name: ${{ parameters.poolName }}
       image: ${{ parameters.image }}
       os: ${{ parameters.os }}
+    settings:
+      networkIsolationPolicy: Permissive,CFSClean
 
     stages:
     - stage: BuildAndScan
@@ -49,13 +59,16 @@ extends:
         steps:
         - checkout: self
 
-        # NuGet restore
+        # NuGet restore (CFS compliant)
         - task: NuGetToolInstaller@1
+        - task: NuGetAuthenticate@1
+
         - task: NuGetCommand@2
           inputs:
             command: restore
             restoreSolution: '$(Build.SourcesDirectory)/sqlnexus.sln'
-            feedsToUse: select
+            feedsToUse: config
+            nugetConfigPath: '$(Build.SourcesDirectory)/nuget.config'
 
         # Build the solution
         - task: VSBuild@1
