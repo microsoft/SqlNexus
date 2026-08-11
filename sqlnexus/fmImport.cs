@@ -898,7 +898,7 @@ namespace sqlnexus
                 }
 
                 // /M command-line override: supersedes both UI saved settings and AppConfig.xml.
-                // user.config is never read or written here — it remains intact for GUI sessions.
+                // user.config is never read or written here ï¿½ it remains intact for GUI sessions.
                 // Tracks whether this importer runs because a /M token explicitly requested it
                 // (EnabledByToken) versus because it is mandatory (ForcedOn Rowset). Only a
                 // token-requested importer that finds no files signals "requested data missing".
@@ -1189,7 +1189,7 @@ namespace sqlnexus
             string customXELImprtStr = "CustomXELImporter";
             bool customXelEnabled = tsiSQLDiagAlwaysOnXEL_Enabled != null && tsiSQLDiagAlwaysOnXEL_Enabled.Checked;
 
-            // /M override for CustomXEL — does not touch tsiSQLDiagAlwaysOnXEL_Enabled.Checked,
+            // /M override for CustomXEL - does not touch tsiSQLDiagAlwaysOnXEL_Enabled.Checked,
             // so the saved UI setting is preserved unchanged.
             if (Globals.EnabledImporters != null)
                 customXelEnabled = ImporterSelectionEvaluator.IsCustomXelSelected(Globals.EnabledImporters);

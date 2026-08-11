@@ -34,7 +34,7 @@ namespace sqlnexus
         /// When set via the /M command-line argument, only the listed importers are activated.
         /// Tokens (case-insensitive): ReadTrace, TraceEventImporter (synonyms Trace/TraceImp/
         /// TraceImporter), Perfmon, Linux, Errorlog, CustomXEL, All.
-        /// Null means no override — use the defaults / saved user.config values unchanged.
+        /// Null means no override - use the defaults / saved user.config values unchanged.
         /// </summary>
         public static HashSet<string> EnabledImporters = null;
 

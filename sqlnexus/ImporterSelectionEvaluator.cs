@@ -8,7 +8,7 @@ namespace sqlnexus
     /// </summary>
     internal enum ImporterGateResult
     {
-        /// <summary>Runs unconditionally (Rowset Importer ? core dependency).</summary>
+        /// <summary>Runs unconditionally (Rowset Importer - core dependency).</summary>
         ForcedOn,
         /// <summary>Explicitly requested by a /M token and eligible to run.</summary>
         EnabledByToken,
@@ -30,7 +30,7 @@ namespace sqlnexus
     /// </summary>
     internal static class ImporterSelectionEvaluator
     {
-        /// <summary>Rowset Importer always runs ? it populates core tables all other stages depend on.</summary>
+        /// <summary>Rowset Importer always runs - it populates core tables all other stages depend on.</summary>
         public const string RowsetImporterName = "Rowset Importer";
         public const string ReadTraceImporterName = "ReadTrace (SQL XEL/TRC Files)";
         public const string TraceEventImporterName = "Trace Event Importer (Managed)";
