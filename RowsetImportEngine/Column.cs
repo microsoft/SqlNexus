@@ -178,27 +178,28 @@ namespace RowsetImportEngine
 		// The base class does not provide any data validation. 
 		public override object ValidateData(object columndata)
 		{
-            return ConvertHelper.ValidateData<DateTime>(columndata, out data);
-   //         try
-			//{
-			//	// Query Analyzer and osql format dates like this: 
-			//	//		2004-07-12 23:26:18.850
-			//	// The specific formatting is left up to the SQL ODBC driver. 
-			//	// TODO: Verify whether SQLODBC date formatting depends on the system locale. Do we need a way to specify formatting or LCID? 
+			object converted = ConvertHelper.ValidateData<DateTime>(columndata, out data);
 
-			//	// Unfortunately, the framework's DateTime value only has second-level precision. Use 
-			//	// Convert.ToDateTime just to validate that the format of the datetime string is valid, 
-			//	// but actually store the string value so we can pass the milliseconds portion intact 
-			//	// to SQL. 
-			//	Convert.ToDateTime(columndata);
-			//	data = columndata.ToString();
-			//	return data;
-			//}
-			//catch
-			//{
-			//	data = null;
-			//	return null;
-			//}
+			// .NET DateTime (year 0001+) has a wider range than SQL Server's 'datetime' type
+			// (1753-01-01 .. 9999-12-31). A value that is a valid .NET DateTime but outside the
+			// SQL range passes the TypeConverter validation above, then throws SqlDateTime overflow
+			// at bulk-copy/flush time - aborting the entire rowset. Guard against that here by
+			// treating out-of-SQL-range values as NULL so a single bad row does not fail the load.
+			if (converted is DateTime)
+			{
+				DateTime dt = (DateTime)converted;
+				if (dt < System.Data.SqlTypes.SqlDateTime.MinValue.Value
+					|| dt > System.Data.SqlTypes.SqlDateTime.MaxValue.Value)
+				{
+					System.Diagnostics.Trace.WriteLine(string.Format(
+						"DateTimeColumn: value '{0}' is outside the SQL 'datetime' range (1753-01-01 .. 9999-12-31); storing NULL instead.",
+						dt));
+					data = null;
+					return null;
+				}
+			}
+
+			return data;
 		}
 		public override Column Copy()
 		{
