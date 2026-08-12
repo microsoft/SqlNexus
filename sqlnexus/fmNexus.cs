@@ -264,8 +264,9 @@ namespace sqlnexus
                                FileOptions.None, Util.GetFileSecurity());
 
             Util.Env.NexusLogFile = newLogFileName;
-            TraceListener log = new System.Diagnostics.TextWriterTraceListener(fstream);
-            log.TraceOutputOptions = TraceOptions.DateTime;
+            // Use a listener that writes the timestamp inline (same line as the message) instead of
+            // TraceOptions.DateTime, which emits the timestamp as a footer on its own indented line.
+            TraceListener log = new InlineDateTimeTraceListener(fstream);
             log.Filter = new EventTypeFilter(SourceLevels.All);
             TraceLogger.Listeners.Add(log);
         }

@@ -19,6 +19,9 @@ using System.Runtime.InteropServices;
 // COM, set the ComVisible attribute to true on that type.
 [assembly: ComVisible(false)]
 
+// Expose internal members (e.g. Program.TryParseImporterSelection) to the unit test project.
+[assembly: InternalsVisibleTo("SqlNexus.UnitTests")]
+
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("da26622b-cd7a-47f6-8962-459747425941")]
 
