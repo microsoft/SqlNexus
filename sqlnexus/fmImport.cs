@@ -1159,7 +1159,6 @@ namespace sqlnexus
         private void DoImport()
         {
             //AddLabel();
-            bool RunScripts = true;
             bool Success = false;
 
             if (CheckAndStop())
@@ -1402,8 +1401,6 @@ namespace sqlnexus
                         msg = "(Importer:" + ri.Name + ") ";
                         if (ri.Cancelled)	// different msg if import was canceled.
                         {
-                            RunScripts = false;
-
                             // A cancelled /M run did not complete the requested import; flag it so the
                             // process returns a non-zero (ImportIncomplete) exit code instead of success.
                             if (Globals.EnabledImporters != null)
@@ -1424,8 +1421,6 @@ namespace sqlnexus
                         }
                         else if (!Success)	// set summary msg if import failed
                         {
-                            RunScripts = false;
-
                             // Under /M, a requested importer that FAILED means the data automation
                             // asked for did not arrive; flag it so the process returns a non-zero exit code.
                             if (Globals.EnabledImporters != null)
