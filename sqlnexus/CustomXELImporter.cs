@@ -27,9 +27,27 @@ namespace sqlnexus
         int countTotalFilesFound = 0;
         int totalRowsAffected = 0;
 
+        /// <summary>
+        /// Total number of Custom XEL files (SqlDiag/AlwaysOn Health/system_health) discovered and
+        /// imported by the last <see cref="ImportCustomXELFiles"/> call. Zero means nothing matched,
+        /// which a /M-driven run treats as "requested data did not arrive".
+        /// </summary>
+        public int TotalFilesFound { get { return countTotalFilesFound; } }
+
+        /// <summary>
+        /// Decides whether a Custom XEL import failed based on the per-source row counts returned by
+        /// the Load* methods. Each Load* method returns a non-negative row count on success and -1 on
+        /// failure (from its catch block), so any negative value means that source errored.
+        /// Extracted for unit testing (see CustomXELImporterTests).
+        /// </summary>
+        internal static bool AnyCustomXelSourceFailed(int sqlDiagRowsImported, int alwaysOnRowsImported, int systemHealthRowsImported)
+        {
+            return sqlDiagRowsImported < 0 || alwaysOnRowsImported < 0 || systemHealthRowsImported < 0;
+        }
+
         bool dropExistingTables = true;
 
-        public string SQLBaseImport(string connString, string Server, bool UseWindowsAuth, string SQLLogin, string SQLPassword, string DatabaseName, string srcpath, bool importSQLDiagAlwaysOnXEL = true, bool dropTables = true)
+        public string ImportCustomXELFiles(string connString, string Server, bool UseWindowsAuth, string SQLLogin, string SQLPassword, string DatabaseName, string srcpath, out bool success, bool importCustomXEL = true, bool dropTables = true)
         {
 
             connStr = connString;
@@ -41,14 +59,28 @@ namespace sqlnexus
             srcPath = srcpath;
             dropExistingTables = dropTables;
 
+            success = true;
 
             int sqlDiagRowsImported = 0;
             int alwaysOnRowsImported = 0;
-            if (importSQLDiagAlwaysOnXEL)
+            if (importCustomXEL)
             {
                 sqlDiagRowsImported = LoadSQLDiaglFiles();
                 alwaysOnRowsImported = LoadAlwaysonHealthFiles();
                 int systemHealthRowsImported = LoadSystemHealthFiles();
+
+                // Each Load* method returns a non-negative row count on success and -1 on failure
+                // (and logs the specific error). Surface any failure so the caller does NOT report a
+                // successful "Done" status.
+                bool anyFailed = AnyCustomXelSourceFailed(sqlDiagRowsImported, alwaysOnRowsImported, systemHealthRowsImported);
+                success = !anyFailed;
+
+                if (anyFailed)
+                {
+                    Util.Logger.LogMessage("Custom XEL import encountered errors (SqlDiag/AOHealth/SysHealth). See preceding log entries for details.");
+                    return String.Format("FAILED - one or more Custom XEL sources errored (SqlDiag {0}, AOHealth {1}, SysHealth {2}). See log for details.",
+                                    sqlDiagRowsImported, alwaysOnRowsImported, systemHealthRowsImported);
+                }
 
                 string retStr = String.Format("{0} rows imported (SqlDiag {2}, AOHealth {3}, SysHealth {4}) across {1} XEL files.", 
                                     totalRowsAffected, 
@@ -60,7 +92,7 @@ namespace sqlnexus
             }
             else
             {
-                Util.Logger.LogMessage("Skipping SQLDiag and AlwaysOn XEL import (SQLDiagAlwaysOnXEL option is disabled).");
+                Util.Logger.LogMessage("Skipping Custom XEL import (SQLDiag, AlwaysOn Health, and system_health) - CustomXEL option is disabled.");
                 return "Skipped (disabled)";
             }
 
@@ -107,7 +139,11 @@ namespace sqlnexus
 
                     SqlCommand cmd = new SqlCommand(sqlstatment, cnn);
                     cmd.CommandTimeout = 0;
-                    totalRowsAffected += sqlDiagRowsImported = cmd.ExecuteNonQuery();
+                    // ExecuteNonQuery returns -1 when the rowcount is suppressed (e.g. SET NOCOUNT ON).
+                    // Clamp to 0 so a successful import can never be mistaken for the -1 failure signal
+                    // returned by the catch block below.
+                    sqlDiagRowsImported = Math.Max(0, cmd.ExecuteNonQuery());
+                    totalRowsAffected += sqlDiagRowsImported;
 
                     Util.Logger.LogMessage(String.Format("Custom XEL import for {0} finished: {1} rows imported from {2} files.", sqlDiagXelFileToImport, sqlDiagRowsImported, sqlDiagFileCount));
                 }
@@ -163,7 +199,9 @@ namespace sqlnexus
                     string sqlstatment = dropSql + "SELECT * INTO tbl_SQL_Base_AlwaysOnHealth FROM sys.fn_xe_file_target_read_file('" + XEFile + "*.XEL', NULL, null, null);";
                     SqlCommand cmd = new SqlCommand(sqlstatment, cnn);
                     cmd.CommandTimeout = 0;
-                    totalRowsAffected += AlwaysOnRowsImported = cmd.ExecuteNonQuery();
+                    // Clamp to 0 (see LoadSQLDiaglFiles) so success is never confused with the -1 failure signal.
+                    AlwaysOnRowsImported = Math.Max(0, cmd.ExecuteNonQuery());
+                    totalRowsAffected += AlwaysOnRowsImported;
 
 
                     Util.Logger.LogMessage(String.Format("Custom XEL import for {0} finished: {1} rows imported from {2} files.", AOHealthFileToImport, AlwaysOnRowsImported, AlwaysOnFileCount));
@@ -221,7 +259,9 @@ namespace sqlnexus
 
                     SqlCommand cmd = new SqlCommand(sqlstatment, cnn);
                     cmd.CommandTimeout = 0;
-                    totalRowsAffected += systemHealthRowsImported = cmd.ExecuteNonQuery();
+                    // Clamp to 0 (see LoadSQLDiaglFiles) so success is never confused with the -1 failure signal.
+                    systemHealthRowsImported = Math.Max(0, cmd.ExecuteNonQuery());
+                    totalRowsAffected += systemHealthRowsImported;
 
                     Util.Logger.LogMessage(String.Format("Custom XEL import for {0} finished: {1} rows imported from {2} files.", sysHealthFilesToImport, systemHealthRowsImported, systemHealthFileCount));
                 }

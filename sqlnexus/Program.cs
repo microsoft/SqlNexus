@@ -75,7 +75,10 @@ namespace sqlnexus
     {
         UserCancel = -1,
         Normal = 0,
-        Exception = 2
+        Exception = 2,
+        // A requested importer (via /M) was missing or imported no data. The core load may have
+        // succeeded, but automation asked for data that did not arrive, so this must not report success.
+        ImportIncomplete = 3
     }
 
     static class Program
@@ -104,11 +107,169 @@ namespace sqlnexus
             Console.WriteLine(Util.ExpandEscapeStrings(sqlnexus.Properties.Resources.Usage_Parameter));
             Console.WriteLine(Util.ExpandEscapeStrings(sqlnexus.Properties.Resources.Usage_Quiet));
             Console.WriteLine(Util.ExpandEscapeStrings(sqlnexus.Properties.Resources.Drop_Existing_Database));
+            Console.WriteLine(Util.ExpandEscapeStrings(sqlnexus.Properties.Resources.Usage_Importers));
         }
 
         public static bool IsDbNameValid(string dbName)
         {
             return System.Text.RegularExpressions.Regex.IsMatch(dbName, @"^(?!(master|tempdb|msdb|model)$)[A-Za-z0-9_]{1,128}$", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+        }
+
+        /// <summary>
+        /// The complete set of canonical importer tokens that "All" expands to.
+        /// </summary>
+        private static readonly string[] AllImporterTokens =
+            { "ReadTrace", "Perfmon", "Linux", "Errorlog", "CustomXEL", "TraceEventImporter" };
+
+        /// <summary>
+        /// Maps a user-supplied /M token (case-insensitive) to its canonical importer token.
+        /// The two XEvent trace importers are mutually exclusive and write to the same
+        /// ReadTrace.* schema, so the generic trace synonyms (Trace, TraceImp, TraceImporter)
+        /// collapse to TraceEventImporter (the preferred managed trace importer).
+        /// </summary>
+        private static readonly Dictionary<string, string> ImporterTokenAliases =
+            new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                { "ReadTrace",          "ReadTrace" },
+                { "Perfmon",            "Perfmon" },
+                { "Linux",              "Linux" },
+                { "Errorlog",           "Errorlog" },
+                { "CustomXEL",          "CustomXEL" },
+                { "TraceEventImporter", "TraceEventImporter" },
+                { "TraceImporter",      "TraceEventImporter" },
+                { "TraceImp",           "TraceEventImporter" },
+                { "Trace",              "TraceEventImporter" },
+            };
+
+        /// <summary>
+        /// True if the canonical token is one of the (mutually exclusive) XEvent trace importers.
+        /// </summary>
+        private static bool IsTraceToken(string canonicalToken)
+        {
+            return string.Equals(canonicalToken, "ReadTrace", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(canonicalToken, "TraceEventImporter", StringComparison.OrdinalIgnoreCase);
+        }
+
+        /// <summary>
+        /// Parses the value of the /M switch into the set of importer tokens to enable.
+        /// Supported syntaxes (tokens are case-insensitive):
+        ///   /MReadTrace+Perfmon        additive: only the listed importers
+        ///   /MAll                      every importer
+        ///   /MAll-ReadTrace            subtractive: every importer except the listed ones
+        ///   /MAll-ReadTrace-Perfmon    every importer except the listed ones
+        /// Unknown tokens are rejected. The two XEvent trace importers (ReadTrace and
+        /// TraceEventImporter) are treated as a single logical capability: subtracting either
+        /// one (or the generic "Trace") suppresses BOTH, so no XEvent trace data is imported.
+        /// The '+' (add) and '-' (subtract-from-All) forms cannot be mixed in a single value.
+        /// </summary>
+        /// <returns>true when parsing succeeds; false for an invalid/empty/unknown selection.</returns>
+        internal static bool TryParseImporterSelection(string mVal, out HashSet<string> selectedImporters)
+        {
+            selectedImporters = null;
+
+            if (string.IsNullOrWhiteSpace(mVal))
+                return false;
+
+            bool hasPlus = mVal.IndexOf('+') >= 0;
+            bool hasMinus = mVal.IndexOf('-') >= 0;
+
+            // '+' (add) and '-' (subtract) semantics cannot be combined.
+            if (hasPlus && hasMinus)
+                return false;
+
+            if (hasMinus)
+            {
+                // Subtractive syntax: must start with "All", followed by one or more tokens to remove.
+                // Split with None (not RemoveEmptyEntries) so leading/trailing/repeated '-' separators
+                // produce empty tokens that are rejected below.
+                string[] parts = mVal.Split('-');
+                if (parts.Length < 2 || !string.Equals(parts[0].Trim(), "All", StringComparison.OrdinalIgnoreCase))
+                    return false;
+
+                HashSet<string> result = BuildAllImporterSet();
+                for (int i = 1; i < parts.Length; i++)
+                {
+                    string tokenText = parts[i].Trim();
+                    if (tokenText.Length == 0)
+                        return false; // empty token (e.g. "All--Perfmon", "All-Perfmon-")
+
+                    string canonical;
+                    if (!ImporterTokenAliases.TryGetValue(tokenText, out canonical))
+                        return false; // unknown token
+
+                    if (IsTraceToken(canonical))
+                    {
+                        // Subtracting either trace importer removes both.
+                        result.Remove("ReadTrace");
+                        result.Remove("TraceEventImporter");
+                    }
+                    else
+                    {
+                        result.Remove(canonical);
+                    }
+                }
+                result.Remove("All");
+                selectedImporters = result;
+                return true;
+            }
+
+            if (string.Equals(mVal, "All", StringComparison.OrdinalIgnoreCase))
+            {
+                selectedImporters = BuildAllImporterSet();
+                return true;
+            }
+
+            // Additive syntax: '+'-separated list of importer tokens (canonicalized; unknowns rejected).
+            // Split with None (not RemoveEmptyEntries) so leading/trailing/repeated '+' separators
+            // produce empty tokens that are rejected below.
+            string[] tokens = mVal.Split('+');
+            if (tokens.Length == 0)
+                return false;
+
+            var set = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            foreach (string token in tokens)
+            {
+                string tokenText = token.Trim();
+                if (tokenText.Length == 0)
+                    return false; // empty token (e.g. "+Perfmon", "Perfmon+", "Perfmon++Linux")
+
+                string canonical;
+                if (!ImporterTokenAliases.TryGetValue(tokenText, out canonical))
+                    return false; // unknown token
+                set.Add(canonical);
+            }
+            selectedImporters = set;
+            return true;
+        }
+
+        private static HashSet<string> BuildAllImporterSet()
+        {
+            // Option B: "/M" governs only the known, explicitly-wired built-in importers.
+            // "All" expands to this fixed canonical token set (no special "All" marker is kept),
+            // so every /M form flows through the same token-based gating. Importers that are not
+            // wired into this set are never enabled by /M - drop-in/unknown assemblies are ignored.
+            return new HashSet<string>(AllImporterTokens, StringComparer.OrdinalIgnoreCase);
+        }
+
+        /// <summary>
+        /// Prints a helpful error for an invalid /M value: the supported tokens,
+        /// the accepted syntaxes, and concrete examples.
+        /// </summary>
+        private static void ShowImporterTokenHelp(string badArg)
+        {
+            Console.WriteLine("Invalid /M importer selection: " + badArg);
+            Console.WriteLine("Valid tokens (case-insensitive): " + string.Join(", ", AllImporterTokens) + ", All");
+            Console.WriteLine("  Trace synonyms for TraceEventImporter: Trace, TraceImp, TraceImporter");
+            Console.WriteLine("Syntax:");
+            Console.WriteLine("  /M<token>[+<token>...]   additive - only the listed importers");
+            Console.WriteLine("  /MAll                    every wired built-in importer (see note)");
+            Console.WriteLine("  /MAll-<token>[-<token>]  every importer except the listed ones");
+            Console.WriteLine("Notes: '+' (add) and '-' (subtract) cannot be combined; unknown tokens are rejected.");
+            Console.WriteLine("       Subtracting either trace importer (or 'Trace') suppresses both.");
+            Console.WriteLine("       'All' means all explicitly-wired built-in importers (logical capabilities),");
+            Console.WriteLine("       not arbitrary drop-in assemblies; the two trace importers are one capability.");
+            Console.WriteLine("       /M only affects importer selection - it requires an input path (/I) to import.");
+            Console.WriteLine("Examples: /MReadTrace+Perfmon+Errorlog   |   /MAll   |   /MAll-Trace-Perfmon");
         }
 
         /// <summary>
@@ -146,7 +307,7 @@ namespace sqlnexus
                 // Some switches require a string to immediately follow the switch
                 char switchChar = arg.ToUpper(CultureInfo.InvariantCulture)[1];
                 if (('C' == switchChar) || ('S' == switchChar) || ('U' == switchChar) || ('P' == switchChar) || ('R' == switchChar)
-                    || ('O' == switchChar) || ('I' == switchChar) || ('V' == switchChar) || ('D' == switchChar))
+                    || ('O' == switchChar) || ('I' == switchChar) || ('V' == switchChar) || ('D' == switchChar) || ('M' == switchChar))
                 {
                     if (arg.Length < 3)
                     {
@@ -158,7 +319,9 @@ namespace sqlnexus
 
                 string arg_slash_validation = arg.Replace("/", "");
 
-                if (arg.Length - arg_slash_validation.Length > 1)
+                // The generic "extra backslash" heuristic doesn't apply to /M, whose value can
+                // legitimately contain characters like '-'. Let the /M case emit a token-specific error.
+                if (('M' != switchChar) && (arg.Length - arg_slash_validation.Length > 1))
                 {
                     Console.WriteLine(sqlnexus.Properties.Resources.Msg_InvalidSwitch + arg.Substring(0, 2));
                     Console.WriteLine("Possible reason: An extra backslash exists at the end of " + arg.Substring(0, 2) + " parameter in your command");
@@ -261,6 +424,32 @@ namespace sqlnexus
                             Globals.UserSuppliedReportParameters.Add(param, val);
                             break;
                         }
+                    case 'M':
+                        {
+                            string mVal = arg.Substring(2).Trim();
+                            Console.WriteLine(@"Command Line Arg (/M): Importers=" + mVal);
+
+                            HashSet<string> selectedImporters;
+                            if (!TryParseImporterSelection(mVal, out selectedImporters))
+                            {
+                                ShowImporterTokenHelp(arg);
+                                return false;
+                            }
+                            Globals.EnabledImporters = selectedImporters;
+
+                            // Log the REQUESTED selection (parsed canonical tokens). Note this is the
+                            // requested set, not necessarily what runs: trace mutual-exclusivity may
+                            // suppress ReadTrace, and a token whose importer DLL is missing / finds no
+                            // files cannot run. The EFFECTIVE per-importer decisions and a final
+                            // "importers that ran" summary are logged later during the import (EnumFiles).
+                            Console.WriteLine("/M requested importer selection: "
+                                + (selectedImporters.Count == 0
+                                    ? "(none)"
+                                    : string.Join(", ", selectedImporters.OrderBy(t => t, StringComparer.OrdinalIgnoreCase)))
+                                + " (Rowset Importer always runs; only explicitly-wired built-in importers are eligible; "
+                                + "TraceEventImporter is preferred when both trace importers are requested).");
+                            break;
+                        }
                     case 'N':
                         {
                             Console.WriteLine(@"Command Line Arg (/N)" + arg.Substring(2));
@@ -277,6 +466,16 @@ namespace sqlnexus
 
             }
             //create a database
+
+            // /M only controls importer selection; it has no effect without an input path to import.
+            // Fail closed rather than silently launching the GUI with the override active (as the
+            // /M help text states, /M requires /I).
+            if (Globals.EnabledImporters != null && Globals.PathsToImport.Count == 0)
+            {
+                Console.WriteLine("Error: /M (importer selection) requires an input path. "
+                    + "Specify the folder to import with /I<path> (for example: /IC:\\Data /MPerfmon).");
+                return false;
+            }
 
             if (!string.IsNullOrEmpty(Globals.credentialMgr.Database))
             {
@@ -339,9 +538,16 @@ namespace sqlnexus
             {
                 Console.WriteLine(string.Format("Exception encountered in Main(): [{0}]", ex.Message));
                 Console.WriteLine(string.Format("{0}", ex.StackTrace));
+
+                // A fatal, unhandled error must never be reported as success to automation.
+                Globals.IsNexusCoreImporterSuccessful = false;
+                if (Globals.EnabledImporters != null)
+                    Globals.RequestedImporterMissingOrEmpty = true;
             }
 
-            return (int)(Globals.IsNexusCoreImporterSuccessful ? ProgramExitCodes.Normal : ProgramExitCodes.Exception);
+            return (int)ImporterSelectionEvaluator.DecideExitCode(
+                Globals.IsNexusCoreImporterSuccessful,
+                Globals.EnabledImporters != null && Globals.RequestedImporterMissingOrEmpty);
         }
     }
 }
