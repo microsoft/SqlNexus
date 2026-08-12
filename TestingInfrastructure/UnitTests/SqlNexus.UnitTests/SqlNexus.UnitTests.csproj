@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    SqlNexus unit test project.
+    - Targets net48 so it can reference the legacy .NET Framework 4.8 product projects.
+    - Uses MSTest (works well in Visual Studio and in CI via 'dotnet test').
+    Add ProjectReferences to the product assemblies you are testing, e.g.:
+      <ProjectReference Include="..\..\..\RowsetImportEngine\RowsetImportEngine.csproj" />
+    If you need to test 'internal' members, add an InternalsVisibleTo attribute in the
+    product project pointing at "SqlNexus.UnitTests".
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <LangVersion>7.3</LangVersion>
+    <Nullable>disable</Nullable>
+    <AssemblyName>SqlNexus.UnitTests</AssemblyName>
+    <RootNamespace>SqlNexus.UnitTests</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
+    <PackageReference Include="MSTest.TestAdapter" Version="3.2.2" />
+    <PackageReference Include="MSTest.TestFramework" Version="3.2.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\RowsetImportEngine\RowsetImportEngine.csproj" />
+    <ProjectReference Include="..\..\..\sqlnexus\sqlnexus.csproj" />
+  </ItemGroup>
+
+</Project>

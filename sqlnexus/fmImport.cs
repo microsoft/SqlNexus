@@ -22,6 +22,19 @@ namespace sqlnexus
         private ToolStripMenuItem tsiSQLDiagAlwaysOnXEL_Enabled;
         private ToolStripMenuItem tsiSQLDiagAlwaysOnXEL_DropTables;
         private SqlInstances instances;
+
+        // Importer names used for mutual exclusivity and /M token mapping.
+        // Single source of truth lives in ImporterSelectionEvaluator (also used by unit tests).
+        private const string READTRACE_IMPORTER_NAME  = ImporterSelectionEvaluator.ReadTraceImporterName;
+        private const string TRACEEVENT_IMPORTER_NAME = ImporterSelectionEvaluator.TraceEventImporterName;
+
+        /// <summary>
+        /// Maps /M command-line tokens (case-insensitive) to the exact INexusImporter.Name
+        /// values returned at runtime. CustomXEL is handled separately in DoImport.
+        /// </summary>
+        private static readonly IDictionary<string, string> ImporterTokenToName =
+            ImporterSelectionEvaluator.ImporterTokenToName;
+
         private fmImport()
         {
             InitializeComponent();
@@ -117,7 +130,7 @@ namespace sqlnexus
             return false;
         }
 
-        private void AddFiles(string Mask, INexusImporter Importer)
+        private bool AddFiles(string Mask, INexusImporter Importer)
         {
             string basePath = cbPath.Text.Trim().Replace("\"", "");
             string[] allMatches = Directory.GetFiles(basePath, Mask);
@@ -125,7 +138,7 @@ namespace sqlnexus
 
             //if no file found for this mask, just return
             if (allMatches.Length <= 0)
-                return;
+                return false;
 
             // If this is a trace mask (*.trc) for ReadTrace, filter out excluded files
             bool isReadTrace = Importer != null &&
@@ -149,7 +162,7 @@ namespace sqlnexus
 
             // If after filtering there are NO included files, do NOT add any UI row.
             if (includedFiles.Length == 0)
-                return;
+                return false;
 
             int rowIndex = tlpFiles.RowCount - 1;
 
@@ -158,6 +171,7 @@ namespace sqlnexus
             {
 
                 int blockedCounter = 0;
+                int addedCounter = 0;
                 foreach (string f in includedFiles)
                 {
 
@@ -171,9 +185,11 @@ namespace sqlnexus
 
                     AddFileRow(rowIndex, Path.GetFileName(f), Importer, "");
                     rowIndex++;
+                    addedCounter++;
 
                 }
                 MainForm.LogMessage("Number of files blocked for import (due to multiple instance or unrelated files such as sqldump*: " + blockedCounter, MessageOptions.Silent);
+                return addedCounter > 0;
             }
             else
             {
@@ -193,8 +209,10 @@ namespace sqlnexus
                         AddFileRow(rowIndex, Mask, Importer, "");
                     }
 
+                    return true;
                 }
             }
+            return false;
         }//end of AddFiles
 
         private void AddFileRow(int row, string labelText, INexusImporter Importer, string RowType)
@@ -413,49 +431,107 @@ namespace sqlnexus
             EnumImportersFromDirectory(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\SqlNexus\Importers");
             EnumImportersFromDirectory(Application.StartupPath);
             EnforceTraceImporterExclusivity();
+            ResolveTraceImporterFallback();
+            LogMissingBuiltInImporters();
+        }
 
-            // Final check: warn for any expected importer that never made it into the menu,
-            // regardless of which directory was scanned. This is the most user-visible signal.
-            var registeredNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-            foreach (ToolStripMenuItem item in tsiImporters.DropDownItems)
+        /// <summary>
+        /// The set of importer names actually discovered/loaded from the Importers folder(s).
+        /// </summary>
+        private HashSet<string> GetDiscoveredImporterNames()
+        {
+            var discovered = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            foreach (ToolStripMenuItem importerTsi in tsiImporters.DropDownItems)
             {
-                INexusImporter prod = item.Tag as INexusImporter;
+                INexusImporter prod = importerTsi.Tag as INexusImporter;
                 if (prod != null)
-                    registeredNames.Add(prod.Name);
+                    discovered.Add(prod.Name);
             }
+            return discovered;
+        }
 
-            // Map DLL base name → the Name the importer registers itself under
-            var expectedDllToName = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
-            {
-                { "TraceEventImporter",     TRACEEVENT_IMPORTER_NAME },
-                { "ReadTraceNexusImporter", READTRACE_IMPORTER_NAME },
-            };
+        /// <summary>
+        /// For a /M run, if the requested trace importer is not installed, transparently fall back
+        /// to the other trace importer (they are one logical capability writing to the same
+        /// ReadTrace.* schema). TraceEventImporter is preferred, but if its assembly is missing we
+        /// use ReadTrace (and vice versa) so trace data is still imported. Logged explicitly.
+        /// </summary>
+        private void ResolveTraceImporterFallback()
+        {
+            if (Globals.EnabledImporters == null)
+                return;
 
-            foreach (var kvp in expectedDllToName)
+            HashSet<string> discovered = GetDiscoveredImporterNames();
+            var outcome = ImporterSelectionEvaluator.ResolveTraceFallback(
+                Globals.EnabledImporters, name => discovered.Contains(name));
+
+            switch (outcome)
             {
-                if (!registeredNames.Contains(kvp.Value))
+                case ImporterSelectionEvaluator.TraceFallbackResult.FellBackToReadTrace:
+                    MainForm.LogMessage("/M override; preferred '" + TRACEEVENT_IMPORTER_NAME
+                        + "' was NOT discovered - falling back to '" + READTRACE_IMPORTER_NAME
+                        + "' so trace data is still imported.", MessageOptions.All);
+                    break;
+                case ImporterSelectionEvaluator.TraceFallbackResult.FellBackToTraceEvent:
+                    MainForm.LogMessage("/M override; '" + READTRACE_IMPORTER_NAME
+                        + "' was NOT discovered - using '" + TRACEEVENT_IMPORTER_NAME
+                        + "' instead so trace data is still imported.", MessageOptions.All);
+                    break;
+                case ImporterSelectionEvaluator.TraceFallbackResult.NoTraceImporterAvailable:
+                    MainForm.LogMessage("/M override; trace data was requested but NEITHER '"
+                        + TRACEEVENT_IMPORTER_NAME + "' nor '" + READTRACE_IMPORTER_NAME
+                        + "' was discovered - no trace data will be imported.", MessageOptions.All);
+
+                    // Requested trace data cannot arrive: flag directly so the exit code is
+                    // ImportIncomplete regardless of downstream call ordering or token swapping
+                    // (do not rely on LogMissingBuiltInImporters to catch this).
+                    Globals.RequestedImporterMissingOrEmpty = true;
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Logs any explicitly-wired built-in importer (from ImporterTokenToName) that was not
+        /// discovered. This surfaces missing DLLs and load or registration failures that would
+        /// otherwise be silently absent - important for /M-driven automation where a token may
+        /// match nothing.
+        /// </summary>
+        private void LogMissingBuiltInImporters()
+        {
+            var discovered = GetDiscoveredImporterNames();
+
+            foreach (var kvp in ImporterTokenToName)
+            {
+                if (!discovered.Contains(kvp.Value))
                 {
-                    MainForm.LogMessage(string.Format(
-                        "WARNING: Importer '{0}' (from {1}.dll) did not register in the Import menu. " +
-                        "Check the application log for load errors, or verify that {1}.dll is present in '{2}'.",
-                        kvp.Value, kvp.Key, Application.StartupPath), MessageOptions.Both);
+                    MainForm.LogMessage("Built-in importer '" + kvp.Value + "' (/M token '" + kvp.Key
+                        + "') was NOT discovered. Its assembly may be missing or may have failed to load "
+                        + "or register; check the application log for details. It cannot be enabled by /M "
+                        + "for this run.", MessageOptions.All);
+
+                    // If this missing importer was explicitly requested via /M, the run cannot deliver
+                    // the requested data; flag it so the process returns a non-zero exit code.
+                    if (Globals.EnabledImporters != null && Globals.EnabledImporters.Contains(kvp.Key))
+                        Globals.RequestedImporterMissingOrEmpty = true;
                 }
             }
         }
 
         /// <summary>
-        /// If both ReadTrace and TraceEventImporter are enabled, disable ReadTrace
-        /// (TraceEventImporter is the preferred/modern one).
+        /// If both ReadTrace and TraceEventImporter are enabled, disable ReadTrace.
+        /// TraceEventImporter is the preferred managed importer.
         /// </summary>
         private void EnforceTraceImporterExclusivity()
         {
-            bool readTraceEnabled = IsImporterEnabled(READTRACE_IMPORTER_NAME);
+            bool readTraceEnabled  = IsImporterEnabled(READTRACE_IMPORTER_NAME);
             bool traceEventEnabled = IsImporterEnabled(TRACEEVENT_IMPORTER_NAME);
 
             if (readTraceEnabled && traceEventEnabled)
             {
                 DisableImporterByName(READTRACE_IMPORTER_NAME);
-                MainForm.LogMessage(string.Format("Both '{0}' and '{1}' were enabled. Automatically disabled '{1}' to prevent conflicts.", TRACEEVENT_IMPORTER_NAME, READTRACE_IMPORTER_NAME), MessageOptions.Silent);
+                MainForm.LogMessage(string.Format(
+                    "Both '{0}' and '{1}' were enabled. Automatically disabled '{1}' to prevent conflicts.",
+                    TRACEEVENT_IMPORTER_NAME, READTRACE_IMPORTER_NAME), MessageOptions.Silent);
             }
         }
 
@@ -477,6 +553,34 @@ namespace sqlnexus
                 }
             }
             return false;
+        }
+
+        /// <summary>
+        /// Finds the importer menu item by name and unchecks its Enabled option.
+        /// </summary>
+        private void DisableImporterByName(string importerName)
+        {
+            foreach (ToolStripMenuItem importerTsi in tsiImporters.DropDownItems)
+            {
+                INexusImporter otherProd = importerTsi.Tag as INexusImporter;
+                if (otherProd == null || otherProd.Name != importerName)
+                    continue;
+
+                foreach (ToolStripMenuItem optionTsi in importerTsi.DropDownItems)
+                {
+                    if (optionTsi.Text == "Enabled")
+                    {
+                        optionTsi.Checked = false;
+                        otherProd.Options["Enabled"] = false;
+                        // Never persist during a /M run: /M is an in-memory-only override for the
+                        // current run and must not modify saved UI settings (user.config).
+                        if (Globals.EnabledImporters == null && ImportOptions.IsEnabled("SaveImportOptions"))
+                            ImportOptions.Set(string.Format("{0}.Enabled", importerName), false);
+                        break;
+                    }
+                }
+                break;
+            }
         }
         private String FileVersions(String file)
         {
@@ -866,6 +970,11 @@ namespace sqlnexus
             tlpFiles.Controls.Clear();
 
             INexusImporter prod;
+            // Track importers that will actually run so we can log an effective summary (esp. for /M).
+            List<string> effectiveImportersToRun = new List<string>();
+            // Enabled importers that matched NO input files (nothing to import) - surfaced separately
+            // so the /M effective summary does not claim an importer "ran" when it found nothing.
+            List<string> enabledButEmptyImporters = new List<string>();
             // For each importer listed in the Options menu on the import form
             foreach (ToolStripMenuItem tsi in tsiImporters.DropDownItems)
             {
@@ -898,15 +1007,94 @@ namespace sqlnexus
 
                 }
 
+                // /M command-line override: supersedes both UI saved settings and AppConfig.xml.
+                // user.config is never read or written here � it remains intact for GUI sessions.
+                // Tracks whether this importer runs because a /M token explicitly requested it
+                // (EnabledByToken) versus because it is mandatory (ForcedOn Rowset). Only a
+                // token-requested importer that finds no files signals "requested data missing".
+                bool enabledByToken = false;
+                if (Globals.EnabledImporters != null)
+                {
+                    // Delegate the decision to the pure, unit-tested evaluator so the runtime gating
+                    // logic (mandatory Rowset, token gating, trace exclusivity, unwired importers)
+                    // is the single source of truth shared with the tests. user.config is never
+                    // read or written here - it remains intact for GUI sessions.
+                    ImporterGateResult gate = ImporterSelectionEvaluator.Evaluate(prod.Name, Globals.EnabledImporters);
+                    Enabled = ImporterSelectionEvaluator.WillRun(gate);
+                    enabledByToken = gate == ImporterGateResult.EnabledByToken;
+
+                    switch (gate)
+                    {
+                        case ImporterGateResult.SuppressedByTraceExclusivity:
+                            Util.Logger.LogMessage("/M override; both trace importers selected - disabling '"
+                                + READTRACE_IMPORTER_NAME + "' in favour of '" + TRACEEVENT_IMPORTER_NAME + "'.");
+                            break;
+                        case ImporterGateResult.NotWired:
+                            Util.Logger.LogMessage("/M override; discovered importer '" + prod.Name
+                                + "' is not wired to a /M token and will NOT be enabled by /M (ignored by design).");
+                            break;
+                    }
+
+                    Util.Logger.LogMessage("/M override; importer '" + prod.Name + "' enabled = " + Enabled);
+                }
+
 
                 if (Enabled)
                 {
+                    bool anyFilesFound = false;
                     foreach (string s in prod.SupportedMasks)
                     {
-                        AddFiles(s, prod);
+                        if (AddFiles(s, prod))
+                            anyFilesFound = true;
+                    }
+
+                    // Only importers that actually matched files are reported as "will run"; ones that
+                    // matched nothing are tracked separately so the summary is not misleading.
+                    if (anyFilesFound)
+                    {
+                        effectiveImportersToRun.Add(prod.Name);
+                    }
+                    else
+                    {
+                        // A selected/enabled importer that matched no input files is worth surfacing:
+                        // in a /M-driven automation run this usually means the expected data is missing.
+                        enabledButEmptyImporters.Add(prod.Name);
+                        MainForm.LogMessage("Importer '" + prod.Name + "' is enabled but found NO matching files (masks: "
+                            + string.Join(", ", prod.SupportedMasks) + ") in the import path. Nothing to import for this importer.",
+                            MessageOptions.All);
+
+                        // Under /M, a requested importer that finds no files means the data automation
+                        // asked for did not arrive; flag it so the process returns a non-zero exit code.
+                        // Only flag importers explicitly requested by a /M token: the mandatory Rowset
+                        // (ForcedOn) importer runs regardless of selection, so its masks (*.OUT/*.TXT)
+                        // matching nothing must NOT mark the requested import as incomplete.
+                        if (Globals.EnabledImporters != null && enabledByToken)
+                            Globals.RequestedImporterMissingOrEmpty = true;
                     }
                 }
             }
+
+            // Effective summary of the importers that will actually run this session. For a /M run this
+            // is the authoritative "what ran" list (after mandatory Rowset, token gating and trace
+            // exclusivity), unlike the earlier /M "requested" line printed at command-line parse time.
+            if (Globals.EnabledImporters != null)
+            {
+                MainForm.LogMessage("/M effective importers to run: "
+                    + (effectiveImportersToRun.Count == 0 ? "(none)" : string.Join(", ", effectiveImportersToRun))
+                    + (ImporterSelectionEvaluator.IsCustomXelSelected(Globals.EnabledImporters) ? ", CustomXEL" : "")
+                    + ".", MessageOptions.All);
+
+                // Authoritative single-line summary: what will run, what was enabled but empty, and the
+                // resulting exit-code intent. (Per-importer failures/cancellation are added at runtime.)
+                MainForm.LogMessage("/M selection summary: will-run="
+                    + (effectiveImportersToRun.Count == 0 ? "(none)" : string.Join(", ", effectiveImportersToRun))
+                    + "; enabled-but-empty="
+                    + (enabledButEmptyImporters.Count == 0 ? "(none)" : string.Join(", ", enabledButEmptyImporters))
+                    + "; exit-code intent="
+                    + (Globals.RequestedImporterMissingOrEmpty ? "ImportIncomplete (requested data missing/empty)" : "Normal (so far)")
+                    + ".", MessageOptions.All);
+            }
+
             tlpFiles.Visible = true;
             Application.DoEvents();
         }
@@ -1109,7 +1297,14 @@ namespace sqlnexus
 
             //add individual rows for each of these so they show up as progress bars in the summary window listview
             string customXELImprtStr = "CustomXELImporter";
-            if (tsiSQLDiagAlwaysOnXEL_Enabled != null && tsiSQLDiagAlwaysOnXEL_Enabled.Checked)
+            bool customXelEnabled = tsiSQLDiagAlwaysOnXEL_Enabled != null && tsiSQLDiagAlwaysOnXEL_Enabled.Checked;
+
+            // /M override for CustomXEL - does not touch tsiSQLDiagAlwaysOnXEL_Enabled.Checked,
+            // so the saved UI setting is preserved unchanged.
+            if (Globals.EnabledImporters != null)
+                customXelEnabled = ImporterSelectionEvaluator.IsCustomXelSelected(Globals.EnabledImporters);
+
+            if (customXelEnabled)
             {
                 AddFileRow((tlpFiles.RowCount - 1), "Custom XEL import (SQLDiag, AlwaysOnHealth, System Health)", null, customXELImprtStr);
             }
@@ -1184,8 +1379,12 @@ namespace sqlnexus
 
 
                             RunPostScripts(ri.Name);
-                        
-                            Globals.IsNexusCoreImporterSuccessful = true;
+
+                            // Only the mandatory Rowset (core) importer determines core success. Do NOT
+                            // set this true for other importers: doing so would overwrite a prior Rowset
+                            // failure and mask it from the exit-code decision (DecideExitCode).
+                            if (ri.Name == ImporterSelectionEvaluator.RowsetImporterName)
+                                Globals.IsNexusCoreImporterSuccessful = Success;
                             //ll.LinkBehavior = LinkBehavior.HoverUnderline;
                         }
                         catch (Exception ex)
@@ -1204,6 +1403,12 @@ namespace sqlnexus
                         if (ri.Cancelled)	// different msg if import was canceled.
                         {
                             RunScripts = false;
+
+                            // A cancelled /M run did not complete the requested import; flag it so the
+                            // process returns a non-zero (ImportIncomplete) exit code instead of success.
+                            if (Globals.EnabledImporters != null)
+                                Globals.RequestedImporterMissingOrEmpty = true;
+
                             msg += "Cancelled. (" + (Environment.TickCount - ticks) / 1000 + " sec, ";
                             if (ri is INexusFileImporter)
                             {
@@ -1220,6 +1425,12 @@ namespace sqlnexus
                         else if (!Success)	// set summary msg if import failed
                         {
                             RunScripts = false;
+
+                            // Under /M, a requested importer that FAILED means the data automation
+                            // asked for did not arrive; flag it so the process returns a non-zero exit code.
+                            if (Globals.EnabledImporters != null)
+                                Globals.RequestedImporterMissingOrEmpty = true;
+
                             msg += "Import failed. (" + (Environment.TickCount - ticks) / 1000 + " sec, ";
                             if (ri is INexusFileImporter)
                             {
@@ -1269,23 +1480,62 @@ namespace sqlnexus
                         Application.DoEvents();
 
 
-                        // do the custom XEL import - system health, Always ON, etc.
+                        // do the custom XEL import - AlwaysOn System Health, Failover Cluster
+                        // Instance Diagnostics Log (SQLDiag), and system_health Extended Events.
                         CustomXELImporter CI = new CustomXELImporter();
-                        bool alwaysOnXelEnabled = tsiSQLDiagAlwaysOnXEL_Enabled != null && tsiSQLDiagAlwaysOnXEL_Enabled.Checked;
+                        bool customXelImportEnabled = tsiSQLDiagAlwaysOnXEL_Enabled != null && tsiSQLDiagAlwaysOnXEL_Enabled.Checked;
+
+                        // /M command-line override: supersedes the saved UI checkbox (which is never
+                        // set in a console/quiet run). Without this, ImportCustomXELFiles is called with
+                        // importCustomXEL = false and returns "Skipped (disabled)", so the
+                        // CustomXEL tables (e.g. tbl_SQL_Base_SystemHealthXEL_Startup) are never created.
+                        if (Globals.EnabledImporters != null)
+                            customXelImportEnabled = ImporterSelectionEvaluator.IsCustomXelSelected(Globals.EnabledImporters);
+
                         bool alwaysOnXelDropTables = tsiSQLDiagAlwaysOnXEL_DropTables != null && tsiSQLDiagAlwaysOnXEL_DropTables.Checked;
-                        string XelImprtStatusStr = CI.SQLBaseImport(Globals.credentialMgr.ConnectionString, Globals.credentialMgr.Server,
+                        bool customXelSuccess;
+                        string XelImprtStatusStr = CI.ImportCustomXELFiles(Globals.credentialMgr.ConnectionString, Globals.credentialMgr.Server,
                                                                 Globals.credentialMgr.WindowsAuth,
                                                                 Globals.credentialMgr.User,
                                                                 Globals.credentialMgr.Password,
                                                                 Globals.credentialMgr.Database, srcPath,
-                                                                alwaysOnXelEnabled,
+                                                                out customXelSuccess,
+                                                                customXelImportEnabled,
                                                                 alwaysOnXelDropTables);
-                        
+
 
                         currBar.Value = 100;
-                        MainForm.LogMessage("Custom XEL Importer completed");
 
-                        string rawfileMsg = "(Importer:" + customXELImprtStr + ") " + "Done. (" + (Environment.TickCount - customXELImportStartTicks) / 1000 + " sec), " + XelImprtStatusStr + ".";
+                        string rawfileMsg;
+                        if (customXelSuccess)
+                        {
+                            MainForm.LogMessage("Custom XEL Importer completed");
+                            rawfileMsg = "(Importer:" + customXELImprtStr + ") " + "Done. (" + (Environment.TickCount - customXELImportStartTicks) / 1000 + " sec), " + XelImprtStatusStr + ".";
+
+                            // A /M-selected CustomXEL import that matched NO files imported nothing:
+                            // the requested data did not arrive, so flag it for a non-zero exit code
+                            // (other importers surface this via the "found NO matching files" path).
+                            if (customXelImportEnabled && CI.TotalFilesFound == 0)
+                            {
+                                MainForm.LogMessage("Custom XEL import is enabled but found NO matching files "
+                                    + "(SQLDiag/AlwaysOn Health/system_health) in the import path. Nothing to import.",
+                                    MessageOptions.All);
+
+                                if (Globals.EnabledImporters != null)
+                                    Globals.RequestedImporterMissingOrEmpty = true;
+                            }
+                        }
+                        else
+                        {
+                            Success = false;
+                            MainForm.LogMessage("Custom XEL Importer FAILED - see log for details");
+                            rawfileMsg = "(Importer:" + customXELImprtStr + ") " + "FAILED. (" + (Environment.TickCount - customXELImportStartTicks) / 1000 + " sec), " + XelImprtStatusStr;
+
+                            // Under /M, a failed CustomXEL import means requested data did not arrive;
+                            // flag it so the process returns a non-zero exit code.
+                            if (Globals.EnabledImporters != null)
+                                Globals.RequestedImporterMissingOrEmpty = true;
+                        }
                         currLabel.Text = rawfileMsg;
                         Application.DoEvents();
                     }
@@ -1355,6 +1605,7 @@ namespace sqlnexus
                         currLabel = (Label)tlpFiles.Controls[i + 2];
                         currLabel.Text = "Please wait for PerfStats analysis step to complete...";
 
+                        MainForm.LogMessage("PerfStats analysis is a mandatory post-import stage (creates derived tables and reporting rules used by reports, including Perfmon reports); it runs regardless of /M selection.");
                         MainForm.LogMessage("Running Perfstats Analysis");
                         Application.DoEvents();
 
@@ -1430,6 +1681,13 @@ namespace sqlnexus
             catch (Exception ex)
             {
                 MainForm.LogMessage("Import failed.");
+
+                // A fatal error aborted the import. Record failure so a /M automation run does NOT
+                // report success: treat the core load as failed and the requested import as incomplete.
+                Globals.IsNexusCoreImporterSuccessful = false;
+                if (Globals.EnabledImporters != null)
+                    Globals.RequestedImporterMissingOrEmpty = true;
+
                 Globals.HandleException(ex, this, MainForm);
             }
             finally
@@ -1572,7 +1830,8 @@ namespace sqlnexus
             if (string.IsNullOrEmpty(importerName))
                 return;
 
-            // Only execute ReadTracePostProcessing.sql when the current importer is ReadTrace or TraceEventImporter (both use the ReadTrace schema).
+            // ReadTracePostProcessing.sql applies to both ReadTrace and TraceEventImporter
+            // because both write to the ReadTrace schema.
             bool isReadTraceImporter = importerName.Equals(READTRACE_IMPORTER_NAME, StringComparison.OrdinalIgnoreCase)
                                     || importerName.Equals(TRACEEVENT_IMPORTER_NAME, StringComparison.OrdinalIgnoreCase);
 
@@ -1768,10 +2027,6 @@ namespace sqlnexus
 
 
         }
-        // Importer names used for mutual exclusivity
-        private const string READTRACE_IMPORTER_NAME = "ReadTrace (SQL XEL/TRC Files)";
-        private const string TRACEEVENT_IMPORTER_NAME = "Trace Event Importer (Managed)";
-
         private void tsiBool_Click(object sender, EventArgs e)
         {
             ToolStripMenuItem tsi = (sender as ToolStripMenuItem);
@@ -1786,9 +2041,9 @@ namespace sqlnexus
             if (tsi.Text == "Enabled" && tsi.Checked)
             {
                 string otherImporterName = null;
-                if (string.Equals(prod.Name, TRACEEVENT_IMPORTER_NAME, StringComparison.OrdinalIgnoreCase))
+                if (prod.Name == TRACEEVENT_IMPORTER_NAME)
                     otherImporterName = READTRACE_IMPORTER_NAME;
-                else if (string.Equals(prod.Name, READTRACE_IMPORTER_NAME, StringComparison.OrdinalIgnoreCase))
+                else if (prod.Name == READTRACE_IMPORTER_NAME)
                     otherImporterName = TRACEEVENT_IMPORTER_NAME;
 
                 if (otherImporterName != null)
@@ -1804,34 +2059,6 @@ namespace sqlnexus
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Information);
                 }
-            }
-        }
-
-        /// <summary>
-        /// Finds the importer menu item by name and unchecks its Enabled option.
-        /// </summary>
-        private void DisableImporterByName(string importerName)
-        {
-            foreach (ToolStripMenuItem importerTsi in tsiImporters.DropDownItems)
-            {
-                INexusImporter otherProd = importerTsi.Tag as INexusImporter;
-                if (otherProd == null || !string.Equals(otherProd.Name, importerName, StringComparison.OrdinalIgnoreCase))
-                    continue;
-
-                foreach (ToolStripMenuItem optionTsi in importerTsi.DropDownItems)
-                {
-                    if (optionTsi.Text == "Enabled")
-                    {
-                        optionTsi.Checked = false;
-                        otherProd.Options["Enabled"] = false;
-                        if (ImportOptions.IsEnabled("SaveImportOptions"))
-                        {
-                            ImportOptions.Set(string.Format("{0}.Enabled", importerName), false);
-                        }
-                        break;
-                    }
-                }
-                break;
             }
         }
 
