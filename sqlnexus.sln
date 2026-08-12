@@ -30,6 +30,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ErrorLogImporter", "ErrorLogImporter\ErrorLogImporter.csproj", "{B3A4C5D6-E7F8-4A9B-0C1D-2E3F4A5B6C7D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestingInfrastructure", "TestingInfrastructure", "{6D44C6B4-40AC-4E16-2E38-88021EEFA3A4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{74F32D8C-8333-3BB4-9D68-CD79F94CE772}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -450,6 +454,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{74F32D8C-8333-3BB4-9D68-CD79F94CE772} = {6D44C6B4-40AC-4E16-2E38-88021EEFA3A4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {232E21A9-A04A-448B-A0F6-EF10BF68A46A}
