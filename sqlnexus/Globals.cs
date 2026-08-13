@@ -22,7 +22,6 @@ namespace sqlnexus
         public static string ReportExportPath;
         public static bool ExitAfterProcessingReports = false;
         public static Boolean ConsoleMode = false;
-        private  static string m_connectionString;
         public static CredentialManager credentialMgr = new CredentialManager();
         public static bool QuietNonInteractiveMode = false;
         public static bool ExceptionEncountered = false;

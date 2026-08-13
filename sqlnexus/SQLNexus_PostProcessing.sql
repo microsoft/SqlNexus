@@ -47,35 +47,83 @@ END;
 
 GO
 IF (
-       (OBJECT_ID('tbl_ServerProperties') IS NOT NULL)
-       OR (OBJECT_ID('tbl_server_times') IS NOT NULL)
+       (OBJECT_ID('[ReadTrace].[tblBatches]') IS NOT NULL)
+       OR (OBJECT_ID('[ReadTrace].[tblStatements]') IS NOT NULL)
+       OR (OBJECT_ID('[ReadTrace].[tblConnections]') IS NOT NULL)
    )
 BEGIN
 
-    --get the offset from one of two possible tables
+    -- Check whether the importer flagged that timestamps are already in local server time.
+    -- When true, StartTime/EndTime in the ReadTrace tables are already local, so
+    -- StartTime_local/EndTime_local should be a direct copy rather than an offset conversion.
+    DECLARE @timestamps_are_local BIT = 0;
+
+    IF OBJECT_ID('dbo.tbl_ServerProperties') IS NOT NULL
+    BEGIN
+        IF EXISTS (
+            SELECT 1 FROM dbo.tbl_ServerProperties
+            WHERE PropertyName = 'ImportedTraceTimestampsInLocalTime' AND PropertyValue = '1'
+        )
+            SET @timestamps_are_local = 1;
+    END;
+    ELSE IF OBJECT_ID('dbo.tbl_server_times') IS NOT NULL
+        AND COL_LENGTH('dbo.tbl_server_times', 'ImportedTraceTimestampsInLocalTime') IS NOT NULL
+    BEGIN
+        IF EXISTS (
+            SELECT 1 FROM dbo.tbl_server_times
+            WHERE [ImportedTraceTimestampsInLocalTime] = 1
+        )
+            SET @timestamps_are_local = 1;
+    END;
+
+    -- Fallback: ReadTrace.tblMiscInfo is written by both managed importers and is always
+    -- present even when PSSDIAG / Log Scout diagnostic tables (tbl_ServerProperties,
+    -- tbl_server_times) are absent (e.g. when only the Trace Event Importer is enabled).
+    IF @timestamps_are_local = 0 AND OBJECT_ID('ReadTrace.tblMiscInfo') IS NOT NULL
+    BEGIN
+        IF EXISTS (
+            SELECT 1 FROM ReadTrace.tblMiscInfo
+            WHERE Attribute = 'ImportedTraceTimestampsInLocalTime' AND Value = '1'
+        )
+            SET @timestamps_are_local = 1;
+    END;
+
+    --get the offset from one of two possible tables (defaults to 0 when neither is present)
     DECLARE @utc_to_local_offset NUMERIC(3, 0) = 0;
 
-    IF OBJECT_ID('tbl_ServerProperties') IS NOT NULL
+    IF @timestamps_are_local = 0
     BEGIN
-        SELECT @utc_to_local_offset = PropertyValue
-        FROM dbo.tbl_ServerProperties
-        WHERE PropertyName = 'UTCOffset_in_Hours';
+        IF OBJECT_ID('tbl_ServerProperties') IS NOT NULL
+        BEGIN
+            SELECT @utc_to_local_offset = ISNULL(CONVERT(NUMERIC(3, 0), PropertyValue), 0)
+            FROM dbo.tbl_ServerProperties
+            WHERE PropertyName = 'UTCOffset_in_Hours';
+        END;
+        ELSE IF OBJECT_ID('tbl_server_times') IS NOT NULL
+        BEGIN
+            SELECT TOP 1
+                   @utc_to_local_offset = ISNULL(CONVERT(NUMERIC(3, 0), time_delta_hours * -1), 0)
+            FROM dbo.tbl_server_times;
+        END;
     END;
-    ELSE IF OBJECT_ID('tbl_server_times') IS NOT NULL
-    BEGIN
-        SELECT TOP 1
-               @utc_to_local_offset = time_delta_hours * -1
-        FROM dbo.tbl_server_times;
-    END;
+
+    -- Guard: ensure @utc_to_local_offset is never NULL (DATEADD returns NULL when number arg is NULL)
+    SET @utc_to_local_offset = ISNULL(@utc_to_local_offset, 0);
+
     --update the new columns in tblBatches with local times
     IF (
            (COLUMNPROPERTY(OBJECT_ID('[ReadTrace].[tblBatches]'), 'StartTime_local', 'ColumnId') IS NOT NULL)
            AND (COLUMNPROPERTY(OBJECT_ID('[ReadTrace].[tblBatches]'), 'EndTime_local', 'ColumnId') IS NOT NULL)
        )
     BEGIN
-        UPDATE [ReadTrace].[tblBatches]
-        SET StartTime_local = DATEADD(HOUR, @utc_to_local_offset, StartTime),
-            EndTime_local = DATEADD(HOUR, @utc_to_local_offset, EndTime);
+        IF @timestamps_are_local = 1
+            UPDATE [ReadTrace].[tblBatches]
+            SET StartTime_local = StartTime,
+                EndTime_local = EndTime;
+        ELSE
+            UPDATE [ReadTrace].[tblBatches]
+            SET StartTime_local = DATEADD(HOUR, @utc_to_local_offset, StartTime),
+                EndTime_local = DATEADD(HOUR, @utc_to_local_offset, EndTime);
     END;
 
     --update the new columns in tblStatements with local times
@@ -84,9 +132,14 @@ BEGIN
            AND (COLUMNPROPERTY(OBJECT_ID('[ReadTrace].[tblStatements]'), 'EndTime_local', 'ColumnId') IS NOT NULL)
        )
     BEGIN
-        UPDATE [ReadTrace].[tblStatements]
-        SET StartTime_local = DATEADD(HOUR, @utc_to_local_offset, StartTime),
-            EndTime_local = DATEADD(HOUR, @utc_to_local_offset, EndTime);
+        IF @timestamps_are_local = 1
+            UPDATE [ReadTrace].[tblStatements]
+            SET StartTime_local = StartTime,
+                EndTime_local = EndTime;
+        ELSE
+            UPDATE [ReadTrace].[tblStatements]
+            SET StartTime_local = DATEADD(HOUR, @utc_to_local_offset, StartTime),
+                EndTime_local = DATEADD(HOUR, @utc_to_local_offset, EndTime);
     END;
 
 
@@ -96,10 +149,14 @@ BEGIN
            AND (COLUMNPROPERTY(OBJECT_ID('[ReadTrace].[tblConnections]'), 'EndTime_local', 'ColumnId') IS NOT NULL)
        )
     BEGIN
-
-        UPDATE [ReadTrace].[tblConnections]
-        SET StartTime_local = DATEADD(HOUR, @utc_to_local_offset, StartTime),
-            EndTime_local = DATEADD(HOUR, @utc_to_local_offset, EndTime);
+        IF @timestamps_are_local = 1
+            UPDATE [ReadTrace].[tblConnections]
+            SET StartTime_local = StartTime,
+                EndTime_local = EndTime;
+        ELSE
+            UPDATE [ReadTrace].[tblConnections]
+            SET StartTime_local = DATEADD(HOUR, @utc_to_local_offset, StartTime),
+                EndTime_local = DATEADD(HOUR, @utc_to_local_offset, EndTime);
     END;
 
 END;

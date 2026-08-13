@@ -52,7 +52,7 @@ public class DependencyManager
             if (asem != null)
                 ExactAssemblyFound = true;
         }
-        catch (FileNotFoundException fnf)
+        catch (FileNotFoundException)
         {
             //no need to do anything
         }
@@ -89,7 +89,7 @@ public class DependencyManager
 
             }
         }
-        catch (FileNotFoundException fnf)
+        catch (FileNotFoundException)
         {
 
         }
