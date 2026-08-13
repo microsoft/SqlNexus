@@ -1670,8 +1670,6 @@ namespace sqlnexus
         private System.Windows.Forms.Panel paReports;
         private System.Windows.Forms.Panel paReportsBody;
         private System.Windows.Forms.Panel paReportsHeader;
-        private System.Windows.Forms.PictureBox pbExpandReports;
-        private System.Windows.Forms.PictureBox pbCollapseReports;
         private System.Windows.Forms.TreeView tvReports;
         private System.Windows.Forms.LinkLabel llReports;
         private System.Windows.Forms.ContextMenuStrip cmNav;
@@ -1696,8 +1694,6 @@ namespace sqlnexus
         private System.Windows.Forms.LinkLabel linkLabel8;
         private System.Windows.Forms.LinkLabel llPrint;
         private System.Windows.Forms.Panel paTasksHeader;
-        private System.Windows.Forms.PictureBox pbExpandTasks;
-        private System.Windows.Forms.PictureBox pbCollapseTasks;
         private System.Windows.Forms.LinkLabel llTasks;
         private System.Windows.Forms.Panel paData;
         private System.Windows.Forms.LinkLabel ll_CustomRowset;
@@ -1705,8 +1701,6 @@ namespace sqlnexus
         private System.Windows.Forms.LinkLabel linkLabelImport;
         private System.Windows.Forms.Panel paDataHeader;
         private System.Windows.Forms.LinkLabel llData;
-        private System.Windows.Forms.PictureBox pbCollapseData;
-        private System.Windows.Forms.PictureBox pbExpandData;
         private System.Windows.Forms.Panel paLogBody;
         private System.Windows.Forms.LinkLabel llOpenNexusLog;
         private System.Windows.Forms.PictureBox picOpenNexusLog;

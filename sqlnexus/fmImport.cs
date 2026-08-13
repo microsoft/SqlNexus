@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -491,9 +491,10 @@ namespace sqlnexus
         }
 
         /// <summary>
-        /// Logs any explicitly-wired built-in importer (from ImporterTokenToName) whose assembly
-        /// was not discovered/loaded. This surfaces missing importer DLLs that would otherwise be
-        /// silently absent - important for /M-driven automation where a token may match nothing.
+        /// Logs any explicitly-wired built-in importer (from ImporterTokenToName) that was not
+        /// discovered. This surfaces missing DLLs and load or registration failures that would
+        /// otherwise be silently absent - important for /M-driven automation where a token may
+        /// match nothing.
         /// </summary>
         private void LogMissingBuiltInImporters()
         {
@@ -504,8 +505,9 @@ namespace sqlnexus
                 if (!discovered.Contains(kvp.Value))
                 {
                     MainForm.LogMessage("Built-in importer '" + kvp.Value + "' (/M token '" + kvp.Key
-                        + "') was NOT discovered - its assembly is missing from the Importers folder. "
-                        + "It cannot be enabled by /M for this run.", MessageOptions.All);
+                        + "') was NOT discovered. Its assembly may be missing or may have failed to load "
+                        + "or register; check the application log for details. It cannot be enabled by /M "
+                        + "for this run.", MessageOptions.All);
 
                     // If this missing importer was explicitly requested via /M, the run cannot deliver
                     // the requested data; flag it so the process returns a non-zero exit code.
@@ -612,9 +614,10 @@ namespace sqlnexus
                 else if (file.ToUpper().Contains("TRACEEVENTIMPORTER"))
                 {
                     // TraceEventImporter must run after RowsetImportEngine (100) so that
-                    // tbl_ServerProperties already exists when it is called.
-                    // Place it between Rowset (100) and ReadTrace (200); the two trace
-                    // importers are mutually exclusive so they will never both be active.
+                    // tbl_ServerProperties already exists when GetLocalServerTimeOffset()
+                    // and WriteLocalTimeFlag() are called.  Place it between Rowset (100)
+                    // and ReadTrace (200); ReadTrace and TraceEventImporter are mutually
+                    // exclusive so they will never both be present at the same time.
                     ImporterList.Add(150, file);
                 }
                 else
@@ -646,15 +649,25 @@ namespace sqlnexus
 
             return OrderedImporters;
         }
+        // The set of assembly names that sqlnexus.exe directly references at compile time.
+        // Built once from the executing assembly's manifest so it stays in sync automatically:
+        // any new importer added as a ProjectReference to sqlnexus.csproj is immediately
+        // included without any code change here.
+        private static readonly Lazy<HashSet<string>> _referencedByHost = new Lazy<HashSet<string>>(() =>
+        {
+            var names = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            foreach (AssemblyName asmName in Assembly.GetExecutingAssembly().GetReferencedAssemblies())
+                names.Add(asmName.Name);
+            return names;
+        });
+
         private void EnumImportersFromDirectory(string importerDirectory)
         {
             if (!Directory.Exists(importerDirectory))
                 return;
-            
+
             string[] Files = Directory.GetFiles(importerDirectory, "*.DLL");
             List<string> OrderedFiles = OrderedImporterFiles(Files);
-
-            // List of option names
 
             foreach (string file in OrderedFiles)
             {
@@ -666,20 +679,55 @@ namespace sqlnexus
                     MainForm.LogMessage(String.Format(Properties.Resources.Msg_NativeImage, file));
                     continue;
                 }
+
+                string dllBaseName = Path.GetFileNameWithoutExtension(file);
+                // A DLL is "expected" if sqlnexus.exe directly references it at compile time
+                // (i.e. it was added as a ProjectReference). No list to maintain here.
+                bool isExpected = _referencedByHost.Value.Contains(dllBaseName);
+
                 Assembly Assem;
                 try
                 {
                     Assem = Assembly.LoadFile(file);
-
-
                 }
                 catch (Exception ex)
                 {
-                    MainForm.LogMessage("Assembly " + file + " could not be used as an importer: " + ex.Message, MessageOptions.Silent);
+                    string msg = string.Format("Assembly '{0}' could not be loaded: {1}", Path.GetFileName(file), ex.Message);
+                    // Use a visible log level when a known importer DLL fails to load
+                    MainForm.LogMessage(msg, isExpected ? MessageOptions.Both : MessageOptions.Silent);
                     continue;
                 }
 
-                Type[] typs = Assem.GetExportedTypes();
+                Type[] typs;
+                try
+                {
+                    typs = Assem.GetExportedTypes();
+                }
+                catch (ReflectionTypeLoadException rtle)
+                {
+                    // Log the loader exceptions — these reveal exactly which dependency is missing
+                    var loaderMsgs = rtle.LoaderExceptions != null
+                        ? string.Join("; ", rtle.LoaderExceptions
+                            .Where(le => le != null)
+                            .Select(le => le.Message))
+                        : rtle.Message;
+                    string msg = string.Format(
+                        "Assembly '{0}' loaded but type inspection failed (missing dependency?): {1}",
+                        Path.GetFileName(file), loaderMsgs);
+                    MainForm.LogMessage(msg, isExpected ? MessageOptions.Both : MessageOptions.Silent);
+                    continue;
+                }
+                catch (Exception ex)
+                {
+                    string msg = string.Format(
+                        "Assembly '{0}' loaded but GetExportedTypes() failed: {1}",
+                        Path.GetFileName(file), ex.Message);
+                    MainForm.LogMessage(msg, isExpected ? MessageOptions.Both : MessageOptions.Silent);
+                    continue;
+                }
+
+                int importersRegisteredFromThisDll = 0;
+
                 foreach (Type typ in typs)
                 {
                     //Ignore abstract classes
@@ -697,7 +745,21 @@ namespace sqlnexus
 
                         //If we get in here, the Class implements the interface, so add it to the list
                         //and bail
-                        INexusImporter prod = (INexusImporter)Assem.CreateInstance(typ.FullName, true);
+                        INexusImporter prod;
+                        try
+                        {
+                            prod = (INexusImporter)Assem.CreateInstance(typ.FullName, true);
+                        }
+                        catch (Exception ex)
+                        {
+                            MainForm.LogMessage(string.Format(
+                                "Failed to instantiate or cast '{0}' from '{1}': {2}",
+                                typ.FullName, Path.GetFileName(file), ex.Message),
+                                isExpected ? MessageOptions.Both : MessageOptions.Silent);
+                            continue;
+                        }
+
+                        importersRegisteredFromThisDll++;
 
                         prod.StatusChanged += new System.EventHandler(this.ImportStatusChanged);
                         if (prod is INexusProgressReporter)
@@ -734,7 +796,8 @@ namespace sqlnexus
                             "Ignore events associated with PSSDIAG activity",
                             "Disable event requirement checks",
                             "Import to SQL (Linux Perf)",
-                            "Drop existing tables (Linux Perf)"
+                            "Drop existing tables (Linux Perf)",
+                            "Drop existing ReadTrace tables"
                         };
 
                         foreach (string optionName in optionNames)
@@ -744,10 +807,12 @@ namespace sqlnexus
                             {
                                 // Construct the userSavedKey using the product name and option name
                                 string userSavedKey = string.Format("{0}.{1}", prod.Name, optionName);
-                                // Get the userSavedValue using ImportOptions
-                                bool userSavedValue = ImportOptions.IsEnabled(userSavedKey);
-                                // Update the option with the userSavedValue
-                                prod.Options[optionName] = userSavedValue;
+                                // Only restore saved value if it was actually saved before
+                                if (ImportOptions.HasOption(userSavedKey))
+                                {
+                                    bool userSavedValue = ImportOptions.IsEnabled(userSavedKey);
+                                    prod.Options[optionName] = userSavedValue;
+                                }
                             }
                         }
                         
@@ -764,7 +829,7 @@ namespace sqlnexus
                                 subtsi.Tag = prod.OptionsDialog;
                                 subtsi.Click += new System.EventHandler(this.tsiDialog_Click);
                             }
-                            else // boolean
+                            else if (prod.Options[option] is bool) // boolean
                             {
                                 m_OptionList.Add(subtsi);
 
@@ -781,6 +846,11 @@ namespace sqlnexus
 
                                 subtsi.Click += new System.EventHandler(this.tsiBool_Click);
                             }
+                            else
+                            {
+                                // Non-boolean, non-dialog options (e.g. int) are not shown in the menu
+                                continue;
+                            }
 
                             tsi.DropDownItems.Add(subtsi);
                         }
@@ -793,13 +863,53 @@ namespace sqlnexus
                         };
                     }
                 }
+
+                // Log if a DLL that looks like an importer loaded and reflected cleanly but
+                // registered nothing — this catches mismatched interface versions, wrong SNK, etc.
+                if (importersRegisteredFromThisDll == 0 && isExpected)
+                {
+                    MainForm.LogMessage(string.Format(
+                        "WARNING: '{0}' loaded successfully but registered no INexusImporter entries. " +
+                        "The importer will not appear in the Import menu. " +
+                        "Check that the DLL targets the correct NexusInterfaces version.",
+                        Path.GetFileName(file)), MessageOptions.Both);
+                }
+                else if (importersRegisteredFromThisDll > 0)
+                {
+                    MainForm.LogMessage(string.Format(
+                        "'{0}' registered {1} importer(s).", Path.GetFileName(file), importersRegisteredFromThisDll),
+                        MessageOptions.Silent);
+                }
+            }
+
+            // After scanning, log any compile-time-referenced DLL that wasn't even found on
+            // disk in this directory. Only check DLLs that are both referenced AND absent;
+            // support libraries (Azure.Core, System.Memory, etc.) are expected not to be here
+            // when scanning the AppData importers directory, so we limit to DLLs whose names
+            // suggest they are importers (contain "Import") to avoid log noise.
+            var foundOnDiskNames = new HashSet<string>(
+                OrderedFiles.Select(f => Path.GetFileNameWithoutExtension(f)),
+                StringComparer.OrdinalIgnoreCase);
+
+            foreach (string refName in _referencedByHost.Value)
+            {
+                if (refName.IndexOf("Import", StringComparison.OrdinalIgnoreCase) < 0)
+                    continue; // skip non-importer support libraries
+
+                if (!foundOnDiskNames.Contains(refName))
+                {
+                    MainForm.LogMessage(string.Format(
+                        "Referenced importer DLL '{0}.dll' was not found in '{1}'. " +
+                        "The importer will not appear in the Import menu.",
+                        refName, importerDirectory), MessageOptions.Silent);
+                }
             }
 
             // Add the SQLDiag/AlwaysOn XEL option under Importers with sub-items
             tsiSQLDiagAlwaysOnXEL.Name = "tsiSQLDiagAlwaysOnXEL";
-            tsiSQLDiagAlwaysOnXEL.Text = "Import SQLDiag/AlwaysOn XEL";
-            tsiSQLDiagAlwaysOnXEL.AccessibleName = "Import SQLDiag AlwaysOn XEL";
-            tsiSQLDiagAlwaysOnXEL.AccessibleDescription = "Submenu for importing SQLDiag and AlwaysOn Extended Events XEL files";
+            tsiSQLDiagAlwaysOnXEL.Text = "Import SQLDiag / AlwaysOn / System Health XEL";
+            tsiSQLDiagAlwaysOnXEL.AccessibleName = "Import SQLDiag AlwaysOn System Health XEL";
+            tsiSQLDiagAlwaysOnXEL.AccessibleDescription = "Submenu for importing SQLDiag, AlwaysOn, and System Health Extended Events XEL files";
             tsiSQLDiagAlwaysOnXEL.DropDownItems.Clear();
 
             // "Drop existing tables" sub-item
@@ -1049,7 +1159,6 @@ namespace sqlnexus
         private void DoImport()
         {
             //AddLabel();
-            bool RunScripts = true;
             bool Success = false;
 
             if (CheckAndStop())
@@ -1292,8 +1401,6 @@ namespace sqlnexus
                         msg = "(Importer:" + ri.Name + ") ";
                         if (ri.Cancelled)	// different msg if import was canceled.
                         {
-                            RunScripts = false;
-
                             // A cancelled /M run did not complete the requested import; flag it so the
                             // process returns a non-zero (ImportIncomplete) exit code instead of success.
                             if (Globals.EnabledImporters != null)
@@ -1314,8 +1421,6 @@ namespace sqlnexus
                         }
                         else if (!Success)	// set summary msg if import failed
                         {
-                            RunScripts = false;
-
                             // Under /M, a requested importer that FAILED means the data automation
                             // asked for did not arrive; flag it so the process returns a non-zero exit code.
                             if (Globals.EnabledImporters != null)

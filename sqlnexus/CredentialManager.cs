@@ -177,20 +177,11 @@ namespace sqlnexus
         }
         public bool VerifyCredential()
         {
-            bool connectSuccess = true;
-
             SqlConnection conn = new SqlConnection(ConnectionString);
             try
             {
                 conn.Open();
             }
-            catch (SqlException sqlex)
-            {
-                //Console.WriteLine(sqlex.ToString());
-                connectSuccess = false;
-                throw;
-            }
-
             finally
             {
                 if (conn.State == System.Data.ConnectionState.Open)
@@ -198,7 +189,7 @@ namespace sqlnexus
                     conn.Close();
                 }
             }
-            return connectSuccess;
+            return true;
 
         }
 

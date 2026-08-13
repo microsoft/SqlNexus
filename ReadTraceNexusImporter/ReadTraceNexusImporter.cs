@@ -50,6 +50,9 @@ namespace ReadTrace
                                             "tbl_ServerProperties " +
                                             "WHERE PropertyName = 'UTCOffset_in_Hours'";
 
+        // Flag name written to the DB to record whether timestamps are in local time or UTC.
+        // SQLNexus_PostProcessing.sql reads this value to choose the correct time conversion.
+
 
         // Private members
         private ArrayList knownRowsets = new ArrayList();	// List of the rowsets we know how to interpret
@@ -186,6 +189,72 @@ namespace ReadTrace
             }
         }
 
+        /// <summary>
+        /// Writes a flag recording whether timestamps in the ReadTrace tables are already in local
+        /// server time (<paramref name="isLocalTime"/> = true, value '1') or in UTC (false, '0').
+        /// Writes to <c>tbl_ServerProperties</c> when it exists, and also sets a
+        /// <c>ImportedTraceTimestampsInLocalTime</c> column on <c>tbl_server_times</c> (adding the column
+        /// first if necessary) as a fallback for environments where <c>tbl_ServerProperties</c>
+        /// is not present. <c>SQLNexus_PostProcessing.sql</c> reads either location to choose
+        /// the correct UTC offset conversion when populating <c>StartTime_local</c> /
+        /// <c>EndTime_local</c>.
+        /// </summary>
+        private void WriteLocalTimeFlag(bool isLocalTime)
+        {
+            // @flagStr = '1' or '0' for VARCHAR columns (tbl_ServerProperties, tblMiscInfo).
+            // @flagBit = 1 or 0 for the BIT column on tbl_server_times.
+            // sp_executesql's own @val parameter is fed from the outer @flagBit so the BIT
+            // update is also fully parameterised with no runtime concatenation.
+            const string sql =
+                // --- tbl_ServerProperties (primary) ---
+                "IF OBJECT_ID('dbo.tbl_ServerProperties') IS NOT NULL " +
+                "BEGIN " +
+                "    IF EXISTS (SELECT 1 FROM dbo.tbl_ServerProperties WHERE PropertyName = 'ImportedTraceTimestampsInLocalTime') " +
+                "        UPDATE dbo.tbl_ServerProperties SET PropertyValue = @flagStr WHERE PropertyName = 'ImportedTraceTimestampsInLocalTime'; " +
+                "    ELSE " +
+                "        INSERT INTO dbo.tbl_ServerProperties (PropertyName, PropertyValue) VALUES ('ImportedTraceTimestampsInLocalTime', @flagStr); " +
+                "END " +
+                // --- tbl_server_times (fallback) ---
+                // NOTE: ALTER TABLE and UPDATE must be in different batches; sp_executesql is
+                // used here so the UPDATE is compiled only after the column is already visible.
+                // The outer @flagBit parameter is forwarded into sp_executesql's own @val.
+                "IF OBJECT_ID('dbo.tbl_server_times') IS NOT NULL " +
+                "BEGIN " +
+                "    IF COL_LENGTH('dbo.tbl_server_times', 'ImportedTraceTimestampsInLocalTime') IS NULL " +
+                "        ALTER TABLE dbo.tbl_server_times ADD [ImportedTraceTimestampsInLocalTime] BIT NULL; " +
+                "    IF COL_LENGTH('dbo.tbl_server_times', 'ImportedTraceTimestampsInLocalTime') IS NOT NULL " +
+                "        EXEC sp_executesql N'UPDATE dbo.tbl_server_times SET [ImportedTraceTimestampsInLocalTime] = @val', N'@val BIT', @val = @flagBit; " +
+                "END " +
+                // --- ReadTrace.tblMiscInfo (guaranteed fallback) ---
+                "IF OBJECT_ID('ReadTrace.tblMiscInfo') IS NOT NULL " +
+                "BEGIN " +
+                "    IF EXISTS (SELECT 1 FROM ReadTrace.tblMiscInfo WHERE Attribute = 'ImportedTraceTimestampsInLocalTime') " +
+                "        UPDATE ReadTrace.tblMiscInfo SET Value = @flagStr WHERE Attribute = 'ImportedTraceTimestampsInLocalTime'; " +
+                "    ELSE " +
+                "        INSERT INTO ReadTrace.tblMiscInfo (Attribute, Value) VALUES ('ImportedTraceTimestampsInLocalTime', @flagStr); " +
+                "END";
+
+            using (SqlConnection cn = new SqlConnection(connStr))
+            {
+                try
+                {
+                    cn.Open();
+                    using (SqlCommand cmd = new SqlCommand(sql, cn))
+                    {
+                        cmd.CommandTimeout = 0;
+                        cmd.Parameters.Add("@flagStr", SqlDbType.VarChar, 1).Value = isLocalTime ? "1" : "0";
+                        cmd.Parameters.Add("@flagBit", SqlDbType.Bit).Value = isLocalTime;
+                        cmd.ExecuteNonQuery();
+                    }
+                    Util.Logger.LogMessage("ReadTraceNexusImporter: Wrote 'ImportedTraceTimestampsInLocalTime'=" + (isLocalTime ? "1" : "0") + " to tbl_ServerProperties, tbl_server_times, and/or ReadTrace.tblMiscInfo.");
+                }
+                catch (Exception e)
+                {
+                    Util.Logger.LogMessage("ReadTraceNexusImporter: Could not write local time flag: " + e.Message);
+                }
+            }
+        }
+
         private decimal GetLocalServerTimeOffset()
         {
             using (SqlConnection cn = new SqlConnection(connStr))
@@ -292,7 +361,7 @@ namespace ReadTrace
 
         /// <summary>Cancel an in-progress load</summary>
         /// <remarks>Called by host to ask in importer abort an in-progress load.  Can return before abort is complete; 
-        /// the host will wait until <c>DoImport()</c> returns.</remarks>
+        /// the host will wait until DoImport()</c> returns.</remarks>
         public void Cancel()
         {
             Cancelled = true;
@@ -312,7 +381,7 @@ namespace ReadTrace
             State = ImportState.Idle;
         }
 
-        /// <summary>True if the import has been asked to cancel an in-progress load. Set by the <c>Cancel</c> method.</summary>
+        /// <summary>True if the import has been asked to cancel an in-progress load. Set by the Cancel</c> method.</summary>
         public bool Cancelled
         {
             get { return canceled; }
@@ -320,7 +389,7 @@ namespace ReadTrace
         }
 
         /// <summary>Start import</summary>
-        /// <remarks><c>Initialize()</c> will be called prior to <c>DoImport()</c></remarks>
+        /// <remarks>Initialize()</c> will be called prior to DoImport()</c></remarks>
         /// <returns>true if import succeeds, false otherwise</returns>
         public bool DoImport()
         {
@@ -451,7 +520,12 @@ namespace ReadTrace
             State = ImportState.Idle;
 
             if (0 == processReadTrace.ExitCode)
+            {
+                // Always write the flag ('1' = already local time, '0' = UTC) so that
+                // SQLNexus_PostProcessing.sql always has an explicit value to act on.
+                WriteLocalTimeFlag((bool)this.options[OPTION_USE_LOCAL_SERVER_TIME]);
                 return true;
+            }
             else
                 return false;
         }
