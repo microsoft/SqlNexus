@@ -34,6 +34,22 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TraceEventImporter", "Trace
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ErrorLogImporter", "ErrorLogImporter\ErrorLogImporter.csproj", "{B3A4C5D6-E7F8-4A9B-0C1D-2E3F4A5B6C7D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+	ProjectSection(SolutionItems) = preProject
+		copilot-instructions.md = copilot-instructions.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "prompts", "prompts", "{0D7E0387-B2DC-4FF8-B3AF-91C79C1582DE}"
+	ProjectSection(SolutionItems) = preProject
+		git_commit_summary.md = git_commit_summary.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "instructions", "instructions", "{90650373-2789-417C-9504-8F95A4C0D22A}"
+	ProjectSection(SolutionItems) = preProject
+		csharp.instructions.md = csharp.instructions.md
+		sql.instructions.md = sql.instructions.md
+	EndProjectSection
+EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestingInfrastructure", "TestingInfrastructure", "{6D44C6B4-40AC-4E16-2E38-88021EEFA3A4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{74F32D8C-8333-3BB4-9D68-CD79F94CE772}"
@@ -612,6 +628,8 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{0D7E0387-B2DC-4FF8-B3AF-91C79C1582DE} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{90650373-2789-417C-9504-8F95A4C0D22A} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{74F32D8C-8333-3BB4-9D68-CD79F94CE772} = {6D44C6B4-40AC-4E16-2E38-88021EEFA3A4}
 		{48E27AA0-5AD8-4F64-97AB-D70A7FE1C02E} = {74F32D8C-8333-3BB4-9D68-CD79F94CE772}
 	EndGlobalSection
