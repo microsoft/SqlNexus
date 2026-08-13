@@ -1,5 +1,7 @@
 $ErrorActionPreference = 'Continue'
 try {
+    Import-Module (Join-Path $PSHOME "Modules\Microsoft.PowerShell.Utility\Microsoft.PowerShell.Utility.psd1") -ErrorAction Stop
+
     $scriptDir = if ($PSScriptRoot) { $PSScriptRoot } else { Split-Path -Parent $MyInvocation.MyCommand.Path }
 
     # The protected files live in the repository root (not next to this project). Walk up from the
@@ -25,7 +27,7 @@ try {
     Write-Output "Paste the following into FileIntegrity.cs:"
     Write-Output "`tprivate static readonly Dictionary<string, string> ProtectedFileHashes = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) {"
     foreach ($file in $files) {
-        $hash = (Get-FileHash $file.FullName -Algorithm SHA256).Hash.ToUpper()
+        $hash = (Microsoft.PowerShell.Utility\Get-FileHash $file.FullName -Algorithm SHA256).Hash.ToUpper()
         # Emit the repository-relative path with forward slashes to match the dictionary keys.
         $relative = $file.FullName.Substring($repoRoot.Length).TrimStart('\', '/').Replace('\', '/')
         Write-Output "`t`t{ `"$relative`", `"$hash`" },"
