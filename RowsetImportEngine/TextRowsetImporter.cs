@@ -940,7 +940,21 @@ namespace RowsetImportEngine
                     }
                     else
                     {
-                        row[c.Name] = ColData; // Keep original for numeric/date types
+                        // Final safety net for datetime columns: a .NET DateTime can be valid (year 0001+)
+                        // yet outside SQL Server's 'datetime' range (1753-01-01 .. 9999-12-31), which would
+                        // throw "SqlDateTime overflow" during SqlBulkCopy.Flush() and abort the whole rowset.
+                        // Coerce such out-of-range values to NULL so one bad source row cannot fail the load.
+                        object coerced;
+                        if ((c.DataType == SqlDbType.DateTime || c.DataType == SqlDbType.SmallDateTime)
+                            && RowsetImportEngine.Helpers.ConvertHelper.CoerceToSqlDateTimeRange(ColData, out coerced))
+                        {
+                            logger.LogMessage($"Column '{c.Name}' in rowset '{CurrentRowset.Name}' had a datetime value '{ColData}' outside the SQL 'datetime' range (1753-01-01 .. 9999-12-31); storing NULL instead. This usually indicates a malformed timestamp or misaligned columns in the source data.");
+                            row[c.Name] = DBNull.Value;
+                        }
+                        else
+                        {
+                            row[c.Name] = ColData; // Keep original for numeric/date types
+                        }
                     }
 
 
