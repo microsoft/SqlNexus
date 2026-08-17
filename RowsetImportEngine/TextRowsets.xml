@@ -3229,7 +3229,7 @@
         <Column name="start_time" type="RowsetImportEngine.DateTimeColumn"/>
         <Column name="time" type="RowsetImportEngine.DateTimeColumn"/>
         <Column name="duration" type="RowsetImportEngine.IntColumn" length="128"/>
-        <Column name="comments" type="RowsetImportEngine.NVarCharColumn" length="4096"/>
+        <Column name="comments" type="RowsetImportEngine.NVarCharColumn" length="-1"/>
         <Column name="xact_seqno" type="RowsetImportEngine.VarBinaryColumn"/>
         <Column name="current_delivery_rate" type="RowsetImportEngine.FloatColumn" length="128"/>
         <Column name="current_delivery_latency" type="RowsetImportEngine.IntColumn"/>
@@ -3270,7 +3270,7 @@
         <Column name="start_time" type="RowsetImportEngine.DateTimeColumn"/>
         <Column name="time" type="RowsetImportEngine.DateTimeColumn"/>
         <Column name="duration" type="RowsetImportEngine.IntColumn"/>
-        <Column name="comments" type="RowsetImportEngine.NVarCharColumn" length="4096"/>
+        <Column name="comments" type="RowsetImportEngine.NVarCharColumn" length="-1"/>
         <Column name="xact_seqno" type="RowsetImportEngine.VarBinaryColumn"/>
         <Column name="delivery_time" type="RowsetImportEngine.IntColumn"/>
         <Column name="delivered_transactions" type="RowsetImportEngine.IntColumn"/>
@@ -3316,7 +3316,7 @@
         <Column name="distribution_dbname" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="session_id" type="RowsetImportEngine.IntColumn"/>
         <Column name="agent_id" type="RowsetImportEngine.IntColumn"/>
-        <Column name="comments" type="RowsetImportEngine.NVarCharColumn" length="4096"/>
+        <Column name="comments" type="RowsetImportEngine.NVarCharColumn" length="-1"/>
         <Column name="error_id" type="RowsetImportEngine.IntColumn"/>
         <Column name="timestamp" type="RowsetImportEngine.VarBinaryColumn"/>
         <Column name="updateable_row" type="RowsetImportEngine.IntColumn"/>
@@ -3658,7 +3658,7 @@
         <Column name="start_time" type="RowsetImportEngine.DateTimeColumn"/>
         <Column name="time" type="RowsetImportEngine.DateTimeColumn"/>
         <Column name="duration" type="RowsetImportEngine.IntColumn"/>
-        <Column name="comments" type="RowsetImportEngine.NVarCharColumn" length="4096"/>
+        <Column name="comments" type="RowsetImportEngine.NVarCharColumn" length="-1"/>
         <Column name="delivered_transactions" type="RowsetImportEngine.IntColumn"/>
         <Column name="delivered_commands" type="RowsetImportEngine.IntColumn"/>
         <Column name="delivery_rate" type="RowsetImportEngine.FloatColumn"/>
