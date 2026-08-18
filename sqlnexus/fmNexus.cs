@@ -206,7 +206,7 @@ namespace sqlnexus
         {
             Trace.AutoFlush = true;
 
-            TraceListener conlistener = new ConsoleTraceListener();
+            TraceListener conlistener = new InlineDateTimeTraceListener(Console.Out);
             conlistener.Filter = new EventTypeFilter(SourceLevels.Information);
             TraceLogger.Listeners.Add(conlistener);
 
