@@ -37,6 +37,30 @@ namespace RowsetImportEngine.Helpers
             return false;
         }
 
+        /// <summary>
+        /// Normalize string values before assigning to SQL-bound DataRow columns by trimming and,
+        /// when a bounded max length is enforced by the destination schema, truncating safely.
+        /// </summary>
+        /// <param name="value">Input string value.</param>
+        /// <param name="maxLength">Destination max length (DataColumn.MaxLength).</param>
+        /// <param name="wasTruncated">True when truncation occurred.</param>
+        /// <returns>Trimmed/truncated string (or null).</returns>
+        public static string NormalizeStringForSql(string value, int maxLength, out bool wasTruncated)
+        {
+            wasTruncated = false;
+            if (value == null)
+                return null;
+
+            string normalized = value.Trim();
+            if (maxLength > 0 && normalized.Length > maxLength)
+            {
+                wasTruncated = true;
+                normalized = normalized.Substring(0, maxLength);
+            }
+
+            return normalized;
+        }
+
         public static object ValidateData<T>(object columndata, out object data)
         {
             //IsValid() and ConvertFrom() only work if you do valid converts from one data type to another.

@@ -3518,7 +3518,7 @@
       </KnownColumns>
     </Rowset>
 
-    <Rowset name="tbl_repl_msrepl_errors" enabled="true" identifier="-- repl_msrepl_errors --" type="RowsetImportEngine.TextRowset">
+    <Rowset name="tbl_repl_msrepl_errors" enabled="true" identifier="-- repl_msrepl_errors --" type="RowsetImportEngine.ReplMsreplErrorsRowset">
       <KnownColumns>
         <Column name="distribution_dbname" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="id" type="RowsetImportEngine.IntColumn"/>
@@ -3527,7 +3527,7 @@
         <Column name="source_type_id" type="RowsetImportEngine.IntColumn"/>
         <Column name="source_name" type="RowsetImportEngine.NVarCharColumn" length="128"/>
         <Column name="error_code" type="RowsetImportEngine.NVarCharColumn" length="128"/>
-        <Column name="error_text" type="RowsetImportEngine.NVarCharColumn" length="512"/>
+        <Column name="error_text" type="RowsetImportEngine.NVarCharColumn" length="-1"/>
         <Column name="xact_seqno" type="RowsetImportEngine.VarBinaryColumn"/>
         <Column name="command_id" type="RowsetImportEngine.IntColumn"/>
         <Column name="session_id" type="RowsetImportEngine.IntColumn"/>
