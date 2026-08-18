@@ -127,6 +127,78 @@ namespace BulkLoadEx
         }
 
         /// <summary>
+        /// Append a diagnostic note to a text column on the most recently buffered row.
+        /// Used to indicate that continuation lines were skipped during import while still
+        /// preserving a mostly clean rowset shape.
+        /// </summary>
+        /// <param name="columnName">Target string column name.</param>
+        /// <param name="note">Diagnostic note to append.</param>
+        /// <returns>True when the last buffered row was updated; otherwise false.</returns>
+        public bool TryAnnotateLastBufferedRow(string columnName, string note)
+        {
+            if (string.IsNullOrEmpty(columnName) || string.IsNullOrEmpty(note))
+                return false;
+
+            if (dataTableBuffer == null || dataTableBuffer.Rows.Count == 0)
+                return false;
+
+            if (!dataTableBuffer.Columns.Contains(columnName))
+                return false;
+
+            DataColumn column = dataTableBuffer.Columns[columnName];
+            DataRow lastRow = dataTableBuffer.Rows[dataTableBuffer.Rows.Count - 1];
+
+            string existing = (lastRow[columnName] == DBNull.Value) ? string.Empty : Convert.ToString(lastRow[columnName]);
+            bool noteAppended;
+            string updated = AppendContinuationNote(existing, column.MaxLength, note, out noteAppended);
+
+            if (!noteAppended)
+                return false;
+
+            lastRow[columnName] = string.IsNullOrEmpty(updated) ? (object)DBNull.Value : updated;
+            return true;
+        }
+
+        /// <summary>
+        /// Appends a note to existing text while respecting destination max length and avoiding duplicates.
+        /// </summary>
+        public static string AppendContinuationNote(string existingText, int maxLength, string note, out bool noteAppended)
+        {
+            noteAppended = false;
+            string existing = existingText ?? string.Empty;
+            if (string.IsNullOrEmpty(note))
+                return existing;
+
+            if (existing.IndexOf(note, StringComparison.OrdinalIgnoreCase) >= 0)
+                return existing;
+
+            string separator = string.IsNullOrEmpty(existing) ? string.Empty : " ";
+            string candidate = existing + separator + note;
+
+            if (maxLength > 0 && candidate.Length > maxLength)
+            {
+                const string fallback = " [See raw file for full multi-line error text]";
+
+                if (existing.IndexOf(fallback, StringComparison.OrdinalIgnoreCase) >= 0)
+                    return existing;
+
+                candidate = existing + fallback;
+                if (maxLength > 0 && candidate.Length > maxLength)
+                {
+                    int remaining = maxLength - fallback.Length;
+                    if (remaining <= 0)
+                        return maxLength > 0 && existing.Length > maxLength ? existing.Substring(0, maxLength) : existing;
+
+                    string prefix = existing.Length > remaining ? existing.Substring(0, remaining) : existing;
+                    candidate = prefix + fallback;
+                }
+            }
+
+            noteAppended = true;
+            return candidate;
+        }
+
+        /// <summary>
         /// Flush any rows still on the client and close the SQL connection
         /// </summary>
         public void Close()
