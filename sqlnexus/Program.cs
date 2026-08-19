@@ -532,17 +532,26 @@ EXEC sys.sp_executesql @sql;";
             if (!string.IsNullOrEmpty(Globals.credentialMgr.Database))
             {
                 String currentDb = Globals.credentialMgr.Database;
-                String CreateDB = string.Format(SQLScripts.CreateDB, Globals.credentialMgr.Database);
-                Console.WriteLine("Creating Database" + CreateDB);
+                if (!IsDbNameValid(currentDb))
+                {
+                    Console.WriteLine("Invalid database name: " + currentDb);
+                    return false;
+                }
+
+                Console.WriteLine("Creating Database " + currentDb);
 
                 //set the db to 'master' to be able to create a new Nexus db
                 Globals.credentialMgr.Database = "master";
-                SqlConnection conn = new SqlConnection(Globals.credentialMgr.ConnectionString);
-                conn.Open();
-                SqlCommand cmd = conn.CreateCommand();
-                cmd.CommandText = CreateDB; // CodeQL [SM03934] the DB name has been validated but even previously the db name was wrapped in brackets, so no SQL injection possible here
-
-                cmd.ExecuteNonQuery();
+                using (SqlConnection conn = new SqlConnection(Globals.credentialMgr.ConnectionString))
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = GetCreateDatabaseCommandText();
+                        cmd.Parameters.Add("@DbName", System.Data.SqlDbType.NVarChar, 128).Value = currentDb;
+                        cmd.ExecuteNonQuery();
+                    }
+                }
 
                 //reset the Nexus db name that the user selected
                 Globals.credentialMgr.Database = currentDb;
