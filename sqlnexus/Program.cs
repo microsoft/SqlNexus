@@ -115,6 +115,58 @@ namespace sqlnexus
             return System.Text.RegularExpressions.Regex.IsMatch(dbName, @"^(?!(master|tempdb|msdb|model)$)[A-Za-z0-9_]{1,128}$", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
         }
 
+        internal static string GetCreateDatabaseCommandText()
+        {
+            return @"
+USE [master];
+DECLARE @db sysname = @DbName;
+DECLARE @quotedDb sysname = QUOTENAME(@db);
+
+IF DB_ID(@db) IS NULL
+BEGIN
+    DECLARE @sql nvarchar(max);
+
+    SET @sql = N'CREATE DATABASE ' + @quotedDb + N';';
+    EXEC sys.sp_executesql @sql;
+
+    SET @sql = N'ALTER DATABASE ' + @quotedDb + N' SET RECOVERY SIMPLE;';
+    EXEC sys.sp_executesql @sql;
+
+    BEGIN TRY
+        SET @sql = N'ALTER DATABASE ' + @quotedDb
+                 + N' MODIFY FILE (name = N''' + REPLACE(@db, '''', '''''') + N''', size = 50MB);';
+        EXEC sys.sp_executesql @sql;
+    END TRY
+    BEGIN CATCH
+        -- preserve current behavior: ignore rare MODIFY FILE failure
+    END CATCH
+END";
+        }
+
+        internal static string GetCreateDropDatabaseCommandText()
+        {
+            return @"
+USE [master];
+DECLARE @db sysname = @DbName;
+DECLARE @quotedDb sysname = QUOTENAME(@db);
+DECLARE @sql nvarchar(max);
+
+IF DB_ID(@db) IS NOT NULL
+BEGIN
+    SET @sql = N'ALTER DATABASE ' + @quotedDb + N' SET SINGLE_USER WITH ROLLBACK IMMEDIATE;';
+    EXEC sys.sp_executesql @sql;
+
+    SET @sql = N'DROP DATABASE ' + @quotedDb + N';';
+    EXEC sys.sp_executesql @sql;
+END
+
+SET @sql = N'CREATE DATABASE ' + @quotedDb + N';';
+EXEC sys.sp_executesql @sql;
+
+SET @sql = N'ALTER DATABASE ' + @quotedDb + N' SET RECOVERY SIMPLE;';
+EXEC sys.sp_executesql @sql;";
+        }
+
         /// <summary>
         /// The complete set of canonical importer tokens that "All" expands to.
         /// </summary>
