@@ -722,8 +722,31 @@ namespace RowsetImportEngine
 									}
 								}
 							}
-							// Insert current row into SQL. 
-							InsertRow();
+                            // Insert current row into SQL unless rowset-specific validation says to skip.
+                            if (this.CurrentRowset.ShouldInsertCurrentRow())
+                            {
+                                InsertRow();
+                            }
+                            else
+                            {
+                               if (this.CurrentRowset is ReplMsreplErrorsRowset && this.CurrentRowset.Bulkload != null)
+                                {
+                                    const string continuationNote = "[SqlNexus note: additional multi-line error text was skipped during import; review the source input file for full details.]";
+                                    bool annotated = this.CurrentRowset.Bulkload.TryAnnotateLastBufferedRow("error_text", continuationNote);
+                                    if (annotated)
+                                    {
+                                        logger.LogMessage("Skipping continuation line in rowset " + this.CurrentRowset.Name + " and annotating previous row to point to raw input file.");
+                                    }
+                                    else
+                                    {
+                                        logger.LogMessage("Skipping continuation line in rowset " + this.CurrentRowset.Name + ".");
+                                    }
+                                }
+                                else
+                                {
+                                    logger.LogMessage("Skipping non-data continuation row in rowset " + this.CurrentRowset.Name);
+                                }
+                            }
 							// Save the last line read (the inputbuffer special rowset uses the same marker for end-of-row and end-of-rowset)
 							// TODO: clean this up (same soln as in SimpleMessageRowset)
 							CurrentRowText = line;
@@ -936,11 +959,37 @@ namespace RowsetImportEngine
                     }
                     else if (c.DataType == SqlDbType.VarChar || c.DataType == SqlDbType.NVarChar)
                     {
-                        row[c.Name] = ColData.ToString().Trim(); // Trim strings
+                        int maxLength = row.Table.Columns[c.Name].MaxLength;
+                        bool wasTruncated;
+                        string normalized = RowsetImportEngine.Helpers.ConvertHelper.NormalizeStringForSql(
+                            ColData.ToString(),
+                            maxLength,
+                            out wasTruncated);
+
+                        if (wasTruncated)
+                        {
+                            logger.LogMessage($"Column '{c.Name}' in rowset '{CurrentRowset.Name}' exceeded destination length ({maxLength}) and was truncated to allow import to continue.");
+                        }
+
+                        row[c.Name] = (object)normalized ?? DBNull.Value;
                     }
                     else
                     {
-                        row[c.Name] = ColData; // Keep original for numeric/date types
+                        // Final safety net for datetime columns: a .NET DateTime can be valid (year 0001+)
+                        // yet outside SQL Server's 'datetime' range (1753-01-01 .. 9999-12-31), which would
+                        // throw "SqlDateTime overflow" during SqlBulkCopy.Flush() and abort the whole rowset.
+                        // Coerce such out-of-range values to NULL so one bad source row cannot fail the load.
+                        object coerced;
+                        if ((c.DataType == SqlDbType.DateTime || c.DataType == SqlDbType.SmallDateTime)
+                            && RowsetImportEngine.Helpers.ConvertHelper.CoerceToSqlDateTimeRange(ColData, out coerced))
+                        {
+                            logger.LogMessage($"Column '{c.Name}' in rowset '{CurrentRowset.Name}' had a datetime value '{ColData}' outside the SQL 'datetime' range (1753-01-01 .. 9999-12-31); storing NULL instead. This usually indicates a malformed timestamp or misaligned columns in the source data.");
+                            row[c.Name] = DBNull.Value;
+                        }
+                        else
+                        {
+                            row[c.Name] = ColData; // Keep original for numeric/date types
+                        }
                     }
 
 
@@ -979,7 +1028,22 @@ namespace RowsetImportEngine
                     }
                     catch (SqlTypeException ex)
                     {
-                        logger.LogMessage("Flushing rowset failed for " + r.Name + ex);
+                        logger.LogMessage("Flushing rowset failed for " + r.Name + ": " + ex.Message + "\r\n" + ex.StackTrace);
+
+                    }
+                    catch (InvalidOperationException ex)
+                    {
+                        logger.LogMessage("Flushing rowset failed for " + r.Name + ": " + ex.Message + "\r\n" + ex.StackTrace);
+
+                    }
+                    catch (SqlException ex)
+                    {
+                        logger.LogMessage("Flushing rowset failed for " + r.Name + ": " + ex.Message + "\r\n" + ex.StackTrace);
+
+                    }
+                    catch (Exception ex)
+                    {
+                        logger.LogMessage("Flushing rowset failed for " + r.Name + ": " + ex.Message + "\r\n" + ex.StackTrace);
 
                     }
                     
