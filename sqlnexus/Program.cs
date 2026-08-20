@@ -115,6 +115,58 @@ namespace sqlnexus
             return System.Text.RegularExpressions.Regex.IsMatch(dbName, @"^(?!(master|tempdb|msdb|model)$)[A-Za-z0-9_]{1,128}$", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
         }
 
+        internal static string GetCreateDatabaseCommandText()
+        {
+            return @"
+USE [master];
+DECLARE @db sysname = @DbName;
+DECLARE @quotedDb sysname = QUOTENAME(@db);
+
+IF DB_ID(@db) IS NULL
+BEGIN
+    DECLARE @sql nvarchar(max);
+
+    SET @sql = N'CREATE DATABASE ' + @quotedDb + N';';
+    EXEC sys.sp_executesql @sql;
+
+    SET @sql = N'ALTER DATABASE ' + @quotedDb + N' SET RECOVERY SIMPLE;';
+    EXEC sys.sp_executesql @sql;
+
+    BEGIN TRY
+        SET @sql = N'ALTER DATABASE ' + @quotedDb
+                 + N' MODIFY FILE (name = N''' + REPLACE(@db, '''', '''''') + N''', size = 50MB);';
+        EXEC sys.sp_executesql @sql;
+    END TRY
+    BEGIN CATCH
+        -- preserve current behavior: ignore rare MODIFY FILE failure
+    END CATCH
+END";
+        }
+
+        internal static string GetCreateDropDatabaseCommandText()
+        {
+            return @"
+USE [master];
+DECLARE @db sysname = @DbName;
+DECLARE @quotedDb sysname = QUOTENAME(@db);
+DECLARE @sql nvarchar(max);
+
+IF DB_ID(@db) IS NOT NULL
+BEGIN
+    SET @sql = N'ALTER DATABASE ' + @quotedDb + N' SET SINGLE_USER WITH ROLLBACK IMMEDIATE;';
+    EXEC sys.sp_executesql @sql;
+
+    SET @sql = N'DROP DATABASE ' + @quotedDb + N';';
+    EXEC sys.sp_executesql @sql;
+END
+
+SET @sql = N'CREATE DATABASE ' + @quotedDb + N';';
+EXEC sys.sp_executesql @sql;
+
+SET @sql = N'ALTER DATABASE ' + @quotedDb + N' SET RECOVERY SIMPLE;';
+EXEC sys.sp_executesql @sql;";
+        }
+
         /// <summary>
         /// The complete set of canonical importer tokens that "All" expands to.
         /// </summary>
@@ -480,17 +532,26 @@ namespace sqlnexus
             if (!string.IsNullOrEmpty(Globals.credentialMgr.Database))
             {
                 String currentDb = Globals.credentialMgr.Database;
-                String CreateDB = string.Format(SQLScripts.CreateDB, Globals.credentialMgr.Database);
-                Console.WriteLine("Creating Database" + CreateDB);
+                if (!IsDbNameValid(currentDb))
+                {
+                    Console.WriteLine("Invalid database name: " + currentDb);
+                    return false;
+                }
+
+                Console.WriteLine("Creating Database " + currentDb);
 
                 //set the db to 'master' to be able to create a new Nexus db
                 Globals.credentialMgr.Database = "master";
-                SqlConnection conn = new SqlConnection(Globals.credentialMgr.ConnectionString);
-                conn.Open();
-                SqlCommand cmd = conn.CreateCommand();
-                cmd.CommandText = CreateDB; // CodeQL [SM03934] the DB name has been validated but even previously the db name was wrapped in brackets, so no SQL injection possible here
-
-                cmd.ExecuteNonQuery();
+                using (SqlConnection conn = new SqlConnection(Globals.credentialMgr.ConnectionString))
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = GetCreateDatabaseCommandText();
+                        cmd.Parameters.Add("@DbName", System.Data.SqlDbType.NVarChar, 128).Value = currentDb;
+                        cmd.ExecuteNonQuery();
+                    }
+                }
 
                 //reset the Nexus db name that the user selected
                 Globals.credentialMgr.Database = currentDb;
