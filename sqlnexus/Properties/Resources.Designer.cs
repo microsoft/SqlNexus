@@ -241,48 +241,6 @@ namespace sqlnexus.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to use master
-        ///if db_id (&apos;{0}&apos;) is null
-        ///begin
-        ///	CREATE DATABASE [{0}];
-        ///	ALTER DATABASE [{0}] SET RECOVERY SIMPLE
-        ///
-        ///	BEGIN TRY
-        ///	  ALTER DATABASE [{0}] MODIFY FILE (name=&apos;{0}&apos;, size=50MB)
-        ///	END TRY
-        ///
-        ///	BEGIN CATCH  
-        ///		--print no error - very rarely would MODIFY FILE fail 
-        ///	END CATCH  
-        ///end
-        ///
-        ///.
-        /// </summary>
-        internal static string CreateDB {
-            get {
-                return ResourceManager.GetString("CreateDB", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to use master
-        ///if db_id (&apos;{0}&apos;) is not null
-        ///begin
-        ///	alter database [{0}] set single_user with rollback immediate
-        ///	drop database [{0}];
-        ///end
-        ///create database [{0}];
-        ///alter database [{0}] set recovery simple
-        ///
-        ///.
-        /// </summary>
-        internal static string CreateDropDB {
-            get {
-                return ResourceManager.GetString("CreateDropDB", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap Critical {

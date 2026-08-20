@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
   <Import Project="..\packages\Microsoft.SqlServer.Types.160.1000.6\build\net462\Microsoft.SqlServer.Types.props" Condition="Exists('..\packages\Microsoft.SqlServer.Types.160.1000.6\build\net462\Microsoft.SqlServer.Types.props')" />
   <PropertyGroup>
@@ -67,7 +67,8 @@
     <GenerateManifests>false</GenerateManifests>
     <SignManifests>false</SignManifests>
     <UseApplicationTrust>false</UseApplicationTrust>
-    <TargetZone></TargetZone>
+    <TargetZone>
+    </TargetZone>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -527,11 +528,6 @@
     <Content Include="Reports\Virtual File Stats Details_C.rdlC">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <EmbeddedResource Include="SQLScripts.resx">
-      <SubType>Designer</SubType>
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>SQLScripts.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Include="UserInstruction.resx">
       <DependentUpon>UserInstruction.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -573,11 +569,6 @@
       <DependentUpon>Spinner.cs</DependentUpon>
     </Compile>
     <Compile Include="SqlInstances.cs" />
-    <Compile Include="SQLScripts.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SQLScripts.resx</DependentUpon>
-    </Compile>
     <Compile Include="ThemeManager.cs" />
     <Compile Include="UserInstruction.cs">
       <SubType>Form</SubType>
@@ -689,10 +680,8 @@
     <Content Include="Reports\SQL Perf Main.rdl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <None Include="Resources\CreateDB.txt" />
     <None Include="Resources\UpdateTraceStats.txt" />
     <None Include="Resources\HelpManageRowSet.txt" />
-    <None Include="Resources\CreateDropDB.txt" />
     <None Include="Resources\TextFile1.txt" />
     <None Include="Resources\InitDB.txt" />
     <None Include="Resources\powerbi.png" />

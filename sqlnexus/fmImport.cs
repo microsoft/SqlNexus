@@ -1203,7 +1203,16 @@ namespace sqlnexus
                 builder.InitialCatalog = "master";
                 SqlConnection conn = new SqlConnection(builder.ConnectionString);
                 SqlCommand cmd = conn.CreateCommand();
-                cmd.CommandText = String.Format(Properties.Resources.CreateDropDB, Globals.credentialMgr.Database); // CodeQL [SM03934] database name is validated before use now in parameter setter but also previously a "[]" brackets were added around the name
+                string targetDatabase = Globals.credentialMgr.Database;
+
+                if (!Program.IsDbNameValid(targetDatabase))
+                {
+                    MainForm.LogMessage("Create Db failed with exception invalid database name: " + targetDatabase, MessageOptions.Dialog);
+                    return;
+                }
+
+                cmd.CommandText = Program.GetCreateDropDatabaseCommandText();
+                cmd.Parameters.Add("@DbName", System.Data.SqlDbType.NVarChar, 128).Value = targetDatabase;
                 try
                 {
                     conn.Open();

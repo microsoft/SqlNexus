@@ -3543,7 +3543,8 @@ bool CreateDB(String dbName)
             SqlConnection conn = new SqlConnection(Globals.credentialMgr.ConnectionString);
             SqlCommand cmd = conn.CreateCommand();
             bool success = true;
-            cmd.CommandText = String.Format(SQLScripts.CreateDB, dbName);
+            cmd.CommandText = Program.GetCreateDatabaseCommandText();
+            cmd.Parameters.Add("@DbName", System.Data.SqlDbType.NVarChar, 128).Value = dbName;
             try
             {
                 conn.Open();
