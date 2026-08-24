@@ -71,7 +71,7 @@ namespace SqlNexus.UnitTests.SqlNexus.McpServer
         [TestMethod]
         public void Scrub_NotAGuid_Unchanged()
         {
-            // Too short in one group — must not be treated as a GUID.
+            // Too short in one group ï¿½ must not be treated as a GUID.
             const string input = "6ba7b810-9dad-11d1-80b4-00c04fd430";
             Assert.AreEqual(input, PiiScrubber.Scrub(input));
         }
@@ -94,7 +94,7 @@ namespace SqlNexus.UnitTests.SqlNexus.McpServer
         [TestMethod]
         public void Scrub_NotAnEmail_Unchanged()
         {
-            // No TLD — should not be matched as an email.
+            // No TLD ï¿½ should not be matched as an email.
             const string input = "user@localhost";
             Assert.AreEqual(input, PiiScrubber.Scrub(input));
         }
@@ -159,6 +159,34 @@ namespace SqlNexus.UnitTests.SqlNexus.McpServer
                 PiiScrubber.Scrub("10.0.0.1 -> 172.16.254.3"));
         }
 
+        [TestMethod]
+        public void Scrub_InvalidIPv4Octets_Unchanged()
+        {
+            const string input = "999.999.999.999";
+            Assert.AreEqual(input, PiiScrubber.Scrub(input));
+        }
+
+        [TestMethod]
+        public void Scrub_IPv6_Replaced()
+        {
+            Assert.AreEqual("client <IPV6> connected",
+                PiiScrubber.Scrub("client fe80::1 connected"));
+        }
+
+        [TestMethod]
+        public void Scrub_TimeValue_NotTreatedAsIPv6()
+        {
+            const string input = "completed at 12:34:56";
+            Assert.AreEqual(input, PiiScrubber.Scrub(input));
+        }
+
+        [TestMethod]
+        public void Scrub_MacAddress_Replaced()
+        {
+            Assert.AreEqual("adapter <MAC>",
+                PiiScrubber.Scrub("adapter 00-15-5D-01-02-03"));
+        }
+
         // ?? Auto-generated computer names ????????????????????????????????????
 
         [TestMethod]
@@ -181,6 +209,28 @@ namespace SqlNexus.UnitTests.SqlNexus.McpServer
         {
             Assert.AreEqual("login <DOMAIN_USER> connected",
                 PiiScrubber.Scrub(@"login CONTOSO\jsmith connected"));
+        }
+
+        [TestMethod]
+        public void Scrub_JsonEscapedDomainUser_Replaced()
+        {
+            string result = PiiScrubber.Scrub("{\"User Name\":\"CONTOSO\\\\jsmith\"}");
+            Assert.AreEqual("{\"User Name\":\"<SCRUBBED>\"}", result);
+        }
+
+        [TestMethod]
+        public void Scrub_JsonEscapedUncPath_Replaced()
+        {
+            string result = PiiScrubber.Scrub("{\"path\":\"\\\\\\\\SERVER01\\\\share\\\\file.txt\"}");
+            Assert.AreEqual("{\"path\":\"<UNCPATH>\"}", result);
+        }
+
+        [TestMethod]
+        public void Scrub_JsonEscapedWindowsUserPath_UserNameRemoved()
+        {
+            string result = PiiScrubber.Scrub("{\"path\":\"C:\\\\Users\\\\jsmith\\\\file.txt\"}");
+            StringAssert.Contains(result, "<WINPATH>");
+            Assert.IsFalse(result.Contains("jsmith"));
         }
 
         [TestMethod]
@@ -214,6 +264,48 @@ namespace SqlNexus.UnitTests.SqlNexus.McpServer
         {
             string result = PiiScrubber.Scrub("{\"host_name\": \"APPSRV07\"}");
             Assert.AreEqual("{\"host_name\": \"<SCRUBBED>\"}", result);
+        }
+
+        [TestMethod]
+        public void Scrub_ServerNameJsonValue_Replaced()
+        {
+            string result = PiiScrubber.Scrub("{\"server_name\": \"PRODSQL01\"}");
+            Assert.AreEqual("{\"server_name\": \"<SCRUBBED>\"}", result);
+        }
+
+        [TestMethod]
+        public void Scrub_ReplicaServerNameJsonValue_Replaced()
+        {
+            string result = PiiScrubber.Scrub("{\"ReplicaServerName\": \"AGREPLICA01\"}");
+            Assert.AreEqual("{\"ReplicaServerName\": \"<SCRUBBED>\"}", result);
+        }
+
+        [TestMethod]
+        public void Scrub_ReplicaServerNameSnakeCaseJsonValue_Replaced()
+        {
+            string result = PiiScrubber.Scrub("{\"replica_server_name\": \"AGREPLICA02\"}");
+            Assert.AreEqual("{\"replica_server_name\": \"<SCRUBBED>\"}", result);
+        }
+
+        [TestMethod]
+        public void Scrub_InternalUpnInUserNameField_Replaced()
+        {
+            string result = PiiScrubber.Scrub("{\"user_name\": \"user@localhost\"}");
+            Assert.AreEqual("{\"user_name\": \"<SCRUBBED>\"}", result);
+        }
+
+        [TestMethod]
+        public void Scrub_InternalUpnOutsideIdentityField_Unchanged()
+        {
+            const string input = "query parameter user@localhost";
+            Assert.AreEqual(input, PiiScrubber.Scrub(input));
+        }
+
+        [TestMethod]
+        public void Scrub_OwnerSidJsonValue_Replaced()
+        {
+            string result = PiiScrubber.Scrub("{\"owner_sid\": \"AQIDBA==\"}");
+            Assert.AreEqual("{\"owner_sid\": \"<SCRUBBED>\"}", result);
         }
 
         [TestMethod]
@@ -261,6 +353,20 @@ namespace SqlNexus.UnitTests.SqlNexus.McpServer
         {
             Assert.AreEqual("see <Scrubbed_URL> for details",
                 PiiScrubber.Scrub("see https://malicious.example.com/leak for details"));
+        }
+
+        [TestMethod]
+        public void Scrub_AllowlistedHostPrefixAttack_Scrubbed()
+        {
+            Assert.AreEqual("<Scrubbed_URL>",
+                PiiScrubber.Scrub("https://www.microsoft.com.evil.example/leak"));
+        }
+
+        [TestMethod]
+        public void Scrub_AllowlistedPathPrefixAttack_Scrubbed()
+        {
+            Assert.AreEqual("<Scrubbed_URL>",
+                PiiScrubber.Scrub("https://stackoverflow.com/questions-leak"));
         }
 
         [TestMethod]
