@@ -1679,6 +1679,19 @@
 </PreBuildEvent>
     <PostBuildEvent>"$(ProjectDir)PostBuild.cmd"  "$(SolutionName)"  "$(SolutionDir)\Dependencies"  "$(SolutionDir)\RowsetImportEngine\bin\$(ConfigurationName)"  "$(TargetDir)"  &gt; "$(ProjectDir)PostBuild.log" 2&gt;&amp;1</PostBuildEvent>
   </PropertyGroup>
+  <Target Name="StageSqlNexusAiFiles" AfterTargets="Build">
+    <ItemGroup>
+      <_McpServerReleaseFiles Include="$(SolutionDir)SqlNexus.McpServer\bin\$(ConfigurationName)\**\*" />
+      <_AiSkillReleaseFiles Include="$(SolutionDir)AI\Skills\**\*" />
+      <_AgentReleaseFiles Include="$(SolutionDir).github\agents\**\*" />
+    </ItemGroup>
+    <Error Condition="!Exists('$(SolutionDir)SqlNexus.McpServer\bin\$(ConfigurationName)\SqlNexus.McpServer.exe')" Text="SQL Nexus MCP Server release output was not found. Build SqlNexus.McpServer before staging the release." />
+    <Error Condition="!Exists('$(SolutionDir)AI\Skills')" Text="The AI skill files required by the SQL Nexus MCP Server were not found." />
+    <Error Condition="!Exists('$(SolutionDir).github\agents\sql-nexus-diagnostic.agent.md')" Text="The SQL Nexus diagnostic agent definition was not found." />
+    <Copy SourceFiles="@(_McpServerReleaseFiles)" DestinationFiles="@(_McpServerReleaseFiles-&gt;'$(TargetDir)SqlNexus.McpServer\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(_AiSkillReleaseFiles)" DestinationFiles="@(_AiSkillReleaseFiles-&gt;'$(TargetDir)AI\Skills\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(_AgentReleaseFiles)" DestinationFiles="@(_AgentReleaseFiles-&gt;'$(TargetDir).github\agents\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
+  </Target>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
