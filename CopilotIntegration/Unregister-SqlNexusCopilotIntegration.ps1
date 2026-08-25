@@ -4,7 +4,10 @@ param(
     [string] $CopilotHome = (Join-Path $HOME ".copilot"),
 
     [Parameter()]
-    [string] $VsCodeUserData = (Join-Path $env:APPDATA "Code\User")
+    [string] $VsCodeUserData = (Join-Path $env:APPDATA "Code\User"),
+
+    [Parameter()]
+    [switch] $McpOnly
 )
 
 $ErrorActionPreference = "Stop"
@@ -12,6 +15,24 @@ $serverName = "sqlnexus_mcp"
 $copilotConfigPath = Join-Path $CopilotHome "mcp-config.json"
 $vscodeConfigPath = Join-Path $VsCodeUserData "mcp.json"
 $agentDestination = Join-Path $CopilotHome "agents\sql-nexus-diagnostic.agent.md"
+
+function Write-Status {
+    param(
+        [ValidateSet("INFO", "ERROR")]
+        [string] $Level,
+        [string] $Message
+    )
+
+    $color = if ($Level -eq "ERROR") { "Red" } else { "Cyan" }
+    Write-Host "$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') [$Level] $Message" -ForegroundColor $color
+}
+
+trap {
+    Write-Host ""
+    Write-Status -Level "ERROR" -Message "SQL Nexus Copilot integration was not unregistered."
+    Write-Status -Level "ERROR" -Message $_.Exception.Message
+    exit 1
+}
 
 function Read-JsonConfiguration {
     param([string] $Path)
@@ -85,9 +106,14 @@ if (Remove-ServerEntry -Configuration $vscodeConfiguration -ContainerName "serve
 if (Remove-ServerEntry -Configuration $copilotConfiguration -ContainerName "mcpServers" -Name $serverName) {
     Write-JsonConfiguration -Path $copilotConfigPath -Configuration $copilotConfiguration
 }
-if (Test-Path -LiteralPath $agentDestination -PathType Leaf) {
+if (-not $McpOnly -and (Test-Path -LiteralPath $agentDestination -PathType Leaf)) {
     Remove-Item -LiteralPath $agentDestination -Force
 }
 
-Write-Output "SQL Nexus Copilot integration unregistered."
-Write-Output "Other VS Code and Copilot CLI configuration entries were preserved."
+if ($McpOnly) {
+    Write-Status -Level "INFO" -Message "SQL Nexus MCP server unregistered. The custom agent was preserved."
+}
+else {
+    Write-Status -Level "INFO" -Message "SQL Nexus Copilot integration unregistered."
+}
+Write-Status -Level "INFO" -Message "Other VS Code and Copilot CLI configuration entries were preserved."

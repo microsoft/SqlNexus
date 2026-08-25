@@ -20,6 +20,7 @@ namespace SqlNexus.UnitTests.SqlNexus.McpServer
                 ProcessResult registerResult = fixture.RunRegister();
 
                 Assert.AreEqual(0, registerResult.ExitCode, registerResult.Error);
+                StringAssert.Matches(registerResult.Output, new System.Text.RegularExpressions.Regex(@"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2} \[INFO\] SQL Nexus Copilot integration registered\."));
                 JObject vscodeConfiguration = JObject.Parse(File.ReadAllText(fixture.VsCodeConfigPath));
                 JObject copilotConfiguration = JObject.Parse(File.ReadAllText(fixture.CopilotConfigPath));
                 Assert.IsNotNull(vscodeConfiguration["servers"]["other"]);
@@ -50,12 +51,65 @@ namespace SqlNexus.UnitTests.SqlNexus.McpServer
             using (var fixture = new CopilotIntegrationFixture())
             {
                 ProcessResult firstResult = fixture.RunRegister();
+                DateTime retainedWriteTime = new DateTime(2000, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+                File.SetLastWriteTimeUtc(fixture.VsCodeConfigPath, retainedWriteTime);
+                File.SetLastWriteTimeUtc(fixture.CopilotConfigPath, retainedWriteTime);
+                File.SetLastWriteTimeUtc(fixture.InstalledAgentPath, retainedWriteTime);
+
                 ProcessResult secondResult = fixture.RunRegister();
 
                 Assert.AreEqual(0, firstResult.ExitCode, firstResult.Error);
                 Assert.AreEqual(0, secondResult.ExitCode, secondResult.Error);
+                StringAssert.Contains(secondResult.Output, "SQL Nexus Copilot integration is already registered. Existing matching settings were not replaced.");
+                StringAssert.Contains(secondResult.Output, "SQL Server: localhost\\SQLEXPRESS");
+                StringAssert.Contains(secondResult.Output, "Database: NexusDiagnostics");
+                StringAssert.Contains(secondResult.Output, "Authentication: Windows Integrated Authentication");
+                Assert.AreEqual(retainedWriteTime, File.GetLastWriteTimeUtc(fixture.VsCodeConfigPath));
+                Assert.AreEqual(retainedWriteTime, File.GetLastWriteTimeUtc(fixture.CopilotConfigPath));
+                Assert.AreEqual(retainedWriteTime, File.GetLastWriteTimeUtc(fixture.InstalledAgentPath));
                 JObject configuration = JObject.Parse(File.ReadAllText(fixture.CopilotConfigPath));
                 Assert.AreEqual(1, ((JObject)configuration["mcpServers"]).Count);
+            }
+        }
+
+        [TestMethod]
+        public void Register_McpOnlyWithoutAgentAssets_RegistersServerWithoutAgent()
+        {
+            using (var fixture = new CopilotIntegrationFixture())
+            {
+                Directory.Delete(fixture.SkillsDirectory, true);
+                File.Delete(fixture.AgentSourcePath);
+
+                ProcessResult result = fixture.RunRegister(mcpOnly: true);
+
+                Assert.AreEqual(0, result.ExitCode, result.Error);
+                StringAssert.Contains(result.Output, "SQL Nexus MCP server registered. The custom agent was not changed.");
+                Assert.IsFalse(result.Output.Contains("Custom agent:"), result.Output);
+                JObject vscodeConfiguration = JObject.Parse(File.ReadAllText(fixture.VsCodeConfigPath));
+                JObject copilotConfiguration = JObject.Parse(File.ReadAllText(fixture.CopilotConfigPath));
+                Assert.IsNotNull(vscodeConfiguration["servers"]["sqlnexus_mcp"]);
+                Assert.IsNotNull(copilotConfiguration["mcpServers"]["sqlnexus_mcp"]);
+                Assert.IsFalse(File.Exists(fixture.InstalledAgentPath));
+            }
+        }
+
+        [TestMethod]
+        public void Unregister_McpOnlyWithInstalledAgent_RemovesServerAndPreservesAgent()
+        {
+            using (var fixture = new CopilotIntegrationFixture())
+            {
+                ProcessResult registerResult = fixture.RunRegister();
+
+                ProcessResult unregisterResult = fixture.RunUnregister(mcpOnly: true);
+
+                Assert.AreEqual(0, registerResult.ExitCode, registerResult.Error);
+                Assert.AreEqual(0, unregisterResult.ExitCode, unregisterResult.Error);
+                StringAssert.Contains(unregisterResult.Output, "SQL Nexus MCP server unregistered. The custom agent was preserved.");
+                JObject vscodeConfiguration = JObject.Parse(File.ReadAllText(fixture.VsCodeConfigPath));
+                JObject copilotConfiguration = JObject.Parse(File.ReadAllText(fixture.CopilotConfigPath));
+                Assert.IsNull(vscodeConfiguration["servers"]["sqlnexus_mcp"]);
+                Assert.IsNull(copilotConfiguration["mcpServers"]["sqlnexus_mcp"]);
+                Assert.IsTrue(File.Exists(fixture.InstalledAgentPath));
             }
         }
 
@@ -70,10 +124,54 @@ namespace SqlNexus.UnitTests.SqlNexus.McpServer
                 ProcessResult result = fixture.RunRegister();
 
                 Assert.AreNotEqual(0, result.ExitCode);
-                StringAssert.Contains(result.Error, "does not contain valid JSON");
+                StringAssert.Matches(result.Output, new System.Text.RegularExpressions.Regex(@"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2} \[ERROR\] SQL Nexus Copilot integration was not registered\."));
+                StringAssert.Contains(result.Output, "does not contain valid JSON");
+                Assert.AreEqual(string.Empty, result.Error);
                 Assert.AreEqual(malformedJson, File.ReadAllText(fixture.VsCodeConfigPath));
                 Assert.IsFalse(File.Exists(fixture.CopilotConfigPath));
                 Assert.IsFalse(File.Exists(fixture.InstalledAgentPath));
+            }
+        }
+
+        [TestMethod]
+        public void Register_ConflictingServerEntry_ShowsConciseActionableError()
+        {
+            using (var fixture = new CopilotIntegrationFixture())
+            {
+                File.WriteAllText(
+                    fixture.CopilotConfigPath,
+                    "{\"mcpServers\":{\"sqlnexus_mcp\":{\"type\":\"stdio\",\"command\":\"old.exe\"}}}");
+
+                ProcessResult result = fixture.RunRegister();
+
+                Assert.AreNotEqual(0, result.ExitCode);
+                StringAssert.Matches(result.Output, new System.Text.RegularExpressions.Regex(@"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2} \[ERROR\] SQL Nexus Copilot integration was not registered\."));
+                StringAssert.Contains(result.Output, "Re-run with -Force to replace only that entry.");
+                Assert.IsFalse(result.Output.Contains(" char:"), result.Output);
+                Assert.IsFalse(result.Output.Contains("CategoryInfo"), result.Output);
+                Assert.AreEqual(string.Empty, result.Error);
+                JObject configuration = JObject.Parse(File.ReadAllText(fixture.CopilotConfigPath));
+                Assert.AreEqual("old.exe", (string)configuration["mcpServers"]["sqlnexus_mcp"]["command"]);
+                Assert.IsFalse(File.Exists(fixture.InstalledAgentPath));
+            }
+        }
+
+        [TestMethod]
+        public void Unregister_MalformedExistingConfiguration_ShowsConciseErrorWithoutChangingFile()
+        {
+            using (var fixture = new CopilotIntegrationFixture())
+            {
+                const string malformedJson = "{ not valid json";
+                File.WriteAllText(fixture.CopilotConfigPath, malformedJson);
+
+                ProcessResult result = fixture.RunUnregister();
+
+                Assert.AreNotEqual(0, result.ExitCode);
+                StringAssert.Matches(result.Output, new System.Text.RegularExpressions.Regex(@"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2} \[ERROR\] SQL Nexus Copilot integration was not unregistered\."));
+                StringAssert.Contains(result.Output, "does not contain valid JSON");
+                Assert.IsFalse(result.Output.Contains(" char:"), result.Output);
+                Assert.AreEqual(string.Empty, result.Error);
+                Assert.AreEqual(malformedJson, File.ReadAllText(fixture.CopilotConfigPath));
             }
         }
 
@@ -121,27 +219,45 @@ namespace SqlNexus.UnitTests.SqlNexus.McpServer
             public string VsCodeUserData { get; }
             public string SkillsDirectory { get; }
             public string McpExecutable { get; }
+            public string AgentSourcePath
+            {
+                get { return Path.Combine(InstallRoot, ".github", "agents", "sql-nexus-diagnostic.agent.md"); }
+            }
             public string InstalledAgentPath { get; }
             public string VsCodeConfigPath { get; }
             public string CopilotConfigPath { get; }
 
-            public ProcessResult RunRegister()
+            public ProcessResult RunRegister(bool mcpOnly = false)
             {
-                return RunPowerShell(
-                    registerScript,
+                var arguments = new System.Collections.Generic.List<string>
+                {
                     "-InstallRoot", InstallRoot,
                     "-CopilotHome", CopilotHome,
                     "-VsCodeUserData", VsCodeUserData,
                     "-Server", "localhost\\SQLEXPRESS",
-                    "-Database", "NexusDiagnostics");
+                    "-Database", "NexusDiagnostics"
+                };
+                if (mcpOnly)
+                {
+                    arguments.Add("-McpOnly");
+                }
+
+                return RunPowerShell(registerScript, arguments.ToArray());
             }
 
-            public ProcessResult RunUnregister()
+            public ProcessResult RunUnregister(bool mcpOnly = false)
             {
-                return RunPowerShell(
-                    unregisterScript,
+                var arguments = new System.Collections.Generic.List<string>
+                {
                     "-CopilotHome", CopilotHome,
-                    "-VsCodeUserData", VsCodeUserData);
+                    "-VsCodeUserData", VsCodeUserData
+                };
+                if (mcpOnly)
+                {
+                    arguments.Add("-McpOnly");
+                }
+
+                return RunPowerShell(unregisterScript, arguments.ToArray());
             }
 
             public void Dispose()
