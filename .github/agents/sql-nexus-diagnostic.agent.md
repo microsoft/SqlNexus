@@ -1,5 +1,4 @@
 ---
----
 name: SQL Nexus Diagnostic Agent
 description: >
   Expert SQL Server performance diagnostic agent. Uses SqlNexus MCP tools to

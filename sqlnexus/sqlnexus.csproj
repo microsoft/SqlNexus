@@ -900,6 +900,11 @@
       <Project>{B3A4C5D6-E7F8-4A9B-0C1D-2E3F4A5B6C7D}</Project>
       <Name>ErrorLogImporter</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SqlNexus.McpServer\SqlNexus.McpServer.csproj">
+      <Project>{9C60504A-30B3-7508-1791-02C4FA6A1703}</Project>
+      <Name>SqlNexus.McpServer</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">
@@ -1680,17 +1685,24 @@
     <PostBuildEvent>"$(ProjectDir)PostBuild.cmd"  "$(SolutionName)"  "$(SolutionDir)\Dependencies"  "$(SolutionDir)\RowsetImportEngine\bin\$(ConfigurationName)"  "$(TargetDir)"  &gt; "$(ProjectDir)PostBuild.log" 2&gt;&amp;1</PostBuildEvent>
   </PropertyGroup>
   <Target Name="StageSqlNexusAiFiles" AfterTargets="Build">
+    <PropertyGroup>
+      <_SqlNexusRepositoryRoot>$(MSBuildProjectDirectory)\..</_SqlNexusRepositoryRoot>
+    </PropertyGroup>
     <ItemGroup>
-      <_McpServerReleaseFiles Include="$(SolutionDir)SqlNexus.McpServer\bin\$(ConfigurationName)\**\*" />
-      <_AiSkillReleaseFiles Include="$(SolutionDir)AI\Skills\**\*" />
-      <_AgentReleaseFiles Include="$(SolutionDir).github\agents\**\*" />
+      <_McpServerReleaseFiles Include="$(_SqlNexusRepositoryRoot)\SqlNexus.McpServer\bin\$(Configuration)\**\*" />
+      <_AiSkillReleaseFiles Include="$(_SqlNexusRepositoryRoot)\AI\Skills\**\*" />
+      <_AgentReleaseFiles Include="$(_SqlNexusRepositoryRoot)\.github\agents\**\*" />
+      <_CopilotIntegrationFiles Include="$(_SqlNexusRepositoryRoot)\CopilotIntegration\**\*" />
     </ItemGroup>
-    <Error Condition="!Exists('$(SolutionDir)SqlNexus.McpServer\bin\$(ConfigurationName)\SqlNexus.McpServer.exe')" Text="SQL Nexus MCP Server release output was not found. Build SqlNexus.McpServer before staging the release." />
-    <Error Condition="!Exists('$(SolutionDir)AI\Skills')" Text="The AI skill files required by the SQL Nexus MCP Server were not found." />
-    <Error Condition="!Exists('$(SolutionDir).github\agents\sql-nexus-diagnostic.agent.md')" Text="The SQL Nexus diagnostic agent definition was not found." />
+    <Error Condition="!Exists('$(_SqlNexusRepositoryRoot)\SqlNexus.McpServer\bin\$(Configuration)\SqlNexus.McpServer.exe')" Text="SQL Nexus MCP Server output was not found for the $(Configuration) configuration. Build SqlNexus.McpServer before staging the SQL Nexus output." />
+    <Error Condition="!Exists('$(_SqlNexusRepositoryRoot)\AI\Skills')" Text="The AI skill files required by the SQL Nexus MCP Server were not found." />
+    <Error Condition="!Exists('$(_SqlNexusRepositoryRoot)\.github\agents\sql-nexus-diagnostic.agent.md')" Text="The SQL Nexus diagnostic agent definition was not found." />
+    <Error Condition="!Exists('$(_SqlNexusRepositoryRoot)\CopilotIntegration\Register-SqlNexusCopilotIntegration.ps1')" Text="The SQL Nexus Copilot integration registration script was not found." />
+    <Error Condition="!Exists('$(_SqlNexusRepositoryRoot)\CopilotIntegration\Unregister-SqlNexusCopilotIntegration.ps1')" Text="The SQL Nexus Copilot integration unregistration script was not found." />
     <Copy SourceFiles="@(_McpServerReleaseFiles)" DestinationFiles="@(_McpServerReleaseFiles-&gt;'$(TargetDir)SqlNexus.McpServer\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
     <Copy SourceFiles="@(_AiSkillReleaseFiles)" DestinationFiles="@(_AiSkillReleaseFiles-&gt;'$(TargetDir)AI\Skills\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
     <Copy SourceFiles="@(_AgentReleaseFiles)" DestinationFiles="@(_AgentReleaseFiles-&gt;'$(TargetDir).github\agents\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(_CopilotIntegrationFiles)" DestinationFiles="@(_CopilotIntegrationFiles-&gt;'$(TargetDir)CopilotIntegration\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
   </Target>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
