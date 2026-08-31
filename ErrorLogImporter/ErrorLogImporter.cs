@@ -19,7 +19,7 @@ namespace ErrorLogImporter
         private const string OPTION_DROP_EXISTING = "Drop existing tables (ERRORLOG)";
         private const string OPTION_ENABLED = "Enabled";
         private const string HEAD_AND_TAIL_MARKER = "<<... middle part of file not captured because the file is too large (>1 GB) ...>>";
-        private const string INCOMPLETE_LOG_MESSAGE = "ERRORLOG file is incomplete: the middle part was not captured because the file was too large (>1 GB).";
+        internal const string INCOMPLETE_LOG_MESSAGE = "ERRORLOG file is incomplete: the middle part was not captured because the file was too large (>1 GB).";
 
         // Regex to match ERRORLOG lines: datetime, process, message
         // Example: "2026-04-14 22:37:11.55 Server      Microsoft SQL Server 2022..."

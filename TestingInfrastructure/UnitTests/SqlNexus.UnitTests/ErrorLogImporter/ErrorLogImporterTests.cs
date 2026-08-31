@@ -56,7 +56,6 @@ namespace SqlNexus.UnitTests.ErrorLogImporter
         {
             var rows = new List<ImportedRow>();
             const string marker = "<<... middle part of file not captured because the file is too large (>1 GB) ...>>";
-            const string incompleteLogMessage = "ERRORLOG file is incomplete: the middle part was not captured because the file was too large (>1 GB).";
 
             using (var reader = new StringReader(
                 "2026-04-14 22:37:11.55 Server      First message." + Environment.NewLine +
@@ -68,13 +67,13 @@ namespace SqlNexus.UnitTests.ErrorLogImporter
                     () => false,
                     line => { },
                     (logDateTime, process, message) => rows.Add(new ImportedRow(logDateTime, process, message)),
-                    () => rows.Add(new ImportedRow(null, null, incompleteLogMessage)));
+                    () => rows.Add(new ImportedRow(null, null, global::ErrorLogImporter.ErrorLogImporter.INCOMPLETE_LOG_MESSAGE)));
             }
 
             Assert.AreEqual(3, rows.Count);
             Assert.AreEqual("First message.", rows[0].Message);
             Assert.IsFalse(rows[0].Message.Contains(marker));
-            Assert.AreEqual(incompleteLogMessage, rows[1].Message);
+            Assert.AreEqual(global::ErrorLogImporter.ErrorLogImporter.INCOMPLETE_LOG_MESSAGE, rows[1].Message);
             Assert.IsNull(rows[1].LogDateTime);
             Assert.AreEqual("Last message.", rows[2].Message);
         }
