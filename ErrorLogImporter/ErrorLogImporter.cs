@@ -18,6 +18,8 @@ namespace ErrorLogImporter
         private const string TABLE_NAME = "tbl_ERRORLOG";
         private const string OPTION_DROP_EXISTING = "Drop existing tables (ERRORLOG)";
         private const string OPTION_ENABLED = "Enabled";
+        private const string HEAD_AND_TAIL_MARKER = "<<... middle part of file not captured because the file is too large (>1 GB) ...>>";
+        private const string INCOMPLETE_LOG_MESSAGE = "ERRORLOG file is incomplete: the middle part was not captured because the file was too large (>1 GB).";
 
         // Regex to match ERRORLOG lines: datetime, process, message
         // Example: "2026-04-14 22:37:11.55 Server      Microsoft SQL Server 2022..."
@@ -49,6 +51,11 @@ namespace ErrorLogImporter
         {
             options.Add(OPTION_DROP_EXISTING, true);
             options.Add(OPTION_ENABLED, true);
+        }
+
+        public static bool IsHeadAndTailMarker(string line)
+        {
+            return line != null && string.Equals(line.Trim(), HEAD_AND_TAIL_MARKER, StringComparison.Ordinal);
         }
 
         private void LogMessage(string msg)
@@ -305,6 +312,20 @@ namespace ErrorLogImporter
                         currentPosition += System.Text.Encoding.UTF8.GetByteCount(line) + 2; // +2 for \r\n
                         OnProgressChanged(EventArgs.Empty);
 
+                        if (IsHeadAndTailMarker(line))
+                        {
+                            if (pendingDateTime.HasValue)
+                            {
+                                InsertRow(bulkLoad, pendingDateTime.Value, pendingProcess, pendingMessageBuilder?.ToString(), shortFileName);
+                            }
+
+                            InsertIncompleteLogNotice(bulkLoad, shortFileName);
+                            pendingDateTime = null;
+                            pendingProcess = null;
+                            pendingMessageBuilder = null;
+                            continue;
+                        }
+
                         Match match = LogLineRegex.Match(line);
                         if (match.Success)
                         {
@@ -369,6 +390,15 @@ namespace ErrorLogImporter
                 }
             }
 
+            row["FileName"] = fileName != null && fileName.Length > 256 ? fileName.Substring(0, 256) : fileName;
+            bulkLoad.InsertRow(row);
+            totalRowsInserted++;
+        }
+
+        private void InsertIncompleteLogNotice(BulkLoadRowset bulkLoad, string fileName)
+        {
+            System.Data.DataRow row = bulkLoad.GetNewRow();
+            row["Message"] = INCOMPLETE_LOG_MESSAGE;
             row["FileName"] = fileName != null && fileName.Length > 256 ? fileName.Substring(0, 256) : fileName;
             bulkLoad.InsertRow(row);
             totalRowsInserted++;
