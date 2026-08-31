@@ -296,79 +296,80 @@ namespace ErrorLogImporter
 
             try
             {
-                DateTime? pendingDateTime = null;
-                string pendingProcess = null;
-                StringBuilder pendingMessageBuilder = null;
-
                 using (StreamReader reader = new StreamReader(filePath))
                 {
-                    string line;
-                    while ((line = reader.ReadLine()) != null)
-                    {
-                        if (Cancelled)
-                            break;
-
-                        totalLinesProcessed++;
-                        currentPosition += System.Text.Encoding.UTF8.GetByteCount(line) + 2; // +2 for \r\n
-                        OnProgressChanged(EventArgs.Empty);
-
-                        if (IsHeadAndTailMarker(line))
+                    ProcessLogEntries(
+                        reader,
+                        () => Cancelled,
+                        line =>
                         {
-                            if (pendingDateTime.HasValue)
-                            {
-                                InsertRow(bulkLoad, pendingDateTime.Value, pendingProcess, pendingMessageBuilder?.ToString(), shortFileName);
-                            }
-
-                            InsertIncompleteLogNotice(bulkLoad, shortFileName);
-                            pendingDateTime = null;
-                            pendingProcess = null;
-                            pendingMessageBuilder = null;
-                            continue;
-                        }
-
-                        Match match = LogLineRegex.Match(line);
-                        if (match.Success)
-                        {
-                            // Flush the previous pending entry
-                            if (pendingDateTime.HasValue)
-                            {
-                                InsertRow(bulkLoad, pendingDateTime.Value, pendingProcess, pendingMessageBuilder?.ToString(), shortFileName);
-                            }
-                        
-
-                            // Parse the new entry
-                            string dateStr = match.Groups[1].Value;
-                            pendingProcess = match.Groups[2].Value;
-                            pendingMessageBuilder = new StringBuilder(match.Groups[3].Value);
-
-
-                            pendingDateTime = DateTime.TryParseExact(dateStr, "yyyy-MM-dd HH:mm:ss.ff",
-                                CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime parsedDate)
-                                ? parsedDate
-                                : (DateTime?)null;
-                            
-                        }
-                        else
-                        {
-                            // Continuation line - append to current message
-                            if (pendingMessageBuilder != null)
-                            {
-                                pendingMessageBuilder.Append(Environment.NewLine);
-                                pendingMessageBuilder.Append(line);
-                            }
-                        }
-                    }
-
-                    // Flush the last pending entry
-                    if (pendingDateTime.HasValue)
-                    {
-                        InsertRow(bulkLoad, pendingDateTime.Value, pendingProcess, pendingMessageBuilder?.ToString(), shortFileName);
-                    }
+                            totalLinesProcessed++;
+                            currentPosition += System.Text.Encoding.UTF8.GetByteCount(line) + 2; // +2 for \r\n
+                            OnProgressChanged(EventArgs.Empty);
+                        },
+                        (logDateTime, process, message) => InsertRow(bulkLoad, logDateTime, process, message, shortFileName),
+                        () => InsertIncompleteLogNotice(bulkLoad, shortFileName));
                 }
             }
             finally
             {
                 bulkLoad.Close();
+            }
+        }
+
+        internal static void ProcessLogEntries(TextReader reader, Func<bool> isCancelled, Action<string> lineProcessed, Action<DateTime, string, string> insertRow, Action insertIncompleteLogNotice)
+        {
+            DateTime? pendingDateTime = null;
+            string pendingProcess = null;
+            StringBuilder pendingMessageBuilder = null;
+            string line;
+            while ((line = reader.ReadLine()) != null)
+            {
+                if (isCancelled())
+                    break;
+
+                lineProcessed(line);
+
+                if (IsHeadAndTailMarker(line))
+                {
+                    if (pendingDateTime.HasValue)
+                    {
+                        insertRow(pendingDateTime.Value, pendingProcess, pendingMessageBuilder?.ToString());
+                    }
+
+                    insertIncompleteLogNotice();
+                    pendingDateTime = null;
+                    pendingProcess = null;
+                    pendingMessageBuilder = null;
+                    continue;
+                }
+
+                Match match = LogLineRegex.Match(line);
+                if (match.Success)
+                {
+                    if (pendingDateTime.HasValue)
+                    {
+                        insertRow(pendingDateTime.Value, pendingProcess, pendingMessageBuilder?.ToString());
+                    }
+
+                    string dateStr = match.Groups[1].Value;
+                    pendingProcess = match.Groups[2].Value;
+                    pendingMessageBuilder = new StringBuilder(match.Groups[3].Value);
+                    pendingDateTime = DateTime.TryParseExact(dateStr, "yyyy-MM-dd HH:mm:ss.ff",
+                        CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime parsedDate)
+                        ? parsedDate
+                        : (DateTime?)null;
+                }
+                else if (pendingMessageBuilder != null)
+                {
+                    pendingMessageBuilder.Append(Environment.NewLine);
+                    pendingMessageBuilder.Append(line);
+                }
+            }
+
+            if (pendingDateTime.HasValue)
+            {
+                insertRow(pendingDateTime.Value, pendingProcess, pendingMessageBuilder?.ToString());
             }
         }
 
