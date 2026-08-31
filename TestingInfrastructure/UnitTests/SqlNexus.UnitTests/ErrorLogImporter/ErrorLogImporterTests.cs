@@ -32,6 +32,14 @@ namespace SqlNexus.UnitTests.ErrorLogImporter
         }
 
         [TestMethod]
+        public void IsHeadAndTailMarker_EmptyLine_ReturnsFalse()
+        {
+            bool result = global::ErrorLogImporter.ErrorLogImporter.IsHeadAndTailMarker("");
+
+            Assert.IsFalse(result);
+        }
+
+        [TestMethod]
         public void IsHeadAndTailMarker_AlteredMarker_ReturnsFalse()
         {
             bool result = global::ErrorLogImporter.ErrorLogImporter.IsHeadAndTailMarker(

@@ -398,6 +398,7 @@ namespace ErrorLogImporter
         private void InsertIncompleteLogNotice(BulkLoadRowset bulkLoad, string fileName)
         {
             System.Data.DataRow row = bulkLoad.GetNewRow();
+            row["LogDateTime"] = DBNull.Value;
             row["Message"] = INCOMPLETE_LOG_MESSAGE;
             row["FileName"] = fileName != null && fileName.Length > 256 ? fileName.Substring(0, 256) : fileName;
             bulkLoad.InsertRow(row);
