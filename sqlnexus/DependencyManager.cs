@@ -23,8 +23,15 @@ public class DependencyManager
 
         if (!AssemblyFound)
         {
-            UserInstruction fm = new UserInstruction(Path.GetDirectoryName(Assembly.GetExecutingAssembly().GetModules()[0].FullyQualifiedName) + "\\MissingAssemblyFiles.htm", true);
-            fm.ShowDialog();
+            // NOTE: The MissingAssemblyFiles.htm resource was removed because this check is no
+            // longer performed. If this code is ever revived (see issue #93), replace the HTML
+            // dialog with an in-code message instead of relying on the deleted file.
+            MessageBox.Show(
+                "SQL Nexus requires the Microsoft Report Viewer control to be installed. " +
+                "Please install it and restart the application.",
+                "Missing Components",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Warning);
         }*/
     }
 
