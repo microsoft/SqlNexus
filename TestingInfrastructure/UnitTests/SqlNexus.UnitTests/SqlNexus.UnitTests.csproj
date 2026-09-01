@@ -29,6 +29,7 @@
     <ProjectReference Include="..\..\..\RowsetImportEngine\RowsetImportEngine.csproj" />
     <ProjectReference Include="..\..\..\sqlnexus\sqlnexus.csproj" />
     <ProjectReference Include="..\..\..\TraceEventImporter\TraceEventImporter.csproj" />
+    <ProjectReference Include="..\..\..\PerfmonImporter\PerfmonImporter.csproj" />
   </ItemGroup>
 
 </Project>
