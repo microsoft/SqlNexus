@@ -54,7 +54,7 @@ namespace ErrorLogImporter
             options.Add(OPTION_ENABLED, true);
         }
 
-        public static bool IsHeadAndTailMarker(string line)
+        internal static bool IsHeadAndTailMarker(string line)
         {
             return line != null && line.Trim().StartsWith(HEAD_AND_TAIL_MARKER_PARTIAL, StringComparison.Ordinal);
         }
@@ -396,6 +396,11 @@ namespace ErrorLogImporter
                         pendingDateTime = null;
                         pendingProcess = null;
                         pendingMessageBuilder = null;
+
+                        // Note: if the first line of the truncated tail section is a continuation
+                        // line (not a new dated entry), it is intentionally dropped because there is
+                        // no pending entry to append it to (pendingMessageBuilder is null here). The
+                        // source data is genuinely truncated at the marker, so no owning entry exists.
                         continue;
                     }
                 }
