@@ -17,6 +17,9 @@
     <Nullable>disable</Nullable>
     <AssemblyName>SqlNexus.UnitTests</AssemblyName>
     <RootNamespace>SqlNexus.UnitTests</RootNamespace>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\..\ErrorLogImporter\SqlNexus.snk</AssemblyOriginatorKeyFile>
+    <NoWarn>$(NoWarn);8002</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

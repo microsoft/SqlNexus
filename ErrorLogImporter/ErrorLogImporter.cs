@@ -18,7 +18,7 @@ namespace ErrorLogImporter
         private const string TABLE_NAME = "tbl_ERRORLOG";
         private const string OPTION_DROP_EXISTING = "Drop existing tables (ERRORLOG)";
         private const string OPTION_ENABLED = "Enabled";
-        private const string HEAD_AND_TAIL_MARKER = "<<... middle part of file not captured because the file is too large (>1 GB) ...>>";
+        private const string HEAD_AND_TAIL_MARKER_PARTIAL = "<<... middle part of file not captured because";
         internal const string INCOMPLETE_LOG_MESSAGE = "ERRORLOG file is incomplete: the middle part was not captured because the file was too large (>1 GB).";
 
         // Regex to match ERRORLOG lines: datetime, process, message
@@ -55,7 +55,7 @@ namespace ErrorLogImporter
 
         public static bool IsHeadAndTailMarker(string line)
         {
-            return line != null && string.Equals(line.Trim(), HEAD_AND_TAIL_MARKER, StringComparison.Ordinal);
+            return line != null && line.StartsWith(HEAD_AND_TAIL_MARKER_PARTIAL, StringComparison.Ordinal);
         }
 
         private void LogMessage(string msg)
@@ -322,6 +322,7 @@ namespace ErrorLogImporter
             DateTime? pendingDateTime = null;
             string pendingProcess = null;
             StringBuilder pendingMessageBuilder = null;
+            bool headAndTailMarkerFound = false;
             string line;
             while ((line = reader.ReadLine()) != null)
             {
@@ -330,18 +331,22 @@ namespace ErrorLogImporter
 
                 lineProcessed(line);
 
-                if (IsHeadAndTailMarker(line))
+                if (!headAndTailMarkerFound)
                 {
-                    if (pendingDateTime.HasValue)
+                    if (IsHeadAndTailMarker(line))
                     {
-                        insertRow(pendingDateTime.Value, pendingProcess, pendingMessageBuilder?.ToString());
-                    }
+                        if (pendingDateTime.HasValue)
+                        {
+                            insertRow(pendingDateTime.Value, pendingProcess, pendingMessageBuilder?.ToString());
+                        }
 
-                    insertIncompleteLogNotice();
-                    pendingDateTime = null;
-                    pendingProcess = null;
-                    pendingMessageBuilder = null;
-                    continue;
+                        insertIncompleteLogNotice();
+                        headAndTailMarkerFound = true;
+                        pendingDateTime = null;
+                        pendingProcess = null;
+                        pendingMessageBuilder = null;
+                        continue;
+                    }
                 }
 
                 Match match = LogLineRegex.Match(line);

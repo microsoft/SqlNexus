@@ -9,12 +9,12 @@ namespace SqlNexus.UnitTests.ErrorLogImporter
     public class ErrorLogImporterTests
     {
         [TestMethod]
-        public void IsHeadAndTailMarker_LogScoutMarkerWithWhitespace_ReturnsTrue()
+        public void IsHeadAndTailMarker_LogScoutMarkerWithLeadingWhitespace_ReturnsFalse()
         {
             bool result = global::ErrorLogImporter.ErrorLogImporter.IsHeadAndTailMarker(
                 "   <<... middle part of file not captured because the file is too large (>1 GB) ...>>");
 
-            Assert.IsTrue(result);
+            Assert.IsFalse(result);
         }
 
         [TestMethod]
@@ -43,12 +43,12 @@ namespace SqlNexus.UnitTests.ErrorLogImporter
         }
 
         [TestMethod]
-        public void IsHeadAndTailMarker_AlteredMarker_ReturnsFalse()
+        public void IsHeadAndTailMarker_MarkerWithDifferentSize_ReturnsTrue()
         {
             bool result = global::ErrorLogImporter.ErrorLogImporter.IsHeadAndTailMarker(
                 "<<... middle part of file not captured because the file is too large (>2 GB) ...>>");
 
-            Assert.IsFalse(result);
+            Assert.IsTrue(result);
         }
 
         [TestMethod]
@@ -76,6 +76,30 @@ namespace SqlNexus.UnitTests.ErrorLogImporter
             Assert.AreEqual(global::ErrorLogImporter.ErrorLogImporter.INCOMPLETE_LOG_MESSAGE, rows[1].Message);
             Assert.IsNull(rows[1].LogDateTime);
             Assert.AreEqual("Last message.", rows[2].Message);
+        }
+
+        [TestMethod]
+        public void ProcessLogEntries_MultipleMarkers_InsertsSingleIncompleteNotice()
+        {
+            var rows = new List<ImportedRow>();
+            const string marker = "<<... middle part of file not captured because the file is too large (>1 GB) ...>>";
+
+            using (var reader = new StringReader(
+                marker + Environment.NewLine +
+                marker + Environment.NewLine +
+                "2026-04-14 22:37:12.55 Server      Last message."))
+            {
+                global::ErrorLogImporter.ErrorLogImporter.ProcessLogEntries(
+                    reader,
+                    () => false,
+                    line => { },
+                    (logDateTime, process, message) => rows.Add(new ImportedRow(logDateTime, process, message)),
+                    () => rows.Add(new ImportedRow(null, null, global::ErrorLogImporter.ErrorLogImporter.INCOMPLETE_LOG_MESSAGE)));
+            }
+
+            Assert.AreEqual(2, rows.Count);
+            Assert.AreEqual(global::ErrorLogImporter.ErrorLogImporter.INCOMPLETE_LOG_MESSAGE, rows[0].Message);
+            Assert.AreEqual("Last message.", rows[1].Message);
         }
 
         private sealed class ImportedRow
