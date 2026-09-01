@@ -318,15 +318,20 @@ namespace ErrorLogImporter
 
             try
             {
-                using (StreamReader reader = new StreamReader(filePath))
+                using (StreamReader reader = new StreamReader(filePath, detectEncodingFromByteOrderMarks: true))
                 {
+                    // Peek forces the StreamReader to read the BOM (if any) and settle on the actual
+                    // encoding before we start estimating byte offsets for the progress bar.
+                    reader.Peek();
+                    Encoding encoding = reader.CurrentEncoding;
+
                     ProcessLogEntries(
                         reader,
                         () => Cancelled,
                         line =>
                         {
                             totalLinesProcessed++;
-                            currentPosition += System.Text.Encoding.UTF8.GetByteCount(line) + 2; // +2 for \r\n
+                            currentPosition = AdvancePosition(currentPosition, fileSize, line, encoding);
                             OnProgressChanged(EventArgs.Empty);
                         },
                         (logDateTime, process, message) => InsertRow(bulkLoad, logDateTime, process, message, shortFileName),
@@ -337,6 +342,26 @@ namespace ErrorLogImporter
             {
                 bulkLoad.Close();
             }
+        }
+
+        // Estimates how far into the file we have read after consuming a line, in bytes, using the
+        // file's actual encoding and accounting for a stripped newline. The result is clamped to
+        // fileSize so the reported progress can never overshoot the file (which would push a progress
+        // bar past 100%). ReadLine drops the line terminator, so we add the encoding's byte count for
+        // a newline; the estimate is approximate for LF-only vs CRLF files but never exceeds fileSize.
+        internal static long AdvancePosition(long currentPosition, long fileSize, string line, Encoding encoding)
+        {
+            if (encoding == null)
+                encoding = Encoding.UTF8;
+
+            long lineBytes = line != null ? encoding.GetByteCount(line) : 0;
+            long newlineBytes = encoding.GetByteCount(Environment.NewLine);
+            long advanced = currentPosition + lineBytes + newlineBytes;
+
+            if (fileSize > 0 && advanced > fileSize)
+                return fileSize;
+
+            return advanced;
         }
 
         internal static void ProcessLogEntries(TextReader reader, Func<bool> isCancelled, Action<string> lineProcessed, Action<DateTime, string, string> insertRow, Action insertIncompleteLogNotice)
@@ -353,6 +378,10 @@ namespace ErrorLogImporter
 
                 lineProcessed(line);
 
+                // The head-and-tail marker is written at most once per ERRORLOG file by the
+                // collection tooling, so once we have seen it we stop checking for it. This avoids a
+                // Trim()/StartsWith() call on every remaining line of what may be a very large tail
+                // section (>1 GB), while still emitting exactly one incomplete-log notice.
                 if (!headAndTailMarkerFound)
                 {
                     if (IsHeadAndTailMarker(line))

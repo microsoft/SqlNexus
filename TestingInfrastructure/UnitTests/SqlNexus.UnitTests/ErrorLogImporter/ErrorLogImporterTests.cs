@@ -1,5 +1,4 @@
 using System;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -202,6 +201,57 @@ namespace SqlNexus.UnitTests.ErrorLogImporter
         {
             Assert.IsNull(global::ErrorLogImporter.ErrorLogImporter.StripLeadingByteOrderMark(null));
             Assert.AreEqual(string.Empty, global::ErrorLogImporter.ErrorLogImporter.StripLeadingByteOrderMark(string.Empty));
+        }
+
+        [TestMethod]
+        public void AdvancePosition_Utf8Line_AddsLineAndNewlineBytes()
+        {
+            long result = global::ErrorLogImporter.ErrorLogImporter.AdvancePosition(
+                0, 1000, "hello", System.Text.Encoding.UTF8);
+
+            long expected = System.Text.Encoding.UTF8.GetByteCount("hello")
+                + System.Text.Encoding.UTF8.GetByteCount(Environment.NewLine);
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void AdvancePosition_ExceedsFileSize_ClampsToFileSize()
+        {
+            long result = global::ErrorLogImporter.ErrorLogImporter.AdvancePosition(
+                990, 1000, new string('x', 500), System.Text.Encoding.UTF8);
+
+            Assert.AreEqual(1000, result, "Position must never overshoot the file size");
+        }
+
+        [TestMethod]
+        public void AdvancePosition_NullEncoding_DefaultsToUtf8()
+        {
+            long result = global::ErrorLogImporter.ErrorLogImporter.AdvancePosition(
+                0, 1000, "abc", null);
+
+            long expected = System.Text.Encoding.UTF8.GetByteCount("abc")
+                + System.Text.Encoding.UTF8.GetByteCount(Environment.NewLine);
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        public void AdvancePosition_NullLine_AddsOnlyNewlineBytes()
+        {
+            long result = global::ErrorLogImporter.ErrorLogImporter.AdvancePosition(
+                10, 1000, null, System.Text.Encoding.UTF8);
+
+            Assert.AreEqual(10 + System.Text.Encoding.UTF8.GetByteCount(Environment.NewLine), result);
+        }
+
+        [TestMethod]
+        public void AdvancePosition_UnknownFileSize_DoesNotClamp()
+        {
+            long result = global::ErrorLogImporter.ErrorLogImporter.AdvancePosition(
+                100, 0, "data", System.Text.Encoding.UTF8);
+
+            long expected = 100 + System.Text.Encoding.UTF8.GetByteCount("data")
+                + System.Text.Encoding.UTF8.GetByteCount(Environment.NewLine);
+            Assert.AreEqual(expected, result);
         }
 
         private sealed class ImportedRow
