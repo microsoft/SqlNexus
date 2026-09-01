@@ -19,7 +19,8 @@ namespace ErrorLogImporter
         private const string OPTION_DROP_EXISTING = "Drop existing tables (ERRORLOG)";
         private const string OPTION_ENABLED = "Enabled";
         private const string HEAD_AND_TAIL_MARKER_PARTIAL = "<<... middle part of file not captured because";
-        internal const string INCOMPLETE_LOG_MESSAGE = "ERRORLOG file is incomplete: the middle part was not captured because the file was too large (>1 GB).";
+        internal const string INCOMPLETE_PROCESS_MARKER = "INCOMPLETE";
+        internal const string INCOMPLETE_LOG_MESSAGE = ">>>>> ERRORLOG file is incomplete: the middle part was not captured because the file was too large (>1 GB). <<<<<";
 
         // Regex to match ERRORLOG lines: datetime, process, message
         // Example: "2026-04-14 22:37:11.55 Server      Microsoft SQL Server 2022..."
@@ -55,7 +56,28 @@ namespace ErrorLogImporter
 
         public static bool IsHeadAndTailMarker(string line)
         {
-            return line != null && line.StartsWith(HEAD_AND_TAIL_MARKER_PARTIAL, StringComparison.Ordinal);
+            return line != null && line.Trim().StartsWith(HEAD_AND_TAIL_MARKER_PARTIAL, StringComparison.Ordinal);
+        }
+
+        // A UTF-8 BOM (or its mangled single-character representation such as U+FEFF or U+FFFD, or a
+        // literal '?' produced when the BOM is written to a non-UTF8 file) can be prepended to the
+        // first line following the head-and-tail marker by the collection tooling. Strip it so the
+        // date/time regex still matches and the line is not lost.
+        internal static string StripLeadingByteOrderMark(string line)
+        {
+            if (string.IsNullOrEmpty(line))
+                return line;
+
+            char first = line[0];
+            if (first == '\uFEFF' || first == '\uFFFD' || first == '?')
+            {
+                // Only strip when what follows looks like the start of a real log line (a digit),
+                // so genuine '?'-prefixed message text is never altered.
+                if (line.Length > 1 && char.IsDigit(line[1]))
+                    return line.Substring(1);
+            }
+
+            return line;
         }
 
         private void LogMessage(string msg)
@@ -349,7 +371,7 @@ namespace ErrorLogImporter
                     }
                 }
 
-                Match match = LogLineRegex.Match(line);
+                Match match = LogLineRegex.Match(StripLeadingByteOrderMark(line));
                 if (match.Success)
                 {
                     if (pendingDateTime.HasValue)
@@ -405,6 +427,7 @@ namespace ErrorLogImporter
         {
             System.Data.DataRow row = bulkLoad.GetNewRow();
             row["LogDateTime"] = DBNull.Value;
+            row["Process"] = INCOMPLETE_PROCESS_MARKER;
             row["Message"] = INCOMPLETE_LOG_MESSAGE;
             row["FileName"] = fileName != null && fileName.Length > 256 ? fileName.Substring(0, 256) : fileName;
             bulkLoad.InsertRow(row);
