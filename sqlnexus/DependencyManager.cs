@@ -23,9 +23,10 @@ public class DependencyManager
 
         if (!AssemblyFound)
         {
-            // NOTE: The MissingAssemblyFiles.htm resource was removed because this check is no
-            // longer performed. If this code is ever revived (see issue #93), replace the HTML
-            // dialog with an in-code message instead of relying on the deleted file.
+            // This code block is inert - it stays inside the commented section intentionally. 
+            // MissingAssemblyFiles.htm (previously shown via UserInstruction)
+            // was deleted, so reviving the check (issue #93) needs to
+            // replace the HTML dialog with an in-code message instead of relying on the deleted file.
             MessageBox.Show(
                 "SQL Nexus requires the Microsoft Report Viewer control to be installed. " +
                 "Please install it and restart the application.",
@@ -96,9 +97,10 @@ public class DependencyManager
 
             }
         }
-        catch (FileNotFoundException)
+        catch (FileNotFoundException ex)
         {
-
+            // Util.Logger is not initialized this early in startup, so fall back to the debugger.
+            Debug.WriteLine("AssemblyInstalled_NotUsed: " + MajorAssemblyString + " not found. " + ex.Message);
         }
 
         return ExactAssemblyFound;
