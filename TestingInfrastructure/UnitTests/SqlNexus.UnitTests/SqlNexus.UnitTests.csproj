@@ -17,6 +17,9 @@
     <Nullable>disable</Nullable>
     <AssemblyName>SqlNexus.UnitTests</AssemblyName>
     <RootNamespace>SqlNexus.UnitTests</RootNamespace>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\..\ErrorLogImporter\SqlNexus.snk</AssemblyOriginatorKeyFile>
+    <NoWarn>$(NoWarn);8002</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
@@ -29,6 +32,7 @@
     <ProjectReference Include="..\..\..\RowsetImportEngine\RowsetImportEngine.csproj" />
     <ProjectReference Include="..\..\..\sqlnexus\sqlnexus.csproj" />
     <ProjectReference Include="..\..\..\TraceEventImporter\TraceEventImporter.csproj" />
+    <ProjectReference Include="..\..\..\ErrorLogImporter\ErrorLogImporter.csproj" />
   </ItemGroup>
 
 </Project>
