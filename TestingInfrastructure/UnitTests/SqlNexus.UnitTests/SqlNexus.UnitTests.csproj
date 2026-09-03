@@ -17,8 +17,11 @@
     <Nullable>disable</Nullable>
     <AssemblyName>SqlNexus.UnitTests</AssemblyName>
     <RootNamespace>SqlNexus.UnitTests</RootNamespace>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\..\..\ErrorLogImporter\SqlNexus.snk</AssemblyOriginatorKeyFile>
+    <!-- Not strong-named: sqlnexus.exe (the host under test) is an unsigned leaf executable.
+         A strong-named test assembly cannot load a non-strong-named referenced assembly,
+         which blocks tests that exercise sqlnexus internals. Leaving this unsigned lets the
+         test project reference both the unsigned host EXE and the signed importer DLLs. -->
+    <SignAssembly>false</SignAssembly>
     <NoWarn>$(NoWarn);8002</NoWarn>
   </PropertyGroup>
 

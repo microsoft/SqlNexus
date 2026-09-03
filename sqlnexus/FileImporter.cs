@@ -15,20 +15,28 @@ namespace sqlnexus
         string m_ServerName;
         string m_DatabaseName;
         string m_Importpath;
+        readonly List<string> m_SearchPaths;
         CSql m_Csql;
 
 
         public RawFileImporter(string ServerName, string DatabaseName, string ImportPath)
         {
-            
+
             m_ServerName = ServerName;
             m_DatabaseName = DatabaseName;
             m_Importpath = ImportPath;
+            // Search the primary import folder plus the sibling SharedOutputFiles folder when it
+            // exists (non-instance-specific host files such as event logs, tasklist, drivers land
+            // there). When the sibling does not exist this is just the primary folder, so behavior
+            // is unchanged.
+            m_SearchPaths = SharedOutputFolder.GetImportSearchPaths(ImportPath);
+            if (m_SearchPaths.Count == 0)
+                m_SearchPaths.Add(ImportPath);
             //string ConnString = string.Format("Data Source={0}; Initial Catalog={1};Integrated Security=SSPI", m_ServerName, m_DatabaseName);
             string ConnString = string.Format(Globals.credentialMgr.ConnectionString);
             m_Csql = new CSql(ConnString);
-        
-            
+
+
         }
 
         private bool IsSafeSqlIdentifier(string name)
@@ -51,15 +59,21 @@ namespace sqlnexus
             {
                 CreateTable(rawfile.TableName);
 
-                string[] files = Directory.GetFiles(m_Importpath, rawfile.Mask);
+                foreach (string searchPath in m_SearchPaths)
+                {
+                    if (string.IsNullOrEmpty(searchPath) || !Directory.Exists(searchPath))
+                        continue;
 
-                 foreach (string file in files)
-                 {
-                    ImportFile(rawfile.TableName, file);
-                    fileCntr++;
+                    string[] files = Directory.GetFiles(searchPath, rawfile.Mask);
+
+                    foreach (string file in files)
+                    {
+                        ImportFile(rawfile.TableName, file);
+                        fileCntr++;
+                    }
                 }
 
-                
+
             } //end of foreach
 
             
