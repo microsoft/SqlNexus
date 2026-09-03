@@ -224,7 +224,7 @@ SQL Nexus Database
   ├── tbl_REQUESTS              (dm_exec_requests)
   ├── tbl_OS_WAIT_STATS         (dm_os_wait_stats)
   ├── tbl_NOTABLEACTIVEQUERIES  (active query snapshots)
-  ├── vw_BLOCKING_CHAINS        (blocking analysis)
+  ├── tbl_HEADBLOCKERSUMMARY / tbl_BLOCKING_CHAINS (blocking analysis)
   ├── tbl_SPINLOCKSTATS         (spinlock stats)
   ├── tbl_FILESTATS            (I/O stats)
   ├── CounterData/CounterDetails (Perfmon)

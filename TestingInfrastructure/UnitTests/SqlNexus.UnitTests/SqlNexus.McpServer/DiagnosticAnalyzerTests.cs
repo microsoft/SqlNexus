@@ -65,5 +65,23 @@ END";
         {
             Assert.AreEqual("%sql%", global::SqlNexus.McpServer.DiagnosticAnalyzer.InstalledProgramsNameFilter);
         }
+
+        [TestMethod]
+        public void BuildQueriesByApplicationQuery_Filtered_UsesSqlParameterPlaceholder()
+        {
+            string query = global::SqlNexus.McpServer.DiagnosticAnalyzer.BuildQueriesByApplicationQuery(true);
+
+            StringAssert.Contains(query, "WHERE c.ApplicationName = @app_name");
+            Assert.IsFalse(query.Contains("ApplicationName = '"));
+        }
+
+        [TestMethod]
+        public void BuildTableStatisticsHealthQuery_Filtered_UsesSqlParameterPlaceholder()
+        {
+            string query = global::SqlNexus.McpServer.DiagnosticAnalyzer.BuildTableStatisticsHealthQuery(true);
+
+            StringAssert.Contains(query, "Database_Name = @db_name");
+            Assert.IsFalse(query.Contains("Database_Name = '"));
+        }
     }
 }

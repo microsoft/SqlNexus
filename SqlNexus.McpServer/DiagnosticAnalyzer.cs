@@ -1361,11 +1361,26 @@ namespace SqlNexus.McpServer
         public string GetQueriesByApplication(string? appName = null)
         {
             bool filterByApp = !string.IsNullOrWhiteSpace(appName);
-            // Sanitize: escape single quotes to prevent SQL injection
-            string safeAppName = (appName ?? "").Replace("'", "''");
+            string query = BuildQueriesByApplicationQuery(filterByApp);
+            var parameters = new List<SqlParameter>();
+            if (filterByApp)
+            {
+                parameters.Add(new SqlParameter("@app_name", SqlDbType.NVarChar, 256)
+                {
+                    Value = appName!
+                });
+            }
 
-            string query = filterByApp
-                ? $@"
+            string title = filterByApp
+                ? $"Queries by Application: {appName}"
+                : "Top Queries Across All Applications";
+            return ExecuteQueryAndReturnJson(query, title, parameters);
+        }
+
+        internal static string BuildQueriesByApplicationQuery(bool filterByApp)
+        {
+            return filterByApp
+                ? @"
                 IF OBJECT_ID('ReadTrace.tblBatches') IS NOT NULL
                    AND OBJECT_ID('ReadTrace.tblConnections') IS NOT NULL
                 BEGIN
@@ -1386,7 +1401,7 @@ namespace SqlNexus.McpServer
                     JOIN ReadTrace.tblConnections c
                         ON b.ConnSeq = c.ConnSeq AND b.session = c.session
                     JOIN ReadTrace.tblUniqueBatches ub ON b.HashID = ub.HashID
-                    WHERE c.ApplicationName = '{safeAppName}'
+                    WHERE c.ApplicationName = @app_name
                     GROUP BY ub.NormText, b.HashID
                     ORDER BY Total_Duration_ms DESC;
                 END"
@@ -1410,11 +1425,6 @@ namespace SqlNexus.McpServer
                     GROUP BY ub.NormText, b.HashID, c.ApplicationName
                     ORDER BY Total_Duration_ms DESC;
                 END";
-
-            string title = filterByApp
-                ? $"Queries by Application: {appName}"
-                : "Top Queries Across All Applications";
-            return ExecuteQueryAndReturnJson(query, title);
         }
 
         /// <summary>
@@ -1682,13 +1692,29 @@ namespace SqlNexus.McpServer
         public string GetTableStatisticsHealth(string? dbName = null)
         {
             bool filterByDb = !string.IsNullOrWhiteSpace(dbName);
-            string safeDbName = (dbName ?? "").Replace("'", "''");
+            string query = BuildTableStatisticsHealthQuery(filterByDb);
+            var parameters = new List<SqlParameter>();
+            if (filterByDb)
+            {
+                parameters.Add(new SqlParameter("@db_name", SqlDbType.NVarChar, 128)
+                {
+                    Value = dbName!
+                });
+            }
 
+            string title = filterByDb
+                ? $"Table Statistics Health: {dbName}"
+                : "Table Statistics Health (All User Databases)";
+            return ExecuteQueryAndReturnJson(query, title, parameters);
+        }
+
+        internal static string BuildTableStatisticsHealthQuery(bool filterByDb)
+        {
             string whereClause = filterByDb
-                ? $"WHERE Database_Name NOT IN ('msdb','master','model','tempdb') AND Database_Name = '{safeDbName}'"
+                ? "WHERE Database_Name NOT IN ('msdb','master','model','tempdb') AND Database_Name = @db_name"
                 : "WHERE Database_Name NOT IN ('msdb','master','model','tempdb')";
 
-            string query = $@"
+            return $@"
                 IF OBJECT_ID('dbo.tbl_dm_db_stats_properties') IS NOT NULL
                 BEGIN
                     SELECT TOP 200
@@ -1706,11 +1732,6 @@ namespace SqlNexus.McpServer
                     {whereClause}
                     ORDER BY last_updated ASC;
                 END";
-
-            string title = filterByDb
-                ? $"Table Statistics Health: {dbName}"
-                : "Table Statistics Health (All User Databases)";
-            return ExecuteQueryAndReturnJson(query, title);
         }
 
         /// <summary>
@@ -2405,8 +2426,21 @@ namespace SqlNexus.McpServer
         /// </summary>
         private DataTable ExecuteQueryToDataTable(string query)
         {
+            return ExecuteQueryToDataTable(query, null);
+        }
+
+        /// <summary>
+        /// Helper method to execute query and return DataTable with optional SQL parameters.
+        /// </summary>
+        private DataTable ExecuteQueryToDataTable(string query, IEnumerable<SqlParameter>? parameters)
+        {
             using var connection = new SqlConnection(_connectionString);
             using var command = new SqlCommand(query, connection) { CommandTimeout = 120 };
+            if (parameters != null)
+            {
+                foreach (var parameter in parameters)
+                    command.Parameters.Add(parameter);
+            }
             connection.Open();
             var dataTable = new DataTable();
             using var adapter = new SqlDataAdapter(command);
@@ -2419,9 +2453,22 @@ namespace SqlNexus.McpServer
         /// </summary>
         private string ExecuteQueryAndReturnJson(string query, string summaryTitle)
         {
+            return ExecuteQueryAndReturnJson(query, summaryTitle, null);
+        }
+
+        /// <summary>
+        /// Helper method to execute query and return JSON with optional SQL parameters.
+        /// </summary>
+        private string ExecuteQueryAndReturnJson(string query, string summaryTitle, IEnumerable<SqlParameter>? parameters)
+        {
             using var connection = new SqlConnection(_connectionString);
             using var command = new SqlCommand(query, connection);
             command.CommandTimeout = 120;
+            if (parameters != null)
+            {
+                foreach (var parameter in parameters)
+                    command.Parameters.Add(parameter);
+            }
 
             connection.Open();
             var dataTable = new DataTable();
