@@ -9,11 +9,11 @@ Run from an extracted SQL Nexus release:
 
 ```powershell
 .\CopilotIntegration\Register-SqlNexusCopilotIntegration.ps1 `
-    -Server "localhost\SQLEXPRESS" `
+    -Server "localhost" `
     -Database "SqlNexus"
 ```
 
-Registration updates the following user-level locations while preserving unrelated entries:
+Registration updates
 
 - VS Code MCP configuration: `%APPDATA%\Code\User\mcp.json`
 - Copilot CLI MCP configuration: `%USERPROFILE%\.copilot\mcp-config.json`
@@ -30,13 +30,28 @@ Nexus Diagnostic Agent, add `-McpOnly`:
 
 ```powershell
 .\CopilotIntegration\Register-SqlNexusCopilotIntegration.ps1 `
-    -Server "localhost\SQLEXPRESS" `
+    -Server "localhost" `
     -Database "SqlNexus" `
     -McpOnly
 ```
 
 This mode does not require the agent or `AI\Skills` files. Use it when you want to call the SQL
 Nexus MCP tools from Copilot's default agent or when the custom agent is managed separately.
+
+### Compare two databases
+
+To enable the `compare_nexus_databases` tool, register a second (comparison) database with
+`-Database2`. It is optional; omit it for single-database analysis.
+
+```powershell
+.\CopilotIntegration\Register-SqlNexusCopilotIntegration.ps1 `
+    -Server "localhost" `
+    -Database "sqlnexus_run1" `
+    -Database2 "sqlnexus_run2"
+```
+
+This adds `--database2` to the registered MCP server arguments. After registration, invoke the
+`compare_nexus_databases` tool to get a side-by-side comparison.
 
 Use `-Force` only when replacing an existing `sqlnexus_mcp` entry or SQL Nexus agent that has
 different content. The scripts configure Windows Integrated Authentication and never request or

@@ -30,6 +30,8 @@ And get **instant, data-driven answers** from your PSSDiag/SQLLogScout diagnosti
 
 ## Setup
 
+> Quick start (recommended): run `CopilotIntegration/Register-SqlNexusCopilotIntegration.ps1` from the repository root. It registers MCP + agent automatically. See `CopilotIntegration/README.md`.
+
 ### 1. Build
 
 ```powershell
@@ -166,27 +168,50 @@ cd bin\Release
 
 ---
 
-## 17 Diagnostic Tools
+## Diagnostic Tools
+
+The server advertises the full catalog below. The authoritative list is always the runtime `tools/list` response.
 
 | Tool | Answers |
 |------|---------|
 | `analyze_cpu_usage` | "Is there high CPU?" |
 | `get_top_cpu_queries` | "Which queries cause high CPU?" |
 | `get_sql_cpu_usage_over_time` | "Show CPU trends over time" |
+| `get_cpu_by_database` | "Which database uses the most CPU?" |
 | `analyze_io_performance` | "Is I/O slow?" |
 | `analyze_io_waits` | "Is SQL Server causing slow I/O?" |
+| `get_sql_file_io_stats` | "What are per-file read/write latencies?" |
+| `get_top_queries_by_reads` | "Which queries do the most reads?" |
+| `get_top_queries_by_writes` | "Which queries do the most writes?" |
 | `analyze_wait_stats` | "What are the top bottlenecks?" |
+| `get_wait_type_distribution` | "What is the request-level wait distribution?" |
+| `get_wait_resource_hotspots` | "Which resources have the most contention?" |
+| `get_wait_heavy_queries` | "Which queries are wait-bound?" |
 | `get_aggregate_waits_and_queries` | "Which queries have the most waits?" |
+| `get_waits_for_query` | "What waits did a specific query hit?" |
 | `analyze_spinlocks` | "Is there spinlock contention?" |
 | `analyze_blocking` | "Who are the head blockers?" |
 | `get_blocked_sessions` | "What sessions are blocked?" |
+| `get_blocking_chain_tree` | "Show the full blocking chain hierarchy" |
+| `get_lock_summary_by_object` | "Which objects have the most lock contention?" |
 | `get_top_queries_by_duration` | "What are the slowest queries?" |
-| `get_waits_for_query` | "What waits did a specific query hit?" |
+| `get_query_execution_details` | "Show each execution of a specific query" |
+| `get_statements_in_batch` | "Break a batch into its statements" |
+| `get_queries_by_application` | "Which queries come from an application?" |
+| `get_performance_by_application` | "Which application consumes the most resources?" |
 | `get_missing_indexes` | "What indexes are missing?" |
+| `get_table_statistics_health` | "Are statistics stale?" |
+| `get_compilation_stats` | "Are compilations/recompilations high?" |
+| `get_plan_cache_analysis` | "Is the plan cache bloated with single-use plans?" |
 | `get_memory_clerk_distribution` | "How is SQL Server memory used?" |
+| `analyze_tracing_overhead` | "Are XEvent/Trace sessions causing overhead?" |
 | `get_collection_time_range` | "What is the data collection window?" |
 | `get_performance_summary` | "Give me a full health check" |
-| `query_nexus_database` | Execute any custom SQL query |
+| `analyze_hadr_health` | "Is Always On / HADR healthy?" |
+| `analyze_setup_health` | "Are there SQL Server setup/install problems?" |
+| `compare_nexus_databases` | "What is different between two captures?" |
+| `list_nexus_tables` | "What tables are available?" |
+| `query_nexus_database` | Execute read-only custom SQL query |
 
 ---
 
@@ -248,7 +273,7 @@ SQL Nexus Database
 │  Copilot ──── tools/list ────────────────► Server   │
 │           ◄─── {tools: [{name, description,         │
 │                          inputSchema}, ...]} ─────  │
-│                (Copilot caches all 17 tools)        │
+│                (Copilot caches all advertised tools)│
 └─────────────────────────────────────────────────────┘
 
 ┌─────────────────────────────────────────────────────┐

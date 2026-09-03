@@ -2,9 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using Microsoft.Data.SqlClient;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace SqlNexus.McpServer
 {
@@ -63,6 +65,7 @@ namespace SqlNexus.McpServer
 
         // Simple size-based rollover so the temp file can't grow without bound.
         private const long MaxLogBytes = 5 * 1024 * 1024; // 5 MB
+        private const int MaxBackupFiles = 5;
 
         private static readonly object s_sync = new object();
         private static string s_logFilePath = LogFileName;
@@ -138,7 +141,7 @@ namespace SqlNexus.McpServer
                     if (request.Params.TryGetValue("name", out var name) && name != null)
                         sb.Append(" tool=").Append(name);
                     if (request.Params.TryGetValue("arguments", out var args) && args != null)
-                        sb.Append(" args=").Append(Truncate(SafeSerialize(args)));
+                        sb.Append(" args=").Append(SanitizeForRequestLog(args));
                 }
                 else if (string.Equals(request.Method, "initialize", StringComparison.OrdinalIgnoreCase) &&
                          request.Params != null)
@@ -150,7 +153,7 @@ namespace SqlNexus.McpServer
                 }
                 else if (request.Params != null && request.Params.Count > 0)
                 {
-                    sb.Append(" params=").Append(Truncate(SafeSerialize(request.Params)));
+                    sb.Append(" params=").Append(SanitizeForRequestLog(request.Params));
                 }
 
                 Info(sb.ToString());
@@ -159,6 +162,15 @@ namespace SqlNexus.McpServer
             {
                 // Logging must never interfere with request processing.
             }
+        }
+
+        /// <summary>
+        /// Log a compact, low-risk summary of a tool response for troubleshooting:
+        /// tool name, elapsed time, and (when present) summary/row_count from the JSON payload.
+        /// </summary>
+        public static void LogToolResult(string toolName, string resultText, long elapsedMs)
+        {
+            Info(BuildToolResultLogLine(toolName, resultText, elapsedMs));
         }
 
         private static void Write(Level level, string message, LogTarget target)
@@ -234,15 +246,59 @@ namespace SqlNexus.McpServer
                 if (!fi.Exists || fi.Length <= MaxLogBytes)
                     return;
 
-                string backup = s_logFilePath + ".1";
+                string timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
+                string backup = s_logFilePath + "." + timestamp;
                 if (File.Exists(backup))
-                    File.Delete(backup);
+                    backup = s_logFilePath + "." + timestamp + "_" + Guid.NewGuid().ToString("N").Substring(0, 8);
                 File.Move(s_logFilePath, backup);
+
+                string backupPattern = Path.GetFileName(s_logFilePath) + ".*";
+                string logDir = Path.GetDirectoryName(s_logFilePath) ?? Directory.GetCurrentDirectory();
+                var backups = new DirectoryInfo(logDir)
+                    .GetFiles(backupPattern)
+                    .OrderByDescending(f => f.CreationTimeUtc)
+                    .ToList();
+
+                for (int i = MaxBackupFiles; i < backups.Count; i++)
+                {
+                    try { backups[i].Delete(); } catch { }
+                }
             }
             catch
             {
                 // If rollover fails, keep appending to the existing file.
             }
+        }
+
+        internal static string SanitizeForRequestLog(object value)
+        {
+            string serialized = SafeSerialize(value);
+            string scrubbed = PiiScrubber.Scrub(serialized);
+            return Truncate(scrubbed);
+        }
+
+        internal static string BuildToolResultLogLine(string toolName, string resultText, long elapsedMs)
+        {
+            string safeToolName = string.IsNullOrWhiteSpace(toolName) ? "(unknown)" : toolName;
+            string summary = "(unavailable)";
+            string rowCount = "(unknown)";
+
+            try
+            {
+                var obj = JObject.Parse(resultText);
+                summary = obj.Value<string>("summary") ?? summary;
+
+                JToken rowToken;
+                if (obj.TryGetValue("row_count", out rowToken) && rowToken != null && rowToken.Type != JTokenType.Null)
+                    rowCount = rowToken.ToString();
+            }
+            catch
+            {
+                // Not JSON, keep defaults.
+            }
+
+            summary = Truncate(PiiScrubber.Scrub(summary));
+            return $"RES tool={safeToolName} elapsed_ms={elapsedMs} row_count={rowCount} summary={summary}";
         }
 
         private static string SafeSerialize(object value)

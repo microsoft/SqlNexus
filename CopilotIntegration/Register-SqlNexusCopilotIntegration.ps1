@@ -9,6 +9,9 @@ param(
     [string] $Database = "SqlNexus",
 
     [Parameter()]
+    [string] $Database2 = "",
+
+    [Parameter()]
     [string] $InstallRoot = (Split-Path -Parent $PSScriptRoot),
 
     [Parameter()]
@@ -152,7 +155,11 @@ foreach ($requiredPath in $requiredPaths) {
     }
 }
 
-$arguments = @("--server", $Server, "--database", $Database, "--trusted-connection", "true")
+$arguments = @("--server", $Server, "--database", $Database)
+if (-not [string]::IsNullOrWhiteSpace($Database2)) {
+    $arguments += @("--database2", $Database2)
+}
+$arguments += @("--trusted-connection", "true")
 $vscodeEntry = [pscustomobject][ordered]@{
     type = "stdio"
     command = $mcpExecutable
@@ -219,6 +226,9 @@ else {
 Write-Status -Level "INFO" -Message "MCP executable: $mcpExecutable"
 Write-Status -Level "INFO" -Message "SQL Server: $Server"
 Write-Status -Level "INFO" -Message "Database: $Database"
+if (-not [string]::IsNullOrWhiteSpace($Database2)) {
+    Write-Status -Level "INFO" -Message "Comparison database (--database2): $Database2"
+}
 Write-Status -Level "INFO" -Message "Authentication: Windows Integrated Authentication"
 Write-Status -Level "INFO" -Message "VS Code MCP configuration: $vscodeConfigPath"
 Write-Status -Level "INFO" -Message "Copilot CLI MCP configuration: $copilotConfigPath"

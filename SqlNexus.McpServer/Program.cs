@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Microsoft.Data.SqlClient;
@@ -645,6 +646,7 @@ namespace SqlNexus.McpServer
                 ? JObject.FromObject(parameters["arguments"]) 
                 : new JObject();
 
+            var stopwatch = Stopwatch.StartNew();
             string resultText;
             switch (toolName)
             {
@@ -767,9 +769,13 @@ namespace SqlNexus.McpServer
                 default:
                     throw new NotSupportedException($"Tool not supported: {toolName}");
             }
+            stopwatch.Stop();
 
             // Scrub PII from tool output before returning to the agent
             resultText = PiiScrubber.Scrub(resultText);
+
+            // Log lightweight response telemetry for troubleshooting without logging full payloads.
+            Logger.LogToolResult(toolName, resultText, stopwatch.ElapsedMilliseconds);
 
             // Append Responsible AI validation guidance so every answer encourages the user to
             // review the supporting evidence and inspect the underlying SQL Nexus tables.

@@ -11,6 +11,8 @@ Your **SQL Nexus MCP Server** is built and ready for testing!
 
 ## IMPORTANT: Where to Use It
 
+> Recommended setup path: run `CopilotIntegration/Register-SqlNexusCopilotIntegration.ps1` from the repository root to register MCP + agent automatically. Use this file for manual/advanced setup details.
+
 ### You CANNOT Ask Questions Here
 This GitHub Copilot Workspace chat does **NOT** have the MCP server loaded.
 
@@ -52,7 +54,7 @@ Press `Ctrl+Shift+P` → "MCP: Open User Configuration" → Add:
 }
 ```
 
-**SQL Authentication** — add credentials in `env` (keep passwords out of `args`):
+**SQL Authentication** — add credentials in `env` (keep passwords out of `args`). Use a least-privilege login (for example a SQL login/user with `db_datareader` on the SQL Nexus database), not `sa`:
 ```json
 {
   "mcpServers": {
@@ -61,7 +63,7 @@ Press `Ctrl+Shift+P` → "MCP: Open User Configuration" → Add:
       "command": "C:\\path\\to\\SqlNexus.McpServer\\bin\\Release\\SqlNexus.McpServer.exe",
       "args": ["--server", "localhost", "--database", "SqlNexus", "--trusted-connection", "false"],
       "env": {
-        "SqlNexus__UserId": "sa",
+        "SqlNexus__UserId": "sqlnexus_reader",
         "SqlNexus__Password": "YourPassword"
       }
     }

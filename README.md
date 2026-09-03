@@ -25,6 +25,13 @@ Current release is 7.24.02.18. Please go to [latest release](https://github.com/
 6. [RML Utility/ReadTrace download](https://github.com/Microsoft/SqlNexus/wiki/RML-Utility)
 7. [Top Issues](https://github.com/Microsoft/SqlNexus/wiki/Top-Issues)
 
+# GitHub Copilot + MCP integration
+
+SQL Nexus also includes a local MCP server and integration scripts for AI-assisted diagnostics:
+
+- MCP server docs: [`SqlNexus.McpServer/README.md`](SqlNexus.McpServer/README.md)
+- Copilot integration/register scripts: [`CopilotIntegration/README.md`](CopilotIntegration/README.md)
+
 
 # Microsoft Code of Conduct
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.

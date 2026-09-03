@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SqlNexus.McpServer;
 
@@ -66,6 +67,34 @@ namespace SqlNexus.UnitTests.SqlNexus.McpServer
             Logger.Info("trigger initialization");
             string second = Logger.LogFilePath;
             Assert.AreEqual(first, second);
+        }
+
+        [TestMethod]
+        public void SanitizeForRequestLog_ScrubsEmailAddresses()
+        {
+            var payload = new Dictionary<string, object>
+            {
+                ["query"] = "SELECT 'user@example.com'"
+            };
+
+            string text = Logger.SanitizeForRequestLog(payload);
+
+            Assert.IsFalse(text.Contains("user@example.com"));
+            StringAssert.Contains(text, "<EMAIL>");
+        }
+
+        [TestMethod]
+        public void BuildToolResultLogLine_JsonPayload_ExtractsSummaryAndRowCount()
+        {
+            string line = Logger.BuildToolResultLogLine(
+                "analyze_wait_stats",
+                "{\"summary\":\"Wait Stats\",\"row_count\":5,\"data\":[]}",
+                123);
+
+            StringAssert.Contains(line, "tool=analyze_wait_stats");
+            StringAssert.Contains(line, "elapsed_ms=123");
+            StringAssert.Contains(line, "row_count=5");
+            StringAssert.Contains(line, "summary=Wait Stats");
         }
     }
 }
