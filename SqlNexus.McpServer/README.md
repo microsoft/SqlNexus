@@ -209,6 +209,7 @@ The server advertises the full catalog below. The authoritative list is always t
 | `get_performance_summary` | "Give me a full health check" |
 | `analyze_hadr_health` | "Is Always On / HADR healthy?" |
 | `analyze_setup_health` | "Are there SQL Server setup/install problems?" |
+| `get_error_log_summary` | "What errors are in the SQL Server error log?" |
 | `compare_nexus_databases` | "What is different between two captures?" |
 | `list_nexus_tables` | "What tables are available?" |
 | `query_nexus_database` | Execute read-only custom SQL query |

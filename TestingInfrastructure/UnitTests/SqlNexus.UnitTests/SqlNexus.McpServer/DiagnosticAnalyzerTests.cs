@@ -67,6 +67,17 @@ END";
         }
 
         [TestMethod]
+        public void BuildErrorLogSummaryQuery_GuardsTableAndGroupsByErrorNumber()
+        {
+            string query = global::SqlNexus.McpServer.DiagnosticAnalyzer.BuildErrorLogSummaryQuery(25);
+
+            StringAssert.Contains(query, "OBJECT_ID('tbl_ERRORLOG')");
+            StringAssert.Contains(query, "TOP 25");
+            StringAssert.Contains(query, "GROUP BY ErrorNumber");
+            StringAssert.Contains(query, "ORDER BY Occurrences DESC");
+        }
+
+        [TestMethod]
         public void BuildQueriesByApplicationQuery_Filtered_UsesSqlParameterPlaceholder()
         {
             string query = global::SqlNexus.McpServer.DiagnosticAnalyzer.BuildQueriesByApplicationQuery(true);

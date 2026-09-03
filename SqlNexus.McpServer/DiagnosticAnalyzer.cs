@@ -349,6 +349,36 @@ namespace SqlNexus.McpServer
             return ExecuteQueryAndReturnJson(query, $"I/O Performance Analysis (Threshold: {FormatSqlDecimalLiteral(thresholdMs)}ms)");
         }
 
+        /// <summary>
+        /// Summarize SQL Server error log entries from tbl_ERRORLOG, grouped by error number.
+        /// Shows how often each error occurred, when it was first/last seen, and a sample message.
+        /// Useful for surfacing recurring errors captured during the collection window.
+        /// </summary>
+        public string GetErrorLogSummary(int topN = 50)
+        {
+            string query = BuildErrorLogSummaryQuery(topN);
+
+            return ExecuteQueryAndReturnJson(query, $"Top {topN} SQL Server Error Log Entries by Occurrence");
+        }
+
+        internal static string BuildErrorLogSummaryQuery(int topN)
+        {
+            return $@"
+                IF OBJECT_ID('tbl_ERRORLOG') IS NOT NULL
+                BEGIN
+                    SELECT TOP {topN}
+                           ErrorNumber,
+                           COUNT(*) AS Occurrences,
+                           MIN(LogDateTime) AS FirstSeen,
+                           MAX(LogDateTime) AS LastSeen,
+                           MIN(SUBSTRING([Message], 1, 300)) AS SampleMessage
+                    FROM tbl_ERRORLOG
+                    WHERE ErrorNumber IS NOT NULL
+                    GROUP BY ErrorNumber
+                    ORDER BY Occurrences DESC
+                END";
+        }
+
         internal static string BuildAnalyzeIoPerformanceQuery(decimal thresholdMs)
         {
             return $@"

@@ -604,6 +604,19 @@ namespace SqlNexus.McpServer
                 },
                 new McpTool
                 {
+                    Name = "get_error_log_summary",
+                    Description = "Answer: 'What errors are in the SQL Server error log?' Summarizes tbl_ERRORLOG grouped by ErrorNumber, showing Occurrences, FirstSeen, LastSeen, and a SampleMessage. Use to surface recurring errors (e.g. login failures, I/O errors, severity 20+ errors) captured during the collection window.",
+                    InputSchema = new
+                    {
+                        type = "object",
+                        properties = new
+                        {
+                            top_n = new { type = "number", description = "Number of error groups to return (default: 50)", @default = 50 }
+                        }
+                    }
+                },
+                new McpTool
+                {
                     Name = "compare_nexus_databases",
                     Description = "Answer: 'What is different between two SQL Nexus captures/servers/runs?' Compares the primary SQL Nexus database against a second one (configured via --database2 / --database-for-comparison). Produces side-by-side sections: (1) server_properties from tbl_ServerProperties with a Different flag; (2) database_options from tbl_database_options (name, compatibility level, status); (3) database_scoped_configurations from tbl_database_scoped_configurations with a Different flag; (4) sys_configurations from tbl_Sys_Configurations comparing value_in_use per sp_configure setting (differences only); and (5) query_performance comparison from ReadTrace.tblBatches/tblUniqueBatches (avg duration/CPU deltas per normalized query) when ReadTrace tables are present in both databases. Requires a second database to be configured at startup.",
                     InputSchema = new { type = "object", properties = new { } }
@@ -763,6 +776,9 @@ namespace SqlNexus.McpServer
                 case "analyze_setup_health":
                     resultText = GetAnalyzer().AnalyzeSetupHealth();
                     break;
+                case "get_error_log_summary":
+                    resultText = GetAnalyzer().GetErrorLogSummary(arguments.Value<int?>("top_n") ?? 50);
+                    break;
                 case "compare_nexus_databases":
                     resultText = GetAnalyzer().CompareNexusDatabases();
                     break;
@@ -836,6 +852,7 @@ namespace SqlNexus.McpServer
                 "tbl_hadr_alwayson_health_availability_replica_state_change", "tbl_hadr_dm_os_server_diagnostics_log_configurations"
             },
             ["analyze_setup_health"]             = new[] { "tbl_installed_programs", "tbl_setup_missing_msi_msp_packages" },
+            ["get_error_log_summary"]            = new[] { "tbl_ERRORLOG" },
             ["compare_nexus_databases"]          = new[] { "tbl_ServerProperties", "tbl_database_options", "tbl_database_scoped_configurations", "tbl_Sys_Configurations", "ReadTrace.tblBatches", "ReadTrace.tblUniqueBatches" },
         };
 
