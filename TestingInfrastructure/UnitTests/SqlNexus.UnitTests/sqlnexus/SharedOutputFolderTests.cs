@@ -138,5 +138,17 @@ namespace SqlNexus.UnitTests.sqlnexus
             Assert.IsNull(SharedOutputFolder.ResolveSharedSibling(
                 Path.GetFullPath(instance).TrimEnd(Path.DirectorySeparatorChar)));
         }
+
+        [TestMethod]
+        public void GetImportSearchPaths_DriveRootInput_PreservesRootedPath()
+        {
+            string driveRoot = Path.GetPathRoot(Path.GetFullPath(_root));
+
+            List<string> result = SharedOutputFolder.GetImportSearchPaths(driveRoot);
+
+            Assert.AreEqual(1, result.Count, "Drive root should resolve to only the primary path.");
+            Assert.AreEqual(driveRoot, result[0], "Drive root must remain rooted (e.g. 'C:\\'), not 'C:'.");
+            Assert.IsTrue(Path.IsPathRooted(result[0]), "Resolved path must be rooted.");
+        }
     }
 }

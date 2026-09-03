@@ -151,6 +151,9 @@ namespace sqlnexus
             List<string> searchPaths = SharedOutputFolder.GetImportSearchPaths(
                 cbPath.Text.Trim().Replace("\"", ""));
 
+            if (searchPaths.Count == 0)
+                searchPaths.Add(cbPath.Text.Trim().Replace("\"", ""));
+
             bool anyAdded = false;
             for (int idx = 0; idx < searchPaths.Count; idx++)
             {

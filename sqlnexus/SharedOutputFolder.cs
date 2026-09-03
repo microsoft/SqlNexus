@@ -50,9 +50,7 @@ namespace sqlnexus
             string normalizedPrimary;
             try
             {
-                // Normalize and strip any trailing separators for consistent comparison/combination.
-                normalizedPrimary = Path.GetFullPath(primaryPath.Trim().Replace("\"", ""))
-                    .TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+                normalizedPrimary = NormalizePath(primaryPath.Trim().Replace("\"", ""));
             }
             catch (Exception)
             {
@@ -96,8 +94,7 @@ namespace sqlnexus
             string candidate;
             try
             {
-                candidate = Path.GetFullPath(Path.Combine(parent, SharedFolderName))
-                    .TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+                candidate = NormalizePath(Path.Combine(parent, SharedFolderName));
             }
             catch (Exception)
             {
@@ -113,8 +110,8 @@ namespace sqlnexus
             bool isDirectSibling =
                 candidateParent != null &&
                 string.Equals(
-                    candidateParent.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar),
-                    parent,
+                    NormalizePath(candidateParent),
+                    NormalizePath(parent),
                     StringComparison.OrdinalIgnoreCase) &&
                 string.Equals(candidateName, SharedFolderName, StringComparison.OrdinalIgnoreCase);
 
@@ -129,6 +126,21 @@ namespace sqlnexus
                 return null;
 
             return candidate;
+        }
+
+        private static string NormalizePath(string path)
+        {
+            string fullPath = Path.GetFullPath(path);
+            string root = Path.GetPathRoot(fullPath);
+
+            if (!string.IsNullOrEmpty(root) &&
+                string.Equals(fullPath, root, StringComparison.OrdinalIgnoreCase))
+            {
+                // Preserve true drive/share roots (e.g. "C:\\") as rooted paths.
+                return root;
+            }
+
+            return fullPath.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
         }
     }
 }
