@@ -26,7 +26,7 @@ Inspects these SQL Nexus tables when present (missing ones are reported under `t
 
 | Section | Table | What it tells you |
 |---------|-------|-------------------|
-| `installed_sql_programs` | `tbl_installed_programs` (filtered `name LIKE 'sql%'`) | Installed SQL Server related programs/components; each well-known component is flagged present/missing |
+| `installed_sql_programs` | `tbl_installed_programs` (filtered `name LIKE '%sql%'`) | Installed SQL Server related programs/components; each well-known component is flagged present/missing |
 | `missing_msi_msp_packages` | `tbl_setup_missing_msi_msp_packages` | Missing Windows Installer MSI/MSP cached packages. **ANY row = a real problem.** |
 
 **Output shape**:
@@ -64,7 +64,7 @@ If deeper detail is needed beyond the tool output, use `query_nexus_database`:
 ```sql
 -- All installed SQL Server components/programs
 IF OBJECT_ID('dbo.tbl_installed_programs') IS NOT NULL
-    SELECT * FROM dbo.tbl_installed_programs WHERE name LIKE 'sql%' ORDER BY name;
+    SELECT * FROM dbo.tbl_installed_programs WHERE name LIKE '%sql%' ORDER BY name;
 ```
 
 ```sql

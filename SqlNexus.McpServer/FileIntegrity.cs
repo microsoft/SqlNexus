@@ -50,7 +50,7 @@ namespace SqlNexus.McpServer
             { "AI/Skills/scenario-memory.md",                       "253CB40AE8A6EB06480782EB99E41D287976C54D6D7CD29952B65F8DB6099C10" },
             { "AI/Skills/scenario-performance.md",                  "C8D2718D54C3313C2B33C90E88D3278027C0B2CB7A2BD4CE061CF420B3F6FA52" },
             { "AI/Skills/scenario-query-deepdive-wait-analysis.md", "E3F8CF314B7913FCC567A78E870EEA95A7EB517A6CED3372291549B8C91D37D3" },
-            { "AI/Skills/scenario-setup.md",                        "0490C34E41A69F7C9266BED6F922343CD4769C7DC1FFB9EDCC582C0D484FDE21" },
+            { "AI/Skills/scenario-setup.md",                        "D62A1D76376ADDEA78C2947DD57228194190E431396B58E99061968027C45111" },
             { "AI/Skills/scenario-utility-diagnostics.md",          "A184BBF7CD6F21190ACFBAEAB93065CF0A4B1CC325EB4BB879908761F5E8ABE4" },
             { "AI/Skills/symptom-quick-reference.md",               "DB22D0D15DA9230467C458685D0AED64621100151E99CAE286B2E4BA057C5E05" },
             { "AI/Skills/wait-analysis-queries.md",                 "483AC72DCC582C49A03DEA06B9405967E65F70E57C6F2744F7A8571AE053B254" },

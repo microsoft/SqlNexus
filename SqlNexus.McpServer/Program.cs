@@ -106,6 +106,14 @@ namespace SqlNexus.McpServer
             return null;
         }
 
+        internal static long GetRequiredInt64Argument(JObject arguments, string argumentName)
+        {
+            if (!arguments.TryGetValue(argumentName, out JToken token) || token.Type == JTokenType.Null)
+                throw new ArgumentException($"{argumentName} parameter required");
+
+            return token.Value<long>();
+        }
+
         static void ProcessRequests()
         {
             using var reader = new StreamReader(Console.OpenStandardInput());
@@ -429,7 +437,7 @@ namespace SqlNexus.McpServer
                 new McpTool
                 {
                     Name = "query_nexus_database",
-                    Description = "Execute custom SQL queries against SQL Nexus database. Supports SELECT, WITH (CTE), DECLARE, and IF statements.",
+                    Description = "Execute read-only custom SQL against the SQL Nexus database. Allows only SELECT/WITH/DECLARE/IF patterns in a single statement and blocks DDL, DML, EXEC/EXECUTE, permission changes, backup/restore, configuration changes, and external data-source commands.",
                     InputSchema = new
                     {
                         type = "object",
@@ -590,7 +598,7 @@ namespace SqlNexus.McpServer
                 new McpTool
                 {
                     Name = "analyze_setup_health",
-                    Description = "Answer: 'Are there SQL Server Setup / Install / Installation/ Update/ Upgrade problems?' Keywords: setup, install, installation, installed, patching, patch, MSI, MSP, repair, uninstall, components. Inspects the SQL Nexus setup/installation tables when present: tbl_installed_programs (filtered to SQL Server components) to enumerate installed SQL Server components and flag well-known components as present/missing; and tbl_setup_missing_msi_msp_packages, where ANY row indicates a missing Windows Installer MSI/MSP cached package that can block SQL Server patching, repair, or uninstall. Missing tables are reported under tables_not_present; missing MSI/MSP packages are surfaced under issues_found.",
+                    Description = "Answer: 'Are there SQL Server Setup / Install / Installation/ Update/ Upgrade problems?' Keywords: setup, install, installation, installed, patching, patch, MSI, MSP, repair, uninstall, components. Inspects the SQL Nexus setup/installation tables when present: tbl_installed_programs (filtered with name LIKE '%sql%') to enumerate installed SQL Server components and flag well-known components as present/missing; and tbl_setup_missing_msi_msp_packages, where ANY row indicates a missing Windows Installer MSI/MSP cached package that can block SQL Server patching, repair, or uninstall. Missing tables are reported under tables_not_present; missing MSI/MSP packages are surfaced under issues_found.",
                     InputSchema = new { type = "object", properties = new { } }
                 },
                 new McpTool
@@ -671,7 +679,7 @@ namespace SqlNexus.McpServer
                     resultText = GetAnalyzer().GetCollectionTimeRange();
                     break;
                 case "get_waits_for_query":
-                    resultText = GetAnalyzer().GetWaitsForQuery(arguments.Value<long>("hash_id"));
+                    resultText = GetAnalyzer().GetWaitsForQuery(GetRequiredInt64Argument(arguments, "hash_id"));
                     break;
                 case "get_aggregate_waits_and_queries":
                     resultText = GetAnalyzer().GetAggregateWaitsAndQueries();
@@ -700,7 +708,7 @@ namespace SqlNexus.McpServer
                     break;
                 // ── New tools ────────────────────────────────────────────────────
                 case "get_query_execution_details":
-                    resultText = GetAnalyzer().GetQueryExecutionDetails(arguments.Value<long>("hash_id"));
+                    resultText = GetAnalyzer().GetQueryExecutionDetails(GetRequiredInt64Argument(arguments, "hash_id"));
                     break;
                 case "get_wait_type_distribution":
                     resultText = GetAnalyzer().GetWaitTypeDistribution();
@@ -712,7 +720,7 @@ namespace SqlNexus.McpServer
                     resultText = GetAnalyzer().GetWaitHeavyQueries();
                     break;
                 case "get_statements_in_batch":
-                    resultText = GetAnalyzer().GetStatementsInBatch(arguments.Value<long>("batch_seq"));
+                    resultText = GetAnalyzer().GetStatementsInBatch(GetRequiredInt64Argument(arguments, "batch_seq"));
                     break;
                 case "get_blocking_chain_tree":
                     resultText = GetAnalyzer().GetBlockingChainTree();

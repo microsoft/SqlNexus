@@ -106,7 +106,7 @@ All non-sensitive settings go in `args`. Passwords go in `env`:
 | `--database2` | Second SQL Nexus database used by the `compare_nexus_databases` tool (aliases: `--database-for-comparison`, `--database_for_comparison`) | *(none)* |
 | `--trusted-connection` | `true` = Windows Auth, `false` = SQL Auth | `true` |
 
-**SQL Authentication** — add credentials in `env` (keep passwords out of `args`):
+**SQL Authentication** — add credentials in `env` (keep passwords out of `args`). Use a least-privilege login (for example a login/user mapped to the SQL Nexus database with `db_datareader` only), not `sa`:
 ```json
 {
   "mcpServers": {
@@ -114,7 +114,7 @@ All non-sensitive settings go in `args`. Passwords go in `env`:
       "command": "C:\\path\\to\\SqlNexus.McpServer\\bin\\Release\\SqlNexus.McpServer.exe",
       "args": ["--server", "localhost", "--database", "SqlNexus", "--trusted-connection", "false"],
       "env": {
-        "SqlNexus__UserId": "sa",
+        "SqlNexus__UserId": "sqlnexus_reader",
         "SqlNexus__Password": "YourPassword"
       }
     }
@@ -282,8 +282,10 @@ SQL Nexus Database
 ```
 
 ### Security
-- Read-only: `SELECT`, `WITH` (CTE), `DECLARE`, `IF` only
-- Blocks all DDL/DML: `DROP`, `DELETE`, `UPDATE`, `INSERT`, etc.
+- Read-only custom query guard: allows `SELECT`, `WITH` (CTE), `DECLARE`, `IF` patterns only
+- Rejects batch separators and multi-statement batches
+- Blocks DDL/DML and high-risk commands including `EXEC`/`EXECUTE`, `MERGE`, `GRANT`/`REVOKE`/`DENY`, `BACKUP`/`RESTORE`, `RECONFIGURE`, `OPENROWSET`/`OPENQUERY`/`OPENDATASOURCE`, and `xp_`/`sp_` procedure calls
+- Use least-privilege SQL credentials (`db_datareader` on the SQL Nexus database) when SQL Authentication is enabled
 - 120-second query timeout
 
 ---

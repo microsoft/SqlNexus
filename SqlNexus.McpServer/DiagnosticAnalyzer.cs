@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Microsoft.Data.SqlClient;
@@ -13,6 +14,39 @@ namespace SqlNexus.McpServer
         private readonly string _connectionString;
         private readonly string _database;
         private readonly string? _database2;
+
+        internal const string InstalledProgramsNameFilter = "%sql%";
+
+        private static readonly string[] AllowedCustomQueryStarts =
+        {
+            "SELECT",
+            "WITH",
+            "DECLARE",
+            "IF"
+        };
+
+        private static readonly string[] DisallowedCustomQueryKeywords =
+        {
+            "DROP",
+            "DELETE",
+            "INSERT",
+            "UPDATE",
+            "TRUNCATE",
+            "ALTER",
+            "CREATE",
+            "EXEC",
+            "EXECUTE",
+            "MERGE",
+            "GRANT",
+            "REVOKE",
+            "DENY",
+            "BACKUP",
+            "RESTORE",
+            "RECONFIGURE",
+            "OPENROWSET",
+            "OPENQUERY",
+            "OPENDATASOURCE"
+        };
 
         public DiagnosticAnalyzer(string connectionString)
             : this(connectionString, "SqlNexus", null)
@@ -310,8 +344,15 @@ namespace SqlNexus.McpServer
         /// </summary>
         public string AnalyzeIoPerformance(decimal thresholdMs = 20.0m)
         {
-            string query = $@"
-                DECLARE @IO_threshold DECIMAL(12, 3) = {thresholdMs};
+            string query = BuildAnalyzeIoPerformanceQuery(thresholdMs);
+
+            return ExecuteQueryAndReturnJson(query, $"I/O Performance Analysis (Threshold: {FormatSqlDecimalLiteral(thresholdMs)}ms)");
+        }
+
+        internal static string BuildAnalyzeIoPerformanceQuery(decimal thresholdMs)
+        {
+            return $@"
+                DECLARE @IO_threshold DECIMAL(12, 3) = {FormatSqlDecimalLiteral(thresholdMs)};
 
                 IF ((OBJECT_ID('dbo.CounterData') IS NOT NULL))
                 BEGIN
@@ -329,8 +370,11 @@ namespace SqlNexus.McpServer
                         AND dat.CounterValue >= @IO_threshold
                     ORDER BY dat.CounterValue DESC;
                 END";
+        }
 
-            return ExecuteQueryAndReturnJson(query, $"I/O Performance Analysis (Threshold: {thresholdMs}ms)");
+        internal static string FormatSqlDecimalLiteral(decimal value)
+        {
+            return value.ToString(CultureInfo.InvariantCulture);
         }
 
         /// <summary>
@@ -1863,9 +1907,9 @@ namespace SqlNexus.McpServer
             var issues = new List<object>();
 
             // ── 1. Installed SQL Server programs/components ──────────────────────────────
-            const string installedQuery = @"
+            string installedQuery = @"
                 IF OBJECT_ID('dbo.tbl_installed_programs') IS NOT NULL
-                    SELECT * FROM dbo.tbl_installed_programs WHERE name LIKE 'sql%';";
+                    SELECT * FROM dbo.tbl_installed_programs WHERE name LIKE '" + InstalledProgramsNameFilter + "';";
 
             DataTable installedTable;
             try
@@ -1936,7 +1980,7 @@ namespace SqlNexus.McpServer
                 sections["installed_sql_programs"] = new
                 {
                     table = "tbl_installed_programs",
-                    description = "Installed SQL Server related programs/components (name LIKE 'sql%').",
+                    description = "Installed SQL Server related programs/components (name LIKE '%sql%').",
                     row_count = installedRows.Count,
                     known_component_status = componentStatus,
                     data = installedRows
@@ -2309,33 +2353,51 @@ namespace SqlNexus.McpServer
         /// </summary>
         public string ExecuteCustomQuery(string query)
         {
-            var trimmedQuery = query.Trim();
-            if (!trimmedQuery.StartsWith("SELECT", StringComparison.OrdinalIgnoreCase) &&
-                !trimmedQuery.StartsWith("WITH", StringComparison.OrdinalIgnoreCase) &&
-                !trimmedQuery.StartsWith("DECLARE", StringComparison.OrdinalIgnoreCase) &&
-                !trimmedQuery.StartsWith("IF", StringComparison.OrdinalIgnoreCase))
-            {
-                throw new InvalidOperationException("Only SELECT queries, CTEs, and queries with DECLARE/IF are allowed");
-            }
-
-            var dangerousKeywords = new[] { "DROP", "DELETE", "INSERT", "UPDATE", "TRUNCATE", "ALTER", "CREATE" };
-
-            // Strip single-quoted string literals before scanning so that legitimate data values
-            // (e.g. a server-property label like 'CreateDate' or 'IsUpdateable') are not mistaken
-            // for DDL/DML keywords. Escaped quotes ('') inside a literal are handled by the pattern.
-            var queryWithoutLiterals = Regex.Replace(trimmedQuery, "'(?:[^']|'')*'", " ");
-
-            foreach (var keyword in dangerousKeywords)
-            {
-                // Match the keyword only as a whole word (word boundaries), so identifiers that merely
-                // contain the keyword as a substring (e.g. CreateDate, sysaltfiles) are not rejected.
-                if (Regex.IsMatch(queryWithoutLiterals, $@"\b{keyword}\b", RegexOptions.IgnoreCase))
-                {
-                    throw new InvalidOperationException($"Query contains disallowed keyword: {keyword}");
-                }
-            }
+            ValidateReadOnlyCustomQuery(query);
 
             return ExecuteQueryAndReturnJson(query, "Custom Query Results");
+        }
+
+        internal static void ValidateReadOnlyCustomQuery(string query)
+        {
+            if (string.IsNullOrWhiteSpace(query))
+                throw new InvalidOperationException("Query parameter required");
+
+            string queryWithoutLiteralsAndComments = StripSqlLiteralsAndComments(query);
+            string normalizedQuery = queryWithoutLiteralsAndComments.Trim();
+            while (normalizedQuery.StartsWith(";", StringComparison.Ordinal))
+                normalizedQuery = normalizedQuery.Substring(1).TrimStart();
+
+            bool hasAllowedPrefix = AllowedCustomQueryStarts.Any(prefix =>
+                normalizedQuery.StartsWith(prefix, StringComparison.OrdinalIgnoreCase));
+            if (!hasAllowedPrefix)
+                throw new InvalidOperationException("Only SELECT queries, CTEs, and queries with DECLARE/IF are allowed");
+
+            string withoutTrailingSemicolons = normalizedQuery.TrimEnd();
+            while (withoutTrailingSemicolons.EndsWith(";", StringComparison.Ordinal))
+                withoutTrailingSemicolons = withoutTrailingSemicolons.Substring(0, withoutTrailingSemicolons.Length - 1).TrimEnd();
+
+            if (withoutTrailingSemicolons.IndexOf(';') >= 0)
+                throw new InvalidOperationException("Only single-statement read-only batches are allowed");
+
+            if (Regex.IsMatch(queryWithoutLiteralsAndComments, @"\bGO\b", RegexOptions.IgnoreCase))
+                throw new InvalidOperationException("Batch separators are not allowed");
+
+            foreach (var keyword in DisallowedCustomQueryKeywords)
+            {
+                if (Regex.IsMatch(queryWithoutLiteralsAndComments, $@"\b{keyword}\b", RegexOptions.IgnoreCase))
+                    throw new InvalidOperationException($"Query contains disallowed keyword: {keyword}");
+            }
+
+            if (Regex.IsMatch(queryWithoutLiteralsAndComments, @"\b(?:xp_|sp_)\w*\b", RegexOptions.IgnoreCase))
+                throw new InvalidOperationException("Stored procedure and extended procedure calls are not allowed");
+        }
+
+        internal static string StripSqlLiteralsAndComments(string query)
+        {
+            string withoutLiterals = Regex.Replace(query, "'(?:[^']|'')*'", " ");
+            string withoutBlockComments = Regex.Replace(withoutLiterals, @"/\*.*?\*/", " ", RegexOptions.Singleline);
+            return Regex.Replace(withoutBlockComments, @"--.*?$", " ", RegexOptions.Multiline);
         }
 
         /// <summary>
