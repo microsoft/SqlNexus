@@ -18,6 +18,9 @@ namespace ErrorLogImporter
         private const string TABLE_NAME = "tbl_ERRORLOG";
         private const string OPTION_DROP_EXISTING = "Drop existing tables (ERRORLOG)";
         private const string OPTION_ENABLED = "Enabled";
+        private const string HEAD_AND_TAIL_MARKER_PARTIAL = "<<... middle part of file not captured because";
+        internal const string INCOMPLETE_PROCESS_MARKER = "INCOMPLETE";
+        internal const string INCOMPLETE_LOG_MESSAGE = ">>>>> ERRORLOG file is incomplete: the middle part was not captured because the file was too large (>1 GB). <<<<<";
 
         // Regex to match ERRORLOG lines: datetime, process, message
         // Example: "2026-04-14 22:37:11.55 Server      Microsoft SQL Server 2022..."
@@ -49,6 +52,32 @@ namespace ErrorLogImporter
         {
             options.Add(OPTION_DROP_EXISTING, true);
             options.Add(OPTION_ENABLED, true);
+        }
+
+        internal static bool IsHeadAndTailMarker(string line)
+        {
+            return line != null && line.Trim().StartsWith(HEAD_AND_TAIL_MARKER_PARTIAL, StringComparison.Ordinal);
+        }
+
+        // A UTF-8 BOM (or its mangled single-character representation such as U+FEFF or U+FFFD, or a
+        // literal '?' produced when the BOM is written to a non-UTF8 file) can be prepended to the
+        // first line following the head-and-tail marker by the collection tooling. Strip it so the
+        // date/time regex still matches and the line is not lost.
+        internal static string StripLeadingByteOrderMark(string line)
+        {
+            if (string.IsNullOrEmpty(line))
+                return line;
+
+            char first = line[0];
+            if (first == '\uFEFF' || first == '\uFFFD' || first == '?')
+            {
+                // Only strip when what follows looks like the start of a real log line (a digit),
+                // so genuine '?'-prefixed message text is never altered.
+                if (line.Length > 1 && char.IsDigit(line[1]))
+                    return line.Substring(1);
+            }
+
+            return line;
         }
 
         private void LogMessage(string msg)
@@ -289,65 +318,119 @@ namespace ErrorLogImporter
 
             try
             {
-                DateTime? pendingDateTime = null;
-                string pendingProcess = null;
-                StringBuilder pendingMessageBuilder = null;
-
-                using (StreamReader reader = new StreamReader(filePath))
+                using (StreamReader reader = new StreamReader(filePath, detectEncodingFromByteOrderMarks: true))
                 {
-                    string line;
-                    while ((line = reader.ReadLine()) != null)
-                    {
-                        if (Cancelled)
-                            break;
+                    // Peek forces the StreamReader to read the BOM (if any) and settle on the actual
+                    // encoding before we start estimating byte offsets for the progress bar.
+                    reader.Peek();
+                    Encoding encoding = reader.CurrentEncoding;
 
-                        totalLinesProcessed++;
-                        currentPosition += System.Text.Encoding.UTF8.GetByteCount(line) + 2; // +2 for \r\n
-                        OnProgressChanged(EventArgs.Empty);
-
-                        Match match = LogLineRegex.Match(line);
-                        if (match.Success)
+                    ProcessLogEntries(
+                        reader,
+                        () => Cancelled,
+                        line =>
                         {
-                            // Flush the previous pending entry
-                            if (pendingDateTime.HasValue)
-                            {
-                                InsertRow(bulkLoad, pendingDateTime.Value, pendingProcess, pendingMessageBuilder?.ToString(), shortFileName);
-                            }
-                        
-
-                            // Parse the new entry
-                            string dateStr = match.Groups[1].Value;
-                            pendingProcess = match.Groups[2].Value;
-                            pendingMessageBuilder = new StringBuilder(match.Groups[3].Value);
-
-
-                            pendingDateTime = DateTime.TryParseExact(dateStr, "yyyy-MM-dd HH:mm:ss.ff",
-                                CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime parsedDate)
-                                ? parsedDate
-                                : (DateTime?)null;
-                            
-                        }
-                        else
-                        {
-                            // Continuation line - append to current message
-                            if (pendingMessageBuilder != null)
-                            {
-                                pendingMessageBuilder.Append(Environment.NewLine);
-                                pendingMessageBuilder.Append(line);
-                            }
-                        }
-                    }
-
-                    // Flush the last pending entry
-                    if (pendingDateTime.HasValue)
-                    {
-                        InsertRow(bulkLoad, pendingDateTime.Value, pendingProcess, pendingMessageBuilder?.ToString(), shortFileName);
-                    }
+                            totalLinesProcessed++;
+                            currentPosition = AdvancePosition(currentPosition, fileSize, line, encoding);
+                            OnProgressChanged(EventArgs.Empty);
+                        },
+                        (logDateTime, process, message) => InsertRow(bulkLoad, logDateTime, process, message, shortFileName),
+                        () => InsertIncompleteLogNotice(bulkLoad, shortFileName));
                 }
             }
             finally
             {
                 bulkLoad.Close();
+            }
+        }
+
+        // Estimates how far into the file we have read after consuming a line, in bytes, using the
+        // file's actual encoding and accounting for a stripped newline. The result is clamped to
+        // fileSize so the reported progress can never overshoot the file (which would push a progress
+        // bar past 100%). ReadLine drops the line terminator, so we add the encoding's byte count for
+        // a newline; the estimate is approximate for LF-only vs CRLF files but never exceeds fileSize.
+        internal static long AdvancePosition(long currentPosition, long fileSize, string line, Encoding encoding)
+        {
+            if (encoding == null)
+                encoding = Encoding.UTF8;
+
+            long lineBytes = line != null ? encoding.GetByteCount(line) : 0;
+            long newlineBytes = encoding.GetByteCount(Environment.NewLine);
+            long advanced = currentPosition + lineBytes + newlineBytes;
+
+            if (fileSize > 0 && advanced > fileSize)
+                return fileSize;
+
+            return advanced;
+        }
+
+        internal static void ProcessLogEntries(TextReader reader, Func<bool> isCancelled, Action<string> lineProcessed, Action<DateTime, string, string> insertRow, Action insertIncompleteLogNotice)
+        {
+            DateTime? pendingDateTime = null;
+            string pendingProcess = null;
+            StringBuilder pendingMessageBuilder = null;
+            bool headAndTailMarkerFound = false;
+            string line;
+            while ((line = reader.ReadLine()) != null)
+            {
+                if (isCancelled())
+                    break;
+
+                lineProcessed(line);
+
+                // The head-and-tail marker is written at most once per ERRORLOG file by the
+                // collection tooling, so once we have seen it we stop checking for it. This avoids a
+                // Trim()/StartsWith() call on every remaining line of what may be a very large tail
+                // section (>1 GB), while still emitting exactly one incomplete-log notice.
+                if (!headAndTailMarkerFound)
+                {
+                    if (IsHeadAndTailMarker(line))
+                    {
+                        if (pendingDateTime.HasValue)
+                        {
+                            insertRow(pendingDateTime.Value, pendingProcess, pendingMessageBuilder?.ToString());
+                        }
+
+                        insertIncompleteLogNotice();
+                        headAndTailMarkerFound = true;
+                        pendingDateTime = null;
+                        pendingProcess = null;
+                        pendingMessageBuilder = null;
+
+                        // Note: if the first line of the truncated tail section is a continuation
+                        // line (not a new dated entry), it is intentionally dropped because there is
+                        // no pending entry to append it to (pendingMessageBuilder is null here). The
+                        // source data is genuinely truncated at the marker, so no owning entry exists.
+                        continue;
+                    }
+                }
+
+                Match match = LogLineRegex.Match(StripLeadingByteOrderMark(line));
+                if (match.Success)
+                {
+                    if (pendingDateTime.HasValue)
+                    {
+                        insertRow(pendingDateTime.Value, pendingProcess, pendingMessageBuilder?.ToString());
+                    }
+
+                    string dateStr = match.Groups[1].Value;
+                    pendingProcess = match.Groups[2].Value;
+                    pendingMessageBuilder = new StringBuilder(match.Groups[3].Value);
+                    pendingDateTime = DateTime.TryParseExact(dateStr, "yyyy-MM-dd HH:mm:ss.ff",
+                        CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime parsedDate)
+                        ? parsedDate
+                        : (DateTime?)null;
+                }
+                else if (pendingMessageBuilder != null)
+                {
+                    pendingMessageBuilder.Append(Environment.NewLine);
+                    pendingMessageBuilder.Append(line);
+                }
+            }
+
+            if (pendingDateTime.HasValue)
+            {
+                insertRow(pendingDateTime.Value, pendingProcess, pendingMessageBuilder?.ToString());
             }
         }
 
@@ -369,6 +452,17 @@ namespace ErrorLogImporter
                 }
             }
 
+            row["FileName"] = fileName != null && fileName.Length > 256 ? fileName.Substring(0, 256) : fileName;
+            bulkLoad.InsertRow(row);
+            totalRowsInserted++;
+        }
+
+        private void InsertIncompleteLogNotice(BulkLoadRowset bulkLoad, string fileName)
+        {
+            System.Data.DataRow row = bulkLoad.GetNewRow();
+            row["LogDateTime"] = DBNull.Value;
+            row["Process"] = INCOMPLETE_PROCESS_MARKER;
+            row["Message"] = INCOMPLETE_LOG_MESSAGE;
             row["FileName"] = fileName != null && fileName.Length > 256 ? fileName.Substring(0, 256) : fileName;
             bulkLoad.InsertRow(row);
             totalRowsInserted++;

@@ -659,9 +659,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Build\build.cmd" />
-    <Content Include="MissingAssemblyFiles.htm">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="nexus.ico" />
     <Content Include="PerfStatsAnalysis.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -673,9 +670,6 @@
     <Content Include="Reports\Instructions.rdl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Docs\Analysis.doc">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Reports\SQL Perf Main.rdl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
