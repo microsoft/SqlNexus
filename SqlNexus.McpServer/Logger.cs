@@ -173,6 +173,16 @@ namespace SqlNexus.McpServer
             Info(BuildToolResultLogLine(toolName, resultText, elapsedMs));
         }
 
+        /// <summary>
+        /// Overload that reuses an already-parsed JSON token so large tool payloads are not
+        /// re-parsed just to extract summary/row_count for the log line. Pass <c>null</c> when the
+        /// payload is not JSON.
+        /// </summary>
+        public static void LogToolResult(string toolName, JToken? resultToken, long elapsedMs)
+        {
+            Info(BuildToolResultLogLine(toolName, resultToken, elapsedMs));
+        }
+
         private static void Write(Level level, string message, LogTarget target)
         {
             EnsureInitialized();
@@ -279,25 +289,38 @@ namespace SqlNexus.McpServer
 
         internal static string BuildToolResultLogLine(string toolName, string resultText, long elapsedMs)
         {
+            JToken? token = null;
+            try
+            {
+                if (!string.IsNullOrEmpty(resultText))
+                    token = JToken.Parse(resultText);
+            }
+            catch
+            {
+                // Not JSON, keep token null.
+            }
+
+            return BuildToolResultLogLine(toolName, token, elapsedMs);
+        }
+
+        internal static string BuildToolResultLogLine(string toolName, JToken? resultToken, long elapsedMs)
+        {
             string safeToolName = string.IsNullOrWhiteSpace(toolName) ? "(unknown)" : toolName;
             string summary = "(unavailable)";
             string rowCount = "(unknown)";
 
-            try
+            // The result payload is already PII-scrubbed before it reaches here, so summary/
+            // row_count extracted from it need no additional scrubbing.
+            if (resultToken is JObject obj)
             {
-                var obj = JObject.Parse(resultText);
                 summary = obj.Value<string>("summary") ?? summary;
 
                 JToken rowToken;
                 if (obj.TryGetValue("row_count", out rowToken) && rowToken != null && rowToken.Type != JTokenType.Null)
                     rowCount = rowToken.ToString();
             }
-            catch
-            {
-                // Not JSON, keep defaults.
-            }
 
-            summary = Truncate(PiiScrubber.Scrub(summary));
+            summary = Truncate(summary);
             return $"RES tool={safeToolName} elapsed_ms={elapsedMs} row_count={rowCount} summary={summary}";
         }
 

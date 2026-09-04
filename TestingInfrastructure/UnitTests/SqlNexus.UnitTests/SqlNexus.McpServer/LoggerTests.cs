@@ -96,5 +96,29 @@ namespace SqlNexus.UnitTests.SqlNexus.McpServer
             StringAssert.Contains(line, "row_count=5");
             StringAssert.Contains(line, "summary=Wait Stats");
         }
+
+        [TestMethod]
+        public void BuildToolResultLogLine_ParsedToken_ExtractsSummaryAndRowCount()
+        {
+            var token = Newtonsoft.Json.Linq.JToken.Parse(
+                "{\"summary\":\"Wait Stats\",\"row_count\":7,\"data\":[]}");
+
+            string line = Logger.BuildToolResultLogLine("analyze_wait_stats", token, 99);
+
+            StringAssert.Contains(line, "tool=analyze_wait_stats");
+            StringAssert.Contains(line, "elapsed_ms=99");
+            StringAssert.Contains(line, "row_count=7");
+            StringAssert.Contains(line, "summary=Wait Stats");
+        }
+
+        [TestMethod]
+        public void BuildToolResultLogLine_NullToken_UsesDefaults()
+        {
+            string line = Logger.BuildToolResultLogLine("some_tool", (Newtonsoft.Json.Linq.JToken)null, 5);
+
+            StringAssert.Contains(line, "tool=some_tool");
+            StringAssert.Contains(line, "row_count=(unknown)");
+            StringAssert.Contains(line, "summary=(unavailable)");
+        }
     }
 }

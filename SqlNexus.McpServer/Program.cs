@@ -787,15 +787,19 @@ namespace SqlNexus.McpServer
             }
             stopwatch.Stop();
 
-            // Scrub PII from tool output before returning to the agent
+            // Scrub PII from tool output before returning to the agent.
             resultText = PiiScrubber.Scrub(resultText);
 
+            // Parse the (already-scrubbed) payload ONCE and reuse it for both the response log
+            // line and the validation-guidance injection, avoiding a second full-payload parse.
+            JToken? resultToken = TryParseJson(resultText);
+
             // Log lightweight response telemetry for troubleshooting without logging full payloads.
-            Logger.LogToolResult(toolName, resultText, stopwatch.ElapsedMilliseconds);
+            Logger.LogToolResult(toolName, resultToken, stopwatch.ElapsedMilliseconds);
 
             // Append Responsible AI validation guidance so every answer encourages the user to
             // review the supporting evidence and inspect the underlying SQL Nexus tables.
-            resultText = AppendValidationGuidance(resultText, toolName);
+            resultText = AppendValidationGuidance(resultText, toolName, resultToken);
 
             return new McpToolResult
             {
@@ -804,6 +808,22 @@ namespace SqlNexus.McpServer
                     new McpContent { Type = "text", Text = resultText }
                 }
             };
+        }
+
+        private static JToken? TryParseJson(string text)
+        {
+            var trimmed = text?.TrimStart();
+            if (string.IsNullOrEmpty(trimmed) || (trimmed[0] != '{' && trimmed[0] != '['))
+                return null;
+
+            try
+            {
+                return JToken.Parse(text);
+            }
+            catch (JsonException)
+            {
+                return null;
+            }
         }
 
         // Maps each tool to the primary SQL Nexus table(s) it reads, so the guidance can point the
@@ -881,16 +901,21 @@ namespace SqlNexus.McpServer
         /// </summary>
         private static string AppendValidationGuidance(string resultText, string toolName)
         {
+            return AppendValidationGuidance(resultText, toolName, TryParseJson(resultText));
+        }
+
+        private static string AppendValidationGuidance(string resultText, string toolName, JToken? parsedToken)
+        {
             ToolSourceTables.TryGetValue(toolName, out var tables);
             tables ??= Array.Empty<string>();
 
-            // Preferred path: embed the notice as first-class JSON fields.
-            var trimmed = resultText?.TrimStart();
-            if (!string.IsNullOrEmpty(trimmed) && (trimmed[0] == '{' || trimmed[0] == '['))
+            // Preferred path: embed the notice as first-class JSON fields. Reuse the token that was
+            // already parsed by the caller instead of parsing the full payload again.
+            if (parsedToken != null)
             {
                 try
                 {
-                    var token = JToken.Parse(resultText);
+                    var token = parsedToken;
 
                     // Build a validation object that hosts/models see as part of the data.
                     var validation = new JObject
