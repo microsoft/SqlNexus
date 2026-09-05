@@ -1,0 +1,7 @@
+# Keep the integrity-checked AI guidance files byte-stable across clones and
+# checkouts regardless of each developer's core.autocrlf setting. The SQL Nexus
+# MCP server verifies these files with a fixed SHA-256 hash at startup, so their
+# on-disk line endings must never be rewritten by Git. Pinned to CRLF to match the
+# hashes stored in SqlNexus.McpServer/FileIntegrity.cs.
+.github/agents/sql-nexus-diagnostic.agent.md eol=crlf
+AI/Skills/*.md                               eol=crlf

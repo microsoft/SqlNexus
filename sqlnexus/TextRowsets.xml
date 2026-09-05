@@ -724,7 +724,7 @@
     </Rowset>
 
 
-    <Rowset name="tbl_FileStats" enabled="true" identifier="-- File Stats (full)" type="RowsetImportEngine.TextRowset">
+    <Rowset name="tbl_FileStats" enabled="true" identifier="-- File Stats (full) --" type="RowsetImportEngine.TextRowset">
       <KnownColumns>
         <Column name="rownum" type="RowsetImportEngine.BigIntColumn"  valuetoken="ROWNUMBER" />
         <Column name="runtime" type="RowsetImportEngine.DateTimeColumn" />
