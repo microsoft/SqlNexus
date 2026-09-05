@@ -74,6 +74,19 @@ namespace sqlnexus
         ProgressBar currBar = null;
         Label currLabel = null;
 
+        // Maps each per-file/mask import row (its file-name Label) to the full target path
+        // (directory + file name/mask) the importer should open. For the normal single-folder case
+        // this resolves to the primary import path; for files pulled from the sibling
+        // SharedOutputFiles folder it points at that sibling directory. The import loop uses this
+        // instead of concatenating the primary path with the (possibly annotated) display label.
+        // Rows not present here fall back to primary-path + label text (legacy behavior).
+        private readonly Dictionary<Label, string> m_RowTargetPaths = new Dictionary<Label, string>();
+
+        // Display suffix appended to import rows whose file/mask was discovered in the sibling
+        // SharedOutputFiles folder. This is purely cosmetic (for user/screen-reader visibility) and
+        // is never parsed to build a path - the actual path comes from m_RowTargetPaths.
+        private const string SharedOutputLabelSuffix = " (SharedOutput)";
+
 
 
         private bool BlockPerfStatsSnapshot(string FileName)
@@ -132,7 +145,34 @@ namespace sqlnexus
 
         private bool AddFiles(string Mask, INexusImporter Importer)
         {
-            string basePath = cbPath.Text.Trim().Replace("\"", "");
+            // Resolve the folders to search: the primary import path, plus the sibling
+            // SharedOutputFiles folder when it exists. When the sibling does not exist this is just
+            // the primary path and behavior is identical to before.
+            List<string> searchPaths = SharedOutputFolder.GetImportSearchPaths(
+                cbPath.Text.Trim().Replace("\"", ""));
+
+            if (searchPaths.Count == 0)
+                searchPaths.Add(cbPath.Text.Trim().Replace("\"", ""));
+
+            bool anyAdded = false;
+            for (int idx = 0; idx < searchPaths.Count; idx++)
+            {
+                bool isShared = idx > 0; // index 0 is always the primary import folder
+                if (AddFilesFromDirectory(Mask, Importer, searchPaths[idx], isShared))
+                    anyAdded = true;
+            }
+            return anyAdded;
+        }
+
+        // Enumerates a single directory for the given mask and adds the corresponding import rows.
+        // When <paramref name="isSharedFolder"/> is true the files come from the sibling
+        // SharedOutputFiles folder; such rows get a cosmetic "(SharedOutput)" label suffix and the
+        // real target path is recorded in m_RowTargetPaths so the import loop opens the correct file.
+        private bool AddFilesFromDirectory(string Mask, INexusImporter Importer, string basePath, bool isSharedFolder)
+        {
+            if (string.IsNullOrEmpty(basePath) || !Directory.Exists(basePath))
+                return false;
+
             string[] allMatches = Directory.GetFiles(basePath, Mask);
 
 
@@ -183,7 +223,11 @@ namespace sqlnexus
                         continue;
                     }
 
-                    AddFileRow(rowIndex, Path.GetFileName(f), Importer, "");
+                    string displayText = Path.GetFileName(f) + (isSharedFolder ? SharedOutputLabelSuffix : "");
+                    Label rowLabel = AddFileRowReturningLabel(rowIndex, displayText, Importer, "");
+                    // Record the actual full path (already absolute from Directory.GetFiles) so the
+                    // import loop does not reconstruct it from the primary path + display label.
+                    m_RowTargetPaths[rowLabel] = f;
                     rowIndex++;
                     addedCounter++;
 
@@ -197,17 +241,24 @@ namespace sqlnexus
                 {
                     //need special handling read trace for multiple instances
                     //when multiple instances files are caputred, only provide the one instnance selected.
+                    string effectiveMask;
                     if (isReadTrace && instances.Count > 1)
                     {
                         if (Mask.ToUpper().Contains("XEL"))
-                            AddFileRow(rowIndex, instances.SelectedXEventFileMask, Importer, "");
+                            effectiveMask = instances.SelectedXEventFileMask;
                         else
-                            AddFileRow(rowIndex, instances.SelectedTraceFileMask, Importer, "");
+                            effectiveMask = instances.SelectedTraceFileMask;
                     }
                     else
                     {
-                        AddFileRow(rowIndex, Mask, Importer, "");
+                        effectiveMask = Mask;
                     }
+
+                    string displayText = effectiveMask + (isSharedFolder ? SharedOutputLabelSuffix : "");
+                    Label rowLabel = AddFileRowReturningLabel(rowIndex, displayText, Importer, "");
+                    // For mask-based importers (e.g. Perfmon BLG) the importer re-globs from the path
+                    // it is given; record the folder + mask so it scans the correct directory.
+                    m_RowTargetPaths[rowLabel] = Path.Combine(basePath, effectiveMask);
 
                     return true;
                 }
@@ -216,6 +267,11 @@ namespace sqlnexus
         }//end of AddFiles
 
         private void AddFileRow(int row, string labelText, INexusImporter Importer, string RowType)
+        {
+            AddFileRowReturningLabel(row, labelText, Importer, RowType);
+        }
+
+        private Label AddFileRowReturningLabel(int row, string labelText, INexusImporter Importer, string RowType)
         {
             tlpFiles.RowCount += 1;
 
@@ -255,6 +311,8 @@ namespace sqlnexus
             lab2.Text = "";
             lab2.Anchor = AnchorStyles.Left;
             lab2.Location = new Point(0, 3);
+
+            return lab1;
         }
 
 
@@ -968,6 +1026,7 @@ namespace sqlnexus
 
             tlpFiles.RowCount = 1;
             tlpFiles.Controls.Clear();
+            m_RowTargetPaths.Clear();
 
             INexusImporter prod;
             // Track importers that will actually run so we can log an effective summary (esp. for /M).
@@ -1356,7 +1415,15 @@ namespace sqlnexus
 
                         try
                         {
-                            ri.Initialize(srcPath + (tlpFiles.Controls[i] as /*LinkLabel*/ Label).Text,
+                            // Resolve the importer's target from the path recorded when the row was
+                            // created (handles files pulled from the sibling SharedOutputFiles folder
+                            // and avoids parsing the possibly-annotated display label). Fall back to
+                            // the legacy primary-path + label text when no path was recorded.
+                            string targetPath;
+                            if (!m_RowTargetPaths.TryGetValue(ll, out targetPath))
+                                targetPath = srcPath + ll.Text;
+
+                            ri.Initialize(targetPath,
                                                     Globals.credentialMgr.ConnectionString,
                                                     Globals.credentialMgr.Server,
                                                     Globals.credentialMgr.WindowsAuth,
