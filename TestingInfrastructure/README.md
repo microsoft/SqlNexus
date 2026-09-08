@@ -4,6 +4,8 @@ This folder contains the automated test scaffolding for SqlNexus.
 
 ```
 TestingInfrastructure/
+  IntegrationTests/
+    SQLNexusPiiAudit.ps1        Database-wide PII scrubber integration audit
   UnitTests/
     SqlNexus.UnitTests/          MSTest project (targets net48)
       <MirrorOfSourceProject>/   test folders mirror the code under test
@@ -46,6 +48,63 @@ additional product code:
 > Note: the legacy WinForms `sqlnexus` project may not build under the `dotnet` SDK
 > toolchain on all machines (non-string WinForms resources). If `dotnet test` fails to
 > build it, build the solution in Visual Studio and run the tests from Test Explorer.
+
+## Running the PII scrubber integration audit
+
+[`IntegrationTests/SQLNexusPiiAudit.ps1`](IntegrationTests/SQLNexusPiiAudit.ps1) scans SQL Server
+user tables, processes PII-capable column values through the production MCP `PiiScrubber`, and
+reports patterns that remain after scrubbing.
+
+### Prerequisites
+
+- Run on Windows with PowerShell and access to the target SQL Server through Windows integrated
+  authentication.
+- Build `SqlNexus.McpServer` in Release first. By default, the script loads
+  `SqlNexus.McpServer/bin/Release/SqlNexus.McpServer.exe` relative to the repository. Use
+  `-AssemblyPath` to select a different build.
+- The login must be able to read table metadata and the user tables being audited.
+
+From the repository root, audit the default `localhost` / `sqlnexus` database:
+
+```powershell
+.\TestingInfrastructure\IntegrationTests\SQLNexusPiiAudit.ps1
+```
+
+Select another server or database:
+
+```powershell
+.\TestingInfrastructure\IntegrationTests\SQLNexusPiiAudit.ps1 `
+  -Server localhost `
+  -Database sqlnexus
+```
+
+Exclude specific tables and skip every table containing more than one million rows:
+
+```powershell
+.\TestingInfrastructure\IntegrationTests\SQLNexusPiiAudit.ps1 `
+  -Database sqlnexus_ManagedTrc `
+  -ExcludeTable dbo.Counters,dbo.CounterData `
+  -MaximumTableRows 1000000 `
+  -Verbose
+```
+
+`-ExcludeTable` accepts either `table` or `schema.table` names and is case-insensitive.
+`-MaximumTableRows 0`, the default, disables the row-count limit. Tables exceeding a configured
+limit are not queried and are listed in the `LargeTablesSkipped` result property.
+
+The script writes JSON to the pipeline. Redirect it to retain a report:
+
+```powershell
+.\TestingInfrastructure\IntegrationTests\SQLNexusPiiAudit.ps1 `
+  -Database sqlnexus `
+  -MaximumTableRows 1000000 |
+  Set-Content -LiteralPath .\pii-audit-report.json -Encoding utf8
+```
+
+The report does not contain raw source values. Findings contain table and column locations,
+counts, value lengths, generalized value shapes, and truncated SHA-256 fingerprints. Review
+`TableErrors` for tables that could not be audited and treat residual detector matches as leads
+requiring classification; SQL text, timestamps, and numeric metrics can produce false positives.
 
 ## Solution membership
 
