@@ -17,11 +17,13 @@
     <Nullable>disable</Nullable>
     <AssemblyName>SqlNexus.UnitTests</AssemblyName>
     <RootNamespace>SqlNexus.UnitTests</RootNamespace>
-    <!-- Not strong-named: sqlnexus.exe (the host under test) is an unsigned leaf executable.
-         A strong-named test assembly cannot load a non-strong-named referenced assembly,
-         which blocks tests that exercise sqlnexus internals. Leaving this unsigned lets the
-         test project reference both the unsigned host EXE and the signed importer DLLs. -->
-    <SignAssembly>false</SignAssembly>
+    <!-- Strong-named with the shared SqlNexus key. This lets signed product assemblies (e.g.
+         ErrorLogImporter) grant InternalsVisibleTo to this project, since a signed assembly can
+         only expose internals to a strong-named friend. The referenced host projects
+         (sqlnexus.exe, importers) are also strong-named with the same key, so there is no
+         CS8002/FileLoadException from mixing signed and unsigned assemblies. -->
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\..\sqlnexus\SqlNexus.snk</AssemblyOriginatorKeyFile>
     <NoWarn>$(NoWarn);8002</NoWarn>
   </PropertyGroup>
 

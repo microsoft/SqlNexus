@@ -7,6 +7,12 @@
     <RootNamespace>SqlNexus.McpServer</RootNamespace>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+    <!-- Strong-named with the shared SqlNexus key so the (strong-named) unit test project can
+         load this referenced assembly and be granted InternalsVisibleTo. A strong-named test
+         assembly cannot load an unsigned reference at runtime (FileLoadException), and a signed
+         assembly can only grant InternalsVisibleTo to a strong-named friend. -->
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\sqlnexus\SqlNexus.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <ItemGroup>

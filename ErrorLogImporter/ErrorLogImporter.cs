@@ -19,10 +19,10 @@ namespace ErrorLogImporter
         private const string OPTION_DROP_EXISTING = "Drop existing tables (ERRORLOG)";
         private const string OPTION_ENABLED = "Enabled";
         private const string HEAD_AND_TAIL_MARKER_PARTIAL = "<<... middle part of file not captured because";
-        // Public so the (non-strong-named) unit test project can assert against these values; a
-        // signed assembly cannot grant InternalsVisibleTo to an unsigned friend, so we widen instead.
-        public const string INCOMPLETE_PROCESS_MARKER = "INCOMPLETE";
-        public const string INCOMPLETE_LOG_MESSAGE = ">>>>> ERRORLOG file is incomplete: the middle part was not captured because the file was too large (>1 GB). <<<<<";
+        // Internal so the strong-named unit test project (granted via InternalsVisibleTo) can assert
+        // against these values without widening them to public plugin API.
+        internal const string INCOMPLETE_PROCESS_MARKER = "INCOMPLETE";
+        internal const string INCOMPLETE_LOG_MESSAGE = ">>>>> ERRORLOG file is incomplete: the middle part was not captured because the file was too large (>1 GB). <<<<<";
 
         // Regex to match ERRORLOG lines: datetime, process, message
         // Example: "2026-04-14 22:37:11.55 Server      Microsoft SQL Server 2022..."
@@ -56,7 +56,7 @@ namespace ErrorLogImporter
             options.Add(OPTION_ENABLED, true);
         }
 
-        public static bool IsHeadAndTailMarker(string line)
+        internal static bool IsHeadAndTailMarker(string line)
         {
             return line != null && line.Trim().StartsWith(HEAD_AND_TAIL_MARKER_PARTIAL, StringComparison.Ordinal);
         }
@@ -65,7 +65,7 @@ namespace ErrorLogImporter
         // literal '?' produced when the BOM is written to a non-UTF8 file) can be prepended to the
         // first line following the head-and-tail marker by the collection tooling. Strip it so the
         // date/time regex still matches and the line is not lost.
-        public static string StripLeadingByteOrderMark(string line)
+        internal static string StripLeadingByteOrderMark(string line)
         {
             if (string.IsNullOrEmpty(line))
                 return line;
@@ -351,7 +351,7 @@ namespace ErrorLogImporter
         // fileSize so the reported progress can never overshoot the file (which would push a progress
         // bar past 100%). ReadLine drops the line terminator, so we add the encoding's byte count for
         // a newline; the estimate is approximate for LF-only vs CRLF files but never exceeds fileSize.
-        public static long AdvancePosition(long currentPosition, long fileSize, string line, Encoding encoding)
+        internal static long AdvancePosition(long currentPosition, long fileSize, string line, Encoding encoding)
         {
             if (encoding == null)
                 encoding = Encoding.UTF8;
@@ -366,7 +366,7 @@ namespace ErrorLogImporter
             return advanced;
         }
 
-        public static void ProcessLogEntries(TextReader reader, Func<bool> isCancelled, Action<string> lineProcessed, Action<DateTime, string, string> insertRow, Action insertIncompleteLogNotice)
+        internal static void ProcessLogEntries(TextReader reader, Func<bool> isCancelled, Action<string> lineProcessed, Action<DateTime, string, string> insertRow, Action insertIncompleteLogNotice)
         {
             DateTime? pendingDateTime = null;
             string pendingProcess = null;
