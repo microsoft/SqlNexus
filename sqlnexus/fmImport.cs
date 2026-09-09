@@ -84,8 +84,11 @@ namespace sqlnexus
 
         // Display suffix appended to import rows whose file/mask was discovered in the sibling
         // SharedOutputFiles folder. This is purely cosmetic (for user/screen-reader visibility) and
-        // is never parsed to build a path - the actual path comes from m_RowTargetPaths.
-        private const string SharedOutputLabelSuffix = " (SharedOutput)";
+        // is never parsed to build a path - the actual path comes from m_RowTargetPaths. Derived from
+        // SharedOutputFolder.SharedFolderName so it always matches the real folder name and reads
+        // clearly aloud (e.g. "... (from SharedOutputFiles)").
+        private static readonly string SharedOutputLabelSuffix =
+            " (from " + SharedOutputFolder.SharedFolderName + ")";
 
 
 
@@ -407,33 +410,31 @@ namespace sqlnexus
             }
             else
             {
-                if (includedFiles.Length > 0)  //Only add the mask if matching files are found
+                // includedFiles is guaranteed non-empty here (we returned early above when it was
+                // empty). Mask-based importers add a single row for the mask.
+                //need special handling read trace for multiple instances
+                //when multiple instances files are caputred, only provide the one instnance selected.
+                string effectiveMask;
+                if (isReadTrace && instances.Count > 1)
                 {
-                    //need special handling read trace for multiple instances
-                    //when multiple instances files are caputred, only provide the one instnance selected.
-                    string effectiveMask;
-                    if (isReadTrace && instances.Count > 1)
-                    {
-                        if (Mask.ToUpper().Contains("XEL"))
-                            effectiveMask = instances.SelectedXEventFileMask;
-                        else
-                            effectiveMask = instances.SelectedTraceFileMask;
-                    }
+                    if (Mask.ToUpper().Contains("XEL"))
+                        effectiveMask = instances.SelectedXEventFileMask;
                     else
-                    {
-                        effectiveMask = Mask;
-                    }
-
-                    string displayText = effectiveMask + (isSharedFolder ? SharedOutputLabelSuffix : "");
-                    Label rowLabel = AddFileRowReturningLabel(rowIndex, displayText, Importer, "");
-                    // For mask-based importers (e.g. Perfmon BLG) the importer re-globs from the path
-                    // it is given; record the folder + mask so it scans the correct directory.
-                    m_RowTargetPaths[rowLabel] = Path.Combine(basePath, effectiveMask);
-
-                    return true;
+                        effectiveMask = instances.SelectedTraceFileMask;
                 }
+                else
+                {
+                    effectiveMask = Mask;
+                }
+
+                string displayText = effectiveMask + (isSharedFolder ? SharedOutputLabelSuffix : "");
+                Label rowLabel = AddFileRowReturningLabel(rowIndex, displayText, Importer, "");
+                // For mask-based importers (e.g. Perfmon BLG) the importer re-globs from the path
+                // it is given; record the folder + mask so it scans the correct directory.
+                m_RowTargetPaths[rowLabel] = Path.Combine(basePath, effectiveMask);
+
+                return true;
             }
-            return false;
         }//end of AddFiles
 
         private void AddFileRow(int row, string labelText, INexusImporter Importer, string RowType)
@@ -472,6 +473,10 @@ namespace sqlnexus
             tlpFiles.Controls.Add(pb, 1, row);
             pb.Height = 13;
             pb.MarqueeAnimationSpeed = 25;
+            // Two rows can now differ only by a "(from SharedOutputFiles)" suffix, so give the
+            // progress bar and status label an AccessibleName tied to the row's label text; otherwise
+            // a screen reader announces every progress bar identically.
+            pb.AccessibleName = labelText;
 
 
             //third column - lines processed. starts blank and filled dynamically as files are processed
@@ -481,6 +486,7 @@ namespace sqlnexus
             lab2.Text = "";
             lab2.Anchor = AnchorStyles.Left;
             lab2.Location = new Point(0, 3);
+            lab2.AccessibleName = labelText + " status";
 
             return lab1;
         }
@@ -1418,6 +1424,10 @@ namespace sqlnexus
                 this.FormBorderStyle = FormBorderStyle.Sizable;
                 tlpFiles.Visible = true;
                 ssStatus.Visible = true;
+                // The compact-form affordance no longer applies once expanded; hide the label and
+                // clear the flag so a later path change does not try to shrink the (now large) form.
+                laSharedFolder.Visible = false;
+                m_sharedFolderLabelShown = false;
             }
 
             MainForm.LogMessage("Starting import...");
@@ -2265,6 +2275,105 @@ namespace sqlnexus
         private void tbPath_TextChanged(object sender, EventArgs e)
         {
             tsbGo.Enabled = Directory.Exists(cbPath.Text);
+            UpdateSharedFolderAffordance();
+        }
+
+        // Form-level affordance (item 15): the path combo shows only the instance folder, so a second
+        // scanned folder would otherwise be discoverable only from per-row "(from SharedOutputFiles)"
+        // suffixes. When a sibling shared folder exists, surface it in a muted label under the path box
+        // so the user (and screen readers) can tell a second folder will also be scanned.
+        private void UpdateSharedFolderAffordance()
+        {
+            try
+            {
+                string primary = (cbPath.Text ?? "").Trim().Replace("\"", "");
+                string sibling = string.IsNullOrEmpty(primary)
+                    ? null
+                    : SharedOutputFolder.ResolveSharedSibling(
+                        primary.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar));
+
+                if (sibling != null)
+                {
+                    // Show an abbreviated path (label AutoEllipsis also truncates if still too wide);
+                    // the full path is always available via the tooltip.
+                    string shortPath = AbbreviatePath(sibling, 48);
+                    laSharedFolder.Text = "Also scanning: " + shortPath;
+                    laSharedFolder.AccessibleName = "Also scanning sibling folder " + sibling;
+                    toolTip1.SetToolTip(laSharedFolder, sibling);
+                    // Re-assert the info-band colors here because ThemeManager.ApplyTheme (run once at
+                    // construction) overwrites control colors for non-Default themes. SystemColors.Info
+                    // is contrast-safe and honored by High Contrast mode, and the "Also scanning:" text
+                    // carries the meaning so information is never conveyed by color alone.
+                    laSharedFolder.BackColor = SystemColors.Info;
+                    laSharedFolder.ForeColor = SystemColors.InfoText;
+                    ShowSharedFolderLabel(true);
+                }
+                else
+                {
+                    laSharedFolder.Text = "";
+                    toolTip1.SetToolTip(laSharedFolder, "");
+                    ShowSharedFolderLabel(false);
+                }
+            }
+            catch (Exception ex)
+            {
+                // A malformed path in the combo must never break the form; just hide the affordance.
+                MainForm.LogMessage("Unable to update shared-folder affordance: " + ex.Message,
+                    MessageOptions.Silent);
+                ShowSharedFolderLabel(false);
+            }
+        }
+
+        // Abbreviates a long path to "<root>\...\<last-two-segments>" so the affordance stays readable
+        // for deeply nested capture folders. Returns the original path when it is already short or has
+        // too few segments to shorten. Purely cosmetic - the full path is shown in the tooltip.
+        private static string AbbreviatePath(string path, int maxLength)
+        {
+            if (string.IsNullOrEmpty(path) || path.Length <= maxLength)
+                return path;
+
+            try
+            {
+                string root = Path.GetPathRoot(path) ?? "";
+                string trimmed = path.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+                string[] parts = trimmed.Split(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+                if (parts.Length >= 2)
+                {
+                    string tail = parts[parts.Length - 2] + Path.DirectorySeparatorChar + parts[parts.Length - 1];
+                    return root.TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar + "..." +
+                           Path.DirectorySeparatorChar + tail;
+                }
+            }
+            catch
+            {
+                // Fall through to the raw path on any parsing issue; the tooltip still has the full text.
+            }
+            return path;
+        }
+
+        // Shows/hides the shared-folder label in the COMPACT (pre-import) form only, growing the top
+        // panel and the form by the label's row height so the label sits BELOW the Import/Close buttons
+        // instead of overlapping them. Once the import view is expanded (tlpFiles visible) the form is
+        // already large, so this is a no-op there.
+        private bool m_sharedFolderLabelShown;
+        private const int SharedFolderLabelRowHeight = 22;
+        private void ShowSharedFolderLabel(bool show)
+        {
+            if (tlpFiles.Visible)
+            {
+                laSharedFolder.Visible = false; // expanded import view does not use the compact label
+                return;
+            }
+
+            if (show != m_sharedFolderLabelShown)
+            {
+                int delta = show ? SharedFolderLabelRowHeight : -SharedFolderLabelRowHeight;
+                paTop.Height += delta;
+                this.ClientSize = new Size(this.ClientSize.Width, this.ClientSize.Height + delta);
+                m_sharedFolderLabelShown = show;
+            }
+
+            laSharedFolder.Visible = show;
         }
 
         private void tsbPath_Click(object sender, EventArgs e)

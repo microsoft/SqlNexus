@@ -51,6 +51,8 @@ namespace sqlnexus
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.ssStatus = new System.Windows.Forms.StatusStrip();
             this.ssText = new System.Windows.Forms.ToolStripStatusLabel();
+            this.laSharedFolder = new System.Windows.Forms.Label();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.paTop.SuspendLayout();
             this.cmOptions.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -70,6 +72,7 @@ namespace sqlnexus
             this.paTop.Controls.Add(this.laInstructions);
             this.paTop.Controls.Add(this.pictureBox1);
             this.paTop.Controls.Add(this.laPath);
+            this.paTop.Controls.Add(this.laSharedFolder);
             this.paTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.paTop.Location = new System.Drawing.Point(0, 0);
             this.paTop.Name = "paTop";
@@ -214,6 +217,23 @@ namespace sqlnexus
             this.laPath.TabIndex = 0;
             this.laPath.Text = "Source path:";
             // 
+            // laSharedFolder
+            // 
+            this.laSharedFolder.AutoEllipsis = true;
+            this.laSharedFolder.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.laSharedFolder.BackColor = System.Drawing.SystemColors.Info;
+            this.laSharedFolder.ForeColor = System.Drawing.SystemColors.InfoText;
+            this.laSharedFolder.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.laSharedFolder.Padding = new System.Windows.Forms.Padding(4, 2, 4, 2);
+            this.laSharedFolder.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.laSharedFolder.Location = new System.Drawing.Point(0, 63);
+            this.laSharedFolder.Name = "laSharedFolder";
+            this.laSharedFolder.Size = new System.Drawing.Size(455, 18);
+            this.laSharedFolder.TabIndex = 7;
+            this.laSharedFolder.Text = "";
+            this.laSharedFolder.Visible = false;
+            // 
             // tlpFiles
             // 
             this.tlpFiles.AutoScroll = true;
@@ -315,6 +335,8 @@ namespace sqlnexus
         private System.Windows.Forms.StatusStrip ssStatus;
         private System.Windows.Forms.ToolStripStatusLabel ssText;
         private System.Windows.Forms.Label laInstructions;
+        private System.Windows.Forms.Label laSharedFolder;
+        private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.Button btPath;
         private System.Windows.Forms.Button tsbGo;
         private System.Windows.Forms.LinkLabel llOptions;

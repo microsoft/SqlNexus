@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using NexusInterfaces;
 
 namespace sqlnexus
 {
@@ -17,10 +19,12 @@ namespace sqlnexus
     /// everything behaves exactly as before.
     ///
     /// This type is intentionally free of WinForms/SQL dependencies so it can be unit-tested.
-    /// The shared folder name and location (direct sibling only) are fixed by design and are never
-    /// built from user input, so there is no injection surface. The resolved sibling is the fixed
-    /// <see cref="SharedFolderName"/> combined with the primary folder's parent, and is only used
-    /// when <see cref="Directory.Exists(string)"/> confirms it is present.
+    /// The primary path comes from the user, but the shared folder NAME is a fixed constant
+    /// (<see cref="SharedFolderName"/>) and is never built from user input. The resolved sibling is
+    /// simply that fixed name combined with the primary folder's parent, and it is only returned
+    /// after <see cref="Directory.Exists(string)"/> confirms the directory is actually present. The
+    /// resolved path is used only to enumerate files for import - it is never used to build a SQL
+    /// command or shell string - so path resolution here is not itself an injection surface.
     /// </summary>
     internal static class SharedOutputFolder
     {
@@ -30,6 +34,27 @@ namespace sqlnexus
         /// folder, is considered.
         /// </summary>
         public const string SharedFolderName = "SharedOutputFiles";
+
+        /// <summary>
+        /// Logs a diagnostic message to the silent (file-only) log when a global logger is available.
+        /// This type is used from unit tests where <see cref="Util.Logger"/> may be null, so logging
+        /// is best-effort and never throws - failures fall back to <see cref="Debug.WriteLine(string)"/>.
+        /// </summary>
+        private static void LogSilent(string message)
+        {
+            try
+            {
+                if (Util.Logger != null)
+                    Util.Logger.LogMessage(message, MessageOptions.Silent);
+                else
+                    Debug.WriteLine(message);
+            }
+            catch
+            {
+                // Logging must never destabilize path resolution; swallow after a debug write.
+                Debug.WriteLine(message);
+            }
+        }
 
         /// <summary>
         /// Returns the ordered list of directories to search for importable files.
@@ -53,10 +78,12 @@ namespace sqlnexus
             {
                 normalizedPrimary = NormalizePath(primaryPath.Trim().Replace("\"", ""));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 // Malformed path - fail closed by returning nothing extra; callers still use their
-                // own primary path. We intentionally do not throw here.
+                // own primary path. We intentionally do not throw here, but do record why.
+                LogSilent("SharedOutputFolder: could not normalize import path '" + primaryPath +
+                    "': " + ex.Message);
                 return paths;
             }
 
@@ -209,8 +236,10 @@ namespace sqlnexus
             {
                 parent = Path.GetDirectoryName(normalizedPrimary);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                LogSilent("SharedOutputFolder: could not determine parent of '" + normalizedPrimary +
+                    "': " + ex.Message);
                 return null;
             }
 
@@ -223,8 +252,10 @@ namespace sqlnexus
             {
                 candidate = NormalizePath(Path.Combine(parent, SharedFolderName));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                LogSilent("SharedOutputFolder: could not resolve sibling '" + SharedFolderName +
+                    "' under '" + parent + "': " + ex.Message);
                 return null;
             }
 
