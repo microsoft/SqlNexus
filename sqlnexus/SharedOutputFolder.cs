@@ -70,6 +70,132 @@ namespace sqlnexus
         }
 
         /// <summary>
+        /// Given the files already selected from the primary folder (name -> byte length) and the
+        /// candidate files discovered in the sibling shared folder (full path -> byte length),
+        /// returns only the sibling files whose file name is NOT already present in the primary
+        /// selection. Sibling files skipped because of a name collision are classified by size:
+        ///   - <paramref name="skippedSameSize"/>: name AND size match - near-certain the same file.
+        ///   - <paramref name="skippedDifferentSize"/>: name matches but size differs - AMBIGUOUS.
+        ///     These are still skipped (primary wins, never auto double-import), but the caller should
+        ///     warn more loudly so the user can decide whether to import the sibling copy manually.
+        ///
+        /// SQL LogScout places host/OS files in the shared folder OR the instance folder exclusively,
+        /// so duplicates are not expected; when they do occur, the primary folder wins and the sibling
+        /// copy is skipped to avoid importing the same data twice into the same tables (silent
+        /// duplicate rows / overwrite of already-imported data). Size is used only to decide how
+        /// loudly to warn - it is never used to auto-import a colliding name (that could double-import
+        /// the same logical capture whose size drifted by a few bytes, e.g. a growing ERRORLOG).
+        /// </summary>
+        /// <param name="primaryNameToSize">
+        /// File names (not full paths) already selected from the primary folder, mapped to their byte
+        /// length. Comparison is case-insensitive. May be null/empty.
+        /// </param>
+        /// <param name="siblingFilesWithSize">
+        /// Candidate sibling files as (full path -> byte length). A negative size means "unknown"
+        /// (e.g. the length could not be read); such collisions are treated as different-size
+        /// (ambiguous) so they are surfaced rather than quietly assumed identical.
+        /// </param>
+        /// <param name="skippedSameSize">Receives skipped sibling paths whose name+size matched. Never null.</param>
+        /// <param name="skippedDifferentSize">Receives skipped sibling paths whose name matched but size differed. Never null.</param>
+        /// <returns>The sibling full paths that are safe to import (no name collision with primary).</returns>
+        public static List<string> FilterDuplicateSiblingFiles(
+            IDictionary<string, long> primaryNameToSize,
+            IEnumerable<KeyValuePair<string, long>> siblingFilesWithSize,
+            out List<string> skippedSameSize,
+            out List<string> skippedDifferentSize)
+        {
+            var accepted = new List<string>();
+            skippedSameSize = new List<string>();
+            skippedDifferentSize = new List<string>();
+
+            if (siblingFilesWithSize == null)
+                return accepted;
+
+            var primary = new Dictionary<string, long>(StringComparer.OrdinalIgnoreCase);
+            if (primaryNameToSize != null)
+            {
+                foreach (KeyValuePair<string, long> kvp in primaryNameToSize)
+                {
+                    if (!string.IsNullOrEmpty(kvp.Key))
+                        primary[kvp.Key] = kvp.Value;
+                }
+            }
+
+            foreach (KeyValuePair<string, long> sibling in siblingFilesWithSize)
+            {
+                string full = sibling.Key;
+                if (string.IsNullOrEmpty(full))
+                    continue;
+
+                string leaf = Path.GetFileName(full);
+                long primarySize;
+                if (!primary.TryGetValue(leaf, out primarySize))
+                {
+                    // No name collision - safe to import.
+                    accepted.Add(full);
+                    continue;
+                }
+
+                // Name collides: skip either way (primary wins). Classify by size for the warning.
+                // A negative (unknown) size on either side is treated as "different" so it is not
+                // quietly assumed to be identical.
+                bool sameSize = primarySize >= 0 && sibling.Value >= 0 && primarySize == sibling.Value;
+                if (sameSize)
+                    skippedSameSize.Add(full);
+                else
+                    skippedDifferentSize.Add(full);
+            }
+
+            return accepted;
+        }
+
+        /// <summary>
+        /// Returns the sibling files (full paths) that exist ONLY in the sibling shared folder - i.e.
+        /// whose file name is NOT present in the primary folder. Used to warn about Custom XEL sources
+        /// (SQLDiag / AlwaysOn_health / system_health) that live only in SharedOutputFiles and would
+        /// therefore never be imported (the Custom XEL importer scans the primary folder only).
+        ///
+        /// A file that exists in BOTH folders is intentionally NOT returned: the primary copy is
+        /// imported, so there is no data gap and telling the user to "move it to the primary folder"
+        /// would be misleading (it is already there).
+        /// </summary>
+        /// <param name="primaryNames">
+        /// File names (not full paths) present in the primary folder. Comparison is case-insensitive.
+        /// May be null/empty.
+        /// </param>
+        /// <param name="siblingFiles">Full paths of candidate files found in the sibling folder.</param>
+        /// <returns>Sibling full paths whose name is not present in the primary folder. Never null.</returns>
+        public static List<string> GetSiblingOnlyFiles(
+            ICollection<string> primaryNames,
+            IEnumerable<string> siblingFiles)
+        {
+            var siblingOnly = new List<string>();
+            if (siblingFiles == null)
+                return siblingOnly;
+
+            var primary = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            if (primaryNames != null)
+            {
+                foreach (string name in primaryNames)
+                {
+                    if (!string.IsNullOrEmpty(name))
+                        primary.Add(name);
+                }
+            }
+
+            foreach (string full in siblingFiles)
+            {
+                if (string.IsNullOrEmpty(full))
+                    continue;
+
+                if (!primary.Contains(Path.GetFileName(full)))
+                    siblingOnly.Add(full);
+            }
+
+            return siblingOnly;
+        }
+
+        /// <summary>
         /// Returns the validated path to the sibling <see cref="SharedFolderName"/> folder if it
         /// exists as a direct sibling of <paramref name="normalizedPrimary"/>; otherwise null.
         /// </summary>

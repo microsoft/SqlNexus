@@ -161,6 +161,80 @@ namespace sqlnexus
             }
         }
 
+        // Returns the file's byte length, or -1 when it cannot be read (missing/locked/error).
+        // -1 is treated by the duplicate guard as "unknown" so a same-name collision is surfaced
+        // rather than quietly assumed identical.
+        private long TryGetFileLength(string path)
+        {
+            try
+            {
+                return new FileInfo(path).Length;
+            }
+            catch (Exception ex)
+            {
+                MainForm.LogMessage("Unable to read length of '" + path + "': " + ex.Message,
+                    MessageOptions.Silent);
+                return -1;
+            }
+        }
+
+        // File masks recognized by CustomXELImporter (SQLDiag / AlwaysOn health / system_health).
+        // Kept in sync with the Directory.GetFiles patterns in CustomXELImporter.Load*Files().
+        private static readonly string[] CustomXelMasks =
+            { "*_SQLDIAG*.xel", "*AlwaysOn_health*.xel", "*system_health*.xel" };
+
+        // CustomXELImporter only scans the primary folder. If the sibling SharedOutputFiles folder
+        // contains Custom XEL sources that are NOT also in the primary folder, they are silently never
+        // imported. Warn about those sibling-ONLY files (with the resolved sibling path) so the user
+        // can move them into the primary folder. Files that exist in both folders are ignored here:
+        // the primary copy is imported, so there is no gap and "move it" would be misleading. This
+        // never imports anything - the Custom XEL load uses SELECT * INTO with optional DROP TABLE and
+        // would overwrite already-imported tables, so scanning the sibling directly is unsafe.
+        private void WarnIfSharedFolderHasUnimportedCustomXel(string primaryPath)
+        {
+            try
+            {
+                string normalizedPrimary = (primaryPath ?? "")
+                    .TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+
+                string sibling = SharedOutputFolder.ResolveSharedSibling(normalizedPrimary);
+                if (sibling == null || !Directory.Exists(sibling))
+                    return;
+
+                // Names of Custom XEL files already present in the primary folder (imported normally).
+                var primaryNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                if (Directory.Exists(normalizedPrimary))
+                {
+                    foreach (string mask in CustomXelMasks)
+                        foreach (string f in Directory.GetFiles(normalizedPrimary, mask))
+                            primaryNames.Add(Path.GetFileName(f));
+                }
+
+                // Custom XEL files in the sibling that are NOT also in the primary folder (the real gap).
+                var siblingOnly = new List<string>();
+                foreach (string mask in CustomXelMasks)
+                {
+                    siblingOnly.AddRange(
+                        SharedOutputFolder.GetSiblingOnlyFiles(
+                            primaryNames, Directory.GetFiles(sibling, mask)));
+                }
+
+                if (siblingOnly.Count > 0)
+                {
+                    MainForm.LogMessage(
+                        "Shared folder: " + siblingOnly.Count + " Custom XEL file(s) (SQLDiag/AlwaysOn/system_health) " +
+                        "exist ONLY in '" + sibling + "' and are NOT imported - the Custom XEL importer only " +
+                        "reads the primary folder. Move them into '" + primaryPath + "' and re-import if needed.",
+                        MessageOptions.Both);
+                }
+            }
+            catch (Exception ex)
+            {
+                MainForm.LogMessage("Unable to check shared folder for Custom XEL files: " + ex.Message,
+                    MessageOptions.Silent);
+            }
+        }
+
         private bool AddFiles(string Mask, INexusImporter Importer)
         {
             // Resolve the folders to search: the primary import path, plus the sibling
@@ -174,10 +248,35 @@ namespace sqlnexus
 
             bool anyAdded = false;
             int blockedCounter = 0;
+
+            // Files (name -> byte length) selected from the primary folder for this mask. Used to
+            // skip a same-named file discovered in the sibling shared folder so we never import the
+            // same file twice into the same tables (silent duplicate rows / overwrite of
+            // already-imported data). Size is carried so the warning can distinguish a near-certain
+            // identical copy (same size) from an ambiguous same-name/different-size case. SQL LogScout
+            // writes host/OS files to EITHER folder exclusively, so this is a safety net.
+            var primaryNameToSize = new Dictionary<string, long>(StringComparer.OrdinalIgnoreCase);
+
             for (int idx = 0; idx < searchPaths.Count; idx++)
             {
                 bool isShared = idx > 0; // index 0 is always the primary import folder
-                if (AddFilesFromDirectory(Mask, Importer, searchPaths[idx], isShared, ref blockedCounter))
+
+                // Guard (mask-based/aggregating importers, e.g. Perfmon/ReadTrace): if the primary
+                // folder already produced a row for this mask, do NOT also add a sibling row. A second
+                // row triggers a second Initialize+DoImport that would re-run table setup over the
+                // first run's results. The sibling is therefore a fallback only - if the primary
+                // matched nothing, the sibling is still imported (no lost import opportunity).
+                if (isShared && anyAdded && !(Importer is INexusFileImporter))
+                {
+                    MainForm.LogMessage(
+                        "Shared folder: skipping duplicate files matching '" + Mask + "' for importer '" +
+                        (Importer != null ? Importer.Name : "(null)") +
+                        "' because the primary folder already provided files for it (avoids re-running " +
+                        "table setup over already-imported data).", MessageOptions.Silent);
+                    continue;
+                }
+
+                if (AddFilesFromDirectory(Mask, Importer, searchPaths[idx], isShared, ref blockedCounter, primaryNameToSize))
                     anyAdded = true;
             }
 
@@ -194,7 +293,10 @@ namespace sqlnexus
         // When <paramref name="isSharedFolder"/> is true the files come from the sibling
         // SharedOutputFiles folder; such rows get a cosmetic "(SharedOutput)" label suffix and the
         // real target path is recorded in m_RowTargetPaths so the import loop opens the correct file.
-        private bool AddFilesFromDirectory(string Mask, INexusImporter Importer, string basePath, bool isSharedFolder, ref int blockedCounter)
+        // <paramref name="primaryNameToSize"/> accumulates the file name -> byte length selected from
+        // the primary folder (when !isSharedFolder) and is consulted for the sibling folder to skip
+        // duplicates (with a size-aware warning).
+        private bool AddFilesFromDirectory(string Mask, INexusImporter Importer, string basePath, bool isSharedFolder, ref int blockedCounter, Dictionary<string, long> primaryNameToSize)
         {
             if (string.IsNullOrEmpty(basePath) || !Directory.Exists(basePath))
                 return false;
@@ -205,6 +307,46 @@ namespace sqlnexus
             //if no file found for this mask, just return
             if (allMatches.Length <= 0)
                 return false;
+
+            // Duplicate-name guard: for per-file importers, drop any sibling file whose name was
+            // already selected from the primary folder (both would import into the same tables). Size
+            // is used only to decide how loudly to warn - a colliding name is skipped either way.
+            if (isSharedFolder && (Importer is INexusFileImporter))
+            {
+                var siblingWithSize = allMatches
+                    .Select(f => new KeyValuePair<string, long>(f, TryGetFileLength(f)))
+                    .ToList();
+
+                List<string> skippedSameSize, skippedDifferentSize;
+                allMatches = SharedOutputFolder.FilterDuplicateSiblingFiles(
+                    primaryNameToSize, siblingWithSize,
+                    out skippedSameSize, out skippedDifferentSize).ToArray();
+
+                foreach (string dup in skippedSameSize)
+                {
+                    MainForm.LogMessage(
+                        "Shared folder: skipping duplicate file '" + Path.GetFileName(dup) +
+                        "' found in SharedOutputFiles - a file with the same name and size is already " +
+                        "being imported from the primary folder (avoids duplicate rows).",
+                        MessageOptions.Both);
+                }
+
+                foreach (string dup in skippedDifferentSize)
+                {
+                    // Ambiguous: same name but different (or unreadable) size. Still skipped so we never
+                    // auto double-import, but surfaced clearly so the user can import it manually if the
+                    // two files are genuinely different captures.
+                    MainForm.LogMessage(
+                        "Shared folder: skipping duplicate file '" + Path.GetFileName(dup) + "' - WARNING: it " +
+                        "exists in BOTH the primary folder and SharedOutputFiles with a DIFFERENT size. The " +
+                        "SharedOutputFiles copy was NOT imported (the primary copy wins). If these are different " +
+                        "captures, import the SharedOutputFiles copy ('" + dup + "') separately.",
+                        MessageOptions.Both);
+                }
+
+                if (allMatches.Length == 0)
+                    return false;
+            }
 
             // If this is a trace mask (*.trc) for ReadTrace, filter out excluded files
             bool isReadTrace = Importer != null &&
@@ -253,6 +395,10 @@ namespace sqlnexus
                     // Record the actual full path (already absolute from Directory.GetFiles) so the
                     // import loop does not reconstruct it from the primary path + display label.
                     m_RowTargetPaths[rowLabel] = f;
+                    // Remember the primary-folder file name and size so a same-named sibling file is
+                    // skipped (and the warning can compare sizes).
+                    if (!isSharedFolder && primaryNameToSize != null)
+                        primaryNameToSize[Path.GetFileName(f)] = TryGetFileLength(f);
                     rowIndex++;
                     addedCounter++;
 
@@ -1038,11 +1184,28 @@ namespace sqlnexus
             Application.DoEvents();
 
             // count the files from pssdiag or logscout 
-            string[] XEFilesPssdiag = Directory.GetFiles(cbPath.Text.Trim().Replace("\"", ""), "*pssdiag*.xel");
-            string[] XEFilesLogScout = Directory.GetFiles(cbPath.Text.Trim().Replace("\"", ""), "*xevent_LogScout*.xel");
-            string[] trcFiles = Directory.GetFiles(cbPath.Text.Trim().Replace("\"", ""), "*sp_trace*.trc");
+            string primaryPath = cbPath.Text.Trim().Replace("\"", "");
 
-            if ((XEFilesPssdiag.Length > 0 || XEFilesLogScout.Length > 0) && trcFiles.Length > 0)
+            // The trace/xevent conflict can also arise across the two folders (e.g. .trc in the
+            // instance folder and .xel in the sibling SharedOutputFiles folder), so the pre-check
+            // inspects BOTH folders, not just the primary one.
+            List<string> conflictSearchPaths = SharedOutputFolder.GetImportSearchPaths(primaryPath);
+            if (conflictSearchPaths.Count == 0)
+                conflictSearchPaths.Add(primaryPath);
+
+            int xeFileCount = 0;
+            int trcFileCount = 0;
+            foreach (string searchDir in conflictSearchPaths)
+            {
+                if (string.IsNullOrEmpty(searchDir) || !Directory.Exists(searchDir))
+                    continue;
+
+                xeFileCount += Directory.GetFiles(searchDir, "*pssdiag*.xel").Length;
+                xeFileCount += Directory.GetFiles(searchDir, "*xevent_LogScout*.xel").Length;
+                trcFileCount += Directory.GetFiles(searchDir, "*sp_trace*.trc").Length;
+            }
+
+            if (xeFileCount > 0 && trcFileCount > 0)
             {
                 Util.Logger.LogMessage("You have captured both trace and xeven files. import will fail! Please remove or move one of the sets before importing", MessageOptions.All);
             }
@@ -1625,6 +1788,16 @@ namespace sqlnexus
 
                         bool alwaysOnXelDropTables = tsiSQLDiagAlwaysOnXEL_DropTables != null && tsiSQLDiagAlwaysOnXEL_DropTables.Checked;
                         bool customXelSuccess;
+
+                        // CustomXELImporter scans only the primary folder (srcPath). If the sibling
+                        // SharedOutputFiles folder contains Custom XEL sources (SQLDiag / AlwaysOn_health
+                        // / system_health), warn that they are NOT imported here so the user can move
+                        // them into the primary folder. We do NOT silently scan the sibling because the
+                        // Custom XEL load uses SELECT * INTO with optional DROP TABLE, which would
+                        // overwrite the primary folder's just-imported tables.
+                        if (customXelImportEnabled)
+                            WarnIfSharedFolderHasUnimportedCustomXel(srcPath);
+
                         string XelImprtStatusStr = CI.ImportCustomXELFiles(Globals.credentialMgr.ConnectionString, Globals.credentialMgr.Server,
                                                                 Globals.credentialMgr.WindowsAuth,
                                                                 Globals.credentialMgr.User,
