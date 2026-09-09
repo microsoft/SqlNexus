@@ -34,6 +34,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\RowsetImportEngine\RowsetImportEngine.csproj" />
     <ProjectReference Include="..\..\..\sqlnexus\sqlnexus.csproj" />
+    <ProjectReference Include="..\..\..\SqlNexus.McpServer\SqlNexus.McpServer.csproj" />
     <ProjectReference Include="..\..\..\TraceEventImporter\TraceEventImporter.csproj" />
     <ProjectReference Include="..\..\..\ErrorLogImporter\ErrorLogImporter.csproj" />
   </ItemGroup>
