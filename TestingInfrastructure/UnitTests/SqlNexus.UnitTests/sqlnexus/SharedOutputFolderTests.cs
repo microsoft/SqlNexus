@@ -386,5 +386,148 @@ namespace SqlNexus.UnitTests.sqlnexus
 
             CollectionAssert.AreEquivalent(new[] { @"D:\s\only.xel" }, siblingOnly);
         }
+
+        // ---- ComposeRowTargetPath (item 16: m_RowTargetPaths composition) ----
+
+        [TestMethod]
+        public void ComposeRowTargetPath_RootedFilePath_ReturnedVerbatim()
+        {
+            // Per-file importers pass the absolute path from Directory.GetFiles; it must be used as-is
+            // (basePath is ignored), which is what the import loop records in m_RowTargetPaths.
+            string result = SharedOutputFolder.ComposeRowTargetPath(
+                @"D:\out\SharedOutputFiles", @"D:\out\SharedOutputFiles\RunningDrivers.txt");
+
+            Assert.AreEqual(@"D:\out\SharedOutputFiles\RunningDrivers.txt", result);
+        }
+
+        [TestMethod]
+        public void ComposeRowTargetPath_FolderPlusMask_CombinesForMaskImporter()
+        {
+            // Mask-based importers (e.g. Perfmon BLG) get folder + mask so they re-glob the right dir.
+            string result = SharedOutputFolder.ComposeRowTargetPath(@"D:\out\Instance1", "*.BLG");
+
+            Assert.AreEqual(@"D:\out\Instance1\*.BLG", result);
+        }
+
+        [TestMethod]
+        public void ComposeRowTargetPath_FolderPlusBareFileName_Combines()
+        {
+            string result = SharedOutputFolder.ComposeRowTargetPath(@"D:\out\Instance1", "ERRORLOG.out");
+
+            Assert.AreEqual(@"D:\out\Instance1\ERRORLOG.out", result);
+        }
+
+        [TestMethod]
+        public void ComposeRowTargetPath_EmptyBasePath_ReturnsLeaf()
+        {
+            Assert.AreEqual("*.BLG", SharedOutputFolder.ComposeRowTargetPath("", "*.BLG"));
+            Assert.AreEqual("*.BLG", SharedOutputFolder.ComposeRowTargetPath(null, "*.BLG"));
+        }
+
+        [TestMethod]
+        public void ComposeRowTargetPath_EmptyLeaf_ReturnsBasePath()
+        {
+            Assert.AreEqual(@"D:\out", SharedOutputFolder.ComposeRowTargetPath(@"D:\out", ""));
+            Assert.AreEqual(string.Empty, SharedOutputFolder.ComposeRowTargetPath(null, null));
+        }
+
+        [TestMethod]
+        public void ComposeRowTargetPath_UncFolderPlusMask_Combines()
+        {
+            string result = SharedOutputFolder.ComposeRowTargetPath(
+                @"\\server\share\output\Instance1", "*.trc");
+
+            Assert.AreEqual(@"\\server\share\output\Instance1\*.trc", result);
+        }
+
+        // ---- ComposeRowDisplayText (item 16: display-suffix composition) -----
+
+        private const string Suffix = " (from SharedOutputFiles)";
+
+        [TestMethod]
+        public void ComposeRowDisplayText_PrimaryFolder_NoSuffix()
+        {
+            string result = SharedOutputFolder.ComposeRowDisplayText("RunningDrivers.txt", false, Suffix);
+
+            Assert.AreEqual("RunningDrivers.txt", result);
+        }
+
+        [TestMethod]
+        public void ComposeRowDisplayText_SharedFolder_AppendsSuffix()
+        {
+            string result = SharedOutputFolder.ComposeRowDisplayText("RunningDrivers.txt", true, Suffix);
+
+            Assert.AreEqual("RunningDrivers.txt (from SharedOutputFiles)", result);
+        }
+
+        [TestMethod]
+        public void ComposeRowDisplayText_SharedButEmptySuffix_NoAppend()
+        {
+            string result = SharedOutputFolder.ComposeRowDisplayText("*.BLG", true, "");
+
+            Assert.AreEqual("*.BLG", result);
+        }
+
+        [TestMethod]
+        public void ComposeRowDisplayText_NullBaseLabel_ReturnsEmptyOrSuffix()
+        {
+            Assert.AreEqual(string.Empty, SharedOutputFolder.ComposeRowDisplayText(null, false, Suffix));
+            Assert.AreEqual(Suffix, SharedOutputFolder.ComposeRowDisplayText(null, true, Suffix));
+        }
+
+        // ---- Item 17: UNC / quoted / case-insensitive edge cases -------------
+
+        [TestMethod]
+        public void GetImportSearchPaths_QuotedInput_StripsQuotesAndResolves()
+        {
+            CreateDir("output");
+            string instance = CreateDir("output", "SERVER_SQL2019");
+            string shared = CreateDir("output", SharedOutputFolder.SharedFolderName);
+
+            // The user (or a command line) may pass the path wrapped in double quotes.
+            List<string> result = SharedOutputFolder.GetImportSearchPaths("\"" + instance + "\"");
+
+            Assert.AreEqual(2, result.Count, "Quoted input must be unquoted and still resolve the sibling.");
+            Assert.AreEqual(Path.GetFullPath(instance).TrimEnd(Path.DirectorySeparatorChar), result[0]);
+            Assert.AreEqual(Path.GetFullPath(shared).TrimEnd(Path.DirectorySeparatorChar), result[1]);
+        }
+
+        [TestMethod]
+        public void ResolveSharedSibling_CaseInsensitiveFolderName_Resolves()
+        {
+            // The on-disk folder name differs in case from the SharedFolderName constant; Windows
+            // paths are case-insensitive, so the sibling must still resolve.
+            CreateDir("output");
+            string instance = CreateDir("output", "SERVER_SQL2019");
+            string shared = CreateDir("output", "sharedoutputfiles"); // lower-case on disk
+
+            string resolved = SharedOutputFolder.ResolveSharedSibling(
+                Path.GetFullPath(instance).TrimEnd(Path.DirectorySeparatorChar));
+
+            Assert.IsNotNull(resolved, "Sibling with differently-cased name must resolve on Windows.");
+            Assert.IsTrue(
+                string.Equals(
+                    Path.GetFullPath(resolved).TrimEnd(Path.DirectorySeparatorChar),
+                    Path.GetFullPath(shared).TrimEnd(Path.DirectorySeparatorChar),
+                    System.StringComparison.OrdinalIgnoreCase),
+                "Resolved path should point at the on-disk shared folder.");
+        }
+
+        [TestMethod]
+        public void ResolveSharedSibling_UncPath_ResolvesSiblingName()
+        {
+            // Pure string behavior for a UNC instance path: the sibling is the SharedFolderName under
+            // the same parent. Directory.Exists will be false for a non-existent share, so this asserts
+            // the normalization/parenting logic via GetImportSearchPaths returning only the primary.
+            const string uncInstance = @"\\server\share\output\Instance1";
+
+            List<string> result = SharedOutputFolder.GetImportSearchPaths(uncInstance);
+
+            Assert.IsTrue(result.Count >= 1, "UNC primary path must always be returned first.");
+            Assert.AreEqual(
+                uncInstance.TrimEnd(Path.DirectorySeparatorChar),
+                result[0].TrimEnd(Path.DirectorySeparatorChar),
+                "UNC primary path must be preserved (no sibling appended when the share does not exist).");
+        }
     }
 }

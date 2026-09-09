@@ -30,15 +30,35 @@ TestingInfrastructure/
 ## Referencing product code
 
 The tests reference real production code via `ProjectReference` entries in
-`SqlNexus.UnitTests.csproj` (currently `RowsetImportEngine` and `sqlnexus`). To test
-additional product code:
+`SqlNexus.UnitTests.csproj` (currently `RowsetImportEngine`, `sqlnexus`, `TraceEventImporter`,
+`ErrorLogImporter`, and `SqlNexus.McpServer`). To test additional product code:
 
 1. Add a `ProjectReference` to the product project in `SqlNexus.UnitTests.csproj`.
-2. If you need to test `internal` members, add to the product project (e.g. in
-   `AssemblyInfo.cs` or the csproj):
-   `[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("SqlNexus.UnitTests")]`
-   (the `sqlnexus` project already does this.)
-3. Call directly into the product type from the test.
+2. If you need to test `internal` members, grant access from the product project with a
+   **strong-name-qualified** `InternalsVisibleTo` (see below), then call directly into the
+   product type from the test.
+
+### Strong naming and `InternalsVisibleTo`
+
+The product assemblies (`sqlnexus.exe`, the importers, and `SqlNexus.McpServer.exe`) are
+**strong-named** with the shared key `sqlnexus/SqlNexus.snk`. A strong-named assembly can only
+grant `InternalsVisibleTo` to a **strong-named** friend, so the test project is **also**
+strong-named with the same key (`SignAssembly=true` +
+`AssemblyOriginatorKeyFile=..\..\..\sqlnexus\SqlNexus.snk`).
+
+Because of that, a bare `InternalsVisibleTo("SqlNexus.UnitTests")` **no longer works** for any
+strong-named product assembly — the grant must include the test project's public key:
+
+```csharp
+// In the product project's AssemblyInfo.cs (public key is the one from SqlNexus.snk):
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo(
+    "SqlNexus.UnitTests, PublicKey=0024000004800000...<full 320-hex-char key>...")]
+```
+
+The `sqlnexus`, `ErrorLogImporter`, and `SqlNexus.McpServer` projects already do this; copy the
+exact `PublicKey=` value from any of their `AssemblyInfo.cs` files. Do **not** add an unqualified
+`InternalsVisibleTo("SqlNexus.UnitTests")` — it will silently fail to expose internals from a
+strong-named assembly.
 
 ## Running tests
 

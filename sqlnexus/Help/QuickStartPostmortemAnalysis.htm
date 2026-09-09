@@ -170,6 +170,21 @@ topic.&nbsp; </p>
 
 <p class=MsoNormal>&nbsp;</p>
 
+<p class=MsoNormal><b>Note about shared (host/OS) files:</b> When you point SQL
+Nexus at a SQL LogScout &quot;All Instances&quot; instance folder (for example
+<span class=SpellE>output</span>\SERVER_SQL2019), SQL Nexus also automatically
+scans a sibling folder named <b>SharedOutputFiles</b> in the same parent
+directory, if one exists.&nbsp; That folder holds non-instance-specific host/OS
+diagnostics (for example running drivers and disk information).&nbsp; Because of
+this, the import list may include rows for files that are not physically inside
+the folder you selected; such rows are labeled with a
+&quot;(from SharedOutputFiles)&quot; suffix, and the Import dialog shows an
+&quot;Also scanning: &#8230;&quot; note naming the second folder.&nbsp; A file
+that appears in both folders is imported only once (the copy in your selected
+folder wins) to avoid duplicate rows.</p>
+
+<p class=MsoNormal>&nbsp;</p>
+
 <ol style='margin-top:0in' start=1 type=1>
  <li class=MsoNormal style='margin-bottom:12.0pt;mso-list:l0 level1 lfo1;
      tab-stops:list .5in'>Capture a SQL Profiler trace that includes at least

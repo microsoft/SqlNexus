@@ -393,11 +393,12 @@ namespace sqlnexus
                         continue;
                     }
 
-                    string displayText = Path.GetFileName(f) + (isSharedFolder ? SharedOutputLabelSuffix : "");
+                    string displayText = SharedOutputFolder.ComposeRowDisplayText(
+                        Path.GetFileName(f), isSharedFolder, SharedOutputLabelSuffix);
                     Label rowLabel = AddFileRowReturningLabel(rowIndex, displayText, Importer, "");
                     // Record the actual full path (already absolute from Directory.GetFiles) so the
                     // import loop does not reconstruct it from the primary path + display label.
-                    m_RowTargetPaths[rowLabel] = f;
+                    m_RowTargetPaths[rowLabel] = SharedOutputFolder.ComposeRowTargetPath(basePath, f);
                     // Remember the primary-folder file name and size so a same-named sibling file is
                     // skipped (and the warning can compare sizes).
                     if (!isSharedFolder && primaryNameToSize != null)
@@ -427,11 +428,12 @@ namespace sqlnexus
                     effectiveMask = Mask;
                 }
 
-                string displayText = effectiveMask + (isSharedFolder ? SharedOutputLabelSuffix : "");
+                string displayText = SharedOutputFolder.ComposeRowDisplayText(
+                    effectiveMask, isSharedFolder, SharedOutputLabelSuffix);
                 Label rowLabel = AddFileRowReturningLabel(rowIndex, displayText, Importer, "");
                 // For mask-based importers (e.g. Perfmon BLG) the importer re-globs from the path
                 // it is given; record the folder + mask so it scans the correct directory.
-                m_RowTargetPaths[rowLabel] = Path.Combine(basePath, effectiveMask);
+                m_RowTargetPaths[rowLabel] = SharedOutputFolder.ComposeRowTargetPath(basePath, effectiveMask);
 
                 return true;
             }

@@ -223,6 +223,53 @@ namespace sqlnexus
         }
 
         /// <summary>
+        /// Composes the target path an importer row should open, given the folder the files were
+        /// found in and either a concrete file name or a mask. Extracted from AddFilesFromDirectory
+        /// so the (previously WinForms-embedded) path composition is unit-testable.
+        ///
+        /// For per-file importers pass the file's own full path (already absolute) as
+        /// <paramref name="fileNameOrMask"/> with a null/empty <paramref name="basePath"/>, or the
+        /// bare file name with the folder; for mask-based importers pass the folder + mask. The result
+        /// is always the folder combined with the leaf, matching what the import loop previously built.
+        /// </summary>
+        /// <param name="basePath">The folder the file/mask was discovered in. May be null/empty when
+        /// <paramref name="fileNameOrMask"/> is already a rooted full path.</param>
+        /// <param name="fileNameOrMask">A concrete file name, a mask (e.g. "*.BLG"), or a full path.</param>
+        /// <returns>The path to hand the importer.</returns>
+        public static string ComposeRowTargetPath(string basePath, string fileNameOrMask)
+        {
+            if (string.IsNullOrEmpty(fileNameOrMask))
+                return basePath ?? string.Empty;
+
+            // If the caller already has a rooted path, use it verbatim (per-file importers pass the
+            // absolute path returned by Directory.GetFiles).
+            if (Path.IsPathRooted(fileNameOrMask))
+                return fileNameOrMask;
+
+            if (string.IsNullOrEmpty(basePath))
+                return fileNameOrMask;
+
+            return Path.Combine(basePath, fileNameOrMask);
+        }
+
+        /// <summary>
+        /// Composes the row's display text: the base label (file name or mask) plus, when the file
+        /// came from the sibling shared folder, the provenance suffix. Extracted so the display-text
+        /// composition is unit-testable without WinForms.
+        /// </summary>
+        /// <param name="baseLabel">The file name or mask shown to the user.</param>
+        /// <param name="isSharedFolder">True when the file came from the sibling shared folder.</param>
+        /// <param name="sharedSuffix">The provenance suffix to append (e.g. " (from SharedOutputFiles)").</param>
+        /// <returns>The composed display text.</returns>
+        public static string ComposeRowDisplayText(string baseLabel, bool isSharedFolder, string sharedSuffix)
+        {
+            string label = baseLabel ?? string.Empty;
+            if (isSharedFolder && !string.IsNullOrEmpty(sharedSuffix))
+                return label + sharedSuffix;
+            return label;
+        }
+
+        /// <summary>
         /// Returns the validated path to the sibling <see cref="SharedFolderName"/> folder if it
         /// exists as a direct sibling of <paramref name="normalizedPrimary"/>; otherwise null.
         /// </summary>
