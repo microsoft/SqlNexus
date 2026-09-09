@@ -140,6 +140,26 @@ namespace SqlNexus.UnitTests.sqlnexus
         }
 
         [TestMethod]
+        public void GetImportSearchPaths_PrimaryContainsDotDotSegment_NormalizesAndResolvesSibling()
+        {
+            // Path.GetFullPath collapses ".." before resolution, so an instance path expressed with
+            // a traversal segment still resolves to the same real folder and its sibling shared
+            // folder. This documents the post-normalization behavior after removing the (dead)
+            // direct-sibling guard.
+            CreateDir("output");
+            string instance = CreateDir("output", "SERVER_SQL2019");
+            string shared = CreateDir("output", SharedOutputFolder.SharedFolderName);
+
+            string traversalInput = Path.Combine(instance, "sub", "..");
+
+            List<string> result = SharedOutputFolder.GetImportSearchPaths(traversalInput);
+
+            Assert.AreEqual(2, result.Count, "Normalized traversal path should still find the sibling.");
+            Assert.AreEqual(Path.GetFullPath(instance).TrimEnd(Path.DirectorySeparatorChar), result[0]);
+            Assert.AreEqual(Path.GetFullPath(shared).TrimEnd(Path.DirectorySeparatorChar), result[1]);
+        }
+
+        [TestMethod]
         public void GetImportSearchPaths_DriveRootInput_PreservesRootedPath()
         {
             string driveRoot = Path.GetPathRoot(Path.GetFullPath(_root));

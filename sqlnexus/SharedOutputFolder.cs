@@ -18,8 +18,9 @@ namespace sqlnexus
     ///
     /// This type is intentionally free of WinForms/SQL dependencies so it can be unit-tested.
     /// The shared folder name and location (direct sibling only) are fixed by design and are never
-    /// built from user input, so there is no injection surface. The resolved sibling is validated
-    /// to be a real direct sibling of the primary folder (rejecting directory-traversal tricks).
+    /// built from user input, so there is no injection surface. The resolved sibling is the fixed
+    /// <see cref="SharedFolderName"/> combined with the primary folder's parent, and is only used
+    /// when <see cref="Directory.Exists(string)"/> confirms it is present.
     /// </summary>
     internal static class SharedOutputFolder
     {
@@ -100,23 +101,6 @@ namespace sqlnexus
             {
                 return null;
             }
-
-            // Security: ensure the resolved candidate is a REAL direct sibling - i.e. its parent is
-            // exactly the primary folder's parent, and its leaf name is exactly SharedFolderName.
-            // This rejects traversal or symlink-style tricks that resolve elsewhere.
-            string candidateParent = Path.GetDirectoryName(candidate);
-            string candidateName = Path.GetFileName(candidate);
-
-            bool isDirectSibling =
-                candidateParent != null &&
-                string.Equals(
-                    NormalizePath(candidateParent),
-                    NormalizePath(parent),
-                    StringComparison.OrdinalIgnoreCase) &&
-                string.Equals(candidateName, SharedFolderName, StringComparison.OrdinalIgnoreCase);
-
-            if (!isDirectSibling)
-                return null;
 
             // Do not treat the primary folder itself as its own shared sibling.
             if (string.Equals(candidate, normalizedPrimary, StringComparison.OrdinalIgnoreCase))

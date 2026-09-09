@@ -143,6 +143,24 @@ namespace sqlnexus
             return false;
         }
 
+        // Returns the number of files directly contained in a folder, or 0 when the folder is
+        // missing or cannot be enumerated. Used only for provenance logging.
+        private int CountFilesInFolder(string folder)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(folder) || !Directory.Exists(folder))
+                    return 0;
+                return Directory.GetFiles(folder).Length;
+            }
+            catch (Exception ex)
+            {
+                MainForm.LogMessage("Unable to count files in '" + folder + "': " + ex.Message,
+                    MessageOptions.Silent);
+                return 0;
+            }
+        }
+
         private bool AddFiles(string Mask, INexusImporter Importer)
         {
             // Resolve the folders to search: the primary import path, plus the sibling
@@ -155,11 +173,19 @@ namespace sqlnexus
                 searchPaths.Add(cbPath.Text.Trim().Replace("\"", ""));
 
             bool anyAdded = false;
+            int blockedCounter = 0;
             for (int idx = 0; idx < searchPaths.Count; idx++)
             {
                 bool isShared = idx > 0; // index 0 is always the primary import folder
-                if (AddFilesFromDirectory(Mask, Importer, searchPaths[idx], isShared))
+                if (AddFilesFromDirectory(Mask, Importer, searchPaths[idx], isShared, ref blockedCounter))
                     anyAdded = true;
+            }
+
+            // Log the blocked count once per mask (across all searched folders) rather than once per
+            // folder, so the log does not show two competing numbers for the same mask.
+            if (Importer is INexusFileImporter)
+            {
+                MainForm.LogMessage("Number of files blocked for import (due to multiple instance or unrelated files such as sqldump*: " + blockedCounter, MessageOptions.Silent);
             }
             return anyAdded;
         }
@@ -168,7 +194,7 @@ namespace sqlnexus
         // When <paramref name="isSharedFolder"/> is true the files come from the sibling
         // SharedOutputFiles folder; such rows get a cosmetic "(SharedOutput)" label suffix and the
         // real target path is recorded in m_RowTargetPaths so the import loop opens the correct file.
-        private bool AddFilesFromDirectory(string Mask, INexusImporter Importer, string basePath, bool isSharedFolder)
+        private bool AddFilesFromDirectory(string Mask, INexusImporter Importer, string basePath, bool isSharedFolder, ref int blockedCounter)
         {
             if (string.IsNullOrEmpty(basePath) || !Directory.Exists(basePath))
                 return false;
@@ -210,7 +236,6 @@ namespace sqlnexus
             if (Importer is INexusFileImporter)
             {
 
-                int blockedCounter = 0;
                 int addedCounter = 0;
                 foreach (string f in includedFiles)
                 {
@@ -232,7 +257,6 @@ namespace sqlnexus
                     addedCounter++;
 
                 }
-                MainForm.LogMessage("Number of files blocked for import (due to multiple instance or unrelated files such as sqldump*: " + blockedCounter, MessageOptions.Silent);
                 return addedCounter > 0;
             }
             else
@@ -1339,6 +1363,28 @@ namespace sqlnexus
             // Setting working directory for linux perf importer
             LinuxPerfImporter.Model.ConfigValues.WorkingDirectory = srcPath;
 
+            // Record in the log whether a sibling SharedOutputFiles folder was also searched, so the
+            // provenance of imported files is captured in sqlnexus.log (not only via the GUI suffix).
+            string resolvedShared = SharedOutputFolder.ResolveSharedSibling(
+                srcPath.TrimEnd('\\'));
+            if (resolvedShared != null)
+            {
+                MainForm.LogMessage(
+                    "Shared output folder detected. Import will search two folders: primary '" +
+                    srcPath.TrimEnd('\\') + "' (" + CountFilesInFolder(srcPath) +
+                    " file(s)) and shared '" + resolvedShared + "' (" +
+                    CountFilesInFolder(resolvedShared) + " file(s)).",
+                    MessageOptions.Silent);
+            }
+            else
+            {
+                MainForm.LogMessage(
+                    "No sibling '" + SharedOutputFolder.SharedFolderName +
+                    "' folder found. Importing from primary folder '" + srcPath.TrimEnd('\\') +
+                    "' only (" + CountFilesInFolder(srcPath) + " file(s)).",
+                    MessageOptions.Silent);
+            }
+
             //find the instance name by locating it inside ##SQLDIAG.LOG
             instances = new SqlInstances(srcPath);
 
@@ -1422,6 +1468,20 @@ namespace sqlnexus
                             string targetPath;
                             if (!m_RowTargetPaths.TryGetValue(ll, out targetPath))
                                 targetPath = srcPath + ll.Text;
+
+                            // The LinuxPerfImporter changes to ConfigValues.WorkingDirectory when it
+                            // runs, so point it at the folder this row was actually discovered in.
+                            // Without this a *.perf file found in the sibling SharedOutputFiles folder
+                            // would be imported from the primary folder instead (reporting success while
+                            // importing nothing). Match by Name because importers are reflection-loaded
+                            // and may not share this host's LinuxPerfImporter type identity.
+                            if (ri.Name != null &&
+                                ri.Name.IndexOf("Linux Performance", StringComparison.OrdinalIgnoreCase) >= 0)
+                            {
+                                string targetDir = Path.GetDirectoryName(targetPath);
+                                if (!string.IsNullOrEmpty(targetDir))
+                                    LinuxPerfImporter.Model.ConfigValues.WorkingDirectory = targetDir;
+                            }
 
                             ri.Initialize(targetPath,
                                                     Globals.credentialMgr.ConnectionString,
