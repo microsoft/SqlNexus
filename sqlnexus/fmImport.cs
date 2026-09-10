@@ -87,6 +87,10 @@ namespace sqlnexus
         private readonly HashSet<string> m_MissingFoldersWarned =
             new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
+        // The sibling shared folder most recently announced (log/AccessibleDescription), so the
+        // full-path announcement is emitted only when it changes rather than on every keystroke.
+        private string m_lastAnnouncedSibling;
+
         // Display suffix appended to import rows whose file/mask was discovered in the sibling
         // SharedOutputFiles folder. This is purely cosmetic (for user/screen-reader visibility) and
         // is never parsed to build a path - the actual path comes from m_RowTargetPaths. Derived from
@@ -295,8 +299,8 @@ namespace sqlnexus
             }
 
             // Log the blocked count once per mask (across all searched folders) rather than once per
-            // folder, so the log does not show two competing numbers for the same mask.
-            if (Importer is INexusFileImporter)
+            // folder. Only when something was actually blocked, to avoid a "...: 0" line per mask.
+            if (Importer is INexusFileImporter && blockedCounter > 0)
             {
                 MainForm.LogMessage("Number of files blocked for import (due to multiple instance or unrelated files such as sqldump*: " + blockedCounter, MessageOptions.Silent);
             }
@@ -365,24 +369,36 @@ namespace sqlnexus
 
                 foreach (string dup in skippedSameSize)
                 {
+                    // Same name AND size - almost certainly the identical file. Low-risk, so this stays
+                    // at Silent (log file only) to avoid noise; no data is lost (the primary copy imports).
                     MainForm.LogMessage(
                         "Shared folder: skipping duplicate file '" + Path.GetFileName(dup) +
-                        "' found in SharedOutputFiles - a file with the same name and size is already " +
-                        "being imported from the primary folder (avoids duplicate rows).",
-                        MessageOptions.Both);
+                        "' - same name and size as a file already being imported from the primary folder " +
+                        "(avoids duplicate rows).",
+                        MessageOptions.Silent);
                 }
 
-                foreach (string dup in skippedDifferentSize)
+                // Different-size collisions are the important case (two files share a name but differ,
+                // so one copy is NOT imported). A per-file status-bar line is overwritten instantly and
+                // never read, so aggregate them into ONE dialog (MessageOptions.All) with a count and the
+                // file names. Full paths are logged separately at Silent for diagnostics.
+                if (skippedDifferentSize.Count > 0)
                 {
-                    // Ambiguous: same name but different (or unreadable) size. Still skipped so we never
-                    // auto double-import, but surfaced clearly so the user can import it manually if the
-                    // two files are genuinely different captures.
+                    var names = skippedDifferentSize.Select(Path.GetFileName).ToList();
                     MainForm.LogMessage(
-                        "Shared folder: skipping duplicate file '" + Path.GetFileName(dup) + "' - WARNING: it " +
-                        "exists in BOTH the primary folder and SharedOutputFiles with a DIFFERENT size. The " +
-                        "SharedOutputFiles copy was NOT imported (the primary copy wins). If these are different " +
-                        "captures, import the SharedOutputFiles copy ('" + dup + "') separately.",
-                        MessageOptions.Both);
+                        skippedDifferentSize.Count + " file(s) exist in BOTH the primary folder and " +
+                        SharedOutputFolder.SharedFolderName + " with the SAME name but a DIFFERENT size. " +
+                        "The " + SharedOutputFolder.SharedFolderName + " copy was NOT imported (the primary " +
+                        "copy wins). If these are different captures, import that folder separately. " +
+                        "File(s): " + string.Join(", ", names),
+                        MessageOptions.All);
+
+                    foreach (string dup in skippedDifferentSize)
+                    {
+                        MainForm.LogMessage(
+                            "Shared folder: not imported (different size, primary wins): " + dup,
+                            MessageOptions.Silent);
+                    }
                 }
 
                 if (allMatches.Length == 0)
@@ -2364,6 +2380,10 @@ namespace sqlnexus
                     laSharedFolder.Text = "Also scanning: " + shortPath;
                     laSharedFolder.AccessibleName = "Also scanning sibling folder " + sibling;
                     toolTip1.SetToolTip(laSharedFolder, sibling);
+                    // The banner Label is not focusable, so mirror the announcement onto the focusable
+                    // path combo box (which a screen reader user WILL land on) so they are told a second
+                    // folder was added. Also gives a keyboard-only user the full path without a mouse.
+                    cbPath.AccessibleDescription = "Also scanning sibling shared folder: " + sibling;
                     // Re-assert the info-band colors here because ThemeManager.ApplyTheme (run once at
                     // construction) overwrites control colors for non-Default themes. SystemColors.Info
                     // is contrast-safe and honored by High Contrast mode, and the "Also scanning:" text
@@ -2371,18 +2391,32 @@ namespace sqlnexus
                     laSharedFolder.BackColor = SystemColors.Info;
                     laSharedFolder.ForeColor = SystemColors.InfoText;
                     ShowSharedFolderLabel(true);
+
+                    // Surface the full path in the log (All) the first time a given sibling is detected,
+                    // so a keyboard-only user has a non-mouse way to read it (the label is abbreviated).
+                    if (!string.Equals(sibling, m_lastAnnouncedSibling, StringComparison.OrdinalIgnoreCase))
+                    {
+                        MainForm?.LogMessage(
+                            "A sibling shared folder was detected and will also be scanned during import: " +
+                            sibling, MessageOptions.All);
+                        m_lastAnnouncedSibling = sibling;
+                    }
                 }
                 else
                 {
                     laSharedFolder.Text = "";
+                    laSharedFolder.AccessibleName = "";       // clear stale path from the hidden banner
                     toolTip1.SetToolTip(laSharedFolder, "");
+                    cbPath.AccessibleDescription = "";        // clear the mirrored announcement
+                    m_lastAnnouncedSibling = null;
                     ShowSharedFolderLabel(false);
                 }
             }
             catch (Exception ex)
             {
                 // A malformed path in the combo must never break the form; just hide the affordance.
-                MainForm.LogMessage("Unable to update shared-folder affordance: " + ex.Message,
+                // MainForm can be null on the parameterless-constructor path, so guard it.
+                MainForm?.LogMessage("Unable to update shared-folder affordance: " + ex.Message,
                     MessageOptions.Silent);
                 ShowSharedFolderLabel(false);
             }
@@ -2391,7 +2425,7 @@ namespace sqlnexus
         // Abbreviates a long path to "<root>\...\<last-two-segments>" so the affordance stays readable
         // for deeply nested capture folders. Returns the original path when it is already short or has
         // too few segments to shorten. Purely cosmetic - the full path is shown in the tooltip.
-        private static string AbbreviatePath(string path, int maxLength)
+        private string AbbreviatePath(string path, int maxLength)
         {
             if (string.IsNullOrEmpty(path) || path.Length <= maxLength)
                 return path;
@@ -2408,9 +2442,11 @@ namespace sqlnexus
                            Path.DirectorySeparatorChar + tail;
                 }
             }
-            catch
+            catch (Exception ex)
             {
                 // Fall through to the raw path on any parsing issue; the tooltip still has the full text.
+                MainForm?.LogMessage("Unable to abbreviate path '" + path + "': " + ex.Message,
+                    MessageOptions.Silent);
             }
             return path;
         }
