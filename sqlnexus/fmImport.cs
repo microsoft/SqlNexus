@@ -281,17 +281,16 @@ namespace sqlnexus
                 if (SharedOutputFolder.ShouldSkipSiblingForMask(
                         isShared, anyAdded, Importer is INexusFileImporter))
                 {
-                    // Surface this at MessageOptions.All (not Silent): for aggregating importers we skip
-                    // the ENTIRE sibling folder for this mask when the primary already matched, so if a
-                    // customer genuinely has (e.g.) .blg files in both folders, this is where the sibling
-                    // set is dropped. Name the folder so it is discoverable, not silent.
+                    // Informational, not an error: the primary folder already provided files for this
+                    // mask, so they WERE imported. We just don't ALSO import the sibling copies (that
+                    // would re-run table setup over already-imported data). Log + status bar (Both),
+                    // not a modal dialog, so it is discoverable without alarming the user.
                     MainForm.LogMessage(
-                        "Shared folder: NOT importing files matching '" + Mask + "' from '" +
-                        searchPaths[idx] + "' for importer '" +
+                        "Files matching '" + Mask + "' were imported from the primary folder. Additional " +
+                        "matching files in '" + searchPaths[idx] + "' were not also imported (to avoid " +
+                        "re-processing the same data) for importer '" +
                         (Importer != null ? Importer.Name : "(null)") +
-                        "' because the primary folder already provided files for this mask (a second run " +
-                        "would re-run table setup over already-imported data). If you need those files, " +
-                        "import that folder separately.", MessageOptions.All);
+                        "'. If you need those, import that folder separately.", MessageOptions.Both);
                     continue;
                 }
 
