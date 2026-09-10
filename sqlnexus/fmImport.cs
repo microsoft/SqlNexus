@@ -1389,9 +1389,11 @@ namespace sqlnexus
                         // A selected/enabled importer that matched no input files is worth surfacing:
                         // in a /M-driven automation run this usually means the expected data is missing.
                         enabledButEmptyImporters.Add(prod.Name);
+                        // Informational only (an enabled importer simply had nothing to import) - not a
+                        // warning or error, so log + status bar (Both), not a modal dialog (All).
                         MainForm.LogMessage("Importer '" + prod.Name + "' is enabled but found NO matching files (masks: "
                             + string.Join(", ", prod.SupportedMasks) + ") in the import path. Nothing to import for this importer.",
-                            MessageOptions.All);
+                            MessageOptions.Both);
 
                         // Under /M, a requested importer that finds no files means the data automation
                         // asked for did not arrive; flag it so the process returns a non-zero exit code.
@@ -1929,7 +1931,7 @@ namespace sqlnexus
                             {
                                 MainForm.LogMessage("Custom XEL import is enabled but found NO matching files "
                                     + "(SQLDiag/AlwaysOn Health/system_health) in the import path. Nothing to import.",
-                                    MessageOptions.All);
+                                    MessageOptions.Both);
 
                                 if (Globals.EnabledImporters != null)
                                     Globals.RequestedImporterMissingOrEmpty = true;
