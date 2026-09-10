@@ -72,7 +72,21 @@ namespace sqlnexus
                         continue;
 
                     bool isSharedFolder = idx > 0; // index 0 is always the primary import folder
-                    string[] files = Directory.GetFiles(searchPath, rawfile.Mask);
+                    string[] files;
+                    try
+                    {
+                        files = Directory.GetFiles(searchPath, rawfile.Mask);
+                    }
+                    catch (Exception ex) when (ex is UnauthorizedAccessException || ex is IOException || ex is PathTooLongException)
+                    {
+                        // A restrictive-permission / too-long / transient-IO folder (often the sibling
+                        // SharedOutputFiles the user never selected) must not abort the whole raw-file
+                        // import. Log it and carry on with the remaining folders.
+                        Util.Logger.LogMessage(
+                            "Unable to enumerate '" + rawfile.Mask + "' in '" + searchPath + "': " +
+                            ex.Message + " - skipping this folder and continuing.", MessageOptions.All);
+                        continue;
+                    }
 
                     // For the sibling folder, drop any file whose name was already imported from the
                     // primary folder (reuses the same name-based, unit-tested rule as the other

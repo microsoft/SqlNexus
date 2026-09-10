@@ -304,7 +304,21 @@ namespace sqlnexus
             if (string.IsNullOrEmpty(basePath) || !Directory.Exists(basePath))
                 return false;
 
-            string[] allMatches = Directory.GetFiles(basePath, Mask);
+            string[] allMatches;
+            try
+            {
+                allMatches = Directory.GetFiles(basePath, Mask);
+            }
+            catch (Exception ex) when (ex is UnauthorizedAccessException || ex is IOException || ex is PathTooLongException)
+            {
+                // A restrictive-permission / too-long / transient-IO folder (often the sibling
+                // SharedOutputFiles the user never selected) must not abort the whole enumeration.
+                // Log it and carry on with the other folders.
+                MainForm.LogMessage(
+                    "Unable to enumerate '" + Mask + "' in '" + basePath + "': " + ex.Message +
+                    " - skipping this folder and continuing.", MessageOptions.All);
+                return false;
+            }
 
 
             //if no file found for this mask, just return
@@ -1427,9 +1441,10 @@ namespace sqlnexus
                 tlpFiles.Visible = true;
                 ssStatus.Visible = true;
                 // The compact-form affordance no longer applies once expanded; hide the label and
-                // clear the flag so a later path change does not try to shrink the (now large) form.
+                // clear the flag/delta so a later path change does not try to shrink the (now large) form.
                 laSharedFolder.Visible = false;
                 m_sharedFolderLabelShown = false;
+                m_sharedFolderLabelDelta = 0;
             }
 
             MainForm.LogMessage("Starting import...");
@@ -2354,11 +2369,13 @@ namespace sqlnexus
         }
 
         // Shows/hides the shared-folder label in the COMPACT (pre-import) form only, growing the top
-        // panel and the form by the label's row height so the label sits BELOW the Import/Close buttons
-        // instead of overlapping them. Once the import view is expanded (tlpFiles visible) the form is
-        // already large, so this is a no-op there.
+        // panel and the form by the label's ACTUAL rendered height so the label sits BELOW the
+        // Import/Close buttons instead of overlapping them. Using the runtime height (not a fixed
+        // pixel constant) keeps the layout correct under High-DPI / AutoScaleMode.Font at 125%/150%.
+        // Once the import view is expanded (tlpFiles visible) the form is already large, so this is a
+        // no-op there.
         private bool m_sharedFolderLabelShown;
-        private const int SharedFolderLabelRowHeight = 22;
+        private int m_sharedFolderLabelDelta; // actual pixels added, so we remove exactly the same
         private void ShowSharedFolderLabel(bool show)
         {
             if (tlpFiles.Visible)
@@ -2369,9 +2386,25 @@ namespace sqlnexus
 
             if (show != m_sharedFolderLabelShown)
             {
-                int delta = show ? SharedFolderLabelRowHeight : -SharedFolderLabelRowHeight;
-                paTop.Height += delta;
-                this.ClientSize = new Size(this.ClientSize.Width, this.ClientSize.Height + delta);
+                if (show)
+                {
+                    // Measure the label's actual height at the current font/DPI (plus its vertical
+                    // margin) instead of assuming a fixed pixel row height.
+                    int rowHeight = laSharedFolder.PreferredHeight
+                        + laSharedFolder.Margin.Top + laSharedFolder.Margin.Bottom;
+                    if (rowHeight <= 0)
+                        rowHeight = laSharedFolder.Height; // defensive fallback
+                    m_sharedFolderLabelDelta = rowHeight;
+
+                    paTop.Height += rowHeight;
+                    this.ClientSize = new Size(this.ClientSize.Width, this.ClientSize.Height + rowHeight);
+                }
+                else
+                {
+                    paTop.Height -= m_sharedFolderLabelDelta;
+                    this.ClientSize = new Size(this.ClientSize.Width, this.ClientSize.Height - m_sharedFolderLabelDelta);
+                    m_sharedFolderLabelDelta = 0;
+                }
                 m_sharedFolderLabelShown = show;
             }
 
