@@ -59,16 +59,43 @@ namespace sqlnexus
             {
                 CreateTable(rawfile.TableName);
 
-                foreach (string searchPath in m_SearchPaths)
+                // Track file names already imported for THIS mask from the primary folder so a
+                // same-named file discovered in the sibling SharedOutputFiles folder is not imported
+                // again into the same table (silent duplicate rows). SQL LogScout writes host/OS files
+                // to EITHER folder exclusively, so this is a safety net; the primary folder wins.
+                var importedNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+                for (int idx = 0; idx < m_SearchPaths.Count; idx++)
                 {
+                    string searchPath = m_SearchPaths[idx];
                     if (string.IsNullOrEmpty(searchPath) || !Directory.Exists(searchPath))
                         continue;
 
+                    bool isSharedFolder = idx > 0; // index 0 is always the primary import folder
                     string[] files = Directory.GetFiles(searchPath, rawfile.Mask);
 
-                    foreach (string file in files)
+                    // For the sibling folder, drop any file whose name was already imported from the
+                    // primary folder (reuses the same name-based, unit-tested rule as the other
+                    // importers). Primary wins; the duplicate is logged, not silently imported twice.
+                    string[] filesToImport = files;
+                    if (isSharedFolder)
+                    {
+                        filesToImport = SharedOutputFolder.GetSiblingOnlyFiles(importedNames, files).ToArray();
+
+                        foreach (string dup in files.Except(filesToImport, StringComparer.OrdinalIgnoreCase))
+                        {
+                            Util.Logger.LogMessage(
+                                "Shared folder: skipping duplicate file '" + Path.GetFileName(dup) +
+                                "' found in " + SharedOutputFolder.SharedFolderName + " - a file with the " +
+                                "same name is already being imported from the primary folder (avoids duplicate rows).",
+                                MessageOptions.Both);
+                        }
+                    }
+
+                    foreach (string file in filesToImport)
                     {
                         ImportFile(rawfile.TableName, file);
+                        importedNames.Add(Path.GetFileName(file));
                         fileCntr++;
                     }
                 }
