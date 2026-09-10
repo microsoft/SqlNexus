@@ -219,17 +219,14 @@ namespace sqlnexus
             // 
             // laSharedFolder
             // 
-            this.laSharedFolder.AutoEllipsis = true;
-            this.laSharedFolder.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.laSharedFolder.AutoSize = true;
+            this.laSharedFolder.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.laSharedFolder.BackColor = System.Drawing.SystemColors.Info;
             this.laSharedFolder.ForeColor = System.Drawing.SystemColors.InfoText;
             this.laSharedFolder.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.laSharedFolder.Padding = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.laSharedFolder.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.laSharedFolder.Location = new System.Drawing.Point(0, 63);
             this.laSharedFolder.Name = "laSharedFolder";
-            this.laSharedFolder.Size = new System.Drawing.Size(455, 18);
             this.laSharedFolder.TabIndex = 7;
             this.laSharedFolder.Text = "";
             this.laSharedFolder.Visible = false;

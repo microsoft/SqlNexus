@@ -270,6 +270,28 @@ namespace sqlnexus
         }
 
         /// <summary>
+        /// Decides whether the sibling shared folder should be SKIPPED for a given mask. Extracted so
+        /// the orchestration rule is unit-testable without WinForms.
+        ///
+        /// The rule applies only to mask-based / aggregating importers (Perfmon *.blg, ReadTrace) - the
+        /// ones that are handed a folder+mask and re-glob it, running table setup once per row. For
+        /// those, if the primary folder already produced files for the mask, adding a second (sibling)
+        /// row would trigger a second Initialize+DoImport that re-runs table setup over the first run's
+        /// results. So the sibling is a FALLBACK only: skip it when the primary already matched.
+        ///
+        /// Per-file importers (INexusFileImporter) are never skipped here - they add one row per file
+        /// and dedupe by file name instead (see <see cref="FilterDuplicateSiblingFiles"/>).
+        /// </summary>
+        /// <param name="isSharedFolder">True when evaluating the sibling shared folder (not the primary).</param>
+        /// <param name="primaryAlreadyMatched">True when the primary folder already produced a row for this mask.</param>
+        /// <param name="isPerFileImporter">True when the importer is an INexusFileImporter (per-file).</param>
+        /// <returns>True to skip the sibling folder for this mask; false to scan it.</returns>
+        public static bool ShouldSkipSiblingForMask(bool isSharedFolder, bool primaryAlreadyMatched, bool isPerFileImporter)
+        {
+            return isSharedFolder && primaryAlreadyMatched && !isPerFileImporter;
+        }
+
+        /// <summary>
         /// Returns the validated path to the sibling <see cref="SharedFolderName"/> folder if it
         /// exists as a direct sibling of <paramref name="normalizedPrimary"/>; otherwise null.
         /// </summary>

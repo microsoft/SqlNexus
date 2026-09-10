@@ -475,6 +475,42 @@ namespace SqlNexus.UnitTests.sqlnexus
             Assert.AreEqual(Suffix, SharedOutputFolder.ComposeRowDisplayText(null, true, Suffix));
         }
 
+        // ---- ShouldSkipSiblingForMask (mask-importer fallback rule) ----------
+
+        [TestMethod]
+        public void ShouldSkipSiblingForMask_MaskImporterPrimaryMatched_Skips()
+        {
+            // Aggregating importer (not per-file), sibling folder, primary already matched -> skip.
+            Assert.IsTrue(SharedOutputFolder.ShouldSkipSiblingForMask(
+                isSharedFolder: true, primaryAlreadyMatched: true, isPerFileImporter: false));
+        }
+
+        [TestMethod]
+        public void ShouldSkipSiblingForMask_MaskImporterPrimaryEmpty_DoesNotSkip()
+        {
+            // Primary matched nothing -> the sibling is still scanned (no lost import opportunity).
+            Assert.IsFalse(SharedOutputFolder.ShouldSkipSiblingForMask(
+                isSharedFolder: true, primaryAlreadyMatched: false, isPerFileImporter: false));
+        }
+
+        [TestMethod]
+        public void ShouldSkipSiblingForMask_PerFileImporter_NeverSkips()
+        {
+            // Per-file importers dedupe by file name instead; the whole-folder skip never applies.
+            Assert.IsFalse(SharedOutputFolder.ShouldSkipSiblingForMask(
+                isSharedFolder: true, primaryAlreadyMatched: true, isPerFileImporter: true));
+        }
+
+        [TestMethod]
+        public void ShouldSkipSiblingForMask_PrimaryFolder_NeverSkips()
+        {
+            // The primary folder (idx 0) is never skipped, regardless of the other flags.
+            Assert.IsFalse(SharedOutputFolder.ShouldSkipSiblingForMask(
+                isSharedFolder: false, primaryAlreadyMatched: true, isPerFileImporter: false));
+            Assert.IsFalse(SharedOutputFolder.ShouldSkipSiblingForMask(
+                isSharedFolder: false, primaryAlreadyMatched: false, isPerFileImporter: true));
+        }
+
         // ---- Item 17: UNC / quoted / case-insensitive edge cases -------------
 
         [TestMethod]

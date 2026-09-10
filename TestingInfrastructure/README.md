@@ -47,7 +47,7 @@ strong-named with the same key (`SignAssembly=true` +
 `AssemblyOriginatorKeyFile=..\..\..\sqlnexus\SqlNexus.snk`).
 
 Because of that, a bare `InternalsVisibleTo("SqlNexus.UnitTests")` **no longer works** for any
-strong-named product assembly — the grant must include the test project's public key:
+strong-named product assembly -- the grant must include the test project's public key:
 
 ```csharp
 // In the product project's AssemblyInfo.cs (public key is the one from SqlNexus.snk):
@@ -57,7 +57,7 @@ strong-named product assembly — the grant must include the test project's public
 
 The `sqlnexus`, `ErrorLogImporter`, and `SqlNexus.McpServer` projects already do this; copy the
 exact `PublicKey=` value from any of their `AssemblyInfo.cs` files. Do **not** add an unqualified
-`InternalsVisibleTo("SqlNexus.UnitTests")` — it will silently fail to expose internals from a
+`InternalsVisibleTo("SqlNexus.UnitTests")` -- it will silently fail to expose internals from a
 strong-named assembly.
 
 ## Running tests

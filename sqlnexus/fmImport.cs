@@ -278,7 +278,8 @@ namespace sqlnexus
                 // row triggers a second Initialize+DoImport that would re-run table setup over the
                 // first run's results. The sibling is therefore a fallback only - if the primary
                 // matched nothing, the sibling is still imported (no lost import opportunity).
-                if (isShared && anyAdded && !(Importer is INexusFileImporter))
+                if (SharedOutputFolder.ShouldSkipSiblingForMask(
+                        isShared, anyAdded, Importer is INexusFileImporter))
                 {
                     // Surface this at MessageOptions.All (not Silent): for aggregating importers we skip
                     // the ENTIRE sibling folder for this mask when the primary already matched, so if a
@@ -309,8 +310,8 @@ namespace sqlnexus
 
         // Enumerates a single directory for the given mask and adds the corresponding import rows.
         // When <paramref name="isSharedFolder"/> is true the files come from the sibling
-        // SharedOutputFiles folder; such rows get a cosmetic "(SharedOutput)" label suffix and the
-        // real target path is recorded in m_RowTargetPaths so the import loop opens the correct file.
+        // SharedOutputFiles folder; such rows get a cosmetic " (from SharedOutputFiles)" label suffix
+        // and the real target path is recorded in m_RowTargetPaths so the import loop opens the file.
         // <paramref name="primaryNameToSize"/> accumulates the file name -> byte length selected from
         // the primary folder (when !isSharedFolder) and is consulted for the sibling folder to skip
         // duplicates (with a size-aware warning).
@@ -491,7 +492,7 @@ namespace sqlnexus
 
                 return true;
             }
-        }//end of AddFiles
+        }//end of AddFilesFromDirectory
 
         private void AddFileRow(int row, string labelText, INexusImporter Importer, string RowType)
         {
@@ -2451,47 +2452,49 @@ namespace sqlnexus
             return path;
         }
 
-        // Shows/hides the shared-folder label in the COMPACT (pre-import) form only, growing the top
-        // panel and the form by the label's ACTUAL rendered height so the label sits BELOW the
-        // Import/Close buttons instead of overlapping them. Using the runtime height (not a fixed
-        // pixel constant) keeps the layout correct under High-DPI / AutoScaleMode.Font at 125%/150%.
-        // Once the import view is expanded (tlpFiles visible) the form is already large, so this is a
-        // no-op there.
+        // Shows/hides the shared-folder banner in the COMPACT (pre-import) form only. The banner is a
+        // Dock=Bottom, AutoSize label docked to the bottom of paTop, so it flows with the panel instead
+        // of being absolutely positioned. The compact form is sized to fit paTop exactly, so we still
+        // grow paTop and the form by the banner's OWN measured height (DPI-safe: the label auto-sizes to
+        // the current font) and shrink back by the same amount when hidden. Once the import view is
+        // expanded (tlpFiles visible) the form is already large, so this is a no-op there.
         private bool m_sharedFolderLabelShown;
         private int m_sharedFolderLabelDelta; // actual pixels added, so we remove exactly the same
         private void ShowSharedFolderLabel(bool show)
         {
             if (tlpFiles.Visible)
             {
-                laSharedFolder.Visible = false; // expanded import view does not use the compact label
+                laSharedFolder.Visible = false; // expanded import view does not use the compact banner
                 return;
             }
 
-            if (show != m_sharedFolderLabelShown)
+            if (show == m_sharedFolderLabelShown)
             {
-                if (show)
-                {
-                    // Measure the label's actual height at the current font/DPI (plus its vertical
-                    // margin) instead of assuming a fixed pixel row height.
-                    int rowHeight = laSharedFolder.PreferredHeight
-                        + laSharedFolder.Margin.Top + laSharedFolder.Margin.Bottom;
-                    if (rowHeight <= 0)
-                        rowHeight = laSharedFolder.Height; // defensive fallback
-                    m_sharedFolderLabelDelta = rowHeight;
-
-                    paTop.Height += rowHeight;
-                    this.ClientSize = new Size(this.ClientSize.Width, this.ClientSize.Height + rowHeight);
-                }
-                else
-                {
-                    paTop.Height -= m_sharedFolderLabelDelta;
-                    this.ClientSize = new Size(this.ClientSize.Width, this.ClientSize.Height - m_sharedFolderLabelDelta);
-                    m_sharedFolderLabelDelta = 0;
-                }
-                m_sharedFolderLabelShown = show;
+                laSharedFolder.Visible = show;
+                return;
             }
 
-            laSharedFolder.Visible = show;
+            if (show)
+            {
+                // Make it visible first so the docked/auto-sized label reports its real laid-out
+                // height at the current font/DPI, then grow the panel and form by exactly that.
+                laSharedFolder.Visible = true;
+                int rowHeight = laSharedFolder.Height;
+                if (rowHeight <= 0)
+                    rowHeight = laSharedFolder.PreferredHeight; // defensive fallback
+                m_sharedFolderLabelDelta = rowHeight;
+
+                paTop.Height += rowHeight;
+                this.ClientSize = new Size(this.ClientSize.Width, this.ClientSize.Height + rowHeight);
+            }
+            else
+            {
+                paTop.Height -= m_sharedFolderLabelDelta;
+                this.ClientSize = new Size(this.ClientSize.Width, this.ClientSize.Height - m_sharedFolderLabelDelta);
+                m_sharedFolderLabelDelta = 0;
+                laSharedFolder.Visible = false;
+            }
+            m_sharedFolderLabelShown = show;
         }
 
         private void tsbPath_Click(object sender, EventArgs e)
