@@ -82,6 +82,11 @@ namespace sqlnexus
         // Rows not present here fall back to primary-path + label text (legacy behavior).
         private readonly Dictionary<Label, string> m_RowTargetPaths = new Dictionary<Label, string>();
 
+        // Primary folders already reported as missing/inaccessible, so the warning is logged at most
+        // once per folder (AddFilesFromDirectory runs once per mask). Case-insensitive for Windows paths.
+        private readonly HashSet<string> m_MissingFoldersWarned =
+            new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
         // Display suffix appended to import rows whose file/mask was discovered in the sibling
         // SharedOutputFiles folder. This is purely cosmetic (for user/screen-reader visibility) and
         // is never parsed to build a path - the actual path comes from m_RowTargetPaths. Derived from
@@ -271,11 +276,17 @@ namespace sqlnexus
                 // matched nothing, the sibling is still imported (no lost import opportunity).
                 if (isShared && anyAdded && !(Importer is INexusFileImporter))
                 {
+                    // Surface this at MessageOptions.All (not Silent): for aggregating importers we skip
+                    // the ENTIRE sibling folder for this mask when the primary already matched, so if a
+                    // customer genuinely has (e.g.) .blg files in both folders, this is where the sibling
+                    // set is dropped. Name the folder so it is discoverable, not silent.
                     MainForm.LogMessage(
-                        "Shared folder: skipping duplicate files matching '" + Mask + "' for importer '" +
+                        "Shared folder: NOT importing files matching '" + Mask + "' from '" +
+                        searchPaths[idx] + "' for importer '" +
                         (Importer != null ? Importer.Name : "(null)") +
-                        "' because the primary folder already provided files for it (avoids re-running " +
-                        "table setup over already-imported data).", MessageOptions.Silent);
+                        "' because the primary folder already provided files for this mask (a second run " +
+                        "would re-run table setup over already-imported data). If you need those files, " +
+                        "import that folder separately.", MessageOptions.All);
                     continue;
                 }
 
@@ -302,7 +313,20 @@ namespace sqlnexus
         private bool AddFilesFromDirectory(string Mask, INexusImporter Importer, string basePath, bool isSharedFolder, ref int blockedCounter, Dictionary<string, long> primaryNameToSize)
         {
             if (string.IsNullOrEmpty(basePath) || !Directory.Exists(basePath))
+            {
+                // A missing PRIMARY folder is very likely a mistyped/moved source path and should be
+                // visible, not silently treated as "no files". A missing SIBLING (SharedOutputFiles)
+                // folder is normal and expected, so it is not surfaced. Warn only once per folder so
+                // the log is not flooded (AddFilesFromDirectory is called once per mask).
+                if (!isSharedFolder && !string.IsNullOrEmpty(basePath) &&
+                    m_MissingFoldersWarned.Add(basePath))
+                {
+                    MainForm.LogMessage(
+                        "Import source folder does not exist or is not accessible: '" + basePath +
+                        "'. No files will be imported from it.", MessageOptions.All);
+                }
                 return false;
+            }
 
             string[] allMatches;
             try
@@ -1236,6 +1260,7 @@ namespace sqlnexus
             tlpFiles.RowCount = 1;
             tlpFiles.Controls.Clear();
             m_RowTargetPaths.Clear();
+            m_MissingFoldersWarned.Clear();
 
             INexusImporter prod;
             // Track importers that will actually run so we can log an effective summary (esp. for /M).
@@ -1440,8 +1465,13 @@ namespace sqlnexus
                 this.FormBorderStyle = FormBorderStyle.Sizable;
                 tlpFiles.Visible = true;
                 ssStatus.Visible = true;
-                // The compact-form affordance no longer applies once expanded; hide the label and
-                // clear the flag/delta so a later path change does not try to shrink the (now large) form.
+                // The compact-form affordance no longer applies once expanded. Reverse any header
+                // growth we added for the label BEFORE overriding the size below, then hide the label
+                // and clear the flag/delta so a later path change does not try to shrink the form again.
+                if (m_sharedFolderLabelShown && m_sharedFolderLabelDelta > 0)
+                {
+                    paTop.Height -= m_sharedFolderLabelDelta;
+                }
                 laSharedFolder.Visible = false;
                 m_sharedFolderLabelShown = false;
                 m_sharedFolderLabelDelta = 0;
@@ -1649,6 +1679,12 @@ namespace sqlnexus
                         ri = (ll.Tag as INexusImporter);
                         MainForm.LogMessage(ri.Name + " is a INexusImporter");
 
+                        // LinuxPerfImporter mutates the static ConfigValues.WorkingDirectory when it
+                        // runs. Remember the value on entry so we can restore it after this row, so a
+                        // per-row repoint (e.g. to the sibling SharedOutputFiles folder) does not leak
+                        // into any importer that runs afterwards.
+                        string savedLinuxWorkingDir = LinuxPerfImporter.Model.ConfigValues.WorkingDirectory;
+
                         try
                         {
                             // Resolve the importer's target from the path recorded when the row was
@@ -1720,6 +1756,12 @@ namespace sqlnexus
                             }
                             Success = false;
                             Globals.HandleException(ex, this, MainForm);
+                        }
+                        finally
+                        {
+                            // Restore the working directory the Linux perf importer may have changed,
+                            // so it never leaks into subsequent importers.
+                            LinuxPerfImporter.Model.ConfigValues.WorkingDirectory = savedLinuxWorkingDir;
                         }
 
                         currBar.Style = ProgressBarStyle.Blocks;
@@ -2291,23 +2333,28 @@ namespace sqlnexus
 
         private void tbPath_TextChanged(object sender, EventArgs e)
         {
-            tsbGo.Enabled = Directory.Exists(cbPath.Text);
-            UpdateSharedFolderAffordance();
+            bool pathExists = Directory.Exists(cbPath.Text);
+            tsbGo.Enabled = pathExists;
+            UpdateSharedFolderAffordance(pathExists);
         }
 
         // Form-level affordance (item 15): the path combo shows only the instance folder, so a second
         // scanned folder would otherwise be discoverable only from per-row "(from SharedOutputFiles)"
         // suffixes. When a sibling shared folder exists, surface it in a muted label under the path box
         // so the user (and screen readers) can tell a second folder will also be scanned.
-        private void UpdateSharedFolderAffordance()
+        private void UpdateSharedFolderAffordance(bool primaryExists)
         {
             try
             {
                 string primary = (cbPath.Text ?? "").Trim().Replace("\"", "");
-                string sibling = string.IsNullOrEmpty(primary)
-                    ? null
-                    : SharedOutputFolder.ResolveSharedSibling(
-                        primary.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar));
+
+                // Only do path work (GetFullPath + Directory.Exists on the sibling) for a rooted path
+                // that already exists. This avoids running it on every keystroke while a path is being
+                // typed - important for an unreachable UNC path, where the probing could hang the dialog.
+                string sibling = (primaryExists && !string.IsNullOrEmpty(primary) && Path.IsPathRooted(primary))
+                    ? SharedOutputFolder.ResolveSharedSibling(
+                        primary.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar))
+                    : null;
 
                 if (sibling != null)
                 {
