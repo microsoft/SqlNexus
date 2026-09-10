@@ -51,7 +51,17 @@ namespace sqlnexus
         {
 
             fmImport fmi = new fmImport(mainform);
-            fmi.cbPath.Text = path;
+            // Setting the path fires tbPath_TextChanged; suppress the loud dialog for this
+            // programmatic assignment (the form isn't shown yet). The banner still updates on display.
+            fmi.m_suppressAffordanceDialog = true;
+            try
+            {
+                fmi.cbPath.Text = path;
+            }
+            finally
+            {
+                fmi.m_suppressAffordanceDialog = false;
+            }
 
             if (Globals.QuietNonInteractiveMode == true)
             {
@@ -673,7 +683,18 @@ namespace sqlnexus
             }
             else
             {
-                this.cbPath.Text = sqlnexus.Properties.Settings.Default.ImportPath;
+                // Seeding the remembered path fires tbPath_TextChanged; suppress the loud dialog for
+                // this programmatic assignment so opening the form on a remembered SharedOutputFiles
+                // path does not pop a modal out of context. The visual banner still updates.
+                m_suppressAffordanceDialog = true;
+                try
+                {
+                    this.cbPath.Text = sqlnexus.Properties.Settings.Default.ImportPath;
+                }
+                finally
+                {
+                    m_suppressAffordanceDialog = false;
+                }
             }
 
             this.Left -= 100;
@@ -2351,14 +2372,26 @@ namespace sqlnexus
         {
             bool pathExists = Directory.Exists(cbPath.Text);
             tsbGo.Enabled = pathExists;
-            UpdateSharedFolderAffordance(pathExists);
+            // announce=true: a text change here is user-driven (typing/browse/selection), so it is OK
+            // to raise the loud one-time dialog. The initial load path is set separately (see
+            // fmImport_Load) with announce=false so opening the form on a remembered path does not pop
+            // a dialog out of context.
+            UpdateSharedFolderAffordance(pathExists, announce: !m_suppressAffordanceDialog);
         }
+
+        // Set while the form programmatically seeds the remembered path at load, so the shared-folder
+        // dialog is not raised out of context when the user has not chosen anything yet.
+        private bool m_suppressAffordanceDialog;
 
         // Form-level affordance (item 15): the path combo shows only the instance folder, so a second
         // scanned folder would otherwise be discoverable only from per-row "(from SharedOutputFiles)"
         // suffixes. When a sibling shared folder exists, surface it in a muted label under the path box
         // so the user (and screen readers) can tell a second folder will also be scanned.
-        private void UpdateSharedFolderAffordance(bool primaryExists)
+        //
+        // <paramref name="announce"/> controls only the loud, one-time dialog (MessageOptions.All).
+        // The visual banner / AccessibleDescription always update. On initial load announce is false,
+        // so the banner appears but no modal dialog interrupts a user who just opened the form.
+        private void UpdateSharedFolderAffordance(bool primaryExists, bool announce)
         {
             try
             {
@@ -2392,13 +2425,15 @@ namespace sqlnexus
                     laSharedFolder.ForeColor = SystemColors.InfoText;
                     ShowSharedFolderLabel(true);
 
-                    // Surface the full path in the log (All) the first time a given sibling is detected,
-                    // so a keyboard-only user has a non-mouse way to read it (the label is abbreviated).
+                    // Surface the full path the first time a given sibling is detected, so a
+                    // keyboard-only user has a non-mouse way to read it (the label is abbreviated).
+                    // A user-driven change raises it at MessageOptions.All (dialog); the initial-load
+                    // path uses Both (status bar + log) so opening the form does not pop a dialog.
                     if (!string.Equals(sibling, m_lastAnnouncedSibling, StringComparison.OrdinalIgnoreCase))
                     {
                         MainForm?.LogMessage(
                             "A sibling shared folder was detected and will also be scanned during import: " +
-                            sibling, MessageOptions.All);
+                            sibling, announce ? MessageOptions.All : MessageOptions.Both);
                         m_lastAnnouncedSibling = sibling;
                     }
                 }
