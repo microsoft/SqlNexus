@@ -185,7 +185,7 @@ namespace SqlNexus.UnitTests.sqlnexus
                 { leaf, 20480 }, // selected from the instance folder
             };
             var sibling = Sib(
-                (@"D:\SQLLogScout\output_AllInstances1\SharedOutputFiles\" + leaf, 20480));
+                (@"C:\SQLLogScout\output_AllInstances1\SharedOutputFiles\" + leaf, 20480));
 
             List<string> sameSize, diffSize;
             List<string> accepted = SharedOutputFolder.FilterDuplicateSiblingFiles(
@@ -323,7 +323,7 @@ namespace SqlNexus.UnitTests.sqlnexus
             // so the sibling copy must NOT be flagged as an unimported gap.
             const string leaf = "DESKTOP_SQL2019_system_health_0_134291004454640000.xel";
             var primaryNames = new HashSet<string> { leaf };
-            var siblingFiles = new[] { @"D:\out\SharedOutputFiles\" + leaf };
+            var siblingFiles = new[] { @"C:\out\SharedOutputFiles\" + leaf };
 
             List<string> siblingOnly = SharedOutputFolder.GetSiblingOnlyFiles(primaryNames, siblingFiles);
 
@@ -336,21 +336,21 @@ namespace SqlNexus.UnitTests.sqlnexus
             var primaryNames = new HashSet<string> { "server_SQLDIAG_0_100.xel" };
             var siblingFiles = new[]
             {
-                @"D:\out\SharedOutputFiles\host_system_health_0_200.xel", // sibling only -> gap
-                @"D:\out\SharedOutputFiles\server_SQLDIAG_0_100.xel",     // also in primary -> not a gap
+                @"C:\out\SharedOutputFiles\host_system_health_0_200.xel", // sibling only -> gap
+                @"C:\out\SharedOutputFiles\server_SQLDIAG_0_100.xel",     // also in primary -> not a gap
             };
 
             List<string> siblingOnly = SharedOutputFolder.GetSiblingOnlyFiles(primaryNames, siblingFiles);
 
             CollectionAssert.AreEquivalent(
-                new[] { @"D:\out\SharedOutputFiles\host_system_health_0_200.xel" }, siblingOnly);
+                new[] { @"C:\out\SharedOutputFiles\host_system_health_0_200.xel" }, siblingOnly);
         }
 
         [TestMethod]
         public void GetSiblingOnlyFiles_CaseInsensitiveNameMatch_NotReturned()
         {
             var primaryNames = new HashSet<string> { "SYSTEM_HEALTH.XEL" };
-            var siblingFiles = new[] { @"D:\s\system_health.xel" };
+            var siblingFiles = new[] { @"C:\s\system_health.xel" };
 
             List<string> siblingOnly = SharedOutputFolder.GetSiblingOnlyFiles(primaryNames, siblingFiles);
 
@@ -369,7 +369,7 @@ namespace SqlNexus.UnitTests.sqlnexus
         [TestMethod]
         public void GetSiblingOnlyFiles_NullOrEmptyPrimary_ReturnsAllSibling()
         {
-            var siblingFiles = new[] { @"D:\s\a.xel", @"D:\s\b.xel" };
+            var siblingFiles = new[] { @"C:\s\a.xel", @"C:\s\b.xel" };
 
             List<string> siblingOnly = SharedOutputFolder.GetSiblingOnlyFiles(null, siblingFiles);
 
@@ -380,11 +380,11 @@ namespace SqlNexus.UnitTests.sqlnexus
         public void GetSiblingOnlyFiles_IgnoresNullAndEmptyEntries()
         {
             var primaryNames = new HashSet<string> { "keep.xel", "", null };
-            var siblingFiles = new[] { @"D:\s\keep.xel", "", null, @"D:\s\only.xel" };
+            var siblingFiles = new[] { @"C:\s\keep.xel", "", null, @"C:\s\only.xel" };
 
             List<string> siblingOnly = SharedOutputFolder.GetSiblingOnlyFiles(primaryNames, siblingFiles);
 
-            CollectionAssert.AreEquivalent(new[] { @"D:\s\only.xel" }, siblingOnly);
+            CollectionAssert.AreEquivalent(new[] { @"C:\s\only.xel" }, siblingOnly);
         }
 
         // ---- ComposeRowTargetPath (item 16: m_RowTargetPaths composition) ----
@@ -395,26 +395,26 @@ namespace SqlNexus.UnitTests.sqlnexus
             // Per-file importers pass the absolute path from Directory.GetFiles; it must be used as-is
             // (basePath is ignored), which is what the import loop records in m_RowTargetPaths.
             string result = SharedOutputFolder.ComposeRowTargetPath(
-                @"D:\out\SharedOutputFiles", @"D:\out\SharedOutputFiles\RunningDrivers.txt");
+                @"C:\out\SharedOutputFiles", @"C:\out\SharedOutputFiles\RunningDrivers.txt");
 
-            Assert.AreEqual(@"D:\out\SharedOutputFiles\RunningDrivers.txt", result);
+            Assert.AreEqual(@"C:\out\SharedOutputFiles\RunningDrivers.txt", result);
         }
 
         [TestMethod]
         public void ComposeRowTargetPath_FolderPlusMask_CombinesForMaskImporter()
         {
             // Mask-based importers (e.g. Perfmon BLG) get folder + mask so they re-glob the right dir.
-            string result = SharedOutputFolder.ComposeRowTargetPath(@"D:\out\Instance1", "*.BLG");
+            string result = SharedOutputFolder.ComposeRowTargetPath(@"C:\out\Instance1", "*.BLG");
 
-            Assert.AreEqual(@"D:\out\Instance1\*.BLG", result);
+            Assert.AreEqual(@"C:\out\Instance1\*.BLG", result);
         }
 
         [TestMethod]
         public void ComposeRowTargetPath_FolderPlusBareFileName_Combines()
         {
-            string result = SharedOutputFolder.ComposeRowTargetPath(@"D:\out\Instance1", "ERRORLOG.out");
+            string result = SharedOutputFolder.ComposeRowTargetPath(@"C:\out\Instance1", "ERRORLOG.out");
 
-            Assert.AreEqual(@"D:\out\Instance1\ERRORLOG.out", result);
+            Assert.AreEqual(@"C:\out\Instance1\ERRORLOG.out", result);
         }
 
         [TestMethod]
@@ -427,7 +427,7 @@ namespace SqlNexus.UnitTests.sqlnexus
         [TestMethod]
         public void ComposeRowTargetPath_EmptyLeaf_ReturnsBasePath()
         {
-            Assert.AreEqual(@"D:\out", SharedOutputFolder.ComposeRowTargetPath(@"D:\out", ""));
+            Assert.AreEqual(@"C:\out", SharedOutputFolder.ComposeRowTargetPath(@"C:\out", ""));
             Assert.AreEqual(string.Empty, SharedOutputFolder.ComposeRowTargetPath(null, null));
         }
 
