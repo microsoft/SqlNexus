@@ -51,17 +51,9 @@ namespace sqlnexus
         {
 
             fmImport fmi = new fmImport(mainform);
-            // Setting the path fires tbPath_TextChanged; suppress the loud dialog for this
-            // programmatic assignment (the form isn't shown yet). The banner still updates on display.
-            fmi.m_suppressAffordanceDialog = true;
-            try
-            {
-                fmi.cbPath.Text = path;
-            }
-            finally
-            {
-                fmi.m_suppressAffordanceDialog = false;
-            }
+            // Setting the path fires tbPath_TextChanged, which updates the shared-folder banner.
+            // No modal is raised, so this programmatic assignment needs no suppression.
+            fmi.cbPath.Text = path;
 
             if (Globals.QuietNonInteractiveMode == true)
             {
@@ -683,18 +675,9 @@ namespace sqlnexus
             }
             else
             {
-                // Seeding the remembered path fires tbPath_TextChanged; suppress the loud dialog for
-                // this programmatic assignment so opening the form on a remembered SharedOutputFiles
-                // path does not pop a modal out of context. The visual banner still updates.
-                m_suppressAffordanceDialog = true;
-                try
-                {
-                    this.cbPath.Text = sqlnexus.Properties.Settings.Default.ImportPath;
-                }
-                finally
-                {
-                    m_suppressAffordanceDialog = false;
-                }
+                // Seeding the remembered path fires tbPath_TextChanged, which updates the visual
+                // shared-folder banner. No modal is raised, so no suppression is needed.
+                this.cbPath.Text = sqlnexus.Properties.Settings.Default.ImportPath;
             }
 
             this.Left -= 100;
@@ -2374,26 +2357,19 @@ namespace sqlnexus
         {
             bool pathExists = Directory.Exists(cbPath.Text);
             tsbGo.Enabled = pathExists;
-            // announce=true: a text change here is user-driven (typing/browse/selection), so it is OK
-            // to raise the loud one-time dialog. The initial load path is set separately (see
-            // fmImport_Load) with announce=false so opening the form on a remembered path does not pop
-            // a dialog out of context.
-            UpdateSharedFolderAffordance(pathExists, announce: !m_suppressAffordanceDialog);
+            UpdateSharedFolderAffordance(pathExists);
         }
-
-        // Set while the form programmatically seeds the remembered path at load, so the shared-folder
-        // dialog is not raised out of context when the user has not chosen anything yet.
-        private bool m_suppressAffordanceDialog;
 
         // Form-level affordance (item 15): the path combo shows only the instance folder, so a second
         // scanned folder would otherwise be discoverable only from per-row "(from SharedOutputFiles)"
         // suffixes. When a sibling shared folder exists, surface it in a muted label under the path box
         // so the user (and screen readers) can tell a second folder will also be scanned.
         //
-        // <paramref name="announce"/> controls only the loud, one-time dialog (MessageOptions.All).
-        // The visual banner / AccessibleDescription always update. On initial load announce is false,
-        // so the banner appears but no modal dialog interrupts a user who just opened the form.
-        private void UpdateSharedFolderAffordance(bool primaryExists, bool announce)
+        // The affordance is purely non-modal: the visual banner, tooltip, and cbPath.AccessibleDescription
+        // convey the sibling folder. The first detection of a given sibling is also written to the status
+        // bar and log (MessageOptions.Both) - no MessageBox is raised, so it never steals focus or
+        // interrupts a user mid-typing (tbPath_TextChanged fires on every keystroke).
+        private void UpdateSharedFolderAffordance(bool primaryExists)
         {
             try
             {
@@ -2429,13 +2405,13 @@ namespace sqlnexus
 
                     // Surface the full path the first time a given sibling is detected, so a
                     // keyboard-only user has a non-mouse way to read it (the label is abbreviated).
-                    // A user-driven change raises it at MessageOptions.All (dialog); the initial-load
-                    // path uses Both (status bar + log) so opening the form does not pop a dialog.
+                    // Use MessageOptions.Both (status bar + log) - never a modal - so it does not steal
+                    // focus or interrupt typing.
                     if (!string.Equals(sibling, m_lastAnnouncedSibling, StringComparison.OrdinalIgnoreCase))
                     {
                         MainForm?.LogMessage(
                             "A sibling shared folder was detected and will also be scanned during import: " +
-                            sibling, announce ? MessageOptions.All : MessageOptions.Both);
+                            sibling, MessageOptions.Both);
                         m_lastAnnouncedSibling = sibling;
                     }
                 }
