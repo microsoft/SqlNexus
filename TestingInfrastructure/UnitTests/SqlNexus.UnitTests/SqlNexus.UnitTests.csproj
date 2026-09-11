@@ -17,8 +17,15 @@
     <Nullable>disable</Nullable>
     <AssemblyName>SqlNexus.UnitTests</AssemblyName>
     <RootNamespace>SqlNexus.UnitTests</RootNamespace>
+    <!-- Strong-named with the shared SqlNexus key. This lets the signed product assemblies (e.g.
+         ErrorLogImporter) grant InternalsVisibleTo to this project, since a signed assembly can
+         only expose internals to a strong-named friend. All referenced product projects
+         (sqlnexus.exe and the importers) are strong-named with the same key. -->
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\..\..\ErrorLogImporter\SqlNexus.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\..\..\sqlnexus\SqlNexus.snk</AssemblyOriginatorKeyFile>
+    <!-- CS8002 = "referenced assembly does not have a strong name". It is suppressed because some
+         test-only NuGet package assemblies are not strong-named; this is harmless for a test project
+         (it is never itself referenced by a strong-named assembly). -->
     <NoWarn>$(NoWarn);8002</NoWarn>
   </PropertyGroup>
 

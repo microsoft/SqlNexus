@@ -27,6 +27,19 @@ namespace sqlnexus
         int countTotalFilesFound = 0;
         int totalRowsAffected = 0;
 
+        // Single source of truth for the Custom XEL file masks. These are the ONLY patterns the
+        // Load*Files() methods scan for, and fmImport.WarnIfSharedFolderHasUnimportedCustomXel
+        // references these same constants when detecting Custom XEL files that exist only in the
+        // sibling SharedOutputFiles folder. Keeping one definition prevents the two from silently
+        // drifting apart (see issue #556): if a mask changes here, the sibling-gap warning follows.
+        internal const string SqlDiagMask = "*_SQLDIAG*.xel";
+        internal const string AlwaysOnHealthMask = "*AlwaysOn_health*.xel";
+        internal const string SystemHealthMask = "*system_health*.xel";
+
+        // Aggregate of all Custom XEL masks, for callers that scan for every source at once.
+        internal static readonly string[] CustomXelFileMasks =
+            { SqlDiagMask, AlwaysOnHealthMask, SystemHealthMask };
+
         /// <summary>
         /// Total number of Custom XEL files (SqlDiag/AlwaysOn Health/system_health) discovered and
         /// imported by the last <see cref="ImportCustomXELFiles"/> call. Zero means nothing matched,
@@ -108,7 +121,7 @@ namespace sqlnexus
 
             try
             {
-                string sqlDiagXelFileToImport = "*_SQLDIAG*.xel";
+                string sqlDiagXelFileToImport = SqlDiagMask;
                 string[] XEFiles = Directory.GetFiles(srcPath, sqlDiagXelFileToImport);
 
                 //count the files found to be imported
@@ -171,7 +184,7 @@ namespace sqlnexus
             try
             {
 
-                string AOHealthFileToImport = "*AlwaysOn_health*.xel";
+                string AOHealthFileToImport = AlwaysOnHealthMask;
                 string[] XEFiles = Directory.GetFiles(srcPath, AOHealthFileToImport);
 
                 //count the files found to be imported
@@ -226,7 +239,7 @@ namespace sqlnexus
         {
             try
             {
-                string sysHealthFilesToImport = "*system_health*.xel";
+                string sysHealthFilesToImport = SystemHealthMask;
                 string[] XEFiles = Directory.GetFiles(srcPath, sysHealthFilesToImport);
 
                 //count the files found to be imported

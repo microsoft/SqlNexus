@@ -55,5 +55,31 @@ namespace SqlNexus.UnitTests.sqlnexus
 
             Assert.IsFalse(failed);
         }
+
+        [TestMethod]
+        public void CustomXelFileMasks_AreTheThreeCustomXelPatterns()
+        {
+            // Guards the single-source-of-truth contract (issue #556): fmImport's sibling-gap warning
+            // reuses these exact masks, so if the importer's patterns change, this test flags it.
+            CollectionAssert.AreEquivalent(
+                new[]
+                {
+                    CustomXELImporter.SqlDiagMask,
+                    CustomXELImporter.AlwaysOnHealthMask,
+                    CustomXELImporter.SystemHealthMask
+                },
+                CustomXELImporter.CustomXelFileMasks);
+        }
+
+        [DataTestMethod]
+        [DataRow("*_SQLDIAG*.xel")]
+        [DataRow("*AlwaysOn_health*.xel")]
+        [DataRow("*system_health*.xel")]
+        public void CustomXelFileMasks_ContainsExpectedPattern(string expectedMask)
+        {
+            // Regression: pins the literal patterns so a rename in the importer cannot silently
+            // desync the SharedOutputFiles Custom XEL warning without failing a test.
+            CollectionAssert.Contains(CustomXELImporter.CustomXelFileMasks, expectedMask);
+        }
     }
 }

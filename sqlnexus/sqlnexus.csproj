@@ -94,7 +94,7 @@
   </PropertyGroup>
   <PropertyGroup />
   <PropertyGroup>
-    <SignAssembly>false</SignAssembly>
+    <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>SqlNexus.snk</AssemblyOriginatorKeyFile>
@@ -354,6 +354,7 @@
     </Compile>
     <Compile Include="Globals.cs" />
     <Compile Include="ImporterSelectionEvaluator.cs" />
+    <Compile Include="SharedOutputFolder.cs" />
     <Compile Include="InlineDateTimeTraceListener.cs" />
     <Compile Include="NexusInfo.cs" />
     <Compile Include="Program.cs" />

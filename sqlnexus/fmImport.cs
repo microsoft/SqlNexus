@@ -51,6 +51,8 @@ namespace sqlnexus
         {
 
             fmImport fmi = new fmImport(mainform);
+            // Setting the path fires tbPath_TextChanged, which updates the shared-folder banner.
+            // No modal is raised, so this programmatic assignment needs no suppression.
             fmi.cbPath.Text = path;
 
             if (Globals.QuietNonInteractiveMode == true)
@@ -73,6 +75,31 @@ namespace sqlnexus
         INexusImporter ri = null;
         ProgressBar currBar = null;
         Label currLabel = null;
+
+        // Maps each per-file/mask import row (its file-name Label) to the full target path
+        // (directory + file name/mask) the importer should open. For the normal single-folder case
+        // this resolves to the primary import path; for files pulled from the sibling
+        // SharedOutputFiles folder it points at that sibling directory. The import loop uses this
+        // instead of concatenating the primary path with the (possibly annotated) display label.
+        // Rows not present here fall back to primary-path + label text (legacy behavior).
+        private readonly Dictionary<Label, string> m_RowTargetPaths = new Dictionary<Label, string>();
+
+        // Primary folders already reported as missing/inaccessible, so the warning is logged at most
+        // once per folder (AddFilesFromDirectory runs once per mask). Case-insensitive for Windows paths.
+        private readonly HashSet<string> m_MissingFoldersWarned =
+            new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+        // The sibling shared folder most recently announced (log/AccessibleDescription), so the
+        // full-path announcement is emitted only when it changes rather than on every keystroke.
+        private string m_lastAnnouncedSibling;
+
+        // Display suffix appended to import rows whose file/mask was discovered in the sibling
+        // SharedOutputFiles folder. This is purely cosmetic (for user/screen-reader visibility) and
+        // is never parsed to build a path - the actual path comes from m_RowTargetPaths. Derived from
+        // SharedOutputFolder.SharedFolderName so it always matches the real folder name and reads
+        // clearly aloud (e.g. "... (from SharedOutputFiles)").
+        private static readonly string SharedOutputLabelSuffix =
+            " (from " + SharedOutputFolder.SharedFolderName + ")";
 
 
 
@@ -130,15 +157,255 @@ namespace sqlnexus
             return false;
         }
 
+        // Returns the number of files directly contained in a folder, or 0 when the folder is
+        // missing or cannot be enumerated. Used only for provenance logging.
+        private int CountFilesInFolder(string folder)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(folder) || !Directory.Exists(folder))
+                    return 0;
+                return Directory.GetFiles(folder).Length;
+            }
+            catch (Exception ex)
+            {
+                MainForm.LogMessage("Unable to count files in '" + folder + "': " + ex.Message,
+                    MessageOptions.Silent);
+                return 0;
+            }
+        }
+
+        // Returns the file's byte length, or -1 when it cannot be read (missing/locked/error).
+        // -1 is treated by the duplicate guard as "unknown" so a same-name collision is surfaced
+        // rather than quietly assumed identical.
+        private long TryGetFileLength(string path)
+        {
+            try
+            {
+                return new FileInfo(path).Length;
+            }
+            catch (Exception ex)
+            {
+                MainForm.LogMessage("Unable to read length of '" + path + "': " + ex.Message,
+                    MessageOptions.Silent);
+                return -1;
+            }
+        }
+
+        // File masks recognized by CustomXELImporter (SQLDiag / AlwaysOn health / system_health).
+        // Single source of truth lives on CustomXELImporter so this warning and the actual importer
+        // can never drift apart (see issue #556).
+        private static readonly string[] CustomXelMasks = CustomXELImporter.CustomXelFileMasks;
+
+        // CustomXELImporter only scans the primary folder. If the sibling SharedOutputFiles folder
+        // contains Custom XEL sources that are NOT also in the primary folder, they are silently never
+        // imported. Warn about those sibling-ONLY files (with the resolved sibling path) so the user
+        // can move them into the primary folder. Files that exist in both folders are ignored here:
+        // the primary copy is imported, so there is no gap and "move it" would be misleading. This
+        // never imports anything - the Custom XEL load uses SELECT * INTO with optional DROP TABLE and
+        // would overwrite already-imported tables, so scanning the sibling directly is unsafe.
+        private void WarnIfSharedFolderHasUnimportedCustomXel(string primaryPath)
+        {
+            try
+            {
+                string normalizedPrimary = (primaryPath ?? "")
+                    .TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+
+                string sibling = SharedOutputFolder.ResolveSharedSibling(normalizedPrimary);
+                if (sibling == null || !Directory.Exists(sibling))
+                    return;
+
+                // Names of Custom XEL files already present in the primary folder (imported normally).
+                var primaryNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                if (Directory.Exists(normalizedPrimary))
+                {
+                    foreach (string mask in CustomXelMasks)
+                        foreach (string f in Directory.GetFiles(normalizedPrimary, mask))
+                            primaryNames.Add(Path.GetFileName(f));
+                }
+
+                // Custom XEL files in the sibling that are NOT also in the primary folder (the real gap).
+                var siblingOnly = new List<string>();
+                foreach (string mask in CustomXelMasks)
+                {
+                    siblingOnly.AddRange(
+                        SharedOutputFolder.GetSiblingOnlyFiles(
+                            primaryNames, Directory.GetFiles(sibling, mask)));
+                }
+
+                if (siblingOnly.Count > 0)
+                {
+                    MainForm.LogMessage(
+                        "Shared folder: " + siblingOnly.Count + " Custom XEL file(s) (SQLDiag/AlwaysOn/system_health) " +
+                        "exist ONLY in '" + sibling + "' and are NOT imported - the Custom XEL importer only " +
+                        "reads the primary folder. Move them into '" + primaryPath + "' and re-import if needed.",
+                        MessageOptions.Both);
+                }
+            }
+            catch (Exception ex)
+            {
+                MainForm.LogMessage("Unable to check shared folder for Custom XEL files: " + ex.Message,
+                    MessageOptions.Silent);
+            }
+        }
+
         private bool AddFiles(string Mask, INexusImporter Importer)
         {
-            string basePath = cbPath.Text.Trim().Replace("\"", "");
-            string[] allMatches = Directory.GetFiles(basePath, Mask);
+            // Resolve the folders to search: the primary import path, plus the sibling
+            // SharedOutputFiles folder when it exists. When the sibling does not exist this is just
+            // the primary path and behavior is identical to before.
+            List<string> searchPaths = SharedOutputFolder.GetImportSearchPaths(
+                cbPath.Text.Trim().Replace("\"", ""));
+
+            if (searchPaths.Count == 0)
+                searchPaths.Add(cbPath.Text.Trim().Replace("\"", ""));
+
+            bool anyAdded = false;
+            int blockedCounter = 0;
+
+            // Files (name -> byte length) selected from the primary folder for this mask. Used to
+            // skip a same-named file discovered in the sibling shared folder so we never import the
+            // same file twice into the same tables (silent duplicate rows / overwrite of
+            // already-imported data). Size is carried so the warning can distinguish a near-certain
+            // identical copy (same size) from an ambiguous same-name/different-size case. SQL LogScout
+            // writes host/OS files to EITHER folder exclusively, so this is a safety net.
+            var primaryNameToSize = new Dictionary<string, long>(StringComparer.OrdinalIgnoreCase);
+
+            for (int idx = 0; idx < searchPaths.Count; idx++)
+            {
+                bool isShared = idx > 0; // index 0 is always the primary import folder
+
+                // Guard (mask-based/aggregating importers, e.g. Perfmon/ReadTrace): if the primary
+                // folder already produced a row for this mask, do NOT also add a sibling row. A second
+                // row triggers a second Initialize+DoImport that would re-run table setup over the
+                // first run's results. The sibling is therefore a fallback only - if the primary
+                // matched nothing, the sibling is still imported (no lost import opportunity).
+                if (SharedOutputFolder.ShouldSkipSiblingForMask(
+                        isShared, anyAdded, Importer is INexusFileImporter))
+                {
+                    // Informational, not an error: the primary folder already provided files for this
+                    // mask, so they WERE imported. We just don't ALSO import the sibling copies (that
+                    // would re-run table setup over already-imported data). Log + status bar (Both),
+                    // not a modal dialog, so it is discoverable without alarming the user.
+                    MainForm.LogMessage(
+                        "Files matching '" + Mask + "' were imported from the primary folder. Additional " +
+                        "matching files in '" + searchPaths[idx] + "' were not also imported (to avoid " +
+                        "re-processing the same data) for importer '" +
+                        (Importer != null ? Importer.Name : "(null)") +
+                        "'. If you need those, import that folder separately.", MessageOptions.Both);
+                    continue;
+                }
+
+                if (AddFilesFromDirectory(Mask, Importer, searchPaths[idx], isShared, ref blockedCounter, primaryNameToSize))
+                    anyAdded = true;
+            }
+
+            // Log the blocked count once per mask (across all searched folders) rather than once per
+            // folder. Only when something was actually blocked, to avoid a "...: 0" line per mask.
+            if (Importer is INexusFileImporter && blockedCounter > 0)
+            {
+                MainForm.LogMessage("Number of files blocked for import (due to multiple instance or unrelated files such as sqldump*: " + blockedCounter, MessageOptions.Silent);
+            }
+            return anyAdded;
+        }
+
+        // Enumerates a single directory for the given mask and adds the corresponding import rows.
+        // When <paramref name="isSharedFolder"/> is true the files come from the sibling
+        // SharedOutputFiles folder; such rows get a cosmetic " (from SharedOutputFiles)" label suffix
+        // and the real target path is recorded in m_RowTargetPaths so the import loop opens the file.
+        // <paramref name="primaryNameToSize"/> accumulates the file name -> byte length selected from
+        // the primary folder (when !isSharedFolder) and is consulted for the sibling folder to skip
+        // duplicates (with a size-aware warning).
+        private bool AddFilesFromDirectory(string Mask, INexusImporter Importer, string basePath, bool isSharedFolder, ref int blockedCounter, Dictionary<string, long> primaryNameToSize)
+        {
+            if (string.IsNullOrEmpty(basePath) || !Directory.Exists(basePath))
+            {
+                // A missing PRIMARY folder is very likely a mistyped/moved source path and should be
+                // visible, not silently treated as "no files". A missing SIBLING (SharedOutputFiles)
+                // folder is normal and expected, so it is not surfaced. Warn only once per folder so
+                // the log is not flooded (AddFilesFromDirectory is called once per mask).
+                if (!isSharedFolder && !string.IsNullOrEmpty(basePath) &&
+                    m_MissingFoldersWarned.Add(basePath))
+                {
+                    MainForm.LogMessage(
+                        "Import source folder does not exist or is not accessible: '" + basePath +
+                        "'. No files will be imported from it.", MessageOptions.All);
+                }
+                return false;
+            }
+
+            string[] allMatches;
+            try
+            {
+                allMatches = Directory.GetFiles(basePath, Mask);
+            }
+            catch (Exception ex) when (ex is UnauthorizedAccessException || ex is IOException || ex is PathTooLongException)
+            {
+                // A restrictive-permission / too-long / transient-IO folder (often the sibling
+                // SharedOutputFiles the user never selected) must not abort the whole enumeration.
+                // Log it and carry on with the other folders.
+                MainForm.LogMessage(
+                    "Unable to enumerate '" + Mask + "' in '" + basePath + "': " + ex.Message +
+                    " - skipping this folder and continuing.", MessageOptions.All);
+                return false;
+            }
 
 
             //if no file found for this mask, just return
             if (allMatches.Length <= 0)
                 return false;
+
+            // Duplicate-name guard: for per-file importers, drop any sibling file whose name was
+            // already selected from the primary folder (both would import into the same tables). Size
+            // is used only to decide how loudly to warn - a colliding name is skipped either way.
+            if (isSharedFolder && (Importer is INexusFileImporter))
+            {
+                var siblingWithSize = allMatches
+                    .Select(f => new KeyValuePair<string, long>(f, TryGetFileLength(f)))
+                    .ToList();
+
+                List<string> skippedSameSize, skippedDifferentSize;
+                allMatches = SharedOutputFolder.FilterDuplicateSiblingFiles(
+                    primaryNameToSize, siblingWithSize,
+                    out skippedSameSize, out skippedDifferentSize).ToArray();
+
+                foreach (string dup in skippedSameSize)
+                {
+                    // Same name AND size - almost certainly the identical file. Low-risk, so this stays
+                    // at Silent (log file only) to avoid noise; no data is lost (the primary copy imports).
+                    MainForm.LogMessage(
+                        "Shared folder: skipping duplicate file '" + Path.GetFileName(dup) +
+                        "' - same name and size as a file already being imported from the primary folder " +
+                        "(avoids duplicate rows).",
+                        MessageOptions.Silent);
+                }
+
+                // Different-size collisions are the important case (two files share a name but differ,
+                // so one copy is NOT imported). A per-file status-bar line is overwritten instantly and
+                // never read, so aggregate them into ONE dialog (MessageOptions.All) with a count and the
+                // file names. Full paths are logged separately at Silent for diagnostics.
+                if (skippedDifferentSize.Count > 0)
+                {
+                    var names = skippedDifferentSize.Select(Path.GetFileName).ToList();
+                    MainForm.LogMessage(
+                        skippedDifferentSize.Count + " file(s) exist in BOTH the primary folder and " +
+                        SharedOutputFolder.SharedFolderName + " with the SAME name but a DIFFERENT size. " +
+                        "The " + SharedOutputFolder.SharedFolderName + " copy was NOT imported (the primary " +
+                        "copy wins). If these are different captures, import that folder separately. " +
+                        "File(s): " + string.Join(", ", names),
+                        MessageOptions.All);
+
+                    foreach (string dup in skippedDifferentSize)
+                    {
+                        MainForm.LogMessage(
+                            "Shared folder: not imported (different size, primary wins): " + dup,
+                            MessageOptions.Silent);
+                    }
+                }
+
+                if (allMatches.Length == 0)
+                    return false;
+            }
 
             // If this is a trace mask (*.trc) for ReadTrace, filter out excluded files
             bool isReadTrace = Importer != null &&
@@ -170,7 +437,6 @@ namespace sqlnexus
             if (Importer is INexusFileImporter)
             {
 
-                int blockedCounter = 0;
                 int addedCounter = 0;
                 foreach (string f in includedFiles)
                 {
@@ -183,39 +449,58 @@ namespace sqlnexus
                         continue;
                     }
 
-                    AddFileRow(rowIndex, Path.GetFileName(f), Importer, "");
+                    string displayText = SharedOutputFolder.ComposeRowDisplayText(
+                        Path.GetFileName(f), isSharedFolder, SharedOutputLabelSuffix);
+                    Label rowLabel = AddFileRowReturningLabel(rowIndex, displayText, Importer, "");
+                    // Record the actual full path (already absolute from Directory.GetFiles) so the
+                    // import loop does not reconstruct it from the primary path + display label.
+                    m_RowTargetPaths[rowLabel] = SharedOutputFolder.ComposeRowTargetPath(basePath, f);
+                    // Remember the primary-folder file name and size so a same-named sibling file is
+                    // skipped (and the warning can compare sizes).
+                    if (!isSharedFolder && primaryNameToSize != null)
+                        primaryNameToSize[Path.GetFileName(f)] = TryGetFileLength(f);
                     rowIndex++;
                     addedCounter++;
 
                 }
-                MainForm.LogMessage("Number of files blocked for import (due to multiple instance or unrelated files such as sqldump*: " + blockedCounter, MessageOptions.Silent);
                 return addedCounter > 0;
             }
             else
             {
-                if (includedFiles.Length > 0)  //Only add the mask if matching files are found
+                // includedFiles is guaranteed non-empty here (we returned early above when it was
+                // empty). Mask-based importers add a single row for the mask.
+                //need special handling read trace for multiple instances
+                //when multiple instances files are caputred, only provide the one instnance selected.
+                string effectiveMask;
+                if (isReadTrace && instances.Count > 1)
                 {
-                    //need special handling read trace for multiple instances
-                    //when multiple instances files are caputred, only provide the one instnance selected.
-                    if (isReadTrace && instances.Count > 1)
-                    {
-                        if (Mask.ToUpper().Contains("XEL"))
-                            AddFileRow(rowIndex, instances.SelectedXEventFileMask, Importer, "");
-                        else
-                            AddFileRow(rowIndex, instances.SelectedTraceFileMask, Importer, "");
-                    }
+                    if (Mask.ToUpper().Contains("XEL"))
+                        effectiveMask = instances.SelectedXEventFileMask;
                     else
-                    {
-                        AddFileRow(rowIndex, Mask, Importer, "");
-                    }
-
-                    return true;
+                        effectiveMask = instances.SelectedTraceFileMask;
                 }
+                else
+                {
+                    effectiveMask = Mask;
+                }
+
+                string displayText = SharedOutputFolder.ComposeRowDisplayText(
+                    effectiveMask, isSharedFolder, SharedOutputLabelSuffix);
+                Label rowLabel = AddFileRowReturningLabel(rowIndex, displayText, Importer, "");
+                // For mask-based importers (e.g. Perfmon BLG) the importer re-globs from the path
+                // it is given; record the folder + mask so it scans the correct directory.
+                m_RowTargetPaths[rowLabel] = SharedOutputFolder.ComposeRowTargetPath(basePath, effectiveMask);
+
+                return true;
             }
-            return false;
-        }//end of AddFiles
+        }//end of AddFilesFromDirectory
 
         private void AddFileRow(int row, string labelText, INexusImporter Importer, string RowType)
+        {
+            AddFileRowReturningLabel(row, labelText, Importer, RowType);
+        }
+
+        private Label AddFileRowReturningLabel(int row, string labelText, INexusImporter Importer, string RowType)
         {
             tlpFiles.RowCount += 1;
 
@@ -246,6 +531,10 @@ namespace sqlnexus
             tlpFiles.Controls.Add(pb, 1, row);
             pb.Height = 13;
             pb.MarqueeAnimationSpeed = 25;
+            // Two rows can now differ only by a "(from SharedOutputFiles)" suffix, so give the
+            // progress bar and status label an AccessibleName tied to the row's label text; otherwise
+            // a screen reader announces every progress bar identically.
+            pb.AccessibleName = labelText;
 
 
             //third column - lines processed. starts blank and filled dynamically as files are processed
@@ -255,6 +544,9 @@ namespace sqlnexus
             lab2.Text = "";
             lab2.Anchor = AnchorStyles.Left;
             lab2.Location = new Point(0, 3);
+            lab2.AccessibleName = labelText + " status";
+
+            return lab1;
         }
 
 
@@ -383,6 +675,8 @@ namespace sqlnexus
             }
             else
             {
+                // Seeding the remembered path fires tbPath_TextChanged, which updates the visual
+                // shared-folder banner. No modal is raised, so no suppression is needed.
                 this.cbPath.Text = sqlnexus.Properties.Settings.Default.ImportPath;
             }
 
@@ -956,11 +1250,28 @@ namespace sqlnexus
             Application.DoEvents();
 
             // count the files from pssdiag or logscout 
-            string[] XEFilesPssdiag = Directory.GetFiles(cbPath.Text.Trim().Replace("\"", ""), "*pssdiag*.xel");
-            string[] XEFilesLogScout = Directory.GetFiles(cbPath.Text.Trim().Replace("\"", ""), "*xevent_LogScout*.xel");
-            string[] trcFiles = Directory.GetFiles(cbPath.Text.Trim().Replace("\"", ""), "*sp_trace*.trc");
+            string primaryPath = cbPath.Text.Trim().Replace("\"", "");
 
-            if ((XEFilesPssdiag.Length > 0 || XEFilesLogScout.Length > 0) && trcFiles.Length > 0)
+            // The trace/xevent conflict can also arise across the two folders (e.g. .trc in the
+            // instance folder and .xel in the sibling SharedOutputFiles folder), so the pre-check
+            // inspects BOTH folders, not just the primary one.
+            List<string> conflictSearchPaths = SharedOutputFolder.GetImportSearchPaths(primaryPath);
+            if (conflictSearchPaths.Count == 0)
+                conflictSearchPaths.Add(primaryPath);
+
+            int xeFileCount = 0;
+            int trcFileCount = 0;
+            foreach (string searchDir in conflictSearchPaths)
+            {
+                if (string.IsNullOrEmpty(searchDir) || !Directory.Exists(searchDir))
+                    continue;
+
+                xeFileCount += Directory.GetFiles(searchDir, "*pssdiag*.xel").Length;
+                xeFileCount += Directory.GetFiles(searchDir, "*xevent_LogScout*.xel").Length;
+                trcFileCount += Directory.GetFiles(searchDir, "*sp_trace*.trc").Length;
+            }
+
+            if (xeFileCount > 0 && trcFileCount > 0)
             {
                 Util.Logger.LogMessage("You have captured both trace and xeven files. import will fail! Please remove or move one of the sets before importing", MessageOptions.All);
             }
@@ -968,6 +1279,8 @@ namespace sqlnexus
 
             tlpFiles.RowCount = 1;
             tlpFiles.Controls.Clear();
+            m_RowTargetPaths.Clear();
+            m_MissingFoldersWarned.Clear();
 
             INexusImporter prod;
             // Track importers that will actually run so we can log an effective summary (esp. for /M).
@@ -1059,9 +1372,11 @@ namespace sqlnexus
                         // A selected/enabled importer that matched no input files is worth surfacing:
                         // in a /M-driven automation run this usually means the expected data is missing.
                         enabledButEmptyImporters.Add(prod.Name);
+                        // Informational only (an enabled importer simply had nothing to import) - not a
+                        // warning or error, so log + status bar (Both), not a modal dialog (All).
                         MainForm.LogMessage("Importer '" + prod.Name + "' is enabled but found NO matching files (masks: "
                             + string.Join(", ", prod.SupportedMasks) + ") in the import path. Nothing to import for this importer.",
-                            MessageOptions.All);
+                            MessageOptions.Both);
 
                         // Under /M, a requested importer that finds no files means the data automation
                         // asked for did not arrive; flag it so the process returns a non-zero exit code.
@@ -1172,6 +1487,16 @@ namespace sqlnexus
                 this.FormBorderStyle = FormBorderStyle.Sizable;
                 tlpFiles.Visible = true;
                 ssStatus.Visible = true;
+                // The compact-form affordance no longer applies once expanded. Reverse any header
+                // growth we added for the label BEFORE overriding the size below, then hide the label
+                // and clear the flag/delta so a later path change does not try to shrink the form again.
+                if (m_sharedFolderLabelShown && m_sharedFolderLabelDelta > 0)
+                {
+                    paTop.Height -= m_sharedFolderLabelDelta;
+                }
+                laSharedFolder.Visible = false;
+                m_sharedFolderLabelShown = false;
+                m_sharedFolderLabelDelta = 0;
             }
 
             MainForm.LogMessage("Starting import...");
@@ -1280,6 +1605,28 @@ namespace sqlnexus
             // Setting working directory for linux perf importer
             LinuxPerfImporter.Model.ConfigValues.WorkingDirectory = srcPath;
 
+            // Record in the log whether a sibling SharedOutputFiles folder was also searched, so the
+            // provenance of imported files is captured in sqlnexus.log (not only via the GUI suffix).
+            string resolvedShared = SharedOutputFolder.ResolveSharedSibling(
+                srcPath.TrimEnd('\\'));
+            if (resolvedShared != null)
+            {
+                MainForm.LogMessage(
+                    "Shared output folder detected. Import will search two folders: primary '" +
+                    srcPath.TrimEnd('\\') + "' (" + CountFilesInFolder(srcPath) +
+                    " file(s)) and shared '" + resolvedShared + "' (" +
+                    CountFilesInFolder(resolvedShared) + " file(s)).",
+                    MessageOptions.Silent);
+            }
+            else
+            {
+                MainForm.LogMessage(
+                    "No sibling '" + SharedOutputFolder.SharedFolderName +
+                    "' folder found. Importing from primary folder '" + srcPath.TrimEnd('\\') +
+                    "' only (" + CountFilesInFolder(srcPath) + " file(s)).",
+                    MessageOptions.Silent);
+            }
+
             //find the instance name by locating it inside ##SQLDIAG.LOG
             instances = new SqlInstances(srcPath);
 
@@ -1354,9 +1701,37 @@ namespace sqlnexus
                         ri = (ll.Tag as INexusImporter);
                         MainForm.LogMessage(ri.Name + " is a INexusImporter");
 
+                        // LinuxPerfImporter mutates the static ConfigValues.WorkingDirectory when it
+                        // runs. Remember the value on entry so we can restore it after this row, so a
+                        // per-row repoint (e.g. to the sibling SharedOutputFiles folder) does not leak
+                        // into any importer that runs afterwards.
+                        string savedLinuxWorkingDir = LinuxPerfImporter.Model.ConfigValues.WorkingDirectory;
+
                         try
                         {
-                            ri.Initialize(srcPath + (tlpFiles.Controls[i] as /*LinkLabel*/ Label).Text,
+                            // Resolve the importer's target from the path recorded when the row was
+                            // created (handles files pulled from the sibling SharedOutputFiles folder
+                            // and avoids parsing the possibly-annotated display label). Fall back to
+                            // the legacy primary-path + label text when no path was recorded.
+                            string targetPath;
+                            if (!m_RowTargetPaths.TryGetValue(ll, out targetPath))
+                                targetPath = srcPath + ll.Text;
+
+                            // The LinuxPerfImporter changes to ConfigValues.WorkingDirectory when it
+                            // runs, so point it at the folder this row was actually discovered in.
+                            // Without this a *.perf file found in the sibling SharedOutputFiles folder
+                            // would be imported from the primary folder instead (reporting success while
+                            // importing nothing). Match by Name because importers are reflection-loaded
+                            // and may not share this host's LinuxPerfImporter type identity.
+                            if (ri.Name != null &&
+                                ri.Name.IndexOf("Linux Performance", StringComparison.OrdinalIgnoreCase) >= 0)
+                            {
+                                string targetDir = Path.GetDirectoryName(targetPath);
+                                if (!string.IsNullOrEmpty(targetDir))
+                                    LinuxPerfImporter.Model.ConfigValues.WorkingDirectory = targetDir;
+                            }
+
+                            ri.Initialize(targetPath,
                                                     Globals.credentialMgr.ConnectionString,
                                                     Globals.credentialMgr.Server,
                                                     Globals.credentialMgr.WindowsAuth,
@@ -1403,6 +1778,12 @@ namespace sqlnexus
                             }
                             Success = false;
                             Globals.HandleException(ex, this, MainForm);
+                        }
+                        finally
+                        {
+                            // Restore the working directory the Linux perf importer may have changed,
+                            // so it never leaks into subsequent importers.
+                            LinuxPerfImporter.Model.ConfigValues.WorkingDirectory = savedLinuxWorkingDir;
                         }
 
                         currBar.Style = ProgressBarStyle.Blocks;
@@ -1498,6 +1879,16 @@ namespace sqlnexus
 
                         bool alwaysOnXelDropTables = tsiSQLDiagAlwaysOnXEL_DropTables != null && tsiSQLDiagAlwaysOnXEL_DropTables.Checked;
                         bool customXelSuccess;
+
+                        // CustomXELImporter scans only the primary folder (srcPath). If the sibling
+                        // SharedOutputFiles folder contains Custom XEL sources (SQLDiag / AlwaysOn_health
+                        // / system_health), warn that they are NOT imported here so the user can move
+                        // them into the primary folder. We do NOT silently scan the sibling because the
+                        // Custom XEL load uses SELECT * INTO with optional DROP TABLE, which would
+                        // overwrite the primary folder's just-imported tables.
+                        if (customXelImportEnabled)
+                            WarnIfSharedFolderHasUnimportedCustomXel(srcPath);
+
                         string XelImprtStatusStr = CI.ImportCustomXELFiles(Globals.credentialMgr.ConnectionString, Globals.credentialMgr.Server,
                                                                 Globals.credentialMgr.WindowsAuth,
                                                                 Globals.credentialMgr.User,
@@ -1523,7 +1914,7 @@ namespace sqlnexus
                             {
                                 MainForm.LogMessage("Custom XEL import is enabled but found NO matching files "
                                     + "(SQLDiag/AlwaysOn Health/system_health) in the import path. Nothing to import.",
-                                    MessageOptions.All);
+                                    MessageOptions.Both);
 
                                 if (Globals.EnabledImporters != null)
                                     Globals.RequestedImporterMissingOrEmpty = true;
@@ -1964,7 +2355,158 @@ namespace sqlnexus
 
         private void tbPath_TextChanged(object sender, EventArgs e)
         {
-            tsbGo.Enabled = Directory.Exists(cbPath.Text);
+            bool pathExists = Directory.Exists(cbPath.Text);
+            tsbGo.Enabled = pathExists;
+            UpdateSharedFolderAffordance(pathExists);
+        }
+
+        // Form-level affordance (item 15): the path combo shows only the instance folder, so a second
+        // scanned folder would otherwise be discoverable only from per-row "(from SharedOutputFiles)"
+        // suffixes. When a sibling shared folder exists, surface it in a muted label under the path box
+        // so the user (and screen readers) can tell a second folder will also be scanned.
+        //
+        // The affordance is purely non-modal: the visual banner, tooltip, and cbPath.AccessibleDescription
+        // convey the sibling folder. The first detection of a given sibling is also written to the status
+        // bar and log (MessageOptions.Both) - no MessageBox is raised, so it never steals focus or
+        // interrupts a user mid-typing (tbPath_TextChanged fires on every keystroke).
+        private void UpdateSharedFolderAffordance(bool primaryExists)
+        {
+            try
+            {
+                string primary = (cbPath.Text ?? "").Trim().Replace("\"", "");
+
+                // Only do path work (GetFullPath + Directory.Exists on the sibling) for a rooted path
+                // that already exists. This avoids running it on every keystroke while a path is being
+                // typed - important for an unreachable UNC path, where the probing could hang the dialog.
+                string sibling = (primaryExists && !string.IsNullOrEmpty(primary) && Path.IsPathRooted(primary))
+                    ? SharedOutputFolder.ResolveSharedSibling(
+                        primary.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar))
+                    : null;
+
+                if (sibling != null)
+                {
+                    // Show an abbreviated path (label AutoEllipsis also truncates if still too wide);
+                    // the full path is always available via the tooltip.
+                    string shortPath = AbbreviatePath(sibling, 48);
+                    laSharedFolder.Text = "Also scanning: " + shortPath;
+                    laSharedFolder.AccessibleName = "Also scanning sibling folder " + sibling;
+                    toolTip1.SetToolTip(laSharedFolder, sibling);
+                    // The banner Label is not focusable, so mirror the announcement onto the focusable
+                    // path combo box (which a screen reader user WILL land on) so they are told a second
+                    // folder was added. Also gives a keyboard-only user the full path without a mouse.
+                    cbPath.AccessibleDescription = "Also scanning sibling shared folder: " + sibling;
+                    // Re-assert the info-band colors here because ThemeManager.ApplyTheme (run once at
+                    // construction) overwrites control colors for non-Default themes. SystemColors.Info
+                    // is contrast-safe and honored by High Contrast mode, and the "Also scanning:" text
+                    // carries the meaning so information is never conveyed by color alone.
+                    laSharedFolder.BackColor = SystemColors.Info;
+                    laSharedFolder.ForeColor = SystemColors.InfoText;
+                    ShowSharedFolderLabel(true);
+
+                    // Surface the full path the first time a given sibling is detected, so a
+                    // keyboard-only user has a non-mouse way to read it (the label is abbreviated).
+                    // Use MessageOptions.Both (status bar + log) - never a modal - so it does not steal
+                    // focus or interrupt typing.
+                    if (!string.Equals(sibling, m_lastAnnouncedSibling, StringComparison.OrdinalIgnoreCase))
+                    {
+                        MainForm?.LogMessage(
+                            "A sibling shared folder was detected and will also be scanned during import: " +
+                            sibling, MessageOptions.Both);
+                        m_lastAnnouncedSibling = sibling;
+                    }
+                }
+                else
+                {
+                    laSharedFolder.Text = "";
+                    laSharedFolder.AccessibleName = "";       // clear stale path from the hidden banner
+                    toolTip1.SetToolTip(laSharedFolder, "");
+                    cbPath.AccessibleDescription = "";        // clear the mirrored announcement
+                    m_lastAnnouncedSibling = null;
+                    ShowSharedFolderLabel(false);
+                }
+            }
+            catch (Exception ex)
+            {
+                // A malformed path in the combo must never break the form; just hide the affordance.
+                // MainForm can be null on the parameterless-constructor path, so guard it.
+                MainForm?.LogMessage("Unable to update shared-folder affordance: " + ex.Message,
+                    MessageOptions.Silent);
+                ShowSharedFolderLabel(false);
+            }
+        }
+
+        // Abbreviates a long path to "<root>\...\<last-two-segments>" so the affordance stays readable
+        // for deeply nested capture folders. Returns the original path when it is already short or has
+        // too few segments to shorten. Purely cosmetic - the full path is shown in the tooltip.
+        private string AbbreviatePath(string path, int maxLength)
+        {
+            if (string.IsNullOrEmpty(path) || path.Length <= maxLength)
+                return path;
+
+            try
+            {
+                string root = Path.GetPathRoot(path) ?? "";
+                string trimmed = path.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+                string[] parts = trimmed.Split(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+                if (parts.Length >= 2)
+                {
+                    string tail = parts[parts.Length - 2] + Path.DirectorySeparatorChar + parts[parts.Length - 1];
+                    return root.TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar + "..." +
+                           Path.DirectorySeparatorChar + tail;
+                }
+            }
+            catch (Exception ex)
+            {
+                // Fall through to the raw path on any parsing issue; the tooltip still has the full text.
+                MainForm?.LogMessage("Unable to abbreviate path '" + path + "': " + ex.Message,
+                    MessageOptions.Silent);
+            }
+            return path;
+        }
+
+        // Shows/hides the shared-folder banner in the COMPACT (pre-import) form only. The banner is a
+        // Dock=Bottom, AutoSize label docked to the bottom of paTop, so it flows with the panel instead
+        // of being absolutely positioned. The compact form is sized to fit paTop exactly, so we still
+        // grow paTop and the form by the banner's OWN measured height (DPI-safe: the label auto-sizes to
+        // the current font) and shrink back by the same amount when hidden. Once the import view is
+        // expanded (tlpFiles visible) the form is already large, so this is a no-op there.
+        private bool m_sharedFolderLabelShown;
+        private int m_sharedFolderLabelDelta; // actual pixels added, so we remove exactly the same
+        private void ShowSharedFolderLabel(bool show)
+        {
+            if (tlpFiles.Visible)
+            {
+                laSharedFolder.Visible = false; // expanded import view does not use the compact banner
+                return;
+            }
+
+            if (show == m_sharedFolderLabelShown)
+            {
+                laSharedFolder.Visible = show;
+                return;
+            }
+
+            if (show)
+            {
+                // Make it visible first so the docked/auto-sized label reports its real laid-out
+                // height at the current font/DPI, then grow the panel and form by exactly that.
+                laSharedFolder.Visible = true;
+                int rowHeight = laSharedFolder.Height;
+                if (rowHeight <= 0)
+                    rowHeight = laSharedFolder.PreferredHeight; // defensive fallback
+                m_sharedFolderLabelDelta = rowHeight;
+
+                paTop.Height += rowHeight;
+                this.ClientSize = new Size(this.ClientSize.Width, this.ClientSize.Height + rowHeight);
+            }
+            else
+            {
+                paTop.Height -= m_sharedFolderLabelDelta;
+                this.ClientSize = new Size(this.ClientSize.Width, this.ClientSize.Height - m_sharedFolderLabelDelta);
+                m_sharedFolderLabelDelta = 0;
+                laSharedFolder.Visible = false;
+            }
+            m_sharedFolderLabelShown = show;
         }
 
         private void tsbPath_Click(object sender, EventArgs e)
