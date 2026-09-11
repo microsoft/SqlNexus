@@ -7,10 +7,12 @@
     <RootNamespace>SqlNexus.McpServer</RootNamespace>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
-    <!-- Strong-named with the shared SqlNexus key so the (strong-named) unit test project can
-         load this referenced assembly and be granted InternalsVisibleTo. A strong-named test
-         assembly cannot load an unsigned reference at runtime (FileLoadException), and a signed
-         assembly can only grant InternalsVisibleTo to a strong-named friend. -->
+    <!-- Strong-named with the shared SqlNexus key so this assembly can grant InternalsVisibleTo to
+         the (strong-named) unit test project: a signed assembly can only expose its internals to a
+         strong-named friend, and the friend grant must carry that friend's PublicKey (see
+         Properties\AssemblyInfo.cs). This is the only reason signing is required here - a
+         strong-named assembly can still reference/load a weak-named one at runtime; that merely
+         produces the CS8002 warning, which the test project already suppresses via NoWarn. -->
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\sqlnexus\SqlNexus.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
