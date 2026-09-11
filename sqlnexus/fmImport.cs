@@ -193,9 +193,9 @@ namespace sqlnexus
         }
 
         // File masks recognized by CustomXELImporter (SQLDiag / AlwaysOn health / system_health).
-        // Kept in sync with the Directory.GetFiles patterns in CustomXELImporter.Load*Files().
-        private static readonly string[] CustomXelMasks =
-            { "*_SQLDIAG*.xel", "*AlwaysOn_health*.xel", "*system_health*.xel" };
+        // Single source of truth lives on CustomXELImporter so this warning and the actual importer
+        // can never drift apart (see issue #556).
+        private static readonly string[] CustomXelMasks = CustomXELImporter.CustomXelFileMasks;
 
         // CustomXELImporter only scans the primary folder. If the sibling SharedOutputFiles folder
         // contains Custom XEL sources that are NOT also in the primary folder, they are silently never
