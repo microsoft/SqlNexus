@@ -283,16 +283,30 @@ namespace sqlnexus
                 if (SharedOutputFolder.ShouldSkipSiblingForMask(
                         isShared, anyAdded, Importer is INexusFileImporter))
                 {
-                    // Informational, not an error: the primary folder already provided files for this
-                    // mask, so they WERE imported. We just don't ALSO import the sibling copies (that
-                    // would re-run table setup over already-imported data). Log + status bar (Both),
-                    // not a modal dialog, so it is discoverable without alarming the user.
-                    MainForm.LogMessage(
-                        "Files matching '" + Mask + "' were imported from the primary folder. Additional " +
-                        "matching files in '" + searchPaths[idx] + "' were not also imported (to avoid " +
-                        "re-processing the same data) for importer '" +
-                        (Importer != null ? Importer.Name : "(null)") +
-                        "'. If you need those, import that folder separately.", MessageOptions.Both);
+                    // Only warn when the sibling folder ACTUALLY contains files matching this mask.
+                    // GetImportSearchPaths appends the sibling merely because the directory exists,
+                    // not because it holds anything relevant, and this skip branch never otherwise
+                    // enumerates it (AddFilesFromDirectory - the only caller of Directory.GetFiles -
+                    // is exactly what we are skipping). Without this check the message fires on every
+                    // import whose sibling has zero matching files (e.g. instance-specific ReadTrace /
+                    // TraceEvent masks that never appear in SharedOutputFiles), permanently polluting
+                    // sqlnexus.log and telling the user to re-import an empty folder.
+                    int siblingMatchCount = SharedOutputFolder.CountMaskMatches(searchPaths[idx], Mask);
+
+                    if (siblingMatchCount > 0)
+                    {
+                        // Informational, not an error: the primary folder already provided files for
+                        // this mask, so they WERE imported. We just don't ALSO import the sibling
+                        // copies (that would re-run table setup over already-imported data). Log +
+                        // status bar (Both), not a modal dialog, so it is discoverable without
+                        // alarming the user.
+                        MainForm.LogMessage(
+                            "Files matching '" + Mask + "' were imported from the primary folder. " +
+                            siblingMatchCount + " additional matching file(s) in '" + searchPaths[idx] +
+                            "' were not also imported (to avoid re-processing the same data) for importer '" +
+                            (Importer != null ? Importer.Name : "(null)") +
+                            "'. If you need those, import that folder separately.", MessageOptions.Both);
+                    }
                     continue;
                 }
 

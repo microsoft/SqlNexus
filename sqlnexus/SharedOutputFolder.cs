@@ -292,6 +292,40 @@ namespace sqlnexus
         }
 
         /// <summary>
+        /// Safely counts the files in <paramref name="folder"/> matching <paramref name="mask"/>.
+        /// Returns 0 when the folder is null/empty, does not exist, or cannot be enumerated (a
+        /// restrictive-permission / too-long / transient-IO sibling folder must not abort the caller).
+        ///
+        /// This exists so the "primary matched, sibling was NOT also imported" warning can be gated on
+        /// the sibling ACTUALLY containing matching files. GetImportSearchPaths appends the sibling
+        /// merely because the directory exists, so without this check the warning fires even when the
+        /// sibling holds zero files matching the mask (the common case for instance-specific masks such
+        /// as ReadTrace / TraceEvent XEL/TRC that never appear in SharedOutputFiles).
+        /// </summary>
+        /// <param name="folder">The directory to enumerate. May be null/empty or nonexistent.</param>
+        /// <param name="mask">The file mask (e.g. "*.trc"). May be null/empty (treated as no match).</param>
+        /// <returns>The number of matching files, or 0 on any missing-folder / access failure.</returns>
+        public static int CountMaskMatches(string folder, string mask)
+        {
+            if (string.IsNullOrEmpty(folder) || string.IsNullOrEmpty(mask) || !Directory.Exists(folder))
+                return 0;
+
+            try
+            {
+                return Directory.GetFiles(folder, mask).Length;
+            }
+            catch (Exception ex) when (ex is UnauthorizedAccessException || ex is IOException || ex is PathTooLongException)
+            {
+                // A restrictive-permission / too-long / transient-IO folder must not abort the caller.
+                // Treat as "nothing matched" so we never emit a misleading "not also imported" message
+                // for files we were never able to see.
+                LogSilent("SharedOutputFolder: could not enumerate '" + mask + "' in '" + folder +
+                    "': " + ex.Message);
+                return 0;
+            }
+        }
+
+        /// <summary>
         /// Returns the validated path to the sibling <see cref="SharedFolderName"/> folder if it
         /// exists as a direct sibling of <paramref name="normalizedPrimary"/>; otherwise null.
         /// </summary>

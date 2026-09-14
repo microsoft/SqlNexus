@@ -565,5 +565,52 @@ namespace SqlNexus.UnitTests.sqlnexus
                 result[0].TrimEnd(Path.DirectorySeparatorChar),
                 "UNC primary path must be preserved (no sibling appended when the share does not exist).");
         }
+
+        // ---- CountMaskMatches (issue #556: gate the "not also imported" warning) --
+
+        [TestMethod]
+        public void CountMaskMatches_SiblingHasNoMatchingFiles_ReturnsZero()
+        {
+            // Regression for issue #556: instance-specific masks (e.g. ReadTrace *.trc) never appear
+            // in SharedOutputFiles, so the sibling match count must be 0 and the caller must NOT emit
+            // the misleading "additional matching files were not also imported" message.
+            string shared = CreateDir("output", SharedOutputFolder.SharedFolderName);
+            File.WriteAllText(Path.Combine(shared, "host_os.txt"), "x"); // present, but not *.trc
+
+            Assert.AreEqual(0, SharedOutputFolder.CountMaskMatches(shared, "*.trc"));
+        }
+
+        [TestMethod]
+        public void CountMaskMatches_SiblingHasMatchingFiles_ReturnsCount()
+        {
+            // The genuine gap case (e.g. Perfmon *.BLG present in both folders) must be counted so the
+            // caller warns the user about the real, unimported sibling copies.
+            string shared = CreateDir("output", SharedOutputFolder.SharedFolderName);
+            File.WriteAllText(Path.Combine(shared, "counters1.blg"), "x");
+            File.WriteAllText(Path.Combine(shared, "counters2.blg"), "x");
+            File.WriteAllText(Path.Combine(shared, "unrelated.txt"), "x");
+
+            Assert.AreEqual(2, SharedOutputFolder.CountMaskMatches(shared, "*.blg"));
+        }
+
+        [TestMethod]
+        public void CountMaskMatches_NonexistentFolder_ReturnsZero()
+        {
+            string missing = Path.Combine(_root, "does_not_exist");
+
+            Assert.AreEqual(0, SharedOutputFolder.CountMaskMatches(missing, "*.blg"));
+        }
+
+        [TestMethod]
+        public void CountMaskMatches_NullOrEmptyFolderOrMask_ReturnsZero()
+        {
+            string shared = CreateDir("output", SharedOutputFolder.SharedFolderName);
+            File.WriteAllText(Path.Combine(shared, "counters.blg"), "x");
+
+            Assert.AreEqual(0, SharedOutputFolder.CountMaskMatches(null, "*.blg"));
+            Assert.AreEqual(0, SharedOutputFolder.CountMaskMatches("", "*.blg"));
+            Assert.AreEqual(0, SharedOutputFolder.CountMaskMatches(shared, null));
+            Assert.AreEqual(0, SharedOutputFolder.CountMaskMatches(shared, ""));
+        }
     }
 }
