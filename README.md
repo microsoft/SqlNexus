@@ -15,6 +15,13 @@ Current release is 7.24.02.18. Please go to [latest release](https://github.com/
 5. **Full-featured reporting engine** : SQL Nexus uses the SQL Server Reporting Services client-side report viewer (it does not require an RS instance). You can create reports for Nexus from either the RS report designer or the Visual Studio report designer. You can also modify the reports that ship with Nexus using either facility. Zoom in/Zoom out to view server performance during a particular time window. Expand/collapse report regions (subreports) for easier navigation of complex data. Export or email reports directly from SQL Nexus. Nexus supports exporting in Excel, PDF, and several other formats.
 6. **Extensibility** : You can use the existing importers to load the output from any DMV query into a table, and any RS reports you drop in the Reports folder will automatically show up in the reports task pane. If you want, you can even add a new data importer for a new data type. SQL Nexus will automatically &quot;fix up&quot; the database references in your reports to reference the current server and database, and it will provide generic parameter prompting for any parameters your reports support.
 
+# Importing SQL LogScout "All Instances" captures
+
+When you point SQL Nexus at a SQL LogScout instance folder (for example `output\SERVER_SQL2019`), SQL Nexus also automatically scans a sibling folder named **SharedOutputFiles** in the same parent directory, if one exists. That folder holds non-instance-specific host/OS diagnostics (such as running drivers, disk info, and event logs). As a result:
+
+- The import list may include rows for files that are not physically inside the folder you selected. Such rows are labeled with a `(from SharedOutputFiles)` suffix, and the Import dialog shows an "Also scanning: ..." note naming the second folder.
+- A file that appears in both folders is imported only once (the copy in your selected folder wins), so you do not get duplicate rows.
+
 # Common Tasks
 
 1. [How To Use SQL Nexus](https://github.com/microsoft/SqlNexus/wiki/How-to-use-SQL-Nexus)

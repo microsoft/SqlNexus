@@ -19,6 +19,8 @@ namespace ErrorLogImporter
         private const string OPTION_DROP_EXISTING = "Drop existing tables (ERRORLOG)";
         private const string OPTION_ENABLED = "Enabled";
         private const string HEAD_AND_TAIL_MARKER_PARTIAL = "<<... middle part of file not captured because";
+        // Internal so the strong-named unit test project (granted via InternalsVisibleTo) can assert
+        // against these values without widening them to public plugin API.
         internal const string INCOMPLETE_PROCESS_MARKER = "INCOMPLETE";
         internal const string INCOMPLETE_LOG_MESSAGE = ">>>>> ERRORLOG file is incomplete: the middle part was not captured because the file was too large (>1 GB). <<<<<";
 
