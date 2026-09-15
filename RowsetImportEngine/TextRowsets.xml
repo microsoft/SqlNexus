@@ -4842,5 +4842,138 @@
       </KnownColumns>
     </Rowset>  
     
+    <!-- ============================================================================================== -->
+    <!-- SQL LogScout connectivity & security collectors (TLS protocols, client drivers, SPNs, service   -->
+    <!-- accounts, client aliases, server certificates). One rowset per section emitted by each          -->
+    <!-- collector's .out file. Output is fixed-width sqlcmd-style; the engine derives column widths from -->
+    <!-- the dashed separator line and matches the header names below.                                   -->
+    <!-- ============================================================================================== -->
+
+    <Rowset name="tbl_tls_ssl_protocols" enabled="true" identifier="-- TLS_SSL_Protocols --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="Protocol" type="RowsetImportEngine.VarCharColumn" length="30" />
+        <Column name="Role" type="RowsetImportEngine.VarCharColumn" length="8" />
+        <Column name="RegEnabled" type="RowsetImportEngine.VarCharColumn" length="12" />
+        <Column name="RegDisabledByDefault" type="RowsetImportEngine.VarCharColumn" length="22" />
+        <Column name="EffectiveState" type="RowsetImportEngine.VarCharColumn" length="30" />
+        <Column name="Source" type="RowsetImportEngine.VarCharColumn" length="20" />
+        <Column name="RegistryPath" type="RowsetImportEngine.VarCharColumn" length="160" />
+      </KnownColumns>
+    </Rowset>
+
+    <Rowset name="tbl_sql_client_drivers" enabled="true" identifier="-- SQL_Client_Drivers --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="Name" type="RowsetImportEngine.VarCharColumn" length="32" />
+        <Column name="Type" type="RowsetImportEngine.VarCharColumn" length="8" />
+        <Column name="Version" type="RowsetImportEngine.VarCharColumn" length="18" />
+        <Column name="TLS12" type="RowsetImportEngine.VarCharColumn" length="9" />
+        <Column name="TLS13" type="RowsetImportEngine.VarCharColumn" length="9" />
+        <Column name="MSF" type="RowsetImportEngine.VarCharColumn" length="6" />
+        <Column name="Bitness" type="RowsetImportEngine.VarCharColumn" length="9" />
+        <Column name="CLSID" type="RowsetImportEngine.VarCharColumn" length="40" />
+        <Column name="Path" type="RowsetImportEngine.VarCharColumn" length="260" />
+      </KnownColumns>
+    </Rowset>
+
+    <Rowset name="tbl_sql_spn_service_accounts" enabled="true" identifier="-- SQL_SPN_ServiceAccounts --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="ServiceName" type="RowsetImportEngine.VarCharColumn" length="24" />
+        <Column name="ServiceAccountName" type="RowsetImportEngine.VarCharColumn" length="34" />
+        <Column name="SpnAccount" type="RowsetImportEngine.VarCharColumn" length="38" />
+        <Column name="State" type="RowsetImportEngine.VarCharColumn" length="16" />
+      </KnownColumns>
+    </Rowset>
+
+    <Rowset name="tbl_sql_spn_registered" enabled="true" identifier="-- SQL_SPN_Registered --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="Account" type="RowsetImportEngine.VarCharColumn" length="38" />
+        <Column name="SPN" type="RowsetImportEngine.VarCharColumn" length="54" />
+        <Column name="Type" type="RowsetImportEngine.VarCharColumn" length="12" />
+        <Column name="Duplicate" type="RowsetImportEngine.VarCharColumn" length="10" />
+      </KnownColumns>
+    </Rowset>
+
+    <Rowset name="tbl_sql_spn_suggested" enabled="true" identifier="-- SQL_SPN_Suggested --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="Instance" type="RowsetImportEngine.VarCharColumn" length="20" />
+        <Column name="SuggestedSPN" type="RowsetImportEngine.VarCharColumn" length="54" />
+        <Column name="ExpectedAccount" type="RowsetImportEngine.VarCharColumn" length="24" />
+        <Column name="Status" type="RowsetImportEngine.VarCharColumn" length="64" />
+      </KnownColumns>
+    </Rowset>
+
+    <Rowset name="tbl_sql_service_summary" enabled="true" identifier="-- SQL_Service_Summary --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="Instance" type="RowsetImportEngine.VarCharColumn" length="18" />
+        <Column name="ServiceName" type="RowsetImportEngine.VarCharColumn" length="22" />
+        <Column name="Account" type="RowsetImportEngine.VarCharColumn" length="40" />
+        <Column name="StartMode" type="RowsetImportEngine.VarCharColumn" length="10" />
+        <Column name="State" type="RowsetImportEngine.VarCharColumn" length="16" />
+      </KnownColumns>
+    </Rowset>
+
+    <Rowset name="tbl_sql_service_account_delegation" enabled="true" identifier="-- SQL_Service_Account_Delegation --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="Account" type="RowsetImportEngine.VarCharColumn" length="24" />
+        <Column name="Property" type="RowsetImportEngine.VarCharColumn" length="28" />
+        <Column name="Value" type="RowsetImportEngine.NVarCharColumn" length="256" />
+      </KnownColumns>
+    </Rowset>
+
+    <Rowset name="tbl_kerberos_local_policy" enabled="true" identifier="-- Kerberos_Local_Policy --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="Property" type="RowsetImportEngine.VarCharColumn" length="28" />
+        <Column name="Value" type="RowsetImportEngine.NVarCharColumn" length="256" />
+      </KnownColumns>
+    </Rowset>
+
+    <Rowset name="tbl_sql_instance_network_security" enabled="true" identifier="-- SQL_Instance_Network_Security --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="Instance" type="RowsetImportEngine.VarCharColumn" length="18" />
+        <Column name="Property" type="RowsetImportEngine.VarCharColumn" length="24" />
+        <Column name="Value" type="RowsetImportEngine.NVarCharColumn" length="64" />
+      </KnownColumns>
+    </Rowset>
+
+    <Rowset name="tbl_sql_client_aliases" enabled="true" identifier="-- SQL_Client_Aliases --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="Alias" type="RowsetImportEngine.VarCharColumn" length="28" />
+        <Column name="Architecture" type="RowsetImportEngine.VarCharColumn" length="14" />
+        <Column name="Protocol" type="RowsetImportEngine.VarCharColumn" length="20" />
+        <Column name="Server" type="RowsetImportEngine.NVarCharColumn" length="48" />
+        <Column name="Port" type="RowsetImportEngine.VarCharColumn" length="8" />
+        <Column name="Value" type="RowsetImportEngine.NVarCharColumn" length="128" />
+      </KnownColumns>
+    </Rowset>
+
+    <Rowset name="tbl_sql_server_certificates" enabled="true" identifier="-- SQL_Server_Certificates --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="CertID" type="RowsetImportEngine.VarCharColumn" length="7" />
+        <Column name="Thumbprint" type="RowsetImportEngine.VarCharColumn" length="42" />
+        <Column name="Subject" type="RowsetImportEngine.NVarCharColumn" length="40" />
+        <Column name="SubjectAltNames" type="RowsetImportEngine.NVarCharColumn" length="34" />
+        <Column name="ServerCert" type="RowsetImportEngine.VarCharColumn" length="11" />
+        <Column name="NotBefore" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="NotAfter" type="RowsetImportEngine.DateTimeColumn" />
+        <Column name="Validity" type="RowsetImportEngine.VarCharColumn" length="13" />
+        <Column name="HasPrivKey" type="RowsetImportEngine.VarCharColumn" length="11" />
+        <Column name="Exportable" type="RowsetImportEngine.VarCharColumn" length="11" />
+        <Column name="KeyProv" type="RowsetImportEngine.VarCharColumn" length="9" />
+        <Column name="SqlAccess" type="RowsetImportEngine.VarCharColumn" length="11" />
+        <Column name="SqlUsed" type="RowsetImportEngine.VarCharColumn" length="11" />
+        <Column name="KeyContainerFile" type="RowsetImportEngine.NVarCharColumn" length="260" />
+      </KnownColumns>
+    </Rowset>
+
+    <Rowset name="tbl_sql_server_certificate_key_acl" enabled="true" identifier="-- SQL_Server_Certificate_KeyAcl --" type="RowsetImportEngine.TextRowset">
+      <KnownColumns>
+        <Column name="CertID" type="RowsetImportEngine.VarCharColumn" length="7" />
+        <Column name="Thumbprint" type="RowsetImportEngine.VarCharColumn" length="42" />
+        <Column name="Identity" type="RowsetImportEngine.NVarCharColumn" length="44" />
+        <Column name="Access" type="RowsetImportEngine.VarCharColumn" length="10" />
+        <Column name="Rights" type="RowsetImportEngine.NVarCharColumn" length="128" />
+      </KnownColumns>
+    </Rowset>
+
   </KnownRowsets>
 </TextImport>
