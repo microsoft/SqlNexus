@@ -1,5 +1,4 @@
 using System;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -7,6 +6,8 @@ using NexusInterfaces;
 using System.IO;
 using System.Diagnostics;
 using System.Data;
+using System.Linq;
+using System.Text.RegularExpressions;
 using Microsoft.Data.SqlClient;
 using System.Runtime.InteropServices;
 //using System.Windows.Forms;
@@ -29,15 +30,103 @@ namespace PerfmonImporter
         [DllImport("ODBCCP32.dll", EntryPoint = "SQLConfigDataSource", CharSet = CharSet.Unicode)]
         private static extern bool SQLConfigDataSource(IntPtr parent, int request, string driver, string attributes);
 
-        // Drivers are tried in preference order. The modern "ODBC Driver 18/17 for SQL Server"
-        // drivers honor the Encrypt / TrustServerCertificate keywords; the legacy "SQL Server"
-        // driver (sqlsrv32.dll) is kept only as a last-resort fallback and largely ignores them.
-        public static readonly string[] PreferredDrivers = new string[]
+        // Enumerates the ODBC drivers installed on the machine. Each driver description is a
+        // null-terminated string, and the whole list is terminated by an extra null.
+        [DllImport("ODBCCP32.dll", EntryPoint = "SQLGetInstalledDrivers", CharSet = CharSet.Unicode)]
+        private static extern bool SQLGetInstalledDrivers(char[] lpszBuf, ushort cbBufMax, out ushort pcbBufOut);
+
+        // Legacy SQL Server ODBC driver (sqlsrv32.dll). It is kept only as a last-resort fallback:
+        // it largely ignores the Encrypt / TrustServerCertificate keywords, so modern
+        // "ODBC Driver NN for SQL Server" drivers are always preferred over it.
+        public const string LegacyDriverName = "SQL Server";
+
+        // Matches the modern Microsoft SQL Server ODBC drivers, e.g. "ODBC Driver 18 for SQL Server".
+        // The captured number is used to prefer the newest installed version.
+        private static readonly Regex ModernDriverRegex =
+            new Regex(@"^ODBC Driver (\d+) for SQL Server$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+
+        // Returns the SQL Server ODBC drivers to try, in preference order:
+        //   1. Modern "ODBC Driver NN for SQL Server" drivers, newest version number first.
+        //   2. The legacy "SQL Server" driver last, as a fallback (if installed).
+        // Drivers that are not SQL Server drivers are ignored. This makes the code future-proof:
+        // a newly installed "ODBC Driver 19/20/... for SQL Server" is picked up automatically
+        // without a code change, because selection is based on the drivers actually installed.
+        public static string[] GetPreferredDrivers(IEnumerable<string> installedDrivers)
         {
-            "ODBC Driver 18 for SQL Server",
-            "ODBC Driver 17 for SQL Server",
-            "SQL Server"
-        };
+            if (null == installedDrivers)
+            {
+                return new string[0];
+            }
+
+            List<KeyValuePair<int, string>> modern = new List<KeyValuePair<int, string>>();
+            bool hasLegacy = false;
+
+            foreach (string driver in installedDrivers)
+            {
+                if (string.IsNullOrWhiteSpace(driver))
+                {
+                    continue;
+                }
+
+                string name = driver.Trim();
+                Match m = ModernDriverRegex.Match(name);
+                if (m.Success)
+                {
+                    int version;
+                    if (int.TryParse(m.Groups[1].Value, out version))
+                    {
+                        modern.Add(new KeyValuePair<int, string>(version, name));
+                    }
+                }
+                else if (string.Equals(name, LegacyDriverName, StringComparison.OrdinalIgnoreCase))
+                {
+                    hasLegacy = true;
+                }
+            }
+
+            // Newest modern driver first (highest version number).
+            List<string> ordered = modern
+                .OrderByDescending(kvp => kvp.Key)
+                .Select(kvp => kvp.Value)
+                .ToList();
+
+            if (hasLegacy)
+            {
+                ordered.Add(LegacyDriverName);
+            }
+
+            return ordered.ToArray();
+        }
+
+        // Reads the list of installed ODBC drivers from the ODBC installer (SQLGetInstalledDrivers).
+        // Returns an empty array on failure so the caller can decide how to proceed.
+        public static string[] GetInstalledOdbcDrivers()
+        {
+            try
+            {
+                // The buffer holds all driver descriptions as consecutive null-terminated strings,
+                // with a final extra null terminating the list. 8 KB is far more than enough.
+                const ushort bufChars = 8192;
+                char[] buffer = new char[bufChars];
+                ushort written;
+                if (!SQLGetInstalledDrivers(buffer, bufChars, out written) || written == 0)
+                {
+                    return new string[0];
+                }
+
+                // Split the double-null-terminated block into individual driver names.
+                string block = new string(buffer, 0, written);
+                return block
+                    .Split('\0')
+                    .Where(s => !string.IsNullOrWhiteSpace(s))
+                    .ToArray();
+            }
+            catch (Exception)
+            {
+                // Enumeration is best-effort; fall back to an empty list (caller handles it).
+                return new string[0];
+            }
+        }
 
         // Builds the null-delimited attribute string passed to SQLConfigDataSource.
         // Extracted for unit testing (the P/Invoke itself cannot run in a unit test).
@@ -51,7 +140,7 @@ namespace PerfmonImporter
             if (AuthMode)
                 DSNSettings += "Trusted_Connection=yes\0";
             else	// NOTE: I don't think SQL allows you to persist a SQL login/pwd in a DSN...
-                DSNSettings += "Trusted_Connection=no\0;UID=" + User + "\0" + "PWD=" + Password + "\0";
+                DSNSettings += "Trusted_Connection=no\0" + "UID=" + User + "\0" + "PWD=" + Password + "\0";
 
             // Honor the encryption choices the user made when connecting SqlNexus to SQL Server,
             // so relog.exe negotiates the same transport security as the rest of the app.
@@ -71,10 +160,30 @@ namespace PerfmonImporter
         {
             string DSNSettings = BuildDsnSettings(DSNName, Server, Database, AuthMode, User, Password, Encrypt, TrustServerCertificate);
 
+            // Discover the SQL Server ODBC drivers actually installed on this machine and try them
+            // newest-first (see GetPreferredDrivers). This is future-proof: a newer
+            // "ODBC Driver NN for SQL Server" is used automatically without a code change.
+            string[] drivers = GetPreferredDrivers(GetInstalledOdbcDrivers());
+            if (0 == drivers.Length)
+            {
+                // Enumeration returned nothing usable (e.g. the ODBC installer call failed). Fall
+                // back to probing the known driver names directly so the import can still work.
+                drivers = new string[]
+                {
+                    "ODBC Driver 18 for SQL Server",
+                    "ODBC Driver 17 for SQL Server",
+                    LegacyDriverName
+                };
+                if (null != Logger)
+                {
+                    Logger.LogMessage("Could not enumerate installed ODBC drivers; falling back to probing known SQL Server ODBC driver names.");
+                }
+            }
+
             // UAC makes creating a system DSN a problem, so we register a USER DSN.
             // Try modern drivers first (which honor Encrypt/TrustServerCertificate) and fall
             // back to older ones so the import still works on machines without them installed.
-            foreach (string driver in PreferredDrivers)
+            foreach (string driver in drivers)
             {
                 // The driver is supplied as the separate lpszDriver parameter below; it must NOT
                 // also be embedded in the attribute string or SQLConfigDataSource will fail.
@@ -84,7 +193,7 @@ namespace PerfmonImporter
                     if (null != Logger)
                     {
                         Logger.LogMessage("Perfmon import DSN '" + DSNName + "' created using ODBC driver '" + driver + "'.");
-                        if (Encrypt && string.Equals(driver, "SQL Server", StringComparison.OrdinalIgnoreCase))
+                        if (Encrypt && string.Equals(driver, LegacyDriverName, StringComparison.OrdinalIgnoreCase))
                         {
                             Logger.LogMessage("Warning: the legacy 'SQL Server' ODBC driver was used; it may not enforce the requested connection encryption.");
                         }
@@ -288,43 +397,31 @@ namespace PerfmonImporter
                 DropExistingTables();
             }
 
-            int filenum = 1;
+            // Create the ODBC DSN once for the whole import. The DSN points at the SQL Server and
+            // is identical for every .BLG file, so there is no need to recreate it per file.
+            // (Relog.exe requires a DSN.) Honor the same Encrypt / TrustServerCertificate options
+            // the user selected when connecting SqlNexus to SQL Server so the relog import is
+            // consistent with the rest of the app.
+            bool encrypt;
+            bool trustServerCertificate;
+            ReadEncryptionSettings(connStr, out encrypt, out trustServerCertificate);
+
+            bool DSNCreate = DSNCreator.CreateDSN(DSN_NAME, server, databasename, usewindowsauth, sqllogin, sqlpassword, encrypt, trustServerCertificate, logger);
+            if (!DSNCreate)
+            {
+                // Fail closed: without the DSN, relog cannot write to SQL Server. Surface the
+                // failure instead of letting relog run and silently import zero rows.
+                logger.LogMessage("Failed to create ODBC DSN '" + DSN_NAME + "'; skipping relog import for all Perfmon files.", MessageOptions.All);
+                State = ImportState.Idle;
+                return false;
+            }
+
+            int importedFiles = 0;
             foreach (string f in Files)
             {
                 string args;
 
-                filenum++;
                 logger.LogMessage("Loading " + Path.GetFileName(f));
-
-
-                // Create a system DSN pointing at the SQL Server. (Relog.exe requires a DSN.)
-                // Honor the same Encrypt / TrustServerCertificate options the user selected when
-                // connecting SqlNexus to SQL Server, so the relog import is consistent with the app.
-                bool encrypt = false;
-                bool trustServerCertificate = false;
-                try
-                {
-                    SqlConnectionStringBuilder csb = new SqlConnectionStringBuilder(connStr);
-                    // In Microsoft.Data.SqlClient 5.x, Encrypt is a SqlConnectionEncryptOption.
-                    // Treat Mandatory or Strict as "encrypt"; Optional means no encryption.
-                    encrypt = csb.Encrypt != SqlConnectionEncryptOption.Optional;
-                    trustServerCertificate = csb.TrustServerCertificate;
-                }
-                catch (Exception ex)
-                {
-                    // Fall back to no encryption if the connection string cannot be parsed, but log it.
-                    Util.Logger.LogMessage("Could not read encryption settings from connection string; defaulting to unencrypted DSN. " + ex.Message);
-                }
-
-                bool DSNCreate = DSNCreator.CreateDSN(DSN_NAME, server, databasename, usewindowsauth, sqllogin, sqlpassword, encrypt, trustServerCertificate, logger);
-                if (!DSNCreate)
-                {
-                    // Fail closed: without the DSN, relog cannot write to SQL Server. Surface the
-                    // failure instead of letting relog run and silently import zero rows.
-                    logger.LogMessage("Failed to create ODBC DSN '" + DSN_NAME + "' for " + Path.GetFileName(f) + "; skipping relog import for this file.", MessageOptions.All);
-                    State = ImportState.Idle;
-                    return false;
-                }
 
                 // Finally, kick off relog to load the BLG into the database. To improve 
                 // loading perf we have excluded Thread and Process counters (except for 
@@ -336,6 +433,8 @@ namespace PerfmonImporter
                 // this will load a data point for every 10 second interval. The load will 
                 // usually finish in about 1.5 minutes per 256MB .BLG (~200K rows loaded). 
 
+                // NOTE: the relog args intentionally reference the DSN (never a password). No
+                // credentials are embedded here, so logging the args below cannot leak secrets.
                 args = "\"" + f + "\" -o SQL:" + DSN_NAME + "!" + databasename + " -f SQL -t 2 "; // + " -cf \"" + TempDir + "\\counterlist_small.txt\"";
 
                 ProcessStartInfo pi = new ProcessStartInfo("relog.exe", args);
@@ -344,7 +443,7 @@ namespace PerfmonImporter
                 {
                     pi.WindowStyle = ProcessWindowStyle.Minimized;
                 }
-                    
+
                 Util.Logger.LogMessage("relog.exe args " + args);
                 Process p = Process.Start(pi);
                 p.WaitForExit();
@@ -360,6 +459,8 @@ namespace PerfmonImporter
                 //	throw new Exception ("Failed to generate reduced counter list.");
                 //}
 
+                importedFiles++;
+
                 if (cancelled)
                 {
                     break;
@@ -367,8 +468,51 @@ namespace PerfmonImporter
                 totalLinesProcessed = TotalRows();
                 totalRowsInserted = TotalLinesProcessed;
             }
+
+            // Be explicit about partial-import semantics: if the user cancelled part-way through,
+            // some files were imported and some were not. Surface that in the status log so the
+            // result is not mistaken for a complete import.
+            if (cancelled && importedFiles < Files.Length)
+            {
+                logger.LogMessage("Perfmon import cancelled after processing " + importedFiles + " of " + Files.Length + " file(s); the remaining file(s) were not imported.", MessageOptions.All);
+            }
+
             State = ImportState.Idle;
             return true;
+        }
+
+        // Reads the Encrypt / TrustServerCertificate options from the app's connection string so
+        // the relog DSN negotiates the same transport security as the rest of SqlNexus. Extracted
+        // as a static helper so the parsing logic is unit-testable without touching the DSN P/Invoke.
+        // Fails closed to "no encryption" only when the connection string cannot be parsed.
+        internal static void ReadEncryptionSettings(string connectionString, out bool encrypt, out bool trustServerCertificate)
+        {
+            encrypt = false;
+            trustServerCertificate = false;
+            try
+            {
+                SqlConnectionStringBuilder csb = new SqlConnectionStringBuilder(connectionString);
+                // In Microsoft.Data.SqlClient 5.x, Encrypt is a SqlConnectionEncryptOption.
+                // Treat Mandatory or Strict as "encrypt"; Optional means no encryption.
+                encrypt = csb.Encrypt != SqlConnectionEncryptOption.Optional;
+                trustServerCertificate = csb.TrustServerCertificate;
+            }
+            catch (Exception ex)
+            {
+                // Fall back to no encryption if the connection string cannot be parsed, but log it.
+                // Only ex.Message is logged (never the connection string) so credentials cannot leak.
+                // Util.Logger may be null when this runs outside the WinForms host (e.g. unit tests),
+                // so guard against it: the fail-closed handler must never throw.
+                ILogger log = Util.Logger;
+                if (null != log)
+                {
+                    log.LogMessage("Could not read encryption settings from connection string; defaulting to unencrypted DSN. " + ex.Message);
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine("Could not read encryption settings from connection string; defaulting to unencrypted DSN. " + ex.Message);
+                }
+            }
         }
 
         public void Cancel()

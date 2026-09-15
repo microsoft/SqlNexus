@@ -72,22 +72,85 @@ namespace SqlNexus.UnitTests.PerfmonImporter
         {
             string dsn = DSNCreator.BuildDsnSettings("SQLNexusDSN", "myserver", "mydb", false, "sa", "p@ss", true, false);
 
-            Assert.IsTrue(dsn.Contains("UID=sa"));
-            Assert.IsTrue(dsn.Contains("PWD=p@ss"));
-            Assert.IsTrue(dsn.Contains("Trusted_Connection=no"));
+            // Assert exact tokens (not just substrings) so a malformed keyword such as ";UID=sa"
+            // is caught. Each keyword=value pair must be its own '\0'-delimited token.
+            Assert.IsTrue(ContainsToken(dsn, "UID=sa"));
+            Assert.IsTrue(ContainsToken(dsn, "PWD=p@ss"));
+            Assert.IsTrue(ContainsToken(dsn, "Trusted_Connection=no"));
             Assert.IsTrue(ContainsToken(dsn, "Encrypt=yes"));
         }
 
         [TestMethod]
-        public void PreferredDrivers_ModernDriversTakePrecedenceOverLegacy()
+        public void GetPreferredDrivers_ModernDriversTakePrecedenceOverLegacy()
         {
-            string[] drivers = DSNCreator.PreferredDrivers;
+            // Simulate a machine with a mix of installed ODBC drivers (order intentionally shuffled).
+            string[] installed = new string[]
+            {
+                "SQL Server",
+                "ODBC Driver 17 for SQL Server",
+                "Microsoft Access Driver (*.mdb, *.accdb)",
+                "ODBC Driver 18 for SQL Server",
+            };
+
+            string[] drivers = DSNCreator.GetPreferredDrivers(installed);
 
             Assert.IsNotNull(drivers);
-            Assert.IsTrue(drivers.Length >= 1);
-            // Modern driver must be preferred; legacy "SQL Server" must be last (fallback only).
+            // Newest modern SQL Server driver first, legacy "SQL Server" last, non-SQL drivers dropped.
+            Assert.AreEqual(3, drivers.Length);
             Assert.AreEqual("ODBC Driver 18 for SQL Server", drivers[0]);
+            Assert.AreEqual("ODBC Driver 17 for SQL Server", drivers[1]);
             Assert.AreEqual("SQL Server", drivers[drivers.Length - 1]);
+        }
+
+        [TestMethod]
+        public void GetPreferredDrivers_FutureDriverVersion_IsPreferredAutomatically()
+        {
+            // A driver version newer than any hardcoded value must be picked first with no code change.
+            string[] installed = new string[]
+            {
+                "ODBC Driver 18 for SQL Server",
+                "ODBC Driver 99 for SQL Server",
+                "SQL Server",
+            };
+
+            string[] drivers = DSNCreator.GetPreferredDrivers(installed);
+
+            Assert.AreEqual("ODBC Driver 99 for SQL Server", drivers[0]);
+            Assert.AreEqual("ODBC Driver 18 for SQL Server", drivers[1]);
+            Assert.AreEqual("SQL Server", drivers[2]);
+        }
+
+        [TestMethod]
+        public void GetPreferredDrivers_NoSqlServerDrivers_ReturnsEmpty()
+        {
+            string[] installed = new string[]
+            {
+                "Microsoft Access Driver (*.mdb, *.accdb)",
+                "Microsoft Excel Driver (*.xls)",
+            };
+
+            string[] drivers = DSNCreator.GetPreferredDrivers(installed);
+
+            Assert.IsNotNull(drivers);
+            Assert.AreEqual(0, drivers.Length);
+        }
+
+        [TestMethod]
+        public void GetPreferredDrivers_NullInput_ReturnsEmpty()
+        {
+            string[] drivers = DSNCreator.GetPreferredDrivers(null);
+
+            Assert.IsNotNull(drivers);
+            Assert.AreEqual(0, drivers.Length);
+        }
+
+        [TestMethod]
+        public void GetPreferredDrivers_OnlyLegacyDriver_ReturnsLegacyOnly()
+        {
+            string[] drivers = DSNCreator.GetPreferredDrivers(new string[] { "SQL Server" });
+
+            Assert.AreEqual(1, drivers.Length);
+            Assert.AreEqual("SQL Server", drivers[0]);
         }
     }
 }
