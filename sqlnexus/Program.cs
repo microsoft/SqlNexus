@@ -112,6 +112,10 @@ namespace sqlnexus
 
         public static bool IsDbNameValid(string dbName)
         {
+            // Fail closed on null/empty/whitespace (Regex.IsMatch throws on a null input).
+            if (string.IsNullOrWhiteSpace(dbName))
+                return false;
+
             return System.Text.RegularExpressions.Regex.IsMatch(dbName, @"^(?!(master|tempdb|msdb|model)$)[A-Za-z0-9_]{1,128}$", System.Text.RegularExpressions.RegexOptions.IgnoreCase);
         }
 
