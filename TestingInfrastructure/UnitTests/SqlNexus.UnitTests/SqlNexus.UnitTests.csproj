@@ -40,6 +40,7 @@
     <ProjectReference Include="..\..\..\sqlnexus\sqlnexus.csproj" />
     <ProjectReference Include="..\..\..\SqlNexus.McpServer\SqlNexus.McpServer.csproj" />
     <ProjectReference Include="..\..\..\TraceEventImporter\TraceEventImporter.csproj" />
+    <ProjectReference Include="..\..\..\PerfmonImporter\PerfmonImporter.csproj" />
     <ProjectReference Include="..\..\..\ErrorLogImporter\ErrorLogImporter.csproj" />
   </ItemGroup>
 
