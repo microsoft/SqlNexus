@@ -4959,7 +4959,7 @@
         <Column name="HasPrivKey" type="RowsetImportEngine.VarCharColumn" length="11" />
         <Column name="Exportable" type="RowsetImportEngine.VarCharColumn" length="11" />
         <Column name="KeyProv" type="RowsetImportEngine.VarCharColumn" length="9" />
-        <Column name="SqlAccess" type="RowsetImportEngine.VarCharColumn" length="11" />
+        <Column name="AllowAce" type="RowsetImportEngine.VarCharColumn" length="11" />
         <Column name="SqlUsed" type="RowsetImportEngine.VarCharColumn" length="11" />
         <Column name="KeyContainerFile" type="RowsetImportEngine.NVarCharColumn" length="260" />
       </KnownColumns>
