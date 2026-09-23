@@ -12,6 +12,13 @@ using System.Windows.Forms;
 
 namespace sqlnexus
 {
+    internal enum CustomXelSource
+    {
+        SqlDiag,
+        AlwaysOnHealth,
+        SystemHealth
+    }
+
     public class CustomXELImporter
     {
 
@@ -79,7 +86,19 @@ namespace sqlnexus
             if (importCustomXEL)
             {
                 sqlDiagRowsImported = LoadSQLDiaglFiles();
+                if (sqlDiagRowsImported < 0)
+                {
+                    success = false;
+                    return "FAILED - SQLDiag XEL import errored. The import may be partial; see log for details.";
+                }
+
                 alwaysOnRowsImported = LoadAlwaysonHealthFiles();
+                if (alwaysOnRowsImported < 0)
+                {
+                    success = false;
+                    return String.Format("FAILED - AlwaysOn Health XEL import errored after importing {0} SQLDiag rows. The import may be partial; see log for details.", sqlDiagRowsImported);
+                }
+
                 int systemHealthRowsImported = LoadSystemHealthFiles();
 
                 // Each Load* method returns a non-negative row count on success and -1 on failure
@@ -112,7 +131,41 @@ namespace sqlnexus
 
         }
 
-        SqlConnection cnn;
+        internal static SqlCommand CreateImportCommand(SqlConnection connection, CustomXelSource source, string filePattern, bool dropExistingTable)
+        {
+            if (connection == null)
+                throw new ArgumentNullException(nameof(connection));
+            if (String.IsNullOrWhiteSpace(filePattern))
+                throw new ArgumentException("An XEL file pattern is required.", nameof(filePattern));
+
+            string tableName;
+            switch (source)
+            {
+                case CustomXelSource.SqlDiag:
+                    tableName = "tbl_SQL_Base_SQLDIAGXEL_Startup";
+                    break;
+                case CustomXelSource.AlwaysOnHealth:
+                    tableName = "tbl_SQL_Base_AlwaysOnHealth";
+                    break;
+                case CustomXelSource.SystemHealth:
+                    tableName = "tbl_SQL_Base_SystemHealthXEL_Startup";
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(source));
+            }
+
+            string dropSql = dropExistingTable
+                ? "IF OBJECT_ID(N'dbo." + tableName + "', N'U') IS NOT NULL DROP TABLE dbo." + tableName + "; "
+                : String.Empty;
+            string commandText = dropSql
+                + "SELECT * INTO dbo." + tableName
+                + " FROM sys.fn_xe_file_target_read_file(@filePattern, NULL, NULL, NULL);";
+
+            SqlCommand command = new SqlCommand(commandText, connection);
+            command.CommandTimeout = 0;
+            command.Parameters.Add("@filePattern", System.Data.SqlDbType.NVarChar, 4000).Value = filePattern;
+            return command;
+        }
 
         // We can implement following methods more efficiently by combining them into just one method
         // we are just inserting a Raw XEL file into SQL Tables.
@@ -128,9 +181,6 @@ namespace sqlnexus
                 int sqlDiagFileCount = XEFiles.Count();
                 int sqlDiagRowsImported = 0;
 
-                cnn = new SqlConnection(connStr);
-                cnn.Open();
-
                 if (sqlDiagFileCount > 0)
                 {
                     //increment total number of files imported from this importer
@@ -141,21 +191,15 @@ namespace sqlnexus
                     if (index > 0)
                         XEFile = XEFile.Substring(0, index);
 
-                    string dropSql = dropExistingTables ? @"IF OBJECT_ID(N'tbl_SQL_Base_SQLDIAGXEL_Startup', N'U') IS NOT NULL
-                            BEGIN
-                            DROP TABLE tbl_SQL_Base_SQLDIAGXEL_Startup;
-                            END
-                            " : "";
-                    string sqlstatment = dropSql + "SELECT * INTO tbl_SQL_Base_SQLDIAGXEL_Startup FROM sys.fn_xe_file_target_read_file('" + XEFile + "*.XEL', NULL, null, null);";
-
-
-
-                    SqlCommand cmd = new SqlCommand(sqlstatment, cnn);
-                    cmd.CommandTimeout = 0;
-                    // ExecuteNonQuery returns -1 when the rowcount is suppressed (e.g. SET NOCOUNT ON).
-                    // Clamp to 0 so a successful import can never be mistaken for the -1 failure signal
-                    // returned by the catch block below.
-                    sqlDiagRowsImported = Math.Max(0, cmd.ExecuteNonQuery());
+                    using (SqlConnection connection = new SqlConnection(connStr))
+                    using (SqlCommand cmd = CreateImportCommand(connection, CustomXelSource.SqlDiag, XEFile + "*.XEL", dropExistingTables))
+                    {
+                        connection.Open();
+                        // ExecuteNonQuery returns -1 when the rowcount is suppressed (e.g. SET NOCOUNT ON).
+                        // Clamp to 0 so a successful import can never be mistaken for the -1 failure signal
+                        // returned by the catch block below.
+                        sqlDiagRowsImported = Math.Max(0, cmd.ExecuteNonQuery());
+                    }
                     totalRowsAffected += sqlDiagRowsImported;
 
                     Util.Logger.LogMessage(String.Format("Custom XEL import for {0} finished: {1} rows imported from {2} files.", sqlDiagXelFileToImport, sqlDiagRowsImported, sqlDiagFileCount));
@@ -168,15 +212,6 @@ namespace sqlnexus
                 Util.Logger.LogMessage("Error importing SQLDiag XEL files: " + ex.Message);
                 return -1;
             }
-            
-            finally
-            {
-                //cmd.Dispose();
-                cnn.Close();
-            }
-
-
-
         }
 
         public int LoadAlwaysonHealthFiles()
@@ -191,8 +226,6 @@ namespace sqlnexus
                 int AlwaysOnFileCount = XEFiles.Count();
                 int AlwaysOnRowsImported = 0;
 
-                cnn = new SqlConnection(connStr);
-                cnn.Open();
                 if (AlwaysOnFileCount > 0)
                 {
                     //increment total number of files imported from this importer
@@ -204,16 +237,13 @@ namespace sqlnexus
                     if (index > 0)
                         XEFile = XEFile.Substring(0, index);
 
-                    string dropSql = dropExistingTables ? @"IF OBJECT_ID(N'tbl_SQL_Base_AlwaysOnHealth', N'U') IS NOT NULL
-                             BEGIN
-                            DROP TABLE tbl_SQL_Base_AlwaysOnHealth;
-                                END
-                            " : "";
-                    string sqlstatment = dropSql + "SELECT * INTO tbl_SQL_Base_AlwaysOnHealth FROM sys.fn_xe_file_target_read_file('" + XEFile + "*.XEL', NULL, null, null);";
-                    SqlCommand cmd = new SqlCommand(sqlstatment, cnn);
-                    cmd.CommandTimeout = 0;
-                    // Clamp to 0 (see LoadSQLDiaglFiles) so success is never confused with the -1 failure signal.
-                    AlwaysOnRowsImported = Math.Max(0, cmd.ExecuteNonQuery());
+                    using (SqlConnection connection = new SqlConnection(connStr))
+                    using (SqlCommand cmd = CreateImportCommand(connection, CustomXelSource.AlwaysOnHealth, XEFile + "*.XEL", dropExistingTables))
+                    {
+                        connection.Open();
+                        // Clamp to 0 (see LoadSQLDiaglFiles) so success is never confused with the -1 failure signal.
+                        AlwaysOnRowsImported = Math.Max(0, cmd.ExecuteNonQuery());
+                    }
                     totalRowsAffected += AlwaysOnRowsImported;
 
 
@@ -226,11 +256,6 @@ namespace sqlnexus
             {
                 Util.Logger.LogMessage("Error importing AlwaysOn Health XEL files: " + ex.Message);
                 return -1;
-            }
-            
-            finally
-            {
-                cnn.Close();
             }
         }
 
@@ -247,10 +272,6 @@ namespace sqlnexus
                 int systemHealthRowsImported = 0;
 
 
-                cnn = new SqlConnection(connStr);
-                cnn.Open();
-
-            
                 if (systemHealthFileCount > 0)
                 {
                     //increment total number of files imported from this importer
@@ -261,19 +282,13 @@ namespace sqlnexus
                     int index = XEFile.IndexOf("system_health");
                     if (index > 0)
                         XEFile = XEFile.Substring(0, index);
-                    string dropSql = dropExistingTables ? @"IF OBJECT_ID(N'tbl_SQL_Base_SystemHealthXEL_Startup', N'U') IS NOT NULL
-                            BEGIN
-                            DROP TABLE tbl_SQL_Base_SystemHealthXEL_Startup;
-                            END
-                            " : "";
-                    string sqlstatment = dropSql + "SELECT * INTO tbl_SQL_Base_SystemHealthXEL_Startup FROM sys.fn_xe_file_target_read_file('" + XEFile + "*.XEL', NULL, null, null);";
-
-
-
-                    SqlCommand cmd = new SqlCommand(sqlstatment, cnn);
-                    cmd.CommandTimeout = 0;
-                    // Clamp to 0 (see LoadSQLDiaglFiles) so success is never confused with the -1 failure signal.
-                    systemHealthRowsImported = Math.Max(0, cmd.ExecuteNonQuery());
+                    using (SqlConnection connection = new SqlConnection(connStr))
+                    using (SqlCommand cmd = CreateImportCommand(connection, CustomXelSource.SystemHealth, XEFile + "*.XEL", dropExistingTables))
+                    {
+                        connection.Open();
+                        // Clamp to 0 (see LoadSQLDiaglFiles) so success is never confused with the -1 failure signal.
+                        systemHealthRowsImported = Math.Max(0, cmd.ExecuteNonQuery());
+                    }
                     totalRowsAffected += systemHealthRowsImported;
 
                     Util.Logger.LogMessage(String.Format("Custom XEL import for {0} finished: {1} rows imported from {2} files.", sysHealthFilesToImport, systemHealthRowsImported, systemHealthFileCount));
@@ -286,12 +301,6 @@ namespace sqlnexus
                 Util.Logger.LogMessage("Error importing System Health XEL files: " + ex.Message);
                 return -1;
             }
-            
-            finally
-            {
-                cnn.Close();
-            }
-
         }
 
     }//class

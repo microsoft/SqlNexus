@@ -34,10 +34,9 @@ namespace sqlnexus
             { Application.StartupPath + "\\" + "PerfStatsAnalysis.sql", "BB0CF55C8AECF35CDBA1292241F43EE902407AB4C7E92EE2F9BD4C210837B198" },
             { Application.StartupPath + "\\" + "ReadTracePostProcessing.sql", "770DE7883BEFFA30C81C5BF45433EFF4C121EF92796047C49AC459103517BB68" },
             { Application.StartupPath + "\\" + "ReadTraceReportValidate.sql", "92A575503905D2CABEE18D1804D1DCDCACD12FACD912B16E1040C923AB168E02" },
-            { Application.StartupPath + "\\" + "SQLNexus_PostProcessing.sql", "BA659CE90DD602AD16C5A8F131D95C1A7D86AA00D764C68C3DE176C5AD0A4139" },
+            { Application.StartupPath + "\\" + "SQLNexus_PostProcessing.sql", "C69415B5B5CC751CA368E0F304C5C59B10D978637C84E0E6628E50BDD98AE833" },
             { Application.StartupPath + "\\" + "SQLNexus_PreProcessing.sql", "81465871D11C26E93329C5F60CBACED1311E97205B29CD8E5526273018168FF6" },
             { Application.StartupPath + "\\" + "PostBuild.cmd", "741ABE8E8750EE4F010268B29C08B645EAB3EAE4E805D46CD5CA100926E00A48" },
-            { Application.StartupPath + "\\" + "PostProcess.cmd", "652A277F51640BC6AADCD47D88493B11BC17FF4B62DB470BE0A623BC32280A69" },
             { Application.StartupPath + "\\" + "PreBuild.cmd", "9C706DD338C5A3743C176E43F2C35FE765CF4719FBF33AF6FDAA811418B01187" }
         };
 
@@ -80,6 +79,16 @@ namespace sqlnexus
         {
             string fileName = Path.GetFileName(filePath);
             return ScriptHashes.ContainsKey(fileName);
+        }
+
+        internal static bool IsExpectedHash(string scriptName, string actualHash)
+        {
+            if (String.IsNullOrWhiteSpace(scriptName) || String.IsNullOrWhiteSpace(actualHash))
+                return false;
+
+            string scriptPath = Application.StartupPath + "\\" + Path.GetFileName(scriptName);
+            return ScriptHashes.TryGetValue(scriptPath, out string expectedHash)
+                && String.Equals(expectedHash, actualHash, StringComparison.OrdinalIgnoreCase);
         }
 
         private static string ComputeFileHash(string filePath)

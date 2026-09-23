@@ -1947,6 +1947,9 @@ namespace sqlnexus
                         }
                         currLabel.Text = rawfileMsg;
                         Application.DoEvents();
+
+                        if (!customXelSuccess)
+                            throw new InvalidOperationException("Custom XEL import failed. Subsequent processing was stopped because the database may contain a partial import.");
                     }
 
                     else if (tlpFiles.Controls[i].Name == rawFileImprtStr)
@@ -2117,77 +2120,55 @@ namespace sqlnexus
 
         private void RunPostProcessing(string sourcePath)
         {
+            string[] planFiles = GetSqlPlanFiles(sourcePath);
 
-            //post-process execution (call PostProcess.cmd)
-            StringBuilder output_stream = new StringBuilder();
-            StringBuilder error_stream = new StringBuilder();
-
-            ProcessStartInfo psi = new ProcessStartInfo();
-            psi.CreateNoWindow = true;
-            psi.RedirectStandardOutput = true;
-            psi.RedirectStandardError = true;
-            psi.UseShellExecute = false;
-            psi.Arguments = string.Format("\"{0}\" \"{1}\" \"{2}\" \"{3}\" \"{4}\"",
-                Globals.credentialMgr.Server,
-                Globals.credentialMgr.Database,
-                sourcePath,
-                Globals.credentialMgr.EncryptConnection.ToString().ToLower(),
-                Globals.credentialMgr.TrustServerCertificate.ToString().ToLower());
-
-            MainForm.LogMessage("Executing: PostProcess.cmd " + psi.Arguments);
-            psi.FileName = Application.StartupPath + "\\PostProcess.cmd";
-
-            //print psi filename full path
-            MainForm.LogMessage("PostProcess.cmd full path: " + Path.GetFullPath(psi.FileName));
-
-            // do a script validation before executing
-            if (!ScriptIntegrityChecker.VerifyScript(psi.FileName))
+            using (SqlConnection connection = new SqlConnection(Globals.credentialMgr.ConnectionString))
             {
-                MainForm.LogMessage("Script is not allowed or has been tampered with: '" + psi.FileName + "'. Exiting...", MessageOptions.All, TraceEventType.Error, "Script integrity");
-                return;
-            }
+                connection.Open();
 
-            Process process = new Process();
-            process.StartInfo = psi;
-
-            process.EnableRaisingEvents = true;
-
-            process.ErrorDataReceived += new DataReceivedEventHandler
-                (
-                    delegate (object sender, DataReceivedEventArgs ea)
-                    {
-                        error_stream.Append(ea.Data);
-                    }
-
-                );
-
-            process.OutputDataReceived += new DataReceivedEventHandler
-            (
-                delegate (object sender, DataReceivedEventArgs e)
+                using (SqlCommand createTable = new SqlCommand("CREATE TABLE dbo.tblPlansTemp (sqlplan xml);", connection))
                 {
-                    output_stream.Append(e.Data);
+                    createTable.CommandTimeout = 0;
+                    createTable.ExecuteNonQuery();
                 }
-            );
 
-            process.Start();
-            process.BeginOutputReadLine();
-            process.WaitForExit();
-
-            if ((error_stream != null) && (error_stream.Length != 0 ))
-            {
-                MainForm.LogMessage("PostProcess error output: " + error_stream.ToString());
+                foreach (string planFile in planFiles)
+                {
+                    string planXml = File.ReadAllText(planFile);
+                    using (SqlCommand insertPlan = CreateSqlPlanInsertCommand(connection, planXml))
+                    {
+                        insertPlan.ExecuteNonQuery();
+                    }
+                }
             }
 
-            if ((output_stream != null) && (output_stream.Length != 0 ))
-            {
-                MainForm.LogMessage("PostProcess console output: " + output_stream.ToString().Replace("+++", "\r\n\t"));
-            }
+            MainForm.LogMessage(String.Format("Imported {0} SQL plan file(s) for post-processing.", planFiles.Length));
+            RunScript("SQLNexus_PostProcessing.sql");
+        }
 
+        internal static string[] GetSqlPlanFiles(string sourcePath)
+        {
+            if (String.IsNullOrWhiteSpace(sourcePath))
+                throw new ArgumentException("A post-processing source path is required.", nameof(sourcePath));
 
-            process.CancelOutputRead();
-            process.Close();
-            
+            string fullSourcePath = Path.GetFullPath(sourcePath);
+            if (!Directory.Exists(fullSourcePath))
+                throw new DirectoryNotFoundException("The post-processing source path does not exist.");
 
+            return Directory.GetFiles(fullSourcePath, "*.sqlplan", SearchOption.TopDirectoryOnly);
+        }
+
+        internal static SqlCommand CreateSqlPlanInsertCommand(SqlConnection connection, string planXml)
+        {
+            if (connection == null)
+                throw new ArgumentNullException(nameof(connection));
+            if (String.IsNullOrWhiteSpace(planXml))
+                throw new ArgumentException("SQL plan XML is required.", nameof(planXml));
+
+            SqlCommand command = new SqlCommand("INSERT INTO dbo.tblPlansTemp (sqlplan) VALUES (@sqlplan);", connection);
+            command.CommandTimeout = 0;
+            command.Parameters.Add("@sqlplan", System.Data.SqlDbType.Xml).Value = planXml;
+            return command;
         }
 
 
@@ -2330,8 +2311,7 @@ namespace sqlnexus
 
                 if (!File.Exists(FullScriptName))
                 {
-                    MainForm.LogMessage("Script '" + FullScriptName + "' doesn't exist", MessageOptions.All);
-                    return;
+                    throw new FileNotFoundException("Script '" + FullScriptName + "' doesn't exist.", FullScriptName);
                 }
 
                 //print full path to the script
@@ -2341,8 +2321,8 @@ namespace sqlnexus
 
                 if (!ScriptIntegrityChecker.VerifyScript(FullScriptName))
                 {
-                    MainForm.LogMessage("Script is not allowed or has been tampered with: '" + scriptname + "'", MessageOptions.All, TraceEventType.Error, "Script integrity");
-                    return;
+                    MainForm.LogMessage("Script is not allowed or has been tampered with: '" + scriptname + "'", MessageOptions.Silent, TraceEventType.Error, "Script integrity");
+                    throw new System.Security.SecurityException("Script integrity verification failed for '" + scriptname + "'.");
                 }
 
                 //db.ExecuteNonQuery(File.ReadAllText(FullScriptName), Microsoft.SqlServer.Management.Common.ExecutionTypes.ContinueOnError);

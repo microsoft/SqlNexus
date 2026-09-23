@@ -1,4 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Data.SqlClient;
 using sqlnexus;
 
 namespace SqlNexus.UnitTests.sqlnexus
@@ -80,6 +81,50 @@ namespace SqlNexus.UnitTests.sqlnexus
             // Regression: pins the literal patterns so a rename in the importer cannot silently
             // desync the SharedOutputFiles Custom XEL warning without failing a test.
             CollectionAssert.Contains(CustomXELImporter.CustomXelFileMasks, expectedMask);
+        }
+
+        [DataTestMethod]
+        [DataRow(0, "tbl_SQL_Base_SQLDIAGXEL_Startup")]
+        [DataRow(1, "tbl_SQL_Base_AlwaysOnHealth")]
+        [DataRow(2, "tbl_SQL_Base_SystemHealthXEL_Startup")]
+        public void CreateImportCommand_MaliciousFilePattern_UsesParameter(int sourceValue, string expectedTable)
+        {
+            string maliciousPattern = @"C:\capture\diagnostic'; DROP TABLE dbo.Sensitive;--*.xel";
+            CustomXelSource source = (CustomXelSource)sourceValue;
+            using (SqlConnection connection = new SqlConnection())
+            using (SqlCommand command = CustomXELImporter.CreateImportCommand(connection, source, maliciousPattern, true))
+            {
+                StringAssert.Contains(command.CommandText, expectedTable);
+                StringAssert.Contains(command.CommandText, "@filePattern");
+                Assert.IsFalse(command.CommandText.Contains(maliciousPattern));
+                Assert.AreEqual(maliciousPattern, command.Parameters["@filePattern"].Value);
+                Assert.AreEqual(System.Data.SqlDbType.NVarChar, command.Parameters["@filePattern"].SqlDbType);
+                Assert.AreEqual(4000, command.Parameters["@filePattern"].Size);
+            }
+        }
+
+        [TestMethod]
+        public void CreateImportCommand_DropDisabled_DoesNotIncludeDropStatement()
+        {
+            using (SqlConnection connection = new SqlConnection())
+            using (SqlCommand command = CustomXELImporter.CreateImportCommand(
+                connection, CustomXelSource.SqlDiag, @"C:\capture\*.xel", false))
+            {
+                Assert.IsFalse(command.CommandText.Contains("DROP TABLE"));
+            }
+        }
+
+        [DataTestMethod]
+        [DataRow(null)]
+        [DataRow("")]
+        [DataRow(" ")]
+        public void CreateImportCommand_MissingFilePattern_ThrowsArgumentException(string filePattern)
+        {
+            using (SqlConnection connection = new SqlConnection())
+            {
+                Assert.ThrowsException<System.ArgumentException>(() =>
+                    CustomXELImporter.CreateImportCommand(connection, CustomXelSource.SqlDiag, filePattern, true));
+            }
         }
     }
 }
