@@ -46,8 +46,8 @@
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>31</ApplicationRevision>
-    <ApplicationVersion>7.26.08.31</ApplicationVersion>
+    <ApplicationRevision>24</ApplicationRevision>
+    <ApplicationVersion>8.26.09.24</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -1694,10 +1694,10 @@
     <Error Condition="!Exists('$(_SqlNexusRepositoryRoot)\.github\agents\sql-nexus-diagnostic.agent.md')" Text="The SQL Nexus diagnostic agent definition was not found." />
     <Error Condition="!Exists('$(_SqlNexusRepositoryRoot)\CopilotIntegration\Register-SqlNexusCopilotIntegration.ps1')" Text="The SQL Nexus Copilot integration registration script was not found." />
     <Error Condition="!Exists('$(_SqlNexusRepositoryRoot)\CopilotIntegration\Unregister-SqlNexusCopilotIntegration.ps1')" Text="The SQL Nexus Copilot integration unregistration script was not found." />
-    <Copy SourceFiles="@(_McpServerReleaseFiles)" DestinationFiles="@(_McpServerReleaseFiles-&gt;'$(TargetDir)SqlNexus.McpServer\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
-    <Copy SourceFiles="@(_AiSkillReleaseFiles)" DestinationFiles="@(_AiSkillReleaseFiles-&gt;'$(TargetDir)AI\Skills\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
-    <Copy SourceFiles="@(_AgentReleaseFiles)" DestinationFiles="@(_AgentReleaseFiles-&gt;'$(TargetDir).github\agents\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
-    <Copy SourceFiles="@(_CopilotIntegrationFiles)" DestinationFiles="@(_CopilotIntegrationFiles-&gt;'$(TargetDir)CopilotIntegration\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(_McpServerReleaseFiles)" DestinationFiles="@(_McpServerReleaseFiles->'$(TargetDir)SqlNexus.McpServer\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(_AiSkillReleaseFiles)" DestinationFiles="@(_AiSkillReleaseFiles->'$(TargetDir)AI\Skills\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(_AgentReleaseFiles)" DestinationFiles="@(_AgentReleaseFiles->'$(TargetDir).github\agents\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(_CopilotIntegrationFiles)" DestinationFiles="@(_CopilotIntegrationFiles->'$(TargetDir)CopilotIntegration\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
   </Target>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
