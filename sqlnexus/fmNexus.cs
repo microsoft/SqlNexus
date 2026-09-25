@@ -360,10 +360,6 @@ namespace sqlnexus
 
         #endregion
 
-        #region AutoUpdate methods
-        private ClickOnce clickOnce = new ClickOnce();
-        #endregion
-
         #region Form methods
 
         private bool _suppressThemeChange = false;
@@ -593,12 +589,6 @@ namespace sqlnexus
 //#endif 
             InitAppEnvironment();
            
-            // Kick off async (background) ClickOnce autoupdate check.  Results of check will be 
-            // written to the log file
-            clickOnce.TraceLogger = this.TraceLogger;
-            clickOnce.UpdateApplicationAsync();
-            
-          
             if (!Globals.ConsoleMode)
             {
 

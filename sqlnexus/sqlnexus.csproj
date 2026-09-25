@@ -15,12 +15,6 @@
     <StartupObject>
     </StartupObject>
     <RunPostBuildEvent>Always</RunPostBuildEvent>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <ManifestCertificateThumbprint>2AA98B6209BFD7D716FF5FC64685E1D03CAB96FD</ManifestCertificateThumbprint>
-    <ManifestKeyFile>sqlnexus_TemporaryKey.pfx</ManifestKeyFile>
-    <GenerateManifests>true</GenerateManifests>
-    <SignManifests>false</SignManifests>
-    <TargetZone>LocalIntranet</TargetZone>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>4.0</OldToolsVersion>
@@ -30,27 +24,6 @@
     <TargetFrameworkProfile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <PublishUrl>c:\sqlnexustest\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>true</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <SupportUrl>https://github.com/microsoft/SqlNexus</SupportUrl>
-    <ProductName>SQL Nexus</ProductName>
-    <PublisherName>SQL Nexus</PublisherName>
-    <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
-    <WebPage>publish.htm</WebPage>
-    <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>24</ApplicationRevision>
-    <ApplicationVersion>8.26.09.24</ApplicationVersion>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <PublishWizardCompleted>true</PublishWizardCompleted>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <!--
     CI builds under the .NET SDK (dotnet build/test) use MSBuild running on .NET Core, whose
@@ -62,13 +35,6 @@
   -->
   <PropertyGroup Condition=" '$(MSBuildRuntimeType)' == 'Core' ">
     <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
-    <!-- ClickOnce trust/manifest tasks (GenerateTrustInfo) are unsupported on Core MSBuild (MSB4803);
-         CI only needs to compile this assembly to run tests, so disable manifest generation there. -->
-    <GenerateManifests>false</GenerateManifests>
-    <SignManifests>false</SignManifests>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <TargetZone>
-    </TargetZone>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -178,7 +144,6 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data.OracleClient" />
-    <Reference Include="System.Deployment" />
     <Reference Include="System.Design" />
     <Reference Include="System.Diagnostics.DiagnosticSource, Version=8.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Diagnostics.DiagnosticSource.8.0.1\lib\net462\System.Diagnostics.DiagnosticSource.dll</HintPath>
@@ -288,7 +253,6 @@
     <Compile Include="AccessibleControls.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="ClickOnce\ClickOnce.cs" />
     <Compile Include="CredentialManager.cs" />
     <Compile Include="CustomXELImporter.cs" />
     <Compile Include="DependencyManager.cs" />
@@ -900,38 +864,6 @@
       <Name>SqlNexus.McpServer</Name>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include=".NETFramework,Version=v4.0">
-      <Visible>False</Visible>
-      <ProductName>Microsoft .NET Framework 4 %28x86 and x64%29</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 2.0</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.ReportViewer.10.0">
-      <Visible>False</Visible>
-      <ProductName>Microsoft Visual Studio 2010 Report Viewer</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.VSTORuntime.4.0">
-      <Visible>False</Visible>
-      <ProductName>Microsoft Visual Studio 2010 Tools for Office Runtime %28x86 and x64%29</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
     <PublishFile Include="AppConfig.xml">
