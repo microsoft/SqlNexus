@@ -4869,6 +4869,7 @@
         <Column name="Cipher" type="RowsetImportEngine.VarCharColumn" length="14" />
         <Column name="Hash" type="RowsetImportEngine.VarCharColumn" length="12" />
         <Column name="Source" type="RowsetImportEngine.VarCharColumn" length="20" />
+        <Column name="RegistryPath" type="RowsetImportEngine.VarCharColumn" length="160" />
       </KnownColumns>
     </Rowset>
 
