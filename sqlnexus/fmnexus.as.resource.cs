@@ -237,10 +237,6 @@ namespace sqlnexus
 
         #endregion
 
-        #region AutoUpdate methods
-        private ClickOnce clickOnce = new ClickOnce();
-        #endregion
-
         #region Form methods
 
         public fmNexus()
@@ -391,11 +387,6 @@ namespace sqlnexus
             InitializeLog(@"%TEMP%\sqlnexus.log");
             LogMessage("sqlnexus.exe running at: " + Application.ExecutablePath);
             InitAppEnvironment();
-            // Kick off async (background) ClickOnce autoupdate check.  Results of check will be 
-            // written to the log file
-            clickOnce.TraceLogger = this.TraceLogger;
-            clickOnce.UpdateApplicationAsync();
-            
             if (!Globals.ConsoleMode)
             {
                 try
