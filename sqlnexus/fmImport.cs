@@ -2156,7 +2156,10 @@ namespace sqlnexus
                 (
                     delegate (object sender, DataReceivedEventArgs ea)
                     {
-                        error_stream.Append(ea.Data);
+                        if (ea.Data != null)
+                        {
+                            error_stream.AppendLine(ea.Data);
+                        }
                     }
 
                 );
@@ -2165,17 +2168,22 @@ namespace sqlnexus
             (
                 delegate (object sender, DataReceivedEventArgs e)
                 {
-                    output_stream.Append(e.Data);
+                    if (e.Data != null)
+                    {
+                        output_stream.AppendLine(e.Data);
+                    }
                 }
             );
 
             process.Start();
             process.BeginOutputReadLine();
+            process.BeginErrorReadLine();
             process.WaitForExit();
+            int exitCode = process.ExitCode;
 
             if ((error_stream != null) && (error_stream.Length != 0 ))
             {
-                MainForm.LogMessage("PostProcess error output: " + error_stream.ToString());
+                MainForm.LogMessage("PostProcess error output: " + error_stream.ToString(), MessageOptions.Silent | MessageOptions.StatusBar, TraceEventType.Error, "Post-processing error");
             }
 
             if ((output_stream != null) && (output_stream.Length != 0 ))
@@ -2183,11 +2191,22 @@ namespace sqlnexus
                 MainForm.LogMessage("PostProcess console output: " + output_stream.ToString().Replace("+++", "\r\n\t"));
             }
 
+            string exitCodeError = FormatPostProcessExitCodeError(exitCode);
+            if (exitCodeError != null)
+            {
+                MainForm.LogMessage(exitCodeError, MessageOptions.Silent | MessageOptions.StatusBar, TraceEventType.Error, "Post-processing error");
+            }
 
-            process.CancelOutputRead();
             process.Close();
             
 
+        }
+
+        internal static string FormatPostProcessExitCodeError(int exitCode)
+        {
+            return exitCode == 0
+                ? null
+                : string.Format("PostProcess.cmd failed with exit code {0}. Review the preceding post-processing error output in the SQL Nexus log.", exitCode);
         }
 
 
