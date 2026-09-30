@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -41,24 +40,22 @@ namespace SqlNexus.UnitTests.TraceEventImporter
         }
 
         [TestMethod]
-        public void CreateSchema_AggregationView_ExposesExpectedTenColumns()
+        public void CreateSchema_AggregationView_ExposesExpectedColumnsAndEmptyIntervals()
         {
             string sql = ReadResource(typeof(ImporterPlugin).Assembly, "TraceEventImporter.Schema.CreateSchema.sql");
             Match view = Regex.Match(
                 sql,
-                @"CREATE VIEW ReadTrace\.vwBatchPartialAggsByGroupTimeInterval\s+AS\s+SELECT(?<columns>.*?)\s+FROM ReadTrace\.tblBatchPartialAggs",
+                @"CREATE VIEW ReadTrace\.vwBatchPartialAggsByGroupTimeInterval\s+AS\s+(?<definition>.*?)\s+GO",
                 RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
             Assert.IsTrue(view.Success, "The expected aggregation view definition was not found.");
-            string[] columns = view.Groups["columns"].Value
-                .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
-                .Select(column => column.Trim())
-                .ToArray();
-
-            Assert.AreEqual(10, columns.Length);
-            CollectionAssert.AreEqual(
-                new[] { "StartTime", "EndTime", "TimeInterval", "StartingEvents", "CompletedEvents", "Attentions", "Duration", "Reads", "Writes", "CPU" },
-                columns.Select(GetOutputColumnName).ToArray());
+            string definition = view.Groups["definition"].Value;
+            StringAssert.Contains(definition, "t.StartTime");
+            StringAssert.Contains(definition, "t.EndTime");
+            StringAssert.Contains(definition, "t.TimeInterval");
+            StringAssert.Contains(definition, "ISNULL(SUM(a.CompletedEvents), 0) AS CompletedEvents");
+            StringAssert.Contains(definition, "FROM ReadTrace.tblTimeIntervals t");
+            StringAssert.Contains(definition, "LEFT JOIN ReadTrace.tblBatchPartialAggs a");
         }
 
         [TestMethod]
@@ -81,14 +78,5 @@ namespace SqlNexus.UnitTests.TraceEventImporter
             }
         }
 
-        private static string GetOutputColumnName(string expression)
-        {
-            Match alias = Regex.Match(expression, @"\s+AS\s+(?<name>\w+)\s*$", RegexOptions.IgnoreCase);
-            if (alias.Success)
-                return alias.Groups["name"].Value;
-
-            int dot = expression.LastIndexOf('.');
-            return dot >= 0 ? expression.Substring(dot + 1).Trim() : expression.Trim();
-        }
     }
 }

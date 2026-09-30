@@ -439,15 +439,15 @@ AS
 SELECT
     t.StartTime,
     t.EndTime,
-    a.TimeInterval,
-    SUM(a.StartingEvents) AS StartingEvents,
-    SUM(a.CompletedEvents) AS CompletedEvents,
-    SUM(a.AttentionEvents) AS Attentions,
-    SUM(a.TotalDuration) AS Duration,
-    SUM(a.TotalReads) AS Reads,
-    SUM(a.TotalWrites) AS Writes,
-    SUM(a.TotalCPU) AS CPU
-FROM ReadTrace.tblBatchPartialAggs a
-INNER JOIN ReadTrace.tblTimeIntervals t ON a.TimeInterval = t.TimeInterval
-GROUP BY a.TimeInterval, t.StartTime, t.EndTime
+    t.TimeInterval,
+    ISNULL(SUM(a.StartingEvents), 0) AS StartingEvents,
+    ISNULL(SUM(a.CompletedEvents), 0) AS CompletedEvents,
+    ISNULL(SUM(a.AttentionEvents), 0) AS Attentions,
+    ISNULL(SUM(a.TotalDuration), 0) AS Duration,
+    ISNULL(SUM(a.TotalReads), 0) AS Reads,
+    ISNULL(SUM(a.TotalWrites), 0) AS Writes,
+    ISNULL(SUM(a.TotalCPU), 0) AS CPU
+FROM ReadTrace.tblTimeIntervals t
+LEFT JOIN ReadTrace.tblBatchPartialAggs a ON a.TimeInterval = t.TimeInterval
+GROUP BY t.TimeInterval, t.StartTime, t.EndTime
 GO

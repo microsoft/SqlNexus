@@ -22,6 +22,23 @@ namespace SqlNexus.UnitTests.sqlnexus
             Assert.IsFalse(deployedReport.Contains(oldCaption));
         }
 
+        [TestMethod]
+        public void PostProcessing_BatchIntervalProcedure_ReturnsEmptyIntervalsAsZeros()
+        {
+            string repositoryRoot = FindRepositoryRoot();
+            string script = File.ReadAllText(Path.Combine(repositoryRoot, "sqlnexus", "ReadTracePostProcessing.sql"));
+            int procedureStart = script.IndexOf(
+                "CREATE PROCEDURE ReadTrace.spReporter_BatchAggregatesTimeIntervalGrouping",
+                StringComparison.Ordinal);
+            Assert.IsTrue(procedureStart >= 0, "The batch interval procedure was not found.");
+            int procedureEnd = script.IndexOf("\nGO", procedureStart, StringComparison.Ordinal);
+            Assert.IsTrue(procedureEnd > procedureStart, "The end of the batch interval procedure was not found.");
+            string procedure = script.Substring(procedureStart, procedureEnd - procedureStart);
+            StringAssert.Contains(procedure, "FROM ReadTrace.tblTimeIntervals t");
+            StringAssert.Contains(procedure, "LEFT JOIN ReadTrace.tblBatchPartialAggs a");
+            StringAssert.Contains(procedure, "ISNULL(SUM(a.CompletedEvents), 0) AS CompletedEvents");
+        }
+
         private static string FindRepositoryRoot()
         {
             var directory = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);

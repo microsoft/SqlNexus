@@ -114,21 +114,22 @@ namespace SqlNexus.UnitTests.TraceEventImporter.Processing
         }
 
         [TestMethod]
-        public void Compute_CaptureRangeIncludesQuietPeriod_PreservesFullReportAxis()
+        public void Compute_WorkloadRowsSeparatedByQuietPeriod_PreservesIntermediateIntervals()
         {
-            DateTime captureStart = new DateTime(2026, 3, 1, 12, 0, 0, DateTimeKind.Utc);
-            DateTime activityStart = captureStart.AddSeconds(5);
+            DateTime start = new DateTime(2026, 3, 1, 12, 0, 0, DateTimeKind.Utc);
             var aggregator = new Aggregator(1);
 
             aggregator.Compute(
-                new List<BatchRow> { Batch(1, activityStart, activityStart.AddSeconds(1), 1, 1, 1, 1) },
-                new List<StatementRow>(),
-                captureStart,
-                captureStart.AddSeconds(10));
+                new List<BatchRow>
+                {
+                    Batch(1, start, start.AddSeconds(1), 1, 1, 1, 1),
+                    Batch(2, start.AddSeconds(9), start.AddSeconds(10), 1, 1, 1, 1)
+                },
+                new List<StatementRow>());
 
             Assert.AreEqual(10, aggregator.TimeIntervals.Count);
-            Assert.AreEqual(captureStart, aggregator.TimeIntervals[0].StartTime);
-            Assert.AreEqual(6, aggregator.BatchAggs.Single(row => row.StartingEvents == 1).TimeInterval);
+            Assert.AreEqual(start, aggregator.TimeIntervals[0].StartTime);
+            Assert.IsFalse(aggregator.BatchAggs.Any(row => row.TimeInterval == 5));
         }
 
         [TestMethod]

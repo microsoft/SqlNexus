@@ -375,10 +375,22 @@ BEGIN
 	IF(@EndTimeInterval IS NULL)
 		SELECT @EndTimeInterval = MAX(TimeInterval) FROM ReadTrace.tblTimeIntervals
 
-	SELECT  * 
-	FROM ReadTrace.vwBatchPartialAggsByGroupTimeInterval a
-	WHERE a.TimeInterval BETWEEN @StartTimeInterval and @EndTimeInterval
-	ORDER BY a.TimeInterval ASC
+  SELECT
+		t.StartTime,
+		t.EndTime,
+		t.TimeInterval,
+		ISNULL(SUM(a.StartingEvents), 0) AS StartingEvents,
+		ISNULL(SUM(a.CompletedEvents), 0) AS CompletedEvents,
+		ISNULL(SUM(a.AttentionEvents), 0) AS Attentions,
+		ISNULL(SUM(a.TotalDuration), 0) AS Duration,
+		ISNULL(SUM(a.TotalReads), 0) AS Reads,
+		ISNULL(SUM(a.TotalWrites), 0) AS Writes,
+		ISNULL(SUM(a.TotalCPU), 0) AS CPU
+	FROM ReadTrace.tblTimeIntervals t
+	LEFT JOIN ReadTrace.tblBatchPartialAggs a ON a.TimeInterval = t.TimeInterval
+	WHERE t.TimeInterval BETWEEN @StartTimeInterval and @EndTimeInterval
+	GROUP BY t.TimeInterval, t.StartTime, t.EndTime
+	ORDER BY t.TimeInterval ASC
 	OPTION (RECOMPILE)
 
 END

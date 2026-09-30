@@ -22,15 +22,11 @@ namespace TraceEventImporter.Processing
             _requestedIntervalSeconds = intervalSeconds;
         }
 
-        public void Compute(
-            List<BatchRow> batches,
-            List<StatementRow> statements,
-            DateTime? captureStartTime = null,
-            DateTime? captureEndTime = null)
+        public void Compute(List<BatchRow> batches, List<StatementRow> statements)
         {
             // Determine overall time range
-            DateTime minTime = captureStartTime ?? DateTime.MaxValue;
-            DateTime maxTime = captureEndTime ?? DateTime.MinValue;
+            DateTime minTime = DateTime.MaxValue;
+            DateTime maxTime = DateTime.MinValue;
 
             foreach (var b in batches)
             {
