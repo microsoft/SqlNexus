@@ -1304,6 +1304,7 @@ FROM
                         AND cat2.wait_category != 'SOS_SCHEDULER_YIELD'
                   ORDER BY wait_time_ms_per_sec DESC
               )
+          AND cat.wait_category != 'SOS_SCHEDULER_YIELD'
 ) AS t
 WHERE percent_of_total_waittime > 0
 ORDER BY wait_time_ms_per_sec DESC;
