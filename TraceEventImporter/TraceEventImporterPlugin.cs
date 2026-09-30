@@ -50,7 +50,7 @@ namespace TraceEventImporter
         public TraceEventImporterPlugin()
         {
             _options.Add(OPTION_DROP_EXISTING, true);
-            _options.Add(OPTION_INTERVAL_SECONDS, 60);
+            _options.Add(OPTION_INTERVAL_SECONDS, 0);
             _options.Add(OPTION_ENABLED, true);
             _options.Add(OPTION_USE_LOCAL_SERVER_TIME, false);
         }
@@ -150,6 +150,8 @@ namespace TraceEventImporter
                 var processor = new EventProcessor(store);
                 int intervalSeconds = Convert.ToInt32(_options[OPTION_INTERVAL_SECONDS]);
                 long globalSeq = 0;
+                DateTime? captureFirstTime = null;
+                DateTime? captureLastTime = null;
 
                 // When importing with local server time, shift every event timestamp by the
                 // UTC-to-local offset so StartTime/EndTime are stored in local time, matching
@@ -198,12 +200,17 @@ namespace TraceEventImporter
                             if (evt.Seq > fileLastSeq) fileLastSeq = evt.Seq;
                             if (evt.Seq > globalSeq) globalSeq = evt.Seq;
 
-                            if (evt.StartTime.HasValue)
+                            DateTime? eventTime = evt.EndTime ?? evt.StartTime;
+                            if (eventTime.HasValue)
                             {
-                                if (!fileFirstTime.HasValue || evt.StartTime.Value < fileFirstTime.Value)
-                                    fileFirstTime = evt.StartTime;
-                                if (!fileLastTime.HasValue || evt.StartTime.Value > fileLastTime.Value)
-                                    fileLastTime = evt.StartTime;
+                                if (!fileFirstTime.HasValue || eventTime.Value < fileFirstTime.Value)
+                                    fileFirstTime = eventTime;
+                                if (!fileLastTime.HasValue || eventTime.Value > fileLastTime.Value)
+                                    fileLastTime = eventTime;
+                                if (!captureFirstTime.HasValue || eventTime.Value < captureFirstTime.Value)
+                                    captureFirstTime = eventTime;
+                                if (!captureLastTime.HasValue || eventTime.Value > captureLastTime.Value)
+                                    captureLastTime = eventTime;
                             }
 
                             if (fileEventsRead % 10000 == 0)
@@ -238,7 +245,8 @@ namespace TraceEventImporter
                         return false;
                     }
 
-                    // 4. Finalize processor (flush pending connections)
+                    // 4. Finalize processor
+                    processor.FlushPendingEvents();
                     processor.FlushPendingConnections();
 
                     // 5. Write all data
@@ -270,7 +278,7 @@ namespace TraceEventImporter
                     // 6. Aggregation
                     LogMessage("TraceEventImporter: Computing aggregations...");
                     var aggregator = new Aggregator(intervalSeconds);
-                    aggregator.Compute(processor.Batches, processor.Statements);
+                    aggregator.Compute(processor.Batches, processor.Statements, captureFirstTime, captureLastTime);
 
                     writer.WriteTimeIntervals(aggregator.TimeIntervals);
                     writer.WriteBatchPartialAggs(aggregator.BatchAggs);

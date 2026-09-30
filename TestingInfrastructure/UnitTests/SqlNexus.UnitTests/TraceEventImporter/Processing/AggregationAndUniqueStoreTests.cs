@@ -59,21 +59,76 @@ namespace SqlNexus.UnitTests.TraceEventImporter.Processing
 
             BatchPartialAggRow second = aggregator.BatchAggs.Single(row => row.TimeInterval == 2);
             Assert.AreEqual(50L, second.TotalDuration);
-            Assert.AreEqual(start.AddSeconds(70), aggregator.TimeIntervals[1].EndTime);
+            Assert.AreEqual(start.AddSeconds(120).AddMilliseconds(-3), aggregator.TimeIntervals[1].EndTime);
         }
 
         [TestMethod]
-        public void Compute_InvalidInterval_UsesSixtySecondDefault()
+        public void Compute_InvalidInterval_UsesOneSecondDefault()
         {
             DateTime start = new DateTime(2026, 3, 1, 12, 0, 0, DateTimeKind.Utc);
             var aggregator = new Aggregator(0);
 
             aggregator.Compute(
-                new List<BatchRow> { Batch(1, start, start.AddSeconds(61), 1, 1, 1, 1) },
+                new List<BatchRow> { Batch(1, start, start.AddSeconds(2), 1, 1, 1, 1) },
                 new List<StatementRow>());
 
             Assert.AreEqual(2, aggregator.TimeIntervals.Count);
-            Assert.AreEqual(start.AddSeconds(60), aggregator.TimeIntervals[0].EndTime);
+            Assert.AreEqual(start.AddSeconds(1).AddMilliseconds(-3), aggregator.TimeIntervals[0].EndTime);
+        }
+
+        [TestMethod]
+        public void Compute_AutomaticIntervalForLongCapture_TargetsApproximatelyOneHundredBuckets()
+        {
+            DateTime start = new DateTime(2026, 3, 1, 12, 0, 0, DateTimeKind.Utc);
+            var aggregator = new Aggregator();
+
+            aggregator.Compute(
+                new List<BatchRow> { Batch(1, start, start.AddSeconds(224), 1, 1, 1, 1) },
+                new List<StatementRow>());
+
+            Assert.AreEqual(112, aggregator.TimeIntervals.Count);
+            Assert.AreEqual(start.AddSeconds(2).AddMilliseconds(-3), aggregator.TimeIntervals[0].EndTime);
+            Assert.AreEqual(start.AddSeconds(224).AddMilliseconds(-3), aggregator.TimeIntervals[111].EndTime);
+        }
+
+        [TestMethod]
+        public void Compute_BatchSpansIntervals_CountsStartAndCompletionInTheirOwnBuckets()
+        {
+            DateTime start = new DateTime(2026, 3, 1, 12, 0, 0, DateTimeKind.Utc);
+            var aggregator = new Aggregator(1);
+
+            aggregator.Compute(
+                new List<BatchRow> { Batch(1, start, start.AddMilliseconds(2500), 10, 2, 1, 4) },
+                new List<StatementRow>());
+
+            Assert.AreEqual(3, aggregator.TimeIntervals.Count);
+            Assert.AreEqual(2, aggregator.BatchAggs.Count);
+            BatchPartialAggRow starting = aggregator.BatchAggs.Single(row => row.TimeInterval == 1);
+            BatchPartialAggRow completed = aggregator.BatchAggs.Single(row => row.TimeInterval == 3);
+            Assert.AreEqual(1, starting.StartingEvents);
+            Assert.AreEqual(0, starting.CompletedEvents);
+            Assert.IsNull(starting.TotalDuration);
+            Assert.AreEqual(0, completed.StartingEvents);
+            Assert.AreEqual(1, completed.CompletedEvents);
+            Assert.AreEqual(10L, completed.TotalDuration);
+        }
+
+        [TestMethod]
+        public void Compute_CaptureRangeIncludesQuietPeriod_PreservesFullReportAxis()
+        {
+            DateTime captureStart = new DateTime(2026, 3, 1, 12, 0, 0, DateTimeKind.Utc);
+            DateTime activityStart = captureStart.AddSeconds(5);
+            var aggregator = new Aggregator(1);
+
+            aggregator.Compute(
+                new List<BatchRow> { Batch(1, activityStart, activityStart.AddSeconds(1), 1, 1, 1, 1) },
+                new List<StatementRow>(),
+                captureStart,
+                captureStart.AddSeconds(10));
+
+            Assert.AreEqual(10, aggregator.TimeIntervals.Count);
+            Assert.AreEqual(captureStart, aggregator.TimeIntervals[0].StartTime);
+            Assert.AreEqual(6, aggregator.BatchAggs.Single(row => row.StartingEvents == 1).TimeInterval);
         }
 
         [TestMethod]
@@ -108,6 +163,8 @@ namespace SqlNexus.UnitTests.TraceEventImporter.Processing
                 Writes = writes,
                 CPU = cpu,
                 AttnSeq = attention,
+                StartSeq = 1,
+                EndSeq = 2,
                 DBID = 5,
                 AppNameID = 2,
                 LoginNameID = 3

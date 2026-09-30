@@ -24,7 +24,7 @@ namespace SqlNexus.UnitTests.TraceEventImporter
                 importer.PostScripts);
             Assert.AreEqual(true, importer.Options["Enabled"]);
             Assert.AreEqual(true, importer.Options["Drop existing ReadTrace tables"]);
-            Assert.AreEqual(60, importer.Options["Aggregation interval (seconds)"]);
+            Assert.AreEqual(0, importer.Options["Aggregation interval (seconds)"]);
             Assert.AreEqual(false, importer.Options["Import events using local server time (not UTC)"]);
         }
 
