@@ -1,12 +1,46 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
+using System.Security.Cryptography;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using sqlnexus;
 
 namespace SqlNexus.UnitTests.sqlnexus
 {
     [TestClass]
     public class PerfStatsAnalysisScriptTests
     {
+        [TestMethod]
+        public void PerfStatsAnalysis_DeployedScript_PassesIntegrityValidation()
+        {
+            string scriptPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "PerfStatsAnalysis.sql");
+            FieldInfo hashesField = typeof(ScriptIntegrityChecker).GetField("ScriptHashes", BindingFlags.NonPublic | BindingFlags.Static);
+            Assert.IsNotNull(hashesField, "The script integrity allowlist was not found.");
+
+            var scriptHashes = (Dictionary<string, string>)hashesField.GetValue(null);
+            string expectedHash = null;
+            foreach (KeyValuePair<string, string> scriptHash in scriptHashes)
+            {
+                if (string.Equals(Path.GetFileName(scriptHash.Key), "PerfStatsAnalysis.sql", StringComparison.OrdinalIgnoreCase))
+                {
+                    expectedHash = scriptHash.Value;
+                    break;
+                }
+            }
+
+            Assert.IsNotNull(expectedHash, "PerfStatsAnalysis.sql is not in the integrity allowlist.");
+
+            string actualHash;
+            using (FileStream stream = File.OpenRead(scriptPath))
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                actualHash = BitConverter.ToString(sha256.ComputeHash(stream)).Replace("-", string.Empty);
+            }
+
+            Assert.AreEqual(expectedHash, actualHash, true, "The deployed PerfStatsAnalysis.sql hash must match the integrity allowlist.");
+        }
+
         [TestMethod]
         public void WaitStatsTop5Categories_OtherCategory_ExcludesCpuWaits()
         {
