@@ -50,7 +50,7 @@ namespace TraceEventImporter
         public TraceEventImporterPlugin()
         {
             _options.Add(OPTION_DROP_EXISTING, true);
-            _options.Add(OPTION_INTERVAL_SECONDS, 60);
+            _options.Add(OPTION_INTERVAL_SECONDS, 0);
             _options.Add(OPTION_ENABLED, true);
             _options.Add(OPTION_USE_LOCAL_SERVER_TIME, false);
         }
@@ -198,12 +198,13 @@ namespace TraceEventImporter
                             if (evt.Seq > fileLastSeq) fileLastSeq = evt.Seq;
                             if (evt.Seq > globalSeq) globalSeq = evt.Seq;
 
-                            if (evt.StartTime.HasValue)
+                            DateTime? eventTime = evt.EndTime ?? evt.StartTime;
+                            if (eventTime.HasValue)
                             {
-                                if (!fileFirstTime.HasValue || evt.StartTime.Value < fileFirstTime.Value)
-                                    fileFirstTime = evt.StartTime;
-                                if (!fileLastTime.HasValue || evt.StartTime.Value > fileLastTime.Value)
-                                    fileLastTime = evt.StartTime;
+                                if (!fileFirstTime.HasValue || eventTime.Value < fileFirstTime.Value)
+                                    fileFirstTime = eventTime;
+                                if (!fileLastTime.HasValue || eventTime.Value > fileLastTime.Value)
+                                    fileLastTime = eventTime;
                             }
 
                             if (fileEventsRead % 10000 == 0)
@@ -238,7 +239,8 @@ namespace TraceEventImporter
                         return false;
                     }
 
-                    // 4. Finalize processor (flush pending connections)
+                    // 4. Finalize processor
+                    processor.FlushPendingEvents();
                     processor.FlushPendingConnections();
 
                     // 5. Write all data

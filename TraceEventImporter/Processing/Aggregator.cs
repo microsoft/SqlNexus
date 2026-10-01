@@ -10,15 +10,16 @@ namespace TraceEventImporter.Processing
     /// </summary>
     public class Aggregator
     {
-        private readonly int _intervalSeconds;
+        private readonly int _requestedIntervalSeconds;
+        private int _intervalSeconds;
 
         public List<TimeIntervalRow> TimeIntervals { get; } = new List<TimeIntervalRow>();
         public List<BatchPartialAggRow> BatchAggs { get; } = new List<BatchPartialAggRow>();
         public List<StmtPartialAggRow> StmtAggs { get; } = new List<StmtPartialAggRow>();
 
-        public Aggregator(int intervalSeconds = 60)
+        public Aggregator(int intervalSeconds = 0)
         {
-            _intervalSeconds = intervalSeconds > 0 ? intervalSeconds : 60;
+            _requestedIntervalSeconds = intervalSeconds;
         }
 
         public void Compute(List<BatchRow> batches, List<StatementRow> statements)
@@ -29,17 +30,24 @@ namespace TraceEventImporter.Processing
 
             foreach (var b in batches)
             {
-                if (b.StartTime.HasValue && b.StartTime.Value < minTime) minTime = b.StartTime.Value;
-                if (b.EndTime.HasValue && b.EndTime.Value > maxTime) maxTime = b.EndTime.Value;
+                ObserveTime(b.StartTime, ref minTime, ref maxTime);
+                ObserveTime(b.EndTime, ref minTime, ref maxTime);
             }
             foreach (var s in statements)
             {
-                if (s.StartTime.HasValue && s.StartTime.Value < minTime) minTime = s.StartTime.Value;
-                if (s.EndTime.HasValue && s.EndTime.Value > maxTime) maxTime = s.EndTime.Value;
+                ObserveTime(s.StartTime, ref minTime, ref maxTime);
+                ObserveTime(s.EndTime, ref minTime, ref maxTime);
             }
 
-            if (minTime >= maxTime)
+            if (minTime == DateTime.MaxValue)
                 return;
+
+            _intervalSeconds = _requestedIntervalSeconds > 0
+                ? _requestedIntervalSeconds
+                : Math.Max(1, (int)((maxTime - minTime).TotalSeconds / 100));
+
+            if (minTime == maxTime)
+                maxTime = minTime.AddSeconds(_intervalSeconds);
 
             // Remember the range start so FindTimeInterval can compute the interval
             // index directly (O(1)) instead of scanning the interval list.
@@ -55,57 +63,54 @@ namespace TraceEventImporter.Processing
             ComputeStmtAggs(statements);
         }
 
+        private static void ObserveTime(DateTime? time, ref DateTime minTime, ref DateTime maxTime)
+        {
+            if (!time.HasValue) return;
+            if (time.Value < minTime) minTime = time.Value;
+            if (time.Value > maxTime) maxTime = time.Value;
+        }
+
         private void BuildTimeIntervals(DateTime minTime, DateTime maxTime)
         {
             DateTime current = minTime;
             int intervalId = 1;
             while (current < maxTime)
             {
-                DateTime end = current.AddSeconds(_intervalSeconds);
-                if (end > maxTime) end = maxTime;
+                DateTime next = current.AddSeconds(_intervalSeconds);
 
                 TimeIntervals.Add(new TimeIntervalRow
                 {
                     TimeInterval = intervalId++,
                     StartTime = current,
-                    EndTime = end
+                    // SQL datetime has approximately 3.33 ms precision. ReadTrace uses
+                    // inclusive interval ends immediately before the next bucket starts.
+                    EndTime = next.AddMilliseconds(-3)
                 });
 
-                current = end;
+                current = next;
             }
         }
 
         private void ComputeBatchAggs(List<BatchRow> batches)
         {
-            // Group by HashID, TimeInterval, DBID, AppNameID, LoginNameID
             foreach (var batch in batches)
             {
-                int timeInterval = FindTimeInterval(batch.EndTime ?? batch.StartTime);
-                if (timeInterval <= 0) continue;
-
-                var key = new AggKey(batch.HashID, timeInterval, batch.DBID, batch.AppNameID, batch.LoginNameID);
-
-                if (!_batchAggDict.TryGetValue(key, out var agg))
+                if (batch.StartTime.HasValue)
                 {
-                    agg = new BatchPartialAggRow
-                    {
-                        HashID = batch.HashID,
-                        TimeInterval = timeInterval,
-                        DBID = batch.DBID,
-                        AppNameID = batch.AppNameID,
-                        LoginNameID = batch.LoginNameID
-                    };
-                    _batchAggDict[key] = agg;
-                    BatchAggs.Add(agg);
+                    BatchPartialAggRow startAgg = GetBatchAgg(batch, FindTimeInterval(batch.StartTime));
+                    if (startAgg != null)
+                        startAgg.StartingEvents++;
                 }
 
-                // Count events
-                if (batch.StartTime.HasValue)
-                    agg.StartingEvents++;
-                if (batch.EndTime.HasValue)
-                    agg.CompletedEvents++;
-                if (batch.AttnSeq.HasValue)
-                    agg.AttentionEvents++;
+                if (!batch.EndSeq.HasValue)
+                    continue;
+
+                BatchPartialAggRow agg = GetBatchAgg(batch, FindTimeInterval(batch.EndTime));
+                if (agg == null)
+                    continue;
+
+                agg.CompletedEvents++;
+                if (batch.AttnSeq.HasValue) agg.AttentionEvents++;
 
                 // Aggregate metrics (from completed events only)
                 if (batch.Duration.HasValue)
@@ -139,28 +144,21 @@ namespace TraceEventImporter.Processing
         {
             foreach (var stmt in statements)
             {
-                int timeInterval = FindTimeInterval(stmt.EndTime ?? stmt.StartTime);
-                if (timeInterval <= 0) continue;
-
-                var key = new AggKey(stmt.HashID, timeInterval, stmt.DBID, stmt.AppNameID, stmt.LoginNameID);
-
-                if (!_stmtAggDict.TryGetValue(key, out var agg))
+                if (stmt.StartTime.HasValue)
                 {
-                    agg = new StmtPartialAggRow
-                    {
-                        HashID = stmt.HashID,
-                        TimeInterval = timeInterval,
-                        ObjectID = stmt.ObjectID,
-                        DBID = stmt.DBID,
-                        AppNameID = stmt.AppNameID,
-                        LoginNameID = stmt.LoginNameID
-                    };
-                    _stmtAggDict[key] = agg;
-                    StmtAggs.Add(agg);
+                    StmtPartialAggRow startAgg = GetStmtAgg(stmt, FindTimeInterval(stmt.StartTime));
+                    if (startAgg != null)
+                        startAgg.StartingEvents++;
                 }
 
-                if (stmt.StartTime.HasValue) agg.StartingEvents++;
-                if (stmt.EndTime.HasValue) agg.CompletedEvents++;
+                if (!stmt.EndSeq.HasValue)
+                    continue;
+
+                StmtPartialAggRow agg = GetStmtAgg(stmt, FindTimeInterval(stmt.EndTime));
+                if (agg == null)
+                    continue;
+
+                agg.CompletedEvents++;
                 if (stmt.AttnSeq.HasValue) agg.AttentionEvents++;
 
                 if (stmt.Duration.HasValue)
@@ -188,6 +186,51 @@ namespace TraceEventImporter.Processing
                     agg.MaxCPU = agg.MaxCPU.HasValue ? Math.Max(agg.MaxCPU.Value, stmt.CPU.Value) : stmt.CPU.Value;
                 }
             }
+        }
+
+        private BatchPartialAggRow GetBatchAgg(BatchRow batch, int timeInterval)
+        {
+            if (timeInterval <= 0) return null;
+
+            var key = new AggKey(batch.HashID, timeInterval, batch.DBID, batch.AppNameID, batch.LoginNameID);
+            if (!_batchAggDict.TryGetValue(key, out BatchPartialAggRow agg))
+            {
+                agg = new BatchPartialAggRow
+                {
+                    HashID = batch.HashID,
+                    TimeInterval = timeInterval,
+                    DBID = batch.DBID,
+                    AppNameID = batch.AppNameID,
+                    LoginNameID = batch.LoginNameID
+                };
+                _batchAggDict[key] = agg;
+                BatchAggs.Add(agg);
+            }
+
+            return agg;
+        }
+
+        private StmtPartialAggRow GetStmtAgg(StatementRow stmt, int timeInterval)
+        {
+            if (timeInterval <= 0) return null;
+
+            var key = new AggKey(stmt.HashID, timeInterval, stmt.DBID, stmt.AppNameID, stmt.LoginNameID);
+            if (!_stmtAggDict.TryGetValue(key, out StmtPartialAggRow agg))
+            {
+                agg = new StmtPartialAggRow
+                {
+                    HashID = stmt.HashID,
+                    TimeInterval = timeInterval,
+                    ObjectID = stmt.ObjectID,
+                    DBID = stmt.DBID,
+                    AppNameID = stmt.AppNameID,
+                    LoginNameID = stmt.LoginNameID
+                };
+                _stmtAggDict[key] = agg;
+                StmtAggs.Add(agg);
+            }
+
+            return agg;
         }
 
         private int FindTimeInterval(DateTime? time)

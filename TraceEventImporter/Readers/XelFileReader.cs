@@ -95,7 +95,12 @@ namespace TraceEventImporter.Readers
 
         private TraceEvent MapEvent(IXEvent xe)
         {
-            var evt = new TraceEvent();
+            var evt = new TraceEvent
+            {
+                // A *_completed XE event is timestamped when it completes. Event-specific
+                // mapping uses this value to derive the corresponding start time.
+                StartTime = xe.Timestamp.UtcDateTime
+            };
 
             // Map event name to TraceEventType
             switch (xe.Name.ToLowerInvariant())
@@ -150,9 +155,6 @@ namespace TraceEventImporter.Readers
                     evt.EventType = TraceEventType.Unknown;
                     break;
             }
-
-            // Common timestamp
-            evt.StartTime = xe.Timestamp.UtcDateTime;
 
             // Common actions (global fields attached to all events).
             // NOTE: evt.Seq is intentionally NOT read from the "event_sequence" action here —
@@ -239,9 +241,18 @@ namespace TraceEventImporter.Readers
             if (logicalReads.HasValue || physicalReads.HasValue)
                 evt.Reads = (logicalReads ?? 0) + (physicalReads ?? 0);
 
-            // EndTime = StartTime + Duration for completed events
-            if (evt.StartTime.HasValue && evt.Duration.HasValue)
-                evt.EndTime = evt.StartTime.Value.AddMicroseconds(evt.Duration.Value);
+            SetCompletedEventTimes(evt);
+        }
+
+        private static void SetCompletedEventTimes(TraceEvent evt)
+        {
+            // XE timestamps completed events at completion. ReadTrace stores both the
+            // calculated start and the original completion timestamp.
+            if (!evt.StartTime.HasValue || !evt.Duration.HasValue)
+                return;
+
+            evt.EndTime = evt.StartTime;
+            evt.StartTime = evt.EndTime.Value.AddMicroseconds(-evt.Duration.Value);
         }
 
         #region Field/Action Helpers

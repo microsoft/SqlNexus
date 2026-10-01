@@ -77,6 +77,33 @@ namespace SqlNexus.UnitTests.TraceEventImporter.Processing
             Assert.AreEqual("master.dbo.sp_executesql", store.GetProcedureNames().Single().Name);
         }
 
+        [TestMethod]
+        public void FlushPendingEvents_UnmatchedStarts_PreservesBatchAndStatementRows()
+        {
+            var store = new UniqueStore();
+            var processor = new EventProcessor(store);
+            DateTime start = new DateTime(2026, 9, 29, 7, 52, 46, DateTimeKind.Utc);
+
+            processor.ProcessEvent(Event(100, TraceEventType.SqlBatchStarting, 51, 2, start, text: "select 42", app: "SqlClient", login: "user"));
+            processor.ProcessEvent(Event(101, TraceEventType.StmtStarting, 51, 2, start.AddSeconds(1), text: "select 42", app: "SqlClient", login: "user"));
+
+            processor.FlushPendingEvents();
+
+            Assert.AreEqual(1, processor.Batches.Count);
+            Assert.AreEqual(100L, processor.Batches[0].StartSeq);
+            Assert.IsNull(processor.Batches[0].EndSeq);
+            Assert.IsNull(processor.Batches[0].EndTime);
+            Assert.AreEqual(1, processor.Statements.Count);
+            Assert.AreEqual(101L, processor.Statements[0].StartSeq);
+            Assert.IsNull(processor.Statements[0].EndSeq);
+            Assert.AreEqual(100L, processor.Statements[0].BatchSeq);
+
+            var aggregator = new Aggregator(1);
+            aggregator.Compute(processor.Batches, processor.Statements);
+            Assert.AreEqual(1, aggregator.BatchAggs.Sum(row => row.StartingEvents));
+            Assert.AreEqual(0, aggregator.BatchAggs.Sum(row => row.CompletedEvents));
+        }
+
         private static TraceEvent Event(
             long seq,
             TraceEventType type,

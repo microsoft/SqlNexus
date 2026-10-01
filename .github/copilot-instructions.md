@@ -85,6 +85,8 @@ For any WinForms UI changes:
 3. Security, privacy, and accessibility considerations addressed (or explicitly noted as N/A).
 4. Build is green; no new warnings.
 5. PR description explains the change, any data-handling implications, and test coverage.
+6. Check whether any file listed in `ScriptIntegrityChecker.ScriptHashes` changed; if so, compute
+   its new SHA-256 hash from the final file contents and update the corresponding allowlist entry.
 
 ## Project overview (projects and responsibilities)
 
@@ -131,6 +133,8 @@ In addition to the SDL requirements above:
 - Database names passed to SQL commands must be bracket-escaped (`[dbname]`) before use — see the
   `CodeQL [SM03934]` annotation pattern in `fmImport.cs`
 - Use `ScriptIntegrityChecker.VerifyScript()` before executing any `.sql` or `.cmd` file on disk
+- When changing a script listed in `ScriptIntegrityChecker.ScriptHashes`, update its SHA-256
+  allowlist value in `ScriptIntegrity.cs` after all edits to the script are complete
 - Validate all file paths before use; reject paths containing directory traversal sequences
 - Do not use `Assembly.LoadFile` on untrusted paths without verification
 - Do not log passwords or connection strings with credentials via `LogMessage`

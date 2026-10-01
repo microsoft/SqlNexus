@@ -141,6 +141,116 @@ namespace TraceEventImporter.Processing
             _connections.Clear();
         }
 
+        /// <summary>
+        /// Writes starting events that did not receive a matching completed event.
+        /// ReadTrace retains these rows so reports can account for work still running
+        /// when the capture ends.
+        /// </summary>
+        public void FlushPendingEvents()
+        {
+            foreach (KeyValuePair<SessionRequestKey, PendingBatch> entry in _pendingBatches)
+            {
+                SessionRequestKey key = entry.Key;
+                PendingBatch pending = entry.Value;
+                byte specialProcId = pending.IsRpc
+                    ? SpecialProcDetector.GetSpecialProcId(pending.ObjectName)
+                    : (byte)0;
+                string textForNormalization = pending.TextData;
+                if (SpExecuteSqlExtractor.ShouldExtractInnerSql(specialProcId))
+                {
+                    string innerSql = SpExecuteSqlExtractor.TryExtractInnerSql(pending.TextData);
+                    if (innerSql != null) textForNormalization = innerSql;
+                }
+
+                string normText = SqlTextNormalizer.Normalize(textForNormalization);
+                long hashId = HashComputer.ComputeHash(normText, specialProcId);
+                _store.TryAddBatch(pending.StartSeq, hashId, pending.TextData, normText, specialProcId);
+
+                if (pending.IsRpc && !string.IsNullOrEmpty(pending.ObjectName))
+                {
+                    _store.AddProcedureName(
+                        pending.DatabaseId,
+                        pending.ObjectId ?? 0,
+                        specialProcId,
+                        pending.ObjectName);
+                }
+
+                int appNameId = _store.GetOrAddAppName(pending.ApplicationName);
+                int loginNameId = _store.GetOrAddLoginName(pending.LoginName);
+                long connSeq = EnsureConnectionForSession(new TraceEvent
+                {
+                    Seq = pending.StartSeq,
+                    SessionId = key.Session
+                });
+
+                Batches.Add(new BatchRow
+                {
+                    BatchSeq = pending.StartSeq,
+                    HashID = hashId,
+                    Session = key.Session,
+                    Request = key.Request,
+                    ConnId = pending.ConnId,
+                    StartTime = pending.StartTime,
+                    EndTime = null,
+                    fRPCEvent = (byte)(pending.IsRpc ? 1 : 0),
+                    DBID = pending.DatabaseId,
+                    StartSeq = pending.StartSeq,
+                    EndSeq = null,
+                    AttnSeq = pending.AttnSeq,
+                    ConnSeq = connSeq,
+                    TextData = pending.TextData,
+                    AppNameID = appNameId,
+                    LoginNameID = loginNameId
+                });
+                _lastBatchIndexBySession[key.Session] = Batches.Count - 1;
+            }
+
+            foreach (KeyValuePair<SessionRequestKey, Stack<PendingStatement>> entry in _pendingStatements)
+            {
+                SessionRequestKey key = entry.Key;
+                foreach (PendingStatement pending in entry.Value)
+                {
+                    string normText = SqlTextNormalizer.Normalize(pending.TextData);
+                    long hashId = HashComputer.ComputeHash(normText);
+                    _store.TryAddStatement(pending.StartSeq, hashId, pending.TextData, normText);
+
+                    long? connSeq = null;
+                    if (_sessionConnSeq.TryGetValue(key.Session, out long existingConnSeq))
+                        connSeq = existingConnSeq;
+
+                    long? batchSeq = null;
+                    if (_curBatchStartSeq.TryGetValue(key, out long currentBatchSeq))
+                        batchSeq = currentBatchSeq;
+
+                    Statements.Add(new StatementRow
+                    {
+                        StmtSeq = pending.StartSeq,
+                        HashID = hashId,
+                        Session = key.Session,
+                        Request = key.Request,
+                        ConnId = pending.ConnId,
+                        StartTime = pending.StartTime,
+                        EndTime = null,
+                        DBID = pending.DatabaseId,
+                        ObjectID = pending.ObjectId,
+                        NestLevel = pending.NestLevel,
+                        fDynamicSQL = false,
+                        StartSeq = pending.StartSeq,
+                        EndSeq = null,
+                        ConnSeq = connSeq,
+                        BatchSeq = batchSeq,
+                        TextData = pending.TextData,
+                        AppNameID = _store.GetOrAddAppName(pending.ApplicationName),
+                        LoginNameID = _store.GetOrAddLoginName(pending.LoginName)
+                    });
+                }
+            }
+
+            _pendingBatches.Clear();
+            _pendingStatements.Clear();
+            _curBatchStartSeq.Clear();
+        }
+
         #region Batch Handling
 
         private void HandleBatchStarting(TraceEvent evt)
@@ -155,8 +265,10 @@ namespace TraceEventImporter.Processing
             {
                 StartSeq = evt.Seq,
                 StartTime = evt.StartTime,
+                ConnId = evt.ConnId,
                 TextData = evt.TextData,
                 ObjectName = evt.ObjectName,
+                ObjectId = evt.ObjectId,
                 IsRpc = evt.IsRpcEvent,
                 DatabaseId = evt.DatabaseId,
                 ApplicationName = evt.ApplicationName,
@@ -271,9 +383,13 @@ namespace TraceEventImporter.Processing
             {
                 StartSeq = evt.Seq,
                 StartTime = evt.StartTime,
+                ConnId = evt.ConnId,
                 TextData = evt.TextData,
                 ObjectId = evt.ObjectId,
-                NestLevel = evt.NestLevel
+                NestLevel = evt.NestLevel,
+                DatabaseId = evt.DatabaseId,
+                ApplicationName = evt.ApplicationName,
+                LoginName = evt.LoginName
             });
         }
 
@@ -650,8 +766,10 @@ namespace TraceEventImporter.Processing
     {
         public long StartSeq;
         public DateTime? StartTime;
+        public long ConnId;
         public string TextData;
         public string ObjectName;
+        public int? ObjectId;
         public bool IsRpc;
         public int DatabaseId;
         public string ApplicationName;
@@ -665,9 +783,13 @@ namespace TraceEventImporter.Processing
     {
         public long StartSeq;
         public DateTime? StartTime;
+        public long ConnId;
         public string TextData;
         public int? ObjectId;
         public int? NestLevel;
+        public int DatabaseId;
+        public string ApplicationName;
+        public string LoginName;
     }
 
     internal class ConnectionInfo
