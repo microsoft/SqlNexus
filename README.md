@@ -4,7 +4,7 @@ SQL Nexus is a tool that helps you identify the root cause of SQL Server perform
 
 # Latest release
 
-Current release is 7.24.02.18. Please go to [latest release](https://github.com/microsoft/SqlNexus/releases/tag/7.24.02.18) to download latest build of SQL Nexus.
+Please go to [latest release](https://github.com/microsoft/SqlNexus/releases/) to download latest build of SQL Nexus.
 
 # Feature Highlights
 
