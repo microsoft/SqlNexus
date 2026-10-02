@@ -2,25 +2,22 @@
 
 SQL Nexus is a tool that helps you identify the root cause of SQL Server performance issues. It loads and analyzes performance data collected by [SQL LogScout](https://github.com/Microsoft/sql_logscout) or [PSSDIAG](https://github.com/Microsoft/diagmanager). It can dramatically reduce the amount of time you spend manually analyzing data. Visit  [Getting Started](https://github.com/Microsoft/SqlNexus/wiki/Getting-Started) page.
 
-# Latest release
+# Download
 
-Current release is 7.24.02.18. Please go to [latest release](https://github.com/microsoft/SqlNexus/releases/tag/7.24.02.18) to download latest build of SQL Nexus.
+Download the latest build of SQL Nexus from the [releases page](https://github.com/microsoft/SqlNexus/releases/).
 
 # Feature Highlights
 
-1. **Fast, easy data loading** : You can quickly and easily load SQL Trace files; T-SQL script output, including SQL DMV queries; and Performance Monitor logs into a SQL Server database for analysis. All three facilities use bulk load APIs to insert data quickly. You can also create your own importer for a custom file type.
-2. **Visualize loaded data via reports** : Once the data is loaded, you can fire up several different  [charts and reports](https://github.com/Microsoft/SqlNexus/wiki/Reports) to analyze it.
-3. **Trace aggregation**  to show the TOP N most expensive queries (using  [RML](https://github.com/Microsoft/SqlNexus/wiki/RML-Utility)).
-4. **Wait stats analysis**  for visualizing blocking and other resource contention issues ( [based on pssdiag](https://github.com/Microsoft/diagmanager)).
-5. **Full-featured reporting engine** : SQL Nexus uses the SQL Server Reporting Services client-side report viewer (it does not require an RS instance). You can create reports for Nexus from either the RS report designer or the Visual Studio report designer. You can also modify the reports that ship with Nexus using either facility. Zoom in/Zoom out to view server performance during a particular time window. Expand/collapse report regions (subreports) for easier navigation of complex data. Export or email reports directly from SQL Nexus. Nexus supports exporting in Excel, PDF, and several other formats.
-6. **Extensibility** : You can use the existing importers to load the output from any DMV query into a table, and any RS reports you drop in the Reports folder will automatically show up in the reports task pane. If you want, you can even add a new data importer for a new data type. SQL Nexus will automatically &quot;fix up&quot; the database references in your reports to reference the current server and database, and it will provide generic parameter prompting for any parameters your reports support.
+1. **AI-assisted diagnostics**: Analyze collected SQL Server diagnostic data with GitHub Copilot through the local SQL Nexus MCP server.
+2. **Fast, easy data loading**: Quickly load SQL Trace files, T-SQL script output (including SQL DMV queries), and Performance Monitor logs into a SQL Server database for analysis. These facilities use bulk-load APIs to insert data quickly.
+3. **Performance Monitor analysis**: Use the Perfmon importer to import and visualize Windows Performance Monitor data.
+4. **ERRORLOG and XEL analysis**: Import SQL Server ERRORLOG files and supported Extended Events data with the ERRORLOG and Custom XEL importers.
+5. **Trace aggregation**: Identify the top N most expensive queries using the native Trace Managed importer or [RML](https://github.com/Microsoft/SqlNexus/wiki/RML-Utility).
+6. **Command-line operation**: Run SQL Nexus from the command line to support scripted and repeatable workflows.
+7. **Visual reports**: Explore loaded data through a variety of [charts and reports](https://github.com/Microsoft/SqlNexus/wiki/Reports).
+8. **Wait statistics analysis**: Visualize blocking and other resource-contention issues in data collected by [PSSDIAG](https://github.com/Microsoft/diagmanager).
+9. **Full-featured reporting engine**: SQL Nexus uses the SQL Server Reporting Services client-side report viewer and does not require a Reporting Services instance. Zoom in or out to examine server performance during a particular time window, expand or collapse report regions for easier navigation, and export reports to Excel, PDF, and other formats.
 
-# Importing SQL LogScout "All Instances" captures
-
-When you point SQL Nexus at a SQL LogScout instance folder (for example `output\SERVER_SQL2019`), SQL Nexus also automatically scans a sibling folder named **SharedOutputFiles** in the same parent directory, if one exists. That folder holds non-instance-specific host/OS diagnostics (such as running drivers, disk info, and event logs). As a result:
-
-- The import list may include rows for files that are not physically inside the folder you selected. Such rows are labeled with a `(from SharedOutputFiles)` suffix, and the Import dialog shows an "Also scanning: ..." note naming the second folder.
-- A file that appears in both folders is imported only once (the copy in your selected folder wins), so you do not get duplicate rows.
 
 # Common Tasks
 
