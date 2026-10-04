@@ -14,6 +14,7 @@ namespace SqlNexus.McpServer
         private readonly string _connectionString;
         private readonly string _database;
         private readonly string? _database2;
+        private readonly bool _impersonateReader;
 
         internal const string InstalledProgramsNameFilter = "%sql%";
 
@@ -49,15 +50,21 @@ namespace SqlNexus.McpServer
         };
 
         public DiagnosticAnalyzer(string connectionString)
-            : this(connectionString, "SqlNexus", null)
+            : this(connectionString, "SqlNexus", null, false)
         {
         }
 
         public DiagnosticAnalyzer(string connectionString, string database, string? database2)
+            : this(connectionString, database, database2, false)
+        {
+        }
+
+        internal DiagnosticAnalyzer(string connectionString, string database, string? database2, bool impersonateReader)
         {
             _connectionString = connectionString;
             _database = string.IsNullOrWhiteSpace(database) ? "SqlNexus" : database.Trim();
             _database2 = string.IsNullOrWhiteSpace(database2) ? null : database2.Trim();
+            _impersonateReader = impersonateReader;
         }
 
         /// <summary>
@@ -2124,8 +2131,6 @@ namespace SqlNexus.McpServer
                 throw new InvalidOperationException($"Comparison database '{_database2}' was not found on the server.");
             }
 
-            string a = BracketQuote(_database);
-            string b = BracketQuote(_database2!);
             string aLabel = _database;
             string bLabel = _database2!;
 
@@ -2134,22 +2139,9 @@ namespace SqlNexus.McpServer
             // 1) Server properties comparison
             try
             {
-                string serverPropsQuery = $@"
-                    SELECT a.PropertyName,
-                           a.PropertyValue AS [{aLabel}],
-                           b.PropertyValue AS [{bLabel}],
-                           CASE WHEN NOT EXISTS (SELECT a.PropertyValue INTERSECT SELECT b.PropertyValue)
-                                THEN 'Yes' ELSE '' END AS Different
-                    FROM {a}.dbo.tbl_ServerProperties a
-                    INNER JOIN {b}.dbo.tbl_ServerProperties b
-                        ON a.PropertyName = b.PropertyName
-                    ORDER BY a.PropertyName";
-                var t = ExecuteQueryToDataTable(serverPropsQuery);
-                sections["server_properties"] = new
-                {
-                    row_count = t.Rows.Count,
-                    data = ConvertDataTableToList(t)
-                };
+                sections["server_properties"] = CompareDatabaseTables(
+                    "SELECT PropertyName, PropertyValue FROM dbo.tbl_ServerProperties ORDER BY PropertyName",
+                    new[] { "PropertyName" }, new[] { "PropertyValue" }, aLabel, bLabel, false, null);
             }
             catch (Exception ex)
             {
@@ -2159,29 +2151,10 @@ namespace SqlNexus.McpServer
             // 2) Database options comparison
             try
             {
-                string dbOptionsQuery = $@"
-                    SELECT a.name,
-                           a.cmptlevel AS [{aLabel}_cmptlevel],
-                           b.cmptlevel AS [{bLabel}_cmptlevel],
-                           a.status   AS [{aLabel}_status],
-                           b.status   AS [{bLabel}_status],
-                           CASE WHEN NOT EXISTS (SELECT a.cmptlevel INTERSECT SELECT b.cmptlevel)
-                                THEN 'Yes' ELSE '' END AS CmptLevel_Different,
-                           CASE WHEN NOT EXISTS (SELECT a.status INTERSECT SELECT b.status)
-                                THEN 'Yes' ELSE '' END AS Status_Different
-                    FROM {a}.dbo.tbl_database_options a
-                    INNER JOIN {b}.dbo.tbl_database_options b
-                        ON a.name = b.name
-                    WHERE NOT EXISTS (SELECT a.cmptlevel INTERSECT SELECT b.cmptlevel)
-                       OR NOT EXISTS (SELECT a.status INTERSECT SELECT b.status)
-                    ORDER BY a.name";
-                var t = ExecuteQueryToDataTable(dbOptionsQuery);
-                sections["database_options"] = new
-                {
-                    note = "Only databases whose compatibility level or status differs are listed; identical databases are omitted to reduce output.",
-                    row_count = t.Rows.Count,
-                    data = ConvertDataTableToList(t)
-                };
+                sections["database_options"] = CompareDatabaseTables(
+                    "SELECT name, cmptlevel, status FROM dbo.tbl_database_options ORDER BY name",
+                    new[] { "name" }, new[] { "cmptlevel", "status" }, aLabel, bLabel, true,
+                    "Only databases whose compatibility level or status differs are listed; identical databases are omitted to reduce output.");
             }
             catch (Exception ex)
             {
@@ -2191,24 +2164,10 @@ namespace SqlNexus.McpServer
             // 3) Database scoped configurations comparison
             try
             {
-                string dbScopedQuery = $@"
-                    SELECT a.dbname, a.name,
-                           a.value AS [{aLabel}],
-                           b.value AS [{bLabel}],
-                           CASE WHEN NOT EXISTS (SELECT a.value INTERSECT SELECT b.value)
-                                THEN 'Yes' ELSE '' END AS Different
-                    FROM {a}.dbo.tbl_database_scoped_configurations a
-                    INNER JOIN {b}.dbo.tbl_database_scoped_configurations b
-                        ON a.dbname = b.dbname AND a.name = b.name
-                    WHERE NOT EXISTS (SELECT a.value INTERSECT SELECT b.value)
-                    ORDER BY a.dbname, a.name";
-                var t = ExecuteQueryToDataTable(dbScopedQuery);
-                sections["database_scoped_configurations"] = new
-                {
-                    note = "Only scoped configurations whose value differs are listed; identical settings are omitted to reduce output.",
-                    row_count = t.Rows.Count,
-                    data = ConvertDataTableToList(t)
-                };
+                sections["database_scoped_configurations"] = CompareDatabaseTables(
+                    "SELECT dbname, name, value FROM dbo.tbl_database_scoped_configurations ORDER BY dbname, name",
+                    new[] { "dbname", "name" }, new[] { "value" }, aLabel, bLabel, true,
+                    "Only scoped configurations whose value differs are listed; identical settings are omitted to reduce output.");
             }
             catch (Exception ex)
             {
@@ -2218,24 +2177,10 @@ namespace SqlNexus.McpServer
             // 4) Server-level sys.configurations comparison (compares value_in_use by name)
             try
             {
-                string sysConfigQuery = $@"
-                    SELECT a.name,
-                           a.value_in_use AS [{aLabel}],
-                           b.value_in_use AS [{bLabel}],
-                           CASE WHEN NOT EXISTS (SELECT a.value_in_use INTERSECT SELECT b.value_in_use)
-                                THEN 'Yes' ELSE '' END AS Different
-                    FROM {a}.dbo.tbl_Sys_Configurations a
-                    INNER JOIN {b}.dbo.tbl_Sys_Configurations b
-                        ON a.name = b.name
-                    WHERE NOT EXISTS (SELECT a.value_in_use INTERSECT SELECT b.value_in_use)
-                    ORDER BY a.name";
-                var t = ExecuteQueryToDataTable(sysConfigQuery);
-                sections["sys_configurations"] = new
-                {
-                    note = "Server-level sp_configure settings from tbl_Sys_Configurations compared by name on value_in_use. Only settings whose value_in_use differs are listed; identical settings are omitted to reduce output.",
-                    row_count = t.Rows.Count,
-                    data = ConvertDataTableToList(t)
-                };
+                sections["sys_configurations"] = CompareDatabaseTables(
+                    "SELECT name, value_in_use FROM dbo.tbl_Sys_Configurations ORDER BY name",
+                    new[] { "name" }, new[] { "value_in_use" }, aLabel, bLabel, true,
+                    "Server-level sp_configure settings from tbl_Sys_Configurations compared by name on value_in_use. Only settings whose value_in_use differs are listed; identical settings are omitted to reduce output.");
             }
             catch (Exception ex)
             {
@@ -2248,43 +2193,18 @@ namespace SqlNexus.McpServer
                 try
                 {
                     string queryPerfQuery = $@"
-                        SELECT db1.AvgDuration_ms AS [{aLabel}_AvgDuration_ms],
-                               db2.AvgDuration_ms AS [{bLabel}_AvgDuration_ms],
-                               db1.AvgDuration_ms - db2.AvgDuration_ms AS Delta_AvgDuration_ms,
-                               db1.AvgCPU_ms AS [{aLabel}_AvgCPU_ms],
-                               db2.AvgCPU_ms AS [{bLabel}_AvgCPU_ms],
-                               db1.AvgCPU_ms - db2.AvgCPU_ms AS Delta_AvgCPU_ms,
-                               db1.Executions AS [{aLabel}_Executions],
-                               db2.Executions AS [{bLabel}_Executions],
-                               db2.NormText
-                        FROM (
-                            SELECT TOP 30
-                                COUNT(*) AS Executions,
-                                (SUM(t.Duration)/1000)/COUNT(*) AS AvgDuration_ms,
-                                SUM(t.CPU)/COUNT(*) AS AvgCPU_ms,
-                                t.HashID
-                            FROM {a}.ReadTrace.tblBatches t
-                            JOIN {a}.ReadTrace.tblUniqueBatches u ON t.HashID = u.HashID
-                            {ReadTraceFilterPredicate}
-                            GROUP BY u.NormText, t.HashID
-                            ORDER BY SUM(t.Duration) DESC
-                        ) db1
-                        JOIN (
-                            SELECT TOP 30
-                                COUNT(*) AS Executions,
-                                (SUM(t.Duration)/1000)/COUNT(*) AS AvgDuration_ms,
-                                SUM(t.CPU)/COUNT(*) AS AvgCPU_ms,
-                                SUBSTRING(u.NormText, 1, 200) AS NormText,
-                                t.HashID
-                            FROM {b}.ReadTrace.tblBatches t
-                            JOIN {b}.ReadTrace.tblUniqueBatches u ON t.HashID = u.HashID
-                            {ReadTraceFilterPredicate}
-                            GROUP BY u.NormText, t.HashID
-                            ORDER BY SUM(t.Duration) DESC
-                        ) db2
-                        ON db1.HashID = db2.HashID
-                        ORDER BY Delta_AvgDuration_ms ASC";
-                    var t = ExecuteQueryToDataTable(queryPerfQuery);
+                        SELECT TOP 30
+                            COUNT(*) AS Executions,
+                            (SUM(t.Duration)/1000)/COUNT(*) AS AvgDuration_ms,
+                            SUM(t.CPU)/COUNT(*) AS AvgCPU_ms,
+                            SUBSTRING(u.NormText, 1, 200) AS NormText,
+                            t.HashID
+                        FROM ReadTrace.tblBatches t
+                        JOIN ReadTrace.tblUniqueBatches u ON t.HashID = u.HashID
+                        {ReadTraceFilterPredicate}
+                        GROUP BY u.NormText, t.HashID
+                        ORDER BY SUM(t.Duration) DESC";
+                    var t = CompareQueryPerformance(queryPerfQuery, aLabel, bLabel);
                     sections["query_performance"] = new
                     {
                         row_count = t.Rows.Count,
@@ -2355,6 +2275,114 @@ namespace SqlNexus.McpServer
                               AND u.NormText NOT LIKE '%FN_TRACE_GETINFO%'
                               AND u.NormText NOT LIKE '%##MAXNAMEWIDTH%'";
 
+        private object CompareDatabaseTables(
+            string query,
+            string[] keyColumns,
+            string[] valueColumns,
+            string firstLabel,
+            string secondLabel,
+            bool differencesOnly,
+            string? note)
+        {
+            DataTable first = ExecuteQueryToDataTable(query, null, _database);
+            DataTable second = ExecuteQueryToDataTable(query, null, _database2!);
+            var secondRows = second.AsEnumerable().ToDictionary(
+                row => BuildComparisonKey(row, keyColumns),
+                row => row,
+                StringComparer.OrdinalIgnoreCase);
+            var rows = new List<Dictionary<string, object>>();
+
+            foreach (DataRow firstRow in first.Rows)
+            {
+                if (!secondRows.TryGetValue(BuildComparisonKey(firstRow, keyColumns), out DataRow secondRow))
+                    continue;
+
+                bool different = valueColumns.Any(column => !ValuesEqual(firstRow[column], secondRow[column]));
+                if (differencesOnly && !different)
+                    continue;
+
+                var resultRow = new Dictionary<string, object>();
+                foreach (string keyColumn in keyColumns)
+                    resultRow[keyColumn] = firstRow[keyColumn] == DBNull.Value ? null! : firstRow[keyColumn];
+
+                foreach (string valueColumn in valueColumns)
+                {
+                    resultRow[firstLabel + "_" + valueColumn] = firstRow[valueColumn] == DBNull.Value ? null! : firstRow[valueColumn];
+                    resultRow[secondLabel + "_" + valueColumn] = secondRow[valueColumn] == DBNull.Value ? null! : secondRow[valueColumn];
+                    resultRow[valueColumn + "_Different"] = ValuesEqual(firstRow[valueColumn], secondRow[valueColumn]) ? string.Empty : "Yes";
+                }
+
+                rows.Add(resultRow);
+            }
+
+            var section = new Dictionary<string, object>
+            {
+                ["row_count"] = rows.Count,
+                ["data"] = rows
+            };
+            if (!string.IsNullOrEmpty(note))
+                section["note"] = note;
+            return section;
+        }
+
+        private DataTable CompareQueryPerformance(string query, string firstLabel, string secondLabel)
+        {
+            DataTable first = ExecuteQueryToDataTable(query, null, _database);
+            DataTable second = ExecuteQueryToDataTable(query, null, _database2!);
+            var secondRows = second.AsEnumerable().ToDictionary(
+                row => Convert.ToString(row["HashID"], CultureInfo.InvariantCulture),
+                row => row,
+                StringComparer.OrdinalIgnoreCase);
+            var result = new DataTable();
+            result.Columns.Add(firstLabel + "_AvgDuration_ms", typeof(long));
+            result.Columns.Add(secondLabel + "_AvgDuration_ms", typeof(long));
+            result.Columns.Add("Delta_AvgDuration_ms", typeof(long));
+            result.Columns.Add(firstLabel + "_AvgCPU_ms", typeof(long));
+            result.Columns.Add(secondLabel + "_AvgCPU_ms", typeof(long));
+            result.Columns.Add("Delta_AvgCPU_ms", typeof(long));
+            result.Columns.Add(firstLabel + "_Executions", typeof(int));
+            result.Columns.Add(secondLabel + "_Executions", typeof(int));
+            result.Columns.Add("NormText", typeof(string));
+
+            foreach (DataRow firstRow in first.Rows)
+            {
+                string key = Convert.ToString(firstRow["HashID"], CultureInfo.InvariantCulture);
+                if (!secondRows.TryGetValue(key, out DataRow secondRow))
+                    continue;
+
+                long firstDuration = Convert.ToInt64(firstRow["AvgDuration_ms"], CultureInfo.InvariantCulture);
+                long secondDuration = Convert.ToInt64(secondRow["AvgDuration_ms"], CultureInfo.InvariantCulture);
+                long firstCpu = Convert.ToInt64(firstRow["AvgCPU_ms"], CultureInfo.InvariantCulture);
+                long secondCpu = Convert.ToInt64(secondRow["AvgCPU_ms"], CultureInfo.InvariantCulture);
+                result.Rows.Add(
+                    firstDuration, secondDuration, firstDuration - secondDuration,
+                    firstCpu, secondCpu, firstCpu - secondCpu,
+                    Convert.ToInt32(firstRow["Executions"], CultureInfo.InvariantCulture),
+                    Convert.ToInt32(secondRow["Executions"], CultureInfo.InvariantCulture),
+                    Convert.ToString(secondRow["NormText"], CultureInfo.InvariantCulture));
+            }
+
+            return result;
+        }
+
+        private static string BuildComparisonKey(DataRow row, IEnumerable<string> columns)
+        {
+            return string.Join("\u001f", columns.Select(column =>
+                Convert.ToString(row[column], CultureInfo.InvariantCulture) ?? string.Empty));
+        }
+
+        private static bool ValuesEqual(object first, object second)
+        {
+            if (first == DBNull.Value || first == null)
+                return second == DBNull.Value || second == null;
+            if (second == DBNull.Value || second == null)
+                return false;
+            return string.Equals(
+                Convert.ToString(first, CultureInfo.InvariantCulture),
+                Convert.ToString(second, CultureInfo.InvariantCulture),
+                StringComparison.Ordinal);
+        }
+
         /// <summary>
         /// Returns true when the ReadTrace.tblBatches table exists in the given database.
         /// </summary>
@@ -2362,11 +2390,11 @@ namespace SqlNexus.McpServer
         {
             try
             {
-                string query = $@"
-                    SELECT CASE WHEN OBJECT_ID('{BracketQuote(database)}.ReadTrace.tblBatches') IS NOT NULL 
-                                 AND OBJECT_ID('{BracketQuote(database)}.ReadTrace.tblUniqueBatches') IS NOT NULL 
+                string query = @"
+                    SELECT CASE WHEN OBJECT_ID('ReadTrace.tblBatches') IS NOT NULL
+                                 AND OBJECT_ID('ReadTrace.tblUniqueBatches') IS NOT NULL
                                 THEN 1 ELSE 0 END AS HasReadTrace";
-                var t = ExecuteQueryToDataTable(query);
+                var t = ExecuteQueryToDataTable(query, null, database);
                 return t.Rows.Count > 0 && Convert.ToInt32(t.Rows[0]["HasReadTrace"]) == 1;
             }
             catch
@@ -2391,12 +2419,17 @@ namespace SqlNexus.McpServer
         /// </summary>
         private bool DatabaseExists(string database)
         {
-            using var connection = new SqlConnection(_connectionString);
-            using var command = new SqlCommand(
-                "SELECT 1 FROM sys.databases WHERE name = @db", connection) { CommandTimeout = 30 };
-            command.Parameters.Add(new SqlParameter("@db", SqlDbType.NVarChar, 128) { Value = database });
-            connection.Open();
-            return command.ExecuteScalar() != null;
+            try
+            {
+                using var connection = SqlSecurityContext.OpenConnection(
+                    SqlSecurityContext.WithDatabase(_connectionString, database), _impersonateReader);
+                using var command = new SqlCommand("SELECT 1", connection) { CommandTimeout = 30 };
+                return Convert.ToInt32(command.ExecuteScalar()) == 1;
+            }
+            catch (SqlException)
+            {
+                return false;
+            }
         }
 
         /// <summary>
@@ -2464,14 +2497,21 @@ namespace SqlNexus.McpServer
         /// </summary>
         private DataTable ExecuteQueryToDataTable(string query, IEnumerable<SqlParameter>? parameters)
         {
-            using var connection = new SqlConnection(_connectionString);
+            return ExecuteQueryToDataTable(query, parameters, null);
+        }
+
+        private DataTable ExecuteQueryToDataTable(string query, IEnumerable<SqlParameter>? parameters, string? database)
+        {
+            string connectionString = database == null
+                ? _connectionString
+                : SqlSecurityContext.WithDatabase(_connectionString, database);
+            using var connection = SqlSecurityContext.OpenConnection(connectionString, _impersonateReader);
             using var command = new SqlCommand(query, connection) { CommandTimeout = 120 };
             if (parameters != null)
             {
                 foreach (var parameter in parameters)
                     command.Parameters.Add(parameter);
             }
-            connection.Open();
             var dataTable = new DataTable();
             using var adapter = new SqlDataAdapter(command);
             adapter.Fill(dataTable);
@@ -2491,7 +2531,7 @@ namespace SqlNexus.McpServer
         /// </summary>
         private string ExecuteQueryAndReturnJson(string query, string summaryTitle, IEnumerable<SqlParameter>? parameters)
         {
-            using var connection = new SqlConnection(_connectionString);
+            using var connection = SqlSecurityContext.OpenConnection(_connectionString, _impersonateReader);
             using var command = new SqlCommand(query, connection);
             command.CommandTimeout = 120;
             if (parameters != null)
@@ -2500,7 +2540,6 @@ namespace SqlNexus.McpServer
                     command.Parameters.Add(parameter);
             }
 
-            connection.Open();
             var dataTable = new DataTable();
             using var adapter = new SqlDataAdapter(command);
             adapter.Fill(dataTable);

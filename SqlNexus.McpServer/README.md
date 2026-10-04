@@ -30,7 +30,7 @@ And get **instant, data-driven answers** from your PSSDiag/SQLLogScout diagnosti
 
 ## Setup
 
-> Quick start (recommended): run `CopilotIntegration/Register-SqlNexusCopilotIntegration.ps1` from the repository root. It registers MCP + agent automatically. See `CopilotIntegration/README.md`.
+> Quick start (recommended): run `CopilotIntegration/Register-SqlNexusCopilotIntegration.ps1` from the repository root. It registers MCP + agent automatically. Elevated SQL identities are blocked by default; see **Least-privilege SQL execution** below when the engineer is a SQL administrator.
 
 ### 1. Build
 
@@ -57,7 +57,7 @@ Add this to `mcp.json`:
   "mcpServers": {
     "sqlnexus_MCP": {
       "command": "C:\\path\\to\\SqlNexus.McpServer\\bin\\Release\\SqlNexus.McpServer.exe",
-      "args": ["--server", "localhost", "--database", "SqlNexus", "--trusted-connection", "true"]
+      "args": ["--server", "localhost", "--database", "SqlNexus", "--trusted-connection", "true", "--elevated-principal-policy", "block"]
     }
   }
 }
@@ -89,7 +89,7 @@ code "C:\path\to\.copilot\mcp-config.json"
     "sqlnexus_MCP": {
       "type": "stdio",
       "command": "C:\\path\\to\\SqlNexus.McpServer\\bin\\Release\\SqlNexus.McpServer.exe",
-      "args": ["--server", "localhost", "--database", "SqlNexus", "--trusted-connection", "true"]
+      "args": ["--server", "localhost", "--database", "SqlNexus", "--trusted-connection", "true", "--elevated-principal-policy", "block"]
     }
   }
 }
@@ -107,8 +107,55 @@ All non-sensitive settings go in `args`. Passwords go in `env`:
 | `--database` | SQL Nexus database name | `SqlNexus` |
 | `--database2` | Second SQL Nexus database used by the `compare_nexus_databases` tool (aliases: `--database-for-comparison`, `--database_for_comparison`) | *(none)* |
 | `--trusted-connection` | `true` = Windows Auth, `false` = SQL Auth | `true` |
+| `--elevated-principal-policy` | `block` rejects elevated SQL identities; `impersonate-reader` accepts the connection only after entering the non-revertible loginless reader context | `block` |
 
-**SQL Authentication** — add credentials in `env` (keep passwords out of `args`). Use a least-privilege login (for example a login/user mapped to the SQL Nexus database with `db_datareader` only), not `sa`:
+### Least-privilege SQL execution
+
+SQL Nexus imports now finish by creating a loginless database user named `SqlNexusMcpReader`, adding only that user to `db_datareader`, and setting the imported database to `READ_ONLY`. The user has no SQL login, password, or server-level permissions.
+
+The MCP server checks the effective SQL identity and database state before accepting requests:
+
+- `block` (default) refuses startup when the Windows identity is `sysadmin`, `db_owner`, has write/DDL permissions, or otherwise controls the database.
+- `impersonate-reader` permits an elevated Windows identity only for connection establishment. Every SQL connection immediately executes `EXECUTE AS USER = 'SqlNexusMcpReader' WITH NO REVERT`, disables connection pooling, and verifies the restricted context before any tool request runs.
+- Both the primary and optional comparison databases must be read-only and pass the same validation.
+
+For a field engineer whose Windows identity is a SQL administrator, register explicitly with:
+
+```powershell
+.\CopilotIntegration\Register-SqlNexusCopilotIntegration.ps1 `
+    -Server "localhost" `
+    -Database "SqlNexus" `
+    -ElevatedPrincipalPolicy ImpersonateReader
+```
+
+This option does not allow MCP queries to run elevated. Startup fails if `SqlNexusMcpReader` is missing, has elevated role membership, or cannot be impersonated. Existing databases created before this feature must be re-imported or hardened by an administrator before MCP access.
+
+#### Hardening an existing SQL Nexus database
+
+Re-importing with the current SQL Nexus version is preferred. When preserving an older imported database is necessary, a SQL administrator can run the following once after replacing `SqlNexus` with the exact database name:
+
+```sql
+USE [master];
+DECLARE @db sysname = N'SqlNexus';
+
+IF DB_ID(@db) IS NULL OR DB_ID(@db) <= 4
+    THROW 51000, 'A valid user database name is required.', 1;
+
+DECLARE @quotedDb sysname = QUOTENAME(@db);
+DECLARE @sql nvarchar(max) = N'USE ' + @quotedDb + N';
+IF DATABASE_PRINCIPAL_ID(N''SqlNexusMcpReader'') IS NULL
+    CREATE USER [SqlNexusMcpReader] WITHOUT LOGIN;
+IF ISNULL(IS_ROLEMEMBER(N''db_datareader'', N''SqlNexusMcpReader''), 0) = 0
+    ALTER ROLE [db_datareader] ADD MEMBER [SqlNexusMcpReader];';
+
+EXEC sys.sp_executesql @sql;
+SET @sql = N'ALTER DATABASE ' + @quotedDb + N' SET READ_ONLY WITH ROLLBACK IMMEDIATE;';
+EXEC sys.sp_executesql @sql;
+```
+
+Do not add `SqlNexusMcpReader` to any other role or grant it write, DDL, control, or server permissions. The MCP startup check verifies the resulting execution context before accepting requests.
+
+**Optional SQL Authentication** — Windows Integrated Authentication with `SqlNexusMcpReader` impersonation is recommended and requires no stored password. If SQL Authentication is explicitly required, add credentials in `env` (keep passwords out of `args`) and use a least-privilege login, not `sa`:
 ```json
 {
   "mcpServers": {

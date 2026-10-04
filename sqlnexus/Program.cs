@@ -171,6 +171,36 @@ SET @sql = N'ALTER DATABASE ' + @quotedDb + N' SET RECOVERY SIMPLE;';
 EXEC sys.sp_executesql @sql;";
         }
 
+        internal static string GetDatabaseHardeningCommandText()
+        {
+            return @"
+USE [master];
+DECLARE @db sysname = @DbName;
+DECLARE @quotedDb sysname = QUOTENAME(@db);
+DECLARE @sql nvarchar(max);
+
+SET @sql = N'USE ' + @quotedDb + N';
+IF DATABASE_PRINCIPAL_ID(N''SqlNexusMcpReader'') IS NULL
+    CREATE USER [SqlNexusMcpReader] WITHOUT LOGIN;
+
+IF ISNULL(IS_ROLEMEMBER(N''db_datareader'', N''SqlNexusMcpReader''), 0) = 0
+    ALTER ROLE [db_datareader] ADD MEMBER [SqlNexusMcpReader];
+
+IF ISNULL(IS_ROLEMEMBER(N''db_owner'', N''SqlNexusMcpReader''), 0) = 1
+   OR ISNULL(IS_ROLEMEMBER(N''db_datawriter'', N''SqlNexusMcpReader''), 0) = 1
+   OR ISNULL(IS_ROLEMEMBER(N''db_ddladmin'', N''SqlNexusMcpReader''), 0) = 1
+   OR ISNULL(IS_ROLEMEMBER(N''db_securityadmin'', N''SqlNexusMcpReader''), 0) = 1
+    THROW 51000, ''SqlNexusMcpReader has elevated database role membership.'', 1;';
+EXEC sys.sp_executesql @sql;
+
+SET @sql = N'ALTER DATABASE ' + @quotedDb + N' SET READ_ONLY WITH ROLLBACK IMMEDIATE;';
+EXEC sys.sp_executesql @sql;
+
+SELECT CONVERT(int, is_read_only)
+FROM sys.databases
+WHERE name = @db;";
+        }
+
         /// <summary>
         /// The complete set of canonical importer tokens that "All" expands to.
         /// </summary>

@@ -57,6 +57,31 @@ Use `-Force` only when replacing an existing `sqlnexus_mcp` entry or SQL Nexus a
 different content. The scripts configure Windows Integrated Authentication and never request or
 store a password.
 
+### Elevated SQL identities
+
+Registration defaults to `-ElevatedPrincipalPolicy Block`. At startup, the MCP server refuses a Windows identity that is `sysadmin`, `db_owner`, or has effective database write/DDL permissions.
+
+SQL Nexus imports create a passwordless, loginless `SqlNexusMcpReader` user with only `db_datareader` membership and set the completed database to `READ_ONLY`. When the engineer's Windows identity is elevated, explicitly select the restricted reader policy:
+
+```powershell
+.\CopilotIntegration\Register-SqlNexusCopilotIntegration.ps1 `
+    -Server "localhost" `
+    -Database "SqlNexus" `
+    -ElevatedPrincipalPolicy ImpersonateReader
+```
+
+This permits the elevated identity only to establish a SQL connection. Before any MCP request is processed, each connection enters `EXECUTE AS USER = 'SqlNexusMcpReader' WITH NO REVERT`; MCP queries never run with the ambient elevated permissions. Registration stores the policy in the MCP configuration and does not store a password.
+
+Use `-Force` when changing the policy of an existing `sqlnexus_mcp` registration:
+
+```powershell
+.\CopilotIntegration\Register-SqlNexusCopilotIntegration.ps1 `
+    -Server "localhost" `
+    -Database "SqlNexus" `
+    -ElevatedPrincipalPolicy ImpersonateReader `
+    -Force
+```
+
 If you run the registration script again with the same settings, it leaves the existing
 configuration and agent files unchanged and displays the settings that are already registered.
 

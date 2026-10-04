@@ -12,6 +12,10 @@ param(
     [string] $Database2 = "",
 
     [Parameter()]
+    [ValidateSet("Block", "ImpersonateReader")]
+    [string] $ElevatedPrincipalPolicy = "Block",
+
+    [Parameter()]
     [string] $InstallRoot = (Split-Path -Parent $PSScriptRoot),
 
     [Parameter()]
@@ -160,6 +164,8 @@ if (-not [string]::IsNullOrWhiteSpace($Database2)) {
     $arguments += @("--database2", $Database2)
 }
 $arguments += @("--trusted-connection", "true")
+$policyArgument = if ($ElevatedPrincipalPolicy -eq "ImpersonateReader") { "impersonate-reader" } else { "block" }
+$arguments += @("--elevated-principal-policy", $policyArgument)
 $vscodeEntry = [pscustomobject][ordered]@{
     type = "stdio"
     command = $mcpExecutable
@@ -230,6 +236,10 @@ if (-not [string]::IsNullOrWhiteSpace($Database2)) {
     Write-Status -Level "INFO" -Message "Comparison database (--database2): $Database2"
 }
 Write-Status -Level "INFO" -Message "Authentication: Windows Integrated Authentication"
+Write-Status -Level "INFO" -Message "Elevated principal policy: $ElevatedPrincipalPolicy"
+if ($ElevatedPrincipalPolicy -eq "ImpersonateReader") {
+    Write-Status -Level "INFO" -Message "Elevated identities are accepted only to enter the non-revertible SqlNexusMcpReader context; MCP queries do not run elevated."
+}
 Write-Status -Level "INFO" -Message "VS Code MCP configuration: $vscodeConfigPath"
 Write-Status -Level "INFO" -Message "Copilot CLI MCP configuration: $copilotConfigPath"
 if (-not $McpOnly) {

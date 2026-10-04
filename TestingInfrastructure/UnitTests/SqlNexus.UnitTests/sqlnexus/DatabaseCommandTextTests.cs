@@ -17,6 +17,20 @@ namespace SqlNexus.UnitTests.sqlnexus
         }
 
         [TestMethod]
+        public void GetDatabaseHardeningCommandText_UsesReaderAndParameterizedDatabaseName()
+        {
+            string sql = Program.GetDatabaseHardeningCommandText();
+
+            StringAssert.Contains(sql, "@DbName");
+            StringAssert.Contains(sql, "QUOTENAME(@db)");
+            StringAssert.Contains(sql, "CREATE USER [SqlNexusMcpReader] WITHOUT LOGIN");
+            StringAssert.Contains(sql, "ALTER ROLE [db_datareader] ADD MEMBER [SqlNexusMcpReader]");
+            StringAssert.Contains(sql, "SET READ_ONLY WITH ROLLBACK IMMEDIATE");
+            StringAssert.Contains(sql, "is_read_only");
+            Assert.IsFalse(sql.Contains("{0}"));
+        }
+
+        [TestMethod]
         public void GetCreateDropDatabaseCommandText_UsesDbNameParameterAndQuotename()
         {
             string sql = Program.GetCreateDropDatabaseCommandText();

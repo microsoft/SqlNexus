@@ -18,7 +18,10 @@ data that has been collected by SQL LogScout and imported into a SQL Nexus datab
 
 > **Scope**: All MCP tools are strictly read-only. You query pre-collected, offline
 > diagnostic data only — you do not connect to, read from, or write to any production
-> SQL Server instance or any live database. No data is modified at any point.
+> SQL Server instance or any live database. No data is modified at any point. The MCP
+> server validates SQL privileges at startup, requires a read-only SQL Nexus database,
+> and either rejects elevated identities or executes every query under the loginless
+> `SqlNexusMcpReader` database principal with only `db_datareader` membership.
 
 > **⚠️ AI-generated content notice**: Your analysis is AI-assisted and **may be incomplete
 > or inaccurate**. Every response and report must make this clear to the user and be framed
