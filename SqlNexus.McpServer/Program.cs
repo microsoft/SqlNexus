@@ -465,13 +465,13 @@ namespace SqlNexus.McpServer
                 new McpTool
                 {
                     Name = "list_nexus_tables",
-                    Description = "Returns a curated catalog of the most analytically significant SQL Nexus tables with plain-English descriptions and a flag indicating whether each table is present in the connected database. IMPORTANT: this is a known-good subset, not a complete list � the database may contain additional tables not covered here. To discover every table actually present, use query_nexus_database with: SELECT TABLE_SCHEMA, TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE' ORDER BY TABLE_SCHEMA, TABLE_NAME",
+                    Description = "Returns a curated catalog of the most analytically significant SQL Nexus tables with plain-English descriptions and a flag indicating whether each table is present in the connected database. Use this catalog to identify relevant diagnostic sources before requesting narrowly scoped data.",
                     InputSchema = new { type = "object", properties = new { } }
                 },
                 new McpTool
                 {
                     Name = "query_nexus_database",
-                    Description = "Execute read-only custom SQL against the SQL Nexus database. Allows only SELECT/WITH/DECLARE/IF patterns in a single statement and blocks DDL, DML, EXEC/EXECUTE, permission changes, backup/restore, configuration changes, and external data-source commands.",
+                    Description = "Execute one read-only SELECT statement, optionally preceded by a CTE, against the SQL Nexus database. AST validation rejects SELECT INTO, multiple statements, cross-database or linked-server references, external rowsets, variable assignment, sequence mutation, and table or query hints. Execution is limited to 60 seconds and 1,000 returned rows.",
                     InputSchema = new
                     {
                         type = "object",
@@ -833,6 +833,10 @@ namespace SqlNexus.McpServer
             // Append Responsible AI validation guidance so every answer encourages the user to
             // review the supporting evidence and inspect the underlying SQL Nexus tables.
             resultText = AppendValidationGuidance(resultText, toolName, resultToken);
+
+            // Enforce redaction at the final response boundary so content added after the initial
+            // parse cannot bypass the scrubber.
+            resultText = PiiScrubber.Scrub(resultText);
 
             return new McpToolResult
             {

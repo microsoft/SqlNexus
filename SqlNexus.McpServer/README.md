@@ -355,11 +355,10 @@ SQL Nexus Database
 ```
 
 ### Security
-- Read-only custom query guard: allows `SELECT`, `WITH` (CTE), `DECLARE`, `IF` patterns only
-- Rejects batch separators and multi-statement batches
-- Blocks DDL/DML and high-risk commands including `EXEC`/`EXECUTE`, `MERGE`, `GRANT`/`REVOKE`/`DENY`, `BACKUP`/`RESTORE`, `RECONFIGURE`, `OPENROWSET`/`OPENQUERY`/`OPENDATASOURCE`, and `xp_`/`sp_` procedure calls
+- ScriptDom AST validation permits exactly one `SELECT` statement, optionally preceded by a CTE
+- Rejects multiple statements, `SELECT INTO`, cross-database and linked-server references, external rowsets, variable assignment, sequence mutation, and table or query hints
 - Use least-privilege SQL credentials (`db_datareader` on the SQL Nexus database) when SQL Authentication is enabled
-- 120-second query timeout
+- Custom queries have a 60-second timeout and return at most 1,000 rows; built-in diagnostics retain their 120-second timeout
 
 ---
 

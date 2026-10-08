@@ -315,6 +315,61 @@ namespace SqlNexus.UnitTests.SqlNexus.McpServer
             Assert.AreEqual(input, PiiScrubber.Scrub(input));
         }
 
+        [TestMethod]
+        public void Scrub_FreeTextLoginAndHostIdentifiers_Replaced()
+        {
+            string result = PiiScrubber.Scrub(
+                "LoginName CONTOSO_admin connected from HostName APPSRV07");
+
+            Assert.IsFalse(result.Contains("CONTOSO_admin"));
+            Assert.IsFalse(result.Contains("APPSRV07"));
+            Assert.AreEqual(2, CountOccurrences(result, "<SCRUBBED>"));
+        }
+
+        [TestMethod]
+        public void Scrub_SqlTextIdentityPredicates_Replaced()
+        {
+            string result = PiiScrubber.Scrub(
+                "WHERE login_name = 'customer_admin' AND host_name = 'PRODSQL01'");
+
+            Assert.IsFalse(result.Contains("customer_admin"));
+            Assert.IsFalse(result.Contains("PRODSQL01"));
+            Assert.AreEqual(2, CountOccurrences(result, "<SCRUBBED>"));
+        }
+
+        [TestMethod]
+        public void Scrub_OrdinarySqlIdentifiers_Unchanged()
+        {
+            const string input = "SELECT wait_type, wait_time_ms FROM dbo.tbl_OS_WAIT_STATS";
+            Assert.AreEqual(input, PiiScrubber.Scrub(input));
+        }
+
+        [TestMethod]
+        public void Scrub_WindowsSid_Replaced()
+        {
+            Assert.AreEqual("owner <SID>",
+                PiiScrubber.Scrub("owner S-1-5-21-123456789-987654321-555555555-1001"));
+        }
+
+        [TestMethod]
+        public void Scrub_Ssn_Replaced()
+        {
+            Assert.AreEqual("ssn <SSN>", PiiScrubber.Scrub("ssn 123-45-6789"));
+        }
+
+        [TestMethod]
+        public void Scrub_ValidPan_Replaced()
+        {
+            Assert.AreEqual("card <PAN>", PiiScrubber.Scrub("card 4111 1111 1111 1111"));
+        }
+
+        [TestMethod]
+        public void Scrub_InvalidPan_Unchanged()
+        {
+            const string input = "reference 4111 1111 1111 1112";
+            Assert.AreEqual(input, PiiScrubber.Scrub(input));
+        }
+
         // ?? Phone numbers ????????????????????????????????????????????????????
 
         [TestMethod]
@@ -400,6 +455,19 @@ namespace SqlNexus.UnitTests.SqlNexus.McpServer
             string once = PiiScrubber.Scrub(input);
             string twice = PiiScrubber.Scrub(once);
             Assert.AreEqual(once, twice);
+        }
+
+        private static int CountOccurrences(string value, string search)
+        {
+            int count = 0;
+            int index = 0;
+            while ((index = value.IndexOf(search, index, System.StringComparison.Ordinal)) >= 0)
+            {
+                count++;
+                index += search.Length;
+            }
+
+            return count;
         }
     }
 }
