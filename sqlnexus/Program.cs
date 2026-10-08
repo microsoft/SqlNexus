@@ -171,6 +171,67 @@ SET @sql = N'ALTER DATABASE ' + @quotedDb + N' SET RECOVERY SIMPLE;';
 EXEC sys.sp_executesql @sql;";
         }
 
+        internal static string GetDatabaseHardeningCommandText()
+        {
+            return @"
+USE [master];
+DECLARE @db sysname = @DbName;
+DECLARE @quotedDb sysname = QUOTENAME(@db);
+DECLARE @sql nvarchar(max);
+
+SET @sql = N'USE ' + @quotedDb + N';
+IF DATABASE_PRINCIPAL_ID(N''SqlNexusMcpReader'') IS NULL
+    CREATE USER [SqlNexusMcpReader] WITHOUT LOGIN;
+
+DECLARE @readerId int = DATABASE_PRINCIPAL_ID(N''SqlNexusMcpReader'');
+
+IF NOT EXISTS
+(
+    SELECT 1
+    FROM sys.database_principals
+    WHERE principal_id = @readerId
+      AND type = N''S''
+      AND authentication_type = 0
+)
+    THROW 51000, ''SqlNexusMcpReader must be a loginless SQL user.'', 1;
+
+IF EXISTS
+(
+    SELECT 1
+    FROM sys.database_role_members AS drm
+    INNER JOIN sys.database_principals AS role
+        ON role.principal_id = drm.role_principal_id
+    WHERE drm.member_principal_id = @readerId
+      AND role.name <> N''db_datareader''
+)
+    THROW 51000, ''SqlNexusMcpReader has unexpected database role membership.'', 1;
+
+IF EXISTS
+(
+    SELECT 1
+    FROM sys.database_permissions
+    WHERE grantee_principal_id = @readerId
+      AND NOT (class = 0 AND permission_name = N''CONNECT'')
+)
+    THROW 51000, ''SqlNexusMcpReader has unexpected direct permissions.'', 1;
+
+IF EXISTS (SELECT 1 FROM sys.schemas WHERE principal_id = @readerId)
+   OR EXISTS (SELECT 1 FROM sys.objects WHERE principal_id = @readerId)
+   OR EXISTS (SELECT 1 FROM sys.database_principals WHERE owning_principal_id = @readerId)
+    THROW 51000, ''SqlNexusMcpReader owns database securables.'', 1;
+
+IF ISNULL(IS_ROLEMEMBER(N''db_datareader'', N''SqlNexusMcpReader''), 0) = 0
+    ALTER ROLE [db_datareader] ADD MEMBER [SqlNexusMcpReader];';
+EXEC sys.sp_executesql @sql;
+
+SET @sql = N'ALTER DATABASE ' + @quotedDb + N' SET READ_ONLY WITH ROLLBACK IMMEDIATE;';
+EXEC sys.sp_executesql @sql;
+
+SELECT CONVERT(int, is_read_only)
+FROM sys.databases
+WHERE name = @db;";
+        }
+
         /// <summary>
         /// The complete set of canonical importer tokens that "All" expands to.
         /// </summary>

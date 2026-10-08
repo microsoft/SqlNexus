@@ -1,4 +1,5 @@
 using System;
+using System.Data;
 using System.Globalization;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -93,6 +94,56 @@ END";
 
             StringAssert.Contains(query, "Database_Name = @db_name");
             Assert.IsFalse(query.Contains("Database_Name = '"));
+        }
+
+        [TestMethod]
+        public void BuildComparisonRows_DuplicateKeys_ReturnsAllMatchingPairs()
+        {
+            DataTable first = CreateComparisonTable();
+            first.Rows.Add("DatabaseA", "100");
+            first.Rows.Add("DatabaseA", "200");
+            DataTable second = CreateComparisonTable();
+            second.Rows.Add("DatabaseA", "110");
+            second.Rows.Add("DatabaseA", "210");
+
+            var result = global::SqlNexus.McpServer.DiagnosticAnalyzer.BuildComparisonRows(
+                first,
+                second,
+                new[] { "name" },
+                new[] { "value" },
+                "first",
+                "second",
+                false);
+
+            Assert.AreEqual(4, result.Count);
+        }
+
+        [TestMethod]
+        public void BuildComparisonRows_NoMatchingKey_ReturnsEmptyList()
+        {
+            DataTable first = CreateComparisonTable();
+            first.Rows.Add("DatabaseA", "100");
+            DataTable second = CreateComparisonTable();
+            second.Rows.Add("DatabaseB", "100");
+
+            var result = global::SqlNexus.McpServer.DiagnosticAnalyzer.BuildComparisonRows(
+                first,
+                second,
+                new[] { "name" },
+                new[] { "value" },
+                "first",
+                "second",
+                false);
+
+            Assert.AreEqual(0, result.Count);
+        }
+
+        private static DataTable CreateComparisonTable()
+        {
+            var table = new DataTable();
+            table.Columns.Add("name", typeof(string));
+            table.Columns.Add("value", typeof(string));
+            return table;
         }
     }
 }

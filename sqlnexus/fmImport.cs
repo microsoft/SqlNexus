@@ -1693,6 +1693,9 @@ namespace sqlnexus
             string enumReportsStr = "EnumReports";
             AddFileRow((tlpFiles.RowCount - 1), "Enumerating reports", null, enumReportsStr);
 
+            string secureDatabaseStr = "SecureDatabase";
+            AddFileRow((tlpFiles.RowCount - 1), "Securing database for read-only analysis", null, secureDatabaseStr);
+
 
             try
             {
@@ -2075,12 +2078,32 @@ namespace sqlnexus
 
                         currBar.Value = 100;
 
-                        string runtimeMsg = "(" + enumReportsStr + ") " + "Done. (" + (Environment.TickCount - enumReportsStartTicks) / 1000 + " sec). Import Complete!";
+                        string runtimeMsg = "(" + enumReportsStr + ") " + "Done. (" + (Environment.TickCount - enumReportsStartTicks) / 1000 + " sec).";
                         currLabel.Text = runtimeMsg;
                         MainForm.LogMessage("End of report enumeration");
 
                         Application.DoEvents();
 
+                    }
+
+                    else if (tlpFiles.Controls[i].Name == secureDatabaseStr)
+                    {
+                        int secureDatabaseStartTicks = Environment.TickCount;
+                        currBar = (ProgressBar)tlpFiles.Controls[i + 1];
+                        currBar.Value = 20;
+
+                        currLabel = (Label)tlpFiles.Controls[i + 2];
+                        currLabel.Text = "Please wait while the imported database is secured...";
+                        MainForm.LogMessage("Creating the restricted MCP reader and setting the database to read-only");
+                        Application.DoEvents();
+
+                        SecureImportedDatabase();
+
+                        currBar.Value = 100;
+                        currLabel.Text = "(Database Security) Database set to read-only. Import Complete! (" +
+                            (Environment.TickCount - secureDatabaseStartTicks) / 1000 + " sec).";
+                        MainForm.LogMessage("Database hardening completed. The imported database is read-only.");
+                        Application.DoEvents();
                     }
 
                 } //end of for loop
@@ -2112,6 +2135,30 @@ namespace sqlnexus
                 {
                     Application.Exit();
                 }
+            }
+        }
+
+        private void SecureImportedDatabase()
+        {
+            string targetDatabase = Globals.credentialMgr.Database;
+            if (!Program.IsDbNameValid(targetDatabase))
+                throw new InvalidOperationException("Cannot secure the imported database because its name is invalid.");
+
+            SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(Globals.credentialMgr.ConnectionString);
+            builder.InitialCatalog = "master";
+
+            SqlConnection.ClearAllPools();
+            using (SqlConnection connection = new SqlConnection(builder.ConnectionString))
+            using (SqlCommand command = connection.CreateCommand())
+            {
+                command.CommandText = Program.GetDatabaseHardeningCommandText();
+                command.CommandTimeout = 120;
+                command.Parameters.Add("@DbName", System.Data.SqlDbType.NVarChar, 128).Value = targetDatabase;
+                connection.Open();
+
+                object readOnlyResult = command.ExecuteScalar();
+                if (readOnlyResult == null || readOnlyResult == DBNull.Value || Convert.ToInt32(readOnlyResult) != 1)
+                    throw new InvalidOperationException("The imported database could not be verified as read-only.");
             }
         }
 

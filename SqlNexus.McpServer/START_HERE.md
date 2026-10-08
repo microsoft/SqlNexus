@@ -48,13 +48,28 @@ Press `Ctrl+Shift+P` → "MCP: Open User Configuration" → Add:
   "mcpServers": {
     "sqlnexus_MCP": {
       "command": "C:\\path\\to\\SqlNexus.McpServer\\bin\\Release\\SqlNexus.McpServer.exe",
-      "args": ["--server", "localhost", "--database", "SqlNexus", "--trusted-connection", "true"]
+      "args": ["--server", "localhost", "--database", "SqlNexus", "--trusted-connection", "true", "--elevated-principal-policy", "block"]
     }
   }
 }
 ```
 
-**SQL Authentication** — add credentials in `env` (keep passwords out of `args`). Use a least-privilege login (for example a SQL login/user with `db_datareader` on the SQL Nexus database), not `sa`:
+## Least-privilege connection policy
+
+Completed imports create a passwordless `SqlNexusMcpReader` database user with only `db_datareader` membership and set the database to `READ_ONLY`. Elevated SQL identities are blocked by default.
+
+If the engineer's Windows identity is a SQL administrator, use the registration script's explicit restricted-context policy:
+
+```powershell
+.\CopilotIntegration\Register-SqlNexusCopilotIntegration.ps1 `
+    -Server "localhost" `
+    -Database "SqlNexus" `
+    -ElevatedPrincipalPolicy ImpersonateReader
+```
+
+The elevated identity is then used only to establish the connection. MCP queries execute as `SqlNexusMcpReader` under `EXECUTE AS USER ... WITH NO REVERT`. No SQL password is required.
+
+**Optional SQL Authentication** — add credentials in `env` (keep passwords out of `args`). Use a least-privilege login, not `sa`:
 ```json
 {
   "mcpServers": {

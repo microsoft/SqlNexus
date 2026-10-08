@@ -16,6 +16,7 @@ namespace SqlNexus.McpServer
         private static string _connectionString = string.Empty;
         private static string _database = string.Empty;
         private static string? _database2;
+        private static ElevatedPrincipalPolicy _elevatedPrincipalPolicy = ElevatedPrincipalPolicy.Block;
         private static readonly string ServerName = "sqlnexus-mcp-server";
         private static readonly string ServerVersion = "1.0.0";
 
@@ -50,6 +51,10 @@ namespace SqlNexus.McpServer
                     ?? config["SqlNexus:TrustedConnection"];
                 var trustedConnection = string.IsNullOrEmpty(trustedConnectionStr) || bool.Parse(trustedConnectionStr);
 
+                var elevatedPrincipalPolicy = GetArgValue(args, "--elevated-principal-policy")
+                    ?? config["SqlNexus:ElevatedPrincipalPolicy"];
+                _elevatedPrincipalPolicy = SqlSecurityContext.ParsePolicy(elevatedPrincipalPolicy);
+
                 var builder = new SqlConnectionStringBuilder
                 {
                     DataSource = server,
@@ -64,6 +69,8 @@ namespace SqlNexus.McpServer
                 {
                     builder.UserID = config["SqlNexus:UserId"];
                     builder.Password = config["SqlNexus:Password"];
+                    if (string.IsNullOrWhiteSpace(builder.UserID) || string.IsNullOrEmpty(builder.Password))
+                        throw new InvalidOperationException("SQL authentication requires SqlNexus:UserId and SqlNexus:Password. Supply the password through the SqlNexus__Password environment variable.");
                 }
 
                 // Store connection string � defer actual SQL connection until first tool call
@@ -77,6 +84,7 @@ namespace SqlNexus.McpServer
                 if (_database2 != null)
                     Logger.Info($"Comparison database: {_database2}");
                 Logger.Info("Using Microsoft.Data.SqlClient");
+                Logger.Info($"Elevated principal policy: {_elevatedPrincipalPolicy}");
 
                 // Integrity gate: refuse to run if the AI guidance files (skill files + agent
                 // definition) have been tampered with, are missing, or are unreadable.
@@ -86,6 +94,19 @@ namespace SqlNexus.McpServer
                     Console.Error.WriteLine(integrityError);
                     Environment.Exit(2);
                     return;
+                }
+
+                SqlSecurityContext.ValidateDatabase(_connectionString, _elevatedPrincipalPolicy);
+                if (_database2 != null)
+                {
+                    SqlSecurityContext.ValidateDatabase(
+                        SqlSecurityContext.WithDatabase(_connectionString, _database2),
+                        _elevatedPrincipalPolicy);
+                }
+
+                if (_elevatedPrincipalPolicy == ElevatedPrincipalPolicy.ImpersonateReader)
+                {
+                    Logger.Warn("An elevated SQL connection identity is permitted only to enter the non-revertible SqlNexusMcpReader execution context. MCP queries do not run elevated.");
                 }
 
                 ProcessRequests();
@@ -223,7 +244,11 @@ namespace SqlNexus.McpServer
             if (_analyzer == null)
             {
                 Logger.Info("Initializing SQL connection...");
-                _analyzer = new DiagnosticAnalyzer(_connectionString, _database, _database2);
+                _analyzer = new DiagnosticAnalyzer(
+                    _connectionString,
+                    _database,
+                    _database2,
+                    _elevatedPrincipalPolicy == ElevatedPrincipalPolicy.ImpersonateReader);
                 Logger.Info("SQL connection initialized.");
             }
             return _analyzer;
@@ -252,6 +277,14 @@ namespace SqlNexus.McpServer
                 "underlying SQL Nexus tables (each tool response names its source tables and you can inspect " +
                 "them with the 'query_nexus_database' tool), and review and edit any generated report before " +
                 "sharing it. No production system is contacted and no data is modified.";
+
+            if (_elevatedPrincipalPolicy == ElevatedPrincipalPolicy.ImpersonateReader)
+            {
+                instructions +=
+                    "\n\nSECURITY NOTICE: The ambient SQL identity is permitted only for connection establishment. " +
+                    "Every MCP query executes under the non-revertible, loginless SqlNexusMcpReader database " +
+                    "principal, and the SQL Nexus database is read-only.";
+            }
 
             // When a second database is configured, strongly steer the agent toward the dedicated
             // comparison tool. (An MCP server cannot force a tool call — invocation is the client's

@@ -1,4 +1,5 @@
 using System;
+using System;
 using System.Diagnostics;
 using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -27,6 +28,9 @@ namespace SqlNexus.UnitTests.SqlNexus.McpServer
                 Assert.AreEqual(fixture.McpExecutable, (string)vscodeConfiguration["servers"]["sqlnexus_mcp"]["command"]);
                 Assert.IsNotNull(copilotConfiguration["mcpServers"]["other"]);
                 Assert.AreEqual("stdio", (string)copilotConfiguration["mcpServers"]["sqlnexus_mcp"]["type"]);
+                CollectionAssert.Contains(
+                    ((JArray)copilotConfiguration["mcpServers"]["sqlnexus_mcp"]["args"]).ToObject<string[]>(),
+                    "block");
                 Assert.IsTrue(File.Exists(fixture.InstalledAgentPath));
                 string installedAgent = File.ReadAllText(fixture.InstalledAgentPath);
                 StringAssert.StartsWith(installedAgent, "---" + Environment.NewLine + "name:");
@@ -42,6 +46,24 @@ namespace SqlNexus.UnitTests.SqlNexus.McpServer
                 Assert.IsNotNull(copilotConfiguration["mcpServers"]["other"]);
                 Assert.IsNull(copilotConfiguration["mcpServers"]["sqlnexus_mcp"]);
                 Assert.IsFalse(File.Exists(fixture.InstalledAgentPath));
+            }
+        }
+
+        [TestMethod]
+        public void Register_ImpersonateReaderPolicy_PersistsExplicitRestrictedPolicy()
+        {
+            using (var fixture = new CopilotIntegrationFixture())
+            {
+                ProcessResult result = fixture.RunRegister(elevatedPrincipalPolicy: "ImpersonateReader");
+
+                Assert.AreEqual(0, result.ExitCode, result.Error);
+                StringAssert.Contains(result.Output, "Elevated principal policy: ImpersonateReader");
+                StringAssert.Contains(result.Output, "MCP queries do not run elevated");
+                JObject configuration = JObject.Parse(File.ReadAllText(fixture.CopilotConfigPath));
+                string[] arguments = ((JArray)configuration["mcpServers"]["sqlnexus_mcp"]["args"]).ToObject<string[]>();
+                int policyIndex = Array.IndexOf(arguments, "--elevated-principal-policy");
+                Assert.IsTrue(policyIndex >= 0);
+                Assert.AreEqual("impersonate-reader", arguments[policyIndex + 1]);
             }
         }
 
@@ -227,7 +249,7 @@ namespace SqlNexus.UnitTests.SqlNexus.McpServer
             public string VsCodeConfigPath { get; }
             public string CopilotConfigPath { get; }
 
-            public ProcessResult RunRegister(bool mcpOnly = false)
+            public ProcessResult RunRegister(bool mcpOnly = false, string elevatedPrincipalPolicy = "Block")
             {
                 var arguments = new System.Collections.Generic.List<string>
                 {
@@ -235,7 +257,8 @@ namespace SqlNexus.UnitTests.SqlNexus.McpServer
                     "-CopilotHome", CopilotHome,
                     "-VsCodeUserData", VsCodeUserData,
                     "-Server", "localhost\\SQLEXPRESS",
-                    "-Database", "NexusDiagnostics"
+                    "-Database", "NexusDiagnostics",
+                    "-ElevatedPrincipalPolicy", elevatedPrincipalPolicy
                 };
                 if (mcpOnly)
                 {
