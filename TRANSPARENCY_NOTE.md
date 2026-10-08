@@ -46,11 +46,11 @@ The following list provides a glossary of key terms related to the SQL Nexus Dia
 
 The key features and capabilities outlined here describe what the SQL Nexus Diagnostic Agent is designed to do and how it performs across supported tasks.
 
-The SQL Nexus Diagnostic Agent is an autonomous agentic AI system with a defined action space: it can call any of 35 read-only diagnostic tools, read local skill files, and search the local workspace. It cannot write data, execute commands, or access external networks. The agent plans and adapts its tool-calling sequence based on what each result reveals, following a hypothesis-driven approach rather than a fixed script.
+The SQL Nexus Diagnostic Agent is an autonomous agentic AI system with a defined action space: it can call any of 39 read-only diagnostic tools, read local skill files, search the local workspace, and use Azure MCP search for diagnostic research. It cannot write data or execute commands. The agent plans and adapts its tool-calling sequence based on what each result reveals, following a hypothesis-driven approach rather than a fixed script.
 
 - **Autonomous multi-step diagnostic reasoning:** The agent independently decides which tools to call and in what order, based on the reported symptom and what each result reveals. It forms a hypothesis, tests it with data, refines, and repeats — in the same way an experienced database administrator (DBA) would work through a case. The engineer does not need to know which specific queries to run.
 
-- **35 read-only diagnostic tools:** The MCP server exposes 35 pre-built tools covering CPU analysis, wait statistics, blocking chain analysis, I/O performance, memory pressure, query performance, per-application breakdowns, missing index detection, and statistics health. Each tool translates a diagnostic question into a structured SQL query against the local SQL Nexus database and returns a structured JSON result.
+- **39 read-only diagnostic tools:** The MCP server exposes 39 pre-built tools covering CPU analysis, wait statistics, blocking chain analysis, I/O performance, memory pressure, query performance, per-application breakdowns, missing index detection, and statistics health. Each tool translates a diagnostic question into a structured SQL query against the local SQL Nexus database and returns a structured JSON result.
 
 - **Skill file cross-check:** After completing its initial free-form analysis, the agent consults 11 curated skill files containing expert SQL Server diagnostic decision trees, threshold values, and interpretation rules. This serves as a second opinion and completeness check, ensuring that no diagnostic angle is missed.
 
@@ -58,7 +58,7 @@ The SQL Nexus Diagnostic Agent is an autonomous agentic AI system with a defined
 
 - **Root-cause synthesis with data citations:** The agent concludes each diagnostic session with a written root-cause summary that cites the specific data values (wait counts, CPU percentages, query hashes, latency figures) that led to the conclusion, and provides prioritized recommended actions.
 
-- **Custom SQL query fallback:** For diagnostic questions outside the 35 built-in tools, engineers can invoke the `query_nexus_database` tool with a custom SQL SELECT statement, allowing ad-hoc analysis without leaving the agent session.
+- **Custom SQL query fallback:** For diagnostic questions outside the purpose-built analysis tools, engineers can invoke the `query_nexus_database` tool with a custom SQL SELECT statement, allowing ad-hoc analysis without leaving the agent session.
 
 ---
 
@@ -114,6 +114,8 @@ Understanding the SQL Nexus Diagnostic Agent's limitations is crucial to determi
 
 - **Output quality varies by model:** The agent was developed and validated primarily with Claude Sonnet and GPT-4o. Less capable models may miss multi-step diagnostic reasoning or draw incorrect conclusions from ambiguous data. Engineers should review all agent conclusions against the cited data values before taking action.
 
+- **Model choice remains a secondary security control:** The MCP server structurally labels diagnostic payloads as untrusted and neutralizes high-confidence instruction patterns before model inference. These code-level controls reduce, but cannot eliminate, indirect prompt-injection risk. Engineers should use a current, well-aligned model and review unexpected tool selection or conclusions, especially when analyzing diagnostic data from a less-trusted source.
+
 - **No automated remediation:** The agent is designed to produce analysis and recommendations only. It is explicitly constrained from applying configuration changes, executing commands, or modifying any database. All remediation is the responsibility of the engineer.
 
 - **Windows only:** The MCP server executable targets .NET Framework 4.8 and runs only on Windows. It is not supported on Linux or macOS.
@@ -160,13 +162,15 @@ The `Test-McpServer.ps1` script provides functional validation at the MCP transp
 
 - **PII scrubbing at response and log boundaries:** Every tool output receives a final `PiiScrubber.cs` pass immediately before it is returned to the AI model, and every MCP log write applies the same scrubber independently. The in-process implementation has no additional external dependencies and redacts structured identifiers plus context-labelled login and host values found in JSON, SQL text, error messages, recommendations, or custom-query output. It also covers Windows SIDs, Social Security numbers, and Luhn-valid payment card numbers. A URL allowlist replaces non-approved URLs with a labeled placeholder.
 
+- **Untrusted diagnostic-data envelope and injection detection:** Every MCP result places analyzer output inside a structured `untrusted_diagnostic_data` envelope before model inference. A lightweight server-side detector scans all nested diagnostic strings for high-confidence instruction override, role override, prompt disclosure, tool invocation, and data-exfiltration patterns. Matching string values are replaced before egress, and the response reports detection categories and counts without retaining the matched text. Local logs record only the tool name, categories, and count.
+
 - **Read-only SQL access enforced in depth:** Completed imports create a loginless `SqlNexusMcpReader` user with only `db_datareader` membership and set the SQL Nexus database to `READ_ONLY`. At startup the MCP server rejects elevated SQL identities by default. The explicit `ImpersonateReader` policy accepts an elevated Windows identity only to establish a connection, then uses `EXECUTE AS USER ... WITH NO REVERT` before any MCP query. The `query_nexus_database` tool adds ScriptDom validation that permits exactly one `SELECT` statement, optionally preceded by a CTE, and rejects `SELECT INTO`, multiple statements, cross-database and linked-server references, external rowsets, variable assignment, sequence mutation, and table or query hints. Custom execution uses the same restricted SQL context and is limited to 60 seconds and 1,000 returned rows.
 
 - **Offline data only — no production server connection:** The MCP server connects exclusively to the local SQL Nexus database on the engineer's machine. It has no mechanism to connect to a customer's live SQL Server instance. This architectural constraint eliminates the risk of the agent inadvertently querying or affecting a production environment.
 
 - **No credentials stored in the repository:** The MCP server uses Windows Integrated Authentication by default. Its restricted execution context is a loginless database user and therefore requires no SQL password. If optional SQL authentication is used, credentials are supplied through environment variables and never committed to source control.
 
-- **Agent action space bounded to defined tools:** The agent's `.agent.md` definition restricts it to 35 named MCP tools plus `read` (local files) and `search` (local workspace). The agent has no shell execution capability, no internet access, no file write access, and no ability to install packages or run scripts. This limits the blast radius of any unexpected model behavior.
+- **Agent action space bounded to defined tools:** The agent's `.agent.md` definition explicitly lists the 39 current SQL Nexus MCP tools rather than granting a wildcard that would automatically include future tools. It also permits `read` (local files), `search` (local workspace), and Azure MCP search. The agent has no shell execution capability, file write access, package installation capability, or script execution capability. This limits the blast radius of unexpected model behavior while preserving its existing diagnostic workflow.
 
 - **GitHub Copilot content safety:** The AI model inference layer is provided by GitHub Copilot, which applies Microsoft's content safety policies — including harmful content detection, jailbreak resistance, and prompt injection mitigations — to all model interactions. These controls are inherited from the GitHub Copilot platform and are not separately configurable by this application.
 

@@ -359,6 +359,8 @@ SQL Nexus Database
 - Rejects multiple statements, `SELECT INTO`, cross-database and linked-server references, external rowsets, variable assignment, sequence mutation, and table or query hints
 - Use least-privilege SQL credentials (`db_datareader` on the SQL Nexus database) when SQL Authentication is enabled
 - Custom queries have a 60-second timeout and return at most 1,000 rows; built-in diagnostics retain their 120-second timeout
+- Wraps every diagnostic result in a structured, untrusted-data envelope and neutralizes high-confidence instruction-like content before model inference
+- Use a current, well-aligned model and review unexpected tool choices or conclusions; model alignment is defense-in-depth rather than a replacement for the server-side controls
 
 ---
 

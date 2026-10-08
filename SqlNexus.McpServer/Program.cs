@@ -823,12 +823,26 @@ namespace SqlNexus.McpServer
             // Scrub PII from tool output before returning to the agent.
             resultText = PiiScrubber.Scrub(resultText);
 
-            // Parse the (already-scrubbed) payload ONCE and reuse it for both the response log
-            // line and the validation-guidance injection, avoiding a second full-payload parse.
+            // Parse the scrubbed analyzer payload for compact response logging. The protected
+            // envelope is parsed separately below before validation guidance is attached.
             JToken? resultToken = TryParseJson(resultText);
 
             // Log lightweight response telemetry for troubleshooting without logging full payloads.
             Logger.LogToolResult(toolName, resultToken, stopwatch.ElapsedMilliseconds);
+
+            // Treat every analyzer payload as attacker-influenceable diagnostic data. The envelope
+            // gives the model a structural trust boundary and removes high-confidence embedded
+            // instructions before they can be interpreted as agent directions.
+            var protectedResult = UntrustedDataEnvelope.Protect(resultText);
+            if (protectedResult.DetectionCount > 0)
+            {
+                Logger.Warn(
+                    $"Indirect prompt-injection patterns neutralized: tool={toolName} "
+                    + $"count={protectedResult.DetectionCount} "
+                    + $"categories={string.Join(",", protectedResult.DetectionCategories)}");
+            }
+            resultText = protectedResult.Text;
+            resultToken = TryParseJson(resultText);
 
             // Append Responsible AI validation guidance so every answer encourages the user to
             // review the supporting evidence and inspect the underlying SQL Nexus tables.
