@@ -128,7 +128,7 @@ For a field engineer whose Windows identity is a SQL administrator, register exp
     -ElevatedPrincipalPolicy ImpersonateReader
 ```
 
-This option does not allow MCP queries to run elevated. Startup fails if `SqlNexusMcpReader` is missing, has elevated role membership, or cannot be impersonated. Existing databases created before this feature must be re-imported or hardened by an administrator before MCP access.
+This option does not allow MCP queries to run elevated. Startup fails if `SqlNexusMcpReader` is missing, is not a loginless SQL user, belongs to any role other than `db_datareader`, has unexpected direct permissions, owns database securables, or cannot be impersonated. Existing databases created before this feature must be re-imported or hardened by an administrator before MCP access.
 
 #### Hardening an existing SQL Nexus database
 
@@ -143,17 +143,17 @@ IF DB_ID(@db) IS NULL OR DB_ID(@db) <= 4
 
 DECLARE @quotedDb sysname = QUOTENAME(@db);
 DECLARE @sql nvarchar(max) = N'USE ' + @quotedDb + N';
-IF DATABASE_PRINCIPAL_ID(N''SqlNexusMcpReader'') IS NULL
-    CREATE USER [SqlNexusMcpReader] WITHOUT LOGIN;
-IF ISNULL(IS_ROLEMEMBER(N''db_datareader'', N''SqlNexusMcpReader''), 0) = 0
-    ALTER ROLE [db_datareader] ADD MEMBER [SqlNexusMcpReader];';
+IF DATABASE_PRINCIPAL_ID(N''SqlNexusMcpReader'') IS NOT NULL
+    THROW 51000, ''The reserved SqlNexusMcpReader principal already exists. Inspect and remove it before hardening this database.'', 1;
+CREATE USER [SqlNexusMcpReader] WITHOUT LOGIN;
+ALTER ROLE [db_datareader] ADD MEMBER [SqlNexusMcpReader];';
 
 EXEC sys.sp_executesql @sql;
 SET @sql = N'ALTER DATABASE ' + @quotedDb + N' SET READ_ONLY WITH ROLLBACK IMMEDIATE;';
 EXEC sys.sp_executesql @sql;
 ```
 
-Do not add `SqlNexusMcpReader` to any other role or grant it write, DDL, control, or server permissions. The MCP startup check verifies the resulting execution context before accepting requests.
+Do not add `SqlNexusMcpReader` to any other role, grant it direct permissions, or make it the owner of database securables. The MCP startup check independently verifies the exact reader configuration before accepting requests. If the reserved principal already exists, inspect its role memberships, permissions, and ownership before removing it; do not drop an unknown principal without first transferring anything it legitimately owns.
 
 **Optional SQL Authentication** — Windows Integrated Authentication with `SqlNexusMcpReader` impersonation is recommended and requires no stored password. If SQL Authentication is explicitly required, add credentials in `env` (keep passwords out of `args`) and use a least-privilege login, not `sa`:
 ```json

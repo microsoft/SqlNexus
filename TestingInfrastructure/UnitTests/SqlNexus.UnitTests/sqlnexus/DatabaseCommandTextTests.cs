@@ -25,6 +25,11 @@ namespace SqlNexus.UnitTests.sqlnexus
             StringAssert.Contains(sql, "QUOTENAME(@db)");
             StringAssert.Contains(sql, "CREATE USER [SqlNexusMcpReader] WITHOUT LOGIN");
             StringAssert.Contains(sql, "ALTER ROLE [db_datareader] ADD MEMBER [SqlNexusMcpReader]");
+            StringAssert.Contains(sql, "role.name <> N''db_datareader''");
+            StringAssert.Contains(sql, "sys.database_permissions");
+            StringAssert.Contains(sql, "grantee_principal_id = @readerId");
+            StringAssert.Contains(sql, "owning_principal_id = @readerId");
+            StringAssert.Contains(sql, "authentication_type = 0");
             StringAssert.Contains(sql, "SET READ_ONLY WITH ROLLBACK IMMEDIATE");
             StringAssert.Contains(sql, "is_read_only");
             Assert.IsFalse(sql.Contains("{0}"));

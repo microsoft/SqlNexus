@@ -19,6 +19,10 @@ namespace SqlNexus.McpServer
         internal bool ReaderUserExists { get; set; }
         internal bool ReaderUserIsDataReader { get; set; }
         internal bool ReaderUserIsElevated { get; set; }
+        internal bool ReaderUserIsLoginlessSqlUser { get; set; }
+        internal bool ReaderUserHasUnexpectedRole { get; set; }
+        internal bool ReaderUserHasUnexpectedDirectPermission { get; set; }
+        internal bool ReaderUserOwnsSecurable { get; set; }
     }
 
     internal static class SqlSecurityContext
@@ -62,7 +66,12 @@ namespace SqlNexus.McpServer
             if (!snapshot.ReaderUserExists)
                 return "The required loginless database user 'SqlNexusMcpReader' does not exist. Re-import or harden the database before starting the MCP server.";
 
-            if (!snapshot.ReaderUserIsDataReader || snapshot.ReaderUserIsElevated)
+            if (!snapshot.ReaderUserIsLoginlessSqlUser ||
+                !snapshot.ReaderUserIsDataReader ||
+                snapshot.ReaderUserIsElevated ||
+                snapshot.ReaderUserHasUnexpectedRole ||
+                snapshot.ReaderUserHasUnexpectedDirectPermission ||
+                snapshot.ReaderUserOwnsSecurable)
                 return "The loginless database user 'SqlNexusMcpReader' is not configured as a dedicated db_datareader principal.";
 
             return string.Empty;
@@ -87,7 +96,11 @@ namespace SqlNexus.McpServer
                         IsDatabaseReadOnly = reader.GetInt32(2) == 1,
                         ReaderUserExists = reader.GetInt32(3) == 1,
                         ReaderUserIsDataReader = reader.GetInt32(4) == 1,
-                        ReaderUserIsElevated = reader.GetInt32(5) == 1
+                        ReaderUserIsElevated = reader.GetInt32(5) == 1,
+                        ReaderUserIsLoginlessSqlUser = reader.GetInt32(6) == 1,
+                        ReaderUserHasUnexpectedRole = reader.GetInt32(7) == 1,
+                        ReaderUserHasUnexpectedDirectPermission = reader.GetInt32(8) == 1,
+                        ReaderUserOwnsSecurable = reader.GetInt32(9) == 1
                     };
                 }
             }
@@ -163,6 +176,13 @@ SELECT CASE WHEN USER_NAME() = N'SqlNexusMcpReader'
             return @"
 SELECT
     CASE WHEN ISNULL(IS_SRVROLEMEMBER(N'sysadmin'), 0) = 1
+               OR ISNULL(IS_SRVROLEMEMBER(N'securityadmin'), 0) = 1
+               OR ISNULL(IS_SRVROLEMEMBER(N'serveradmin'), 0) = 1
+               OR ISNULL(IS_SRVROLEMEMBER(N'setupadmin'), 0) = 1
+               OR ISNULL(IS_SRVROLEMEMBER(N'processadmin'), 0) = 1
+               OR ISNULL(IS_SRVROLEMEMBER(N'diskadmin'), 0) = 1
+               OR ISNULL(IS_SRVROLEMEMBER(N'dbcreator'), 0) = 1
+               OR ISNULL(IS_SRVROLEMEMBER(N'bulkadmin'), 0) = 1
                OR ISNULL(IS_ROLEMEMBER(N'db_owner'), 0) = 1
                OR ISNULL(IS_ROLEMEMBER(N'db_datawriter'), 0) = 1
                OR ISNULL(IS_ROLEMEMBER(N'db_ddladmin'), 0) = 1
@@ -181,7 +201,47 @@ SELECT
                OR ISNULL(IS_ROLEMEMBER(N'db_datawriter', N'SqlNexusMcpReader'), 0) = 1
                OR ISNULL(IS_ROLEMEMBER(N'db_ddladmin', N'SqlNexusMcpReader'), 0) = 1
                OR ISNULL(IS_ROLEMEMBER(N'db_securityadmin', N'SqlNexusMcpReader'), 0) = 1
-         THEN 1 ELSE 0 END AS ReaderUserIsElevated;";
+         THEN 1 ELSE 0 END AS ReaderUserIsElevated,
+    CASE WHEN EXISTS
+         (
+             SELECT 1
+             FROM sys.database_principals AS reader
+             WHERE reader.name = N'SqlNexusMcpReader'
+               AND reader.type = N'S'
+               AND reader.authentication_type = 0
+         ) THEN 1 ELSE 0 END AS ReaderUserIsLoginlessSqlUser,
+    CASE WHEN EXISTS
+         (
+             SELECT 1
+             FROM sys.database_role_members AS drm
+             INNER JOIN sys.database_principals AS role
+                 ON role.principal_id = drm.role_principal_id
+             WHERE drm.member_principal_id = DATABASE_PRINCIPAL_ID(N'SqlNexusMcpReader')
+               AND role.name <> N'db_datareader'
+         ) THEN 1 ELSE 0 END AS ReaderUserHasUnexpectedRole,
+    CASE WHEN EXISTS
+         (
+             SELECT 1
+             FROM sys.database_permissions AS permission
+             WHERE permission.grantee_principal_id = DATABASE_PRINCIPAL_ID(N'SqlNexusMcpReader')
+               AND NOT (permission.class = 0 AND permission.permission_name = N'CONNECT')
+         ) THEN 1 ELSE 0 END AS ReaderUserHasUnexpectedDirectPermission,
+    CASE WHEN EXISTS
+         (
+             SELECT 1
+             FROM sys.schemas AS schemaOwner
+             WHERE schemaOwner.principal_id = DATABASE_PRINCIPAL_ID(N'SqlNexusMcpReader')
+         ) OR EXISTS
+         (
+             SELECT 1
+             FROM sys.objects AS objectOwner
+             WHERE objectOwner.principal_id = DATABASE_PRINCIPAL_ID(N'SqlNexusMcpReader')
+         ) OR EXISTS
+         (
+             SELECT 1
+             FROM sys.database_principals AS principalOwner
+             WHERE principalOwner.owning_principal_id = DATABASE_PRINCIPAL_ID(N'SqlNexusMcpReader')
+         ) THEN 1 ELSE 0 END AS ReaderUserOwnsSecurable;";
         }
     }
 }

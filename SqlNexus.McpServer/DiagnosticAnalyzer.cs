@@ -2286,34 +2286,8 @@ namespace SqlNexus.McpServer
         {
             DataTable first = ExecuteQueryToDataTable(query, null, _database);
             DataTable second = ExecuteQueryToDataTable(query, null, _database2!);
-            var secondRows = second.AsEnumerable().ToDictionary(
-                row => BuildComparisonKey(row, keyColumns),
-                row => row,
-                StringComparer.OrdinalIgnoreCase);
-            var rows = new List<Dictionary<string, object>>();
-
-            foreach (DataRow firstRow in first.Rows)
-            {
-                if (!secondRows.TryGetValue(BuildComparisonKey(firstRow, keyColumns), out DataRow secondRow))
-                    continue;
-
-                bool different = valueColumns.Any(column => !ValuesEqual(firstRow[column], secondRow[column]));
-                if (differencesOnly && !different)
-                    continue;
-
-                var resultRow = new Dictionary<string, object>();
-                foreach (string keyColumn in keyColumns)
-                    resultRow[keyColumn] = firstRow[keyColumn] == DBNull.Value ? null! : firstRow[keyColumn];
-
-                foreach (string valueColumn in valueColumns)
-                {
-                    resultRow[firstLabel + "_" + valueColumn] = firstRow[valueColumn] == DBNull.Value ? null! : firstRow[valueColumn];
-                    resultRow[secondLabel + "_" + valueColumn] = secondRow[valueColumn] == DBNull.Value ? null! : secondRow[valueColumn];
-                    resultRow[valueColumn + "_Different"] = ValuesEqual(firstRow[valueColumn], secondRow[valueColumn]) ? string.Empty : "Yes";
-                }
-
-                rows.Add(resultRow);
-            }
+            List<Dictionary<string, object>> rows = BuildComparisonRows(
+                first, second, keyColumns, valueColumns, firstLabel, secondLabel, differencesOnly);
 
             var section = new Dictionary<string, object>
             {
@@ -2325,11 +2299,52 @@ namespace SqlNexus.McpServer
             return section;
         }
 
+        internal static List<Dictionary<string, object>> BuildComparisonRows(
+            DataTable first,
+            DataTable second,
+            string[] keyColumns,
+            string[] valueColumns,
+            string firstLabel,
+            string secondLabel,
+            bool differencesOnly)
+        {
+            var secondRows = second.AsEnumerable().ToLookup(
+                row => BuildComparisonKey(row, keyColumns),
+                row => row,
+                StringComparer.OrdinalIgnoreCase);
+            var rows = new List<Dictionary<string, object>>();
+
+            foreach (DataRow firstRow in first.Rows)
+            {
+                foreach (DataRow secondRow in secondRows[BuildComparisonKey(firstRow, keyColumns)])
+                {
+                    bool different = valueColumns.Any(column => !ValuesEqual(firstRow[column], secondRow[column]));
+                    if (differencesOnly && !different)
+                        continue;
+
+                    var resultRow = new Dictionary<string, object>();
+                    foreach (string keyColumn in keyColumns)
+                        resultRow[keyColumn] = firstRow[keyColumn] == DBNull.Value ? null! : firstRow[keyColumn];
+
+                    foreach (string valueColumn in valueColumns)
+                    {
+                        resultRow[firstLabel + "_" + valueColumn] = firstRow[valueColumn] == DBNull.Value ? null! : firstRow[valueColumn];
+                        resultRow[secondLabel + "_" + valueColumn] = secondRow[valueColumn] == DBNull.Value ? null! : secondRow[valueColumn];
+                        resultRow[valueColumn + "_Different"] = ValuesEqual(firstRow[valueColumn], secondRow[valueColumn]) ? string.Empty : "Yes";
+                    }
+
+                    rows.Add(resultRow);
+                }
+            }
+
+            return rows;
+        }
+
         private DataTable CompareQueryPerformance(string query, string firstLabel, string secondLabel)
         {
             DataTable first = ExecuteQueryToDataTable(query, null, _database);
             DataTable second = ExecuteQueryToDataTable(query, null, _database2!);
-            var secondRows = second.AsEnumerable().ToDictionary(
+            var secondRows = second.AsEnumerable().ToLookup(
                 row => Convert.ToString(row["HashID"], CultureInfo.InvariantCulture),
                 row => row,
                 StringComparer.OrdinalIgnoreCase);
@@ -2347,19 +2362,19 @@ namespace SqlNexus.McpServer
             foreach (DataRow firstRow in first.Rows)
             {
                 string key = Convert.ToString(firstRow["HashID"], CultureInfo.InvariantCulture);
-                if (!secondRows.TryGetValue(key, out DataRow secondRow))
-                    continue;
-
-                long firstDuration = Convert.ToInt64(firstRow["AvgDuration_ms"], CultureInfo.InvariantCulture);
-                long secondDuration = Convert.ToInt64(secondRow["AvgDuration_ms"], CultureInfo.InvariantCulture);
-                long firstCpu = Convert.ToInt64(firstRow["AvgCPU_ms"], CultureInfo.InvariantCulture);
-                long secondCpu = Convert.ToInt64(secondRow["AvgCPU_ms"], CultureInfo.InvariantCulture);
-                result.Rows.Add(
-                    firstDuration, secondDuration, firstDuration - secondDuration,
-                    firstCpu, secondCpu, firstCpu - secondCpu,
-                    Convert.ToInt32(firstRow["Executions"], CultureInfo.InvariantCulture),
-                    Convert.ToInt32(secondRow["Executions"], CultureInfo.InvariantCulture),
-                    Convert.ToString(secondRow["NormText"], CultureInfo.InvariantCulture));
+                foreach (DataRow secondRow in secondRows[key])
+                {
+                    long firstDuration = Convert.ToInt64(firstRow["AvgDuration_ms"], CultureInfo.InvariantCulture);
+                    long secondDuration = Convert.ToInt64(secondRow["AvgDuration_ms"], CultureInfo.InvariantCulture);
+                    long firstCpu = Convert.ToInt64(firstRow["AvgCPU_ms"], CultureInfo.InvariantCulture);
+                    long secondCpu = Convert.ToInt64(secondRow["AvgCPU_ms"], CultureInfo.InvariantCulture);
+                    result.Rows.Add(
+                        firstDuration, secondDuration, firstDuration - secondDuration,
+                        firstCpu, secondCpu, firstCpu - secondCpu,
+                        Convert.ToInt32(firstRow["Executions"], CultureInfo.InvariantCulture),
+                        Convert.ToInt32(secondRow["Executions"], CultureInfo.InvariantCulture),
+                        Convert.ToString(secondRow["NormText"], CultureInfo.InvariantCulture));
+                }
             }
 
             return result;
