@@ -8,7 +8,8 @@ namespace SqlNexus.McpServer
 {
     internal sealed class UntrustedDataEnvelopeResult
     {
-        internal string Text { get; set; } = string.Empty;
+        internal JToken Token { get; set; } = JValue.CreateNull();
+        internal string Text => Token.ToString(Formatting.Indented);
         internal int DetectionCount { get; set; }
         internal IReadOnlyCollection<string> DetectionCategories { get; set; } = Array.Empty<string>();
     }
@@ -50,6 +51,14 @@ namespace SqlNexus.McpServer
                 payload = new JValue(resultText ?? string.Empty);
             }
 
+            return Protect(payload);
+        }
+
+        internal static UntrustedDataEnvelopeResult Protect(JToken payload)
+        {
+            if (payload == null)
+                payload = JValue.CreateNull();
+
             int detectionCount = 0;
             var categories = new HashSet<string>(StringComparer.Ordinal);
             NeutralizeInstructionLikeStrings(payload, categories, ref detectionCount);
@@ -73,7 +82,7 @@ namespace SqlNexus.McpServer
 
             return new UntrustedDataEnvelopeResult
             {
-                Text = envelope.ToString(Formatting.Indented),
+                Token = envelope,
                 DetectionCount = detectionCount,
                 DetectionCategories = new List<string>(categories)
             };
@@ -84,20 +93,30 @@ namespace SqlNexus.McpServer
             ISet<string> categories,
             ref int detectionCount)
         {
+            if (token is JObject objectToken)
+            {
+                var properties = new List<JProperty>(objectToken.Properties());
+                foreach (var property in properties)
+                {
+                    JProperty propertyToInspect = property;
+                    if (DetectInstructionLikeContent(property.Name, categories))
+                    {
+                        detectionCount++;
+                        string neutralizedName = GetNeutralizedPropertyName(objectToken, detectionCount);
+                        propertyToInspect = new JProperty(neutralizedName, property.Value);
+                        property.Replace(propertyToInspect);
+                    }
+
+                    NeutralizeInstructionLikeStrings(propertyToInspect.Value, categories, ref detectionCount);
+                }
+
+                return;
+            }
+
             if (token is JValue value && value.Type == JTokenType.String)
             {
                 string text = value.Value<string>() ?? string.Empty;
-                bool detected = false;
-                foreach (var instructionPattern in s_instructionPatterns)
-                {
-                    if (!instructionPattern.Pattern.IsMatch(text))
-                        continue;
-
-                    categories.Add(instructionPattern.Category);
-                    detected = true;
-                }
-
-                if (detected)
+                if (DetectInstructionLikeContent(text, categories))
                 {
                     value.Value = NeutralizedValue;
                     detectionCount++;
@@ -108,6 +127,31 @@ namespace SqlNexus.McpServer
 
             foreach (var child in token.Children())
                 NeutralizeInstructionLikeStrings(child, categories, ref detectionCount);
+        }
+
+        private static bool DetectInstructionLikeContent(string text, ISet<string> categories)
+        {
+            bool detected = false;
+            foreach (var instructionPattern in s_instructionPatterns)
+            {
+                if (!instructionPattern.Pattern.IsMatch(text))
+                    continue;
+
+                categories.Add(instructionPattern.Category);
+                detected = true;
+            }
+
+            return detected;
+        }
+
+        private static string GetNeutralizedPropertyName(JObject objectToken, int detectionCount)
+        {
+            string name = $"neutralized_property_{detectionCount}";
+            int suffix = detectionCount;
+            while (objectToken.Property(name) != null)
+                name = $"neutralized_property_{++suffix}";
+
+            return name;
         }
     }
 }

@@ -2521,6 +2521,19 @@ namespace SqlNexus.McpServer
                 throw new InvalidOperationException("OPENROWSET is not allowed");
             }
 
+            public override void ExplicitVisit(SchemaObjectFunctionTableReference node)
+            {
+                throw new InvalidOperationException("Table-valued functions are not allowed in custom queries");
+            }
+
+            public override void ExplicitVisit(FunctionCall node)
+            {
+                if (node.CallTarget != null)
+                    throw new InvalidOperationException("Schema-qualified and user-defined functions are not allowed in custom queries");
+
+                base.ExplicitVisit(node);
+            }
+
             public override void ExplicitVisit(DataModificationTableReference node)
             {
                 throw new InvalidOperationException("Data-modification table sources are not allowed");

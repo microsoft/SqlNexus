@@ -127,6 +127,45 @@ END";
         }
 
         [TestMethod]
+        public void ValidateReadOnlyCustomQuery_ExternalFileTableFunction_ThrowsInvalidOperationException()
+        {
+            Assert.ThrowsException<InvalidOperationException>(() =>
+                global::SqlNexus.McpServer.DiagnosticAnalyzer.ValidateReadOnlyCustomQuery(
+                    "SELECT * FROM sys.fn_get_audit_file('C:\\audit\\*.sqlaudit', DEFAULT, DEFAULT)"));
+        }
+
+        [TestMethod]
+        public void ValidateReadOnlyCustomQuery_ExtendedEventFileTableFunction_ThrowsInvalidOperationException()
+        {
+            Assert.ThrowsException<InvalidOperationException>(() =>
+                global::SqlNexus.McpServer.DiagnosticAnalyzer.ValidateReadOnlyCustomQuery(
+                    "SELECT * FROM sys.fn_xe_file_target_read_file('C:\\xevents\\*.xel', NULL, NULL, NULL)"));
+        }
+
+        [TestMethod]
+        public void ValidateReadOnlyCustomQuery_CustomTableValuedFunction_ThrowsInvalidOperationException()
+        {
+            Assert.ThrowsException<InvalidOperationException>(() =>
+                global::SqlNexus.McpServer.DiagnosticAnalyzer.ValidateReadOnlyCustomQuery(
+                    "SELECT * FROM dbo.ReadExternalDiagnostics()"));
+        }
+
+        [TestMethod]
+        public void ValidateReadOnlyCustomQuery_CustomScalarFunction_ThrowsInvalidOperationException()
+        {
+            Assert.ThrowsException<InvalidOperationException>(() =>
+                global::SqlNexus.McpServer.DiagnosticAnalyzer.ValidateReadOnlyCustomQuery(
+                    "SELECT dbo.ReadExternalSecret() AS value"));
+        }
+
+        [TestMethod]
+        public void ValidateReadOnlyCustomQuery_BuiltInAggregateFunction_DoesNotThrow()
+        {
+            global::SqlNexus.McpServer.DiagnosticAnalyzer.ValidateReadOnlyCustomQuery(
+                "SELECT COUNT(*) AS wait_count, SUM(wait_time_ms) AS total_wait_ms FROM dbo.tbl_OS_WAIT_STATS");
+        }
+
+        [TestMethod]
         public void ValidateReadOnlyCustomQuery_TableHint_ThrowsInvalidOperationException()
         {
             Assert.ThrowsException<InvalidOperationException>(() =>

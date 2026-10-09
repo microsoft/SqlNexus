@@ -820,11 +820,8 @@ namespace SqlNexus.McpServer
             }
             stopwatch.Stop();
 
-            // Scrub PII from tool output before returning to the agent.
-            resultText = PiiScrubber.Scrub(resultText);
-
-            // Parse the scrubbed analyzer payload for compact response logging. The protected
-            // envelope is parsed separately below before validation guidance is attached.
+            // Parse the analyzer payload once. Compact logging independently scrubs the small
+            // fields it extracts, while the complete response is scrubbed at the final boundary.
             JToken? resultToken = TryParseJson(resultText);
 
             // Log lightweight response telemetry for troubleshooting without logging full payloads.
@@ -833,7 +830,8 @@ namespace SqlNexus.McpServer
             // Treat every analyzer payload as attacker-influenceable diagnostic data. The envelope
             // gives the model a structural trust boundary and removes high-confidence embedded
             // instructions before they can be interpreted as agent directions.
-            var protectedResult = UntrustedDataEnvelope.Protect(resultText);
+            var protectedResult = UntrustedDataEnvelope.Protect(
+                resultToken ?? new JValue(resultText ?? string.Empty));
             if (protectedResult.DetectionCount > 0)
             {
                 Logger.Warn(
@@ -841,12 +839,11 @@ namespace SqlNexus.McpServer
                     + $"count={protectedResult.DetectionCount} "
                     + $"categories={string.Join(",", protectedResult.DetectionCategories)}");
             }
-            resultText = protectedResult.Text;
-            resultToken = TryParseJson(resultText);
+                    resultToken = protectedResult.Token;
 
             // Append Responsible AI validation guidance so every answer encourages the user to
             // review the supporting evidence and inspect the underlying SQL Nexus tables.
-            resultText = AppendValidationGuidance(resultText, toolName, resultToken);
+                    resultText = AppendValidationGuidance(string.Empty, toolName, resultToken);
 
             // Enforce redaction at the final response boundary so content added after the initial
             // parse cannot bypass the scrubber.
