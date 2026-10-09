@@ -72,7 +72,7 @@ namespace SqlNexus.McpServer
         private static bool s_initialized;
 
         // SQL Server errors that are an expected part of probing the optional SQL Nexus
-        // schema — the message alone is self-explanatory, so their (large) call stacks
+        // schema ï¿½ the message alone is self-explanatory, so their (large) call stacks
         // are suppressed to keep the log compact. Many tools query tables that may not
         // exist in a given capture, producing "Invalid object name" by design.
         private static readonly HashSet<int> s_expectedSqlErrors = new HashSet<int>
@@ -106,7 +106,7 @@ namespace SqlNexus.McpServer
 
         /// <summary>
         /// Log an error with a concise, single-line description. The full (and often large)
-        /// call stack is appended only for genuinely unexpected exceptions — routine, self-
+        /// call stack is appended only for genuinely unexpected exceptions ï¿½ routine, self-
         /// explanatory errors such as SQL "Invalid object name" (raised while probing for
         /// optional SQL Nexus tables) are logged without a stack to keep the log compact.
         /// </summary>
@@ -147,7 +147,7 @@ namespace SqlNexus.McpServer
                          request.Params != null)
                 {
                     // The initialize params carry a large client capabilities/metadata blob
-                    // that adds no diagnostic value — log only the negotiated protocol version.
+                    // that adds no diagnostic value ï¿½ log only the negotiated protocol version.
                     if (request.Params.TryGetValue("protocolVersion", out var pv) && pv != null)
                         sb.Append(" protocol=").Append(pv);
                 }
@@ -188,7 +188,7 @@ namespace SqlNexus.McpServer
             EnsureInitialized();
 
             // Timestamp is always the first column.
-            string line = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}  [{level.ToString().ToUpperInvariant(),-5}]  {message}";
+            string line = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}  [{level.ToString().ToUpperInvariant(),-5}]  {SanitizeMessageForLog(message)}";
 
             // Persist to the log file (best-effort; never throw).
             if ((target & LogTarget.File) == LogTarget.File)
@@ -202,7 +202,7 @@ namespace SqlNexus.McpServer
                     }
                     catch
                     {
-                        // Swallow — logging must never break the server or the protocol stream.
+                        // Swallow ï¿½ logging must never break the server or the protocol stream.
                     }
                 }
             }
@@ -283,8 +283,13 @@ namespace SqlNexus.McpServer
         internal static string SanitizeForRequestLog(object value)
         {
             string serialized = SafeSerialize(value);
-            string scrubbed = PiiScrubber.Scrub(serialized);
+            string scrubbed = SanitizeMessageForLog(serialized);
             return Truncate(scrubbed);
+        }
+
+        internal static string SanitizeMessageForLog(string message)
+        {
+            return PiiScrubber.Scrub(message ?? string.Empty);
         }
 
         internal static string BuildToolResultLogLine(string toolName, string resultText, long elapsedMs)
@@ -309,8 +314,6 @@ namespace SqlNexus.McpServer
             string summary = "(unavailable)";
             string rowCount = "(unknown)";
 
-            // The result payload is already PII-scrubbed before it reaches here, so summary/
-            // row_count extracted from it need no additional scrubbing.
             if (resultToken is JObject obj)
             {
                 summary = obj.Value<string>("summary") ?? summary;
@@ -320,8 +323,8 @@ namespace SqlNexus.McpServer
                     rowCount = rowToken.ToString();
             }
 
-            summary = Truncate(summary);
-            return $"RES tool={safeToolName} elapsed_ms={elapsedMs} row_count={rowCount} summary={summary}";
+            summary = Truncate(SanitizeMessageForLog(summary));
+            return $"RES tool={SanitizeMessageForLog(safeToolName)} elapsed_ms={elapsedMs} row_count={rowCount} summary={summary}";
         }
 
         private static string SafeSerialize(object value)
@@ -360,7 +363,7 @@ namespace SqlNexus.McpServer
 
         /// <summary>
         /// True when the exception is a routine, self-explanatory error whose call stack
-        /// adds no diagnostic value — currently SQL errors raised while probing optional
+        /// adds no diagnostic value ï¿½ currently SQL errors raised while probing optional
         /// SQL Nexus tables (see <see cref="s_expectedSqlErrors"/>).
         /// </summary>
         private static bool IsExpected(Exception ex)
@@ -372,7 +375,7 @@ namespace SqlNexus.McpServer
         {
             if (string.IsNullOrEmpty(value) || value.Length <= MaxPayloadChars)
                 return value;
-            return value.Substring(0, MaxPayloadChars) + "…(truncated)";
+            return value.Substring(0, MaxPayloadChars) + "ï¿½(truncated)";
         }
     }
 }

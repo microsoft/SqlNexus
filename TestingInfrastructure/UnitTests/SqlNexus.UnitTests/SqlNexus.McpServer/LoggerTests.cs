@@ -84,6 +84,16 @@ namespace SqlNexus.UnitTests.SqlNexus.McpServer
         }
 
         [TestMethod]
+        public void SanitizeMessageForLog_FreeTextIdentifiers_AreScrubbed()
+        {
+            string text = Logger.SanitizeMessageForLog(
+                "SQL error for LoginName customer_admin on HostName PRODSQL01");
+
+            Assert.IsFalse(text.Contains("customer_admin"));
+            Assert.IsFalse(text.Contains("PRODSQL01"));
+        }
+
+        [TestMethod]
         public void BuildToolResultLogLine_JsonPayload_ExtractsSummaryAndRowCount()
         {
             string line = Logger.BuildToolResultLogLine(
@@ -109,6 +119,18 @@ namespace SqlNexus.UnitTests.SqlNexus.McpServer
             StringAssert.Contains(line, "elapsed_ms=99");
             StringAssert.Contains(line, "row_count=7");
             StringAssert.Contains(line, "summary=Wait Stats");
+        }
+
+        [TestMethod]
+        public void BuildToolResultLogLine_UnscrubbedSummary_IsScrubbed()
+        {
+            var token = Newtonsoft.Json.Linq.JToken.Parse(
+                "{\"summary\":\"HostName PRODSQL01\",\"row_count\":1}");
+
+            string line = Logger.BuildToolResultLogLine("custom_tool", token, 12);
+
+            Assert.IsFalse(line.Contains("PRODSQL01"));
+            StringAssert.Contains(line, "<SCRUBBED>");
         }
 
         [TestMethod]

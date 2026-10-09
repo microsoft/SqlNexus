@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Microsoft.Data.SqlClient;
+using Microsoft.SqlServer.TransactSql.ScriptDom;
 using Newtonsoft.Json;
 
 namespace SqlNexus.McpServer
@@ -17,37 +19,8 @@ namespace SqlNexus.McpServer
         private readonly bool _impersonateReader;
 
         internal const string InstalledProgramsNameFilter = "%sql%";
-
-        private static readonly string[] AllowedCustomQueryStarts =
-        {
-            "SELECT",
-            "WITH",
-            "DECLARE",
-            "IF"
-        };
-
-        private static readonly string[] DisallowedCustomQueryKeywords =
-        {
-            "DROP",
-            "DELETE",
-            "INSERT",
-            "UPDATE",
-            "TRUNCATE",
-            "ALTER",
-            "CREATE",
-            "EXEC",
-            "EXECUTE",
-            "MERGE",
-            "GRANT",
-            "REVOKE",
-            "DENY",
-            "BACKUP",
-            "RESTORE",
-            "RECONFIGURE",
-            "OPENROWSET",
-            "OPENQUERY",
-            "OPENDATASOURCE"
-        };
+        internal const int CustomQueryCommandTimeoutSeconds = 60;
+        internal const int CustomQueryMaximumRows = 1000;
 
         public DiagnosticAnalyzer(string connectionString)
             : this(connectionString, "SqlNexus", null, false)
@@ -1105,7 +1078,7 @@ namespace SqlNexus.McpServer
             var result = new
             {
                 summary             = "SQL Nexus Table Catalog (curated subset)",
-                discovery_hint      = "This list covers the most analytically significant tables. The connected database may contain additional tables not listed here. To discover all tables, use the query_nexus_database tool with: SELECT TABLE_SCHEMA, TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE' ORDER BY TABLE_SCHEMA, TABLE_NAME",
+                discovery_hint      = "Use the present tables in this curated catalog to identify the narrowest relevant diagnostic source before querying data.",
                 total_known_tables  = tableList.Count,
                 tables_present      = presentCount,
                 tables              = tableList
@@ -2454,7 +2427,28 @@ namespace SqlNexus.McpServer
         {
             ValidateReadOnlyCustomQuery(query);
 
-            return ExecuteQueryAndReturnJson(query, "Custom Query Results");
+            using var connection = SqlSecurityContext.OpenConnection(_connectionString, _impersonateReader);
+            using var command = new SqlCommand(query, connection) { CommandTimeout = CustomQueryCommandTimeoutSeconds };
+
+            var dataSet = new DataSet();
+            using var adapter = new SqlDataAdapter(command);
+            adapter.Fill(dataSet, 0, CustomQueryMaximumRows + 1, "CustomQueryResults");
+
+            DataTable dataTable = dataSet.Tables["CustomQueryResults"];
+            bool truncated = dataTable.Rows.Count > CustomQueryMaximumRows;
+            if (truncated)
+                dataTable.Rows.RemoveAt(dataTable.Rows.Count - 1);
+
+            var result = new
+            {
+                summary = "Custom Query Results",
+                row_count = dataTable.Rows.Count,
+                truncated,
+                maximum_rows = CustomQueryMaximumRows,
+                data = ConvertDataTableToList(dataTable)
+            };
+
+            return JsonConvert.SerializeObject(result, Formatting.Indented);
         }
 
         internal static void ValidateReadOnlyCustomQuery(string query)
@@ -2462,41 +2456,108 @@ namespace SqlNexus.McpServer
             if (string.IsNullOrWhiteSpace(query))
                 throw new InvalidOperationException("Query parameter required");
 
-            string queryWithoutLiteralsAndComments = StripSqlLiteralsAndComments(query);
-            string normalizedQuery = queryWithoutLiteralsAndComments.Trim();
-            while (normalizedQuery.StartsWith(";", StringComparison.Ordinal))
-                normalizedQuery = normalizedQuery.Substring(1).TrimStart();
+            var parser = new TSql160Parser(true);
+            TSqlFragment fragment;
+            IList<ParseError> errors;
+            using (var reader = new StringReader(query))
+                fragment = parser.Parse(reader, out errors);
 
-            bool hasAllowedPrefix = AllowedCustomQueryStarts.Any(prefix =>
-                normalizedQuery.StartsWith(prefix, StringComparison.OrdinalIgnoreCase));
-            if (!hasAllowedPrefix)
-                throw new InvalidOperationException("Only SELECT queries, CTEs, and queries with DECLARE/IF are allowed");
-
-            string withoutTrailingSemicolons = normalizedQuery.TrimEnd();
-            while (withoutTrailingSemicolons.EndsWith(";", StringComparison.Ordinal))
-                withoutTrailingSemicolons = withoutTrailingSemicolons.Substring(0, withoutTrailingSemicolons.Length - 1).TrimEnd();
-
-            if (withoutTrailingSemicolons.IndexOf(';') >= 0)
-                throw new InvalidOperationException("Only single-statement read-only batches are allowed");
-
-            if (Regex.IsMatch(queryWithoutLiteralsAndComments, @"\bGO\b", RegexOptions.IgnoreCase))
-                throw new InvalidOperationException("Batch separators are not allowed");
-
-            foreach (var keyword in DisallowedCustomQueryKeywords)
+            if (errors.Count > 0)
             {
-                if (Regex.IsMatch(queryWithoutLiteralsAndComments, $@"\b{keyword}\b", RegexOptions.IgnoreCase))
-                    throw new InvalidOperationException($"Query contains disallowed keyword: {keyword}");
+                ParseError error = errors[0];
+                throw new InvalidOperationException(
+                    $"Custom query is not valid T-SQL at line {error.Line}, column {error.Column}: {error.Message}");
             }
 
-            if (Regex.IsMatch(queryWithoutLiteralsAndComments, @"\b(?:xp_|sp_)\w*\b", RegexOptions.IgnoreCase))
-                throw new InvalidOperationException("Stored procedure and extended procedure calls are not allowed");
+            var script = fragment as TSqlScript;
+            if (script == null || script.Batches.Count != 1 || script.Batches[0].Statements.Count != 1)
+                throw new InvalidOperationException("Only one SELECT statement in one batch is allowed");
+
+            var selectStatement = script.Batches[0].Statements[0] as SelectStatement;
+            if (selectStatement == null)
+                throw new InvalidOperationException("Only a SELECT statement or a CTE followed by SELECT is allowed");
+
+            selectStatement.Accept(new ReadOnlyCustomQueryVisitor());
         }
 
-        internal static string StripSqlLiteralsAndComments(string query)
+        private sealed class ReadOnlyCustomQueryVisitor : TSqlFragmentVisitor
         {
-            string withoutLiterals = Regex.Replace(query, "'(?:[^']|'')*'", " ");
-            string withoutBlockComments = Regex.Replace(withoutLiterals, @"/\*.*?\*/", " ", RegexOptions.Singleline);
-            return Regex.Replace(withoutBlockComments, @"--.*?$", " ", RegexOptions.Multiline);
+            public override void ExplicitVisit(SelectStatement node)
+            {
+                if (node.Into != null)
+                    throw new InvalidOperationException("SELECT INTO is not allowed");
+
+                if (node.OptimizerHints.Count > 0)
+                    throw new InvalidOperationException("Query hints are not allowed in custom queries");
+
+                base.ExplicitVisit(node);
+            }
+
+            public override void ExplicitVisit(SchemaObjectName node)
+            {
+                if (node.Identifiers.Count > 2)
+                    throw new InvalidOperationException("Cross-database and linked-server object references are not allowed");
+
+                base.ExplicitVisit(node);
+            }
+
+            public override void ExplicitVisit(AdHocTableReference node)
+            {
+                throw new InvalidOperationException("External data sources are not allowed");
+            }
+
+            public override void ExplicitVisit(OpenQueryTableReference node)
+            {
+                throw new InvalidOperationException("OPENQUERY is not allowed");
+            }
+
+            public override void ExplicitVisit(OpenRowsetTableReference node)
+            {
+                throw new InvalidOperationException("OPENROWSET is not allowed");
+            }
+
+            public override void ExplicitVisit(BulkOpenRowset node)
+            {
+                throw new InvalidOperationException("OPENROWSET is not allowed");
+            }
+
+            public override void ExplicitVisit(SchemaObjectFunctionTableReference node)
+            {
+                throw new InvalidOperationException("Table-valued functions are not allowed in custom queries");
+            }
+
+            public override void ExplicitVisit(FunctionCall node)
+            {
+                if (node.CallTarget != null)
+                    throw new InvalidOperationException("Schema-qualified and user-defined functions are not allowed in custom queries");
+
+                base.ExplicitVisit(node);
+            }
+
+            public override void ExplicitVisit(DataModificationTableReference node)
+            {
+                throw new InvalidOperationException("Data-modification table sources are not allowed");
+            }
+
+            public override void ExplicitVisit(SelectSetVariable node)
+            {
+                throw new InvalidOperationException("Variable assignment is not allowed");
+            }
+
+            public override void ExplicitVisit(NextValueForExpression node)
+            {
+                throw new InvalidOperationException("Sequence value generation is not allowed");
+            }
+
+            public override void ExplicitVisit(TableHint node)
+            {
+                throw new InvalidOperationException("Table hints are not allowed in custom queries");
+            }
+
+            public override void ExplicitVisit(OptimizerHint node)
+            {
+                throw new InvalidOperationException("Query hints are not allowed in custom queries");
+            }
         }
 
         /// <summary>

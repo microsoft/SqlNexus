@@ -10,6 +10,28 @@ namespace SqlNexus.UnitTests.SqlNexus.McpServer
     public class DiagnosticAnalyzerTests
     {
         [TestMethod]
+        public void ValidateReadOnlyCustomQuery_SelectStatement_DoesNotThrow()
+        {
+            global::SqlNexus.McpServer.DiagnosticAnalyzer.ValidateReadOnlyCustomQuery(
+                "SELECT TOP 100 wait_type, wait_time_ms FROM dbo.tbl_OS_WAIT_STATS ORDER BY wait_time_ms DESC;");
+        }
+
+        [TestMethod]
+        public void ValidateReadOnlyCustomQuery_CteSelect_DoesNotThrow()
+        {
+            const string query = @"
+WITH WaitTotals AS
+(
+    SELECT wait_type, SUM(wait_time_ms) AS total_wait_ms
+    FROM dbo.tbl_OS_WAIT_STATS
+    GROUP BY wait_type
+)
+SELECT wait_type, total_wait_ms FROM WaitTotals;";
+
+            global::SqlNexus.McpServer.DiagnosticAnalyzer.ValidateReadOnlyCustomQuery(query);
+        }
+
+        [TestMethod]
         public void ValidateReadOnlyCustomQuery_ExecStatement_ThrowsInvalidOperationException()
         {
             Assert.ThrowsException<InvalidOperationException>(() =>
@@ -40,6 +62,145 @@ END";
         public void ValidateReadOnlyCustomQuery_KeywordInsideLiteral_DoesNotThrow()
         {
             global::SqlNexus.McpServer.DiagnosticAnalyzer.ValidateReadOnlyCustomQuery("SELECT 'DROP TABLE dbo.X' AS message");
+        }
+
+        [TestMethod]
+        public void ValidateReadOnlyCustomQuery_KeywordInsideComment_DoesNotThrow()
+        {
+            global::SqlNexus.McpServer.DiagnosticAnalyzer.ValidateReadOnlyCustomQuery(
+                "/* WAITFOR DELAY and SELECT INTO are prohibited */ SELECT 1 AS value");
+        }
+
+        [TestMethod]
+        public void ValidateReadOnlyCustomQuery_SelectInto_ThrowsInvalidOperationException()
+        {
+            Assert.ThrowsException<InvalidOperationException>(() =>
+                global::SqlNexus.McpServer.DiagnosticAnalyzer.ValidateReadOnlyCustomQuery(
+                    "SELECT * INTO dbo.CopiedWaits FROM dbo.tbl_OS_WAIT_STATS"));
+        }
+
+        [TestMethod]
+        public void ValidateReadOnlyCustomQuery_SelectIntoTempTable_ThrowsInvalidOperationException()
+        {
+            Assert.ThrowsException<InvalidOperationException>(() =>
+                global::SqlNexus.McpServer.DiagnosticAnalyzer.ValidateReadOnlyCustomQuery(
+                    "SELECT * INTO #CopiedWaits FROM dbo.tbl_OS_WAIT_STATS"));
+        }
+
+        [TestMethod]
+        public void ValidateReadOnlyCustomQuery_WaitForDelay_ThrowsInvalidOperationException()
+        {
+            Assert.ThrowsException<InvalidOperationException>(() =>
+                global::SqlNexus.McpServer.DiagnosticAnalyzer.ValidateReadOnlyCustomQuery("WAITFOR DELAY '00:00:05'"));
+        }
+
+        [TestMethod]
+        public void ValidateReadOnlyCustomQuery_IfWaitForDelay_ThrowsInvalidOperationException()
+        {
+            Assert.ThrowsException<InvalidOperationException>(() =>
+                global::SqlNexus.McpServer.DiagnosticAnalyzer.ValidateReadOnlyCustomQuery(
+                    "IF 1 = 1 WAITFOR DELAY '00:00:05'"));
+        }
+
+        [TestMethod]
+        public void ValidateReadOnlyCustomQuery_CrossDatabaseReference_ThrowsInvalidOperationException()
+        {
+            Assert.ThrowsException<InvalidOperationException>(() =>
+                global::SqlNexus.McpServer.DiagnosticAnalyzer.ValidateReadOnlyCustomQuery(
+                    "SELECT * FROM OtherDatabase.dbo.CustomerData"));
+        }
+
+        [TestMethod]
+        public void ValidateReadOnlyCustomQuery_LinkedServerReference_ThrowsInvalidOperationException()
+        {
+            Assert.ThrowsException<InvalidOperationException>(() =>
+                global::SqlNexus.McpServer.DiagnosticAnalyzer.ValidateReadOnlyCustomQuery(
+                    "SELECT * FROM LinkedServer.OtherDatabase.dbo.CustomerData"));
+        }
+
+        [TestMethod]
+        public void ValidateReadOnlyCustomQuery_OpenRowset_ThrowsInvalidOperationException()
+        {
+            Assert.ThrowsException<InvalidOperationException>(() =>
+                global::SqlNexus.McpServer.DiagnosticAnalyzer.ValidateReadOnlyCustomQuery(
+                    "SELECT * FROM OPENROWSET(BULK 'C:\\customer-data.txt', SINGLE_CLOB) AS contents"));
+        }
+
+        [TestMethod]
+        public void ValidateReadOnlyCustomQuery_ExternalFileTableFunction_ThrowsInvalidOperationException()
+        {
+            Assert.ThrowsException<InvalidOperationException>(() =>
+                global::SqlNexus.McpServer.DiagnosticAnalyzer.ValidateReadOnlyCustomQuery(
+                    "SELECT * FROM sys.fn_get_audit_file('C:\\audit\\*.sqlaudit', DEFAULT, DEFAULT)"));
+        }
+
+        [TestMethod]
+        public void ValidateReadOnlyCustomQuery_ExtendedEventFileTableFunction_ThrowsInvalidOperationException()
+        {
+            Assert.ThrowsException<InvalidOperationException>(() =>
+                global::SqlNexus.McpServer.DiagnosticAnalyzer.ValidateReadOnlyCustomQuery(
+                    "SELECT * FROM sys.fn_xe_file_target_read_file('C:\\xevents\\*.xel', NULL, NULL, NULL)"));
+        }
+
+        [TestMethod]
+        public void ValidateReadOnlyCustomQuery_CustomTableValuedFunction_ThrowsInvalidOperationException()
+        {
+            Assert.ThrowsException<InvalidOperationException>(() =>
+                global::SqlNexus.McpServer.DiagnosticAnalyzer.ValidateReadOnlyCustomQuery(
+                    "SELECT * FROM dbo.ReadExternalDiagnostics()"));
+        }
+
+        [TestMethod]
+        public void ValidateReadOnlyCustomQuery_CustomScalarFunction_ThrowsInvalidOperationException()
+        {
+            Assert.ThrowsException<InvalidOperationException>(() =>
+                global::SqlNexus.McpServer.DiagnosticAnalyzer.ValidateReadOnlyCustomQuery(
+                    "SELECT dbo.ReadExternalSecret() AS value"));
+        }
+
+        [TestMethod]
+        public void ValidateReadOnlyCustomQuery_BuiltInAggregateFunction_DoesNotThrow()
+        {
+            global::SqlNexus.McpServer.DiagnosticAnalyzer.ValidateReadOnlyCustomQuery(
+                "SELECT COUNT(*) AS wait_count, SUM(wait_time_ms) AS total_wait_ms FROM dbo.tbl_OS_WAIT_STATS");
+        }
+
+        [TestMethod]
+        public void ValidateReadOnlyCustomQuery_TableHint_ThrowsInvalidOperationException()
+        {
+            Assert.ThrowsException<InvalidOperationException>(() =>
+                global::SqlNexus.McpServer.DiagnosticAnalyzer.ValidateReadOnlyCustomQuery(
+                    "SELECT * FROM dbo.tbl_OS_WAIT_STATS WITH (TABLOCKX)"));
+        }
+
+        [TestMethod]
+        public void ValidateReadOnlyCustomQuery_QueryHint_ThrowsInvalidOperationException()
+        {
+            Assert.ThrowsException<InvalidOperationException>(() =>
+                global::SqlNexus.McpServer.DiagnosticAnalyzer.ValidateReadOnlyCustomQuery(
+                    "SELECT * FROM dbo.tbl_OS_WAIT_STATS OPTION (MAXDOP 0)"));
+        }
+
+        [TestMethod]
+        public void ValidateReadOnlyCustomQuery_NextSequenceValue_ThrowsInvalidOperationException()
+        {
+            Assert.ThrowsException<InvalidOperationException>(() =>
+                global::SqlNexus.McpServer.DiagnosticAnalyzer.ValidateReadOnlyCustomQuery(
+                    "SELECT NEXT VALUE FOR dbo.DiagnosticSequence"));
+        }
+
+        [TestMethod]
+        public void ValidateReadOnlyCustomQuery_MalformedSelect_ThrowsInvalidOperationException()
+        {
+            Assert.ThrowsException<InvalidOperationException>(() =>
+                global::SqlNexus.McpServer.DiagnosticAnalyzer.ValidateReadOnlyCustomQuery("SELECT FROM"));
+        }
+
+        [TestMethod]
+        public void CustomQueryExecutionLimits_UseSecurityBounds()
+        {
+            Assert.AreEqual(60, global::SqlNexus.McpServer.DiagnosticAnalyzer.CustomQueryCommandTimeoutSeconds);
+            Assert.AreEqual(1000, global::SqlNexus.McpServer.DiagnosticAnalyzer.CustomQueryMaximumRows);
         }
 
         [TestMethod]

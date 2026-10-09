@@ -12,8 +12,8 @@ namespace SqlNexus.McpServer
     /// Layer 1 — Regex: covers all structured PII realistically present in SQL Server diagnostic data:
     ///   GUIDs, IPv4 addresses, auto-generated computer names, email addresses,
     ///   Windows file paths containing usernames (C:\Users\..., C:\Documents and Settings\...),
-    ///   UNC paths (\\server\share), NT DOMAIN\username tokens, SQL login names
-    ///   appearing as JSON field values, and phone numbers.
+    ///   UNC paths (\\server\share), NT DOMAIN\username tokens, context-labelled login/host names,
+    ///   Windows SIDs, SSNs, payment card numbers, and phone numbers.
     ///
     /// Layer 2 — URL allowlist: non-approved URLs are replaced with &lt;Scrubbed_URL&gt;.
     /// </summary>
@@ -93,6 +93,32 @@ namespace SqlNexus.McpServer
                 RegexOptions.IgnoreCase | RegexOptions.Compiled),
              "<SCRUBBED>"),
 
+                // ── Identity values in free text and SQL predicates ───────────────
+                // Preserves the identifying label and surrounding syntax while replacing
+                // the value, for example: LoginName alice or host_name = 'SQLPROD01'.
+                (new Regex(
+                     @"(?<prefix>\b(?:LoginName|login_name|NTUserName|nt_user_name|HostName|host_name|User Name|UserName|user_name|ImportedBy|imported_by|InstalledBy|installed_by|ServerName|server_name|ReplicaServerName|replica_server_name|MachineName|machine_name|ComputerName|computer_name)\b\s*(?:(?:=|:)\s*|(?:is\s+)?)[""']?)(?<identifier>[A-Za-z0-9][A-Za-z0-9._@$\-]{1,127})(?=[""']?(?:\s|[,;)\]}]|$))",
+                     RegexOptions.IgnoreCase | RegexOptions.Compiled),
+                 "${prefix}<SCRUBBED>"),
+
+                // ── Windows security identifiers ─────────────────────────────────
+                (new Regex(
+                     @"\bS-\d-\d+(?:-\d+){1,14}\b",
+                     RegexOptions.IgnoreCase | RegexOptions.Compiled),
+                 "<SID>"),
+
+                // ── US Social Security numbers ───────────────────────────────────
+                (new Regex(
+                     @"(?<!\d)\d{3}-\d{2}-\d{4}(?!\d)",
+                     RegexOptions.Compiled),
+                 "<SSN>"),
+
+                // ── Payment card numbers (Luhn-validated by ApplyRegex) ──────────
+                (new Regex(
+                     @"(?<!\d)(?:\d[ -]?){12,18}\d(?!\d)",
+                     RegexOptions.Compiled),
+                 "<PAN>"),
+
             // ── Phone numbers  e.g. +1-800-555-1234, (425) 555-0100 ──────────
             (new Regex(
                 @"\b(\+?1[\s\-.]?)?\(?\d{3}\)?[\s\-.]?\d{3}[\s\-.]?\d{4}\b",
@@ -149,6 +175,8 @@ namespace SqlNexus.McpServer
                     text = pattern.Replace(text, ReplaceIpv4Address);
                 else if (replacement == "<IPV6>")
                     text = pattern.Replace(text, ReplaceIpv6Address);
+                else if (replacement == "<PAN>")
+                    text = pattern.Replace(text, ReplacePaymentCardNumber);
                 else
                     text = pattern.Replace(text, replacement);
             }
@@ -179,6 +207,31 @@ namespace SqlNexus.McpServer
             }
 
             return candidate;
+        }
+
+        private static string ReplacePaymentCardNumber(Match match)
+        {
+            string digits = Regex.Replace(match.Value, @"[^0-9]", string.Empty);
+            if (digits.Length < 13 || digits.Length > 19)
+                return match.Value;
+
+            int sum = 0;
+            bool doubleDigit = false;
+            for (int index = digits.Length - 1; index >= 0; index--)
+            {
+                int digit = digits[index] - '0';
+                if (doubleDigit)
+                {
+                    digit *= 2;
+                    if (digit > 9)
+                        digit -= 9;
+                }
+
+                sum += digit;
+                doubleDigit = !doubleDigit;
+            }
+
+            return sum % 10 == 0 ? "<PAN>" : match.Value;
         }
 
         private static string ApplyUrlAllowlist(string text)
