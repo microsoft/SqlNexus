@@ -1,0 +1,51 @@
+name: SQLNexusOnBranchCompliance
+
+trigger:
+  batch: false
+  branches:
+    include:
+    - '*'
+
+pr: none
+
+parameters:
+- name: poolName
+  type: string
+  default: MSSecurity-1ES-Build-Agents-Pool
+
+- name: image
+  type: string
+  default: MSSecurity-1ES-Windows-2022
+
+- name: os
+  type: string
+  default: windows
+
+variables:
+  Codeql.Enabled: true
+
+resources:
+  repositories:
+  - repository: 1ESPipelineTemplates
+    type: git
+    name: 1ESPipelineTemplates/1ESPipelineTemplates
+    ref: refs/tags/release
+
+extends:
+  template: v1/1ES.Official.PipelineTemplate.yml@1ESPipelineTemplates
+  parameters:
+    pool:
+      name: ${{ parameters.poolName }}
+      image: ${{ parameters.image }}
+      os: ${{ parameters.os }}
+    settings:
+      networkIsolationPolicy: Permissive,CFSClean
+
+    stages:
+    - stage: Compliance
+      displayName: On-branch compliance
+      jobs:
+      - job: Compliance
+        displayName: CodeQL and Component Governance
+        steps:
+        - checkout: self
