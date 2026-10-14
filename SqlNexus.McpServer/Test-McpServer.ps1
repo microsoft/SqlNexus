@@ -1,6 +1,7 @@
 # SQL Nexus MCP Server Test Script
 # SQL Nexus MCP Server Test Script
 # This script helps validate your MCP server setup
+[CmdletBinding()]
 param(
     [Parameter(Mandatory=$false)]
     [ValidateSet(
@@ -20,6 +21,9 @@ param(
     [string]$Database,
 
     [Parameter(Mandatory=$false)]
+    [string]$Database2,
+
+    [Parameter(Mandatory=$false)]
     [ValidateSet('true','false','True','False')]
     [string]$TrustedConnection,
 
@@ -27,8 +31,479 @@ param(
     [string]$UserId,
 
     [Parameter(Mandatory=$false)]
-    [string]$Password
+    [string]$Password,
+
+    [Parameter(Mandatory=$false)]
+    [ValidateSet('Block','ImpersonateReader')]
+    [string]$ElevatedPrincipalPolicy,
+
+    [Parameter(Mandatory=$false)]
+    [string]$ExecutablePath,
+
+    [Parameter(Mandatory=$false)]
+    [switch]$UseRegisteredConfiguration,
+
+    [Parameter(Mandatory=$false)]
+    [string]$ConfigurationPath,
+
+    [Parameter(Mandatory=$false)]
+    [switch]$All,
+
+    [Parameter(Mandatory=$false)]
+    [switch]$NonInteractive,
+
+    [Parameter(Mandatory=$false)]
+    [switch]$SkipIfNotConfigured
 )
+
+$ErrorActionPreference = "Stop"
+
+function Read-McpConfigurationEntry {
+    param([Parameter(Mandatory=$true)][string]$Path)
+
+    if (-not (Test-Path -LiteralPath $Path -PathType Leaf)) {
+        throw "MCP configuration file not found: $Path"
+    }
+
+    try {
+        $configuration = [System.IO.File]::ReadAllText($Path) | ConvertFrom-Json
+    }
+    catch {
+        throw "MCP configuration '$Path' does not contain valid JSON. $($_.Exception.Message)"
+    }
+
+    $entry = $null
+    if ($null -ne $configuration.servers) {
+        $entry = $configuration.servers.sqlnexus_mcp
+    }
+    if ($null -eq $entry -and $null -ne $configuration.mcpServers) {
+        $entry = $configuration.mcpServers.sqlnexus_mcp
+    }
+    if ($null -eq $entry) {
+        throw "MCP configuration '$Path' does not contain a 'sqlnexus_mcp' server entry."
+    }
+    if ($entry.type -and $entry.type -ne "stdio") {
+        throw "The registered 'sqlnexus_mcp' server must use type 'stdio'."
+    }
+    if ([string]::IsNullOrWhiteSpace([string]$entry.command)) {
+        throw "The registered 'sqlnexus_mcp' server does not specify a command."
+    }
+
+    $command = [string]$entry.command
+    if ([System.IO.Path]::GetFileName($command) -ne "SqlNexus.McpServer.exe") {
+        throw "The registered 'sqlnexus_mcp' command must point to SqlNexus.McpServer.exe."
+    }
+    if (-not (Test-Path -LiteralPath $command -PathType Leaf)) {
+        throw "The registered MCP executable was not found: $command"
+    }
+
+    $arguments = @($entry.args | ForEach-Object { [string]$_ })
+    $knownArguments = @{
+        "--server" = $true
+        "--database" = $true
+        "--database2" = $true
+        "--database-for-comparison" = $true
+        "--database_for_comparison" = $true
+        "--trusted-connection" = $true
+        "--elevated-principal-policy" = $true
+    }
+    $seenArguments = @{}
+    for ($index = 0; $index -lt $arguments.Count; $index += 2) {
+        $name = $arguments[$index]
+        if (-not $knownArguments.ContainsKey($name)) {
+            throw "The registered 'sqlnexus_mcp' entry contains an unsupported argument '$name'."
+        }
+        if ($seenArguments.ContainsKey($name)) {
+            throw "The registered 'sqlnexus_mcp' entry contains duplicate argument '$name'."
+        }
+        if ($index + 1 -ge $arguments.Count -or [string]::IsNullOrWhiteSpace($arguments[$index + 1])) {
+            throw "The registered 'sqlnexus_mcp' argument '$name' requires a value."
+        }
+
+        $seenArguments[$name] = $arguments[$index + 1]
+    }
+    if (-not $seenArguments.ContainsKey("--server") -or -not $seenArguments.ContainsKey("--database")) {
+        throw "The registered 'sqlnexus_mcp' entry must specify --server and --database."
+    }
+    if ($seenArguments.ContainsKey("--trusted-connection") -and $seenArguments["--trusted-connection"] -notin @("true", "false")) {
+        throw "The registered --trusted-connection value must be 'true' or 'false'."
+    }
+    if ($seenArguments.ContainsKey("--elevated-principal-policy") -and $seenArguments["--elevated-principal-policy"] -notin @("block", "impersonate-reader")) {
+        throw "The registered --elevated-principal-policy value is not supported."
+    }
+
+    return [pscustomobject]@{
+        Command = $command
+        Arguments = $arguments
+        HasComparisonDatabase = $seenArguments.ContainsKey("--database2") -or
+            $seenArguments.ContainsKey("--database-for-comparison") -or
+            $seenArguments.ContainsKey("--database_for_comparison")
+        Fingerprint = $command + "`n" + ($arguments -join "`n")
+        Path = $Path
+    }
+}
+
+function Get-RegisteredMcpConfigurationEntry {
+    param([string]$Path)
+
+    if (-not [string]::IsNullOrWhiteSpace($Path)) {
+        return Read-McpConfigurationEntry -Path $Path
+    }
+
+    $candidatePaths = @(
+        (Join-Path $env:APPDATA "Code\User\mcp.json"),
+        (Join-Path $HOME ".copilot\mcp-config.json")
+    )
+    $entries = @()
+    foreach ($candidatePath in $candidatePaths) {
+        if (Test-Path -LiteralPath $candidatePath -PathType Leaf) {
+            try {
+                $entries += Read-McpConfigurationEntry -Path $candidatePath
+            }
+            catch {
+                if ($_.Exception.Message -notlike "*does not contain a 'sqlnexus_mcp' server entry*") {
+                    throw
+                }
+            }
+        }
+    }
+    if ($entries.Count -eq 0) {
+        throw "No registered 'sqlnexus_mcp' entry was found. Run Register-SqlNexusCopilotIntegration.ps1 first or provide -ConfigurationPath."
+    }
+    if ($entries.Count -gt 1 -and $entries[0].Fingerprint -ne $entries[1].Fingerprint) {
+        throw "The VS Code and Copilot CLI 'sqlnexus_mcp' registrations differ. Specify the configuration to test with -ConfigurationPath."
+    }
+
+    return $entries[0]
+}
+
+function Get-DirectMcpServerRegistration {
+    param(
+        [Parameter(Mandatory=$true)][string]$Server,
+        [Parameter(Mandatory=$true)][string]$Database,
+        [string]$Database2,
+        [string]$ExecutablePath,
+        [string]$TrustedConnection,
+        [string]$ElevatedPrincipalPolicy
+    )
+
+    $command = if (-not [string]::IsNullOrWhiteSpace($ExecutablePath)) {
+        $ExecutablePath
+    } else {
+        Join-Path (Split-Path -Parent $PSCommandPath) "bin\Release\SqlNexus.McpServer.exe"
+    }
+
+    if (-not (Test-Path -LiteralPath $command -PathType Leaf)) {
+        throw "The MCP server executable was not found: $command. Build it with 'dotnet build -c Release' or pass -ExecutablePath."
+    }
+
+    $trustedConnectionArg = if ([string]::IsNullOrWhiteSpace($TrustedConnection)) { "true" } else { $TrustedConnection.ToLowerInvariant() }
+    $policyArg = if ($ElevatedPrincipalPolicy -eq "ImpersonateReader") { "impersonate-reader" } else { "block" }
+
+    $arguments = @(
+        "--server", $Server,
+        "--database", $Database,
+        "--trusted-connection", $trustedConnectionArg,
+        "--elevated-principal-policy", $policyArg
+    )
+    if (-not [string]::IsNullOrWhiteSpace($Database2)) {
+        $arguments += @("--database2", $Database2)
+    }
+
+    return [pscustomobject]@{
+        Command = $command
+        Arguments = $arguments
+        HasComparisonDatabase = -not [string]::IsNullOrWhiteSpace($Database2)
+        Fingerprint = $command + "`n" + ($arguments -join "`n")
+        Path = "$Server/$Database (direct)"
+    }
+}
+
+function Get-ProcessFailureDetail {
+    param(
+        [Parameter(Mandatory=$true)][string]$Diagnostics,
+        [Parameter(Mandatory=$true)][int]$ExitCode,
+        [Parameter(Mandatory=$true)][string[]]$StdOutLines
+    )
+
+    if ([string]::IsNullOrWhiteSpace($Diagnostics)) {
+        return "The MCP server exited before returning any JSON-RPC output. The process returned exit code $ExitCode and produced no stderr diagnostics."
+    }
+
+    $normalised = $Diagnostics.Trim()
+    $fatalPatterns = @(
+        '\[ERROR\]',
+        'Fatal error',
+        'Unhandled',
+        'Exception',
+        'StackTrace',
+        'InvalidOperationException',
+        'SqlException',
+        'ArgumentException'
+    )
+    if ($fatalPatterns | Where-Object { $normalised -match $_ }) {
+        return "The MCP server exited with code $ExitCode. Stderr diagnostics: $normalised"
+    }
+
+    $startupBanner = @($normalised -split "`r?`n" | Where-Object { $_ -match '\[INFO\]|
+
+\[WARN\]|=+' -or [string]::IsNullOrWhiteSpace($_) })
+    if ($startupBanner.Count -gt 0 -and $StdOutLines.Count -eq 0) {
+        return "The MCP server exited before returning any JSON-RPC output. This is often a startup-validation failure; inspect %TEMP%\sqlnexus_mcpserver.log for the actual error. Startup diagnostics: $normalised"
+    }
+
+    return "The MCP server exited with code $ExitCode. Stderr diagnostics: $normalised"
+}
+
+function Quote-ProcessArgument {
+    param([Parameter(Mandatory=$true)][string]$Value)
+
+    return '"' + $Value.Replace('"', '\"') + '"'
+}
+
+function Invoke-McpRequests {
+    param(
+        [Parameter(Mandatory=$true)][string]$Command,
+        [Parameter(Mandatory=$true)][string[]]$Arguments,
+        [Parameter(Mandatory=$true)][object[]]$Requests
+    )
+
+    $requestPayload = @($Requests | ForEach-Object { $_ | ConvertTo-Json -Depth 20 -Compress }) -join [Environment]::NewLine
+    $processInfo = New-Object System.Diagnostics.ProcessStartInfo
+    $processInfo.FileName = $Command
+    $processInfo.UseShellExecute = $false
+    $processInfo.RedirectStandardInput = $true
+    $processInfo.RedirectStandardOutput = $true
+    $processInfo.RedirectStandardError = $true
+    $processInfo.CreateNoWindow = $true
+    $processInfo.Arguments = (($Arguments | ForEach-Object { Quote-ProcessArgument -Value $_ }) -join ' ')
+
+    $process = [System.Diagnostics.Process]::Start($processInfo)
+    try {
+        $process.StandardInput.Write($requestPayload)
+        $process.StandardInput.WriteLine()
+        $process.StandardInput.Close()
+
+        $stdOutTask = $process.StandardOutput.ReadToEndAsync()
+        $stdErrTask = $process.StandardError.ReadToEndAsync()
+        if (-not $process.WaitForExit(30000)) {
+            $process.Kill()
+            throw "The MCP server did not respond within 30 seconds. Check the startup log at %TEMP%\sqlnexus_mcpserver.log and the registered server configuration."
+        }
+
+        $stdout = $stdOutTask.GetAwaiter().GetResult()
+        $stderr = $stdErrTask.GetAwaiter().GetResult()
+    }
+    finally {
+        if (-not $process.HasExited) {
+            $process.Kill()
+        }
+    }
+
+    $exitCode = $process.ExitCode
+    $diagnosticLines = @($stderr -split "`r?`n" | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
+    foreach ($diagnosticLine in $diagnosticLines) {
+        Write-Verbose "MCP server: $diagnosticLine"
+    }
+    $diagnostics = $diagnosticLines -join [Environment]::NewLine
+
+    if ($exitCode -ne 0) {
+        throw (Get-ProcessFailureDetail -Diagnostics $diagnostics -ExitCode $exitCode -StdOutLines @($stdout -split "`r?`n"))
+    }
+
+    $responseLines = @($stdout -split "`r?`n" | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
+    if ($responseLines.Count -eq 0) {
+        throw (Get-ProcessFailureDetail -Diagnostics $diagnostics -ExitCode 0 -StdOutLines $responseLines)
+    }
+
+    $responses = @()
+    foreach ($responseLine in $responseLines) {
+        $text = [string]$responseLine
+        if ([string]::IsNullOrWhiteSpace($text)) {
+            continue
+        }
+        try {
+            $responses += $text | ConvertFrom-Json
+        }
+        catch {
+            $detail = if ([string]::IsNullOrWhiteSpace($diagnostics)) { "" } else { " MCP diagnostics: $diagnostics" }
+            throw "The MCP server returned a non-JSON stdout response: $text.$detail"
+        }
+    }
+
+    return $responses
+}
+
+function Get-ValidationArguments {
+    param([Parameter(Mandatory=$true)][string]$ToolName)
+
+    switch ($ToolName) {
+        "get_top_queries_by_duration" { return @{ top_n = 1 } }
+        "get_top_cpu_queries" { return @{ top_n = 1 } }
+        "analyze_io_performance" { return @{ threshold_ms = 20 } }
+        "get_waits_for_query" { return @{ hash_id = 0 } }
+        "get_missing_indexes" { return @{ top_n = 1 } }
+        "query_nexus_database" { return @{ query = "SELECT 1 AS validation_value" } }
+        "get_query_execution_details" { return @{ hash_id = 0 } }
+        "get_statements_in_batch" { return @{ batch_seq = 0 } }
+        "get_top_queries_by_reads" { return @{ top_n = 1 } }
+        "get_top_queries_by_writes" { return @{ top_n = 1 } }
+        "get_error_log_summary" { return @{ top_n = 1 } }
+        default { return @{} }
+    }
+}
+
+function Invoke-AllRegisteredMcpTools {
+    param([Parameter(Mandatory=$true)]$Registration)
+
+    $policyIndex = [Array]::IndexOf($Registration.Arguments, "--elevated-principal-policy")
+    $registeredPolicy = if ($policyIndex -ge 0 -and $policyIndex + 1 -lt $Registration.Arguments.Count) { $Registration.Arguments[$policyIndex + 1] } else { "block" }
+    Write-Host "Registered elevated principal policy: $registeredPolicy" -ForegroundColor Cyan
+    if ($registeredPolicy -eq "impersonate-reader") {
+        Write-Host "  MCP queries execute as the non-revertible, loginless SqlNexusMcpReader database principal." -ForegroundColor Gray
+    }
+
+    $initializeRequest = [ordered]@{
+        jsonrpc = "2.0"
+        id = 1
+        method = "initialize"
+        params = [ordered]@{
+            protocolVersion = "2024-11-05"
+            capabilities = @{}
+            clientInfo = @{ name = "sqlnexus-integration-test"; version = "1.0" }
+        }
+    }
+    $listRequest = [ordered]@{ jsonrpc = "2.0"; id = 2; method = "tools/list"; params = @{} }
+    $catalogResponses = @(Invoke-McpRequests -Command $Registration.Command -Arguments $Registration.Arguments -Requests @($initializeRequest, $listRequest))
+    $listResponse = $catalogResponses | Where-Object { $_.id -eq 2 } | Select-Object -First 1
+    if ($null -eq $listResponse -or $null -ne $listResponse.error -or $null -eq $listResponse.result.tools) {
+        throw "The MCP server did not return a valid tools/list response."
+    }
+
+    $tools = @($listResponse.result.tools)
+    if ($tools.Count -eq 0) {
+        throw "The MCP server did not advertise any tools."
+    }
+
+    $requests = @($initializeRequest)
+    $toolByRequestId = @{}
+    $skippedTools = @()
+    $requestId = 100
+    foreach ($tool in $tools) {
+        $toolName = [string]$tool.name
+        if ([string]::IsNullOrWhiteSpace($toolName)) {
+            throw "The MCP server advertised a tool without a name."
+        }
+        if ($toolName -eq "compare_nexus_databases" -and -not $Registration.HasComparisonDatabase) {
+            $skippedTools += $toolName
+            continue
+        }
+
+        $requests += [ordered]@{
+            jsonrpc = "2.0"
+            id = $requestId
+            method = "tools/call"
+            params = [ordered]@{
+                name = $toolName
+                arguments = Get-ValidationArguments -ToolName $toolName
+            }
+        }
+        $toolByRequestId[$requestId] = $toolName
+        $requestId++
+    }
+
+    $responses = @(Invoke-McpRequests -Command $Registration.Command -Arguments $Registration.Arguments -Requests $requests)
+    $failedTools = @()
+    foreach ($entry in $toolByRequestId.GetEnumerator() | Sort-Object Key) {
+        $response = $responses | Where-Object { $_.id -eq $entry.Key } | Select-Object -First 1
+        if ($null -eq $response) {
+            Write-Host "[FAIL] $($entry.Value): no response" -ForegroundColor Red
+            $failedTools += $entry.Value
+        }
+        elseif ($null -ne $response.error) {
+            Write-Host "[FAIL] $($entry.Value): $($response.error.message)" -ForegroundColor Red
+            $failedTools += $entry.Value
+        }
+        else {
+            Write-Host "[PASS] $($entry.Value)" -ForegroundColor Green
+        }
+    }
+    foreach ($skippedTool in $skippedTools) {
+        Write-Host "[SKIP] ${skippedTool}: no comparison database is registered" -ForegroundColor Yellow
+    }
+
+    Write-Host "Validated $($toolByRequestId.Count) tool(s); failed: $($failedTools.Count); skipped: $($skippedTools.Count)."
+    if ($failedTools.Count -gt 0) {
+        throw "MCP tool validation failed for: $($failedTools -join ', ')"
+    }
+}
+
+$requestedAutomatedValidation = -not $Tool -and (
+    $UseRegisteredConfiguration -or
+    -not [string]::IsNullOrWhiteSpace($ConfigurationPath) -or
+    (-not [string]::IsNullOrWhiteSpace($Server) -and -not [string]::IsNullOrWhiteSpace($Database))
+)
+
+if ($requestedAutomatedValidation -and -not $All) {
+    Write-Host "-UseRegisteredConfiguration, -ConfigurationPath, and -Server/-Database validation currently require -All." -ForegroundColor Red
+    exit 1
+}
+
+if ($requestedAutomatedValidation -and $All) {
+    try {
+        $usingDirectMode = -not $UseRegisteredConfiguration -and [string]::IsNullOrWhiteSpace($ConfigurationPath)
+
+        if ($usingDirectMode) {
+            # Direct mode: caller supplies -Server/-Database explicitly (e.g. a sibling repo's
+            # integration tests right after importing data), without requiring MCP client
+            # registration (mcp.json / mcp-config.json) to exist on this machine.
+            if ($SkipIfNotConfigured) {
+                try {
+                    $registration = Get-DirectMcpServerRegistration -Server $Server -Database $Database -Database2 $Database2 `
+                        -ExecutablePath $ExecutablePath -TrustedConnection $TrustedConnection -ElevatedPrincipalPolicy $ElevatedPrincipalPolicy
+                }
+                catch {
+                    Write-Host "MCP server not available; skipping MCP tool validation (-SkipIfNotConfigured). $($_.Exception.Message)" -ForegroundColor Yellow
+                    exit 0
+                }
+            }
+            else {
+                $registration = Get-DirectMcpServerRegistration -Server $Server -Database $Database -Database2 $Database2 `
+                    -ExecutablePath $ExecutablePath -TrustedConnection $TrustedConnection -ElevatedPrincipalPolicy $ElevatedPrincipalPolicy
+            }
+        }
+        else {
+            if ($SkipIfNotConfigured) {
+                try {
+                    $registration = Get-RegisteredMcpConfigurationEntry -Path $ConfigurationPath
+                }
+                catch {
+                    Write-Host "MCP configuration not available; skipping MCP tool validation (-SkipIfNotConfigured). $($_.Exception.Message)" -ForegroundColor Yellow
+                    exit 0
+                }
+            }
+            else {
+                $registration = Get-RegisteredMcpConfigurationEntry -Path $ConfigurationPath
+            }
+        }
+
+        Write-Host "Testing MCP configuration: $($registration.Path)" -ForegroundColor Cyan
+        Invoke-AllRegisteredMcpTools -Registration $registration
+        exit 0
+    }
+    catch {
+        Write-Host "MCP integration validation failed: $($_.Exception.Message)" -ForegroundColor Red
+        if ($SkipIfNotConfigured) {
+            Write-Host "Not treating this as a skip: the MCP server/configuration was found but validation failed." -ForegroundColor Red
+        }
+        exit 1
+    }
+}
+
+if ($NonInteractive -or $All) {
+    Write-Host "-NonInteractive and -All require -UseRegisteredConfiguration, -ConfigurationPath, or both -Server and -Database." -ForegroundColor Red
+    exit 1
+}
 
 Write-Host "==================================================" -ForegroundColor Cyan
 Write-Host "  SQL Nexus MCP Server - Configuration Test" -ForegroundColor Cyan
@@ -38,7 +513,14 @@ Write-Host "Usage:" -ForegroundColor Yellow
 Write-Host "  .\Test-McpServer.ps1" -ForegroundColor Gray
 Write-Host "  .\Test-McpServer.ps1 -Tool top_cpu_queries -Server localhost -Database SqlNexus" -ForegroundColor Gray
 Write-Host "  .\Test-McpServer.ps1 -Tool analyze_waits -TrustedConnection false -UserId sqlnexus_reader -Password <password>" -ForegroundColor Gray
+Write-Host "  .\Test-McpServer.ps1 -Tool analyze_waits -ElevatedPrincipalPolicy ImpersonateReader" -ForegroundColor Gray
+Write-Host "  .\Test-McpServer.ps1 -UseRegisteredConfiguration -All -NonInteractive" -ForegroundColor Gray
+Write-Host "  .\Test-McpServer.ps1 -Server localhost -Database SqlNexus -All -NonInteractive" -ForegroundColor Gray
+Write-Host "  .\Test-McpServer.ps1 -Server localhost -Database SqlNexus -All -NonInteractive -SkipIfNotConfigured" -ForegroundColor Gray
 Write-Host "  Note: TrustedConnection defaults to True unless -TrustedConnection is specified." -ForegroundColor Gray
+Write-Host "  Note: ElevatedPrincipalPolicy defaults to Block (matching registration) unless -ElevatedPrincipalPolicy is specified." -ForegroundColor Gray
+Write-Host "  Note: -Server/-Database with -All validates directly without requiring MCP client registration." -ForegroundColor Gray
+Write-Host "  Note: -SkipIfNotConfigured exits 0 (instead of failing) when the MCP server/configuration is not available." -ForegroundColor Gray
 Write-Host ""
 
 $toolMap = @{
@@ -78,6 +560,7 @@ $configPath = Join-Path $scriptDir "appsettings.json"
 $defaultServer = "localhost"
 $defaultDatabase = "SqlNexus"
 $defaultTrusted = $true
+$defaultElevatedPrincipalPolicy = "Block"
 $configuredUserId = $env:SqlNexus__UserId
 $configuredPassword = $env:SqlNexus__Password
 
@@ -85,6 +568,7 @@ if (Test-Path $configPath) {
     $config = Get-Content $configPath | ConvertFrom-Json
     if ($config.SqlNexus.Server)   { $defaultServer   = $config.SqlNexus.Server }
     if ($config.SqlNexus.Database) { $defaultDatabase = $config.SqlNexus.Database }
+    if ($config.SqlNexus.ElevatedPrincipalPolicy) { $defaultElevatedPrincipalPolicy = $config.SqlNexus.ElevatedPrincipalPolicy }
     if ([string]::IsNullOrWhiteSpace($configuredUserId) -and $config.SqlNexus.UserId) {
         $configuredUserId = $config.SqlNexus.UserId
     }
@@ -95,6 +579,9 @@ if (Test-Path $configPath) {
 
 if ([string]::IsNullOrWhiteSpace($UserId)) { $UserId = $configuredUserId }
 if ([string]::IsNullOrWhiteSpace($Password)) { $Password = $configuredPassword }
+
+$effectiveElevatedPrincipalPolicy = if ($PSBoundParameters.ContainsKey('ElevatedPrincipalPolicy')) { $ElevatedPrincipalPolicy } else { $defaultElevatedPrincipalPolicy }
+$elevatedPrincipalPolicyArg = if ($effectiveElevatedPrincipalPolicy -eq "ImpersonateReader") { "impersonate-reader" } else { "block" }
 
 $serverName = $defaultServer
 $databaseName = $defaultDatabase
@@ -117,6 +604,18 @@ if ($Tool) {
         $inputDatabase = Read-Host "  SQL Nexus database  [$defaultDatabase]"
         if ($inputDatabase) { $databaseName = $inputDatabase }
     }
+
+    if (-not $PSBoundParameters.ContainsKey('ElevatedPrincipalPolicy')) {
+        $inputPolicy = Read-Host "  Elevated principal policy (Block/ImpersonateReader) [$effectiveElevatedPrincipalPolicy]"
+        if ($inputPolicy) {
+            if ($inputPolicy -notin @('Block', 'ImpersonateReader')) {
+                Write-Host "  Invalid value '$inputPolicy'; keeping '$effectiveElevatedPrincipalPolicy'." -ForegroundColor Yellow
+            } else {
+                $effectiveElevatedPrincipalPolicy = $inputPolicy
+                $elevatedPrincipalPolicyArg = if ($effectiveElevatedPrincipalPolicy -eq "ImpersonateReader") { "impersonate-reader" } else { "block" }
+            }
+        }
+    }
 }
 
 $trustedConnection = $defaultTrusted
@@ -125,6 +624,10 @@ if ($PSBoundParameters.ContainsKey('TrustedConnection')) {
 }
 Write-Host "  Using: $serverName / $databaseName" -ForegroundColor Green
 Write-Host "  Trusted connection: $trustedConnection" -ForegroundColor Green
+Write-Host "  Elevated principal policy: $effectiveElevatedPrincipalPolicy" -ForegroundColor Green
+if ($effectiveElevatedPrincipalPolicy -eq "ImpersonateReader") {
+    Write-Host "    MCP queries execute as the non-revertible, loginless SqlNexusMcpReader database principal." -ForegroundColor Gray
+}
 Write-Host ""
 
 # Attempt to test SQL connection
@@ -160,7 +663,8 @@ function Invoke-McpTool {
     $exeArgs = @(
         "--server", $serverName,
         "--database", $databaseName,
-        "--trusted-connection", $trustedConnection.ToString().ToLowerInvariant()
+        "--trusted-connection", $trustedConnection.ToString().ToLowerInvariant(),
+        "--elevated-principal-policy", $elevatedPrincipalPolicyArg
     )
 
     $originalUserId = $env:SqlNexus__UserId
@@ -198,7 +702,10 @@ function Invoke-McpTool {
                     Write-Host "  (no data)" -ForegroundColor Gray
                 }
             }
-        } catch { }
+        } catch {
+            Write-Host "  Invalid MCP response: $($_.Exception.Message)" -ForegroundColor Red
+            throw
+        }
     }
 }
 
@@ -232,8 +739,10 @@ while (-not $exit) {
     Write-Host "  4. Test List Nexus Tables" -ForegroundColor White
     Write-Host "  5. Test Blocking Analysis" -ForegroundColor White
     Write-Host "  6. Test Performance Summary" -ForegroundColor White
-    Write-Host "  7. Exit" -ForegroundColor White
-    $choice = Read-Host "Enter your choice (1-7)"
+    Write-Host "  7. Change Elevated Principal Policy (current: $effectiveElevatedPrincipalPolicy)" -ForegroundColor White
+    Write-Host "  8. Test All Tools Against Registered MCP Configuration" -ForegroundColor White
+    Write-Host "  9. Exit" -ForegroundColor White
+    $choice = Read-Host "Enter your choice (1-9)"
     switch ($choice) {
         "1" {
             Write-Host "Testing Top CPU Queries..." -ForegroundColor Cyan
@@ -266,11 +775,37 @@ while (-not $exit) {
             Invoke-McpToolByAlias -ToolAlias 'performance_summary'
         }
         "7" {
+            $newPolicy = Read-Host "  Elevated principal policy (Block/ImpersonateReader) [$effectiveElevatedPrincipalPolicy]"
+            if ($newPolicy) {
+                if ($newPolicy -notin @('Block', 'ImpersonateReader')) {
+                    Write-Host "  Invalid value '$newPolicy'; keeping '$effectiveElevatedPrincipalPolicy'." -ForegroundColor Yellow
+                } else {
+                    $effectiveElevatedPrincipalPolicy = $newPolicy
+                    $elevatedPrincipalPolicyArg = if ($effectiveElevatedPrincipalPolicy -eq "ImpersonateReader") { "impersonate-reader" } else { "block" }
+                    Write-Host "  Elevated principal policy set to '$effectiveElevatedPrincipalPolicy'." -ForegroundColor Green
+                    if ($effectiveElevatedPrincipalPolicy -eq "ImpersonateReader") {
+                        Write-Host "    MCP queries execute as the non-revertible, loginless SqlNexusMcpReader database principal." -ForegroundColor Gray
+                    }
+                }
+            }
+        }
+        "8" {
+            try {
+                $registeredConfigurationPath = if ([string]::IsNullOrWhiteSpace($ConfigurationPath)) { $null } else { $ConfigurationPath }
+                $registration = Get-RegisteredMcpConfigurationEntry -Path $registeredConfigurationPath
+                Write-Host "Testing registered MCP configuration: $($registration.Path)" -ForegroundColor Cyan
+                Invoke-AllRegisteredMcpTools -Registration $registration
+            }
+            catch {
+                Write-Host "MCP integration validation failed: $($_.Exception.Message)" -ForegroundColor Red
+            }
+        }
+        "9" {
             Write-Host "Exiting test script. Goodbye!" -ForegroundColor Green
             $exit = $true
         }
         default {
-            Write-Host "Invalid choice. Please enter a number between 1 and 7." -ForegroundColor Red
+            Write-Host "Invalid choice. Please enter a number between 1 and 9." -ForegroundColor Red
         }
     }
     Write-Host ""
