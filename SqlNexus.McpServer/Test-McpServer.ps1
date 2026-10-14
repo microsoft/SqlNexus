@@ -177,6 +177,28 @@ function Get-RegisteredMcpConfigurationEntry {
     return $entries[0]
 }
 
+function Resolve-DefaultMcpServerExecutablePath {
+    param([Parameter(Mandatory=$true)][string]$ScriptDirectory)
+
+    # Dev/source-tree layout: SqlNexus.McpServer\Test-McpServer.ps1 next to bin\Release\SqlNexus.McpServer.exe.
+    $devLayoutPath = Join-Path $ScriptDirectory "bin\Release\SqlNexus.McpServer.exe"
+    if (Test-Path -LiteralPath $devLayoutPath -PathType Leaf) {
+        return $devLayoutPath
+    }
+
+    # Staged/release layout: StageSqlNexusAiFiles flattens SqlNexus.McpServer\bin\$(Configuration)\*
+    # directly into sqlnexus\bin\$(Configuration)\SqlNexus.McpServer\, so the exe sits right next to
+    # this script with no nested bin\Release folder.
+    $stagedLayoutPath = Join-Path $ScriptDirectory "SqlNexus.McpServer.exe"
+    if (Test-Path -LiteralPath $stagedLayoutPath -PathType Leaf) {
+        return $stagedLayoutPath
+    }
+
+    # Nothing found at either known location; return the dev-layout path so error messages stay
+    # consistent with the documented 'dotnet build -c Release' guidance.
+    return $devLayoutPath
+}
+
 function Get-DirectMcpServerRegistration {
     param(
         [Parameter(Mandatory=$true)][string]$Server,
@@ -190,7 +212,7 @@ function Get-DirectMcpServerRegistration {
     $command = if (-not [string]::IsNullOrWhiteSpace($ExecutablePath)) {
         $ExecutablePath
     } else {
-        Join-Path (Split-Path -Parent $PSCommandPath) "bin\Release\SqlNexus.McpServer.exe"
+        Resolve-DefaultMcpServerExecutablePath -ScriptDirectory (Split-Path -Parent $PSCommandPath)
     }
 
     if (-not (Test-Path -LiteralPath $command -PathType Leaf)) {
@@ -546,7 +568,7 @@ Write-Host ""
 # Check if MCP Server executable exists
 Write-Host "Checking MCP Server executable..." -ForegroundColor Yellow
 $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
-$exePath = Join-Path $scriptDir "bin\Release\SqlNexus.McpServer.exe"
+$exePath = Resolve-DefaultMcpServerExecutablePath -ScriptDirectory $scriptDir
 if (Test-Path $exePath) {
     Write-Host "  MCP Server found: $exePath" -ForegroundColor Green
 } else {

@@ -104,6 +104,62 @@ namespace SqlNexus.UnitTests.SqlNexus.McpServer
             StringAssert.Contains(result.Output, "currently require -All");
         }
 
+        [TestMethod]
+        public void DirectMode_StagedLayoutExecutableNextToScript_IsDiscoveredWithoutExecutablePath()
+        {
+            // Regression test for the staged/release layout produced by sqlnexus.csproj's
+            // StageSqlNexusAiFiles target: SqlNexus.McpServer.exe is flattened directly next to
+            // Test-McpServer.ps1, with no nested bin\Release subfolder. The default executable
+            // resolution must find it there (not only in the dev bin\Release layout).
+            string stagingDirectory = Path.Combine(Path.GetTempPath(), "SqlNexusStagedLayoutTest_" + Guid.NewGuid().ToString("N"));
+            Directory.CreateDirectory(stagingDirectory);
+            try
+            {
+                string script = Path.Combine(FindRepositoryRoot(), "SqlNexus.McpServer", "Test-McpServer.ps1");
+                string copiedScript = Path.Combine(stagingDirectory, "Test-McpServer.ps1");
+                File.Copy(script, copiedScript);
+
+                // A fake (non-functional) executable is enough: -SkipIfNotConfigured is intentionally
+                // NOT used here, so we only need to confirm the resolver locates the file and attempts
+                // to launch it (proving discovery succeeded) rather than reporting "not found".
+                string fakeExecutable = Path.Combine(stagingDirectory, "SqlNexus.McpServer.exe");
+                File.WriteAllText(fakeExecutable, string.Empty);
+
+                var startInfo = new ProcessStartInfo
+                {
+                    FileName = Path.Combine(
+                        Environment.GetFolderPath(Environment.SpecialFolder.System),
+                        "WindowsPowerShell", "v1.0", "powershell.exe"),
+                    Arguments = "-NoProfile -NonInteractive -ExecutionPolicy Bypass -File " + Quote(copiedScript)
+                        + " -Server localhost -Database SqlNexus -All -NonInteractive",
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    CreateNoWindow = true
+                };
+
+                string output;
+                string error;
+                using (Process process = Process.Start(startInfo))
+                {
+                    output = process.StandardOutput.ReadToEnd();
+                    error = process.StandardError.ReadToEnd();
+                    process.WaitForExit();
+                }
+
+                // The fake executable is not a real MCP server, so validation itself is expected to
+                // fail once launched. The regression being guarded against is the executable being
+                // reported as "not found" when it is actually present in the staged layout.
+                Assert.IsFalse(
+                    output.Contains("The MCP server executable was not found"),
+                    "Staged-layout executable (next to the script) was not discovered: " + output + error);
+            }
+            finally
+            {
+                Directory.Delete(stagingDirectory, recursive: true);
+            }
+        }
+
         private static string CreateTemporaryConfiguration(string content)
         {
             string path = Path.Combine(Path.GetTempPath(), "SqlNexusMcpTest_" + Guid.NewGuid().ToString("N") + ".json");
