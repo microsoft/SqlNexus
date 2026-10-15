@@ -838,9 +838,6 @@
     <None Include="Resources\Book_StackOfReportsHS.BMP" />
     <None Include="Resources\book_reportHS.bmp" />
     <None Include="Resources\status_anim.gif" />
-    <Content Include="sqlnexus.chm">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BulkLoadEx\BulkLoadEx.csproj">

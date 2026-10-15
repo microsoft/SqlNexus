@@ -47,3 +47,5 @@ see License.md
 
 # More information
 More information and help can be found in the [wiki](https://github.com/Microsoft/SqlNexus/wiki)
+
+The obsolete CHM help files are no longer bundled. Legacy CHM help actions in the application have not been redirected.
