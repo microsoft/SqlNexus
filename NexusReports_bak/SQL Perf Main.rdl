@@ -128,19 +128,6 @@ values ('Active Traces and XEvents_C', 'Active Trace and XEvent Report', 'Active
 
 
 
---Azure
-insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection, Manditory,CategorySeq) 
-values ('WASD_Connection_Stats_C', 'Connection Stats', 'Historical summary of connection statistics to the server',  1|2|4|8, 'Azure', 'dbo.tbl_DB_CONN_STATS', 100, 'Azure Perf Stats Collector', 1, 1000)
-
-insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection, Manditory,CategorySeq) 
-values ('WASD_Deadlocks_C', 'Deadlocks', 'Deadlock data from sys.event_log',  1|2|4|8, 'Azure', 'dbo.tbl_EVENT_LOG', 200, 'Azure Perf Stats Collector', 1,1000)
-
-insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection, Manditory,CategorySeq) 
-values ('WASD_ResourceStats_C', 'sys.resource_stats', 'Snapshot from sys.resource_stats view',  1|2|4|8, 'Azure', 'dbo.tbl_RESOURCE_STATS', 300, 'Azure Perf Stats Collector', 1,1000)
-
-insert into @tbl_reports (ReportName, ReportDisplayName, ReportDescription, VersionApplied, Category,  ValidationObject, SeqNo, DataCollection, Manditory,CategorySeq) 
-values ('WASD_SloStats_C', 'SLO change history', 'Shows the changes in service level objective for databases',  1|2|4|8, 'Azure', 'dbo.tbl_SLO_HISTORY', 400, 'Azure Perf Stats Collector', 1,1000)
-
 select
 CategorySeq, Category, ReportName, ReportDisplayName, ReportDescription, DataCollection, SeqNo, MAX(ReportAvailable) ReportAvailable
 from 

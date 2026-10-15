@@ -14,7 +14,7 @@ Download the latest build of SQL Nexus from the [releases page](https://github.c
 4. **ERRORLOG and XEL analysis**: Import SQL Server ERRORLOG files and supported Extended Events data with the ERRORLOG and Custom XEL importers.
 5. **Trace aggregation**: Identify the top N most expensive queries using the native Trace Managed importer or [RML](https://github.com/Microsoft/SqlNexus/wiki/RML-Utility).
 6. **Command-line operation**: Run SQL Nexus from the command line to support scripted and repeatable workflows.
-7. **Visual reports**: Explore loaded data through a variety of [charts and reports](https://github.com/Microsoft/SqlNexus/wiki/Reports).
+7. **Visual reports**: Explore loaded data through a variety of [charts and reports](https://github.com/Microsoft/SqlNexus/wiki/Reports). The unused legacy WASD reports are no longer included.
 8. **Wait statistics analysis**: Visualize blocking and other resource-contention issues in data collected by [PSSDIAG](https://github.com/Microsoft/diagmanager).
 9. **Full-featured reporting engine**: SQL Nexus uses the SQL Server Reporting Services client-side report viewer and does not require a Reporting Services instance. Zoom in or out to examine server performance during a particular time window, expand or collapse report regions for easier navigation, and export reports to Excel, PDF, and other formats.
 
