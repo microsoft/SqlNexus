@@ -245,7 +245,7 @@ function Get-ProcessFailureDetail {
     param(
         [Parameter(Mandatory=$true)][string]$Diagnostics,
         [Parameter(Mandatory=$true)][int]$ExitCode,
-        [Parameter(Mandatory=$true)][string[]]$StdOutLines
+        [Parameter(Mandatory=$true)][AllowEmptyCollection()][AllowEmptyString()][string[]]$StdOutLines
     )
 
     if ([string]::IsNullOrWhiteSpace($Diagnostics)) {
@@ -330,7 +330,7 @@ function Invoke-McpRequests {
     $diagnostics = $diagnosticLines -join [Environment]::NewLine
 
     if ($exitCode -ne 0) {
-        throw (Get-ProcessFailureDetail -Diagnostics $diagnostics -ExitCode $exitCode -StdOutLines @($stdout -split "`r?`n"))
+        throw (Get-ProcessFailureDetail -Diagnostics $diagnostics -ExitCode $exitCode -StdOutLines @($stdout -split "`r?`n" | Where-Object { -not [string]::IsNullOrWhiteSpace($_) }))
     }
 
     $responseLines = @($stdout -split "`r?`n" | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
@@ -377,6 +377,27 @@ function Get-ValidationArguments {
 
 function Invoke-AllRegisteredMcpTools {
     param([Parameter(Mandatory=$true)]$Registration)
+
+    $serverIndex = [Array]::IndexOf($Registration.Arguments, "--server")
+    $databaseIndex = [Array]::IndexOf($Registration.Arguments, "--database")
+    $registeredServer = if ($serverIndex -ge 0 -and $serverIndex + 1 -lt $Registration.Arguments.Count) { $Registration.Arguments[$serverIndex + 1] } else { "<unknown>" }
+    $registeredDatabase = if ($databaseIndex -ge 0 -and $databaseIndex + 1 -lt $Registration.Arguments.Count) { $Registration.Arguments[$databaseIndex + 1] } else { "<unknown>" }
+
+    Write-Host ""
+    Write-Host "Registered MCP server executable: $($Registration.Command)" -ForegroundColor Cyan
+    if (Test-Path -LiteralPath $Registration.Command -PathType Leaf) {
+        $exeItem = Get-Item -LiteralPath $Registration.Command
+        $exeVersion = $exeItem.VersionInfo.FileVersion
+        if ([string]::IsNullOrWhiteSpace($exeVersion)) { $exeVersion = "(no version resource)" }
+        Write-Host "  File version: $exeVersion | Last built: $($exeItem.LastWriteTime)" -ForegroundColor Cyan
+    }
+    else {
+        Write-Host "  WARNING: the registered executable path does not exist." -ForegroundColor Red
+    }
+    Write-Host "  Target server/database: $registeredServer / $registeredDatabase" -ForegroundColor Cyan
+    Write-Host "  If results look stale (e.g. a bug you just fixed still fails), confirm this is the" -ForegroundColor Yellow
+    Write-Host "  SqlNexus.McpServer.exe you expect -- re-run Register-SqlNexusCopilotIntegration.ps1 -Force" -ForegroundColor Yellow
+    Write-Host "  after rebuilding if this points at an older or different SQL Nexus installation." -ForegroundColor Yellow
 
     $policyIndex = [Array]::IndexOf($Registration.Arguments, "--elevated-principal-policy")
     $registeredPolicy = if ($policyIndex -ge 0 -and $policyIndex + 1 -lt $Registration.Arguments.Count) { $Registration.Arguments[$policyIndex + 1] } else { "block" }
