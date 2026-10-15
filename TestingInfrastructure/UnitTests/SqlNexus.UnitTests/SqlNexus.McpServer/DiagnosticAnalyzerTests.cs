@@ -299,6 +299,68 @@ END";
             Assert.AreEqual(0, result.Count);
         }
 
+        [TestMethod]
+        public void BuildQueryExecutionDetailsQuery_UsesOrigRowCountAliasedAsRowCounts()
+        {
+            string query = global::SqlNexus.McpServer.DiagnosticAnalyzer.BuildQueryExecutionDetailsQuery(12345);
+
+            StringAssert.Contains(query, "b.OrigRowCount AS RowCounts");
+            StringAssert.Contains(query, "WHERE b.HashID = 12345");
+            Assert.IsFalse(query.Contains("b.RowCounts,"), "Query must not reference the non-existent ReadTrace.tblBatches.RowCounts column.");
+        }
+
+        [TestMethod]
+        public void BuildBlockingChainTreeQuery_PrimaryBranchUsesBlockingHierarchyView()
+        {
+            string query = global::SqlNexus.McpServer.DiagnosticAnalyzer.BuildBlockingChainTreeQuery();
+
+            StringAssert.Contains(query, "IF OBJECT_ID('dbo.vw_BLOCKING_HIERARCHY') IS NOT NULL");
+            StringAssert.Contains(query, "FROM dbo.vw_BLOCKING_HIERARCHY");
+            Assert.IsFalse(query.Contains("tbl_BLOCKING_CHAINS"), "tbl_BLOCKING_CHAINS does not have session_id/wait_type/wait_resource columns and must not be queried for this shape.");
+        }
+
+        [TestMethod]
+        public void BuildBlockingChainTreeQuery_FallbackBranchUsesRequestsColumns()
+        {
+            string query = global::SqlNexus.McpServer.DiagnosticAnalyzer.BuildBlockingChainTreeQuery();
+
+            StringAssert.Contains(query, "ELSE IF OBJECT_ID('dbo.tbl_REQUESTS') IS NOT NULL");
+            StringAssert.Contains(query, "r.blocking_session_id");
+            StringAssert.Contains(query, "r.wait_resource");
+        }
+
+        [TestMethod]
+        public void BuildLockSummaryByObjectQuery_UsesRequestsNotBlockingChains()
+        {
+            string query = global::SqlNexus.McpServer.DiagnosticAnalyzer.BuildLockSummaryByObjectQuery();
+
+            StringAssert.Contains(query, "IF OBJECT_ID('dbo.tbl_REQUESTS') IS NOT NULL");
+            StringAssert.Contains(query, "wait_resource");
+            StringAssert.Contains(query, "wait_type LIKE 'LCK_%'");
+            Assert.IsFalse(query.Contains("tbl_BLOCKING_CHAINS"), "tbl_BLOCKING_CHAINS does not have wait_resource/database_name columns and must not be queried for this shape.");
+            Assert.IsFalse(query.Contains("database_name"), "tbl_REQUESTS does not have a database_name column (only database_id).");
+        }
+
+        [TestMethod]
+        public void BuildCpuByDatabaseQuery_UsesDbidNotDatabaseId()
+        {
+            string query = global::SqlNexus.McpServer.DiagnosticAnalyzer.BuildCpuByDatabaseQuery();
+
+            StringAssert.Contains(query, "b.DBID");
+            Assert.IsFalse(query.Contains("DatabaseID"), "ReadTrace.tblBatches does not have a DatabaseID column; the actual column is DBID.");
+            Assert.IsFalse(query.Contains("DB_NAME(b"), "DB_NAME() cannot reliably resolve DBID because it refers to the original collection server, not the connected SQL Nexus database.");
+        }
+
+        [TestMethod]
+        public void BuildTopQueriesByWritesQuery_UsesOrigRowCount()
+        {
+            string query = global::SqlNexus.McpServer.DiagnosticAnalyzer.BuildTopQueriesByWritesQuery(50);
+
+            StringAssert.Contains(query, "SUM(b.OrigRowCount)     AS Total_Rows_Affected");
+            StringAssert.Contains(query, "SELECT TOP 50");
+            Assert.IsFalse(query.Contains("b.RowCounts"), "Query must not reference the non-existent ReadTrace.tblBatches.RowCounts column.");
+        }
+
         private static DataTable CreateComparisonTable()
         {
             var table = new DataTable();
