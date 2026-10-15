@@ -558,12 +558,6 @@
       <DependentUpon>UserInstruction.cs</DependentUpon>
     </Compile>
     <Compile Include="Utilities.cs" />
-    <Content Include="Reports\PAL_C.rdlC">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Reports\PAL_sub_C.rdlC">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Reports\PowerBIReports\Performance Reports.pbit">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -1100,26 +1094,6 @@
       <FileType>File</FileType>
     </PublishFile>
     <PublishFile Include="Reports\Other Waits_C.rdlC">
-      <Visible>False</Visible>
-      <Group>
-      </Group>
-      <TargetPath>
-      </TargetPath>
-      <PublishState>Include</PublishState>
-      <IncludeHash>True</IncludeHash>
-      <FileType>File</FileType>
-    </PublishFile>
-    <PublishFile Include="Reports\PAL_C.rdlC">
-      <Visible>False</Visible>
-      <Group>
-      </Group>
-      <TargetPath>
-      </TargetPath>
-      <PublishState>Include</PublishState>
-      <IncludeHash>True</IncludeHash>
-      <FileType>File</FileType>
-    </PublishFile>
-    <PublishFile Include="Reports\PAL_sub_C.rdlC">
       <Visible>False</Visible>
       <Group>
       </Group>
