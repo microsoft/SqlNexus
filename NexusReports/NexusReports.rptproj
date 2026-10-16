@@ -70,8 +70,6 @@
     <Report Include="Missing Indexes_C.rdl" />
     <Report Include="Missing_MSIs_or_MSPs_C.rdl" />
     <Report Include="Other Waits_C.rdl" />
-    <Report Include="PAL_C.rdl" />
-    <Report Include="PAL_sub_C.rdl" />
     <Report Include="Perfmon_C.rdl" />
     <Report Include="Perfmon_CPU_C.rdl" />
     <Report Include="Perfmon_IO_C.rdl" />
@@ -109,11 +107,6 @@
     <Report Include="Virtual File Stats Details_C.rdl" />
     <Report Include="Virtual File Stats_C.rdl" />
     <Report Include="WaitDetails_C.rdl" />
-    <Report Include="WASD_Connection_Stats_C.rdl" />
-    <Report Include="WASD_Deadlocks_C.rdl" />
-    <Report Include="WASD_Event_Log_C.rdl" />
-    <Report Include="WASD_ResourceStats_C.rdl" />
-    <Report Include="WASD_ResourceUsage_C.rdl" />
     <Report Include="Working Set Trim_C.rdl" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Reporting Services\Microsoft.ReportingServices.MSBuilder.targets" />

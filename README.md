@@ -10,11 +10,11 @@ Download the latest build of SQL Nexus from the [releases page](https://github.c
 
 1. **AI-assisted diagnostics**: Analyze collected SQL Server diagnostic data with GitHub Copilot through the local SQL Nexus MCP server.
 2. **Fast, easy data loading**: Quickly load SQL Trace files, T-SQL script output (including SQL DMV queries), and Performance Monitor logs into a SQL Server database for analysis. These facilities use bulk-load APIs to insert data quickly.
-3. **Performance Monitor analysis**: Use the Perfmon importer to import and visualize Windows Performance Monitor data.
+3. **Performance Monitor analysis**: Use the Perfmon importer to import and visualize Windows Performance Monitor data through Perfmon Summary and its CPU, I/O, memory, and network reports. The legacy PAL reports have been removed because SQL Nexus does not provide their required `pal_Counters` catalog.
 4. **ERRORLOG and XEL analysis**: Import SQL Server ERRORLOG files and supported Extended Events data with the ERRORLOG and Custom XEL importers.
 5. **Trace aggregation**: Identify the top N most expensive queries using the native Trace Managed importer or [RML](https://github.com/Microsoft/SqlNexus/wiki/RML-Utility).
 6. **Command-line operation**: Run SQL Nexus from the command line to support scripted and repeatable workflows.
-7. **Visual reports**: Explore loaded data through a variety of [charts and reports](https://github.com/Microsoft/SqlNexus/wiki/Reports).
+7. **Visual reports**: Explore loaded data through a variety of [charts and reports](https://github.com/Microsoft/SqlNexus/wiki/Reports). The unused legacy WASD reports are no longer included.
 8. **Wait statistics analysis**: Visualize blocking and other resource-contention issues in data collected by [PSSDIAG](https://github.com/Microsoft/diagmanager).
 9. **Full-featured reporting engine**: SQL Nexus uses the SQL Server Reporting Services client-side report viewer and does not require a Reporting Services instance. Zoom in or out to examine server performance during a particular time window, expand or collapse report regions for easier navigation, and export reports to Excel, PDF, and other formats.
 
@@ -47,3 +47,5 @@ see License.md
 
 # More information
 More information and help can be found in the [wiki](https://github.com/Microsoft/SqlNexus/wiki)
+
+The obsolete CHM help files are no longer bundled. Legacy CHM help actions in the application have not been redirected.

@@ -476,21 +476,6 @@
     <Content Include="Reports\TopPlanAnalysis_C.rdlC">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Reports\WASD_Connection_Stats_C.rdlC">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Reports\WASD_Deadlocks_C.rdlC">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Reports\WASD_Event_Log_C.rdlC">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Reports\WASD_ResourceStats_C.rdlC">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Reports\WASD_ResourceUsage_C.rdlC">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Reports\Query_Store_C.rdlC">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -558,12 +543,6 @@
       <DependentUpon>UserInstruction.cs</DependentUpon>
     </Compile>
     <Compile Include="Utilities.cs" />
-    <Content Include="Reports\PAL_C.rdlC">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Reports\PAL_sub_C.rdlC">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Reports\PowerBIReports\Performance Reports.pbit">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -838,9 +817,6 @@
     <None Include="Resources\Book_StackOfReportsHS.BMP" />
     <None Include="Resources\book_reportHS.bmp" />
     <None Include="Resources\status_anim.gif" />
-    <Content Include="sqlnexus.chm">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BulkLoadEx\BulkLoadEx.csproj">
@@ -1103,26 +1079,6 @@
       <FileType>File</FileType>
     </PublishFile>
     <PublishFile Include="Reports\Other Waits_C.rdlC">
-      <Visible>False</Visible>
-      <Group>
-      </Group>
-      <TargetPath>
-      </TargetPath>
-      <PublishState>Include</PublishState>
-      <IncludeHash>True</IncludeHash>
-      <FileType>File</FileType>
-    </PublishFile>
-    <PublishFile Include="Reports\PAL_C.rdlC">
-      <Visible>False</Visible>
-      <Group>
-      </Group>
-      <TargetPath>
-      </TargetPath>
-      <PublishState>Include</PublishState>
-      <IncludeHash>True</IncludeHash>
-      <FileType>File</FileType>
-    </PublishFile>
-    <PublishFile Include="Reports\PAL_sub_C.rdlC">
       <Visible>False</Visible>
       <Group>
       </Group>
@@ -1523,56 +1479,6 @@
       <FileType>File</FileType>
     </PublishFile>
     <PublishFile Include="Reports\WaitDetails_C.rdlC">
-      <Visible>False</Visible>
-      <Group>
-      </Group>
-      <TargetPath>
-      </TargetPath>
-      <PublishState>Include</PublishState>
-      <IncludeHash>True</IncludeHash>
-      <FileType>File</FileType>
-    </PublishFile>
-    <PublishFile Include="Reports\WASD_Connection_Stats_C.rdlC">
-      <Visible>False</Visible>
-      <Group>
-      </Group>
-      <TargetPath>
-      </TargetPath>
-      <PublishState>Include</PublishState>
-      <IncludeHash>True</IncludeHash>
-      <FileType>File</FileType>
-    </PublishFile>
-    <PublishFile Include="Reports\WASD_Deadlocks_C.rdlC">
-      <Visible>False</Visible>
-      <Group>
-      </Group>
-      <TargetPath>
-      </TargetPath>
-      <PublishState>Include</PublishState>
-      <IncludeHash>True</IncludeHash>
-      <FileType>File</FileType>
-    </PublishFile>
-    <PublishFile Include="Reports\WASD_Event_Log_C.rdlC">
-      <Visible>False</Visible>
-      <Group>
-      </Group>
-      <TargetPath>
-      </TargetPath>
-      <PublishState>Include</PublishState>
-      <IncludeHash>True</IncludeHash>
-      <FileType>File</FileType>
-    </PublishFile>
-    <PublishFile Include="Reports\WASD_ResourceStats_C.rdlC">
-      <Visible>False</Visible>
-      <Group>
-      </Group>
-      <TargetPath>
-      </TargetPath>
-      <PublishState>Include</PublishState>
-      <IncludeHash>True</IncludeHash>
-      <FileType>File</FileType>
-    </PublishFile>
-    <PublishFile Include="Reports\WASD_ResourceUsage_C.rdlC">
       <Visible>False</Visible>
       <Group>
       </Group>
