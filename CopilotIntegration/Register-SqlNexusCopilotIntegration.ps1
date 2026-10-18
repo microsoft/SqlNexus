@@ -19,6 +19,9 @@ param(
     [string] $InstallRoot = (Split-Path -Parent $PSScriptRoot),
 
     [Parameter()]
+    [string] $McpExecutablePath,
+
+    [Parameter()]
     [string] $CopilotHome = (Join-Path $HOME ".copilot"),
 
     [Parameter()]
@@ -33,7 +36,15 @@ param(
 
 $ErrorActionPreference = "Stop"
 $serverName = "sqlnexus_mcp"
-$mcpExecutable = Join-Path $InstallRoot "SqlNexus.McpServer\SqlNexus.McpServer.exe"
+# Most callers rely on the staged/release layout convention (InstallRoot-based). Callers that
+# already know the correct executable path for their layout -- e.g. Test-McpServer.ps1, which
+# resolves both the dev (bin\Release) and staged/release layouts -- can override it directly so
+# that layout-detection logic lives in exactly one place.
+$mcpExecutable = if (-not [string]::IsNullOrWhiteSpace($McpExecutablePath)) {
+    $McpExecutablePath
+} else {
+    Join-Path $InstallRoot "SqlNexus.McpServer\SqlNexus.McpServer.exe"
+}
 $agentSource = Join-Path $InstallRoot ".github\agents\sql-nexus-diagnostic.agent.md"
 $skillsDirectory = Join-Path $InstallRoot "AI\Skills"
 $copilotConfigPath = Join-Path $CopilotHome "mcp-config.json"

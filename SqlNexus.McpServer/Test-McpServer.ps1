@@ -53,7 +53,10 @@ param(
     [switch]$NonInteractive,
 
     [Parameter(Mandatory=$false)]
-    [switch]$SkipIfNotConfigured
+    [switch]$SkipIfNotConfigured,
+
+    [Parameter(Mandatory=$false)]
+    [switch]$ForceRegistration
 )
 
 $ErrorActionPreference = "Stop"
@@ -175,6 +178,154 @@ function Get-RegisteredMcpConfigurationEntry {
     }
 
     return $entries[0]
+}
+
+function Invoke-ForceRegistrationSync {
+    param(
+        [Parameter(Mandatory=$true)][string]$ExecutablePath,
+        [string]$Server,
+        [string]$Database,
+        [string]$Database2,
+        [string]$ElevatedPrincipalPolicy,
+        [string]$TrustedConnection,
+        [string]$ConfigurationPath,
+        [switch]$NonInteractive
+    )
+
+    if (-not [string]::IsNullOrWhiteSpace($ConfigurationPath)) {
+        # Register-SqlNexusCopilotIntegration.ps1 always writes to its own default (or -CopilotHome/
+        # -VsCodeUserData-derived) locations; it has no way to target an arbitrary -ConfigurationPath
+        # file. Diffing against that file while writing somewhere else would silently register to the
+        # wrong place, so refuse rather than guess.
+        throw ("-ForceRegistration does not support -ConfigurationPath; it always registers to the default " +
+            "VS Code (`$env:APPDATA\Code\User\mcp.json) and Copilot CLI (`$HOME\.copilot\mcp-config.json) locations.")
+    }
+
+    if (-not (Test-Path -LiteralPath $ExecutablePath -PathType Leaf)) {
+        throw "Cannot force-register: the MCP server executable was not found: $ExecutablePath. Build it with 'dotnet build -c Release' first."
+    }
+
+    $registerScript = Join-Path (Split-Path -Parent $ExecutablePath) "..\CopilotIntegration\Register-SqlNexusCopilotIntegration.ps1"
+    if (-not (Test-Path -LiteralPath $registerScript -PathType Leaf)) {
+        # Script directory and exe directory are the same in the staged/release layout; try that too.
+        $registerScript = Join-Path (Split-Path -Parent $PSCommandPath) "..\CopilotIntegration\Register-SqlNexusCopilotIntegration.ps1"
+    }
+    if (-not (Test-Path -LiteralPath $registerScript -PathType Leaf)) {
+        throw "Cannot force-register: Register-SqlNexusCopilotIntegration.ps1 was not found next to this installation."
+    }
+
+    # Collect the values to register. We never trust/preserve values from an existing registration --
+    # a stale registration could point at the wrong server/database just as easily as the wrong exe.
+    $resolvedServer = $Server
+    $resolvedDatabase = $Database
+    $resolvedPolicy = if ([string]::IsNullOrWhiteSpace($ElevatedPrincipalPolicy)) { "Block" } else { $ElevatedPrincipalPolicy }
+    if ([string]::IsNullOrWhiteSpace($resolvedServer) -or [string]::IsNullOrWhiteSpace($resolvedDatabase)) {
+        if ($NonInteractive) {
+            throw "Cannot force-register in -NonInteractive mode without -Server and -Database."
+        }
+        if ([string]::IsNullOrWhiteSpace($resolvedServer)) {
+            $resolvedServer = Read-Host "  SQL Server instance to register [localhost]"
+            if ([string]::IsNullOrWhiteSpace($resolvedServer)) { $resolvedServer = "localhost" }
+        }
+        if ([string]::IsNullOrWhiteSpace($resolvedDatabase)) {
+            $resolvedDatabase = Read-Host "  SQL Nexus database to register [SqlNexus]"
+            if ([string]::IsNullOrWhiteSpace($resolvedDatabase)) { $resolvedDatabase = "SqlNexus" }
+        }
+        if (-not $PSBoundParameters.ContainsKey('ElevatedPrincipalPolicy') -or [string]::IsNullOrWhiteSpace($ElevatedPrincipalPolicy)) {
+            $inputPolicy = Read-Host "  Elevated principal policy to register (Block/ImpersonateReader) [Block]"
+            if (-not [string]::IsNullOrWhiteSpace($inputPolicy)) {
+                if ($inputPolicy -notin @('Block', 'ImpersonateReader')) {
+                    Write-Host "  Invalid value '$inputPolicy'; using 'Block'." -ForegroundColor Yellow
+                } else {
+                    $resolvedPolicy = $inputPolicy
+                }
+            }
+        }
+    }
+
+    $newEntry = [pscustomobject]@{
+        Command = $ExecutablePath
+        Server = $resolvedServer
+        Database = $resolvedDatabase
+        Database2 = $Database2
+        Policy = $resolvedPolicy
+    }
+
+    $existingEntry = $null
+    try {
+        $existingRegistration = Get-RegisteredMcpConfigurationEntry -Path $ConfigurationPath
+        $existingServerIndex = [Array]::IndexOf($existingRegistration.Arguments, "--server")
+        $existingDatabaseIndex = [Array]::IndexOf($existingRegistration.Arguments, "--database")
+        $existingPolicyIndex = [Array]::IndexOf($existingRegistration.Arguments, "--elevated-principal-policy")
+        $existingEntry = [pscustomobject]@{
+            Command = $existingRegistration.Command
+            Server = if ($existingServerIndex -ge 0) { $existingRegistration.Arguments[$existingServerIndex + 1] } else { "<unknown>" }
+            Database = if ($existingDatabaseIndex -ge 0) { $existingRegistration.Arguments[$existingDatabaseIndex + 1] } else { "<unknown>" }
+            Policy = if ($existingPolicyIndex -ge 0) { $existingRegistration.Arguments[$existingPolicyIndex + 1] } else { "block" }
+        }
+    }
+    catch {
+        # No existing registration (or it is invalid/ambiguous) -- nothing to diff against or confirm.
+        Write-Host "No existing 'sqlnexus_mcp' registration found; registering for the first time." -ForegroundColor Cyan
+    }
+
+    if ($null -ne $existingEntry) {
+        Write-Host ""
+        Write-Host "Existing registration:" -ForegroundColor Yellow
+        Write-Host "  Command:  $($existingEntry.Command)"
+        Write-Host "  Server:   $($existingEntry.Server)"
+        Write-Host "  Database: $($existingEntry.Database)"
+        Write-Host "  Policy:   $($existingEntry.Policy)"
+        Write-Host "New registration (this folder):" -ForegroundColor Yellow
+        Write-Host "  Command:  $($newEntry.Command)"
+        Write-Host "  Server:   $($newEntry.Server)"
+        Write-Host "  Database: $($newEntry.Database)"
+        Write-Host "  Policy:   $($newEntry.Policy)"
+        Write-Host "The existing registration will be fully replaced (not merged) if you proceed." -ForegroundColor Yellow
+        Write-Host ""
+
+        if (-not $NonInteractive) {
+            $choice = Read-Host "Keep existing registration or overwrite with the values above? (K)eep/(O)verwrite [K]"
+            if ([string]::IsNullOrWhiteSpace($choice) -or $choice -notmatch '^(o|overwrite)$') {
+                Write-Host "Keeping the existing registration unchanged." -ForegroundColor Cyan
+                return $false
+            }
+        }
+        else {
+            Write-Host "Running -NonInteractive with -ForceRegistration: overwriting the existing registration automatically." -ForegroundColor Yellow
+        }
+    }
+
+    # Use a hashtable (not a flat string array) for splatting: splatting a flat array onto another
+    # PowerShell script binds parameters POSITIONALLY, so "-Name" strings embedded in a plain array
+    # do not bind by name the way they would as literal command-line arguments to a native .exe.
+    $registerArgs = @{
+        Server = $newEntry.Server
+        Database = $newEntry.Database
+        ElevatedPrincipalPolicy = $newEntry.Policy
+        McpExecutablePath = $newEntry.Command
+        McpOnly = $true
+        Force = $true
+    }
+    if (-not [string]::IsNullOrWhiteSpace($newEntry.Database2)) {
+        $registerArgs["Database2"] = $newEntry.Database2
+    }
+
+    $registerArgsDisplay = ($registerArgs.GetEnumerator() | ForEach-Object { "-$($_.Key) $($_.Value)" }) -join ' '
+    Write-Host "Running: $registerScript $registerArgsDisplay" -ForegroundColor Cyan
+
+    # Register-SqlNexusCopilotIntegration.ps1 only calls 'exit 1' on failure (via its trap); it has
+    # no 'exit 0' on success, so $LASTEXITCODE can be stale on success. Reset it first so a nonzero
+    # value afterward can only have come from this specific invocation, and also rely on
+    # $ErrorActionPreference = "Stop" (set at the top of this script) to catch any terminating error
+    # that escapes before the script's own trap/exit runs.
+    $global:LASTEXITCODE = 0
+    & $registerScript @registerArgs
+    if ($LASTEXITCODE -ne 0) {
+        throw "Register-SqlNexusCopilotIntegration.ps1 failed with exit code $LASTEXITCODE."
+    }
+
+    return $true
 }
 
 function Resolve-DefaultMcpServerExecutablePath {
@@ -375,7 +526,7 @@ function Get-ValidationArguments {
     }
 }
 
-function Invoke-AllRegisteredMcpTools {
+function Invoke-AllMcpTools {
     param([Parameter(Mandatory=$true)]$Registration)
 
     $serverIndex = [Array]::IndexOf($Registration.Arguments, "--server")
@@ -384,7 +535,7 @@ function Invoke-AllRegisteredMcpTools {
     $registeredDatabase = if ($databaseIndex -ge 0 -and $databaseIndex + 1 -lt $Registration.Arguments.Count) { $Registration.Arguments[$databaseIndex + 1] } else { "<unknown>" }
 
     Write-Host ""
-    Write-Host "Registered MCP server executable: $($Registration.Command)" -ForegroundColor Cyan
+    Write-Host "MCP server executable: $($Registration.Command)" -ForegroundColor Cyan
     if (Test-Path -LiteralPath $Registration.Command -PathType Leaf) {
         $exeItem = Get-Item -LiteralPath $Registration.Command
         $exeVersion = $exeItem.VersionInfo.FileVersion
@@ -395,13 +546,10 @@ function Invoke-AllRegisteredMcpTools {
         Write-Host "  WARNING: the registered executable path does not exist." -ForegroundColor Red
     }
     Write-Host "  Target server/database: $registeredServer / $registeredDatabase" -ForegroundColor Cyan
-    Write-Host "  If results look stale (e.g. a bug you just fixed still fails), confirm this is the" -ForegroundColor Yellow
-    Write-Host "  SqlNexus.McpServer.exe you expect -- re-run Register-SqlNexusCopilotIntegration.ps1 -Force" -ForegroundColor Yellow
-    Write-Host "  after rebuilding if this points at an older or different SQL Nexus installation." -ForegroundColor Yellow
 
     $policyIndex = [Array]::IndexOf($Registration.Arguments, "--elevated-principal-policy")
     $registeredPolicy = if ($policyIndex -ge 0 -and $policyIndex + 1 -lt $Registration.Arguments.Count) { $Registration.Arguments[$policyIndex + 1] } else { "block" }
-    Write-Host "Registered elevated principal policy: $registeredPolicy" -ForegroundColor Cyan
+    Write-Host "Configured elevated principal policy: $registeredPolicy" -ForegroundColor Cyan
     if ($registeredPolicy -eq "impersonate-reader") {
         Write-Host "  MCP queries execute as the non-revertible, loginless SqlNexusMcpReader database principal." -ForegroundColor Gray
     }
@@ -487,6 +635,34 @@ $requestedAutomatedValidation = -not $Tool -and (
     (-not [string]::IsNullOrWhiteSpace($Server) -and -not [string]::IsNullOrWhiteSpace($Database))
 )
 
+# -ForceRegistration always targets the registered configuration (mcp.json / mcp-config.json),
+# never direct mode, since direct mode never touches those files in the first place.
+if ($ForceRegistration -and -not $Tool) {
+    try {
+        $exePathForRegistration = if (-not [string]::IsNullOrWhiteSpace($ExecutablePath)) {
+            $ExecutablePath
+        } else {
+            Resolve-DefaultMcpServerExecutablePath -ScriptDirectory (Split-Path -Parent $PSCommandPath)
+        }
+
+        Invoke-ForceRegistrationSync -ExecutablePath $exePathForRegistration -Server $Server -Database $Database `
+            -Database2 $Database2 -ElevatedPrincipalPolicy $ElevatedPrincipalPolicy -TrustedConnection $TrustedConnection `
+            -ConfigurationPath $ConfigurationPath -NonInteractive:$NonInteractive | Out-Null
+    }
+    catch {
+        Write-Host "MCP registration sync failed: $($_.Exception.Message)" -ForegroundColor Red
+        exit 1
+    }
+
+    if (-not $All) {
+        exit 0
+    }
+
+    # Proceed to validate against the (now freshly written) registered configuration.
+    $UseRegisteredConfiguration = $true
+    $requestedAutomatedValidation = $true
+}
+
 if ($requestedAutomatedValidation -and -not $All) {
     Write-Host "-UseRegisteredConfiguration, -ConfigurationPath, and -Server/-Database validation currently require -All." -ForegroundColor Red
     exit 1
@@ -531,7 +707,7 @@ if ($requestedAutomatedValidation -and $All) {
         }
 
         Write-Host "Testing MCP configuration: $($registration.Path)" -ForegroundColor Cyan
-        Invoke-AllRegisteredMcpTools -Registration $registration
+        Invoke-AllMcpTools -Registration $registration
         exit 0
     }
     catch {
@@ -560,10 +736,14 @@ Write-Host "  .\Test-McpServer.ps1 -Tool analyze_waits -ElevatedPrincipalPolicy 
 Write-Host "  .\Test-McpServer.ps1 -UseRegisteredConfiguration -All -NonInteractive" -ForegroundColor Gray
 Write-Host "  .\Test-McpServer.ps1 -Server localhost -Database SqlNexus -All -NonInteractive" -ForegroundColor Gray
 Write-Host "  .\Test-McpServer.ps1 -Server localhost -Database SqlNexus -All -NonInteractive -SkipIfNotConfigured" -ForegroundColor Gray
+Write-Host "  .\Test-McpServer.ps1 -ForceRegistration -Server localhost -Database SqlNexus" -ForegroundColor Gray
+Write-Host "  .\Test-McpServer.ps1 -ForceRegistration -Server localhost -Database SqlNexus -All -NonInteractive" -ForegroundColor Gray
 Write-Host "  Note: TrustedConnection defaults to True unless -TrustedConnection is specified." -ForegroundColor Gray
 Write-Host "  Note: ElevatedPrincipalPolicy defaults to Block (matching registration) unless -ElevatedPrincipalPolicy is specified." -ForegroundColor Gray
 Write-Host "  Note: -Server/-Database with -All validates directly without requiring MCP client registration." -ForegroundColor Gray
 Write-Host "  Note: -SkipIfNotConfigured exits 0 (instead of failing) when the MCP server/configuration is not available." -ForegroundColor Gray
+Write-Host "  Note: -ForceRegistration registers (or re-registers) this folder's SqlNexus.McpServer.exe as 'sqlnexus_mcp'," -ForegroundColor Gray
+Write-Host "        replacing any existing registration. Prompts to confirm interactively; auto-overwrites with -NonInteractive." -ForegroundColor Gray
 Write-Host ""
 
 $toolMap = @{
@@ -783,9 +963,10 @@ while (-not $exit) {
     Write-Host "  5. Test Blocking Analysis" -ForegroundColor White
     Write-Host "  6. Test Performance Summary" -ForegroundColor White
     Write-Host "  7. Change Elevated Principal Policy (current: $effectiveElevatedPrincipalPolicy)" -ForegroundColor White
-    Write-Host "  8. Test All Tools Against Registered MCP Configuration" -ForegroundColor White
-    Write-Host "  9. Exit" -ForegroundColor White
-    $choice = Read-Host "Enter your choice (1-9)"
+    Write-Host "  8. Test All Tools Using Current Connection Settings" -ForegroundColor White
+    Write-Host "  9. Force-Register This Folder's MCP Server (replaces existing registration)" -ForegroundColor White
+    Write-Host "  10. Exit" -ForegroundColor White
+    $choice = Read-Host "Enter your choice (1-10)"
     switch ($choice) {
         "1" {
             Write-Host "Testing Top CPU Queries..." -ForegroundColor Cyan
@@ -834,21 +1015,33 @@ while (-not $exit) {
         }
         "8" {
             try {
-                $registeredConfigurationPath = if ([string]::IsNullOrWhiteSpace($ConfigurationPath)) { $null } else { $ConfigurationPath }
-                $registration = Get-RegisteredMcpConfigurationEntry -Path $registeredConfigurationPath
-                Write-Host "Testing registered MCP configuration: $($registration.Path)" -ForegroundColor Cyan
-                Invoke-AllRegisteredMcpTools -Registration $registration
+                $registration = Get-DirectMcpServerRegistration -Server $serverName -Database $databaseName -Database2 $Database2 `
+                    -ExecutablePath $exePath -TrustedConnection $trustedConnection.ToString() `
+                    -ElevatedPrincipalPolicy $effectiveElevatedPrincipalPolicy
+                Write-Host "Testing all tools using the current connection settings." -ForegroundColor Cyan
+                Invoke-AllMcpTools -Registration $registration
             }
             catch {
                 Write-Host "MCP integration validation failed: $($_.Exception.Message)" -ForegroundColor Red
             }
         }
         "9" {
+            try {
+                $exePathForRegistration = if (-not [string]::IsNullOrWhiteSpace($ExecutablePath)) { $ExecutablePath } else { $exePath }
+                Invoke-ForceRegistrationSync -ExecutablePath $exePathForRegistration -Server $Server -Database $Database `
+                    -Database2 $Database2 -ElevatedPrincipalPolicy $effectiveElevatedPrincipalPolicy -TrustedConnection $TrustedConnection `
+                    -ConfigurationPath $ConfigurationPath | Out-Null
+            }
+            catch {
+                Write-Host "MCP registration sync failed: $($_.Exception.Message)" -ForegroundColor Red
+            }
+        }
+        "10" {
             Write-Host "Exiting test script. Goodbye!" -ForegroundColor Green
             $exit = $true
         }
         default {
-            Write-Host "Invalid choice. Please enter a number between 1 and 9." -ForegroundColor Red
+            Write-Host "Invalid choice. Please enter a number between 1 and 10." -ForegroundColor Red
         }
     }
     Write-Host ""

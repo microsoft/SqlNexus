@@ -196,10 +196,15 @@ Open Copilot Chat (`Ctrl+Shift+I`) and start diagnosing!
 
 ### Run the Test Script
 
+When working from the repository, run the authoritative source script:
+
 ```powershell
-cd path\to\SqlNexus.McpServer
-.\Test-McpServer.ps1
+path\to\SqlNexus.McpServer\Test-McpServer.ps1
 ```
+
+For a packaged SQL Nexus build, run the single staged copy at
+`sqlnexus\bin\<Configuration>\SqlNexus.McpServer\Test-McpServer.ps1`. Files elsewhere under
+`bin` are stale build artifacts and can be removed with a clean build.
 
 The script checks prerequisites, tests the SQL connection, and lets you interactively invoke tools.
 

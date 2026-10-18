@@ -1,4 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json.Linq;
 using SqlNexus.McpServer;
 
 namespace SqlNexus.UnitTests.SqlNexus.McpServer
@@ -313,6 +314,17 @@ namespace SqlNexus.UnitTests.SqlNexus.McpServer
         {
             const string input = "{\"Duration_ms\": \"12345\"}";
             Assert.AreEqual(input, PiiScrubber.Scrub(input));
+        }
+
+        [TestMethod]
+        public void Scrub_JsonNumericValuesThatPassLuhn_RemainValidNumbers()
+        {
+            const string input = "{\"NegativeHashID\":-4111111111111111,\"PositiveHashID\":4111111111111111}";
+
+            string result = PiiScrubber.Scrub(input);
+
+            Assert.AreEqual(input, result);
+            Assert.IsNotNull(JToken.Parse(result));
         }
 
         [TestMethod]
