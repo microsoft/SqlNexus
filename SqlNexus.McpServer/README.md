@@ -132,7 +132,7 @@ This option does not allow MCP queries to run elevated. Startup fails if `SqlNex
 
 #### Hardening an existing SQL Nexus database
 
-Re-importing with the current SQL Nexus version is preferred. When preserving an older imported database is necessary, a SQL administrator can run the following once after replacing `SqlNexus` with the exact database name:
+You can harden an existing, previously-created SQL Nexus database by creating the `SqlNexusMcpReader` user, adding it to `db_datareader`, and setting the database to read-only. Re-importing with the current SQL Nexus version is preferred. When preserving an older imported database is necessary, a SQL administrator can run the following once after replacing `SqlNexus` with the exact database name:
 
 ```sql
 USE [master];
