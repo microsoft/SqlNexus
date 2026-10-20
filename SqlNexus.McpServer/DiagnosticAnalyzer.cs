@@ -1093,7 +1093,12 @@ namespace SqlNexus.McpServer
         /// </summary>
         public string GetQueryExecutionDetails(long hashId)
         {
-            string query = $@"
+            return ExecuteQueryAndReturnJson(BuildQueryExecutionDetailsQuery(hashId), $"Execution Details for HashID: {hashId}");
+        }
+
+        internal static string BuildQueryExecutionDetailsQuery(long hashId)
+        {
+            return $@"
                 IF OBJECT_ID('ReadTrace.tblBatches') IS NOT NULL
                 BEGIN
                     SELECT TOP 200
@@ -1108,15 +1113,13 @@ namespace SqlNexus.McpServer
                             END) AS WaitPct,
                         b.Reads,
                         b.Writes,
-                        b.RowCounts,
+                        b.OrigRowCount AS RowCounts,
                         SUBSTRING(ub.NormText, 1, 500) AS NormText
                     FROM ReadTrace.tblBatches b
                     JOIN ReadTrace.tblUniqueBatches ub ON b.HashID = ub.HashID
                     WHERE b.HashID = {hashId}
                     ORDER BY b.StartTime DESC;
                 END";
-
-            return ExecuteQueryAndReturnJson(query, $"Execution Details for HashID: {hashId}");
         }
 
         /// <summary>
@@ -1269,42 +1272,27 @@ namespace SqlNexus.McpServer
         /// </summary>
         public string GetBlockingChainTree()
         {
-            const string query = @"
-                IF OBJECT_ID('dbo.tbl_BLOCKING_CHAINS') IS NOT NULL
+            return ExecuteQueryAndReturnJson(BuildBlockingChainTreeQuery(), "Blocking Chain Tree (Full Hierarchy)");
+        }
+
+        internal static string BuildBlockingChainTreeQuery()
+        {
+            return @"
+                IF OBJECT_ID('dbo.vw_BLOCKING_HIERARCHY') IS NOT NULL
                 BEGIN
-                    WITH BlockingChain AS (
-                        SELECT
-                            session_id,
-                            blocking_session_id,
-                            wait_type,
-                            wait_duration_ms,
-                            wait_resource,
-                            0 AS level
-                        FROM tbl_BLOCKING_CHAINS
-                        WHERE blocking_session_id = 0
-
-                        UNION ALL
-
-                        SELECT
-                            bc.session_id,
-                            bc.blocking_session_id,
-                            bc.wait_type,
-                            bc.wait_duration_ms,
-                            bc.wait_resource,
-                            chain.level + 1
-                        FROM tbl_BLOCKING_CHAINS bc
-                        INNER JOIN BlockingChain chain ON bc.blocking_session_id = chain.session_id
-                    )
+                    -- Primary: vw_BLOCKING_HIERARCHY is a recursive CTE view built directly over
+                    -- tbl_REQUESTS, already walking from each head blocker (Level 0) down through
+                    -- every transitively blocked session.
                     SELECT TOP 200
-                        level,
+                        [Level]                AS level,
                         session_id,
                         blocking_session_id,
                         wait_type,
                         wait_duration_ms,
                         wait_resource,
-                        REPLICATE('  ', level) + CAST(session_id AS VARCHAR(10)) AS blocking_hierarchy
-                    FROM BlockingChain
-                    ORDER BY level, session_id;
+                        REPLICATE('  ', [Level]) + CAST(session_id AS VARCHAR(10)) AS blocking_hierarchy
+                    FROM dbo.vw_BLOCKING_HIERARCHY
+                    ORDER BY head_blocker_session_id, [Level], session_id;
                 END
                 ELSE IF OBJECT_ID('dbo.tbl_REQUESTS') IS NOT NULL
                 BEGIN
@@ -1321,8 +1309,6 @@ namespace SqlNexus.McpServer
                       AND r.blocking_session_id IS NOT NULL
                     ORDER BY r.wait_duration_ms DESC;
                 END";
-
-            return ExecuteQueryAndReturnJson(query, "Blocking Chain Tree (Full Hierarchy)");
         }
 
         /// <summary>
@@ -1330,22 +1316,13 @@ namespace SqlNexus.McpServer
         /// </summary>
         public string GetLockSummaryByObject()
         {
-            const string query = @"
-                IF OBJECT_ID('dbo.tbl_BLOCKING_CHAINS') IS NOT NULL
-                BEGIN
-                    SELECT TOP 50
-                        database_name,
-                        wait_resource,
-                        COUNT(*)                AS lock_count,
-                        SUM(wait_duration_ms)   AS total_wait_ms,
-                        AVG(wait_duration_ms)   AS avg_wait_ms,
-                        MAX(wait_duration_ms)   AS max_wait_ms
-                    FROM tbl_BLOCKING_CHAINS
-                    WHERE wait_resource IS NOT NULL
-                    GROUP BY database_name, wait_resource
-                    ORDER BY total_wait_ms DESC;
-                END
-                ELSE IF OBJECT_ID('dbo.tbl_REQUESTS') IS NOT NULL
+            return ExecuteQueryAndReturnJson(BuildLockSummaryByObjectQuery(), "Lock Summary by Object/Resource");
+        }
+
+        internal static string BuildLockSummaryByObjectQuery()
+        {
+            return @"
+                IF OBJECT_ID('dbo.tbl_REQUESTS') IS NOT NULL
                 BEGIN
                     SELECT TOP 50
                         wait_resource,
@@ -1356,12 +1333,11 @@ namespace SqlNexus.McpServer
                         MAX(wait_duration_ms)   AS max_wait_ms
                     FROM tbl_REQUESTS
                     WHERE wait_resource IS NOT NULL
+                      AND wait_resource <> ''
                       AND wait_type LIKE 'LCK_%'
                     GROUP BY wait_resource, wait_type
                     ORDER BY total_wait_ms DESC;
                 END";
-
-            return ExecuteQueryAndReturnJson(query, "Lock Summary by Object/Resource");
         }
 
         /// <summary>
@@ -1501,12 +1477,20 @@ namespace SqlNexus.McpServer
         /// </summary>
         public string GetCpuByDatabase()
         {
-            const string query = @"
+            return ExecuteQueryAndReturnJson(
+                BuildCpuByDatabaseQuery(),
+                "CPU Consumption by Database (DBID is the original collection server's database_id)");
+        }
+
+        internal static string BuildCpuByDatabaseQuery()
+        {
+            return @"
                 IF OBJECT_ID('ReadTrace.tblBatches') IS NOT NULL
                 BEGIN
+                    -- DBID is the database_id captured on the ORIGINAL collection server, not the
+                    -- SQL Nexus database being queried, so DB_NAME() cannot reliably resolve it here.
                     SELECT
-                        DB_NAME(b.DatabaseID)   AS database_name,
-                        b.DatabaseID,
+                        b.DBID,
                         SUM(b.CPU)              AS Total_CPU_ms,
                         COUNT(*)                AS Executions,
                         SUM(b.CPU) / NULLIF(COUNT(*), 0) AS Avg_CPU_ms,
@@ -1514,12 +1498,10 @@ namespace SqlNexus.McpServer
                              / NULLIF(SUM(SUM(b.CPU)) OVER(), 0)
                              AS DECIMAL(5,2))   AS CPU_Pct
                     FROM ReadTrace.tblBatches b
-                    WHERE b.DatabaseID IS NOT NULL
-                    GROUP BY b.DatabaseID
+                    WHERE b.DBID IS NOT NULL
+                    GROUP BY b.DBID
                     ORDER BY Total_CPU_ms DESC;
                 END";
-
-            return ExecuteQueryAndReturnJson(query, "CPU Consumption by Database");
         }
 
         /// <summary>
@@ -1567,14 +1549,19 @@ namespace SqlNexus.McpServer
         /// </summary>
         public string GetTopQueriesByWrites(int topN = 50)
         {
-            string query = $@"
+            return ExecuteQueryAndReturnJson(BuildTopQueriesByWritesQuery(topN), $"Top {topN} Queries by Writes");
+        }
+
+        internal static string BuildTopQueriesByWritesQuery(int topN)
+        {
+            return $@"
                 IF OBJECT_ID('ReadTrace.tblBatches') IS NOT NULL
                 BEGIN
                     SELECT TOP {topN}
                         SUM(b.Writes)           AS Total_Writes,
                         COUNT(*)                AS Executions,
                         SUM(b.Writes) / NULLIF(COUNT(*), 0) AS Avg_Writes,
-                        SUM(b.RowCounts)        AS Total_Rows_Affected,
+                        SUM(b.OrigRowCount)     AS Total_Rows_Affected,
                         SUM(b.Duration) / 1000  AS Total_Duration_ms,
                         SUBSTRING(ub.NormText, 1, 400) AS Query,
                         b.HashID
@@ -1584,8 +1571,6 @@ namespace SqlNexus.McpServer
                     GROUP BY ub.NormText, b.HashID
                     ORDER BY Total_Writes DESC;
                 END";
-
-            return ExecuteQueryAndReturnJson(query, $"Top {topN} Queries by Writes");
         }
 
         /// <summary>

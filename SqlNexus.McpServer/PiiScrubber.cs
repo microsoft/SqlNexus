@@ -2,6 +2,8 @@ using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Text.RegularExpressions;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace SqlNexus.McpServer
 {
@@ -176,7 +178,7 @@ namespace SqlNexus.McpServer
                 else if (replacement == "<IPV6>")
                     text = pattern.Replace(text, ReplaceIpv6Address);
                 else if (replacement == "<PAN>")
-                    text = pattern.Replace(text, ReplacePaymentCardNumber);
+                    text = pattern.Replace(text, match => ReplacePaymentCardNumber(match, text));
                 else
                     text = pattern.Replace(text, replacement);
             }
@@ -209,8 +211,11 @@ namespace SqlNexus.McpServer
             return candidate;
         }
 
-        private static string ReplacePaymentCardNumber(Match match)
+        private static string ReplacePaymentCardNumber(Match match, string input)
         {
+            if (IsJsonNumericValue(match, input))
+                return match.Value;
+
             string digits = Regex.Replace(match.Value, @"[^0-9]", string.Empty);
             if (digits.Length < 13 || digits.Length > 19)
                 return match.Value;
@@ -232,6 +237,38 @@ namespace SqlNexus.McpServer
             }
 
             return sum % 10 == 0 ? "<PAN>" : match.Value;
+        }
+
+        private static bool IsJsonNumericValue(Match match, string input)
+        {
+            try
+            {
+                JToken.Parse(input);
+            }
+            catch (JsonException)
+            {
+                return false;
+            }
+
+            int beforeIndex = match.Index - 1;
+            while (beforeIndex >= 0 && char.IsWhiteSpace(input[beforeIndex]))
+                beforeIndex--;
+            if (beforeIndex >= 0 && input[beforeIndex] == '-')
+            {
+                beforeIndex--;
+                while (beforeIndex >= 0 && char.IsWhiteSpace(input[beforeIndex]))
+                    beforeIndex--;
+            }
+
+            int afterIndex = match.Index + match.Length;
+            while (afterIndex < input.Length && char.IsWhiteSpace(input[afterIndex]))
+                afterIndex++;
+
+            bool validStart = beforeIndex < 0 || input[beforeIndex] == ':'
+                || input[beforeIndex] == '[' || input[beforeIndex] == ',';
+            bool validEnd = afterIndex >= input.Length || input[afterIndex] == ','
+                || input[afterIndex] == '}' || input[afterIndex] == ']';
+            return validStart && validEnd;
         }
 
         private static string ApplyUrlAllowlist(string text)

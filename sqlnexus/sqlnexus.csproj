@@ -1550,7 +1550,8 @@
       <_SqlNexusRepositoryRoot>$(MSBuildProjectDirectory)\..</_SqlNexusRepositoryRoot>
     </PropertyGroup>
     <ItemGroup>
-      <_McpServerReleaseFiles Include="$(_SqlNexusRepositoryRoot)\SqlNexus.McpServer\bin\$(Configuration)\**\*" />
+      <_McpServerReleaseFiles Include="$(_SqlNexusRepositoryRoot)\SqlNexus.McpServer\bin\$(Configuration)\**\*" Exclude="$(_SqlNexusRepositoryRoot)\SqlNexus.McpServer\bin\$(Configuration)\Test-McpServer.ps1" />
+      <_McpServerSupportFiles Include="$(_SqlNexusRepositoryRoot)\SqlNexus.McpServer\Test-McpServer.ps1" />
       <_AiSkillReleaseFiles Include="$(_SqlNexusRepositoryRoot)\AI\Skills\**\*" />
       <_AgentReleaseFiles Include="$(_SqlNexusRepositoryRoot)\.github\agents\**\*" />
       <_CopilotIntegrationFiles Include="$(_SqlNexusRepositoryRoot)\CopilotIntegration\**\*" />
@@ -1561,6 +1562,7 @@
     <Error Condition="!Exists('$(_SqlNexusRepositoryRoot)\CopilotIntegration\Register-SqlNexusCopilotIntegration.ps1')" Text="The SQL Nexus Copilot integration registration script was not found." />
     <Error Condition="!Exists('$(_SqlNexusRepositoryRoot)\CopilotIntegration\Unregister-SqlNexusCopilotIntegration.ps1')" Text="The SQL Nexus Copilot integration unregistration script was not found." />
     <Copy SourceFiles="@(_McpServerReleaseFiles)" DestinationFiles="@(_McpServerReleaseFiles->'$(TargetDir)SqlNexus.McpServer\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(_McpServerSupportFiles)" DestinationFolder="$(TargetDir)SqlNexus.McpServer" SkipUnchangedFiles="true" />
     <Copy SourceFiles="@(_AiSkillReleaseFiles)" DestinationFiles="@(_AiSkillReleaseFiles->'$(TargetDir)AI\Skills\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
     <Copy SourceFiles="@(_AgentReleaseFiles)" DestinationFiles="@(_AgentReleaseFiles->'$(TargetDir).github\agents\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
     <Copy SourceFiles="@(_CopilotIntegrationFiles)" DestinationFiles="@(_CopilotIntegrationFiles->'$(TargetDir)CopilotIntegration\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />

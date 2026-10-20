@@ -132,7 +132,7 @@ This option does not allow MCP queries to run elevated. Startup fails if `SqlNex
 
 #### Hardening an existing SQL Nexus database
 
-Re-importing with the current SQL Nexus version is preferred. When preserving an older imported database is necessary, a SQL administrator can run the following once after replacing `SqlNexus` with the exact database name:
+You can harden an existing, previously-created SQL Nexus database by creating the `SqlNexusMcpReader` user, adding it to `db_datareader`, and setting the database to read-only. Re-importing with the current SQL Nexus version is preferred. When preserving an older imported database is necessary, a SQL administrator can run the following once after replacing `SqlNexus` with the exact database name:
 
 ```sql
 USE [master];
@@ -196,10 +196,15 @@ Open Copilot Chat (`Ctrl+Shift+I`) and start diagnosing!
 
 ### Run the Test Script
 
+When working from the repository, run the authoritative source script:
+
 ```powershell
-cd path\to\SqlNexus.McpServer
-.\Test-McpServer.ps1
+path\to\SqlNexus.McpServer\Test-McpServer.ps1
 ```
+
+For a packaged SQL Nexus build, run the single staged copy at
+`sqlnexus\bin\<Configuration>\SqlNexus.McpServer\Test-McpServer.ps1`. Files elsewhere under
+`bin` are stale build artifacts and can be removed with a clean build.
 
 The script checks prerequisites, tests the SQL connection, and lets you interactively invoke tools.
 
