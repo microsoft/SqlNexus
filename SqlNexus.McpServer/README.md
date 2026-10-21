@@ -108,6 +108,22 @@ All non-sensitive settings go in `args`. Passwords go in `env`:
 | `--database2` | Second SQL Nexus database used by the `compare_nexus_databases` tool (aliases: `--database-for-comparison`, `--database_for_comparison`) | *(none)* |
 | `--trusted-connection` | `true` = Windows Auth, `false` = SQL Auth | `true` |
 | `--elevated-principal-policy` | `block` rejects elevated SQL identities; `impersonate-reader` accepts the connection only after entering the non-revertible loginless reader context | `block` |
+| `--encrypt` (`SqlNexus:Encrypt`) | Encrypt the SQL connection. Setting `false` is allowed but logs a startup warning | `true` |
+| `--trust-server-certificate` (`SqlNexus:TrustServerCertificate`) | `true` skips SQL Server certificate validation. Refused unless `--allow-untrusted-certificate true` is also set | `false` |
+| `--allow-untrusted-certificate` (`SqlNexus:AllowUntrustedCertificate`) | Explicit opt-in required before `TrustServerCertificate` can be honored. Intended for lab/self-signed certificates only; a warning is logged at every startup | `false` |
+
+### TLS certificate validation
+
+The MCP server encrypts the SQL connection and validates the server certificate chain and name by default, matching the desktop application. Query results flow into an LLM's context, so an on-path attacker who can impersonate the SQL Server could tamper with that data (and capture SQL-auth credentials). This matters when SQL Server is reached across a network; `localhost`/LocalDB connections are not network-exposed.
+
+If the server uses a self-signed certificate (for example a lab instance), prefer installing that certificate as trusted. Otherwise, knowingly opt in by adding both arguments to the registration:
+
+```json
+"args": ["--server", "labserver", "--database", "SqlNexus",
+         "--trust-server-certificate", "true", "--allow-untrusted-certificate", "true"]
+```
+
+With only `--trust-server-certificate true`, the server refuses to start.
 
 ### Least-privilege SQL execution
 
