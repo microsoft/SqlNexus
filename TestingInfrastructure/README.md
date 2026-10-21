@@ -69,6 +69,21 @@ strong-named assembly.
 > toolchain on all machines (non-string WinForms resources). If `dotnet test` fails to
 > build it, build the solution in Visual Studio and run the tests from Test Explorer.
 
+### ReadTrace overview metric regression tests
+
+[`ReadTracePostProcessingScriptTests.cs`](UnitTests/SqlNexus.UnitTests/sqlnexus/ReadTracePostProcessingScriptTests.cs)
+checks the deployed SQL script and its integrity hash without connecting to SQL Server.
+`ReadTrace.spReporter_Overview_Counts` accepts only `StartingEvents`, `CompletedEvents`,
+`TotalCPU`, `TotalDuration`, `TotalReads`, and `TotalWrites`. Null and unsupported metrics
+raise an error before dynamic SQL is built. Complete dotted column identifiers are quoted
+with `QUOTENAME`, preserving the baseline/comparison and matching/unmatched query branches.
+
+These are source-contract tests, not a T-SQL execution engine. They cover the allowlist,
+null/error/return guard, malformed and injection-shaped input examples, length boundaries,
+identifier quoting, all four query branches for each supported metric, and script integrity.
+Executing the procedure against fixture rows and verifying aggregate results and SQL Server
+permission behavior remains a separate integration check.
+
 ## Running the PII scrubber integration audit
 
 [`IntegrationTests/SQLNexusPiiAudit.ps1`](IntegrationTests/SQLNexusPiiAudit.ps1) scans SQL Server

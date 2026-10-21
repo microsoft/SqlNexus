@@ -2625,6 +2625,13 @@ CREATE PROCEDURE ReadTrace.spReporter_Overview_Counts
 AS
 BEGIN
 	SET NOCOUNT ON
+	IF @strColumn IS NULL OR @strColumn NOT IN
+		(N'StartingEvents', N'CompletedEvents', N'TotalCPU', N'TotalDuration', N'TotalReads', N'TotalWrites')
+	BEGIN
+		RAISERROR('Unsupported comparison metric.', 16, 1);
+		RETURN;
+	END
+
 	DECLARE @strCmd		NVARCHAR(MAX)
 
 	SET @strCmd = 
@@ -2647,7 +2654,8 @@ BEGIN
 	 FROM ReadTrace.tblComparisonBatchPartialAggs
 	 WHERE [b.HashID] IS NULL '
 
-	SET @strCmd = REPLACE(@strCmd, '@strColumn', @strColumn);
+	SET @strCmd = REPLACE(@strCmd, '[b.@strColumn]', QUOTENAME(N'b.' + @strColumn));
+	SET @strCmd = REPLACE(@strCmd, '[c.@strColumn]', QUOTENAME(N'c.' + @strColumn));
 	EXEC sp_executesql @strCmd
 END
 GO
