@@ -19,8 +19,6 @@ namespace sqlnexus
     public partial class fmImport : Form
     {
         private List<ToolStripMenuItem> m_OptionList = new List<ToolStripMenuItem>();
-        private ToolStripMenuItem tsiSQLDiagAlwaysOnXEL_Enabled;
-        private ToolStripMenuItem tsiSQLDiagAlwaysOnXEL_DropTables;
         private SqlInstances instances;
 
         // Importer names used for mutual exclusivity and /M token mapping.
@@ -30,7 +28,7 @@ namespace sqlnexus
 
         /// <summary>
         /// Maps /M command-line tokens (case-insensitive) to the exact INexusImporter.Name
-        /// values returned at runtime. CustomXEL is handled separately in DoImport.
+        /// values returned at runtime.
         /// </summary>
         private static readonly IDictionary<string, string> ImporterTokenToName =
             ImporterSelectionEvaluator.ImporterTokenToName;
@@ -192,19 +190,8 @@ namespace sqlnexus
             }
         }
 
-        // File masks recognized by CustomXELImporter (SQLDiag / AlwaysOn health / system_health).
-        // Single source of truth lives on CustomXELImporter so this warning and the actual importer
-        // can never drift apart (see issue #556).
-        private static readonly string[] CustomXelMasks = CustomXELImporter.CustomXelFileMasks;
-
-        // CustomXELImporter only scans the primary folder. If the sibling SharedOutputFiles folder
-        // contains Custom XEL sources that are NOT also in the primary folder, they are silently never
-        // imported. Warn about those sibling-ONLY files (with the resolved sibling path) so the user
-        // can move them into the primary folder. Files that exist in both folders are ignored here:
-        // the primary copy is imported, so there is no gap and "move it" would be misleading. This
-        // never imports anything - the Custom XEL load uses SELECT * INTO with optional DROP TABLE and
-        // would overwrite already-imported tables, so scanning the sibling directly is unsafe.
-        private void WarnIfSharedFolderHasUnimportedCustomXel(string primaryPath)
+        // Preserve the sibling-only warning without expanding a primary-only importer's scope.
+        private void WarnIfSharedFolderHasUnimportedFiles(string primaryPath, INexusImporter importer)
         {
             try
             {
@@ -219,14 +206,14 @@ namespace sqlnexus
                 var primaryNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
                 if (Directory.Exists(normalizedPrimary))
                 {
-                    foreach (string mask in CustomXelMasks)
+                    foreach (string mask in importer.SupportedMasks)
                         foreach (string f in Directory.GetFiles(normalizedPrimary, mask))
                             primaryNames.Add(Path.GetFileName(f));
                 }
 
                 // Custom XEL files in the sibling that are NOT also in the primary folder (the real gap).
                 var siblingOnly = new List<string>();
-                foreach (string mask in CustomXelMasks)
+                foreach (string mask in importer.SupportedMasks)
                 {
                     siblingOnly.AddRange(
                         SharedOutputFolder.GetSiblingOnlyFiles(
@@ -236,15 +223,15 @@ namespace sqlnexus
                 if (siblingOnly.Count > 0)
                 {
                     MainForm.LogMessage(
-                        "Shared folder: " + siblingOnly.Count + " Custom XEL file(s) (SQLDiag/AlwaysOn/system_health) " +
-                        "exist ONLY in '" + sibling + "' and are NOT imported - the Custom XEL importer only " +
+                        "Shared folder: " + siblingOnly.Count + " file(s) supported by '" + importer.Name + "' " +
+                        "exist ONLY in '" + sibling + "' and are NOT imported - this importer only " +
                         "reads the primary folder. Move them into '" + primaryPath + "' and re-import if needed.",
                         MessageOptions.Both);
                 }
             }
             catch (Exception ex)
             {
-                MainForm.LogMessage("Unable to check shared folder for Custom XEL files: " + ex.Message,
+                MainForm.LogMessage("Unable to check shared folder for primary-only importer files: " + ex.Message,
                     MessageOptions.Silent);
             }
         }
@@ -255,7 +242,7 @@ namespace sqlnexus
             // SharedOutputFiles folder when it exists. When the sibling does not exist this is just
             // the primary path and behavior is identical to before.
             List<string> searchPaths = SharedOutputFolder.GetImportSearchPaths(
-                cbPath.Text.Trim().Replace("\"", ""));
+                cbPath.Text.Trim().Replace("\"", ""), Importer);
 
             if (searchPaths.Count == 0)
                 searchPaths.Add(cbPath.Text.Trim().Replace("\"", ""));
@@ -736,11 +723,74 @@ namespace sqlnexus
         public void EnumImporters()
         {
             tsiImporters.DropDownItems.Clear();
+            m_OptionList.Clear();
             EnumImportersFromDirectory(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\SqlNexus\Importers");
             EnumImportersFromDirectory(Application.StartupPath);
+            RegisterImporter(new CustomXELImporter());
             EnforceTraceImporterExclusivity();
             ResolveTraceImporterFallback();
             LogMissingBuiltInImporters();
+        }
+
+        private void RegisterImporter(INexusImporter prod)
+        {
+            prod.StatusChanged += ImportStatusChanged;
+            if (prod is INexusProgressReporter progressReporter)
+                progressReporter.ProgressChanged += ImportProgressChanged;
+
+            if (!prod.Options.ContainsKey("Enabled"))
+                prod.Options.Add("Enabled", true);
+            ImportOptions.RestoreImporterOptions(prod);
+
+            ToolStripMenuItem menu = CreateImporterMenu(prod);
+            tsiImporters.DropDownItems.Add(menu);
+            foreach (ToolStripMenuItem item in menu.DropDownItems)
+            {
+                if (item.Tag is INexusImporter)
+                {
+                    item.Click += tsiBool_Click;
+                    m_OptionList.Add(item);
+                }
+                else
+                    item.Click += tsiDialog_Click;
+            }
+        }
+
+        internal static ToolStripMenuItem CreateImporterMenu(INexusImporter prod)
+        {
+            var menu = new ToolStripMenuItem(prod.Name)
+            {
+                Tag = prod,
+                AccessibleName = prod.Name,
+                AccessibleDescription = "Import options for " + prod.Name
+            };
+            foreach (string option in prod.Options.Keys)
+            {
+                var item = new ToolStripMenuItem(option)
+                {
+                    AccessibleName = option,
+                    AccessibleDescription = prod.Name + ": " + option
+                };
+                if (option.EndsWith("...", StringComparison.Ordinal))
+                {
+                    item.Tag = prod.OptionsDialog;
+                }
+                else if (prod.Options[option] is bool)
+                {
+                    item.Tag = prod;
+                    item.CheckOnClick = true;
+                    item.Checked = (bool)prod.Options[option];
+                }
+                else
+                    continue;
+                menu.DropDownItems.Add(item);
+            }
+            menu.DropDown.Closing += (sender, e) =>
+            {
+                if (e.CloseReason == ToolStripDropDownCloseReason.ItemClicked)
+                    e.Cancel = true;
+            };
+            return menu;
         }
 
         /// <summary>
@@ -1069,106 +1119,7 @@ namespace sqlnexus
 
                         importersRegisteredFromThisDll++;
 
-                        prod.StatusChanged += new System.EventHandler(this.ImportStatusChanged);
-                        if (prod is INexusProgressReporter)
-                        {
-                            (prod as INexusProgressReporter).ProgressChanged += new System.EventHandler(this.ImportProgressChanged);
-                        }
-
-                        ToolStripMenuItem tsi = new ToolStripMenuItem(prod.Name);
-                        tsi.Tag = prod;
-                        tsiImporters.DropDownItems.Add(tsi);
-
-                        // Add subitems
-
-                        // Enabled item
-                        // All importers require an "Enabled" menu option -- if this doesn't exist in the options collection, add it. 
-                        object enabledoption;
-                        if (!prod.Options.TryGetValue("Enabled", out enabledoption))
-                        {
-                            prod.Options.Add("Enabled", true);
-                        }
-
-
-                        //ensure that saved options get re-applied/re-activated based on the previously-selected checkboxes
-                        // get value of from user.config file (true or false) and restore it in the ToolStripMenuItem
-
-                        string[] optionNames = {
-                            "Minimize Cmd window (Relog.exe) during import",
-                            "Drop existing tables (Perfmon)",
-                            "Import events using local server time (not UTC)",
-                            "Enable -T35 to support MARs",
-                            "Output trace files (.trc) by SPID to %TEMP%\\RML",
-                            "Output RML files (.rml) to %TEMP%\\RML",
-                            "Assume QUOTED_IDENTIFIER ON",
-                            "Ignore events associated with PSSDIAG activity",
-                            "Disable event requirement checks",
-                            "Import to SQL (Linux Perf)",
-                            "Drop existing tables (Linux Perf)",
-                            "Drop existing ReadTrace tables"
-                        };
-
-                        foreach (string optionName in optionNames)
-                        {
-                            // Check if the option name exists in prod.Options
-                            if (prod.Options.ContainsKey(optionName))
-                            {
-                                // Construct the userSavedKey using the product name and option name
-                                string userSavedKey = string.Format("{0}.{1}", prod.Name, optionName);
-                                // Only restore saved value if it was actually saved before
-                                if (ImportOptions.HasOption(userSavedKey))
-                                {
-                                    bool userSavedValue = ImportOptions.IsEnabled(userSavedKey);
-                                    prod.Options[optionName] = userSavedValue;
-                                }
-                            }
-                        }
-                        
-
-                        
-
-                        // options
-                        ToolStripMenuItem subtsi;
-                        foreach (string option in prod.Options.Keys)
-                        {
-                            subtsi = new ToolStripMenuItem(option);
-                            if (option.Substring(option.Length - 3) == "...") // dialog
-                            {
-                                subtsi.Tag = prod.OptionsDialog;
-                                subtsi.Click += new System.EventHandler(this.tsiDialog_Click);
-                            }
-                            else if (prod.Options[option] is bool) // boolean
-                            {
-                                m_OptionList.Add(subtsi);
-
-                                subtsi.Tag = prod;
-                                subtsi.CheckOnClick = true;
-
-                                string savedKey = String.Format("{0}.{1}", prod.Name, subtsi.Text);
-                                MainForm.LogMessage("load: " + String.Format("{0}->{1}", prod.Name, option), MessageOptions.Silent);
-
-                                if (ImportOptions.IsEnabled("SaveImportOptions") && ImportOptions.HasOption(savedKey))
-                                    subtsi.Checked = ImportOptions.IsEnabled(savedKey);
-                                else
-                                    subtsi.Checked = (bool)prod.Options[option];
-
-                                subtsi.Click += new System.EventHandler(this.tsiBool_Click);
-                            }
-                            else
-                            {
-                                // Non-boolean, non-dialog options (e.g. int) are not shown in the menu
-                                continue;
-                            }
-
-                            tsi.DropDownItems.Add(subtsi);
-                        }
-
-                        // Keep submenu open when toggling checkbox options (mouse click or keyboard Enter/Space)
-                        tsi.DropDown.Closing += (s, ev) =>
-                        {
-                            if (ev.CloseReason == ToolStripDropDownCloseReason.ItemClicked)
-                                ev.Cancel = true;
-                        };
+                        RegisterImporter(prod);
                     }
                 }
 
@@ -1213,48 +1164,6 @@ namespace sqlnexus
                 }
             }
 
-            // Add the SQLDiag/AlwaysOn XEL option under Importers with sub-items
-            tsiSQLDiagAlwaysOnXEL.Name = "tsiSQLDiagAlwaysOnXEL";
-            tsiSQLDiagAlwaysOnXEL.Text = "Import SQLDiag / AlwaysOn / System Health XEL";
-            tsiSQLDiagAlwaysOnXEL.AccessibleName = "Import SQLDiag AlwaysOn System Health XEL";
-            tsiSQLDiagAlwaysOnXEL.AccessibleDescription = "Submenu for importing SQLDiag, AlwaysOn, and System Health Extended Events XEL files";
-            tsiSQLDiagAlwaysOnXEL.DropDownItems.Clear();
-
-            // "Drop existing tables" sub-item
-            tsiSQLDiagAlwaysOnXEL_DropTables = new ToolStripMenuItem("Drop existing tables");
-            tsiSQLDiagAlwaysOnXEL_DropTables.Name = "tsiSQLDiagAlwaysOnXEL_DropTables";
-            tsiSQLDiagAlwaysOnXEL_DropTables.CheckOnClick = true;
-            tsiSQLDiagAlwaysOnXEL_DropTables.Checked = true;
-            tsiSQLDiagAlwaysOnXEL_DropTables.AccessibleName = "Drop existing tables";
-            tsiSQLDiagAlwaysOnXEL_DropTables.AccessibleDescription = "When checked, existing SQLDiag and AlwaysOn XEL tables are dropped before import";
-            tsiSQLDiagAlwaysOnXEL_DropTables.Click += new EventHandler(tsiSQLDiagAlwaysOnXEL_SubOption_Click);
-
-            // "Enabled" sub-item
-            tsiSQLDiagAlwaysOnXEL_Enabled = new ToolStripMenuItem("Enabled");
-            tsiSQLDiagAlwaysOnXEL_Enabled.Name = "tsiSQLDiagAlwaysOnXEL_Enabled";
-            tsiSQLDiagAlwaysOnXEL_Enabled.CheckOnClick = true;
-            tsiSQLDiagAlwaysOnXEL_Enabled.Checked = false;
-            tsiSQLDiagAlwaysOnXEL_Enabled.AccessibleName = "Enabled";
-            tsiSQLDiagAlwaysOnXEL_Enabled.AccessibleDescription = "When checked, SQLDiag and AlwaysOn XEL files are included in the import";
-            tsiSQLDiagAlwaysOnXEL_Enabled.Click += new EventHandler(tsiSQLDiagAlwaysOnXEL_SubOption_Click);
-
-            if (ImportOptions.IsEnabled("SaveImportOptions"))
-            {
-                tsiSQLDiagAlwaysOnXEL_Enabled.Checked = ImportOptions.IsEnabled("SQLDiagAlwaysOnXEL.Enabled");
-                tsiSQLDiagAlwaysOnXEL_DropTables.Checked = ImportOptions.IsEnabled("SQLDiagAlwaysOnXEL.DropExistingTables");
-            }
-
-            tsiSQLDiagAlwaysOnXEL.DropDownItems.Add(tsiSQLDiagAlwaysOnXEL_DropTables);
-            tsiSQLDiagAlwaysOnXEL.DropDownItems.Add(tsiSQLDiagAlwaysOnXEL_Enabled);
-
-            // Keep submenu open when toggling checkbox options (mouse click or keyboard Enter/Space)
-            tsiSQLDiagAlwaysOnXEL.DropDown.Closing += (s, ev) =>
-            {
-                if (ev.CloseReason == ToolStripDropDownCloseReason.ItemClicked)
-                    ev.Cancel = true;
-            };
-
-            tsiImporters.DropDownItems.Add(tsiSQLDiagAlwaysOnXEL);
         }
 
 
@@ -1368,6 +1277,8 @@ namespace sqlnexus
 
                 if (Enabled)
                 {
+                    if (prod is INexusImporterPolicy policy && policy.PrimaryFolderOnly)
+                        WarnIfSharedFolderHasUnimportedFiles(primaryPath, prod);
                     bool anyFilesFound = false;
                     foreach (string s in prod.SupportedMasks)
                     {
@@ -1410,7 +1321,6 @@ namespace sqlnexus
             {
                 MainForm.LogMessage("/M effective importers to run: "
                     + (effectiveImportersToRun.Count == 0 ? "(none)" : string.Join(", ", effectiveImportersToRun))
-                    + (ImporterSelectionEvaluator.IsCustomXelSelected(Globals.EnabledImporters) ? ", CustomXEL" : "")
                     + ".", MessageOptions.All);
 
                 // Authoritative single-line summary: what will run, what was enabled but empty, and the
@@ -1571,7 +1481,16 @@ namespace sqlnexus
 
             }
 
-            RunScript("SqlNexus_PreProcessing.sql");
+            try
+            {
+                RunScript("SqlNexus_PreProcessing.sql");
+            }
+            catch (Exception ex)
+            {
+                Globals.IsNexusCoreImporterSuccessful = false;
+                Globals.HandleException(ex, this, MainForm);
+                return;
+            }
             MainForm.LogMessage("SQL Nexus importer version " + Application.ProductVersion.ToString());
             MainForm.LogMessage("SQL Nexus connection to server: '" + Globals.credentialMgr.Server + "', database: '"+ Globals.credentialMgr.Database + "'");
             NexusInfo nInfo = new NexusInfo(Globals.credentialMgr.ConnectionString, this.MainForm);
@@ -1664,20 +1583,6 @@ namespace sqlnexus
             //enumerate the files to process and add them to list for processing
             EnumFiles();
 
-            //add individual rows for each of these so they show up as progress bars in the summary window listview
-            string customXELImprtStr = "CustomXELImporter";
-            bool customXelEnabled = tsiSQLDiagAlwaysOnXEL_Enabled != null && tsiSQLDiagAlwaysOnXEL_Enabled.Checked;
-
-            // /M override for CustomXEL - does not touch tsiSQLDiagAlwaysOnXEL_Enabled.Checked,
-            // so the saved UI setting is preserved unchanged.
-            if (Globals.EnabledImporters != null)
-                customXelEnabled = ImporterSelectionEvaluator.IsCustomXelSelected(Globals.EnabledImporters);
-
-            if (customXelEnabled)
-            {
-                AddFileRow((tlpFiles.RowCount - 1), "Custom XEL import (SQLDiag, AlwaysOnHealth, System Health)", null, customXELImprtStr);
-            }
-
             string rawFileImprtStr = "RawFileImport";
             AddFileRow((tlpFiles.RowCount - 1), "Raw file import", null, rawFileImprtStr);
 
@@ -1697,6 +1602,7 @@ namespace sqlnexus
             AddFileRow((tlpFiles.RowCount - 1), "Securing database for read-only analysis", null, secureDatabaseStr);
 
 
+            var tracePostProcessing = new TracePostProcessingPrerequisites();
             try
             {
                 int j = 0;
@@ -1717,6 +1623,7 @@ namespace sqlnexus
 
                         ri = (ll.Tag as INexusImporter);
                         MainForm.LogMessage(ri.Name + " is a INexusImporter");
+                        bool stopOnFailure = ri is INexusImporterPolicy policy && policy.StopOnFailure;
 
                         // LinuxPerfImporter mutates the static ConfigValues.WorkingDirectory when it
                         // runs. Remember the value on entry so we can restore it after this row, so a
@@ -1778,7 +1685,8 @@ namespace sqlnexus
 
 
 
-                            RunPostScripts(ri.Name);
+                            if (!stopOnFailure || (Success && !ri.Cancelled))
+                                RunPostScripts(ri.Name);
 
                             // Only the mandatory Rowset (core) importer determines core success. Do NOT
                             // set this true for other importers: doing so would overwrite a prior Rowset
@@ -1794,10 +1702,13 @@ namespace sqlnexus
                                 Globals.IsNexusCoreImporterSuccessful = false;
                             }
                             Success = false;
+                            if (stopOnFailure)
+                                throw;
                             Globals.HandleException(ex, this, MainForm);
                         }
                         finally
                         {
+                            tracePostProcessing.RecordResult(ri.Name, Success, ri.Cancelled);
                             // Restore the working directory the Linux perf importer may have changed,
                             // so it never leaks into subsequent importers.
                             LinuxPerfImporter.Model.ConfigValues.WorkingDirectory = savedLinuxWorkingDir;
@@ -1844,6 +1755,8 @@ namespace sqlnexus
                             }
                             MainForm.LogMessage(msg);
                             currLabel.Text = msg;
+                            if (stopOnFailure)
+                                throw new InvalidOperationException(ri.Name + " failed. Subsequent processing was stopped because the database may contain a partial import.");
                         }
                         else					// different msg if success
                         {
@@ -1866,92 +1779,6 @@ namespace sqlnexus
                         j++;
 
                     } //end of if (Name == "FileNameLabel")
-                    else if (tlpFiles.Controls[i].Name == customXELImprtStr)
-                    {
-                        int customXELImportStartTicks = Environment.TickCount;
-
-                        currBar = (ProgressBar)tlpFiles.Controls[i + 1];
-                        currBar.Value = 20;
-
-                        currLabel = (Label)tlpFiles.Controls[i + 2];
-                        currLabel.Text = "Please wait for XEL file imports to complete...";
-
-
-                        //raw file importer
-                        MainForm.LogMessage("Custom XEL Importer starting");
-                        Application.DoEvents();
-
-
-                        // do the custom XEL import - AlwaysOn System Health, Failover Cluster
-                        // Instance Diagnostics Log (SQLDiag), and system_health Extended Events.
-                        CustomXELImporter CI = new CustomXELImporter();
-                        bool customXelImportEnabled = tsiSQLDiagAlwaysOnXEL_Enabled != null && tsiSQLDiagAlwaysOnXEL_Enabled.Checked;
-
-                        // /M command-line override: supersedes the saved UI checkbox (which is never
-                        // set in a console/quiet run). Without this, ImportCustomXELFiles is called with
-                        // importCustomXEL = false and returns "Skipped (disabled)", so the
-                        // CustomXEL tables (e.g. tbl_SQL_Base_SystemHealthXEL_Startup) are never created.
-                        if (Globals.EnabledImporters != null)
-                            customXelImportEnabled = ImporterSelectionEvaluator.IsCustomXelSelected(Globals.EnabledImporters);
-
-                        bool alwaysOnXelDropTables = tsiSQLDiagAlwaysOnXEL_DropTables != null && tsiSQLDiagAlwaysOnXEL_DropTables.Checked;
-                        bool customXelSuccess;
-
-                        // CustomXELImporter scans only the primary folder (srcPath). If the sibling
-                        // SharedOutputFiles folder contains Custom XEL sources (SQLDiag / AlwaysOn_health
-                        // / system_health), warn that they are NOT imported here so the user can move
-                        // them into the primary folder. We do NOT silently scan the sibling because the
-                        // Custom XEL load uses SELECT * INTO with optional DROP TABLE, which would
-                        // overwrite the primary folder's just-imported tables.
-                        if (customXelImportEnabled)
-                            WarnIfSharedFolderHasUnimportedCustomXel(srcPath);
-
-                        string XelImprtStatusStr = CI.ImportCustomXELFiles(Globals.credentialMgr.ConnectionString, Globals.credentialMgr.Server,
-                                                                Globals.credentialMgr.WindowsAuth,
-                                                                Globals.credentialMgr.User,
-                                                                Globals.credentialMgr.Password,
-                                                                Globals.credentialMgr.Database, srcPath,
-                                                                out customXelSuccess,
-                                                                customXelImportEnabled,
-                                                                alwaysOnXelDropTables);
-
-
-                        currBar.Value = 100;
-
-                        string rawfileMsg;
-                        if (customXelSuccess)
-                        {
-                            MainForm.LogMessage("Custom XEL Importer completed");
-                            rawfileMsg = "(Importer:" + customXELImprtStr + ") " + "Done. (" + (Environment.TickCount - customXELImportStartTicks) / 1000 + " sec), " + XelImprtStatusStr + ".";
-
-                            // A /M-selected CustomXEL import that matched NO files imported nothing:
-                            // the requested data did not arrive, so flag it for a non-zero exit code
-                            // (other importers surface this via the "found NO matching files" path).
-                            if (customXelImportEnabled && CI.TotalFilesFound == 0)
-                            {
-                                MainForm.LogMessage("Custom XEL import is enabled but found NO matching files "
-                                    + "(SQLDiag/AlwaysOn Health/system_health) in the import path. Nothing to import.",
-                                    MessageOptions.Both);
-
-                                if (Globals.EnabledImporters != null)
-                                    Globals.RequestedImporterMissingOrEmpty = true;
-                            }
-                        }
-                        else
-                        {
-                            Success = false;
-                            MainForm.LogMessage("Custom XEL Importer FAILED - see log for details");
-                            rawfileMsg = "(Importer:" + customXELImprtStr + ") " + "FAILED. (" + (Environment.TickCount - customXELImportStartTicks) / 1000 + " sec), " + XelImprtStatusStr;
-
-                            // Under /M, a failed CustomXEL import means requested data did not arrive;
-                            // flag it so the process returns a non-zero exit code.
-                            if (Globals.EnabledImporters != null)
-                                Globals.RequestedImporterMissingOrEmpty = true;
-                        }
-                        currLabel.Text = rawfileMsg;
-                        Application.DoEvents();
-                    }
-
                     else if (tlpFiles.Controls[i].Name == rawFileImprtStr)
                     {
                         int rawfileStartTicks = Environment.TickCount;
@@ -1996,7 +1823,7 @@ namespace sqlnexus
                         Application.DoEvents();
 
                         //run Post-processing
-                        RunPostProcessing(srcPath);
+                        RunPostProcessing(srcPath, tracePostProcessing);
 
                         currBar.Value = 100;
                         currLabel.Text = "(Post-import Processing) Done. (" + (Environment.TickCount - postProcessStartTicks) / 1000 + " sec) ";
@@ -2113,6 +1940,8 @@ namespace sqlnexus
             catch (Exception ex)
             {
                 MainForm.LogMessage("Import failed.");
+                if (currLabel != null)
+                    currLabel.Text = "Import failed. The database may contain a partial import; see the SQL Nexus log for details.";
 
                 // A fatal error aborted the import. Record failure so a /M automation run does NOT
                 // report success: treat the core load as failed and the requested import as incomplete.
@@ -2162,98 +1991,74 @@ namespace sqlnexus
             }
         }
 
-        private void RunPostProcessing(string sourcePath)
+        private void RunPostProcessing(string sourcePath, TracePostProcessingPrerequisites tracePostProcessing)
         {
+            string[] planFiles = GetSqlPlanFiles(sourcePath);
 
-            //post-process execution (call PostProcess.cmd)
-            StringBuilder output_stream = new StringBuilder();
-            StringBuilder error_stream = new StringBuilder();
-
-            ProcessStartInfo psi = new ProcessStartInfo();
-            psi.CreateNoWindow = true;
-            psi.RedirectStandardOutput = true;
-            psi.RedirectStandardError = true;
-            psi.UseShellExecute = false;
-            psi.Arguments = string.Format("\"{0}\" \"{1}\" \"{2}\" \"{3}\" \"{4}\"",
-                Globals.credentialMgr.Server,
-                Globals.credentialMgr.Database,
-                sourcePath,
-                Globals.credentialMgr.EncryptConnection.ToString().ToLower(),
-                Globals.credentialMgr.TrustServerCertificate.ToString().ToLower());
-
-            MainForm.LogMessage("Executing: PostProcess.cmd " + psi.Arguments);
-            psi.FileName = Application.StartupPath + "\\PostProcess.cmd";
-
-            //print psi filename full path
-            MainForm.LogMessage("PostProcess.cmd full path: " + Path.GetFullPath(psi.FileName));
-
-            // do a script validation before executing
-            if (!ScriptIntegrityChecker.VerifyScript(psi.FileName))
+            using (SqlConnection connection = new SqlConnection(Globals.credentialMgr.ConnectionString))
             {
-                MainForm.LogMessage("Script is not allowed or has been tampered with: '" + psi.FileName + "'. Exiting...", MessageOptions.All, TraceEventType.Error, "Script integrity");
-                return;
-            }
+                connection.Open();
 
-            Process process = new Process();
-            process.StartInfo = psi;
-
-            process.EnableRaisingEvents = true;
-
-            process.ErrorDataReceived += new DataReceivedEventHandler
-                (
-                    delegate (object sender, DataReceivedEventArgs ea)
-                    {
-                        if (ea.Data != null)
-                        {
-                            error_stream.AppendLine(ea.Data);
-                        }
-                    }
-
-                );
-
-            process.OutputDataReceived += new DataReceivedEventHandler
-            (
-                delegate (object sender, DataReceivedEventArgs e)
+                using (SqlCommand createTable = new SqlCommand("IF OBJECT_ID(N'dbo.tblPlansTemp', N'U') IS NULL CREATE TABLE dbo.tblPlansTemp (sqlplan xml);", connection))
                 {
-                    if (e.Data != null)
+                    createTable.CommandTimeout = 0;
+                    createTable.ExecuteNonQuery();
+                }
+
+                foreach (string planFile in planFiles)
+                {
+                    string planXml = File.ReadAllText(planFile);
+                    using (SqlCommand insertPlan = CreateSqlPlanInsertCommand(connection, planXml))
                     {
-                        output_stream.AppendLine(e.Data);
+                        insertPlan.ExecuteNonQuery();
                     }
                 }
-            );
-
-            process.Start();
-            process.BeginOutputReadLine();
-            process.BeginErrorReadLine();
-            process.WaitForExit();
-            int exitCode = process.ExitCode;
-
-            if ((error_stream != null) && (error_stream.Length != 0 ))
-            {
-                MainForm.LogMessage("PostProcess error output: " + error_stream.ToString(), MessageOptions.Silent | MessageOptions.StatusBar, TraceEventType.Error, "Post-processing error");
             }
 
-            if ((output_stream != null) && (output_stream.Length != 0 ))
-            {
-                MainForm.LogMessage("PostProcess console output: " + output_stream.ToString().Replace("+++", "\r\n\t"));
-            }
-
-            string exitCodeError = FormatPostProcessExitCodeError(exitCode);
-            if (exitCodeError != null)
-            {
-                MainForm.LogMessage(exitCodeError, MessageOptions.Silent | MessageOptions.StatusBar, TraceEventType.Error, "Post-processing error");
-            }
-
-            process.Close();
-            
-
+            MainForm.LogMessage(String.Format("Imported {0} SQL plan file(s) for post-processing.", planFiles.Length));
+            if (!tracePostProcessing.CanRun)
+                MainForm.LogMessage("Skipping trace timestamp post-processing: no trace importer completed successfully in this run, or a trace import failed/cancelled.");
+            foreach (string script in tracePostProcessing.Scripts)
+                RunScript(script);
         }
 
-        internal static string FormatPostProcessExitCodeError(int exitCode)
+        internal static string[] GetSqlPlanFiles(string sourcePath)
         {
-            return exitCode == 0
-                ? null
-                : string.Format("PostProcess.cmd failed with exit code {0}. Review the preceding post-processing error output in the SQL Nexus log.", exitCode);
+            if (String.IsNullOrWhiteSpace(sourcePath))
+                throw new ArgumentException("A post-processing source path is required.", nameof(sourcePath));
+            if (sourcePath.Split(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar).Any(part => part == ".."))
+                throw new ArgumentException("Directory traversal is not allowed in the post-processing source path.", nameof(sourcePath));
+
+            string fullSourcePath = Path.GetFullPath(sourcePath);
+            if (!Directory.Exists(fullSourcePath))
+                throw new DirectoryNotFoundException("The post-processing source path does not exist.");
+
+            return Directory.GetFiles(fullSourcePath, "*.sqlplan", SearchOption.TopDirectoryOnly);
+        }
+
+        internal static SqlCommand CreateSqlPlanInsertCommand(SqlConnection connection, string planXml)
+        {
+            if (connection == null)
+                throw new ArgumentNullException(nameof(connection));
+            if (String.IsNullOrWhiteSpace(planXml))
+                throw new ArgumentException("SQL plan XML is required.", nameof(planXml));
+
+            System.Data.SqlTypes.SqlXml sqlXml;
+            var settings = new System.Xml.XmlReaderSettings
+            {
+                DtdProcessing = System.Xml.DtdProcessing.Prohibit,
+                XmlResolver = null
+            };
+            using (var reader = System.Xml.XmlReader.Create(new StringReader(planXml), settings))
+            {
+                // SqlXml preserves XML semantics without passing a conflicting encoding declaration as NVARCHAR.
+                sqlXml = new System.Data.SqlTypes.SqlXml(reader);
+            }
+
+            SqlCommand command = new SqlCommand("INSERT INTO dbo.tblPlansTemp (sqlplan) VALUES (@sqlplan);", connection);
+            command.CommandTimeout = 0;
+            command.Parameters.Add("@sqlplan", System.Data.SqlDbType.Xml).Value = sqlXml;
+            return command;
         }
 
 
@@ -2394,27 +2199,17 @@ namespace sqlnexus
                 else
                     FullScriptName = scriptname;
 
-                if (!File.Exists(FullScriptName))
-                {
-                    MainForm.LogMessage("Script '" + FullScriptName + "' doesn't exist", MessageOptions.All);
-                    return;
-                }
-
                 //print full path to the script
                 MainForm.LogMessage("Full path to script: " + Path.GetFullPath(FullScriptName));
 
-                // do a script validation before executing
-
-                if (!ScriptIntegrityChecker.VerifyScript(FullScriptName))
-                {
-                    MainForm.LogMessage("Script is not allowed or has been tampered with: '" + scriptname + "'", MessageOptions.All, TraceEventType.Error, "Script integrity");
-                    return;
-                }
+                string scriptText = ReadVerifiedScript(FullScriptName);
 
                 //db.ExecuteNonQuery(File.ReadAllText(FullScriptName), Microsoft.SqlServer.Management.Common.ExecutionTypes.ContinueOnError);
                 CSql mysql = new CSql(Globals.credentialMgr.ConnectionString);
                 //MainForm.LogMessage("Connection string inside execute script " + Globals.credentialMgr.ConnectionString);
-                mysql.ExecuteSqlScript(File.ReadAllText(FullScriptName));
+                mysql.ExecuteSqlScript(scriptText);
+                if (!mysql.IsSuccess)
+                    throw new InvalidOperationException("SQL script execution failed for '" + scriptname + "'. The import may be partial; see the SQL Nexus log for details.");
                 MainForm.LogMessage("full script " + FullScriptName);
                 MainForm.LogMessage(string.Format("Execution of {0} complete.", FullScriptName));
             }
@@ -2422,6 +2217,16 @@ namespace sqlnexus
             {
                 this.Cursor = saveCur;
             }
+        }
+
+        internal static string ReadVerifiedScript(string scriptPath)
+        {
+            if (!File.Exists(scriptPath))
+                throw new FileNotFoundException("The SQL script does not exist.", scriptPath);
+            if (!ScriptIntegrityChecker.VerifyScript(scriptPath))
+                throw new System.Security.SecurityException("Script integrity verification failed.");
+
+            return File.ReadAllText(scriptPath);
         }
 
         private void EnableButtons(bool enable)
@@ -2632,7 +2437,7 @@ namespace sqlnexus
                             foreach (ToolStripMenuItem tsi_IndividualOptionMenu in tsi_ProductMenu.DropDownItems)
                             {
                                 INexusImporter prod = tsi_IndividualOptionMenu.Tag as INexusImporter;
-                                // Skip menu items not backed by an INexusImporter (e.g. custom SQLDiag/AlwaysOn XEL sub-items)
+                                // Dialog options are not backed by an importer.
                                 if (prod == null)
                                     continue;
                                 String OptionName = String.Format("{0}.{1}", prod.Name, tsi_IndividualOptionMenu.Text);
@@ -2645,8 +2450,6 @@ namespace sqlnexus
                 }
 
                 ImportOptions.Set("DropDbBeforeImporting", tsiDropDBBeforeImporting.Checked);
-                ImportOptions.Set("SQLDiagAlwaysOnXEL.Enabled", tsiSQLDiagAlwaysOnXEL_Enabled.Checked);
-                ImportOptions.Set("SQLDiagAlwaysOnXEL.DropExistingTables", tsiSQLDiagAlwaysOnXEL_DropTables.Checked);
             }
             else
                 ImportOptions.Clear();
@@ -2722,14 +2525,6 @@ namespace sqlnexus
                 ImportOptions.Set("DropDbBeforeImporting", tsi.Checked);
 
 
-        }
-        private void tsiSQLDiagAlwaysOnXEL_SubOption_Click(object sender, EventArgs e)
-        {
-            if (ImportOptions.IsEnabled("SaveImportOptions"))
-            {
-                ImportOptions.Set("SQLDiagAlwaysOnXEL.Enabled", tsiSQLDiagAlwaysOnXEL_Enabled.Checked);
-                ImportOptions.Set("SQLDiagAlwaysOnXEL.DropExistingTables", tsiSQLDiagAlwaysOnXEL_DropTables.Checked);
-            }
         }
         private void cmOptions_Opening(object sender, CancelEventArgs e)
         {

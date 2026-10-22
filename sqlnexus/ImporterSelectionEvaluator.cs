@@ -35,7 +35,7 @@ namespace sqlnexus
         public const string ReadTraceImporterName = "ReadTrace (SQL XEL/TRC Files)";
         public const string TraceEventImporterName = "Trace Event Importer (Managed)";
 
-        /// <summary>The /M token for the CustomXEL importer (handled outside the INexusImporter menu).</summary>
+        /// <summary>The existing /M token for the standard Custom XEL importer.</summary>
         public const string CustomXelToken = "CustomXEL";
 
         /// <summary>The /M token for the preferred managed trace importer.</summary>
@@ -46,7 +46,7 @@ namespace sqlnexus
 
         /// <summary>
         /// Maps /M command-line tokens (case-insensitive) to the exact INexusImporter.Name values
-        /// returned at runtime. CustomXEL is handled separately (it is not an INexusImporter menu item).
+        /// returned at runtime.
         /// </summary>
         public static readonly IDictionary<string, string> ImporterTokenToName =
             new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
@@ -56,6 +56,7 @@ namespace sqlnexus
                 { "Linux",              "Import Linux Performance Files (.perf)" },
                 { "Errorlog",           "ERRORLOG Importer" },
                 { TraceEventToken,      TraceEventImporterName },
+                { CustomXelToken,       CustomXELImporter.ImporterName },
             };
 
         /// <summary>
@@ -123,14 +124,6 @@ namespace sqlnexus
         {
             return result == ImporterGateResult.ForcedOn
                 || result == ImporterGateResult.EnabledByToken;
-        }
-
-        /// <summary>
-        /// Whether the CustomXEL importer should run for the given /M selection.
-        /// </summary>
-        public static bool IsCustomXelSelected(ISet<string> selectedTokens)
-        {
-            return selectedTokens != null && selectedTokens.Contains(CustomXelToken);
         }
 
         /// <summary>

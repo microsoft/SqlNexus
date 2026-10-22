@@ -434,7 +434,7 @@ namespace TraceEventImporter
         /// <c>tbl_server_times</c> when present) that records whether timestamps in the ReadTrace
         /// tables are already in local server time (<paramref name="isLocalTime"/> = true, value
         /// '1') or in UTC (false, value '0').
-        /// <c>SQLNexus_PostProcessing.sql</c> reads this flag to choose between a direct copy
+        /// <c>TraceTimestampPostProcessing.sql</c> reads this flag to choose between a direct copy
         /// and a DATEADD offset conversion when populating
         /// <c>StartTime_local</c> / <c>EndTime_local</c>.
         /// </summary>

@@ -1,301 +1,300 @@
-﻿using NexusInterfaces;
+using NexusInterfaces;
+using Microsoft.Data.SqlClient;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Microsoft.Data.SqlClient;
+using System.Data;
 using System.IO;
-using System.Linq;
-using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-
 namespace sqlnexus
 {
-    public class CustomXELImporter
+    internal enum CustomXelSource
     {
+        SqlDiag,
+        AlwaysOnHealth,
+        SystemHealth
+    }
 
-        //ILogger logger;
-
-        string connStr;
-        string server;
-        bool usewindowsauth;
-        string sqllogin;
-        string sqlpassword;
-        string databasename;
-        string srcPath;
-        int countTotalFilesFound = 0;
-        int totalRowsAffected = 0;
-
-        // Single source of truth for the Custom XEL file masks. These are the ONLY patterns the
-        // Load*Files() methods scan for, and fmImport.WarnIfSharedFolderHasUnimportedCustomXel
-        // references these same constants when detecting Custom XEL files that exist only in the
-        // sibling SharedOutputFiles folder. Keeping one definition prevents the two from silently
-        // drifting apart (see issue #556): if a mask changes here, the sibling-gap warning follows.
+    public sealed class CustomXELImporter : INexusImporter, INexusImporterPolicy
+    {
+        internal const string ImporterName = "Custom XEL Importer";
+        internal const string DropTablesOption = "Drop existing tables";
         internal const string SqlDiagMask = "*_SQLDIAG*.xel";
         internal const string AlwaysOnHealthMask = "*AlwaysOn_health*.xel";
         internal const string SystemHealthMask = "*system_health*.xel";
-
-        // Aggregate of all Custom XEL masks, for callers that scan for every source at once.
         internal static readonly string[] CustomXelFileMasks =
             { SqlDiagMask, AlwaysOnHealthMask, SystemHealthMask };
 
-        /// <summary>
-        /// Total number of Custom XEL files (SqlDiag/AlwaysOn Health/system_health) discovered and
-        /// imported by the last <see cref="ImportCustomXELFiles"/> call. Zero means nothing matched,
-        /// which a /M-driven run treats as "requested data did not arrive".
-        /// </summary>
-        public int TotalFilesFound { get { return countTotalFilesFound; } }
+        private readonly Func<CustomXelSource, string, bool, long> executeImport;
+        private string connectionString;
+        private string filePattern;
+        private CustomXelSource source;
+        private ILogger logger;
+        private CancellationTokenSource cancellation;
+        private bool initialized;
 
-        /// <summary>
-        /// Decides whether a Custom XEL import failed based on the per-source row counts returned by
-        /// the Load* methods. Each Load* method returns a non-negative row count on success and -1 on
-        /// failure (from its catch block), so any negative value means that source errored.
-        /// Extracted for unit testing (see CustomXELImporterTests).
-        /// </summary>
-        internal static bool AnyCustomXelSourceFailed(int sqlDiagRowsImported, int alwaysOnRowsImported, int systemHealthRowsImported)
+        public CustomXELImporter()
         {
-            return sqlDiagRowsImported < 0 || alwaysOnRowsImported < 0 || systemHealthRowsImported < 0;
+            executeImport = ExecuteImport;
         }
 
-        bool dropExistingTables = true;
-
-        public string ImportCustomXELFiles(string connString, string Server, bool UseWindowsAuth, string SQLLogin, string SQLPassword, string DatabaseName, string srcpath, out bool success, bool importCustomXEL = true, bool dropTables = true)
+        internal CustomXELImporter(Func<CustomXelSource, string, bool, long> executeImport)
         {
+            this.executeImport = executeImport ?? throw new ArgumentNullException(nameof(executeImport));
+        }
 
-            connStr = connString;
-            server = Server;
-            usewindowsauth = UseWindowsAuth;
-            sqllogin = SQLLogin;
-            sqlpassword = SQLPassword;
-            databasename = DatabaseName;
-            srcPath = srcpath;
-            dropExistingTables = dropTables;
+        public Guid ID { get; } = new Guid("05F43A63-2922-457B-BDB2-368280A8DB9E");
+        public string Name => ImporterName;
+        public bool PrimaryFolderOnly => true;
+        public bool StopOnFailure => true;
+        public Dictionary<string, object> Options { get; } = new Dictionary<string, object>
+        {
+            { "Enabled", false },
+            { DropTablesOption, true }
+        };
+        public Form OptionsDialog => null;
+        public string[] SupportedMasks => (string[])CustomXelFileMasks.Clone();
+        public string[] PreScripts => new string[0];
+        public string[] PostScripts => new string[0];
+        public ImportState State { get; private set; }
+        public bool Cancelled { get; private set; }
+        public ArrayList KnownRowsets { get; } = new ArrayList();
+        public long TotalRowsInserted { get; private set; }
+        public long TotalLinesProcessed => 0;
+        public int TotalFilesFound { get; private set; }
+        public event EventHandler StatusChanged;
 
-            success = true;
+        public void Initialize(string Filemask, string connString, string Server, bool UseWindowsAuth,
+            string SQLLogin, string SQLPassword, string DatabaseName, ILogger Logger)
+        {
+            initialized = false;
+            logger = Logger ?? throw new ArgumentNullException(nameof(Logger));
+            if (string.IsNullOrWhiteSpace(connString))
+                throw new ArgumentException("A configured database connection is required.", nameof(connString));
+            if (string.IsNullOrWhiteSpace(Filemask) || Filemask.Length > 4000)
+                throw new ArgumentException("An absolute Custom XEL category mask of at most 4000 characters is required.", nameof(Filemask));
 
-            int sqlDiagRowsImported = 0;
-            int alwaysOnRowsImported = 0;
-            if (importCustomXEL)
+            string root = Path.GetPathRoot(Filemask);
+            string directory = Path.GetDirectoryName(Filemask);
+            if (string.IsNullOrEmpty(root) || root.Length < 3 ||
+                !root.EndsWith(Path.DirectorySeparatorChar.ToString(), StringComparison.Ordinal) ||
+                string.IsNullOrEmpty(directory) || directory.IndexOfAny(new[] { '*', '?' }) >= 0)
+                throw new ArgumentException("An absolute Custom XEL folder is required.", nameof(Filemask));
+            foreach (string component in directory.Split(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar))
             {
-                sqlDiagRowsImported = LoadSQLDiaglFiles();
-                alwaysOnRowsImported = LoadAlwaysonHealthFiles();
-                int systemHealthRowsImported = LoadSystemHealthFiles();
+                if (component == "." || component == "..")
+                    throw new ArgumentException("Directory traversal is not permitted.", nameof(Filemask));
+            }
 
-                // Each Load* method returns a non-negative row count on success and -1 on failure
-                // (and logs the specific error). Surface any failure so the caller does NOT report a
-                // successful "Done" status.
-                bool anyFailed = AnyCustomXelSourceFailed(sqlDiagRowsImported, alwaysOnRowsImported, systemHealthRowsImported);
-                success = !anyFailed;
+            source = GetSource(Path.GetFileName(Filemask));
+            filePattern = Path.Combine(Path.GetFullPath(directory), Path.GetFileName(Filemask));
+            connectionString = connString;
+            Cancelled = false;
+            TotalRowsInserted = 0;
+            TotalFilesFound = 0;
+            KnownRowsets.Clear();
+            SetState(ImportState.Idle);
+            initialized = true;
+        }
 
-                if (anyFailed)
+        internal static CustomXelSource GetSource(string mask)
+        {
+            for (int index = 0; index < CustomXelFileMasks.Length; index++)
+            {
+                if (string.Equals(mask, CustomXelFileMasks[index], StringComparison.OrdinalIgnoreCase))
+                    return (CustomXelSource)index;
+            }
+            throw new ArgumentException("Unknown Custom XEL category mask.", nameof(mask));
+        }
+
+        public bool DoImport()
+        {
+            if (!initialized)
+                throw new InvalidOperationException("Initialize the Custom XEL importer before importing.");
+
+            try
+            {
+                // Selection (including transient /M overrides) belongs to the host, not saved options.
+                if (Cancelled)
+                    throw new OperationCanceledException();
+                string[] files = Directory.GetFiles(Path.GetDirectoryName(filePattern),
+                    Path.GetFileName(filePattern), SearchOption.TopDirectoryOnly);
+                TotalFilesFound = files.Length;
+                if (files.Length == 0)
                 {
-                    Util.Logger.LogMessage("Custom XEL import encountered errors (SqlDiag/AOHealth/SysHealth). See preceding log entries for details.");
-                    return String.Format("FAILED - one or more Custom XEL sources errored (SqlDiag {0}, AOHealth {1}, SysHealth {2}). See log for details.",
-                                    sqlDiagRowsImported, alwaysOnRowsImported, systemHealthRowsImported);
+                    SetState(ImportState.NoFiles);
+                    logger.LogMessage("Custom XEL category has no matching files; existing tables were not changed.");
+                    return true;
                 }
 
-                string retStr = String.Format("{0} rows imported (SqlDiag {2}, AOHealth {3}, SysHealth {4}) across {1} XEL files.", 
-                                    totalRowsAffected, 
-                                    countTotalFilesFound,
-                                    sqlDiagRowsImported,
-                                    alwaysOnRowsImported,
-                                    systemHealthRowsImported);
-                return retStr;
+                foreach (string file in files)
+                {
+                    string name = Path.GetFileNameWithoutExtension(file);
+                    int categories = (name.IndexOf("_SQLDIAG", StringComparison.OrdinalIgnoreCase) >= 0 ? 1 : 0)
+                        + (name.IndexOf("AlwaysOn_health", StringComparison.OrdinalIgnoreCase) >= 0 ? 1 : 0)
+                        + (name.IndexOf("system_health", StringComparison.OrdinalIgnoreCase) >= 0 ? 1 : 0);
+                    if (categories != 1)
+                        throw new InvalidDataException("A Custom XEL filename matches multiple categories. Rename or remove the ambiguous file before importing.");
+                }
+
+                if (!(Options[DropTablesOption] is bool))
+                    throw new InvalidOperationException("The Custom XEL drop-tables option must be boolean.");
+                SetState(ImportState.Importing);
+                if (Cancelled)
+                    throw new OperationCanceledException();
+                long rows = executeImport(source, filePattern, (bool)Options[DropTablesOption]);
+                if (rows < 0)
+                    throw new InvalidOperationException("The Custom XEL reader returned an invalid row count.");
+                TotalRowsInserted = rows;
+                KnownRowsets.Add(new ImportedRowset { Name = GetTableName(source), RowsInserted = rows });
+                logger.LogMessage(string.Format("Custom XEL import for {0} finished: {1} rows imported from {2} files into dbo.{3}.",
+                    Path.GetFileName(filePattern), rows, files.Length, GetTableName(source)));
+                SetState(ImportState.Idle);
+                return true;
             }
+            catch (Exception ex)
+            {
+                logger.LogMessage(Cancelled
+                    ? "Custom XEL import cancelled; the current category transaction was rolled back."
+                    : "Custom XEL import failed; subsequent processing must stop. " + ex.Message, MessageOptions.Both);
+                return false;
+            }
+        }
+
+        private long ExecuteImport(CustomXelSource category, string pattern, bool drop)
+        {
+            using (var cancellationSource = new CancellationTokenSource())
+            using (var connection = new SqlConnection(connectionString))
+            {
+                cancellation = cancellationSource;
+                try
+                {
+                    if (Cancelled)
+                        cancellationSource.Cancel();
+                    SetState(ImportState.OpeningDatabaseConnection);
+                    WaitForSql(connection.OpenAsync(cancellationSource.Token));
+                    cancellationSource.Token.ThrowIfCancellationRequested();
+                    using (SqlTransaction transaction = connection.BeginTransaction())
+                    using (SqlCommand command = CreateImportCommand(connection, category, pattern, drop))
+                    {
+                        command.Transaction = transaction;
+                        SetState(ImportState.Importing);
+                        object result = WaitForSql(command.ExecuteScalarAsync(cancellationSource.Token));
+                        cancellationSource.Token.ThrowIfCancellationRequested();
+                        if (!(result is long) || (long)result < 0)
+                            throw new InvalidOperationException("The Custom XEL reader did not return a valid row count.");
+                        transaction.Commit();
+                        return (long)result;
+                    }
+                }
+                finally
+                {
+                    cancellation = null;
+                }
+            }
+        }
+
+        private static void WaitForSql(Task task)
+        {
+            while (!task.IsCompleted)
+            {
+                Application.DoEvents();
+                Thread.Sleep(20);
+            }
+            task.GetAwaiter().GetResult();
+        }
+
+        private static T WaitForSql<T>(Task<T> task)
+        {
+            WaitForSql((Task)task);
+            return task.GetAwaiter().GetResult();
+        }
+
+        internal static string GetTableName(CustomXelSource category)
+        {
+            switch (category)
+            {
+                case CustomXelSource.SqlDiag: return "tbl_SqlDiagXel";
+                case CustomXelSource.AlwaysOnHealth: return "tbl_AlwaysOnHealthXel";
+                case CustomXelSource.SystemHealth: return "tbl_SystemHealthXel";
+                default: throw new ArgumentOutOfRangeException(nameof(category));
+            }
+        }
+
+        internal static SqlCommand CreateImportCommand(SqlConnection connection, CustomXelSource category,
+            string pattern, bool drop)
+        {
+            if (connection == null)
+                throw new ArgumentNullException(nameof(connection));
+            if (string.IsNullOrWhiteSpace(pattern) || pattern.Length > 4000)
+                throw new ArgumentException("An XEL file pattern of at most 4000 characters is required.", nameof(pattern));
+
+            string table = GetTableName(category);
+            string legacyTable;
+            switch (category)
+            {
+                case CustomXelSource.SqlDiag: legacyTable = "tbl_SQL_Base_SQLDIAGXEL_Startup"; break;
+                case CustomXelSource.AlwaysOnHealth: legacyTable = "tbl_SQL_Base_AlwaysOnHealth"; break;
+                case CustomXelSource.SystemHealth: legacyTable = "tbl_SQL_Base_SystemHealthXEL_Startup"; break;
+                default: throw new ArgumentOutOfRangeException(nameof(category));
+            }
+
+            // Stage before replacing a table; the caller's transaction covers loading and publication.
+            string sql = @"SET NOCOUNT ON;
+SET XACT_ABORT ON;
+SELECT * INTO #CustomXelInput
+FROM sys.fn_xe_file_target_read_file(@filePattern, NULL, NULL, NULL);
+";
+            if (drop)
+                sql += "IF OBJECT_ID(N'dbo." + table + "', N'U') IS NOT NULL DROP TABLE [dbo].[" + table + "];\n";
             else
-            {
-                Util.Logger.LogMessage("Skipping Custom XEL import (SQLDiag, AlwaysOn Health, and system_health) - CustomXEL option is disabled.");
-                return "Skipped (disabled)";
-            }
+                sql += "IF OBJECT_ID(N'dbo." + table + "', N'U') IS NULL AND OBJECT_ID(N'dbo." + legacyTable + @"', N'U') IS NOT NULL
+    THROW 50001, 'Legacy Custom XEL data exists. Re-import with Drop existing tables enabled to populate the canonical table; legacy tables are left unchanged.', 1;
+";
 
-
+            string columns = "[name] COLLATE DATABASE_DEFAULT, column_id, system_type_id, max_length, [precision], scale, is_nullable, is_identity, is_computed, collation_name COLLATE DATABASE_DEFAULT";
+            string targetColumns = "SELECT " + columns + " FROM sys.columns WHERE object_id = OBJECT_ID(N'dbo." + table + "')";
+            string stagedColumns = "SELECT " + columns + " FROM tempdb.sys.columns WHERE object_id = OBJECT_ID(N'tempdb..#CustomXelInput')";
+            sql += "IF OBJECT_ID(N'dbo." + table + @"', N'U') IS NULL
+    SELECT * INTO [dbo].[" + table + @"] FROM #CustomXelInput;
+ELSE
+BEGIN
+    IF EXISTS (" + targetColumns + " EXCEPT " + stagedColumns + @")
+        OR EXISTS (" + stagedColumns + " EXCEPT " + targetColumns + @")
+        THROW 50002, 'The canonical Custom XEL table schema is incompatible. Re-import with Drop existing tables enabled.', 1;
+    INSERT INTO [dbo].[" + table + @"] SELECT * FROM #CustomXelInput;
+END;
+SELECT COUNT_BIG(*) FROM #CustomXelInput;";
+            var command = new SqlCommand(sql, connection) { CommandTimeout = 0 };
+            command.Parameters.Add("@filePattern", SqlDbType.NVarChar, 4000).Value = pattern;
+            return command;
         }
 
-        SqlConnection cnn;
-
-        // We can implement following methods more efficiently by combining them into just one method
-        // we are just inserting a Raw XEL file into SQL Tables.
-        public int LoadSQLDiaglFiles()
+        public void Cancel()
         {
-
-            try
-            {
-                string sqlDiagXelFileToImport = SqlDiagMask;
-                string[] XEFiles = Directory.GetFiles(srcPath, sqlDiagXelFileToImport);
-
-                //count the files found to be imported
-                int sqlDiagFileCount = XEFiles.Count();
-                int sqlDiagRowsImported = 0;
-
-                cnn = new SqlConnection(connStr);
-                cnn.Open();
-
-                if (sqlDiagFileCount > 0)
-                {
-                    //increment total number of files imported from this importer
-                    countTotalFilesFound += sqlDiagFileCount;
-
-                    string XEFile = XEFiles[0];
-                    int index = XEFile.IndexOf("_SQLDIAG_");
-                    if (index > 0)
-                        XEFile = XEFile.Substring(0, index);
-
-                    string dropSql = dropExistingTables ? @"IF OBJECT_ID(N'tbl_SQL_Base_SQLDIAGXEL_Startup', N'U') IS NOT NULL
-                            BEGIN
-                            DROP TABLE tbl_SQL_Base_SQLDIAGXEL_Startup;
-                            END
-                            " : "";
-                    string sqlstatment = dropSql + "SELECT * INTO tbl_SQL_Base_SQLDIAGXEL_Startup FROM sys.fn_xe_file_target_read_file('" + XEFile + "*.XEL', NULL, null, null);";
-
-
-
-                    SqlCommand cmd = new SqlCommand(sqlstatment, cnn);
-                    cmd.CommandTimeout = 0;
-                    // ExecuteNonQuery returns -1 when the rowcount is suppressed (e.g. SET NOCOUNT ON).
-                    // Clamp to 0 so a successful import can never be mistaken for the -1 failure signal
-                    // returned by the catch block below.
-                    sqlDiagRowsImported = Math.Max(0, cmd.ExecuteNonQuery());
-                    totalRowsAffected += sqlDiagRowsImported;
-
-                    Util.Logger.LogMessage(String.Format("Custom XEL import for {0} finished: {1} rows imported from {2} files.", sqlDiagXelFileToImport, sqlDiagRowsImported, sqlDiagFileCount));
-                }
-
-                return sqlDiagRowsImported;
-            }
-            catch (Exception ex)
-            {
-                Util.Logger.LogMessage("Error importing SQLDiag XEL files: " + ex.Message);
-                return -1;
-            }
-            
-            finally
-            {
-                //cmd.Dispose();
-                cnn.Close();
-            }
-
-
-
+            Cancelled = true;
+            SetState(ImportState.Canceling);
+            cancellation?.Cancel();
         }
 
-        public int LoadAlwaysonHealthFiles()
+        private void SetState(ImportState state)
         {
-            try
-            {
-
-                string AOHealthFileToImport = AlwaysOnHealthMask;
-                string[] XEFiles = Directory.GetFiles(srcPath, AOHealthFileToImport);
-
-                //count the files found to be imported
-                int AlwaysOnFileCount = XEFiles.Count();
-                int AlwaysOnRowsImported = 0;
-
-                cnn = new SqlConnection(connStr);
-                cnn.Open();
-                if (AlwaysOnFileCount > 0)
-                {
-                    //increment total number of files imported from this importer
-                    countTotalFilesFound += AlwaysOnFileCount;
-
-                    string XEFile = XEFiles[0];
-
-                    int index = XEFile.IndexOf("AlwaysOn_health");
-                    if (index > 0)
-                        XEFile = XEFile.Substring(0, index);
-
-                    string dropSql = dropExistingTables ? @"IF OBJECT_ID(N'tbl_SQL_Base_AlwaysOnHealth', N'U') IS NOT NULL
-                             BEGIN
-                            DROP TABLE tbl_SQL_Base_AlwaysOnHealth;
-                                END
-                            " : "";
-                    string sqlstatment = dropSql + "SELECT * INTO tbl_SQL_Base_AlwaysOnHealth FROM sys.fn_xe_file_target_read_file('" + XEFile + "*.XEL', NULL, null, null);";
-                    SqlCommand cmd = new SqlCommand(sqlstatment, cnn);
-                    cmd.CommandTimeout = 0;
-                    // Clamp to 0 (see LoadSQLDiaglFiles) so success is never confused with the -1 failure signal.
-                    AlwaysOnRowsImported = Math.Max(0, cmd.ExecuteNonQuery());
-                    totalRowsAffected += AlwaysOnRowsImported;
-
-
-                    Util.Logger.LogMessage(String.Format("Custom XEL import for {0} finished: {1} rows imported from {2} files.", AOHealthFileToImport, AlwaysOnRowsImported, AlwaysOnFileCount));
-                }
-
-                return AlwaysOnRowsImported;
-            }
-            catch (Exception ex)
-            {
-                Util.Logger.LogMessage("Error importing AlwaysOn Health XEL files: " + ex.Message);
-                return -1;
-            }
-            
-            finally
-            {
-                cnn.Close();
-            }
+            State = state;
+            OnStatusChanged(EventArgs.Empty);
         }
 
-
-        public int LoadSystemHealthFiles()
+        public void OnStatusChanged(EventArgs e)
         {
-            try
-            {
-                string sysHealthFilesToImport = SystemHealthMask;
-                string[] XEFiles = Directory.GetFiles(srcPath, sysHealthFilesToImport);
-
-                //count the files found to be imported
-                int systemHealthFileCount = XEFiles.Count();
-                int systemHealthRowsImported = 0;
-
-
-                cnn = new SqlConnection(connStr);
-                cnn.Open();
-
-            
-                if (systemHealthFileCount > 0)
-                {
-                    //increment total number of files imported from this importer
-                    countTotalFilesFound += systemHealthFileCount;
-
-                    string XEFile = XEFiles[0];
-
-                    int index = XEFile.IndexOf("system_health");
-                    if (index > 0)
-                        XEFile = XEFile.Substring(0, index);
-                    string dropSql = dropExistingTables ? @"IF OBJECT_ID(N'tbl_SQL_Base_SystemHealthXEL_Startup', N'U') IS NOT NULL
-                            BEGIN
-                            DROP TABLE tbl_SQL_Base_SystemHealthXEL_Startup;
-                            END
-                            " : "";
-                    string sqlstatment = dropSql + "SELECT * INTO tbl_SQL_Base_SystemHealthXEL_Startup FROM sys.fn_xe_file_target_read_file('" + XEFile + "*.XEL', NULL, null, null);";
-
-
-
-                    SqlCommand cmd = new SqlCommand(sqlstatment, cnn);
-                    cmd.CommandTimeout = 0;
-                    // Clamp to 0 (see LoadSQLDiaglFiles) so success is never confused with the -1 failure signal.
-                    systemHealthRowsImported = Math.Max(0, cmd.ExecuteNonQuery());
-                    totalRowsAffected += systemHealthRowsImported;
-
-                    Util.Logger.LogMessage(String.Format("Custom XEL import for {0} finished: {1} rows imported from {2} files.", sysHealthFilesToImport, systemHealthRowsImported, systemHealthFileCount));
-                }
-
-                return systemHealthRowsImported;
-            }
-            catch(Exception ex)
-            {
-                Util.Logger.LogMessage("Error importing System Health XEL files: " + ex.Message);
-                return -1;
-            }
-            
-            finally
-            {
-                cnn.Close();
-            }
-
+            StatusChanged?.Invoke(this, e);
         }
 
-    }//class
-
-}//namespace
-        
-    
+        private sealed class ImportedRowset : INexusImportedRowset
+        {
+            public string Name { get; set; }
+            public long RowsInserted { get; set; }
+        }
+    }
+}

@@ -46,9 +46,14 @@ namespace NexusInterfaces
 
             Util.Logger.LogMessage (m_ErrorMessages.ToString(), MessageOptions.Silent, ( (m_Success == true ) ? TraceEventType.Information: TraceEventType.Error), dlgTitle);
         }
-        private String[] ParseBatches(string scriptText)
+        internal static String[] ParseBatches(string scriptText)
         {
-            Regex reg1 = new Regex("\r\n\\s*go\\s*\r\n*", RegexOptions.IgnoreCase);
+            if (scriptText == null)
+                throw new ArgumentNullException(nameof(scriptText));
+
+            // Do not consume line breaks: consecutive GO lines must each be recognized.
+            Regex reg1 = new Regex(@"^[\t ]*GO[\t ]*\r?$",
+                RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.CultureInvariant);
             return reg1.Split(scriptText);
 
         }
@@ -194,4 +199,3 @@ namespace NexusInterfaces
 
         
     }
-

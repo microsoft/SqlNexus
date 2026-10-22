@@ -334,6 +334,7 @@
     </Compile>
     <Compile Include="Globals.cs" />
     <Compile Include="ImporterSelectionEvaluator.cs" />
+    <Compile Include="TracePostProcessingPrerequisites.cs" />
     <Compile Include="SharedOutputFolder.cs" />
     <Compile Include="InlineDateTimeTraceListener.cs" />
     <Compile Include="NexusInfo.cs" />
@@ -507,9 +508,6 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
-    <Content Include="PostProcess.cmd">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -643,6 +641,9 @@
     <None Include="Resources\CriticalErrorImport.png" />
     <None Include="Resources\EditIcon_20x20.png" />
     <Content Include="SQLNexus_PostProcessing.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TraceTimestampPostProcessing.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="SQLNexus_PreProcessing.sql">
@@ -877,16 +878,6 @@
       <PublishState>Include</PublishState>
       <IncludeHash>True</IncludeHash>
       <FileType>Assembly</FileType>
-    </PublishFile>
-    <PublishFile Include="PostProcess.cmd">
-      <Visible>False</Visible>
-      <Group>
-      </Group>
-      <TargetPath>
-      </TargetPath>
-      <PublishState>Include</PublishState>
-      <IncludeHash>True</IncludeHash>
-      <FileType>File</FileType>
     </PublishFile>
     <PublishFile Include="Reports\Active Queries_C.rdlC">
       <Visible>False</Visible>
