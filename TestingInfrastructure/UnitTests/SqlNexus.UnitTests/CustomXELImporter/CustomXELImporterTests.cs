@@ -25,7 +25,7 @@ namespace SqlNexus.UnitTests.CustomXELImporter
             Assert.AreEqual(false, importer.Options["Enabled"]);
             Assert.AreEqual(true, importer.Options[CustomXELImporter.DropTablesOption]);
             Assert.IsTrue(((INexusImporterPolicy)importer).PrimaryFolderOnly);
-            Assert.IsTrue(((INexusImporterPolicy)importer).StopOnFailure);
+            Assert.IsFalse(((INexusImporterPolicy)importer).StopOnFailure);
             Assert.IsFalse(importer is INexusFileImporter);
             Assert.AreEqual(0, importer.PreScripts.Length);
             Assert.AreEqual(0, importer.PostScripts.Length);
@@ -60,24 +60,26 @@ namespace SqlNexus.UnitTests.CustomXELImporter
                 Assert.IsFalse(command.CommandText.Contains(pattern));
                 StringAssert.Contains(command.CommandText, "[dbo].[" + table + "]");
                 StringAssert.Contains(command.CommandText, "sys.fn_xe_file_target_read_file(@filePattern, NULL, NULL, NULL)");
-                Assert.IsTrue(command.CommandText.IndexOf("SELECT * INTO #CustomXelInput", StringComparison.Ordinal)
-                    < command.CommandText.IndexOf("DROP TABLE", StringComparison.Ordinal));
-                StringAssert.Contains(command.CommandText, "SELECT COUNT_BIG(*)");
+                Assert.IsTrue(command.CommandText.IndexOf("DROP TABLE", StringComparison.Ordinal)
+                    < command.CommandText.IndexOf("SELECT * INTO [dbo].[" + table + "]", StringComparison.Ordinal));
+                Assert.IsFalse(command.CommandText.Contains("#CustomXelInput"));
+                Assert.IsFalse(command.CommandText.Contains("tempdb"));
+                StringAssert.Contains(command.CommandText, "SELECT ROWCOUNT_BIG()");
             }
         }
 
         [TestMethod]
-        public void CreateImportCommand_Append_ValidatesBothSchemaDirectionsAndRejectsUnmigratedLegacyData()
+        public void CreateImportCommand_Append_LoadsDirectlyAndRejectsUnmigratedLegacyData()
         {
             using (var connection = new SqlConnection())
             using (var command = CustomXELImporter.CreateImportCommand(connection, CustomXelSource.SqlDiag, @"C:\capture\*.xel", false))
             {
                 Assert.IsFalse(command.CommandText.Contains("DROP TABLE"));
                 StringAssert.Contains(command.CommandText, "INSERT INTO [dbo].[tbl_SqlDiagXel]");
-                StringAssert.Contains(command.CommandText, "EXCEPT");
-                StringAssert.Contains(command.CommandText, "OR EXISTS");
-                StringAssert.Contains(command.CommandText, "collation_name COLLATE DATABASE_DEFAULT");
-                StringAssert.Contains(command.CommandText, "THROW 50002");
+                StringAssert.Contains(command.CommandText, "SELECT * FROM sys.fn_xe_file_target_read_file(@filePattern, NULL, NULL, NULL)");
+                StringAssert.Contains(command.CommandText, "SELECT ROWCOUNT_BIG()");
+                Assert.IsFalse(command.CommandText.Contains("#CustomXelInput"));
+                Assert.IsFalse(command.CommandText.Contains("tempdb"));
                 StringAssert.Contains(command.CommandText, "tbl_SQL_Base_SQLDIAGXEL_Startup");
                 StringAssert.Contains(command.CommandText, "THROW 50001");
             }

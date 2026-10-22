@@ -49,7 +49,7 @@ namespace CustomXELImporter
         public Guid ID { get; } = new Guid("05F43A63-2922-457B-BDB2-368280A8DB9E");
         public string Name => ImporterName;
         public bool PrimaryFolderOnly => true;
-        public bool StopOnFailure => true;
+        public bool StopOnFailure => false;
         public Dictionary<string, object> Options { get; } = new Dictionary<string, object>
         {
             { "Enabled", false },
@@ -242,32 +242,28 @@ namespace CustomXELImporter
                 default: throw new ArgumentOutOfRangeException(nameof(category));
             }
 
-            // Stage before replacing a table; the caller's transaction covers loading and publication.
             string sql = @"SET NOCOUNT ON;
 SET XACT_ABORT ON;
-SELECT * INTO #CustomXelInput
-FROM sys.fn_xe_file_target_read_file(@filePattern, NULL, NULL, NULL);
 ";
             if (drop)
-                sql += "IF OBJECT_ID(N'dbo." + table + "', N'U') IS NOT NULL DROP TABLE [dbo].[" + table + "];\n";
+            {
+                sql += "IF OBJECT_ID(N'dbo." + table + "', N'U') IS NOT NULL DROP TABLE [dbo].[" + table + @"];
+SELECT * INTO [dbo].[" + table + @"]
+FROM sys.fn_xe_file_target_read_file(@filePattern, NULL, NULL, NULL);
+SELECT ROWCOUNT_BIG();";
+            }
             else
+            {
                 sql += "IF OBJECT_ID(N'dbo." + table + "', N'U') IS NULL AND OBJECT_ID(N'dbo." + legacyTable + @"', N'U') IS NOT NULL
     THROW 50001, 'Legacy Custom XEL data exists. Re-import with Drop existing tables enabled to populate the canonical table; legacy tables are left unchanged.', 1;
-";
-
-            string columns = "[name] COLLATE DATABASE_DEFAULT, column_id, system_type_id, max_length, [precision], scale, is_nullable, is_identity, is_computed, collation_name COLLATE DATABASE_DEFAULT";
-            string targetColumns = "SELECT " + columns + " FROM sys.columns WHERE object_id = OBJECT_ID(N'dbo." + table + "')";
-            string stagedColumns = "SELECT " + columns + " FROM tempdb.sys.columns WHERE object_id = OBJECT_ID(N'tempdb..#CustomXelInput')";
-            sql += "IF OBJECT_ID(N'dbo." + table + @"', N'U') IS NULL
-    SELECT * INTO [dbo].[" + table + @"] FROM #CustomXelInput;
+IF OBJECT_ID(N'dbo." + table + @"', N'U') IS NULL
+    SELECT * INTO [dbo].[" + table + @"]
+    FROM sys.fn_xe_file_target_read_file(@filePattern, NULL, NULL, NULL);
 ELSE
-BEGIN
-    IF EXISTS (" + targetColumns + " EXCEPT " + stagedColumns + @")
-        OR EXISTS (" + stagedColumns + " EXCEPT " + targetColumns + @")
-        THROW 50002, 'The canonical Custom XEL table schema is incompatible. Re-import with Drop existing tables enabled.', 1;
-    INSERT INTO [dbo].[" + table + @"] SELECT * FROM #CustomXelInput;
-END;
-SELECT COUNT_BIG(*) FROM #CustomXelInput;";
+    INSERT INTO [dbo].[" + table + @"]
+    SELECT * FROM sys.fn_xe_file_target_read_file(@filePattern, NULL, NULL, NULL);
+SELECT ROWCOUNT_BIG();";
+            }
             var command = new SqlCommand(sql, connection) { CommandTimeout = 0 };
             command.Parameters.Add("@filePattern", SqlDbType.NVarChar, 4000).Value = pattern;
             return command;
