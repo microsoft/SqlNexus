@@ -270,7 +270,6 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="CredentialManager.cs" />
-    <Compile Include="CustomXELImporter.cs" />
     <Compile Include="DependencyManager.cs" />
     <Compile Include="DiagConfig.cs" />
     <Compile Include="FileImporter.cs" />
@@ -334,6 +333,7 @@
     </Compile>
     <Compile Include="Globals.cs" />
     <Compile Include="ImporterSelectionEvaluator.cs" />
+    <Compile Include="TracePostProcessingPrerequisites.cs" />
     <Compile Include="SharedOutputFolder.cs" />
     <Compile Include="InlineDateTimeTraceListener.cs" />
     <Compile Include="NexusInfo.cs" />
@@ -507,9 +507,6 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
-    <Content Include="PostProcess.cmd">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -643,6 +640,9 @@
     <None Include="Resources\CriticalErrorImport.png" />
     <None Include="Resources\EditIcon_20x20.png" />
     <Content Include="SQLNexus_PostProcessing.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TraceTimestampPostProcessing.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="SQLNexus_PreProcessing.sql">
@@ -823,6 +823,11 @@
       <Project>{F9069C48-39A6-4FB9-B4B8-D8D0034709A3}</Project>
       <Name>BulkLoadEx</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CustomXELImporter\CustomXELImporter.csproj">
+      <Project>{2F216E66-4CF6-4820-BBC8-B01E72F268EC}</Project>
+      <Name>CustomXELImporter</Name>
+      <Private>True</Private>
+    </ProjectReference>
     <ProjectReference Include="..\LinuxPerfImporter\LinuxPerfImporter.csproj">
       <Project>{ccf72846-1645-4548-8e66-a2ffce83692d}</Project>
       <Name>LinuxPerfImporter</Name>
@@ -877,16 +882,6 @@
       <PublishState>Include</PublishState>
       <IncludeHash>True</IncludeHash>
       <FileType>Assembly</FileType>
-    </PublishFile>
-    <PublishFile Include="PostProcess.cmd">
-      <Visible>False</Visible>
-      <Group>
-      </Group>
-      <TargetPath>
-      </TargetPath>
-      <PublishState>Include</PublishState>
-      <IncludeHash>True</IncludeHash>
-      <FileType>File</FileType>
     </PublishFile>
     <PublishFile Include="Reports\Active Queries_C.rdlC">
       <Visible>False</Visible>

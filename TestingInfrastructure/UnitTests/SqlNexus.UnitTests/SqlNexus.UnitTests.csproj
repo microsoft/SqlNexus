@@ -42,6 +42,7 @@
     <ProjectReference Include="..\..\..\TraceEventImporter\TraceEventImporter.csproj" />
     <ProjectReference Include="..\..\..\PerfmonImporter\PerfmonImporter.csproj" />
     <ProjectReference Include="..\..\..\ErrorLogImporter\ErrorLogImporter.csproj" />
+    <ProjectReference Include="..\..\..\CustomXELImporter\CustomXELImporter.csproj" />
   </ItemGroup>
 
 </Project>
