@@ -26,8 +26,10 @@ connection, including its authentication and encryption settings. Post-processin
 requires `PostProcess.cmd` or `sqlcmd.exe`; SQL scripts remain integrity-checked before execution.
 The managed script runner recognizes standalone `GO` batch separators, including consecutive
 separators and scripts using either Windows or Unix line endings.
-Custom XEL or post-processing failures stop subsequent processing. An unsuccessful import may
-have already committed data, so a failure must not be interpreted as a safe no-op.
+Custom XEL category failures are reported without stopping other importers or host
+post-processing. Post-processing failures stop subsequent processing. Previously completed
+imports remain committed; review category failures before using dependent reports. Failure
+or cancellation must not be interpreted as a safe no-op or proof of rollback.
 
 General post-processing still runs for partial importer selections such as
 `/MCustomXEL`: it cleans and enriches rowset/OS data independently of trace import.

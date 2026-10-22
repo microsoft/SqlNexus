@@ -158,8 +158,8 @@ namespace CustomXELImporter
             catch (Exception ex)
             {
                 logger.LogMessage(Cancelled
-                    ? "Custom XEL import cancelled; the current category transaction was rolled back."
-                    : "Custom XEL import failed; subsequent processing must stop. " + ex.Message, MessageOptions.Both);
+                    ? "Custom XEL category import cancelled. Previously completed imports remain committed; verify the current category's database state before using dependent reports. " + ex.Message
+                    : "Custom XEL category import failed. Other importers will continue. Previously completed imports remain committed; review the failure details before using reports that depend on this category. " + ex.Message, MessageOptions.Both);
                 return false;
             }
         }

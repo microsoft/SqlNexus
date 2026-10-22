@@ -231,7 +231,15 @@ namespace SqlNexus.UnitTests.CustomXELImporter
                 Assert.IsFalse(importer.DoImport());
                 Assert.AreEqual(0L, importer.TotalRowsInserted);
                 Assert.AreEqual(0, importer.KnownRowsets.Count);
-                StringAssert.Contains(string.Join(" ", logger.Messages), "fixture failure");
+                string message = string.Join(" ", logger.Messages);
+                StringAssert.Contains(message, "Custom XEL category import failed.");
+                StringAssert.Contains(message, "Other importers will continue.");
+                StringAssert.Contains(message, "Previously completed imports remain committed");
+                StringAssert.Contains(message, "review the failure details before using reports that depend on this category");
+                StringAssert.Contains(message, "fixture failure");
+                Assert.IsFalse(message.Contains("must stop"));
+                Assert.IsFalse(message.Contains("rolled back"));
+                Assert.IsFalse(((INexusImporterPolicy)importer).StopOnFailure);
             }
         }
 
@@ -274,12 +282,19 @@ namespace SqlNexus.UnitTests.CustomXELImporter
                 int calls = 0;
                 var importer = new CustomXELImporter((source, pattern, drop) => { calls++; return 3; });
                 string mask = Path.Combine(fixture.Primary, importer.SupportedMasks[0]);
-                Initialize(importer, mask, new CapturingLogger());
+                var logger = new CapturingLogger();
+                Initialize(importer, mask, logger);
                 importer.Cancel();
                 Assert.IsFalse(importer.DoImport());
                 Assert.IsTrue(importer.Cancelled);
                 Assert.AreEqual(ImportState.Canceling, importer.State);
                 Assert.AreEqual(0, calls);
+                string message = string.Join(" ", logger.Messages);
+                StringAssert.Contains(message, "Custom XEL category import cancelled.");
+                StringAssert.Contains(message, "Previously completed imports remain committed");
+                StringAssert.Contains(message, "verify the current category's database state");
+                Assert.IsFalse(message.Contains("rolled back"));
+                Assert.IsFalse(message.Contains("Other importers will continue"));
 
                 Initialize(importer, mask, new CapturingLogger());
                 Assert.IsFalse(importer.Cancelled);
@@ -302,15 +317,23 @@ namespace SqlNexus.UnitTests.CustomXELImporter
             {
                 File.WriteAllText(Path.Combine(fixture.Primary, "server_SQLDIAG_1.xel"), "");
                 CustomXELImporter importer = null;
+                var logger = new CapturingLogger();
                 importer = new CustomXELImporter((source, pattern, drop) =>
                 {
                     importer.Cancel();
-                    throw new OperationCanceledException();
+                    throw new OperationCanceledException("fixture cancellation");
                 });
-                Initialize(importer, Path.Combine(fixture.Primary, importer.SupportedMasks[0]), new CapturingLogger());
+                Initialize(importer, Path.Combine(fixture.Primary, importer.SupportedMasks[0]), logger);
                 Assert.IsFalse(importer.DoImport());
                 Assert.IsTrue(importer.Cancelled);
                 Assert.AreEqual(0L, importer.TotalRowsInserted);
+                string message = string.Join(" ", logger.Messages);
+                StringAssert.Contains(message, "Custom XEL category import cancelled.");
+                StringAssert.Contains(message, "Previously completed imports remain committed");
+                StringAssert.Contains(message, "verify the current category's database state");
+                StringAssert.Contains(message, "fixture cancellation");
+                Assert.IsFalse(message.Contains("rolled back"));
+                Assert.IsFalse(message.Contains("Other importers will continue"));
             }
         }
 
