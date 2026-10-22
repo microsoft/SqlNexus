@@ -6,10 +6,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
-using sqlnexus;
 
-namespace SqlNexus.UnitTests.sqlnexus
+namespace SqlNexus.UnitTests.CustomXELImporter
 {
+    using CustomXELImporter = global::CustomXELImporter.CustomXELImporter;
+    using CustomXelSource = global::CustomXELImporter.CustomXelSource;
+
     [TestClass]
     public class CustomXELImporterTests
     {
@@ -206,10 +208,6 @@ namespace SqlNexus.UnitTests.sqlnexus
                 var importer = new CustomXELImporter((source, pattern, drop) => { calls++; return 0; });
                 Initialize(importer, Path.Combine(fixture.Primary, importer.SupportedMasks[0]), new CapturingLogger());
 
-                CollectionAssert.AreEqual(new[] { fixture.Primary },
-                    SharedOutputFolder.GetImportSearchPaths(fixture.Primary, importer));
-                CollectionAssert.AreEqual(new[] { fixture.Primary, fixture.Shared },
-                    SharedOutputFolder.GetImportSearchPaths(fixture.Primary));
                 Assert.IsTrue(importer.DoImport());
                 Assert.AreEqual(ImportState.NoFiles, importer.State);
                 Assert.AreEqual(0, calls);
@@ -348,40 +346,6 @@ namespace SqlNexus.UnitTests.sqlnexus
                 Assert.AreEqual(0, calls);
                 StringAssert.Contains(string.Join(" ", logger.Messages), "must be boolean");
             }
-        }
-
-        [DataTestMethod]
-        [DataRow(true, true, false)]
-        [DataRow(true, false, true)]
-        [DataRow(false, true, false)]
-        public void ApplySavedOptions_LegacyValues_MigratesOnlyWhenSavingEnabled(bool save, bool enabled, bool drop)
-        {
-            var saved = new Dictionary<string, bool>
-            {
-                { "SaveImportOptions", save },
-                { "SQLDiagAlwaysOnXEL.Enabled", enabled },
-                { "SQLDiagAlwaysOnXEL.DropExistingTables", drop }
-            };
-            var importer = new CustomXELImporter();
-            Assert.AreEqual(save, ImportOptions.ApplySavedOptions(importer, saved));
-            Assert.AreEqual(save ? enabled : false, importer.Options["Enabled"]);
-            Assert.AreEqual(save ? drop : true, importer.Options[CustomXELImporter.DropTablesOption]);
-            Assert.AreEqual(save, saved.ContainsKey(importer.Name + ".Enabled"));
-        }
-
-        [TestMethod]
-        public void ApplySavedOptions_NewKeysWinAndMissingKeysKeepDefaults()
-        {
-            var saved = new Dictionary<string, bool>
-            {
-                { "SaveImportOptions", true },
-                { "SQLDiagAlwaysOnXEL.Enabled", true },
-                { CustomXELImporter.ImporterName + ".Enabled", false }
-            };
-            var importer = new CustomXELImporter();
-            Assert.IsFalse(ImportOptions.ApplySavedOptions(importer, saved));
-            Assert.AreEqual(false, importer.Options["Enabled"]);
-            Assert.AreEqual(true, importer.Options[CustomXELImporter.DropTablesOption]);
         }
 
         private static void Initialize(CustomXELImporter importer, string mask, ILogger logger)

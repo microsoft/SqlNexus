@@ -134,21 +134,21 @@ namespace SqlNexus.UnitTests.sqlnexus
         public void CustomXel_Selected_IsTrue()
         {
             Assert.AreEqual(ImporterGateResult.EnabledByToken,
-                ImporterSelectionEvaluator.Evaluate(CustomXELImporter.ImporterName, Tokens("CustomXEL")));
+                ImporterSelectionEvaluator.Evaluate(ImporterSelectionEvaluator.CustomXelImporterName, Tokens("CustomXEL")));
         }
 
         [TestMethod]
         public void CustomXel_NotSelected_IsFalse()
         {
             Assert.AreEqual(ImporterGateResult.NotSelected,
-                ImporterSelectionEvaluator.Evaluate(CustomXELImporter.ImporterName, Tokens("Perfmon")));
+                ImporterSelectionEvaluator.Evaluate(ImporterSelectionEvaluator.CustomXelImporterName, Tokens("Perfmon")));
         }
 
         [TestMethod]
         public void CustomXel_EmptySelection_IsNotSelected()
         {
             Assert.AreEqual(ImporterGateResult.NotSelected,
-                ImporterSelectionEvaluator.Evaluate(CustomXELImporter.ImporterName, Tokens()));
+                ImporterSelectionEvaluator.Evaluate(ImporterSelectionEvaluator.CustomXelImporterName, Tokens()));
         }
 
         // ---- Null guard ------------------------------------------------------

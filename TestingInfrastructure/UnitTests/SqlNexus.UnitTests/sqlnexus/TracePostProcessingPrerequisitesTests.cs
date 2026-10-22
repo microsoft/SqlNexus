@@ -58,7 +58,7 @@ namespace SqlNexus.UnitTests.sqlnexus
         {
             var prerequisites = new TracePostProcessingPrerequisites();
             prerequisites.RecordResult(ImporterSelectionEvaluator.ReadTraceImporterName, true, false);
-            prerequisites.RecordResult(CustomXELImporter.ImporterName, false, false);
+            prerequisites.RecordResult(ImporterSelectionEvaluator.CustomXelImporterName, false, false);
             Assert.IsTrue(prerequisites.CanRun);
         }
 

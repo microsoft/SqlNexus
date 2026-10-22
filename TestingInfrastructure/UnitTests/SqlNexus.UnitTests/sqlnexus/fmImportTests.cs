@@ -9,9 +9,14 @@ using System.Security;
 using System.Xml;
 using System.Reflection;
 using System.Windows.Forms;
+using System.Collections.Generic;
+using System.Linq;
+using NexusInterfaces;
 
 namespace SqlNexus.UnitTests.sqlnexus
 {
+    using CustomXELImporter = global::CustomXELImporter.CustomXELImporter;
+
     [TestClass]
     public class fmImportTests
     {
@@ -34,11 +39,102 @@ namespace SqlNexus.UnitTests.sqlnexus
                     Assert.AreEqual(item.Text, item.AccessibleName);
                     Assert.IsFalse(string.IsNullOrWhiteSpace(item.AccessibleDescription));
                 }
+
                 var closing = new ToolStripDropDownClosingEventArgs(ToolStripDropDownCloseReason.ItemClicked);
                 typeof(ToolStripDropDown).GetMethod("OnClosing", BindingFlags.Instance | BindingFlags.NonPublic)
                     .Invoke(menu.DropDown, new object[] { closing });
                 Assert.IsTrue(closing.Cancel);
             }
+        }
+
+        [TestMethod]
+        public void ImporterAssembly_ReflectionDiscovery_FindsSignedPluginWithoutHostDependency()
+        {
+            string dll = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "CustomXELImporter.dll");
+            Assembly assembly = Assembly.LoadFile(dll);
+            Type type = assembly.GetExportedTypes().Single(candidate =>
+                candidate.IsClass && !candidate.IsAbstract && typeof(INexusImporter).IsAssignableFrom(candidate));
+            var importer = (INexusImporter)Activator.CreateInstance(type);
+
+            Assert.AreEqual("CustomXELImporter", assembly.GetName().Name);
+            Assert.AreEqual(ImporterSelectionEvaluator.CustomXelImporterName, importer.Name);
+            Assert.AreEqual(new Guid("05F43A63-2922-457B-BDB2-368280A8DB9E"), importer.ID);
+            Assert.AreEqual(false, importer.Options["Enabled"]);
+            Assert.AreNotSame(typeof(fmImport).Assembly, assembly);
+            Assert.IsNull(typeof(fmImport).Assembly.GetType("sqlnexus.CustomXELImporter"));
+            Assert.IsFalse(assembly.GetReferencedAssemblies().Any(reference => reference.Name == "sqlnexus"));
+            CollectionAssert.AreEqual(typeof(INexusImporter).Assembly.GetName().GetPublicKeyToken(),
+                assembly.GetName().GetPublicKeyToken());
+        }
+
+        [TestMethod]
+        public void OrderedImporterFiles_CustomXel_IsLastWithoutChangingKnownImporterOrder()
+        {
+            string[] files = { "CustomXELImporter.dll", "PerfmonImporter.dll", "ReadTraceNexusImporter.dll",
+                "TraceEventImporter.dll", "RowsetImportEngine.dll", "ErrorLogImporter.dll", "LinuxPerfImporter.dll" };
+            List<string> ordered = fmImport.OrderedImporterFiles(files);
+
+            Assert.AreEqual("CustomXELImporter.dll", ordered.Last());
+            Assert.IsTrue(ordered.IndexOf("RowsetImportEngine.dll") < ordered.IndexOf("TraceEventImporter.dll"));
+            Assert.IsTrue(ordered.IndexOf("TraceEventImporter.dll") < ordered.IndexOf("ReadTraceNexusImporter.dll"));
+            Assert.IsTrue(ordered.IndexOf("ReadTraceNexusImporter.dll") < ordered.IndexOf("PerfmonImporter.dll"));
+            CollectionAssert.AreEquivalent(files, ordered);
+        }
+
+        [TestMethod]
+        public void OrderedImporterFiles_EmptyNullAndCaseInsensitiveName_AreHandledExplicitly()
+        {
+            Assert.AreEqual(0, fmImport.OrderedImporterFiles(new string[0]).Count);
+            Assert.ThrowsException<ArgumentNullException>(() => fmImport.OrderedImporterFiles(null));
+            CollectionAssert.AreEqual(new[] { @"C:\Plugins\ErrorLogImporter.dll", @"C:\Plugins\customxelimporter.DLL" },
+                fmImport.OrderedImporterFiles(new[] { @"C:\Plugins\customxelimporter.DLL", @"C:\Plugins\ErrorLogImporter.dll" }));
+        }
+
+        [TestMethod]
+        public void CustomXelSearchPaths_SharedSiblingExists_ReturnsOnlyPrimary()
+        {
+            using (var fixture = new PlanFixture())
+            {
+                string sibling = Directory.CreateDirectory(Path.Combine(Path.GetDirectoryName(fixture.Root), "SharedOutputFiles")).FullName;
+                CollectionAssert.AreEqual(new[] { fixture.Root },
+                    SharedOutputFolder.GetImportSearchPaths(fixture.Root, new CustomXELImporter()));
+                CollectionAssert.AreEqual(new[] { fixture.Root, sibling },
+                    SharedOutputFolder.GetImportSearchPaths(fixture.Root));
+            }
+        }
+
+        [DataTestMethod]
+        [DataRow(true, true, false)]
+        [DataRow(true, false, true)]
+        [DataRow(false, true, false)]
+        public void ApplySavedOptions_LegacyValues_MigratesOnlyWhenSavingEnabled(bool save, bool enabled, bool drop)
+        {
+            var saved = new Dictionary<string, bool>
+            {
+                { "SaveImportOptions", save },
+                { "SQLDiagAlwaysOnXEL.Enabled", enabled },
+                { "SQLDiagAlwaysOnXEL.DropExistingTables", drop }
+            };
+            var importer = new CustomXELImporter();
+            Assert.AreEqual(save, ImportOptions.ApplySavedOptions(importer, saved));
+            Assert.AreEqual(save ? enabled : false, importer.Options["Enabled"]);
+            Assert.AreEqual(save ? drop : true, importer.Options[CustomXELImporter.DropTablesOption]);
+            Assert.AreEqual(save, saved.ContainsKey(importer.Name + ".Enabled"));
+        }
+
+        [TestMethod]
+        public void ApplySavedOptions_NewKeysWinAndMissingKeysKeepDefaults()
+        {
+            var saved = new Dictionary<string, bool>
+            {
+                { "SaveImportOptions", true },
+                { "SQLDiagAlwaysOnXEL.Enabled", true },
+                { CustomXELImporter.ImporterName + ".Enabled", false }
+            };
+            var importer = new CustomXELImporter();
+            Assert.IsFalse(ImportOptions.ApplySavedOptions(importer, saved));
+            Assert.AreEqual(false, importer.Options["Enabled"]);
+            Assert.AreEqual(true, importer.Options[CustomXELImporter.DropTablesOption]);
         }
 
         [DataTestMethod]

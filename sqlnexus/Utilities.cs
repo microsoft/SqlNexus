@@ -75,10 +75,10 @@ namespace sqlnexus
                 bool value;
                 if (saved.TryGetValue(key, out value))
                     importer.Options[option] = value;
-                else if (importer is CustomXELImporter)
+                else if (string.Equals(importer.Name, ImporterSelectionEvaluator.CustomXelImporterName, StringComparison.OrdinalIgnoreCase))
                 {
                     string legacyKey = "SQLDiagAlwaysOnXEL." +
-                        (option == CustomXELImporter.DropTablesOption ? "DropExistingTables" : option);
+                        (option == "Drop existing tables" ? "DropExistingTables" : option);
                     if (saved.TryGetValue(legacyKey, out value))
                     {
                         importer.Options[option] = value;

@@ -8,6 +8,7 @@ try {
     # Define the source binary files to be signed
     $SourceFiles = @(
         "BulkLoadEx.dll",
+        "CustomXELImporter.dll",
         "LinuxPerfImporter.dll",
         "NexusInterfaces.dll",
         "PerfmonImporter.dll",
@@ -28,6 +29,7 @@ try {
     # Define an exclusion list for the Signed_Prep folder, which includes all files in $ExcludeFilesUnsigned and additional files
 $ExcludeFilesSignedArray = $ExcludeFilesUnsignedArray + @(
         "BulkLoadEx.pdb",
+        "CustomXELImporter.pdb",
         "LinuxPerfImporter.pdb",
         "Microsoft.Data.SqlClient.SNI.arm64.pdb",
         "Microsoft.Data.SqlClient.SNI.x64.pdb",

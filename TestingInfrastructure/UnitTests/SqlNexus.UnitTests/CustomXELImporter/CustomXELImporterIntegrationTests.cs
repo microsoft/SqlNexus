@@ -1,6 +1,5 @@
 using Microsoft.Data.SqlClient;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using sqlnexus;
 using System;
 using System.Data;
 using System.Diagnostics;
@@ -9,8 +8,11 @@ using System.Linq;
 using System.Windows.Forms;
 using NexusInterfaces;
 
-namespace SqlNexus.UnitTests.sqlnexus
+namespace SqlNexus.UnitTests.CustomXELImporter
 {
+    using CustomXELImporter = global::CustomXELImporter.CustomXELImporter;
+    using CustomXelSource = global::CustomXELImporter.CustomXelSource;
+
     [TestClass]
     public class CustomXELImporterIntegrationTests
     {

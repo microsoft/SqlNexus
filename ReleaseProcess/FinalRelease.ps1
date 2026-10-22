@@ -25,6 +25,7 @@ if (-not (Test-Path -Path $ReleasePath)) {
 
 $SignedFilesToCopy = @(
     "\SQLNexus\Bin\Release\BulkLoadEx.dll",
+    "\SQLNexus\Bin\Release\CustomXELImporter.dll",
     "\SQLNexus\Bin\Release\LinuxPerfImporter.dll",
     "\SQLNexus\Bin\Release\NexusInterfaces.dll",
     "\SQLNexus\Bin\Release\PerfmonImporter.dll",

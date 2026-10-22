@@ -71,7 +71,7 @@ strong-named assembly.
 
 ## Custom XEL compatibility gate (issue #499 / F-002)
 
-`sqlnexus/CustomXELImporterCompatibilityTests.cs` in the unit-test project contains
+`CustomXELImporter/CustomXELImporterCompatibilityTests.cs` in the unit-test project contains
 opt-in probes for comparing the installed XeLite reader with
 `sys.fn_xe_file_target_read_file`. These are assessment tests, not a production reader
 or a certification of full XML/schema compatibility. Passing the probes means that
@@ -178,9 +178,11 @@ for the required full event representation. The reader choice does not prevent t
 `INexusImporter` redesign.
 
 `CustomXELImporterTests` covers the standard contract, primary-only discovery,
-category grouping, canonical table mapping, adversarial parameter values, saved-option
-migration, lifecycle reset, failures, cancellation, and long row counts.
-`fmImportTests` covers accessible standard menu construction; selection evaluator
+category grouping, canonical table mapping, adversarial parameter values,
+lifecycle reset, failures, cancellation, and long row counts. The importer-specific
+tests reside in `CustomXELImporter/` and directly reference the signed importer library.
+`fmImportTests` covers DLL discovery, assembly identity/signing, the absence of a
+host dependency, ordering, accessible standard menus, and saved-option migration; selection evaluator
 tests cover the existing `/M CustomXEL` token through the normal importer mapping.
 These unit tests use temporary files and an injected reader, not live SQL Server.
 The production reader stages and publishes each category inside one transaction,

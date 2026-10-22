@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <ProjectGuid>{2F216E66-4CF6-4820-BBC8-B01E72F268EC}</ProjectGuid>
+    <RootNamespace>CustomXELImporter</RootNamespace>
+    <AssemblyName>CustomXELImporter</AssemblyName>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\NexusInterfaces\SqlNexus.snk</AssemblyOriginatorKeyFile>
+    <LangVersion>7.3</LangVersion>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NexusInterfaces\NexusInterfaces.csproj" />
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+</Project>

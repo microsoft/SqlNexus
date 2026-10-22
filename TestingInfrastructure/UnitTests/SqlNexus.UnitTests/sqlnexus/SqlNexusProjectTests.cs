@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
+using System.Text.RegularExpressions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace SqlNexus.UnitTests.sqlnexus
@@ -36,6 +37,23 @@ namespace SqlNexus.UnitTests.sqlnexus
             bool exists = File.Exists(helpFile);
 
             Assert.IsFalse(exists, "Obsolete CHM help file must be removed: " + relativePath);
+        }
+
+        [DataTestMethod]
+        [DataRow("PrepareFilesForSigning.ps1", "SourceFiles", "CustomXELImporter.dll")]
+        [DataRow("PrepareFilesForSigning.ps1", "ExcludeFilesSignedArray", "CustomXELImporter.pdb")]
+        [DataRow("FinalRelease.ps1", "SignedFilesToCopy", @"\SQLNexus\Bin\Release\CustomXELImporter.dll")]
+        public void ReleaseSigningLists_CustomXel_IncludeBinaryAndExcludeCustomerSymbols(
+            string scriptName, string arrayName, string expectedEntry)
+        {
+            string script = File.ReadAllText(Path.Combine(FindRepositoryRoot(), "ReleaseProcess", scriptName));
+            string pattern = @"(?ms)^\s*\$" + Regex.Escape(arrayName)
+                + @"\s*=\s*(?:\$[A-Za-z0-9_]+\s*\+\s*)?@\((.*?)^\s*\)";
+
+            Match array = Regex.Match(script, pattern);
+
+            Assert.IsTrue(array.Success, "Could not locate release list: " + arrayName);
+            StringAssert.Contains(array.Groups[1].Value, "\"" + expectedEntry + "\"");
         }
 
         private static string FindRepositoryRoot()

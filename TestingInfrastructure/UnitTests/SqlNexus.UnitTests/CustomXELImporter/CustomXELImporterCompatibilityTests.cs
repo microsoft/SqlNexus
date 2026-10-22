@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
 
-namespace SqlNexus.UnitTests.sqlnexus
+namespace SqlNexus.UnitTests.CustomXELImporter
 {
     [TestClass]
     public class CustomXELImporterCompatibilityTests

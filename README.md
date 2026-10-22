@@ -40,10 +40,23 @@ UTC offset conversion and already-local timestamp handling remain supported.
 
 ## Custom XEL importer
 
-`Custom XEL Importer` is a built-in `INexusImporter`, with normal importer options,
+`Custom XEL Importer` is shipped in the signed `CustomXELImporter.dll` assembly and
+discovered through the standard `INexusImporter` DLL pipeline, with normal importer options,
 status reporting, cancellation, and the existing `/M CustomXEL` selection token.
 It is disabled by default. Saved SQLDiag/AlwaysOn options migrate when **Save Import
 Options** is enabled. Command-line selection does not change saved GUI preferences.
+
+Deploy the complete build output, including `CustomXELImporter.dll`, beside
+`sqlnexus.exe`; copying only the executable is not sufficient. The importer has no
+reference back to the host executable and retains its existing ID and option keys.
+Within each importer directory, Custom XEL is ordered after the other importers,
+before host post-processing. Discovery locations and trust behavior are unchanged.
+
+The manual release scripts include this DLL in signing and signed-file replacement,
+and exclude its PDB from the signed customer package. For the DPDiagnosticTools
+OneBranch release, refresh the mirrored SQLNexus sources with the updated
+`Refresh-BuildFoldersFromSource.ps1` before building; that repository maintains its
+own source-folder allowlist and SDK-project restore list.
 
 Only matching files directly in the selected **primary folder** are imported;
 subfolders and `SharedOutputFiles` are excluded. Each category is loaded once,

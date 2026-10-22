@@ -726,7 +726,6 @@ namespace sqlnexus
             m_OptionList.Clear();
             EnumImportersFromDirectory(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\SqlNexus\Importers");
             EnumImportersFromDirectory(Application.StartupPath);
-            RegisterImporter(new CustomXELImporter());
             EnforceTraceImporterExclusivity();
             ResolveTraceImporterFallback();
             LogMissingBuiltInImporters();
@@ -950,70 +949,36 @@ namespace sqlnexus
 
 
         //order the importer to do rowset first
-        private List<string> OrderedImporterFiles(string[] files)
+        internal static List<string> OrderedImporterFiles(string[] files)
         {
-            Dictionary<Int32, string> ImporterList = new Dictionary<Int32, string>();
+            if (files == null)
+                throw new ArgumentNullException(nameof(files));
 
-
-            foreach (string file in files)
-            {
-                if (file.ToUpper().Contains("PERFMONIMPORTER"))
+            // Preserve Custom XEL's position after the other importers, before host post-processing.
+            return files.OrderBy(file => string.Equals(Path.GetFileNameWithoutExtension(file),
+                    ImporterSelectionEvaluator.CustomXelImporterAssemblyName, StringComparison.OrdinalIgnoreCase) ? 1 : 0)
+                .ThenBy(file =>
                 {
-                    ImporterList.Add(300, file);
-                }
-                else if (file.ToUpper().Contains("ROWSETIMPORTENGINE"))
-                {
-                    ImporterList.Add(100, file);
-                }
-                else if (file.ToUpper().Contains("READTRACE"))
-                {
-                    ImporterList.Add(200, file);
-                }
-                else if (file.ToUpper().Contains("TRACEEVENTIMPORTER"))
-                {
-                    // TraceEventImporter must run after RowsetImportEngine (100) so that
-                    // tbl_ServerProperties already exists when GetLocalServerTimeOffset()
-                    // and WriteLocalTimeFlag() are called.  Place it between Rowset (100)
-                    // and ReadTrace (200); ReadTrace and TraceEventImporter are mutually
-                    // exclusive so they will never both be present at the same time.
-                    ImporterList.Add(150, file);
-                }
-                else
-                {
-                    ImporterList.Add(file.GetHashCode(), file);
-                }
-
-            }
-
-
-            List<Int32> OrderedList = new List<Int32>();
-
-            foreach (Int32 key in ImporterList.Keys)
-            {
-                OrderedList.Add(key);
-            }
-
-            List<string> OrderedImporters = new List<string>();
-            OrderedList.Sort();
-            foreach (Int32 key in OrderedList)
-            {
-
-                OrderedImporters.Add(ImporterList[key]);
-
-
-            }
-
-
-
-            return OrderedImporters;
+                    if (file.IndexOf("PERFMONIMPORTER", StringComparison.OrdinalIgnoreCase) >= 0)
+                        return 300;
+                    if (file.IndexOf("ROWSETIMPORTENGINE", StringComparison.OrdinalIgnoreCase) >= 0)
+                        return 100;
+                    if (file.IndexOf("READTRACE", StringComparison.OrdinalIgnoreCase) >= 0)
+                        return 200;
+                    if (file.IndexOf("TRACEEVENTIMPORTER", StringComparison.OrdinalIgnoreCase) >= 0)
+                        return 150;
+                    return file.GetHashCode();
+                }).ToList();
         }
         // The set of assembly names that sqlnexus.exe directly references at compile time.
         // Built once from the executing assembly's manifest so it stays in sync automatically:
-        // any new importer added as a ProjectReference to sqlnexus.csproj is immediately
-        // included without any code change here.
+        // Reflection-only references may be omitted from the compiler's assembly manifest.
         private static readonly Lazy<HashSet<string>> _referencedByHost = new Lazy<HashSet<string>>(() =>
         {
-            var names = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            var names = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+            {
+                ImporterSelectionEvaluator.CustomXelImporterAssemblyName
+            };
             foreach (AssemblyName asmName in Assembly.GetExecutingAssembly().GetReferencedAssemblies())
                 names.Add(asmName.Name);
             return names;

@@ -34,6 +34,8 @@ namespace sqlnexus
         public const string RowsetImporterName = "Rowset Importer";
         public const string ReadTraceImporterName = "ReadTrace (SQL XEL/TRC Files)";
         public const string TraceEventImporterName = "Trace Event Importer (Managed)";
+        public const string CustomXelImporterName = "Custom XEL Importer";
+        public const string CustomXelImporterAssemblyName = "CustomXELImporter";
 
         /// <summary>The existing /M token for the standard Custom XEL importer.</summary>
         public const string CustomXelToken = "CustomXEL";
@@ -56,7 +58,7 @@ namespace sqlnexus
                 { "Linux",              "Import Linux Performance Files (.perf)" },
                 { "Errorlog",           "ERRORLOG Importer" },
                 { TraceEventToken,      TraceEventImporterName },
-                { CustomXelToken,       CustomXELImporter.ImporterName },
+                { CustomXelToken,       CustomXelImporterName },
             };
 
         /// <summary>
