@@ -13,6 +13,84 @@ function DownloadNexusPrereqFile ([string] $url, [string] $destination_file)
     $client.DownloadFile($url,$destination_file)
 }
 
+function DownloadInstallPowerBIDesktop ()
+{
+    $identity = [System.Security.Principal.WindowsIdentity]::GetCurrent()
+    try
+    {
+        $owner = $identity.User
+        $principal = New-Object System.Security.Principal.WindowsPrincipal($identity)
+        if ($principal.IsInRole([System.Security.Principal.WindowsBuiltInRole]::Administrator))
+        {
+            # Do not grant the same user's unelevated token access to an elevated installer.
+            $owner = [System.Security.Principal.SecurityIdentifier]::new('S-1-5-32-544')
+        }
+    }
+    finally
+    {
+        $identity.Dispose()
+    }
+
+    $directorySecurity = New-Object System.Security.AccessControl.DirectorySecurity
+    $directorySecurity.SetAccessRuleProtection($true, $false)
+    $directorySecurity.SetOwner($owner)
+    foreach ($sid in @($owner, [System.Security.Principal.SecurityIdentifier]::new('S-1-5-18')))
+    {
+        $directorySecurity.AddAccessRule([System.Security.AccessControl.FileSystemAccessRule]::new(
+            $sid, 'FullControl', 'ContainerInherit, ObjectInherit', 'None', 'Allow'))
+    }
+
+    $directoryPath = Join-Path ([System.IO.Path]::GetTempPath()) ("SqlNexus-PowerBI-" + [guid]::NewGuid().ToString('N'))
+    if (Test-Path -LiteralPath $directoryPath)
+    {
+        throw "Power BI installer staging directory already exists."
+    }
+    $directory = [System.IO.Directory]::CreateDirectory($directoryPath, $directorySecurity)
+    $installationFile = Join-Path $directory.FullName 'PBIDesktopSetup_x64.exe'
+    $installerLock = $null
+    $installationCompleted = $false
+
+    try
+    {
+        Write-Host "Downloading Power BI Desktop to $installationFile ..." -BackgroundColor DarkYellow
+        DownloadNexusPrereqFile -url "https://download.microsoft.com/download/8/8/0/880BCA75-79DD-466A-927D-1ABF1F5454B0/PBIDesktopSetup_x64.exe" -destination_file $installationFile
+
+        # Prevent replacement or modification between signature verification and process completion.
+        $installerLock = [System.IO.File]::Open($installationFile, 'Open', 'Read', 'Read')
+        $signature = Get-AuthenticodeSignature -LiteralPath $installationFile -ErrorAction Stop
+        if ($signature.Status -ne 'Valid' -or $null -eq $signature.SignerCertificate -or
+            $signature.SignerCertificate.GetNameInfo([System.Security.Cryptography.X509Certificates.X509NameType]::SimpleName, $false) -ne 'Microsoft Corporation')
+        {
+            throw "Power BI installer must have a valid Microsoft Corporation Authenticode signature. Installation blocked."
+        }
+
+        Write-Host "  Launching PBIDesktop (64-bit) Installation. Please follow the installation wizard" -BackgroundColor DarkYellow
+        $process = Start-Process -FilePath $installationFile -Wait -PassThru -ErrorAction Stop
+        if ($process.ExitCode -notin @(0, 1641, 3010))
+        {
+            throw "Power BI Desktop installer failed with exit code $($process.ExitCode)."
+        }
+
+        $installationCompleted = $true
+        return $installationFile
+    }
+    finally
+    {
+        if ($null -ne $installerLock)
+        {
+            $installerLock.Dispose()
+        }
+        if (-not $installationCompleted)
+        {
+            if (Test-Path -LiteralPath $installationFile)
+            {
+                Remove-Item -LiteralPath $installationFile -ErrorAction Stop
+            }
+            Remove-Item -LiteralPath $directory.FullName -ErrorAction Stop
+        }
+    }
+}
+
 function DownloadInstallRMLUtils ()
 {
 	$rml_utils_installation_file = "$env:temp\RMLSetup_AMD64.msi"
@@ -311,8 +389,6 @@ Write-Host "Checking for 'PowerBI Desktop' installation"
 
 #check for the presence of PowerBI
 
-$PBIDesktop_installation_file = "$env:temp\PBIDesktopSetup_x64.exe"
-
 $PBIDesktop_sw_found = Get-ItemProperty HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\* |
                      Select-Object DisplayVersion , DisplayName | 
                      where {$_.DisplayName -Match 'Microsoft PowerBI Desktop (x64)' -and ($_.DisplayVersion -ne $null)}
@@ -326,7 +402,6 @@ if ($PBIDesktop_sw_found  -eq $null)
 
     if ($PBIDesktop_sw_found32bit -eq $null)
     {
-		$destination = "$env:temp"
 		[string]$confirm = $null
 		
 		Write-Host "Microsoft Power BI Reports are now integrated with SQL Nexus. Would you like to install Microsoft Power BI Desktop to use this functionality?"
@@ -348,25 +423,7 @@ if ($PBIDesktop_sw_found  -eq $null)
 
 		if ($confirm -eq "Y")
 		{ 
-	
-			if ($false -eq (Test-Path $PBIDesktop_installation_file))
-			{
-				Write-Host "Downloading PowerBi Destkop installation file locally ..." -BackgroundColor DarkYellow
-				DownloadNexusPrereqFile -url "https://download.microsoft.com/download/8/8/0/880BCA75-79DD-466A-927D-1ABF1F5454B0/PBIDesktopSetup_x64.exe" -destination_file $PBIDesktop_installation_file
-			}
-			
-			if (Test-Path $PBIDesktop_installation_file)
-			 {
-				Write-Host "PBIDesktopSetup_x64.exe successfully downloaded to local %temp% folder"
-			 }
-			else
-			 {
-				Write-Host "PBIDesktopSetup_x64.exe not present in local %temp% folder. Downloading the file has failed!"
-			 }
-
-
-			Write-Host "  Launching PBIDesktop (64-bit) Installation. Please follow the installation wizard" -BackgroundColor DarkYellow
-			Start-Process -FilePath $PBIDesktop_installation_file -Wait
+			$PBIDesktop_installation_file = DownloadInstallPowerBIDesktop
 
 			Write-Host "PowerBI Desktop installation process is complete" -BackgroundColor DarkGreen
 
@@ -377,21 +434,26 @@ if ($PBIDesktop_sw_found  -eq $null)
 			while (-not(($confirm -eq "Y") -or ($confirm -eq "N") -or ($null -eq $confirm)))
 			{
 				
-				$confirm = Read-Host "Delete $destination\PBIDesktopSetup_x64.exe (Y/N)>" 
+				$confirm = Read-Host "Delete $PBIDesktop_installation_file (Y/N)>"
 
 				$confirm = $confirm.ToString().ToUpper()
 				if (-not(($confirm -eq "Y") -or ($confirm -eq "N") -or ($null -eq $confirm)))
 				{
 					Write-Host ""
 					Write-Host "Please chose [Y] to delete installation file."
-					Write-Host "Please chose [N] to keep the file in the %temp% folder."
+					Write-Host "Please chose [N] to keep the file in its private temporary folder."
 					Write-Host ""
 				}
 			}
 
 			if ($confirm -eq "Y")
 			{ 
-				Remove-Item -Path $PBIDesktop_installation_file
+				Remove-Item -LiteralPath $PBIDesktop_installation_file -ErrorAction Stop
+				Remove-Item -LiteralPath ([System.IO.Path]::GetDirectoryName($PBIDesktop_installation_file)) -ErrorAction Stop
+			}
+			else
+			{
+				Write-Host "Installer retained at $PBIDesktop_installation_file"
 			}
 		
 		}
