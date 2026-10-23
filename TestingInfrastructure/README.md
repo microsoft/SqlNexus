@@ -81,8 +81,43 @@ with `QUOTENAME`, preserving the baseline/comparison and matching/unmatched quer
 These are source-contract tests, not a T-SQL execution engine. They cover the allowlist,
 null/error/return guard, malformed and injection-shaped input examples, length boundaries,
 identifier quoting, all four query branches for each supported metric, and script integrity.
-Executing the procedure against fixture rows and verifying aggregate results and SQL Server
-permission behavior remains a separate integration check.
+The runtime test below executes the procedure against fixture rows. Execution permissions
+for application users remain a separate deployment check.
+
+### Running the ReadTrace overview SQL runtime test
+
+[`IntegrationTests/ReadTraceOverviewCounts.sql`](IntegrationTests/ReadTraceOverviewCounts.sql)
+performs **39 runtime checks** against a copy of the installed procedure:
+
+- Exact `B`, `C`, `BO`, and `CO` totals for every supported metric.
+- A `BIGINT` aggregate of 6,000,000,000.
+- Thirteen invalid inputs, including null, empty/unknown names, bracket-breaking expressions,
+  statement/comment delimiters, and 127/128/129-character inputs.
+- Four rows with null aggregate values for every metric when the table is empty.
+- The same thirteen rejections with the fixture table absent, proving validation occurs
+  before dynamic SQL accesses it.
+
+In SSMS, select a SqlNexus database where the updated procedure is already installed, open
+the script, and execute it normally (SQLCMD mode is not required). With Windows authentication:
+
+```powershell
+sqlcmd -S localhost -d YourSqlNexusDatabase -E -b -i .\TestingInfrastructure\IntegrationTests\ReadTraceOverviewCounts.sql
+```
+
+Use the SQL Server instance and SqlNexus database you intend to test. Updating the file in
+the repository alone does not update an already-installed stored procedure.
+
+The login needs `VIEW DEFINITION` on the source procedure and permission to create/drop
+databases. Run outside any existing transaction. The script copies only the installed
+procedure definition, never customer rows, into a unique `SqlNexusOverviewTest_<GUID>`
+database with synthetic fixture data. It does not alter the source procedure or tables.
+The fixture contains only the columns used by this procedure; it is not a full import schema.
+Cleanup is attempted on both success and failure. If execution is cancelled or the connection
+is lost, the printed test database name identifies the database to remove manually.
+
+Success ends with `PASS: 39 runtime checks completed; disposable test database removed.`
+Any unexpected result raises an error; `sqlcmd -b` returns a nonzero exit code. The pre-fix
+procedure fails the invalid-input checks rather than producing a false pass.
 
 ## Running the PII scrubber integration audit
 
