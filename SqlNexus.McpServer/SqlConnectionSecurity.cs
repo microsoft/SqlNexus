@@ -20,19 +20,19 @@ namespace SqlNexus.McpServer
             string? password,
             string? encrypt,
             string? trustServerCertificate,
-            string? allowUntrustedCertificate,
+            string? allowCertificateValidationBypass,
             string applicationName,
             ICollection<string> warnings)
         {
             bool encryptValue = ParseBool(encrypt, true, "Encrypt");
             bool trustValue = ParseBool(trustServerCertificate, false, "TrustServerCertificate");
-            bool allowUntrusted = ParseBool(allowUntrustedCertificate, false, "AllowUntrustedCertificate");
+            bool allowBypass = ParseBool(allowCertificateValidationBypass, false, "AllowCertificateValidationBypass");
 
-            if (trustValue && !allowUntrusted)
+            if (trustValue && !allowBypass)
             {
                 throw new InvalidOperationException(
                     "SqlNexus:TrustServerCertificate=true disables SQL Server certificate validation and is refused unless " +
-                    "SqlNexus:AllowUntrustedCertificate=true is also set. Install a certificate the client trusts, or set both " +
+                    "SqlNexus:AllowCertificateValidationBypass=true is also set. Install a certificate the client trusts, or set both " +
                     "options only for a lab environment that you control.");
             }
 
@@ -62,7 +62,7 @@ namespace SqlNexus.McpServer
             }
             else if (trustValue)
             {
-                warnings.Add("SQL Server certificate validation is DISABLED (SqlNexus:TrustServerCertificate=true with SqlNexus:AllowUntrustedCertificate=true). An on-path attacker could impersonate the SQL Server. Use only in a lab environment.");
+                warnings.Add("SQL Server certificate validation is DISABLED (SqlNexus:TrustServerCertificate=true with SqlNexus:AllowCertificateValidationBypass=true). An on-path attacker could impersonate the SQL Server. Use only in a lab environment.");
             }
 
             return builder.ConnectionString;

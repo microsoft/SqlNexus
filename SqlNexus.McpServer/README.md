@@ -109,8 +109,8 @@ All non-sensitive settings go in `args`. Passwords go in `env`:
 | `--trusted-connection` | `true` = Windows Auth, `false` = SQL Auth | `true` |
 | `--elevated-principal-policy` | `block` rejects elevated SQL identities; `impersonate-reader` accepts the connection only after entering the non-revertible loginless reader context | `block` |
 | `--encrypt` (`SqlNexus:Encrypt`) | Encrypt the SQL connection. Setting `false` is allowed but logs a startup warning | `true` |
-| `--trust-server-certificate` (`SqlNexus:TrustServerCertificate`) | `true` skips SQL Server certificate validation. Refused unless `--allow-untrusted-certificate true` is also set | `false` |
-| `--allow-untrusted-certificate` (`SqlNexus:AllowUntrustedCertificate`) | Explicit opt-in required before `TrustServerCertificate` can be honored. Intended for lab/self-signed certificates only; a warning is logged at every startup | `false` |
+| `--trust-server-certificate` (`SqlNexus:TrustServerCertificate`) | `true` skips SQL Server certificate validation. Refused unless `--allow-certificate-validation-bypass true` is also set | `false` |
+| `--allow-certificate-validation-bypass` (`SqlNexus:AllowCertificateValidationBypass`) | Explicit opt-in required before `TrustServerCertificate` can be honored. Intended for lab/self-signed certificates only; a warning is logged at every startup | `false` |
 
 ### TLS certificate validation
 
@@ -120,7 +120,7 @@ If the server uses a self-signed certificate (for example a lab instance), prefe
 
 ```json
 "args": ["--server", "labserver", "--database", "SqlNexus",
-         "--trust-server-certificate", "true", "--allow-untrusted-certificate", "true"]
+         "--trust-server-certificate", "true", "--allow-certificate-validation-bypass", "true"]
 ```
 
 With only `--trust-server-certificate true`, the server refuses to start.
