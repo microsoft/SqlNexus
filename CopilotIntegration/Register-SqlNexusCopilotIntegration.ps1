@@ -26,8 +26,10 @@ param(
     [ValidateSet("Validate", "TrustServerCertificate")]
     [string] $CertificateValidation,
 
+    # Defaulted after the param block: in Windows PowerShell 5.1, $PSScriptRoot is empty inside a
+    # parameter default when the script also declares a Mandatory parameter.
     [Parameter()]
-    [string] $InstallRoot = (Split-Path -Parent $PSScriptRoot),
+    [string] $InstallRoot,
 
     [Parameter()]
     [string] $McpExecutablePath,
@@ -46,6 +48,9 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
+if ([string]::IsNullOrWhiteSpace($InstallRoot)) {
+    $InstallRoot = Split-Path -Parent $PSScriptRoot
+}
 $serverName = "sqlnexus_mcp"
 # Most callers rely on the staged/release layout convention (InstallRoot-based). Callers that
 # already know the correct executable path for their layout -- e.g. Test-McpServer.ps1, which

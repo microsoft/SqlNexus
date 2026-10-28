@@ -68,6 +68,21 @@ namespace SqlNexus.UnitTests.SqlNexus.McpServer
         }
 
         [TestMethod]
+        public void Register_WithoutInstallRoot_DefaultsToParentOfScriptDirectory()
+        {
+            // Regression: with Mandatory parameters, Windows PowerShell 5.1 left $PSScriptRoot empty in the
+            // InstallRoot parameter default, so the documented command (no -InstallRoot) failed.
+            using (var fixture = new CopilotIntegrationFixture())
+            {
+                ProcessResult result = fixture.RunRegister(passInstallRoot: false);
+
+                Assert.AreEqual(0, result.ExitCode, result.Output + result.Error);
+                Assert.IsTrue(File.Exists(fixture.InstalledAgentPath));
+                Assert.AreEqual(fixture.McpExecutable, (string)JObject.Parse(File.ReadAllText(fixture.CopilotConfigPath))["mcpServers"]["sqlnexus_mcp"]["command"]);
+            }
+        }
+
+        [TestMethod]
         public void Register_MandatoryValidate_PersistsEncryptAndExplicitNoTrust()
         {
             using (var fixture = new CopilotIntegrationFixture())
@@ -369,17 +384,22 @@ namespace SqlNexus.UnitTests.SqlNexus.McpServer
                 bool mcpOnly = false,
                 string elevatedPrincipalPolicy = "Block",
                 string encryptionMode = "Mandatory",
-                string certificateValidation = "Validate")
+                string certificateValidation = "Validate",
+                bool passInstallRoot = true)
             {
                 var arguments = new System.Collections.Generic.List<string>
                 {
-                    "-InstallRoot", InstallRoot,
                     "-CopilotHome", CopilotHome,
                     "-VsCodeUserData", VsCodeUserData,
                     "-Server", "localhost\\SQLEXPRESS",
                     "-Database", "NexusDiagnostics",
                     "-ElevatedPrincipalPolicy", elevatedPrincipalPolicy
                 };
+                if (passInstallRoot)
+                {
+                    arguments.Add("-InstallRoot");
+                    arguments.Add(InstallRoot);
+                }
                 if (encryptionMode != null)
                 {
                     arguments.Add("-EncryptionMode");
