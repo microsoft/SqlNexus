@@ -15,6 +15,17 @@ param(
     [ValidateSet("Block", "ImpersonateReader")]
     [string] $ElevatedPrincipalPolicy = "Block",
 
+    # Optional: the client does not require encryption (the connection is still encrypted if SQL Server
+    # requires it, e.g. Force Encryption). Mandatory: encryption required (works with Force Encryption).
+    # Strict: TDS 8.0 encryption; required when SQL Server uses Force Strict Encryption.
+    [Parameter(Mandatory = $true)]
+    [ValidateSet("Optional", "Mandatory", "Strict")]
+    [string] $EncryptionMode,
+
+    [Parameter(Mandatory = $true)]
+    [ValidateSet("Validate", "TrustServerCertificate")]
+    [string] $CertificateValidation,
+
     [Parameter()]
     [string] $InstallRoot = (Split-Path -Parent $PSScriptRoot),
 
@@ -53,12 +64,12 @@ $agentDestination = Join-Path $CopilotHome "agents\sql-nexus-diagnostic.agent.md
 
 function Write-Status {
     param(
-        [ValidateSet("INFO", "ERROR")]
+        [ValidateSet("INFO", "WARNING", "ERROR")]
         [string] $Level,
         [string] $Message
     )
 
-    $color = if ($Level -eq "ERROR") { "Red" } else { "Cyan" }
+    $color = switch ($Level) { "ERROR" { "Red" } "WARNING" { "Yellow" } default { "Cyan" } }
     Write-Host "$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') [$Level] $Message" -ForegroundColor $color
 }
 
@@ -175,6 +186,21 @@ if (-not [string]::IsNullOrWhiteSpace($Database2)) {
     $arguments += @("--database2", $Database2)
 }
 $arguments += @("--trusted-connection", "true")
+# Reject unsafe combinations before anything is written; the MCP server enforces the same rules.
+if ($CertificateValidation -eq "TrustServerCertificate" -and $EncryptionMode -eq "Strict") {
+    throw "-EncryptionMode Strict always requires certificate validation and cannot be combined with -CertificateValidation TrustServerCertificate. Use -EncryptionMode Mandatory for a lab server with an untrusted certificate."
+}
+if ($CertificateValidation -eq "TrustServerCertificate" -and $EncryptionMode -eq "Optional") {
+    throw "-EncryptionMode Optional cannot be combined with -CertificateValidation TrustServerCertificate. Use -EncryptionMode Mandatory for an encrypted connection to a lab server with an untrusted certificate."
+}
+$arguments += @("--encrypt", $EncryptionMode)
+if ($CertificateValidation -eq "TrustServerCertificate") {
+    # The MCP server refuses --trust-server-certificate unless the separately named bypass opt-in is also present.
+    $arguments += @("--trust-server-certificate", "true", "--allow-certificate-validation-bypass", "true")
+}
+else {
+    $arguments += @("--trust-server-certificate", "false")
+}
 $policyArgument = if ($ElevatedPrincipalPolicy -eq "ImpersonateReader") { "impersonate-reader" } else { "block" }
 $arguments += @("--elevated-principal-policy", $policyArgument)
 $vscodeEntry = [pscustomobject][ordered]@{
@@ -247,6 +273,14 @@ if (-not [string]::IsNullOrWhiteSpace($Database2)) {
     Write-Status -Level "INFO" -Message "Comparison database (--database2): $Database2"
 }
 Write-Status -Level "INFO" -Message "Authentication: Windows Integrated Authentication"
+Write-Status -Level "INFO" -Message "Encryption mode: $EncryptionMode"
+Write-Status -Level "INFO" -Message "Certificate validation: $CertificateValidation"
+if ($EncryptionMode -eq "Optional") {
+    Write-Status -Level "WARNING" -Message "Encryption mode Optional means encryption is not required by the client. The connection is still encrypted if SQL Server requires encryption, but otherwise it can be observed or tampered with on the network."
+}
+if ($CertificateValidation -eq "TrustServerCertificate") {
+    Write-Status -Level "WARNING" -Message "SQL Server certificate validation is disabled. An on-path attacker could impersonate the SQL Server. Use only in a lab environment."
+}
 Write-Status -Level "INFO" -Message "Elevated principal policy: $ElevatedPrincipalPolicy"
 if ($ElevatedPrincipalPolicy -eq "ImpersonateReader") {
     Write-Status -Level "INFO" -Message "Elevated identities are accepted only to enter the non-revertible SqlNexusMcpReader context; MCP queries do not run elevated."

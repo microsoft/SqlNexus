@@ -38,6 +38,14 @@ param(
     [string]$ElevatedPrincipalPolicy,
 
     [Parameter(Mandatory=$false)]
+    [ValidateSet('Optional','Mandatory','Strict')]
+    [string]$EncryptionMode,
+
+    [Parameter(Mandatory=$false)]
+    [ValidateSet('Validate','TrustServerCertificate')]
+    [string]$CertificateValidation,
+
+    [Parameter(Mandatory=$false)]
     [string]$ExecutablePath,
 
     [Parameter(Mandatory=$false)]
@@ -187,6 +195,8 @@ function Invoke-ForceRegistrationSync {
         [string]$Database,
         [string]$Database2,
         [string]$ElevatedPrincipalPolicy,
+        [string]$EncryptionMode,
+        [string]$CertificateValidation,
         [string]$TrustedConnection,
         [string]$ConfigurationPath,
         [switch]$NonInteractive
@@ -219,6 +229,9 @@ function Invoke-ForceRegistrationSync {
     $resolvedServer = $Server
     $resolvedDatabase = $Database
     $resolvedPolicy = if ([string]::IsNullOrWhiteSpace($ElevatedPrincipalPolicy)) { "Block" } else { $ElevatedPrincipalPolicy }
+    # The registration script requires an explicit TLS policy; default to the MCP server's secure defaults.
+    $resolvedEncryptionMode = if ([string]::IsNullOrWhiteSpace($EncryptionMode)) { "Mandatory" } else { $EncryptionMode }
+    $resolvedCertificateValidation = if ([string]::IsNullOrWhiteSpace($CertificateValidation)) { "Validate" } else { $CertificateValidation }
     if ([string]::IsNullOrWhiteSpace($resolvedServer) -or [string]::IsNullOrWhiteSpace($resolvedDatabase)) {
         if ($NonInteractive) {
             throw "Cannot force-register in -NonInteractive mode without -Server and -Database."
@@ -303,6 +316,8 @@ function Invoke-ForceRegistrationSync {
         Server = $newEntry.Server
         Database = $newEntry.Database
         ElevatedPrincipalPolicy = $newEntry.Policy
+        EncryptionMode = $resolvedEncryptionMode
+        CertificateValidation = $resolvedCertificateValidation
         McpExecutablePath = $newEntry.Command
         McpOnly = $true
         Force = $true
@@ -647,6 +662,7 @@ if ($ForceRegistration -and -not $Tool) {
 
         Invoke-ForceRegistrationSync -ExecutablePath $exePathForRegistration -Server $Server -Database $Database `
             -Database2 $Database2 -ElevatedPrincipalPolicy $ElevatedPrincipalPolicy -TrustedConnection $TrustedConnection `
+            -EncryptionMode $EncryptionMode -CertificateValidation $CertificateValidation `
             -ConfigurationPath $ConfigurationPath -NonInteractive:$NonInteractive | Out-Null
     }
     catch {
@@ -1030,6 +1046,7 @@ while (-not $exit) {
                 $exePathForRegistration = if (-not [string]::IsNullOrWhiteSpace($ExecutablePath)) { $ExecutablePath } else { $exePath }
                 Invoke-ForceRegistrationSync -ExecutablePath $exePathForRegistration -Server $Server -Database $Database `
                     -Database2 $Database2 -ElevatedPrincipalPolicy $effectiveElevatedPrincipalPolicy -TrustedConnection $TrustedConnection `
+                    -EncryptionMode $EncryptionMode -CertificateValidation $CertificateValidation `
                     -ConfigurationPath $ConfigurationPath | Out-Null
             }
             catch {

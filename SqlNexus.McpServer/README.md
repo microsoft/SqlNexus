@@ -108,18 +108,27 @@ All non-sensitive settings go in `args`. Passwords go in `env`:
 | `--database2` | Second SQL Nexus database used by the `compare_nexus_databases` tool (aliases: `--database-for-comparison`, `--database_for_comparison`) | *(none)* |
 | `--trusted-connection` | `true` = Windows Auth, `false` = SQL Auth | `true` |
 | `--elevated-principal-policy` | `block` rejects elevated SQL identities; `impersonate-reader` accepts the connection only after entering the non-revertible loginless reader context | `block` |
-| `--encrypt` (`SqlNexus:Encrypt`) | Encrypt the SQL connection. Setting `false` is allowed but logs a startup warning | `true` |
-| `--trust-server-certificate` (`SqlNexus:TrustServerCertificate`) | `true` skips SQL Server certificate validation. Refused unless `--allow-certificate-validation-bypass true` is also set | `false` |
+| `--encrypt` (`SqlNexus:Encrypt`) | `Optional`, `Mandatory` or `Strict`. `Optional` does not require encryption from the client (the connection is still encrypted if SQL Server requires it) and logs a startup warning. `Mandatory` works with SQL Server **Force Encryption**. `Strict` uses TDS 8.0 and is required when SQL Server uses **Force Strict Encryption**. For compatibility, `true` maps to `Mandatory` and `false` to `Optional` | `Mandatory` |
+| `--trust-server-certificate` (`SqlNexus:TrustServerCertificate`) | `true` skips SQL Server certificate validation. Refused unless `--allow-certificate-validation-bypass true` is also set, and rejected with `--encrypt Strict` or `--encrypt Optional` | `false` |
 | `--allow-certificate-validation-bypass` (`SqlNexus:AllowCertificateValidationBypass`) | Explicit opt-in required before `TrustServerCertificate` can be honored. Intended for lab/self-signed certificates only; a warning is logged at every startup | `false` |
 
 ### TLS certificate validation
 
-The MCP server encrypts the SQL connection and validates the server certificate chain and name by default, matching the desktop application. Query results flow into an LLM's context, so an on-path attacker who can impersonate the SQL Server could tamper with that data (and capture SQL-auth credentials). This matters when SQL Server is reached across a network; `localhost`/LocalDB connections are not network-exposed.
+The MCP server encrypts the SQL connection (`Encrypt=Mandatory`) and validates the server certificate chain and name by default, matching the desktop application. Query results flow into an LLM's context, so an on-path attacker who can impersonate the SQL Server could tamper with that data (and capture SQL-auth credentials). This matters when SQL Server is reached across a network; `localhost`/LocalDB connections are not network-exposed.
 
-If the server uses a self-signed certificate (for example a lab instance), prefer installing that certificate as trusted. Otherwise, knowingly opt in by adding both arguments to the registration:
+| Encryption mode | Certificate validation | Behavior |
+|-----------------|------------------------|----------|
+| `Optional` | Validate | Client does not require encryption; the connection is encrypted only if SQL Server requires it |
+| `Optional` | TrustServerCertificate | Rejected |
+| `Mandatory` | Validate | Encryption required and certificate validated |
+| `Mandatory` | TrustServerCertificate | Encryption required, certificate identity not validated (lab only) |
+| `Strict` | Validate | TDS 8.0 Strict encryption with certificate validation |
+| `Strict` | TrustServerCertificate | Rejected: Strict always requires certificate validation |
+
+If the server uses a self-signed certificate (for example a lab instance), prefer installing that certificate as trusted. Otherwise, knowingly opt in by adding all three arguments to the registration (`Register-SqlNexusCopilotIntegration.ps1 -EncryptionMode Mandatory -CertificateValidation TrustServerCertificate` generates them for you):
 
 ```json
-"args": ["--server", "labserver", "--database", "SqlNexus",
+"args": ["--server", "labserver", "--database", "SqlNexus", "--encrypt", "Mandatory",
          "--trust-server-certificate", "true", "--allow-certificate-validation-bypass", "true"]
 ```
 
@@ -141,6 +150,8 @@ For a field engineer whose Windows identity is a SQL administrator, register exp
 .\CopilotIntegration\Register-SqlNexusCopilotIntegration.ps1 `
     -Server "localhost" `
     -Database "SqlNexus" `
+    -EncryptionMode Mandatory `
+    -CertificateValidation Validate `
     -ElevatedPrincipalPolicy ImpersonateReader
 ```
 

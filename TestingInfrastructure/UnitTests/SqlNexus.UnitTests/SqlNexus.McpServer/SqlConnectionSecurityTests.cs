@@ -93,6 +93,109 @@ namespace SqlNexus.UnitTests.SqlNexus.McpServer
         }
 
         [TestMethod]
+        public void BuildConnectionString_EncryptOptional_WarnsAndDoesNotRequireEncryption()
+        {
+            var warnings = new List<string>();
+
+            var builder = new SqlConnectionStringBuilder(Build(warnings, encrypt: "Optional"));
+
+            Assert.AreEqual(SqlConnectionEncryptOption.Optional, builder.Encrypt);
+            Assert.AreEqual(1, warnings.Count);
+            StringAssert.Contains(warnings[0], "NOT REQUIRED");
+        }
+
+        [TestMethod]
+        public void BuildConnectionString_EncryptMandatory_RequiresEncryptionWithoutWarning()
+        {
+            var warnings = new List<string>();
+
+            var builder = new SqlConnectionStringBuilder(Build(warnings, encrypt: " mandatory "));
+
+            Assert.AreEqual(SqlConnectionEncryptOption.Mandatory, builder.Encrypt);
+            Assert.AreEqual(0, warnings.Count);
+        }
+
+        [TestMethod]
+        public void BuildConnectionString_EncryptStrict_UsesStrictEncryptionWithoutWarning()
+        {
+            var warnings = new List<string>();
+
+            var builder = new SqlConnectionStringBuilder(Build(warnings, encrypt: "STRICT"));
+
+            Assert.AreEqual(SqlConnectionEncryptOption.Strict, builder.Encrypt);
+            Assert.IsFalse(builder.TrustServerCertificate);
+            Assert.AreEqual(0, warnings.Count);
+        }
+
+        [TestMethod]
+        public void BuildConnectionString_LegacyTrueEncrypt_MapsToMandatory()
+        {
+            var warnings = new List<string>();
+
+            var builder = new SqlConnectionStringBuilder(Build(warnings, encrypt: "true"));
+
+            Assert.AreEqual(SqlConnectionEncryptOption.Mandatory, builder.Encrypt);
+        }
+
+        [TestMethod]
+        public void BuildConnectionString_StrictWithTrustAndBypass_Throws()
+        {
+            var warnings = new List<string>();
+
+            Assert.ThrowsException<InvalidOperationException>(
+                () => Build(warnings, encrypt: "Strict", trust: "true", allow: "true"));
+        }
+
+        [TestMethod]
+        public void BuildConnectionString_StrictWithTrustWithoutBypass_Throws()
+        {
+            var warnings = new List<string>();
+
+            Assert.ThrowsException<InvalidOperationException>(
+                () => Build(warnings, encrypt: "Strict", trust: "true"));
+        }
+
+        [TestMethod]
+        public void BuildConnectionString_OptionalWithTrustAndBypass_Throws()
+        {
+            var warnings = new List<string>();
+
+            Assert.ThrowsException<InvalidOperationException>(
+                () => Build(warnings, encrypt: "Optional", trust: "true", allow: "true"));
+            Assert.ThrowsException<InvalidOperationException>(
+                () => Build(warnings, encrypt: "false", trust: "true", allow: "true"));
+        }
+
+        [TestMethod]
+        public void BuildConnectionString_MandatoryWithTrustAndBypass_RequiresEncryptionAndWarns()
+        {
+            var warnings = new List<string>();
+
+            var builder = new SqlConnectionStringBuilder(
+                Build(warnings, encrypt: "Mandatory", trust: "true", allow: "true"));
+
+            Assert.AreEqual(SqlConnectionEncryptOption.Mandatory, builder.Encrypt);
+            Assert.IsTrue(builder.TrustServerCertificate);
+            Assert.AreEqual(1, warnings.Count);
+            StringAssert.Contains(warnings[0], "certificate validation");
+        }
+
+        [TestMethod]
+        public void ParseEncryptionMode_UnrecognizedValue_Throws()
+        {
+            Assert.ThrowsException<ArgumentException>(() => Security.ParseEncryptionMode("maybe"));
+            Assert.ThrowsException<ArgumentException>(() => Security.ParseEncryptionMode("1"));
+            Assert.ThrowsException<ArgumentException>(() => Security.ParseEncryptionMode("Required"));
+        }
+
+        [TestMethod]
+        public void ParseEncryptionMode_NullOrWhitespace_DefaultsToMandatory()
+        {
+            Assert.AreEqual(Security.EncryptionMode.Mandatory, Security.ParseEncryptionMode(null));
+            Assert.AreEqual(Security.EncryptionMode.Mandatory, Security.ParseEncryptionMode("  "));
+        }
+
+        [TestMethod]
         public void BuildConnectionString_InvalidBoolean_Throws()
         {
             var warnings = new List<string>();

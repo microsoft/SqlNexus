@@ -68,6 +68,116 @@ namespace SqlNexus.UnitTests.SqlNexus.McpServer
         }
 
         [TestMethod]
+        public void Register_MandatoryValidate_PersistsEncryptAndExplicitNoTrust()
+        {
+            using (var fixture = new CopilotIntegrationFixture())
+            {
+                ProcessResult result = fixture.RunRegister(encryptionMode: "Mandatory", certificateValidation: "Validate");
+
+                Assert.AreEqual(0, result.ExitCode, result.Error);
+                string[] arguments = fixture.ReadRegisteredArguments();
+                Assert.AreEqual("Mandatory", arguments[Array.IndexOf(arguments, "--encrypt") + 1]);
+                Assert.AreEqual("false", arguments[Array.IndexOf(arguments, "--trust-server-certificate") + 1]);
+                Assert.AreEqual(-1, Array.IndexOf(arguments, "--allow-certificate-validation-bypass"));
+                Assert.IsFalse(result.Output.Contains("[WARNING]"), result.Output);
+            }
+        }
+
+        [TestMethod]
+        public void Register_StrictValidate_PersistsStrictEncryption()
+        {
+            using (var fixture = new CopilotIntegrationFixture())
+            {
+                ProcessResult result = fixture.RunRegister(encryptionMode: "Strict", certificateValidation: "Validate");
+
+                Assert.AreEqual(0, result.ExitCode, result.Error);
+                string[] arguments = fixture.ReadRegisteredArguments();
+                Assert.AreEqual("Strict", arguments[Array.IndexOf(arguments, "--encrypt") + 1]);
+            }
+        }
+
+        [TestMethod]
+        public void Register_MandatoryTrustServerCertificate_EmitsBothBypassArgumentsAndWarns()
+        {
+            using (var fixture = new CopilotIntegrationFixture())
+            {
+                ProcessResult result = fixture.RunRegister(encryptionMode: "Mandatory", certificateValidation: "TrustServerCertificate");
+
+                Assert.AreEqual(0, result.ExitCode, result.Error);
+                string[] arguments = fixture.ReadRegisteredArguments();
+                Assert.AreEqual("true", arguments[Array.IndexOf(arguments, "--trust-server-certificate") + 1]);
+                Assert.AreEqual("true", arguments[Array.IndexOf(arguments, "--allow-certificate-validation-bypass") + 1]);
+                StringAssert.Contains(result.Output, "[WARNING]");
+                StringAssert.Contains(result.Output, "certificate validation is disabled");
+            }
+        }
+
+        [TestMethod]
+        public void Register_OptionalValidate_PersistsOptionalAndWarns()
+        {
+            using (var fixture = new CopilotIntegrationFixture())
+            {
+                ProcessResult result = fixture.RunRegister(encryptionMode: "Optional", certificateValidation: "Validate");
+
+                Assert.AreEqual(0, result.ExitCode, result.Error);
+                string[] arguments = fixture.ReadRegisteredArguments();
+                Assert.AreEqual("Optional", arguments[Array.IndexOf(arguments, "--encrypt") + 1]);
+                StringAssert.Contains(result.Output, "not required by the client");
+            }
+        }
+
+        [TestMethod]
+        public void Register_StrictWithTrustServerCertificate_IsRejectedAndWritesNothing()
+        {
+            using (var fixture = new CopilotIntegrationFixture())
+            {
+                ProcessResult result = fixture.RunRegister(encryptionMode: "Strict", certificateValidation: "TrustServerCertificate");
+
+                Assert.AreNotEqual(0, result.ExitCode);
+                StringAssert.Contains(result.Output, "Strict always requires certificate validation");
+                Assert.IsFalse(File.Exists(fixture.CopilotConfigPath));
+                Assert.IsFalse(File.Exists(fixture.VsCodeConfigPath));
+            }
+        }
+
+        [TestMethod]
+        public void Register_OptionalWithTrustServerCertificate_IsRejectedAndWritesNothing()
+        {
+            using (var fixture = new CopilotIntegrationFixture())
+            {
+                ProcessResult result = fixture.RunRegister(encryptionMode: "Optional", certificateValidation: "TrustServerCertificate");
+
+                Assert.AreNotEqual(0, result.ExitCode);
+                StringAssert.Contains(result.Output, "Optional cannot be combined");
+                Assert.IsFalse(File.Exists(fixture.CopilotConfigPath));
+            }
+        }
+
+        [TestMethod]
+        public void Register_MissingTlsParameters_FailsWithoutRegistering()
+        {
+            using (var fixture = new CopilotIntegrationFixture())
+            {
+                ProcessResult result = fixture.RunRegister(encryptionMode: null, certificateValidation: null);
+
+                Assert.AreNotEqual(0, result.ExitCode);
+                Assert.IsFalse(File.Exists(fixture.CopilotConfigPath));
+            }
+        }
+
+        [TestMethod]
+        public void Register_InvalidEncryptionMode_Fails()
+        {
+            using (var fixture = new CopilotIntegrationFixture())
+            {
+                ProcessResult result = fixture.RunRegister(encryptionMode: "Required");
+
+                Assert.AreNotEqual(0, result.ExitCode);
+                Assert.IsFalse(File.Exists(fixture.CopilotConfigPath));
+            }
+        }
+
+        [TestMethod]
         public void Register_RepeatedWithSameValues_RemainsSuccessful()
         {
             using (var fixture = new CopilotIntegrationFixture())
@@ -249,7 +359,17 @@ namespace SqlNexus.UnitTests.SqlNexus.McpServer
             public string VsCodeConfigPath { get; }
             public string CopilotConfigPath { get; }
 
-            public ProcessResult RunRegister(bool mcpOnly = false, string elevatedPrincipalPolicy = "Block")
+            public string[] ReadRegisteredArguments()
+            {
+                JObject configuration = JObject.Parse(File.ReadAllText(CopilotConfigPath));
+                return ((JArray)configuration["mcpServers"]["sqlnexus_mcp"]["args"]).ToObject<string[]>();
+            }
+
+            public ProcessResult RunRegister(
+                bool mcpOnly = false,
+                string elevatedPrincipalPolicy = "Block",
+                string encryptionMode = "Mandatory",
+                string certificateValidation = "Validate")
             {
                 var arguments = new System.Collections.Generic.List<string>
                 {
@@ -260,6 +380,16 @@ namespace SqlNexus.UnitTests.SqlNexus.McpServer
                     "-Database", "NexusDiagnostics",
                     "-ElevatedPrincipalPolicy", elevatedPrincipalPolicy
                 };
+                if (encryptionMode != null)
+                {
+                    arguments.Add("-EncryptionMode");
+                    arguments.Add(encryptionMode);
+                }
+                if (certificateValidation != null)
+                {
+                    arguments.Add("-CertificateValidation");
+                    arguments.Add(certificateValidation);
+                }
                 if (mcpOnly)
                 {
                     arguments.Add("-McpOnly");

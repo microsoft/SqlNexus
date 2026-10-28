@@ -10,8 +10,13 @@ Run from an extracted SQL Nexus release:
 ```powershell
 .\CopilotIntegration\Register-SqlNexusCopilotIntegration.ps1 `
     -Server "localhost" `
-    -Database "SqlNexus"
+    -Database "SqlNexus" `
+    -EncryptionMode Mandatory `
+    -CertificateValidation Validate
 ```
+
+`-EncryptionMode` and `-CertificateValidation` are required on every registration so the TLS policy
+is always an explicit choice. See [TLS policy](#tls-policy-encryption-and-certificate-validation).
 
 Registration updates
 
@@ -32,6 +37,8 @@ Nexus Diagnostic Agent, add `-McpOnly`:
 .\CopilotIntegration\Register-SqlNexusCopilotIntegration.ps1 `
     -Server "localhost" `
     -Database "SqlNexus" `
+    -EncryptionMode Mandatory `
+    -CertificateValidation Validate `
     -McpOnly
 ```
 
@@ -47,7 +54,9 @@ To enable the `compare_nexus_databases` tool, register a second (comparison) dat
 .\CopilotIntegration\Register-SqlNexusCopilotIntegration.ps1 `
     -Server "localhost" `
     -Database "sqlnexus_run1" `
-    -Database2 "sqlnexus_run2"
+    -Database2 "sqlnexus_run2" `
+    -EncryptionMode Mandatory `
+    -CertificateValidation Validate
 ```
 
 This adds `--database2` to the registered MCP server arguments. After registration, invoke the
@@ -56,6 +65,49 @@ This adds `--database2` to the registered MCP server arguments. After registrati
 Use `-Force` only when replacing an existing `sqlnexus_mcp` entry or SQL Nexus agent that has
 different content. The scripts configure Windows Integrated Authentication and never request or
 store a password.
+
+### TLS policy (encryption and certificate validation)
+
+Registration requires an explicit choice for both settings:
+
+| Parameter | Values |
+|-----------|--------|
+| `-EncryptionMode` | `Optional`, `Mandatory`, `Strict` |
+| `-CertificateValidation` | `Validate`, `TrustServerCertificate` |
+
+SQL Server **Force Encryption** and **Force Strict Encryption** are different settings:
+
+- **Force Encryption** works with `-EncryptionMode Mandatory`.
+- **Force Strict Encryption** requires TDS 8.0 and a client using `-EncryptionMode Strict`. A client using only `Mandatory` is expected to fail against a server that requires Strict encryption.
+- `Optional` means encryption is **not required by the client**. The connection can still be encrypted if SQL Server requires encryption, but it is not guaranteed to be. Registration prints a warning.
+
+| Encryption mode | Certificate validation | Result |
+|-----------------|------------------------|--------|
+| `Optional` | `Validate` | Allowed (warning) |
+| `Optional` | `TrustServerCertificate` | Rejected |
+| `Mandatory` | `Validate` | Allowed |
+| `Mandatory` | `TrustServerCertificate` | Allowed (warning, lab use only) |
+| `Strict` | `Validate` | Allowed |
+| `Strict` | `TrustServerCertificate` | Rejected: Strict always requires certificate validation |
+
+Examples:
+
+```powershell
+# SQL Server with Force Strict Encryption
+.\CopilotIntegration\Register-SqlNexusCopilotIntegration.ps1 `
+    -Server "sql2022.contoso.com" -Database "SqlNexus" `
+    -EncryptionMode Strict -CertificateValidation Validate
+
+# Lab server with an untrusted or self-signed certificate
+.\CopilotIntegration\Register-SqlNexusCopilotIntegration.ps1 `
+    -Server "labserver" -Database "SqlNexus" `
+    -EncryptionMode Mandatory -CertificateValidation TrustServerCertificate
+```
+
+`-CertificateValidation TrustServerCertificate` writes both `--trust-server-certificate true` and
+`--allow-certificate-validation-bypass true`; the MCP server refuses the first without the second.
+The MCP server itself defaults to `Mandatory` with certificate validation when launched without
+these arguments.
 
 ### Elevated SQL identities
 
@@ -67,6 +119,8 @@ SQL Nexus imports create a passwordless, loginless `SqlNexusMcpReader` user with
 .\CopilotIntegration\Register-SqlNexusCopilotIntegration.ps1 `
     -Server "localhost" `
     -Database "SqlNexus" `
+    -EncryptionMode Mandatory `
+    -CertificateValidation Validate `
     -ElevatedPrincipalPolicy ImpersonateReader
 ```
 
@@ -78,6 +132,8 @@ Use `-Force` when changing the policy of an existing `sqlnexus_mcp` registration
 .\CopilotIntegration\Register-SqlNexusCopilotIntegration.ps1 `
     -Server "localhost" `
     -Database "SqlNexus" `
+    -EncryptionMode Mandatory `
+    -CertificateValidation Validate `
     -ElevatedPrincipalPolicy ImpersonateReader `
     -Force
 ```

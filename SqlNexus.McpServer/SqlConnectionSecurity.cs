@@ -24,7 +24,7 @@ namespace SqlNexus.McpServer
             string applicationName,
             ICollection<string> warnings)
         {
-            bool encryptValue = ParseBool(encrypt, true, "Encrypt");
+            EncryptionMode mode = ParseEncryptionMode(encrypt);
             bool trustValue = ParseBool(trustServerCertificate, false, "TrustServerCertificate");
             bool allowBypass = ParseBool(allowCertificateValidationBypass, false, "AllowCertificateValidationBypass");
 
@@ -36,12 +36,26 @@ namespace SqlNexus.McpServer
                     "options only for a lab environment that you control.");
             }
 
+            if (trustValue && mode == EncryptionMode.Strict)
+            {
+                throw new InvalidOperationException(
+                    "SqlNexus:Encrypt=Strict always requires certificate validation and cannot be combined with " +
+                    "SqlNexus:TrustServerCertificate=true. Use SqlNexus:Encrypt=Mandatory for a lab server with an untrusted certificate.");
+            }
+
+            if (trustValue && mode == EncryptionMode.Optional)
+            {
+                throw new InvalidOperationException(
+                    "SqlNexus:Encrypt=Optional cannot be combined with SqlNexus:TrustServerCertificate=true. " +
+                    "Use SqlNexus:Encrypt=Mandatory for an encrypted connection to a lab server with an untrusted certificate.");
+            }
+
             var builder = new SqlConnectionStringBuilder
             {
                 DataSource = server,
                 InitialCatalog = database,
                 IntegratedSecurity = trustedConnection,
-                Encrypt = encryptValue,
+                Encrypt = ToEncryptOption(mode),
                 TrustServerCertificate = trustValue,
                 ApplicationName = applicationName,
                 ConnectTimeout = 30
@@ -56,9 +70,9 @@ namespace SqlNexus.McpServer
                 builder.Password = password;
             }
 
-            if (!encryptValue)
+            if (mode == EncryptionMode.Optional)
             {
-                warnings.Add("SQL connection encryption is DISABLED (SqlNexus:Encrypt=false). Queries, results and any SQL credentials can be observed or tampered with on the network.");
+                warnings.Add("SQL connection encryption is NOT REQUIRED by the client (SqlNexus:Encrypt=Optional). The connection is encrypted only if the SQL Server requires it; otherwise queries, results and any SQL credentials can be observed or tampered with on the network.");
             }
             else if (trustValue)
             {
@@ -66,6 +80,48 @@ namespace SqlNexus.McpServer
             }
 
             return builder.ConnectionString;
+        }
+
+        internal enum EncryptionMode
+        {
+            Optional,
+            Mandatory,
+            Strict
+        }
+
+        // Accepts Optional|Mandatory|Strict; the legacy booleans map true -> Mandatory and false -> Optional.
+        // Fail closed: an unrecognized value is rejected and an empty value defaults to Mandatory.
+        internal static EncryptionMode ParseEncryptionMode(string? value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+                return EncryptionMode.Mandatory;
+
+            switch (value!.Trim().ToLowerInvariant())
+            {
+                case "optional":
+                case "false":
+                    return EncryptionMode.Optional;
+                case "mandatory":
+                case "true":
+                    return EncryptionMode.Mandatory;
+                case "strict":
+                    return EncryptionMode.Strict;
+                default:
+                    throw new ArgumentException("SqlNexus:Encrypt must be 'Optional', 'Mandatory' or 'Strict'.");
+            }
+        }
+
+        private static SqlConnectionEncryptOption ToEncryptOption(EncryptionMode mode)
+        {
+            switch (mode)
+            {
+                case EncryptionMode.Optional:
+                    return SqlConnectionEncryptOption.Optional;
+                case EncryptionMode.Strict:
+                    return SqlConnectionEncryptOption.Strict;
+                default:
+                    return SqlConnectionEncryptOption.Mandatory;
+            }
         }
 
         // Fail closed: an unrecognized value is rejected rather than silently falling back to a default.
