@@ -118,6 +118,7 @@ namespace SqlNexus.UnitTests.sqlnexus
         [DataRow("ERRORLOG Importer", true)]
         [DataRow("ReadTrace (SQL XEL/TRC Files)", true)]
         [DataRow("Trace Event Importer (Managed)", true)]
+        [DataRow("Custom XEL Importer", true)]
         [DataRow("Rowset Importer", false)] // forced-on, but not token-wired
         [DataRow("Unknown", false)]
         [DataRow(null, false)]
@@ -132,19 +133,22 @@ namespace SqlNexus.UnitTests.sqlnexus
         [TestMethod]
         public void CustomXel_Selected_IsTrue()
         {
-            Assert.IsTrue(ImporterSelectionEvaluator.IsCustomXelSelected(Tokens("CustomXEL")));
+            Assert.AreEqual(ImporterGateResult.EnabledByToken,
+                ImporterSelectionEvaluator.Evaluate(ImporterSelectionEvaluator.CustomXelImporterName, Tokens("CustomXEL")));
         }
 
         [TestMethod]
         public void CustomXel_NotSelected_IsFalse()
         {
-            Assert.IsFalse(ImporterSelectionEvaluator.IsCustomXelSelected(Tokens("Perfmon")));
+            Assert.AreEqual(ImporterGateResult.NotSelected,
+                ImporterSelectionEvaluator.Evaluate(ImporterSelectionEvaluator.CustomXelImporterName, Tokens("Perfmon")));
         }
 
         [TestMethod]
-        public void CustomXel_NullSelection_IsFalse()
+        public void CustomXel_EmptySelection_IsNotSelected()
         {
-            Assert.IsFalse(ImporterSelectionEvaluator.IsCustomXelSelected(null));
+            Assert.AreEqual(ImporterGateResult.NotSelected,
+                ImporterSelectionEvaluator.Evaluate(ImporterSelectionEvaluator.CustomXelImporterName, Tokens()));
         }
 
         // ---- Null guard ------------------------------------------------------

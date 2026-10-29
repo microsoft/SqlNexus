@@ -34,10 +34,10 @@ namespace sqlnexus
             { Application.StartupPath + "\\" + "PerfStatsAnalysis.sql", "D2CBBE8B3FF46B2F775BDEF831390659A5482B729B21CD2C5A6191F8760BD5C0" },
             { Application.StartupPath + "\\" + "ReadTracePostProcessing.sql", "0F686514FE2B35FA8B6B060649A7F558B058BCA3EB682E02991F0A948C9C45CF" },
             { Application.StartupPath + "\\" + "ReadTraceReportValidate.sql", "92A575503905D2CABEE18D1804D1DCDCACD12FACD912B16E1040C923AB168E02" },
-            { Application.StartupPath + "\\" + "SQLNexus_PostProcessing.sql", "BA659CE90DD602AD16C5A8F131D95C1A7D86AA00D764C68C3DE176C5AD0A4139" },
+            { Application.StartupPath + "\\" + "SQLNexus_PostProcessing.sql", "E631283CF30456C26AD3DBE9C345832581C6BB0D91A2B187A98DBBD314ADD73A" },
+            { Application.StartupPath + "\\" + "TraceTimestampPostProcessing.sql", "ED1D29CD45FBA42F01D96F99CF9E94695B5677C3DF4CCD9499097A829E01C804" },
             { Application.StartupPath + "\\" + "SQLNexus_PreProcessing.sql", "81465871D11C26E93329C5F60CBACED1311E97205B29CD8E5526273018168FF6" },
             { Application.StartupPath + "\\" + "PostBuild.cmd", "741ABE8E8750EE4F010268B29C08B645EAB3EAE4E805D46CD5CA100926E00A48" },
-            { Application.StartupPath + "\\" + "PostProcess.cmd", "DAC323FD6BF699197E754E3F43FFB1E1466C3AB0A296B833A9D2B7D66B7C7CAE" },
             { Application.StartupPath + "\\" + "PreBuild.cmd", "9C706DD338C5A3743C176E43F2C35FE765CF4719FBF33AF6FDAA811418B01187" }
         };
 
@@ -65,7 +65,7 @@ namespace sqlnexus
                 return false;
             }
 
-            if (!string.Equals(expectedHash, actualHash, StringComparison.OrdinalIgnoreCase))
+            if (!IsExpectedHash(filePath, actualHash))
             {
                 Log($"Hash mismatch for '{filePath}'. Expected={expectedHash} Actual={actualHash}");
                 return false;
@@ -80,6 +80,16 @@ namespace sqlnexus
         {
             string fileName = Path.GetFileName(filePath);
             return ScriptHashes.ContainsKey(fileName);
+        }
+
+        internal static bool IsExpectedHash(string scriptName, string actualHash)
+        {
+            if (String.IsNullOrWhiteSpace(scriptName) || String.IsNullOrWhiteSpace(actualHash))
+                return false;
+
+            string scriptPath = Path.Combine(Application.StartupPath, Path.GetFileName(scriptName));
+            return ScriptHashes.TryGetValue(scriptPath, out string expectedHash)
+                && String.Equals(expectedHash, actualHash, StringComparison.OrdinalIgnoreCase);
         }
 
         private static string ComputeFileHash(string filePath)

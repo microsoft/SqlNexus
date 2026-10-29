@@ -195,7 +195,7 @@ namespace ReadTrace
         /// Writes to <c>tbl_ServerProperties</c> when it exists, and also sets a
         /// <c>ImportedTraceTimestampsInLocalTime</c> column on <c>tbl_server_times</c> (adding the column
         /// first if necessary) as a fallback for environments where <c>tbl_ServerProperties</c>
-        /// is not present. <c>SQLNexus_PostProcessing.sql</c> reads either location to choose
+        /// is not present. <c>TraceTimestampPostProcessing.sql</c> reads either location to choose
         /// the correct UTC offset conversion when populating <c>StartTime_local</c> /
         /// <c>EndTime_local</c>.
         /// </summary>

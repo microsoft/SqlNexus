@@ -11,6 +11,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.Data;
 using System.Text.RegularExpressions;
 using Microsoft.Win32;
+using NexusInterfaces;
 
 namespace sqlnexus
 {
@@ -51,6 +52,42 @@ namespace sqlnexus
         {
             m_options.Clear();
             Save();
+        }
+
+        internal static void RestoreImporterOptions(INexusImporter importer)
+        {
+            if (ApplySavedOptions(importer, m_options))
+                Save();
+        }
+
+        internal static bool ApplySavedOptions(INexusImporter importer, IDictionary<string, bool> saved)
+        {
+            bool saveOptions;
+            if (!saved.TryGetValue("SaveImportOptions", out saveOptions) || !saveOptions)
+                return false;
+
+            bool migrated = false;
+            foreach (string option in new List<string>(importer.Options.Keys))
+            {
+                if (!(importer.Options[option] is bool))
+                    continue;
+                string key = importer.Name + "." + option;
+                bool value;
+                if (saved.TryGetValue(key, out value))
+                    importer.Options[option] = value;
+                else if (string.Equals(importer.Name, ImporterSelectionEvaluator.CustomXelImporterName, StringComparison.OrdinalIgnoreCase))
+                {
+                    string legacyKey = "SQLDiagAlwaysOnXEL." +
+                        (option == "Drop existing tables" ? "DropExistingTables" : option);
+                    if (saved.TryGetValue(legacyKey, out value))
+                    {
+                        importer.Options[option] = value;
+                        saved[key] = value;
+                        migrated = true;
+                    }
+                }
+            }
+            return migrated;
         }
     }
 

@@ -144,6 +144,13 @@ namespace NexusInterfaces
         event EventHandler StatusChanged;
         void OnStatusChanged(EventArgs e);
     }
+    /// <summary>Optional host policies; existing importers retain their current discovery and failure behavior.</summary>
+    public interface INexusImporterPolicy
+    {
+        bool PrimaryFolderOnly { get; }
+        bool StopOnFailure { get; }
+    }
+
     public interface INexusFileImporter : INexusImporter, INexusProgressReporter, INexusFileSizeReporter
     {
     }

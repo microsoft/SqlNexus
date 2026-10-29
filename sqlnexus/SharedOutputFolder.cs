@@ -68,6 +68,11 @@ namespace sqlnexus
         /// </returns>
         public static List<string> GetImportSearchPaths(string primaryPath)
         {
+            return GetImportSearchPaths(primaryPath, null);
+        }
+
+        internal static List<string> GetImportSearchPaths(string primaryPath, INexusImporter importer)
+        {
             var paths = new List<string>();
 
             if (string.IsNullOrWhiteSpace(primaryPath))
@@ -88,6 +93,9 @@ namespace sqlnexus
             }
 
             paths.Add(normalizedPrimary);
+
+            if (importer is INexusImporterPolicy policy && policy.PrimaryFolderOnly)
+                return paths;
 
             string sharedPath = ResolveSharedSibling(normalizedPrimary);
             if (sharedPath != null)

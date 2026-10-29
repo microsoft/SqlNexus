@@ -18,6 +18,76 @@ Download the latest build of SQL Nexus from the [releases page](https://github.c
 8. **Wait statistics analysis**: Visualize blocking and other resource-contention issues in data collected by [PSSDIAG](https://github.com/Microsoft/diagmanager).
 9. **Full-featured reporting engine**: SQL Nexus uses the SQL Server Reporting Services client-side report viewer and does not require a Reporting Services instance. Zoom in or out to examine server performance during a particular time window, expand or collapse report regions for easier navigation, and export reports to Excel, PDF, and other formats.
 
+## Import security
+
+Custom XEL imports bind capture paths as SQL parameters. SQL plan files are read locally
+from the selected import folder and loaded as XML parameters using the configured database
+connection, including its authentication and encryption settings. Post-processing no longer
+requires `PostProcess.cmd` or `sqlcmd.exe`; SQL scripts remain integrity-checked before execution.
+The managed script runner recognizes standalone `GO` batch separators, including consecutive
+separators and scripts using either Windows or Unix line endings.
+Custom XEL category failures are reported without stopping other importers or host
+post-processing. Post-processing failures stop subsequent processing. Previously completed
+imports remain committed; review category failures before using dependent reports. Failure
+or cancellation must not be interpreted as a safe no-op or proof of rollback.
+
+General post-processing still runs for partial importer selections such as
+`/MCustomXEL`: it cleans and enriches rowset/OS data independently of trace import.
+Trace timestamp conversion is a separate, integrity-checked
+`TraceTimestampPostProcessing.sql` stage. It runs only when a ReadTrace or managed
+Trace Event importer actually completed successfully in the current run, with no
+failed or cancelled trace imports. Leftover `ReadTrace.*` tables do not enable this
+stage. Missing optional timestamp flags are checked before their SQL is compiled;
+UTC offset conversion and already-local timestamp handling remain supported.
+
+## Custom XEL importer
+
+`Custom XEL Importer` is shipped in the signed `CustomXELImporter.dll` assembly and
+discovered through the standard `INexusImporter` DLL pipeline, with normal importer options,
+status reporting, cancellation, and the existing `/M CustomXEL` selection token.
+It is disabled by default. Saved SQLDiag/AlwaysOn options migrate when **Save Import
+Options** is enabled. Command-line selection does not change saved GUI preferences.
+
+Deploy the complete build output, including `CustomXELImporter.dll`, beside
+`sqlnexus.exe`; copying only the executable is not sufficient. The importer has no
+reference back to the host executable and retains its existing ID and option keys.
+Within each importer directory, Custom XEL is ordered after the other importers,
+before host post-processing. Discovery locations and trust behavior are unchanged.
+
+The manual release scripts include this DLL in signing and signed-file replacement,
+and exclude its PDB from the signed customer package. For the DPDiagnosticTools
+OneBranch release, refresh the mirrored SQLNexus sources with the updated
+`Refresh-BuildFoldersFromSource.ps1` before building; that repository maintains its
+own source-folder allowlist and SDK-project restore list.
+
+Only matching files directly in the selected **primary folder** are imported;
+subfolders and `SharedOutputFiles` are excluded. Each category is loaded once,
+including all matching rollover files and filename prefixes:
+
+| Source mask | Destination |
+|---|---|
+| `*_SQLDIAG*.xel` | `dbo.tbl_SqlDiagXel` |
+| `*AlwaysOn_health*.xel` | `dbo.tbl_AlwaysOnHealthXel` |
+| `*system_health*.xel` | `dbo.tbl_SystemHealthXel` |
+
+The parameterized SQL reader is retained to preserve complete SQL-generated
+`event_data`, timestamps, file offsets, and the reader's remaining columns. SQL
+Server's service account must be able to read the selected paths; remote SQL
+instances therefore need a path accessible from that server. No local-reader
+fallback silently changes the imported representation.
+
+**Drop existing tables** defaults to enabled and replaces only the corresponding
+canonical table. With it disabled, missing tables are created and compatible tables
+are appended to (re-importing the same capture appends duplicates). Incompatible
+schemas fail explicitly. Each category is transactional: read, schema, or
+cancellation failures roll back that category, while earlier categories or importers
+may already be committed. Missing categories leave their existing tables untouched.
+
+Legacy `tbl_SQL_Base_*` tables are not renamed, deleted, or hidden behind
+compatibility views. If only a legacy table exists, append mode rejects the import:
+re-import with **Drop existing tables** enabled to populate the new table. Update
+external queries to the canonical names; any retained legacy tables are historical
+and are no longer refreshed.
 
 # Common Tasks
 
