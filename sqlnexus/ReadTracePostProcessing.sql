@@ -2620,11 +2620,20 @@ IF OBJECTPROPERTY(OBJECT_ID('ReadTrace.spReporter_Overview_Counts'), 'IsProcedur
 GO
 
 -- ReadTrace.spReporter_Overview_Counts 'TotalReads'
+-- Only StartingEvents, CompletedEvents, TotalCPU, TotalDuration, TotalReads, and TotalWrites are supported.
 CREATE PROCEDURE ReadTrace.spReporter_Overview_Counts
 		@strColumn	SYSNAME
 AS
 BEGIN
 	SET NOCOUNT ON
+
+	IF @strColumn IS NULL OR @strColumn NOT IN
+		(N'StartingEvents', N'CompletedEvents', N'TotalCPU', N'TotalDuration', N'TotalReads', N'TotalWrites')
+	BEGIN
+		RAISERROR('Column name must be StartingEvents, CompletedEvents, TotalCPU, TotalDuration, TotalReads, or TotalWrites.', 16, 1);
+		RETURN 1;
+	END
+
 	DECLARE @strCmd		NVARCHAR(MAX)
 
 	SET @strCmd = 
@@ -2647,7 +2656,8 @@ BEGIN
 	 FROM ReadTrace.tblComparisonBatchPartialAggs
 	 WHERE [b.HashID] IS NULL '
 
-	SET @strCmd = REPLACE(@strCmd, '@strColumn', @strColumn);
+	SET @strCmd = REPLACE(@strCmd, N'[b.@strColumn]', QUOTENAME(N'b.' + @strColumn));
+	SET @strCmd = REPLACE(@strCmd, N'[c.@strColumn]', QUOTENAME(N'c.' + @strColumn));
 	EXEC sp_executesql @strCmd
 END
 GO
