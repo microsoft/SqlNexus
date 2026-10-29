@@ -69,6 +69,16 @@ strong-named assembly.
 > toolchain on all machines (non-string WinForms resources). If `dotnet test` fails to
 > build it, build the solution in Visual Studio and run the tests from Test Explorer.
 
+### ReadTrace overview counts script
+
+`ReadTracePostProcessingScriptTests` checks the source contract for
+`ReadTrace.spReporter_Overview_Counts`: only `StartingEvents`, `CompletedEvents`,
+`TotalCPU`, `TotalDuration`, `TotalReads`, and `TotalWrites` are accepted. NULL and
+unsupported columns raise an error before execution, and complete baseline/comparison
+identifiers are quoted. The four aggregate branches and `Type`/`Value` result shape
+are preserved. These checks do not execute SQL or require a SQL Server.
+`ScriptIntegrityCheckerTests` also verifies the deployed script's SHA-256 allowlist entry.
+
 ## Custom XEL compatibility gate (issue #499 / F-002)
 
 `CustomXELImporter/CustomXELImporterCompatibilityTests.cs` in the unit-test project contains

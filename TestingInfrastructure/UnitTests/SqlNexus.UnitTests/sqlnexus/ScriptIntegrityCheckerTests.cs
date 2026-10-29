@@ -13,6 +13,7 @@ namespace SqlNexus.UnitTests.sqlnexus
         [DataTestMethod]
         [DataRow("SQLNexus_PostProcessing.sql")]
         [DataRow("TraceTimestampPostProcessing.sql")]
+        [DataRow("ReadTracePostProcessing.sql")]
         public void IsExpectedHash_DeployedPostProcessingScript_ReturnsTrue(string scriptName)
         {
             string scriptPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, scriptName);
