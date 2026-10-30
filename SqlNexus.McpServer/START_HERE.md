@@ -64,6 +64,8 @@ If the engineer's Windows identity is a SQL administrator, use the registration 
 .\CopilotIntegration\Register-SqlNexusCopilotIntegration.ps1 `
     -Server "localhost" `
     -Database "SqlNexus" `
+    -EncryptionMode Mandatory `
+    -CertificateValidation Validate `
     -ElevatedPrincipalPolicy ImpersonateReader
 ```
 

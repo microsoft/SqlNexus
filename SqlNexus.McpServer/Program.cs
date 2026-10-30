@@ -55,26 +55,24 @@ namespace SqlNexus.McpServer
                     ?? config["SqlNexus:ElevatedPrincipalPolicy"];
                 _elevatedPrincipalPolicy = SqlSecurityContext.ParsePolicy(elevatedPrincipalPolicy);
 
-                var builder = new SqlConnectionStringBuilder
-                {
-                    DataSource = server,
-                    InitialCatalog = database,
-                    IntegratedSecurity = trustedConnection,
-                    TrustServerCertificate = true,
-                    ApplicationName = ServerName,
-                    ConnectTimeout = 30
-                };
+                // TLS: encrypted with certificate validation by default. Trusting an unvalidated
+                // certificate requires both --trust-server-certificate and                 --allow-certificate-validation-bypass.
+                var encrypt = GetArgValue(args, "--encrypt")
+                    ?? config["SqlNexus:Encrypt"];
+                var trustServerCertificate = GetArgValue(args, "--trust-server-certificate")
+                    ?? config["SqlNexus:TrustServerCertificate"];
+                var allowCertificateValidationBypass = GetArgValue(args, "--allow-certificate-validation-bypass")
+                    ?? config["SqlNexus:AllowCertificateValidationBypass"];
 
-                if (!trustedConnection)
-                {
-                    builder.UserID = config["SqlNexus:UserId"];
-                    builder.Password = config["SqlNexus:Password"];
-                    if (string.IsNullOrWhiteSpace(builder.UserID) || string.IsNullOrEmpty(builder.Password))
-                        throw new InvalidOperationException("SQL authentication requires SqlNexus:UserId and SqlNexus:Password. Supply the password through the SqlNexus__Password environment variable.");
-                }
+                var securityWarnings = new List<string>();
+                var connectionString = SqlConnectionSecurity.BuildConnectionString(
+                    server, database, trustedConnection,
+                    config["SqlNexus:UserId"], config["SqlNexus:Password"],
+                    encrypt, trustServerCertificate, allowCertificateValidationBypass,
+                    ServerName, securityWarnings);
 
                 // Store connection string � defer actual SQL connection until first tool call
-                _connectionString = builder.ConnectionString;
+                _connectionString = connectionString;
 
                 _database = database;
                 _database2 = string.IsNullOrWhiteSpace(database2) ? null : database2.Trim();
@@ -85,6 +83,11 @@ namespace SqlNexus.McpServer
                     Logger.Info($"Comparison database: {_database2}");
                 Logger.Info("Using Microsoft.Data.SqlClient");
                 Logger.Info($"Elevated principal policy: {_elevatedPrincipalPolicy}");
+                foreach (var warning in securityWarnings)
+                {
+                    Logger.Warn(warning);
+                    Console.Error.WriteLine("WARNING: " + warning);
+                }
 
                 // Integrity gate: refuse to run if the AI guidance files (skill files + agent
                 // definition) have been tampered with, are missing, or are unreadable.
