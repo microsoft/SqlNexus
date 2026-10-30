@@ -2772,20 +2772,39 @@ CREATE PROCEDURE DataSet_GetSnapshot
     @tablename sysname,
     @rownumber INT
 AS
+DECLARE @schema sysname = PARSENAME(@tablename, 2);
+DECLARE @table sysname = PARSENAME(@tablename, 1);
+IF @tablename IS NULL
+   OR @tablename = N''
+   OR @tablename COLLATE Latin1_General_BIN2 LIKE N'%[^a-zA-Z0-9_.]%'
+   OR @table IS NULL
+   OR PARSENAME(@tablename, 3) IS NOT NULL
+   OR PARSENAME(@tablename, 4) IS NOT NULL
+   OR @tablename <> ISNULL(@schema + N'.', N'') + @table
+BEGIN
+    RAISERROR('Invalid table name. Use table or schema.table with only letters, digits and underscores.', 16, 1);
+    RETURN 1;
+END;
+
+DECLARE @qualifiedTable NVARCHAR(517);
+SET @qualifiedTable = CASE
+                          WHEN @schema IS NULL THEN QUOTENAME(@table)
+                          ELSE QUOTENAME(@schema) + N'.' + QUOTENAME(@table)
+                      END;
+IF OBJECT_ID(@qualifiedTable) IS NULL
+    RETURN;
+
 DECLARE @sql NVARCHAR(MAX);
-SET @sql = N'if OBJECT_ID (''' + @tablename + N''') is not null ';
-SET @sql = @sql + N'begin ';
-SET @sql = @sql + N'declare @runtime datetime ';
+SET @sql = N'declare @runtime datetime ';
 IF @rownumber IS NULL
-    SET @sql = @sql + N'	select @runtime = MAX (runtime) from ' + @tablename + N' ';
+    SET @sql = @sql + N'	select @runtime = MAX (runtime) from ' + @qualifiedTable + N' ';
 ELSE
     SET @sql
         = @sql
           + N'	  select @runtime = runtime from (SELECT     ROW_NUMBER() OVER (ORDER BY runtime) AS ''RowNumber'', runtime  from (select distinct runtime from '
-          + @tablename + N') t   ) MyRunTime  where RowNumber = ' + CAST(@rownumber AS VARCHAR(100)) + N' ';
-SET @sql = @sql + N'select  * from ' + @tablename + N' where runtime = @runtime ';
-SET @sql = @sql + N'end ';
-EXEC (@sql);
+          + @qualifiedTable + N') t   ) MyRunTime  where RowNumber = @rownumber ';
+SET @sql = @sql + N'select  * from ' + @qualifiedTable + N' where runtime = @runtime ';
+EXEC sys.sp_executesql @sql, N'@rownumber INT', @rownumber = @rownumber;
 --print @sql
 
 GO
