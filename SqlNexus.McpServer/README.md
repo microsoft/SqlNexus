@@ -44,7 +44,95 @@ Output: `bin\Release\SqlNexus.McpServer.exe`
 
 ### 2. Configure MCP
 
-#### Option A: VS Code
+There are two ways to register the MCP server with VS Code and Copilot CLI:
+
+- **Option A (recommended):** run the registration script, which writes the configuration for you.
+- **Option B:** edit `mcp.json` / `mcp-config.json` manually.
+
+#### Option A: Registration script (recommended)
+
+`CopilotIntegration\Register-SqlNexusCopilotIntegration.ps1` registers the `sqlnexus_mcp` server for both VS Code (`%APPDATA%\Code\User\mcp.json`) and Copilot CLI (`%USERPROFILE%\.copilot\mcp-config.json`). Unless you pass `-McpOnly`, it also installs the SQL Nexus Diagnostic Agent. It always configures Windows Integrated Authentication and never asks for or stores a password.
+
+Run it from the root of the SQL Nexus folder (the parent of `CopilotIntegration`). `-EncryptionMode` and `-CertificateValidation` are **required**, so the TLS policy is always an explicit choice:
+
+```powershell
+.\CopilotIntegration\Register-SqlNexusCopilotIntegration.ps1 `
+    -Server "localhost" `
+    -Database "SqlNexus" `
+    -EncryptionMode Mandatory `
+    -CertificateValidation Validate
+```
+
+Script parameters:
+
+| Parameter | Description | Default |
+|-----------|-------------|---------|
+| `-Server` | SQL Server instance name (`--server`) | `localhost` |
+| `-Database` | SQL Nexus database name (`--database`) | `SqlNexus` |
+| `-Database2` | Second SQL Nexus database used by the `compare_nexus_databases` tool (`--database2`) | *(none)* |
+| `-EncryptionMode` | **Required.** `Optional`, `Mandatory` or `Strict` (`--encrypt`). `Mandatory` works with SQL Server **Force Encryption**; `Strict` (TDS 8.0) is required for **Force Strict Encryption**; `Optional` does not require encryption from the client | *(required)* |
+| `-CertificateValidation` | **Required.** `Validate` checks the SQL Server certificate. `TrustServerCertificate` skips validation (lab use only) and writes both `--trust-server-certificate true` and `--allow-certificate-validation-bypass true` | *(required)* |
+| `-ElevatedPrincipalPolicy` | `Block` rejects elevated SQL identities; `ImpersonateReader` accepts the connection only after entering the non-revertible loginless reader context (see **Least-privilege SQL execution** below) | `Block` |
+| `-McpOnly` | Register only the MCP server; do not install or change the custom agent | *(off)* |
+| `-Force` | Replace an existing `sqlnexus_mcp` entry or agent that has different content. Not needed for a first registration | *(off)* |
+| `-McpExecutablePath` | Full path to `SqlNexus.McpServer.exe`. Use it when running from a source build (`bin\Release\...`) instead of a release package | `<InstallRoot>\SqlNexus.McpServer\SqlNexus.McpServer.exe` |
+| `-InstallRoot` | Root of the SQL Nexus installation (used to find the executable, agent and skills) | Parent of the script folder |
+| `-CopilotHome` | Copilot CLI home folder | `%USERPROFILE%\.copilot` |
+| `-VsCodeUserData` | VS Code user data folder containing `mcp.json` | `%APPDATA%\Code\User` |
+
+Registration scenarios (all examples use the local default instance `.`; replace `-Server` and `-Database` with your own values):
+
+**1. SQL Server with a trusted certificate and server-side encryption**
+
+Encryption is required and the server certificate is validated. This is the recommended configuration for production systems.
+
+```powershell
+.\CopilotIntegration\Register-SqlNexusCopilotIntegration.ps1 `
+    -Server "." `
+    -Database sqlnexus `
+    -EncryptionMode Mandatory `
+    -CertificateValidation Validate `
+    -ElevatedPrincipalPolicy "ImpersonateReader" `
+    -Force
+```
+
+**2. Lab server with an untrusted or self-signed certificate (`TrustServerCertificate`)**
+
+Encryption is required but the certificate is not validated, so an on-path attacker could impersonate the SQL Server. Registration prints a warning. Use it only in a lab environment you control.
+
+```powershell
+.\CopilotIntegration\Register-SqlNexusCopilotIntegration.ps1 `
+    -Server "." `
+    -Database sqlnexus `
+    -EncryptionMode Mandatory `
+    -CertificateValidation TrustServerCertificate `
+    -ElevatedPrincipalPolicy "ImpersonateReader" `
+    -Force
+```
+
+**3. Optional encryption (not recommended for production systems)**
+
+The client does not require encryption. The connection is still encrypted if SQL Server requires it, but otherwise queries, results and credentials can be observed on the network. Registration prints a warning.
+
+```powershell
+.\CopilotIntegration\Register-SqlNexusCopilotIntegration.ps1 `
+    -Server "." `
+    -Database sqlnexus `
+    -EncryptionMode Optional `
+    -CertificateValidation Validate `
+    -ElevatedPrincipalPolicy "ImpersonateReader" `
+    -Force
+```
+
+> `-ElevatedPrincipalPolicy "ImpersonateReader"` is used above for engineers whose Windows identity is a SQL administrator; omit it to keep the default `Block`. `-Force` is only needed when replacing an existing registration.
+
+Two combinations are rejected and nothing is written: `-EncryptionMode Strict` with `-CertificateValidation TrustServerCertificate` (Strict always requires certificate validation, so use `-CertificateValidation Validate`), and `-EncryptionMode Optional` with `-CertificateValidation TrustServerCertificate` (use `Mandatory` for an encrypted connection to a lab certificate). For the full behavior matrix, see **TLS certificate validation** below.
+
+#### Option B: Manual registration in `mcp.json`
+
+If you prefer not to use the script, edit the configuration files yourself.
+
+##### VS Code
 
 Press `Ctrl+Shift+P` → Type: **"MCP: Open User Configuration"**
 
@@ -64,6 +152,8 @@ Add this to `mcp.json`:
 ```
 
 > Change `localhost` and `SqlNexus` in `args` to match your SQL Server instance and database name. If omitted, both default to `localhost` and `SqlNexus`.
+
+##### Copilot CLI
 
 **1. Start Copilot CLI in interactive mode:**
 ```bash
@@ -97,7 +187,7 @@ code "C:\path\to\.copilot\mcp-config.json"
 
 **5. Save the file**
 
-### 3. Update Connection Details
+### 3. Update Connection Details (manual registration)
 
 All non-sensitive settings go in `args`. Passwords go in `env`:
 
