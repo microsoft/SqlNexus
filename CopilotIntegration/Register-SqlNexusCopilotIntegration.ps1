@@ -193,7 +193,7 @@ if (-not [string]::IsNullOrWhiteSpace($Database2)) {
 $arguments += @("--trusted-connection", "true")
 # Reject unsafe combinations before anything is written; the MCP server enforces the same rules.
 if ($CertificateValidation -eq "TrustServerCertificate" -and $EncryptionMode -eq "Strict") {
-    throw "-EncryptionMode Strict always requires certificate validation and cannot be combined with -CertificateValidation TrustServerCertificate. Use -EncryptionMode Mandatory for a lab server with an untrusted certificate."
+    throw "-EncryptionMode Strict always requires certificate validation (-CertificateValidation Validate) and cannot be combined with -CertificateValidation TrustServerCertificate. Use -EncryptionMode Mandatory for a lab server with an untrusted certificate."
 }
 if ($CertificateValidation -eq "TrustServerCertificate" -and $EncryptionMode -eq "Optional") {
     throw "-EncryptionMode Optional cannot be combined with -CertificateValidation TrustServerCertificate. Use -EncryptionMode Mandatory for an encrypted connection to a lab server with an untrusted certificate."

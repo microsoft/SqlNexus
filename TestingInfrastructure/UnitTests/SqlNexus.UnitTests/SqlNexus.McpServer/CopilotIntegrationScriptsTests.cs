@@ -149,7 +149,7 @@ namespace SqlNexus.UnitTests.SqlNexus.McpServer
                 ProcessResult result = fixture.RunRegister(encryptionMode: "Strict", certificateValidation: "TrustServerCertificate");
 
                 Assert.AreNotEqual(0, result.ExitCode);
-                StringAssert.Contains(result.Output, "Strict always requires certificate validation");
+                StringAssert.Contains(result.Output, "Strict always requires certificate validation (-CertificateValidation Validate)");
                 Assert.IsFalse(File.Exists(fixture.CopilotConfigPath));
                 Assert.IsFalse(File.Exists(fixture.VsCodeConfigPath));
             }
