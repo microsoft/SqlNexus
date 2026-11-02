@@ -41,6 +41,8 @@ namespace sqlnexus
     [System.Reflection.ObfuscationAttribute(Exclude = true, ApplyToMembers = false)]
     public partial class fmNexus : Form, ILogger
     {
+        internal const bool ReportHyperlinksEnabled = false;
+
         #region Imported APIs
 
         [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true, CallingConvention = CallingConvention.Winapi)]
@@ -1651,7 +1653,7 @@ namespace sqlnexus
                         rv.LocalReport.ReportPath = filename;
 
 
-                        rv.LocalReport.EnableHyperlinks = true;
+                        rv.LocalReport.EnableHyperlinks = ReportHyperlinksEnabled;
                         rv.LocalReport.EnableExternalImages = true;
                         rv.LocalReport.DisplayName = report;
                         if (null != parameters)
@@ -3169,136 +3171,22 @@ namespace sqlnexus
             }
         }
 
-        private static Object TryMethodCall(Type type, MethodInfo method, String name, String[] args)
-        {
-            //Names match
-            if (String.Compare(method.Name, name, false, CultureInfo.InvariantCulture) != 0)
-            {
-                throw new Exception(method.DeclaringType + "." + method.Name + sqlnexus.Properties.Resources.Error_MethodDoesntMatch);
-            }
-
-            //Number of parameters matches
-            ParameterInfo[] param = method.GetParameters();
-
-            if (param.Length != args.Length)
-            {
-                throw new Exception(method.DeclaringType + "." + method.Name + sqlnexus.Properties.Resources.Error_MethodsSigsDontMatch);
-            }
-
-            //Types convertible
-            Object[] newArgs = new Object[args.Length];
-
-            for (int index = 0; index < args.Length; index++)
-            {
-                try
-                {
-                    newArgs[index] = Convert.ChangeType(args[index], param[index].ParameterType, CultureInfo.InvariantCulture);
-                }
-                catch (Exception e)
-                {
-                    throw new Exception(method.DeclaringType + "." + method.Name + sqlnexus.Properties.Resources.Error_ArgConversionFailed, e);
-                }
-            }
-
-            //Static or instance?
-            Object instance = null;
-
-            if (!method.IsStatic)
-            {
-                instance = Activator.CreateInstance(type);
-            }
-
-            //Invoke the method
-            return method.Invoke(instance, newArgs);
-        }
-
-        private void ExecuteMethod(string[] args)
-        {
-            Assembly assembly;
-            Type type;
-
-            try
-            {
-                //Load the specified assembly and get the specified type
-                if (args[0] != ".")
-                    assembly = Assembly.LoadFrom(args[0]);
-                else
-                    assembly = Assembly.GetCallingAssembly();
-                type = assembly.GetType(args[1], true);
-            }
-            catch (FileNotFoundException)
-            {
-                LogMessage(string.Format(sqlnexus.Properties.Resources.Error_NoAssembly, args[0]));
-                return;
-            }
-            catch (TypeLoadException)
-            {
-                LogMessage(string.Format(sqlnexus.Properties.Resources.Error_NoType, args[1], args[0]));
-                return;
-            }
-
-            //Get the type's methods
-            MethodInfo[] methods = type.GetMethods();
-
-            if (methods == null)
-            {
-                LogMessage(sqlnexus.Properties.Resources.Error_NoTypes);
-                return;
-            }
-
-            //Create a new array for the call's args
-            String[] newArgs = new String[args.Length - 3];
-
-            if (newArgs.Length != 0)
-            {
-                Array.Copy(args, 3, newArgs, 0, newArgs.Length);
-            }
-
-            //Try each method for a match
-            StringBuilder failureExcuses = new StringBuilder();
-
-            foreach (MethodInfo m in methods)
-            {
-                try
-                {
-                    object obj = TryMethodCall(type, m, args[2], newArgs);
-                    obj.ToString(); //Suppress warning
-                }
-                catch (Exception e)
-                {
-                    failureExcuses.Append(e.Message + "\r\n");
-                    continue;
-                }
-
-                return;
-            }
-            LogMessage(sqlnexus.Properties.Resources.Error_NoMethod, MessageOptions.Dialog);
-            LogMessage(failureExcuses.ToString(), MessageOptions.Silent);
-        }
-
         private void rvTemplate_Hyperlink(object sender, HyperlinkEventArgs e)
         {
+            CancelReportHyperlink(e);
             try
             {
-                //TODO: Put hyperlink code here
                 LogMessage(sqlnexus.Properties.Resources.Msg_RVSyncLink, MessageOptions.Silent);
-                const string ourtoken = "sqlnexus://";
-                if (0==string.Compare(e.Hyperlink.Substring(0,ourtoken.Length),ourtoken,true, CultureInfo.InvariantCulture))
-                {
-                    e.Cancel = true;
-                    string[] parts = e.Hyperlink.Substring(ourtoken.Length).Split('/');
-                    if (parts.Length<3)
-                    {
-                        LogMessage(sqlnexus.Properties.Resources.Error_InvalidURL, MessageOptions.Dialog);
-                        return;
-                    }
-                    ExecuteMethod(parts);
-                }
             }
             catch (Exception ex)
             {
                 Globals.HandleException(ex, this, this);
             }
+        }
+
+        internal static void CancelReportHyperlink(HyperlinkEventArgs e)
+        {
+            e.Cancel = true;
         }
 
         private void rvTemplate_Toggle(object sender, CancelEventArgs e)
