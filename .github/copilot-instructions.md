@@ -26,14 +26,14 @@ every contribution, now and in the future.
   - The **happy path**.
   - **Boundary/edge cases** (empty, null, min/max, out-of-range, malformed input).
   - **Negative cases** (invalid input is rejected/handled, not silently accepted).
-  - Any **bug being fixed** — add a regression test that fails before the fix and passes after.
+  - Any **bug being fixed** ï¿½ add a regression test that fails before the fix and passes after.
 - If the code under test uses `internal` members, prefer adding
   `[assembly: InternalsVisibleTo("SqlNexus.UnitTests")]` to the product project rather than
   making members public solely for testing.
 - When you cannot fully wire a test to production code, still add a clearly-labeled scaffolding
   test and a TODO explaining the required wiring (project reference / InternalsVisibleTo).
 
-## Security requirements (Microsoft SDL — always build in this spirit)
+## Security requirements (Microsoft SDL ï¿½ always build in this spirit)
 
 - **No injection.** Never build SQL, shell, or file paths via string concatenation of untrusted
   input. Use parameterized `SqlCommand` parameters. For dynamic object names, validate against a
@@ -59,7 +59,7 @@ every contribution, now and in the future.
 - **Redaction:** when logging for diagnostics, prefer counts, table names, and status over raw row
   content or identifiers.
 
-## Accessibility requirements (Microsoft accessibility standards — always build in this spirit)
+## Accessibility requirements (Microsoft accessibility standards ï¿½ always build in this spirit)
 
 For any WinForms UI changes:
 
@@ -78,6 +78,19 @@ For any WinForms UI changes:
 - Prefer clear names; add comments only where they clarify non-obvious intent (as the codebase does).
 - Do not introduce new warnings; keep the build clean (`net48`, C# 7.3 language features only).
 
+## Official wiki documentation
+
+- `Wiki/` contains the official user-facing documentation copied from the separate SQL Nexus
+  wiki repository. Keep the relevant pages up to date alongside code changes that affect setup,
+  options, behavior, workflows, or troubleshooting; do not defer documentation until release.
+- Update existing pages rather than creating duplicate guides. Keep parameter names, defaults,
+  requirements, security guidance, and runnable examples aligned with the implementation.
+- For MCP server, diagnostic agent, or Copilot registration changes, update
+  [AI-Assisted-Analysis.md](../Wiki/AI-Assisted-Analysis.md) and any affected component READMEs.
+- Preserve wiki-compatible links and images. These local files are staged documentation: before
+  release, maintainers copy the updated files to the separate wiki repository. Do not publish,
+  push, or synchronize that repository unless explicitly requested.
+
 ## Definition of done for a change
 
 1. Behavior implemented with minimal, focused edits.
@@ -87,36 +100,38 @@ For any WinForms UI changes:
 5. PR description explains the change, any data-handling implications, and test coverage.
 6. Check whether any file listed in `ScriptIntegrityChecker.ScriptHashes` changed; if so, compute
    its new SHA-256 hash from the final file contents and update the corresponding allowlist entry.
+7. Update affected official `Wiki/` pages and related READMEs in the same change, including
+   examples for new or changed options.
 
 ## Project overview (projects and responsibilities)
 
 SqlNexus is a Windows Forms desktop application for importing and analyzing SQL Server
 diagnostic data (PSSdiag, SQL LogScout, XEL, TRC, Perfmon, Linux perf). Key projects:
 
-- **sqlnexus** — Main WinForms host (UI, report viewer, theme engine, import orchestration)
-- **NexusInterfaces** — Shared importer interfaces (`INexusImporter`, `INexusFileImporter`, etc.)
-- **RowsetImportEngine** — Core T-SQL rowset importer
-- **ReadTraceNexusImporter** — XEL/TRC trace importer (legacy)
-- **PerfmonImporter** — Windows Performance Monitor (.blg/.csv) importer
-- **LinuxPerfImporter** — Linux performance data importer
-- **ErrorLogImporter** — SQL Server error log importer
-- **BulkLoadEx** — Native bulk-load helper
-- **TraceEventImporter** — New importer for XEL files using SQL Server's TraceEvent API XeLite
+- **sqlnexus** ï¿½ Main WinForms host (UI, report viewer, theme engine, import orchestration)
+- **NexusInterfaces** ï¿½ Shared importer interfaces (`INexusImporter`, `INexusFileImporter`, etc.)
+- **RowsetImportEngine** ï¿½ Core T-SQL rowset importer
+- **ReadTraceNexusImporter** ï¿½ XEL/TRC trace importer (legacy)
+- **PerfmonImporter** ï¿½ Windows Performance Monitor (.blg/.csv) importer
+- **LinuxPerfImporter** ï¿½ Linux performance data importer
+- **ErrorLogImporter** ï¿½ SQL Server error log importer
+- **BulkLoadEx** ï¿½ Native bulk-load helper
+- **TraceEventImporter** ï¿½ New importer for XEL files using SQL Server's TraceEvent API XeLite
   (future replacement for ReadTraceNexusImporter)
 
 Framework specifics:
 - **Windows Forms** for all UI
 - **Microsoft.Reporting.WinForms** (ReportViewer) for RDLC report rendering
 - **Microsoft.Data.SqlClient** for all SQL Server connectivity (prefer over `System.Data.SqlClient`)
-- Use only APIs available in .NET Framework 4.8 — do **not** suggest .NET Core / .NET 5+ APIs
+- Use only APIs available in .NET Framework 4.8 ï¿½ do **not** suggest .NET Core / .NET 5+ APIs
 
 ## Architecture conventions
 
 - All importers implement `INexusImporter` (and optionally `INexusFileImporter`,
   `INexusProgressReporter`) from `NexusInterfaces`
-- Importer ordering is controlled in `fmImport.OrderedImporterFiles()` — TraceEventImporter (150)
+- Importer ordering is controlled in `fmImport.OrderedImporterFiles()` ï¿½ TraceEventImporter (150)
   must run after RowsetImportEngine (100)
-- ReadTrace and TraceEventImporter are mutually exclusive — never enable both simultaneously
+- ReadTrace and TraceEventImporter are mutually exclusive ï¿½ never enable both simultaneously
 - The `CustomXELImporter` handles SQLDiag, AlwaysOn, and System Health XEL files independently of
   the plugin importers
 - Report parameters are set via `ReportParameter` objects; `ContrastTheme` must be propagated to
@@ -126,11 +141,11 @@ Framework specifics:
 - The `TopToolStripPanel` layout is order-sensitive:
   `menuBarMain ? toolbarService ? toolbarReport ? toolbarMain` (last added = topmost row)
 
-## Security — CodeQL specifics
+## Security ï¿½ CodeQL specifics
 
 In addition to the SDL requirements above:
 
-- Database names passed to SQL commands must be bracket-escaped (`[dbname]`) before use — see the
+- Database names passed to SQL commands must be bracket-escaped (`[dbname]`) before use ï¿½ see the
   `CodeQL [SM03934]` annotation pattern in `fmImport.cs`
 - Use `ScriptIntegrityChecker.VerifyScript()` before executing any `.sql` or `.cmd` file on disk
 - When changing a script listed in `ScriptIntegrityChecker.ScriptHashes`, update its SHA-256
@@ -139,21 +154,21 @@ In addition to the SDL requirements above:
 - Do not use `Assembly.LoadFile` on untrusted paths without verification
 - Do not log passwords or connection strings with credentials via `LogMessage`
 
-## Accessibility — WinForms/WCAG specifics
+## Accessibility ï¿½ WinForms/WCAG specifics
 
 In addition to the accessibility requirements above:
 
 - Use `AccessibleTextBox` (the project's custom subclass) instead of plain `TextBox` for all
-  user-editable fields — it implements the UIA Text pattern required for screen readers
+  user-editable fields ï¿½ it implements the UIA Text pattern required for screen readers
 - Disabled `Label` controls must not rely on WinForms' default disabled rendering (which ignores
-  `ForeColor`) — keep labels `Enabled = true` and set a muted `ForeColor` via
+  `ForeColor`) ï¿½ keep labels `Enabled = true` and set a muted `ForeColor` via
   `ThemeManager.CurrentThemeName` to simulate the disabled appearance
 - `ToolStripLabel` and `ToolStripComboBox` items must have `AccessibleName` set
 - Submenus must remain open when the user toggles a checkbox option
   (`ToolStripDropDownCloseReason.ItemClicked` should be cancelled)
 - Link labels must always use `LinkBehavior.AlwaysUnderline` for WCAG 1.4.1 compliance
 - When Windows High Contrast mode is active (`SystemInformation.HighContrast`), defer to
-  `SystemColors` rather than theme colors — see `ThemeManager.ApplyHighContrastTheme()`
+  `SystemColors` rather than theme colors ï¿½ see `ThemeManager.ApplyHighContrastTheme()`
 
 ## RDLC report theming
 
@@ -169,21 +184,21 @@ In addition to the accessibility requirements above:
   - All `<TextRun>` font-styled text without an explicit color ? `=Variables!ReportTextColor.Value`
 - All chart axes, titles, and legend text must have an explicit `<Color>` set to
   `=Variables!ReportTextColor.Value` so they remain readable in all contrast themes
-- The "No Data Available" warning banner uses a `Gold` background — its text must always be
+- The "No Data Available" warning banner uses a `Gold` background ï¿½ its text must always be
   `Black` regardless of theme
 
 ## Toolbar and settings persistence
 
 - Toolbar visibility (`ShowStandardToolbar`, `ShowReportToolbar`, `ShowDataCollectionToolbar`) must
-  be explicitly saved in `fmNexus_FormClosing` — DataBindings alone are not reliable
+  be explicitly saved in `fmNexus_FormClosing` ï¿½ DataBindings alone are not reliable
 - `ShowHideUIElements()` must explicitly set `toolbarMain.Visible` from the persisted setting to
   guard against DataBinding desync during `InitializeComponent`
 - `SelectLoadReport()` must read `Properties.Settings.Default.ShowReportToolbar` as the source of
-  truth when setting `toolbarReport.Visible` — never blindly set it to `true`
+  truth when setting `toolbarReport.Visible` ï¿½ never blindly set it to `true`
 - When iterating `TopToolStripPanel` rows, use `ToolStripPanel.Join(toolStrip, rowIndex)` to
   restore toolbar row position after database changes
 
-## TextRowsets.xml — rowset definition standards
+## TextRowsets.xml ï¿½ rowset definition standards
 
 `TextRowsets.xml` (and its custom extension `TextRowsetsCustom.xml`) define how the
 `RowsetImportEngine` maps sections of SQL Server diagnostic text output files into SQL tables.
@@ -192,23 +207,23 @@ In addition to the accessibility requirements above:
 - The root element is `<TextImport>` containing a single `<KnownRowsets>` block
 - Each rowset is a `<Rowset>` element with mandatory attributes: `name`, `enabled`, `identifier`,
   and `type`
-- Column definitions go inside `<KnownColumns>` — columns not listed are imported as
+- Column definitions go inside `<KnownColumns>` ï¿½ columns not listed are imported as
   `VarCharColumn` by default
 
 ### Naming
 - Table names (`name` attribute) must be prefixed with `tbl_`
 - Column names must match exactly the column headers that appear in the source diagnostic text
-  output — including spaces if present (e.g. `"Wait Time"`)
+  output ï¿½ including spaces if present (e.g. `"Wait Time"`)
 
 ### Identifiers
 - The `identifier` attribute is the exact string the engine uses to detect the start of this
-  rowset in the text file — it must be unique across all rowsets in the file
+  rowset in the text file ï¿½ it must be unique across all rowsets in the file
 - Use the actual header line from the diagnostic output script (e.g. `"-- sysperfinfo"`,
-  `"-- sys.dm_os_memory_health_history --"`) — do not paraphrase it
+  `"-- sys.dm_os_memory_health_history --"`) ï¿½ do not paraphrase it
 - If the identifier could appear in multiple unrelated contexts, make it more specific
 
 ### Column types
-Use the most appropriate type from `RowsetImportEngine` — do not default everything to
+Use the most appropriate type from `RowsetImportEngine` ï¿½ do not default everything to
 `VarCharColumn`:
 
 | Type | Use for |
@@ -226,43 +241,43 @@ Use the most appropriate type from `RowsetImportEngine` — do not default everyth
 - In some cases may include `rownum` typed as `BigIntColumn` with `valuetoken="ROWNUMBER"` as the
   first column
 - In some cases include `runtime` typed as `DateTimeColumn` with `valuetoken="RUNTIME"` as the
-  second column — this is used by most reports to filter by time range
+  second column ï¿½ this is used by most reports to filter by time range
 
 ### Value tokens and define tokens
 - `valuetoken` columns are populated by the engine from context (e.g. `ROWNUMBER`, `RUNTIME`,
-  `SCRIPTNAME`, `USERNAME`, `IMPORTDATE`, `INPUTFILENAME`) — do not parse these from the text file
+  `SCRIPTNAME`, `USERNAME`, `IMPORTDATE`, `INPUTFILENAME`) ï¿½ do not parse these from the text file
 - `definetoken` columns extract a value from the identifier/header line itself and store it for use
   by `valuetoken` columns later in the same rowset
 
 ### Enabled flag
 - Set `enabled="true"` for all rowsets that should be active by default
 - Set `enabled="false"` only for rowsets that are experimental, deprecated, or conditionally
-  loaded — always add a comment explaining why
+  loaded ï¿½ always add a comment explaining why
 
 ### Security
-- The `name` attribute becomes a SQL table name — it must not be constructed from user input and
+- The `name` attribute becomes a SQL table name ï¿½ it must not be constructed from user input and
   must only contain alphanumeric characters and underscores
-- Column `length` attributes are used to size `VARCHAR`/`NVARCHAR` columns — always specify an
+- Column `length` attributes are used to size `VARCHAR`/`NVARCHAR` columns ï¿½ always specify an
   explicit `length` for string columns; omitting it defaults to a short platform-defined length
   that may truncate data
 
 ## Exception handling
 
-- Never leave a `catch` block empty — a silent catch hides bugs and makes failures impossible to
+- Never leave a `catch` block empty ï¿½ a silent catch hides bugs and makes failures impossible to
   diagnose
 - Every `catch` block must do at least one of: log the exception via `MainForm.LogMessage(...)` or
   `Util.Logger.LogMessage(...)`, rethrow, or return a meaningful failure value
-- Prefer `catch (Exception ex)` with a named variable over bare `catch {}` — the exception message,
+- Prefer `catch (Exception ex)` with a named variable over bare `catch {}` ï¿½ the exception message,
   source, and stack trace should be accessible for logging
-- Use `Globals.HandleException(ex, this, MainForm)` for unhandled exceptions in UI event handlers —
+- Use `Globals.HandleException(ex, this, MainForm)` for unhandled exceptions in UI event handlers ï¿½
   it logs to both the silent log and the dialog, and sets `ExceptionEncountered = true`
 - For expected, recoverable failures (e.g. file not found, SQL connection refused) catch the most
   specific exception type (`SqlException`, `IOException`, `UnauthorizedAccessException`) rather than
   the base `Exception`
-- Do not swallow `SqlException` silently — always log `sqlex.Message` and, where appropriate,
+- Do not swallow `SqlException` silently ï¿½ always log `sqlex.Message` and, where appropriate,
   surface it to the user via `MessageOptions.Dialog`
 - When an inner try/catch exists solely to protect a logging call (as in `Globals.HandleException`),
   fall back to `System.Diagnostics.Debug.WriteLine` so the failure is at minimum visible in the
   debugger output window
-- Do not use exceptions for control flow — validate inputs before calling methods rather than
+- Do not use exceptions for control flow ï¿½ validate inputs before calling methods rather than
   relying on catching the resulting exception
