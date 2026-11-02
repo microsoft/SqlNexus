@@ -31,7 +31,7 @@ namespace sqlnexus
         // Store expected hashes for each allowed script
 
         private static readonly Dictionary<string, string> ScriptHashes = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) {
-            { Application.StartupPath + "\\" + "PerfStatsAnalysis.sql", "D2CBBE8B3FF46B2F775BDEF831390659A5482B729B21CD2C5A6191F8760BD5C0" },
+            { Application.StartupPath + "\\" + "PerfStatsAnalysis.sql", "21D1F5BA061770206F648A9AE36DFE4C4E69AA5CD7CCBF91F9CBDF6F5C7A29F2" },
             { Application.StartupPath + "\\" + "ReadTracePostProcessing.sql", "9244659FFF95BCA5D5C118DDFDAB2E3D9138CAE913D2F52488A01CD72749E5B1" },
             { Application.StartupPath + "\\" + "ReadTraceReportValidate.sql", "92A575503905D2CABEE18D1804D1DCDCACD12FACD912B16E1040C923AB168E02" },
             { Application.StartupPath + "\\" + "SQLNexus_PostProcessing.sql", "E631283CF30456C26AD3DBE9C345832581C6BB0D91A2B187A98DBBD314ADD73A" },

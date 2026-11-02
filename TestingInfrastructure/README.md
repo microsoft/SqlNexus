@@ -79,6 +79,26 @@ identifiers are quoted. The four aggregate branches and `Type`/`Value` result sh
 are preserved. These checks do not execute SQL or require a SQL Server.
 `ScriptIntegrityCheckerTests` also verifies the deployed script's SHA-256 allowlist entry.
 
+### PerfStats snapshot script
+
+`PerfStatsAnalysisScriptTests` checks the source contract for `DataSet_GetSnapshot`.
+Table names must be local, unquoted `table` or `schema.table` identifiers using
+ASCII letters, digits and underscores in each component. NULL, empty, malformed
+and cross-database names raise an error. Each component is quoted with `QUOTENAME`,
+the existence check runs outside dynamic SQL, and the row number is passed as an
+`INT` parameter. Latest/numbered snapshot selection and the no-result behavior for
+missing tables are preserved. The sibling `DateSet_GetSnapshotTime` and
+`DateSet_GetSnapshotTime_Default` procedures are not covered by this hardening.
+
+These are source-contract unit tests, not SQL execution tests; they require no
+SQL Server. They also validate the deployed script's SHA-256 allowlist entry.
+After building with Visual Studio/MSBuild, run:
+
+```powershell
+dotnet test .\TestingInfrastructure\UnitTests\SqlNexus.UnitTests\SqlNexus.UnitTests.csproj `
+  --no-build --no-restore --filter "FullyQualifiedName~PerfStatsAnalysisScriptTests"
+```
+
 ## Custom XEL compatibility gate (issue #499 / F-002)
 
 `CustomXELImporter/CustomXELImporterCompatibilityTests.cs` in the unit-test project contains
