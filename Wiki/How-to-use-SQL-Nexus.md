@@ -192,12 +192,19 @@ installation directory and run:
 Set-Location .\CopilotIntegration
 .\Register-SqlNexusCopilotIntegration.ps1 `
     -Server "localhost" `
-    -Database "SqlNexus"
+    -Database "SqlNexus" `
+    -EncryptionMode Mandatory `
+    -CertificateValidation Validate
 ```
 
 Replace the server and database values as needed. The script configures Windows Integrated
 Authentication. To compare two collections, add `-Database2 "sqlnexus_fast"`, with `-Database`
 identifying the primary or problem run.
+
+Both TLS parameters are required on every registration. `Mandatory` requires encryption and
+`Validate` checks the SQL Server certificate. For Force Strict Encryption, use `Strict`.
+See [Encryption and certificate validation](AI-Assisted-Analysis#encryption-and-certificate-validation)
+for supported combinations and lab-only certificate bypass guidance.
 
 Restart VS Code or start a new Copilot CLI session after registration. In VS Code, open Copilot
 Chat and select **SQL Nexus Diagnostic Agent**. In Copilot CLI, run `/agent` and select the same

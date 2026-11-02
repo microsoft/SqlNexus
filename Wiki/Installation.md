@@ -68,7 +68,9 @@ skills. It does not install GitHub Copilot itself.
    Set-Location .\CopilotIntegration
    .\Register-SqlNexusCopilotIntegration.ps1 `
       -Server "localhost" `
-      -Database "SqlNexus"
+      -Database "SqlNexus" `
+      -EncryptionMode Mandatory `
+      -CertificateValidation Validate
    ```
 
    Replace `localhost` with the non-production SQL Server instance where SQL Nexus imported the
@@ -76,6 +78,22 @@ skills. It does not install GitHub Copilot itself.
    that imported collection. These values identify the analysis database, not the production or
    source SQL Server from which SQL LogScout collected the diagnostic data. The script uses
    Windows Integrated Authentication.
+
+   Both TLS parameters are required on every registration. This example requires encryption
+   and validates the SQL Server certificate. For Force Strict Encryption, use `Strict` instead
+   of `Mandatory`.
+
+   On non-production systems in a controlled lab, you can explicitly choose either:
+   - `-EncryptionMode Optional -CertificateValidation Validate`: the client does not require
+     encryption, although SQL Server can still require it. Otherwise, traffic may be unencrypted.
+   - `-EncryptionMode Mandatory -CertificateValidation TrustServerCertificate`: encryption is
+     required, but certificate validation is skipped for an untrusted or self-signed certificate.
+     This permits server impersonation; prefer installing a certificate the client trusts.
+
+   These settings produce security warnings. `TrustServerCertificate` cannot be combined with
+   `Optional` or `Strict`. Prefer `Mandatory` with `Validate` even on non-production systems.
+   See [Encryption and certificate validation](AI-Assisted-Analysis#encryption-and-certificate-validation)
+   for the complete policy.
 
 5. Restart VS Code or start a new Copilot CLI session.
 6. Select **SQL Nexus Diagnostic Agent** from the agent picker and ask a diagnostic question.
@@ -89,7 +107,9 @@ To compare two imported collections, include a second database:
 .\Register-SqlNexusCopilotIntegration.ps1 `
    -Server "localhost" `
    -Database "sqlnexus_slow" `
-   -Database2 "sqlnexus_fast"
+   -Database2 "sqlnexus_fast" `
+   -EncryptionMode Mandatory `
+   -CertificateValidation Validate
 ```
 
 Use `-Force` to replace an existing SQL Nexus registration that has different settings. Use

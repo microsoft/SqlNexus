@@ -66,3 +66,10 @@ SQL Nexus database) writes to its **own** log file, separate from the main appli
 It records server startup, the MCP tool requests received, the diagnostic queries executed,
 and any errors. Look here when a Copilot agent session fails to return results.
 
+The log also records startup warnings when encryption is not required by the client
+(`EncryptionMode Optional`) or SQL Server certificate validation is disabled
+(`CertificateValidation TrustServerCertificate`). The server also writes these warnings to
+standard error. Optional encryption can leave traffic unencrypted unless SQL Server requires
+encryption; bypassing certificate validation permits server impersonation and is intended only
+for a controlled lab. See [Encryption and certificate validation](AI-Assisted-Analysis#encryption-and-certificate-validation)
+for the registration options and recommended settings.
