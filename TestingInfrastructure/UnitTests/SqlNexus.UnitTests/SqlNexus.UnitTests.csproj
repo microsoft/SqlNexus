@@ -41,6 +41,7 @@
     <ProjectReference Include="..\..\..\SqlNexus.McpServer\SqlNexus.McpServer.csproj" />
     <ProjectReference Include="..\..\..\TraceEventImporter\TraceEventImporter.csproj" />
     <ProjectReference Include="..\..\..\PerfmonImporter\PerfmonImporter.csproj" />
+    <ProjectReference Include="..\..\..\LinuxPerfImporter\LinuxPerfImporter.csproj" />
     <ProjectReference Include="..\..\..\ErrorLogImporter\ErrorLogImporter.csproj" />
     <ProjectReference Include="..\..\..\CustomXELImporter\CustomXELImporter.csproj" />
   </ItemGroup>

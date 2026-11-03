@@ -64,10 +64,10 @@ namespace LinuxPerfImporter.Model
                 
                 foreach (string file in listOfTsv)
                 {
-                    string blgFileName = file.Replace("tsv", "blg");
-                    string processCommand = "relog.exe ";
-                    string processArgs = file + " -o .\\" + blgFileName + " -y";
-                    LinuxPerfImortGlobals.log.WriteLog(processCommand + processArgs, "ImportCombine:RelogConvertToBlg", "[Info]");
+                    string blgFileName = Path.ChangeExtension(file, ".blg");
+                    string processCommand = ProcessUtility.RelogExecutablePath;
+                    string[] processArgs = { file, "-o", blgFileName, "-y" };
+                    LinuxPerfImortGlobals.log.WriteLog(processCommand + " " + string.Join(" ", processArgs.Select(ProcessUtility.QuoteArgument)), "ImportCombine:RelogConvertToBlg", "[Info]");
 
                     relogCollection.Add(new Utility.ProcessUtility().StartProcess(processCommand, processArgs));
                 }
@@ -75,12 +75,15 @@ namespace LinuxPerfImporter.Model
                 foreach (Process p in relogCollection)
                 {
                     p.WaitForExit();
+                    int exitCode = p.ExitCode;
                     p.Dispose();
+                    ValidateRelogExitCode(exitCode);
                 }
             }
             catch (Exception e)
             {
                 LinuxPerfImortGlobals.log.WriteLog(e.Message, "ImportCombine:RelogConvertToBlg", "[Error]");
+                throw;
             }
 
             RelogCombineToBlg();
@@ -89,17 +92,29 @@ namespace LinuxPerfImporter.Model
         {
             try
             {
-                string processCommand = "relog.exe ";
-                string processArgs = ".\\*.blg -o .\\Single_BLG\\" + ConfigValues.MachineName + "_AllPerfmonMetrics.blg -y";
-                LinuxPerfImortGlobals.log.WriteLog(processCommand + processArgs, "ImportCombine:RelogCombineToBlg", "[Info]");
+                string processCommand = ProcessUtility.RelogExecutablePath;
+                string outputFile = Path.Combine(".\\Single_BLG", Config.ValidateMachineName(ConfigValues.MachineName) + "_AllPerfmonMetrics.blg");
+                string[] processArgs = { ".\\*.blg", "-o", outputFile, "-y" };
+                LinuxPerfImortGlobals.log.WriteLog(processCommand + " " + string.Join(" ", processArgs.Select(ProcessUtility.QuoteArgument)), "ImportCombine:RelogCombineToBlg", "[Info]");
                 
                 Process p = new Utility.ProcessUtility().StartProcess(processCommand, processArgs);
                 p.WaitForExit();
+                int exitCode = p.ExitCode;
                 p.Dispose();
+                ValidateRelogExitCode(exitCode);
             }
             catch (Exception e)
             {
                 LinuxPerfImortGlobals.log.WriteLog(e.Message, "ImportCombine:RelogCombineToBlg", "[Error]");
+                throw;
+            }
+        }
+
+        internal static void ValidateRelogExitCode(int exitCode)
+        {
+            if (exitCode != 0)
+            {
+                throw new InvalidOperationException("Relog failed with exit code " + exitCode + ".");
             }
         }
     }

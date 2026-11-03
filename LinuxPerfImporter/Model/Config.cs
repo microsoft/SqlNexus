@@ -75,7 +75,7 @@ namespace LinuxPerfImporter.Model
                     switch (parameter)
                     {
                         case "machine_name":
-                            parameterValueString = splitValue[1];
+                            parameterValueString = ValidateMachineName(splitValue[1].Trim());
                             ConfigValues.MachineName = parameterValueString;
                             LinuxPerfImortGlobals.log.WriteLog(parameterValueString, "machine_name", "[Config]");
                             break;
@@ -140,15 +140,40 @@ namespace LinuxPerfImporter.Model
 
         private void GetMachineName()
         {
-            string[] splitChars = new string[] { "_os_machine_config.info" };
-
             LinuxPerfImortGlobals.log.WriteLog("Getting machine name ", "SetConfigVariables", "[Config]");
 
             string machineName = Directory.GetFiles(".\\", "*_os_machine_config.info")[0];
 
-            ConfigValues.MachineName = machineName.Substring(2, (machineName.Length - 25));
+            ConfigValues.MachineName = GetMachineNameFromConfigFile(machineName);
             
             LinuxPerfImortGlobals.log.WriteLog(ConfigValues.MachineName, "MachineName:GetMachineName", "[Config]");
+        }
+
+        internal static string GetMachineNameFromConfigFile(string configFile)
+        {
+            const string machineConfigSuffix = "_os_machine_config.info";
+            string fileName = Path.GetFileName(configFile);
+
+            if (string.IsNullOrEmpty(fileName) || !fileName.EndsWith(machineConfigSuffix, StringComparison.OrdinalIgnoreCase))
+            {
+                throw new InvalidDataException("The machine configuration file name is invalid.");
+            }
+
+            return ValidateMachineName(fileName.Substring(0, fileName.Length - machineConfigSuffix.Length));
+        }
+
+        internal static string ValidateMachineName(string machineName)
+        {
+            if (string.IsNullOrWhiteSpace(machineName) ||
+                machineName.Length > 255 ||
+                !Regex.IsMatch(machineName, @"^[A-Za-z0-9._-]+$") ||
+                machineName == "." ||
+                machineName == "..")
+            {
+                throw new InvalidDataException("The machine name contains unsupported characters.");
+            }
+
+            return machineName;
         }
     }
 }
