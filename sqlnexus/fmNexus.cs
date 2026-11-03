@@ -41,7 +41,7 @@ namespace sqlnexus
     [System.Reflection.ObfuscationAttribute(Exclude = true, ApplyToMembers = false)]
     public partial class fmNexus : Form, ILogger
     {
-        internal const bool ReportHyperlinksEnabled = false;
+        internal const bool ReportHyperlinksEnabled = true;
 
         #region Imported APIs
 
@@ -3177,6 +3177,17 @@ namespace sqlnexus
             try
             {
                 LogMessage(sqlnexus.Properties.Resources.Msg_RVSyncLink, MessageOptions.Silent);
+
+                Uri hyperlink;
+                if (!TryGetAllowedReportHyperlink(e.Hyperlink, out hyperlink))
+                {
+                    return;
+                }
+
+                Process.Start(new ProcessStartInfo(hyperlink.AbsoluteUri)
+                {
+                    UseShellExecute = true
+                });
             }
             catch (Exception ex)
             {
@@ -3187,6 +3198,53 @@ namespace sqlnexus
         internal static void CancelReportHyperlink(HyperlinkEventArgs e)
         {
             e.Cancel = true;
+        }
+
+        internal static bool TryGetAllowedReportHyperlink(string hyperlink, out Uri allowedUri)
+        {
+            allowedUri = null;
+
+            Uri candidate;
+            if (string.IsNullOrWhiteSpace(hyperlink)
+                || !Uri.TryCreate(hyperlink, UriKind.Absolute, out candidate)
+                || !string.Equals(candidate.Scheme, Uri.UriSchemeHttps, StringComparison.OrdinalIgnoreCase)
+                || !string.IsNullOrEmpty(candidate.UserInfo)
+                || !IsAllowedReportHyperlinkHost(candidate.DnsSafeHost))
+            {
+                return false;
+            }
+
+            allowedUri = candidate;
+            return true;
+        }
+
+        private static bool IsAllowedReportHyperlinkHost(string host)
+        {
+            string normalizedHost = host.TrimEnd('.');
+            string[] allowedDomains =
+            {
+                "aka.ms",
+                "azure.microsoft.com",
+                "blogs.msdn.com",
+                "docs.microsoft.com",
+                "go.microsoft.com",
+                "learn.microsoft.com",
+                "msdn.microsoft.com",
+                "support.microsoft.com",
+                "techcommunity.microsoft.com",
+                "technet.microsoft.com"
+            };
+
+            foreach (string allowedDomain in allowedDomains)
+            {
+                if (string.Equals(normalizedHost, allowedDomain, StringComparison.OrdinalIgnoreCase)
+                    || normalizedHost.EndsWith("." + allowedDomain, StringComparison.OrdinalIgnoreCase))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private void rvTemplate_Toggle(object sender, CancelEventArgs e)

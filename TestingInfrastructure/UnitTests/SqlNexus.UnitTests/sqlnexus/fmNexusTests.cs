@@ -9,9 +9,9 @@ namespace SqlNexus.UnitTests.sqlnexus
     public class fmNexusTests
     {
         [TestMethod]
-        public void ReportHyperlinksEnabled_DefaultConfiguration_DisablesHyperlinks()
+        public void ReportHyperlinksEnabled_ReportContainsHyperlinks_EnablesReportProcessing()
         {
-            Assert.IsFalse(global::sqlnexus.fmNexus.ReportHyperlinksEnabled);
+            Assert.IsTrue(global::sqlnexus.fmNexus.ReportHyperlinksEnabled);
         }
 
         [TestMethod]
@@ -43,6 +43,58 @@ namespace SqlNexus.UnitTests.sqlnexus
             global::sqlnexus.fmNexus.CancelReportHyperlink(args);
 
             Assert.IsTrue(args.Cancel);
+        }
+
+        [DataTestMethod]
+        [DataRow("https://docs.microsoft.com/troubleshoot/windows-server/performance/slow-performance-when-using-power-plan")]
+        [DataRow("https://learn.microsoft.com/sql/")]
+        [DataRow("https://support.microsoft.com/topic/test")]
+        [DataRow("https://TECHCOMMUNITY.MICROSOFT.COM/blog/test")]
+        [DataRow("https://aka.ms/sqlnexus")]
+        public void AllowedHttpsHyperlink_ValidationSucceeds(string hyperlink)
+        {
+            Uri allowedUri;
+
+            bool result = global::sqlnexus.fmNexus.TryGetAllowedReportHyperlink(hyperlink, out allowedUri);
+
+            Assert.IsTrue(result);
+            Assert.IsNotNull(allowedUri);
+            Assert.AreEqual(Uri.UriSchemeHttps, allowedUri.Scheme);
+        }
+
+        [TestMethod]
+        public void NullHyperlink_ValidationFails()
+        {
+            Uri allowedUri;
+
+            bool result = global::sqlnexus.fmNexus.TryGetAllowedReportHyperlink(null, out allowedUri);
+
+            Assert.IsFalse(result);
+            Assert.IsNull(allowedUri);
+        }
+
+        [DataTestMethod]
+        [DataRow("")]
+        [DataRow("a")]
+        [DataRow("relative/path")]
+        [DataRow(@"\\server\share\payload")]
+        [DataRow("http://docs.microsoft.com/test")]
+        [DataRow("file:///C:/payload.cmd")]
+        [DataRow("search-ms:query=payload")]
+        [DataRow("shell:AppsFolder")]
+        [DataRow("custom-protocol://payload")]
+        [DataRow("https://example.com/")]
+        [DataRow("https://docs.microsoft.com.evil.example/test")]
+        [DataRow("https://user@docs.microsoft.com/test")]
+        [DataRow("sqlnexus://C:%5Cpayload.dll/Type/Method")]
+        public void UnsafeOrUntrustedHyperlink_ValidationFails(string hyperlink)
+        {
+            Uri allowedUri;
+
+            bool result = global::sqlnexus.fmNexus.TryGetAllowedReportHyperlink(hyperlink, out allowedUri);
+
+            Assert.IsFalse(result);
+            Assert.IsNull(allowedUri);
         }
 
         [TestMethod]
