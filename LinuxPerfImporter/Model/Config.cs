@@ -165,7 +165,7 @@ namespace LinuxPerfImporter.Model
         internal static string ValidateMachineName(string machineName)
         {
             if (string.IsNullOrWhiteSpace(machineName) ||
-                machineName.Length > 255 ||
+                machineName.Length > 255 - "_AllPerfmonMetrics.blg".Length ||
                 !Regex.IsMatch(machineName, @"^[A-Za-z0-9._-]+$") ||
                 machineName == "." ||
                 machineName == "..")

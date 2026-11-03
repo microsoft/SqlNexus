@@ -72,13 +72,18 @@ namespace LinuxPerfImporter.Model
                     relogCollection.Add(new Utility.ProcessUtility().StartProcess(processCommand, processArgs));
                 }
 
+                int failedExitCode = 0;
                 foreach (Process p in relogCollection)
                 {
                     p.WaitForExit();
                     int exitCode = p.ExitCode;
                     p.Dispose();
-                    ValidateRelogExitCode(exitCode);
+                    if (exitCode != 0 && failedExitCode == 0)
+                    {
+                        failedExitCode = exitCode;
+                    }
                 }
+                ValidateRelogExitCode(failedExitCode);
             }
             catch (Exception e)
             {
