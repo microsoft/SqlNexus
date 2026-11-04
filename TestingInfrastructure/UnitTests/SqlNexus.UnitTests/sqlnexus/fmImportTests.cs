@@ -191,6 +191,58 @@ namespace SqlNexus.UnitTests.sqlnexus
             }
         }
 
+        [DataTestMethod]
+        [DataRow(null)]
+        [DataRow("")]
+        [DataRow(" \r\n\t")]
+        public void TryCreateSqlPlanInsertCommand_EmptyPlan_SkipsWithoutThrowing(string planXml)
+        {
+            using (var connection = new SqlConnection())
+            {
+                bool created = fmImport.TryCreateSqlPlanInsertCommand(connection, planXml, out SqlCommand command, out string reason);
+
+                Assert.IsFalse(created);
+                Assert.IsNull(command);
+                Assert.IsFalse(String.IsNullOrEmpty(reason));
+            }
+        }
+
+        [DataTestMethod]
+        [DataRow("<ShowPlan>")]
+        [DataRow("not XML")]
+        public void TryCreateSqlPlanInsertCommand_MalformedXml_SkipsWithoutThrowing(string planXml)
+        {
+            using (var connection = new SqlConnection())
+            {
+                bool created = fmImport.TryCreateSqlPlanInsertCommand(connection, planXml, out SqlCommand command, out string reason);
+
+                Assert.IsFalse(created);
+                Assert.IsNull(command);
+                Assert.IsTrue(reason.Contains("not valid XML"));
+            }
+        }
+
+        [TestMethod]
+        public void TryCreateSqlPlanInsertCommand_ValidXml_ReturnsCommand()
+        {
+            using (var connection = new SqlConnection())
+            {
+                bool created = fmImport.TryCreateSqlPlanInsertCommand(connection, "<ShowPlan />", out SqlCommand command, out string reason);
+
+                Assert.IsTrue(created);
+                Assert.IsNull(reason);
+                using (command)
+                    Assert.AreEqual(SqlDbType.Xml, command.Parameters["@sqlplan"].SqlDbType);
+            }
+        }
+
+        [TestMethod]
+        public void TryCreateSqlPlanInsertCommand_NullConnection_ThrowsArgumentNullException()
+        {
+            Assert.ThrowsException<ArgumentNullException>(() =>
+                fmImport.TryCreateSqlPlanInsertCommand(null, "<ShowPlan />", out SqlCommand command, out string reason));
+        }
+
         [TestMethod]
         public void GetSqlPlanFiles_SpecialCharactersAndNestedFiles_ReturnsOnlyTopLevelPlans()
         {
