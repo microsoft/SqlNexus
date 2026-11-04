@@ -9,6 +9,8 @@ using System.Diagnostics;
 using System.IO;
 using LinuxPerfImporter.Model;
 
+using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace LinuxPerfImporter.Utility
@@ -156,14 +158,78 @@ namespace LinuxPerfImporter.Utility
 
     class ProcessUtility
     {
-        public Process StartProcess(string processCommand, string processArgs)
+        internal static string RelogExecutablePath
         {
-            ProcessStartInfo processStartInfo = new ProcessStartInfo(processCommand, processArgs);
+            get
+            {
+                return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "relog.exe");
+            }
+        }
+
+        public Process StartProcess(string processCommand, params string[] processArgs)
+        {
+            ProcessStartInfo processStartInfo = CreateStartInfo(processCommand, processArgs);
             Process process = new Process();
             process.StartInfo = processStartInfo;
             process.Start();
 
             return process;
+        }
+
+        internal static ProcessStartInfo CreateStartInfo(string processCommand, params string[] processArgs)
+        {
+            if (string.IsNullOrWhiteSpace(processCommand) || !Path.IsPathRooted(processCommand))
+            {
+                throw new ArgumentException("The executable path must be absolute.", nameof(processCommand));
+            }
+
+            if (processArgs == null)
+            {
+                throw new ArgumentNullException(nameof(processArgs));
+            }
+
+            return new ProcessStartInfo
+            {
+                FileName = processCommand,
+                Arguments = string.Join(" ", processArgs.Select(QuoteArgument)),
+                UseShellExecute = false
+            };
+        }
+
+        internal static string QuoteArgument(string argument)
+        {
+            if (argument == null)
+            {
+                throw new ArgumentNullException(nameof(argument));
+            }
+
+            StringBuilder quotedArgument = new StringBuilder("\"");
+            int backslashCount = 0;
+
+            foreach (char character in argument)
+            {
+                if (character == '\\')
+                {
+                    backslashCount++;
+                    continue;
+                }
+
+                if (character == '"')
+                {
+                    quotedArgument.Append('\\', (backslashCount * 2) + 1);
+                    quotedArgument.Append(character);
+                    backslashCount = 0;
+                    continue;
+                }
+
+                quotedArgument.Append('\\', backslashCount);
+                quotedArgument.Append(character);
+                backslashCount = 0;
+            }
+
+            quotedArgument.Append('\\', backslashCount * 2);
+            quotedArgument.Append('"');
+            return quotedArgument.ToString();
         }
 
     }
