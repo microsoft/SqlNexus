@@ -3754,7 +3754,7 @@ VALUES
 ('E3CECDDA-EBEB-4E69-940C-660813ED5D93', 'Query Performance', 'W', 'Warning', 'usp_DisabledIndex',
  'Some indexes are disabled',
  'Disabling indexes may cause poor query performance. Check tbl_DisabledIndexes for details ', '',
- 'http://aka.ms/nexus/disabledindex', '  ', 1, 100, 0, ' ');
+ 'https://learn.microsoft.com/en-us/previous-versions/sql/sql-server-2008-r2/ms177406(v=sql.105)?redirectedfrom=MSDN', '  ', 1, 100, 0, ' ');
 INSERT INTO dbo.tbl_AnalysisSummary
 (
     SolutionSourceId,
@@ -4357,7 +4357,7 @@ INSERT INTO dbo.tbl_AnalysisSummary
 VALUES
 ('57CAA4BB-C7BD-4F96-8040-3224008A3F39', 'Server Performance', 'I', 'Info', 'XEventcrash',
  'XEvent may cause SQL Server crash', 'XEvent session retrieving the Query Hash can result in SQL Server shutdown', '',
- 'http://support.microsoft.com/kb/3004355', ' ', 1, 100, 0, ' ');
+ 'https://support.microsoft.com/kb/3004355', ' ', 1, 100, 0, ' ');
 INSERT INTO dbo.tbl_AnalysisSummary
 (
     SolutionSourceId,

@@ -1970,17 +1970,29 @@ namespace sqlnexus
                     createTable.ExecuteNonQuery();
                 }
 
+                int importedPlans = 0;
                 foreach (string planFile in planFiles)
                 {
                     string planXml = File.ReadAllText(planFile);
-                    using (SqlCommand insertPlan = CreateSqlPlanInsertCommand(connection, planXml))
+                    SqlCommand insertPlan;
+                    string skipReason;
+                    // A single empty or malformed plan file must not fail the whole import.
+                    if (!TryCreateSqlPlanInsertCommand(connection, planXml, out insertPlan, out skipReason))
+                    {
+                        MainForm.LogMessage(String.Format("Skipping SQL plan file '{0}': {1}", Path.GetFileName(planFile), skipReason), MessageOptions.Silent, TraceEventType.Warning, "Post-processing warning");
+                        continue;
+                    }
+
+                    using (insertPlan)
                     {
                         insertPlan.ExecuteNonQuery();
+                        importedPlans++;
                     }
                 }
+
+                MainForm.LogMessage(String.Format("Imported {0} of {1} SQL plan file(s) for post-processing.", importedPlans, planFiles.Length));
             }
 
-            MainForm.LogMessage(String.Format("Imported {0} SQL plan file(s) for post-processing.", planFiles.Length));
             if (!tracePostProcessing.CanRun)
                 MainForm.LogMessage("Skipping trace timestamp post-processing: no trace importer completed successfully in this run, or a trace import failed/cancelled.");
             foreach (string script in tracePostProcessing.Scripts)
@@ -1999,6 +2011,29 @@ namespace sqlnexus
                 throw new DirectoryNotFoundException("The post-processing source path does not exist.");
 
             return Directory.GetFiles(fullSourcePath, "*.sqlplan", SearchOption.TopDirectoryOnly);
+        }
+
+        internal static bool TryCreateSqlPlanInsertCommand(SqlConnection connection, string planXml, out SqlCommand command, out string skipReason)
+        {
+            command = null;
+            skipReason = null;
+
+            if (String.IsNullOrWhiteSpace(planXml))
+            {
+                skipReason = "the file is empty.";
+                return false;
+            }
+
+            try
+            {
+                command = CreateSqlPlanInsertCommand(connection, planXml);
+                return true;
+            }
+            catch (System.Xml.XmlException xmlex)
+            {
+                skipReason = "the file is not valid XML (" + xmlex.Message + ").";
+                return false;
+            }
         }
 
         internal static SqlCommand CreateSqlPlanInsertCommand(SqlConnection connection, string planXml)

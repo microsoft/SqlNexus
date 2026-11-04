@@ -43,6 +43,17 @@ namespace SqlNexus.UnitTests.sqlnexus
         }
 
         [TestMethod]
+        public void BestPracticesExternalUrls_LegacyHttpLinks_UseSupportedHttpsDestinations()
+        {
+            string script = File.ReadAllText(Path.Combine(FindRepositoryRoot(), "sqlnexus", "PerfStatsAnalysis.sql"));
+
+            StringAssert.Contains(script, "https://learn.microsoft.com/en-us/previous-versions/sql/sql-server-2008-r2/ms177406(v=sql.105)?redirectedfrom=MSDN");
+            StringAssert.Contains(script, "https://support.microsoft.com/kb/3004355");
+            Assert.IsFalse(script.Contains("http://aka.ms/nexus/disabledindex"));
+            Assert.IsFalse(script.Contains("http://support.microsoft.com/kb/3004355"));
+        }
+
+        [TestMethod]
         public void WaitStatsTop5Categories_OtherCategory_ExcludesCpuWaits()
         {
             string script = File.ReadAllText(Path.Combine(FindRepositoryRoot(), "sqlnexus", "PerfStatsAnalysis.sql"));

@@ -36,6 +36,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="Microsoft.ReportViewer.WinForms">
+      <HintPath>..\..\..\packages\Microsoft.ReportingServices.ReportViewerControl.Winforms.150.1652.0\lib\net40\Microsoft.ReportViewer.WinForms.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\..\RowsetImportEngine\RowsetImportEngine.csproj" />
     <ProjectReference Include="..\..\..\sqlnexus\sqlnexus.csproj" />
     <ProjectReference Include="..\..\..\SqlNexus.McpServer\SqlNexus.McpServer.csproj" />
