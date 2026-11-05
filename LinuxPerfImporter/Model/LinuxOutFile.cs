@@ -17,6 +17,12 @@ namespace LinuxPerfImporter.Model
             FileName = fileName;
             FileContents = new Utility.FileUtility().ReadFileByLine(FileName);
         }
+
+        internal LinuxOutFile(List<string> fileContents)
+        {
+            TimeZone = ConfigValues.TimeZone;
+            FileContents = fileContents;
+        }
         // class properties
         public string FileName { get; set; }
         public List<string> FileContents { get; set; }

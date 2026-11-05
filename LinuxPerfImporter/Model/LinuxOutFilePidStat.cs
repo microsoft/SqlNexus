@@ -24,6 +24,15 @@ namespace LinuxPerfImporter.Model
             Metrics = GetPidStatMetrics();
         }
 
+        internal LinuxOutFilePidStat(List<string> fileContents) :
+            base(fileContents)
+        {
+            Processes = GetProcessMetrics();
+            UniquePids = GetUniquePids();
+            Header = GetPidStatHeader();
+            Metrics = GetPidStatMetrics();
+        }
+
         // class properties
         private string[] PidFilter { get; set; }
         private List<long> BlockCount = new List<long>();
@@ -31,6 +40,77 @@ namespace LinuxPerfImporter.Model
         private Dictionary<long, string> UniquePids;
         // number of metric that gets parsed.
         private int MetricCount = 16;
+
+        internal int GetHeaderRowIndex()
+        {
+            if (FileContents == null)
+            {
+                throw new ApplicationException("Invalid pidstat.perf format");
+            }
+
+            int index = FileContents.FindIndex(l => !string.IsNullOrWhiteSpace(l) && l.TrimStart().StartsWith("#"));
+            if (index < 0)
+            {
+                throw new ApplicationException("Invalid pidstat.perf format");
+            }
+
+            return index;
+        }
+
+        internal int GetMetricCount(int headerRowIndex)
+        {
+            string[] headerTokens = Regex.Split(FileContents[headerRowIndex].Trim(), "\\s+");
+            int count = headerTokens.Length - 5;
+            if (count <= 0)
+            {
+                throw new ApplicationException("Invalid pidstat.perf format");
+            }
+
+            return count;
+        }
+
+        private string GetBannerDate()
+        {
+            Regex rgxDate = new Regex("(\\d{2})\\/(\\d{2})\\/(\\d{4})");
+            foreach (string line in FileContents)
+            {
+                if (string.IsNullOrWhiteSpace(line))
+                {
+                    continue;
+                }
+
+                if (line.TrimStart().StartsWith("#"))
+                {
+                    break;
+                }
+
+                Match match = rgxDate.Match(line);
+                if (match.Success)
+                {
+                    return match.Value;
+                }
+            }
+
+            return DateTime.UtcNow.ToString("MM/dd/yyyy");
+        }
+
+        private string FormatPidStatTimeStamp(string rawTime, ref string metricDateMatch, ref int lastTimeStampHour, DateTimeUtility utility)
+        {
+            if (Regex.IsMatch(rawTime, "^ *[0-9]+ *$"))
+            {
+                return utility.GetTimeStamp(rawTime);
+            }
+
+            DateTime parsedTime = DateTime.Parse(metricDateMatch + " " + rawTime.Trim());
+            MetricTimeStamp metricTimeStamp = utility.FormatMetricTimeStamp(parsedTime, lastTimeStampHour);
+            if (metricTimeStamp.IncrementDay)
+            {
+                metricDateMatch = DateTime.Parse(metricTimeStamp.FormattedTimeStamp).ToString("MM/dd/yyyy");
+            }
+
+            lastTimeStampHour = metricTimeStamp.LastTimeStampHour;
+            return metricTimeStamp.FormattedTimeStamp;
+        }
 
         // class methods
         // Reads each line where there are metrics, creates a process object and adds it to the objects collection
@@ -50,13 +130,17 @@ namespace LinuxPerfImporter.Model
 
             Regex rgxEmptyLine = new Regex(emptyLinePattern);
             Regex rgxSplitLine = new Regex(splitPattern);
-            var rgxTime = new Regex("^ *([0-2][0-9]:[0-2][0-9]:[0-2][0-9] ?[AaPp]?[Mm]?|[0-9]+)");
+            var rgxTime = new Regex("^ *([0-2][0-9]:[0-5][0-9]:[0-5][0-9] ?[AaPp]?[Mm]?|[0-9]+)");
 
+            int headerRowIndex = GetHeaderRowIndex();
+            MetricCount = GetMetricCount(headerRowIndex);
+            string metricDateMatch = GetBannerDate();
+            int lastTimeStampHour = -1;
 
             // starting at the first line where # appears
-            for (int i = 2; i <= FileContents.Count - 1;)
+            for (int i = headerRowIndex; i <= FileContents.Count - 1;)
             {
-                if (FileContents[i].StartsWith("#"))
+                if (FileContents[i].TrimStart().StartsWith("#"))
                 {
                     // if not the first block on first iteration, we add the complete metric group to the larger collection "processes"
                     if (!blockIsFirst)
@@ -70,15 +154,19 @@ namespace LinuxPerfImporter.Model
                         blockIsFirst = false;
                     }
 
-                  
+                    if (i + 1 >= FileContents.Count)
+                    {
+                        break;
+                    }
+
                     var thisProcessLine = FileContents[i+1];
 
                     var match = rgxTime.Match(thisProcessLine);
 
                     if (!match.Success) throw new ApplicationException("Invalid pidstat.perf format");
                                        
-                    // reads the line timestamp, converts it from ephoc/unix time
-                    string thisTimeStamp = utility.GetTimeStamp(match.Value);
+                    // reads the line timestamp, converts it from ephoc/unix time or banner date + clock time
+                    string thisTimeStamp = FormatPidStatTimeStamp(match.Value, ref metricDateMatch, ref lastTimeStampHour, utility);
 
                     // add the current line position to the block count array. We will use this to spin off multiple threads for processing the pid stat file
                     BlockCount.Add(i + 1);
@@ -104,20 +192,26 @@ namespace LinuxPerfImporter.Model
 
                     if (!match.Success) throw new ApplicationException("Invalid pidstat.perf format");
 
-                    var subline = line.Substring(match.Length);
+                    var subline = line.Substring(match.Length).Trim();
                     // takes the value of the current line and splits on whitespace
                     string[] thisProcessLine = rgxSplitLine.Split(subline);
-                    // reads the line timestamp, converts it from ephoc/unix time
-                    string thisTimeStamp = utility.GetTimeStamp(match.Value);
+                    if (thisProcessLine.Length < 2 + MetricCount + 1)
+                    {
+                        i++;
+                        continue;
+                    }
+
+                    // reads the line timestamp
+                    string thisTimeStamp = pidProcessGroup.TimeStamp;
                     // reads this line's pid
-                    int thisPid = Convert.ToInt32(thisProcessLine[2]);
+                    int thisPid = Convert.ToInt32(thisProcessLine[1]);
                     // reads this lines process name
                     string thisProcessName = thisProcessLine[thisProcessLine.Length - 1];
                     // declares a new array so that we can populate this array with metrics with array.copy
                     string[] theseMetrics = new string[MetricCount];
 
                     // copies the metrics from the current line to theseMetrics array. We need to do this since we split the line to get other metrics.
-                    Array.Copy(thisProcessLine, 3, theseMetrics, 0, MetricCount);
+                    Array.Copy(thisProcessLine, 2, theseMetrics, 0, MetricCount);
 
                     // create a new process object and set its properties from the vairables we declared above
                     PidProcess process = new PidProcess()
@@ -169,7 +263,7 @@ namespace LinuxPerfImporter.Model
             {
                 StartingColumn = 4,
                 TrimColumn = 1,
-                StartingRow = 2,
+                StartingRow = GetHeaderRowIndex(),
                 FileContents = FileContents,
                 Devices = UniquePids.Select(x => x.Value + "#" + x.Key).ToList(),
                 ObjectName = "Process"
