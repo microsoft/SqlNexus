@@ -117,6 +117,9 @@ function Read-McpConfigurationEntry {
         "--database_for_comparison" = $true
         "--trusted-connection" = $true
         "--elevated-principal-policy" = $true
+        "--encrypt" = $true
+        "--trust-server-certificate" = $true
+        "--allow-certificate-validation-bypass" = $true
     }
     $seenArguments = @{}
     for ($index = 0; $index -lt $arguments.Count; $index += 2) {
@@ -141,6 +144,29 @@ function Read-McpConfigurationEntry {
     }
     if ($seenArguments.ContainsKey("--elevated-principal-policy") -and $seenArguments["--elevated-principal-policy"] -notin @("block", "impersonate-reader")) {
         throw "The registered --elevated-principal-policy value is not supported."
+    }
+
+    $encryptionMode = "Mandatory"
+    if ($seenArguments.ContainsKey("--encrypt")) {
+        $encryptionMode = $seenArguments["--encrypt"].Trim()
+        if ($encryptionMode -notin @("Optional", "Mandatory", "Strict", "true", "false")) {
+            throw "The registered --encrypt value must be 'Optional', 'Mandatory', 'Strict', 'true' or 'false'."
+        }
+    }
+    foreach ($booleanArgument in @("--trust-server-certificate", "--allow-certificate-validation-bypass")) {
+        if ($seenArguments.ContainsKey($booleanArgument) -and $seenArguments[$booleanArgument].Trim() -notin @("true", "false")) {
+            throw "The registered $booleanArgument value must be 'true' or 'false'."
+        }
+    }
+    $trustServerCertificate = $seenArguments.ContainsKey("--trust-server-certificate") -and
+        $seenArguments["--trust-server-certificate"].Trim() -eq "true"
+    $allowCertificateValidationBypass = $seenArguments.ContainsKey("--allow-certificate-validation-bypass") -and
+        $seenArguments["--allow-certificate-validation-bypass"].Trim() -eq "true"
+    if ($trustServerCertificate -and -not $allowCertificateValidationBypass) {
+        throw "The registered --trust-server-certificate true requires --allow-certificate-validation-bypass true."
+    }
+    if ($trustServerCertificate -and $encryptionMode -in @("Optional", "Strict", "false")) {
+        throw "The registered --trust-server-certificate true cannot be combined with --encrypt Optional or Strict. Use --encrypt Mandatory for a lab server with an untrusted certificate."
     }
 
     return [pscustomobject]@{
