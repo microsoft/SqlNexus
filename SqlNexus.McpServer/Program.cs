@@ -24,11 +24,27 @@ namespace SqlNexus.McpServer
         {
             try
             {
+                // Credential management modes run instead of the MCP protocol loop.
+                if (CredentialCommands.IsCredentialCommand(args))
+                {
+                    Environment.Exit(CredentialCommands.Execute(
+                        args,
+                        new StreamReader(Console.OpenStandardInput(), new System.Text.UTF8Encoding(false)),
+                        Console.IsInputRedirected,
+                        Console.Out,
+                        Console.Error,
+                        CredentialCommands.ReadSecretFromConsole));
+                    return;
+                }
+
                 var config = new ConfigurationBuilder()
                     .SetBasePath(Directory.GetCurrentDirectory())
                     .AddJsonFile("appsettings.json", optional: true)
                     .AddEnvironmentVariables()
                     .Build();
+
+                // Fail closed if any JSON configuration source holds a plaintext SQL password.
+                SqlCredentialResolver.RejectPlaintextPasswordInJsonConfiguration(config);
 
                 // Command-line args take priority: --server <name> --database <name> --trusted-connection <true|false>
                 var server = GetArgValue(args, "--server")
@@ -65,9 +81,19 @@ namespace SqlNexus.McpServer
                     ?? config["SqlNexus:AllowCertificateValidationBypass"];
 
                 var securityWarnings = new List<string>();
+                string userId = null;
+                string password = null;
+                if (!trustedConnection)
+                {
+                    // The password is never read from a JSON file (rejected above); config["SqlNexus:Password"]
+                    // can only come from the SqlNexus__Password environment variable here.
+                    userId = GetArgValue(args, "--user-id") ?? config["SqlNexus:UserId"];
+                    password = SqlCredentialResolver.ResolvePassword(server, userId, config["SqlNexus:Password"], securityWarnings);
+                }
+
                 var connectionString = SqlConnectionSecurity.BuildConnectionString(
                     server, database, trustedConnection,
-                    config["SqlNexus:UserId"], config["SqlNexus:Password"],
+                    userId, password,
                     encrypt, trustServerCertificate, allowCertificateValidationBypass,
                     ServerName, securityWarnings);
 
@@ -121,7 +147,7 @@ namespace SqlNexus.McpServer
             }
         }
 
-        static string? GetArgValue(string[] args, string flag)
+        internal static string? GetArgValue(string[] args, string flag)
         {
             for (int i = 0; i < args.Length - 1; i++)
             {

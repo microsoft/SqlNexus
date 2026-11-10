@@ -306,6 +306,12 @@ This resolves `SqlNexus.McpServer.exe` from `bin\Release` next to the script by 
 `-ExecutablePath` to point at a different build. `-Database2`, `-TrustedConnection`, and
 `-ElevatedPrincipalPolicy` are supported the same way as the registered-configuration path.
 
+With `-TrustedConnection false`, the script passes `--user-id` to the MCP server, which reads the
+password from the DPAPI-protected credential created by `SqlNexus.McpServer.exe --set-credential`
+(or by registering with `-AuthMode Sql`). A `-Password` supplied to the script is handed to the
+server through the `SqlNexus__Password` environment variable for that run only. A password in
+`appsettings.json` is no longer read; the MCP server rejects it.
+
 ### Skipping validation when MCP is not configured
 
 Add `-SkipIfNotConfigured` to exit `0` (instead of failing) when the MCP server executable or

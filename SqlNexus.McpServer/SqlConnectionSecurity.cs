@@ -64,7 +64,7 @@ namespace SqlNexus.McpServer
             if (!trustedConnection)
             {
                 if (string.IsNullOrWhiteSpace(userId) || string.IsNullOrEmpty(password))
-                    throw new InvalidOperationException("SQL authentication requires SqlNexus:UserId and SqlNexus:Password. Supply the password through the SqlNexus__Password environment variable.");
+                    throw new InvalidOperationException("SQL authentication requires a user name (--user-id or SqlNexus:UserId) and a password. Store the password with SqlNexus.McpServer.exe --set-credential; it is never read from a configuration file.");
 
                 builder.UserID = userId;
                 builder.Password = password;
