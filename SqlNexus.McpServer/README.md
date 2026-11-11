@@ -330,6 +330,28 @@ For a packaged SQL Nexus build, run the single staged copy at
 
 The script checks prerequisites, tests the SQL connection, and lets you interactively invoke tools.
 
+Interactive connection setup also prompts for `Encryption mode (Optional/Mandatory/Strict)`
+and `Certificate validation (Validate/TrustServerCertificate)`. Press Enter to keep `Mandatory`
+and `Validate`. Supplying `-EncryptionMode` or `-CertificateValidation` skips its corresponding
+prompt. Invalid choices are prompted again; certificate bypass is rejected unless encryption is
+`Mandatory`. Warnings explain the risks of `Optional` and lab-only certificate bypass.
+
+The selected TLS policy is used by individual tool tests, **Test All Tools Using Current Connection
+Settings**, and registration from the menu. Interactive `-ForceRegistration` also prompts for TLS
+settings that were not supplied. Automated runs never prompt and keep secure defaults unless
+explicitly overridden. The preliminary basic SQL connectivity check does not validate the MCP TLS
+policy; the actual MCP tool test does.
+
+For a lab server with an untrusted certificate, select `Mandatory` and `TrustServerCertificate`,
+or supply both options explicitly:
+
+```powershell
+.\Test-McpServer.ps1 -EncryptionMode Mandatory -CertificateValidation TrustServerCertificate
+```
+
+Prefer installing a trusted SQL Server certificate. `Optional` does not require encryption and
+does not bypass certificate validation when SQL Server requires encryption.
+
 ### Manual MCP Protocol Test
 
 ```powershell

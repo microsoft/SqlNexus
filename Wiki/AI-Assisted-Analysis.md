@@ -170,6 +170,18 @@ and `--allow-certificate-validation-bypass true`. The MCP server refuses the fir
 second. When launched without TLS arguments, the server itself defaults to `Mandatory` with
 certificate validation, even though the registration script requires an explicit choice.
 
+When running `SqlNexus.McpServer\Test-McpServer.ps1` interactively, connection setup prompts for
+encryption mode and certificate validation after the elevated principal policy. Enter keeps
+`Mandatory` and `Validate`; explicit `-EncryptionMode` and `-CertificateValidation` values skip
+their respective prompts. The selection applies to individual tests, all-tools validation, and
+menu-based registration. Interactive `-ForceRegistration` prompts for omitted TLS settings too;
+non-interactive runs never prompt.
+
+For an untrusted lab certificate, choose `Mandatory` with `TrustServerCertificate` (or supply
+both parameters explicitly). `Optional` does not bypass certificate validation if SQL Server
+requires encryption. The preliminary basic connectivity check is not a validation of MCP TLS
+settings; the actual tool tests validate those settings.
+
 ### Connecting with an elevated Windows identity
 
 The default `-ElevatedPrincipalPolicy Block` rejects SQL identities with `sysadmin`, `db_owner`,
