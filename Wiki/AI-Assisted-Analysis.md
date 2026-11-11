@@ -69,7 +69,8 @@ Import a SQL LogScout collection into a SQL Nexus database (UI or command line â
 pre-built with SQL Nexus. The recommended registration script installs the integration for the
 current Windows user; no build, manual JSON editing, or manual agent copy is required.
 
-Open PowerShell in the extracted SQL Nexus installation directory and run:
+Open **Windows PowerShell 5.1** (`powershell.exe`; PowerShell 7 / `pwsh` is not supported by SQL
+Nexus or SQL LogScout) in the extracted SQL Nexus installation directory and run:
 
 ```powershell
 Set-Location .\CopilotIntegration

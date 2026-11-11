@@ -5,7 +5,9 @@ current Windows user. They do not install or remove GitHub Copilot.
 
 ## Register SQL Nexus
 
-Run from an extracted SQL Nexus release:
+Run from an extracted SQL Nexus release, in **Windows PowerShell 5.1** (`powershell.exe`).
+PowerShell 7 (`pwsh`) is not supported by SQL Nexus or SQL LogScout; check your version with
+`$PSVersionTable.PSVersion`.
 
 ```powershell
 .\CopilotIntegration\Register-SqlNexusCopilotIntegration.ps1 `
