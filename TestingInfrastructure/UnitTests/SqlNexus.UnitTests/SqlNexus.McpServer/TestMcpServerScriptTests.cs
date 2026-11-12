@@ -313,6 +313,265 @@ namespace SqlNexus.UnitTests.SqlNexus.McpServer
             }
         }
 
+        [DataTestMethod]
+        [DataRow("")]
+        [DataRow(",\"--encrypt\",\"Optional\",\"--trust-server-certificate\",\"false\"")]
+        [DataRow(",\"--encrypt\",\"Mandatory\",\"--trust-server-certificate\",\"false\"")]
+        [DataRow(",\"--encrypt\",\"Strict\",\"--trust-server-certificate\",\"false\"")]
+        [DataRow(",\"--encrypt\",\"true\"")]
+        [DataRow(",\"--encrypt\",\"false\"")]
+        [DataRow(",\"--encrypt\",\" optional \",\"--trust-server-certificate\",\" FALSE \"")]
+        [DataRow(",\"--encrypt\",\"Mandatory\",\"--trust-server-certificate\",\"true\",\"--allow-certificate-validation-bypass\",\"true\"")]
+        [DataRow(",\"--trust-server-certificate\",\"true\",\"--allow-certificate-validation-bypass\",\"true\"")]
+        [DataRow(",\"--encrypt\",\"Strict\",\"--allow-certificate-validation-bypass\",\"true\"")]
+        public void RegisteredConfiguration_SupportedTlsArguments_ArePreserved(string tlsArguments)
+        {
+            using (var fixture = new ForceRegistrationFixture())
+            {
+                ProcessResult result = fixture.RunConfigurationReader(tlsArguments);
+
+                Assert.AreEqual(0, result.ExitCode, result.Output + result.Error);
+                StringAssert.Contains(result.Output, "\"--server\",\"localhost\",\"--database\",\"SqlNexus\"" + tlsArguments);
+            }
+        }
+
+        [DataTestMethod]
+        [DataRow(",\"--encrypt\",\"Invalid\"", "--encrypt value")]
+        [DataRow(",\"--encrypt\",\"\"", "requires a value")]
+        [DataRow(",\"--encrypt\"", "requires a value")]
+        [DataRow(",\"--encrypt\",\"Optional\",\"--encrypt\",\"Mandatory\"", "duplicate argument")]
+        [DataRow(",\"--trust-server-certificate\",\"yes\"", "--trust-server-certificate value")]
+        [DataRow(",\"--allow-certificate-validation-bypass\",\"yes\"", "--allow-certificate-validation-bypass value")]
+        [DataRow(",\"--trust-server-certificate\",\"true\"", "requires --allow-certificate-validation-bypass true")]
+        [DataRow(",\"--trust-server-certificate\",\"true\",\"--allow-certificate-validation-bypass\",\"false\"", "requires --allow-certificate-validation-bypass true")]
+        [DataRow(",\"--encrypt\",\"Strict\",\"--trust-server-certificate\",\"true\",\"--allow-certificate-validation-bypass\",\"true\"", "cannot be combined")]
+        [DataRow(",\"--encrypt\",\"Optional\",\"--trust-server-certificate\",\"true\",\"--allow-certificate-validation-bypass\",\"true\"", "cannot be combined")]
+        [DataRow(",\"--encrypt\",\"false\",\"--trust-server-certificate\",\"true\",\"--allow-certificate-validation-bypass\",\"true\"", "cannot be combined")]
+        [DataRow(",\"--unknown\",\"true\"", "unsupported argument")]
+        public void RegisteredConfiguration_InvalidTlsArguments_ReturnFailure(string tlsArguments, string expectedMessage)
+        {
+            using (var fixture = new ForceRegistrationFixture())
+            {
+                ProcessResult result = fixture.RunConfigurationReader(tlsArguments);
+
+                Assert.AreNotEqual(0, result.ExitCode, result.Output + result.Error);
+                StringAssert.Contains(result.Error + result.Output, expectedMessage);
+            }
+        }
+
+        [DataTestMethod]
+        [DataRow("Optional", "Validate")]
+        [DataRow("Mandatory", "Validate")]
+        [DataRow("Strict", "Validate")]
+        [DataRow("Mandatory", "TrustServerCertificate")]
+        public void ForceRegistration_GeneratedTlsConfiguration_IsAccepted(string encryptionMode, string certificateValidation)
+        {
+            using (var fixture = new ForceRegistrationFixture())
+            {
+                ProcessResult registration = fixture.RunForceRegistration(
+                    nonInteractive: true,
+                    server: "localhost",
+                    database: "SqlNexus",
+                    extraArguments: "-EncryptionMode " + encryptionMode + " -CertificateValidation " + certificateValidation);
+                Assert.AreEqual(0, registration.ExitCode, registration.Output + registration.Error);
+
+                ProcessResult result = fixture.RunConfigurationReader();
+
+                Assert.AreEqual(0, result.ExitCode, result.Output + result.Error);
+                StringAssert.Contains(result.Output, "\"--encrypt\",\"" + encryptionMode + "\"");
+            }
+        }
+
+        [DataTestMethod]
+        [DataRow("", "", "Mandatory", "Validate")]
+        [DataRow("Optional", "", "Optional", "Validate")]
+        [DataRow("Strict", "Validate", "Strict", "Validate")]
+        [DataRow("Mandatory", "TrustServerCertificate", "Mandatory", "TrustServerCertificate")]
+        [DataRow("invalid\nOptional", "invalid\nValidate", "Optional", "Validate")]
+        public void InteractiveTlsPrompts_SelectedSettings_AreUsedByIndividualAndAllTools(
+            string modeInput, string certificateInput, string expectedMode, string expectedCertificate)
+        {
+            using (var fixture = new ForceRegistrationFixture())
+            {
+                string responses = string.Join(",", (modeInput + "\n" + certificateInput)
+                    .Split('\n').Select(value => "'" + value + "'"));
+                ProcessResult result = fixture.RunScriptFunctions(@"
+$script:responses = New-Object 'System.Collections.Generic.Queue[string]'
+@(" + responses + @") | ForEach-Object { $script:responses.Enqueue($_) }
+function Read-Host {
+    param([string]$Prompt)
+    Write-Host ('PROMPT: ' + $Prompt)
+    if ($script:responses.Count -eq 0) { throw 'Unexpected extra prompt.' }
+    return $script:responses.Dequeue()
+}
+$settings = Read-McpTlsSettings -PromptEncryptionMode -PromptCertificateValidation
+$EncryptionMode = $settings.EncryptionMode
+$CertificateValidation = $settings.CertificateValidation
+$registration = Get-DirectMcpServerRegistration -Server localhost -Database SqlNexus -ExecutablePath $ExecutablePath `
+    -EncryptionMode $EncryptionMode -CertificateValidation $CertificateValidation
+Write-Output ('ALL: ' + (ConvertTo-Json -InputObject $registration.Arguments -Compress))
+$serverName = 'localhost'
+$databaseName = 'SqlNexus'
+$trustedConnection = $true
+$elevatedPrincipalPolicyArg = 'block'
+$exePath = { $script:capturedArguments = @($args); return '{""result"":{}}' }
+Invoke-McpTool -Messages @('{}')
+Write-Output ('INDIVIDUAL: ' + (ConvertTo-Json -InputObject $script:capturedArguments -Compress))
+");
+
+                Assert.AreEqual(0, result.ExitCode, result.Output + result.Error);
+                StringAssert.Contains(result.Output, "PROMPT:   Encryption mode (Optional/Mandatory/Strict) [Mandatory]");
+                StringAssert.Contains(result.Output, "PROMPT:   Certificate validation (Validate/TrustServerCertificate) [Validate]");
+                string trust = expectedCertificate == "TrustServerCertificate" ? "true" : "false";
+                string expectedTls = "\"--encrypt\",\"" + expectedMode + "\",\"--trust-server-certificate\",\"" + trust + "\"";
+                string[] argumentLines = result.Output.Split('\n')
+                    .Where(line => line.StartsWith("ALL: ") || line.StartsWith("INDIVIDUAL: ")).ToArray();
+                Assert.AreEqual(2, argumentLines.Length, result.Output);
+                foreach (string line in argumentLines)
+                {
+                    StringAssert.Contains(line, expectedTls);
+                    if (trust == "true")
+                    {
+                        StringAssert.Contains(line, "\"--allow-certificate-validation-bypass\",\"true\"");
+                    }
+                }
+                if (expectedMode == "Optional")
+                {
+                    StringAssert.Contains(result.Output, "Encryption is not required");
+                }
+                if (trust == "true")
+                {
+                    StringAssert.Contains(result.Output, "certificate validation is disabled");
+                }
+                if (modeInput.Contains("invalid"))
+                {
+                    StringAssert.Contains(result.Output, "Invalid encryption mode");
+                    StringAssert.Contains(result.Output, "Invalid certificate validation");
+                }
+            }
+        }
+
+        [TestMethod]
+        public void InteractiveTlsPrompts_EndOfInput_KeepsSecureDefaults()
+        {
+            using (var fixture = new ForceRegistrationFixture())
+            {
+                ProcessResult result = fixture.RunScriptFunctions(@"
+function Read-Host { return $null }
+$settings = Read-McpTlsSettings -PromptEncryptionMode -PromptCertificateValidation
+Write-Output ($settings.EncryptionMode + '/' + $settings.CertificateValidation)
+");
+
+                Assert.AreEqual(0, result.ExitCode, result.Output + result.Error);
+                StringAssert.Contains(result.Output, "Mandatory/Validate");
+            }
+        }
+
+        [DataTestMethod]
+        [DataRow("Optional", "Validate")]
+        [DataRow("Mandatory", "TrustServerCertificate")]
+        public void ForceRegistration_InteractiveTlsSelection_IsWrittenToConfiguration(string mode, string certificate)
+        {
+            using (var fixture = new ForceRegistrationFixture())
+            {
+                ProcessResult result = fixture.RunForceRegistration(
+                    nonInteractive: false,
+                    server: "localhost",
+                    database: "SqlNexus",
+                    stdinInput: mode + "\n" + certificate + "\n");
+
+                Assert.AreEqual(0, result.ExitCode, result.Output + result.Error);
+                ProcessResult readerResult = fixture.RunConfigurationReader();
+                Assert.AreEqual(0, readerResult.ExitCode, readerResult.Output + readerResult.Error);
+                StringAssert.Contains(readerResult.Output, "\"--encrypt\",\"" + mode + "\"");
+                if (certificate == "TrustServerCertificate")
+                {
+                    StringAssert.Contains(readerResult.Output, "\"--allow-certificate-validation-bypass\",\"true\"");
+                }
+            }
+        }
+
+        [DataTestMethod]
+        [DataRow("Optional")]
+        [DataRow("Mandatory")]
+        [DataRow("Strict")]
+        public void TlsSettings_ExplicitValues_DoNotPrompt(string encryptionMode)
+        {
+            using (var fixture = new ForceRegistrationFixture())
+            {
+                ProcessResult result = fixture.RunScriptFunctions(@"
+function Read-Host { throw 'Explicit TLS settings must not prompt.' }
+$settings = Read-McpTlsSettings -EncryptionMode '" + encryptionMode + @"' -CertificateValidation Validate
+Write-Output ($settings.EncryptionMode + '/' + $settings.CertificateValidation)
+");
+
+                Assert.AreEqual(0, result.ExitCode, result.Output + result.Error);
+                StringAssert.Contains(result.Output, encryptionMode + "/Validate");
+            }
+        }
+
+        [DataTestMethod]
+        [DataRow("Optional")]
+        [DataRow("Strict")]
+        public void InteractiveTlsPrompts_UnsafeBypass_FailsBeforeLaunchingServer(string encryptionMode)
+        {
+            using (var fixture = new ForceRegistrationFixture())
+            {
+                ProcessResult result = fixture.RunScriptFunctions(@"
+$script:responses = @('" + encryptionMode + @"', 'TrustServerCertificate')
+$script:responseIndex = 0
+function Read-Host { return $script:responses[$script:responseIndex++] }
+Read-McpTlsSettings -PromptEncryptionMode -PromptCertificateValidation
+Write-Output 'Unexpected success'
+");
+
+                Assert.AreNotEqual(0, result.ExitCode, result.Output + result.Error);
+                StringAssert.Contains(result.Error, "requires EncryptionMode Mandatory");
+                Assert.IsFalse(result.Output.Contains("Unexpected success"), result.Output);
+            }
+        }
+
+        [TestMethod]
+        public void InteractiveTlsSettings_AllLaunchPaths_ForwardSelectedPolicy()
+        {
+            using (var fixture = new ForceRegistrationFixture())
+            {
+                ProcessResult result = fixture.RunScriptFunctions(@"
+$directCalls = @($ast.FindAll({
+    param($node)
+    $node -is [System.Management.Automation.Language.CommandAst] -and
+        $node.GetCommandName() -eq 'Get-DirectMcpServerRegistration'
+}, $true))
+if ($directCalls.Count -ne 3) { throw 'Expected both automated paths and the interactive all-tools path.' }
+$registrationCalls = @($ast.FindAll({
+    param($node)
+    $node -is [System.Management.Automation.Language.CommandAst] -and
+        $node.GetCommandName() -eq 'Invoke-ForceRegistrationSync'
+}, $true))
+foreach ($call in @($directCalls) + @($registrationCalls)) {
+    if ($call.Extent.Text -notmatch '-EncryptionMode \$EncryptionMode' -or
+        $call.Extent.Text -notmatch '-CertificateValidation \$CertificateValidation') {
+        throw 'A launch path does not forward the selected TLS policy.'
+    }
+}
+$promptCalls = @($ast.FindAll({
+    param($node)
+    $node -is [System.Management.Automation.Language.CommandAst] -and
+        $node.GetCommandName() -eq 'Read-McpTlsSettings'
+}, $true))
+if (-not ($promptCalls | Where-Object {
+    $_.Extent.Text.Contains(""-not `$PSBoundParameters.ContainsKey('EncryptionMode')"") -and
+    $_.Extent.Text.Contains(""-not `$PSBoundParameters.ContainsKey('CertificateValidation')"") -and
+    $_.Extent.Text.Contains('-not $Tool')
+})) { throw 'Interactive prompts must respect explicit TLS settings and single-tool mode.' }
+Write-Output 'TLS forwarding verified.'
+");
+
+                Assert.AreEqual(0, result.ExitCode, result.Output + result.Error);
+                StringAssert.Contains(result.Output, "TLS forwarding verified.");
+            }
+        }
+
         private static string CreateTemporaryConfiguration(string content)
         {
             string path = Path.Combine(Path.GetTempPath(), "SqlNexusMcpTest_" + Guid.NewGuid().ToString("N") + ".json");
@@ -326,9 +585,9 @@ namespace SqlNexus.UnitTests.SqlNexus.McpServer
                 "-UseRegisteredConfiguration -ConfigurationPath " + Quote(configurationPath) + " -All -NonInteractive");
         }
 
-        private static ProcessResult RunValidationWithArguments(string scriptArguments)
+        private static ProcessResult RunValidationWithArguments(string scriptArguments, string scriptPath = null)
         {
-            string script = Path.Combine(FindRepositoryRoot(), "SqlNexus.McpServer", "Test-McpServer.ps1");
+            string script = scriptPath ?? Path.Combine(FindRepositoryRoot(), "SqlNexus.McpServer", "Test-McpServer.ps1");
             var startInfo = new ProcessStartInfo
             {
                 FileName = Path.Combine(
@@ -430,6 +689,62 @@ namespace SqlNexus.UnitTests.SqlNexus.McpServer
             public string CopilotConfigPath { get; }
             public string FakeUserProfile { get; }
             public string FakeAppData { get; }
+
+            public ProcessResult RunScriptFunctions(string body)
+            {
+                string harnessScript = Path.Combine(root, "Test-ScriptFunctions.ps1");
+                File.WriteAllText(harnessScript, @"
+param([string]$ScriptPath, [string]$ExecutablePath)
+$ErrorActionPreference = 'Stop'
+$tokens = $null
+$parseErrors = $null
+$ast = [System.Management.Automation.Language.Parser]::ParseFile($ScriptPath, [ref]$tokens, [ref]$parseErrors)
+if ($parseErrors.Count -gt 0) { throw ($parseErrors.Message -join '; ') }
+foreach ($function in $ast.FindAll({
+    param($node)
+    $node -is [System.Management.Automation.Language.FunctionDefinitionAst]
+}, $true)) {
+    . ([scriptblock]::Create($function.Extent.Text))
+}
+" + body);
+                return RunValidationWithArguments(
+                    "-ScriptPath " + Quote(testScriptPath) + " -ExecutablePath " + Quote(NewFakeExecutable),
+                    harnessScript);
+            }
+
+            public ProcessResult RunConfigurationReader(string tlsArguments = null)
+            {
+                if (tlsArguments != null)
+                {
+                    string escapedExecutable = NewFakeExecutable.Replace("\\", "\\\\");
+                    File.WriteAllText(VsCodeConfigPath,
+                        "{\"servers\":{\"sqlnexus_mcp\":{\"command\":\"" + escapedExecutable
+                        + "\",\"args\":[\"--server\",\"localhost\",\"--database\",\"SqlNexus\""
+                        + tlsArguments + "]}}}");
+                }
+
+                string readerScript = Path.Combine(root, "Read-Configuration.ps1");
+                File.WriteAllText(readerScript, @"
+param([string]$ScriptPath, [string]$ConfigurationPath)
+$ErrorActionPreference = 'Stop'
+$tokens = $null
+$parseErrors = $null
+$ast = [System.Management.Automation.Language.Parser]::ParseFile($ScriptPath, [ref]$tokens, [ref]$parseErrors)
+if ($parseErrors.Count -gt 0) { throw ($parseErrors.Message -join '; ') }
+$reader = $ast.Find({
+    param($node)
+    $node -is [System.Management.Automation.Language.FunctionDefinitionAst] -and
+        $node.Name -eq 'Read-McpConfigurationEntry'
+}, $true)
+if ($null -eq $reader) { throw 'Read-McpConfigurationEntry was not found.' }
+. ([scriptblock]::Create($reader.Extent.Text))
+$entry = Read-McpConfigurationEntry -Path $ConfigurationPath
+ConvertTo-Json -InputObject $entry.Arguments -Compress
+");
+                return RunValidationWithArguments(
+                    "-ScriptPath " + Quote(testScriptPath) + " -ConfigurationPath " + Quote(VsCodeConfigPath),
+                    readerScript);
+            }
 
             public void SeedExistingRegistration(string executablePath, string server, string database, string policy)
             {

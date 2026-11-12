@@ -117,6 +117,9 @@ function Read-McpConfigurationEntry {
         "--database_for_comparison" = $true
         "--trusted-connection" = $true
         "--elevated-principal-policy" = $true
+        "--encrypt" = $true
+        "--trust-server-certificate" = $true
+        "--allow-certificate-validation-bypass" = $true
     }
     $seenArguments = @{}
     for ($index = 0; $index -lt $arguments.Count; $index += 2) {
@@ -141,6 +144,29 @@ function Read-McpConfigurationEntry {
     }
     if ($seenArguments.ContainsKey("--elevated-principal-policy") -and $seenArguments["--elevated-principal-policy"] -notin @("block", "impersonate-reader")) {
         throw "The registered --elevated-principal-policy value is not supported."
+    }
+
+    $encryptionMode = "Mandatory"
+    if ($seenArguments.ContainsKey("--encrypt")) {
+        $encryptionMode = $seenArguments["--encrypt"].Trim()
+        if ($encryptionMode -notin @("Optional", "Mandatory", "Strict", "true", "false")) {
+            throw "The registered --encrypt value must be 'Optional', 'Mandatory', 'Strict', 'true' or 'false'."
+        }
+    }
+    foreach ($booleanArgument in @("--trust-server-certificate", "--allow-certificate-validation-bypass")) {
+        if ($seenArguments.ContainsKey($booleanArgument) -and $seenArguments[$booleanArgument].Trim() -notin @("true", "false")) {
+            throw "The registered $booleanArgument value must be 'true' or 'false'."
+        }
+    }
+    $trustServerCertificate = $seenArguments.ContainsKey("--trust-server-certificate") -and
+        $seenArguments["--trust-server-certificate"].Trim() -eq "true"
+    $allowCertificateValidationBypass = $seenArguments.ContainsKey("--allow-certificate-validation-bypass") -and
+        $seenArguments["--allow-certificate-validation-bypass"].Trim() -eq "true"
+    if ($trustServerCertificate -and -not $allowCertificateValidationBypass) {
+        throw "The registered --trust-server-certificate true requires --allow-certificate-validation-bypass true."
+    }
+    if ($trustServerCertificate -and $encryptionMode -in @("Optional", "Strict", "false")) {
+        throw "The registered --trust-server-certificate true cannot be combined with --encrypt Optional or Strict. Use --encrypt Mandatory for a lab server with an untrusted certificate."
     }
 
     return [pscustomobject]@{
@@ -229,9 +255,6 @@ function Invoke-ForceRegistrationSync {
     $resolvedServer = $Server
     $resolvedDatabase = $Database
     $resolvedPolicy = if ([string]::IsNullOrWhiteSpace($ElevatedPrincipalPolicy)) { "Block" } else { $ElevatedPrincipalPolicy }
-    # The registration script requires an explicit TLS policy; default to the MCP server's secure defaults.
-    $resolvedEncryptionMode = if ([string]::IsNullOrWhiteSpace($EncryptionMode)) { "Mandatory" } else { $EncryptionMode }
-    $resolvedCertificateValidation = if ([string]::IsNullOrWhiteSpace($CertificateValidation)) { "Validate" } else { $CertificateValidation }
     if ([string]::IsNullOrWhiteSpace($resolvedServer) -or [string]::IsNullOrWhiteSpace($resolvedDatabase)) {
         if ($NonInteractive) {
             throw "Cannot force-register in -NonInteractive mode without -Server and -Database."
@@ -255,6 +278,12 @@ function Invoke-ForceRegistrationSync {
             }
         }
     }
+
+    $tlsSettings = Read-McpTlsSettings -EncryptionMode $EncryptionMode -CertificateValidation $CertificateValidation `
+        -PromptEncryptionMode:(-not $NonInteractive -and [string]::IsNullOrWhiteSpace($EncryptionMode)) `
+        -PromptCertificateValidation:(-not $NonInteractive -and [string]::IsNullOrWhiteSpace($CertificateValidation))
+    $resolvedEncryptionMode = $tlsSettings.EncryptionMode
+    $resolvedCertificateValidation = $tlsSettings.CertificateValidation
 
     $newEntry = [pscustomobject]@{
         Command = $ExecutablePath
@@ -365,6 +394,74 @@ function Resolve-DefaultMcpServerExecutablePath {
     return $devLayoutPath
 }
 
+function Get-McpTlsArguments {
+    param(
+        [ValidateSet("Optional", "Mandatory", "Strict")]
+        [string]$EncryptionMode = "Mandatory",
+        [ValidateSet("Validate", "TrustServerCertificate")]
+        [string]$CertificateValidation = "Validate"
+    )
+
+    if ($CertificateValidation -eq "TrustServerCertificate" -and $EncryptionMode -ne "Mandatory") {
+        throw "CertificateValidation TrustServerCertificate requires EncryptionMode Mandatory; Optional and Strict cannot bypass certificate validation."
+    }
+
+    "--encrypt", $EncryptionMode
+    if ($CertificateValidation -eq "TrustServerCertificate") {
+        "--trust-server-certificate", "true", "--allow-certificate-validation-bypass", "true"
+    }
+    else {
+        "--trust-server-certificate", "false"
+    }
+}
+
+function Read-McpTlsSettings {
+    param(
+        [string]$EncryptionMode,
+        [string]$CertificateValidation,
+        [switch]$PromptEncryptionMode,
+        [switch]$PromptCertificateValidation
+    )
+
+    if ([string]::IsNullOrWhiteSpace($EncryptionMode)) { $EncryptionMode = "Mandatory" }
+    if ([string]::IsNullOrWhiteSpace($CertificateValidation)) { $CertificateValidation = "Validate" }
+
+    if ($PromptEncryptionMode) {
+        do {
+            $inputMode = Read-Host "  Encryption mode (Optional/Mandatory/Strict) [$EncryptionMode]"
+            if ($null -ne $inputMode) { $inputMode = $inputMode.Trim() }
+            $validMode = [string]::IsNullOrWhiteSpace($inputMode) -or $inputMode -in @("Optional", "Mandatory", "Strict")
+            if (-not $validMode) {
+                Write-Warning "Invalid encryption mode '$inputMode'. Choose Optional, Mandatory or Strict."
+            }
+        } while (-not $validMode)
+        if ($inputMode) { $EncryptionMode = $inputMode }
+    }
+    if ($PromptCertificateValidation) {
+        do {
+            $inputCertificate = Read-Host "  Certificate validation (Validate/TrustServerCertificate) [$CertificateValidation]"
+            if ($null -ne $inputCertificate) { $inputCertificate = $inputCertificate.Trim() }
+            $validCertificate = [string]::IsNullOrWhiteSpace($inputCertificate) -or $inputCertificate -in @("Validate", "TrustServerCertificate")
+            if (-not $validCertificate) {
+                Write-Warning "Invalid certificate validation '$inputCertificate'. Choose Validate or TrustServerCertificate."
+            }
+        } while (-not $validCertificate)
+        if ($inputCertificate) { $CertificateValidation = $inputCertificate }
+    }
+
+    Get-McpTlsArguments -EncryptionMode $EncryptionMode -CertificateValidation $CertificateValidation | Out-Null
+    if ($EncryptionMode -eq "Optional") {
+        Write-Warning "Encryption is not required by the client. Traffic may be unencrypted unless SQL Server requires encryption."
+    }
+    if ($CertificateValidation -eq "TrustServerCertificate") {
+        Write-Warning "SQL Server certificate validation is disabled. Use only in a controlled lab environment."
+    }
+    [pscustomobject]@{
+        EncryptionMode = $EncryptionMode
+        CertificateValidation = $CertificateValidation
+    }
+}
+
 function Get-DirectMcpServerRegistration {
     param(
         [Parameter(Mandatory=$true)][string]$Server,
@@ -372,7 +469,9 @@ function Get-DirectMcpServerRegistration {
         [string]$Database2,
         [string]$ExecutablePath,
         [string]$TrustedConnection,
-        [string]$ElevatedPrincipalPolicy
+        [string]$ElevatedPrincipalPolicy,
+        [string]$EncryptionMode,
+        [string]$CertificateValidation
     )
 
     $command = if (-not [string]::IsNullOrWhiteSpace($ExecutablePath)) {
@@ -397,6 +496,8 @@ function Get-DirectMcpServerRegistration {
     if (-not [string]::IsNullOrWhiteSpace($Database2)) {
         $arguments += @("--database2", $Database2)
     }
+    $tlsSettings = Read-McpTlsSettings -EncryptionMode $EncryptionMode -CertificateValidation $CertificateValidation
+    $arguments += @(Get-McpTlsArguments -EncryptionMode $tlsSettings.EncryptionMode -CertificateValidation $tlsSettings.CertificateValidation)
 
     return [pscustomobject]@{
         Command = $command
@@ -695,7 +796,8 @@ if ($requestedAutomatedValidation -and $All) {
             if ($SkipIfNotConfigured) {
                 try {
                     $registration = Get-DirectMcpServerRegistration -Server $Server -Database $Database -Database2 $Database2 `
-                        -ExecutablePath $ExecutablePath -TrustedConnection $TrustedConnection -ElevatedPrincipalPolicy $ElevatedPrincipalPolicy
+                        -ExecutablePath $ExecutablePath -TrustedConnection $TrustedConnection -ElevatedPrincipalPolicy $ElevatedPrincipalPolicy `
+                        -EncryptionMode $EncryptionMode -CertificateValidation $CertificateValidation
                 }
                 catch {
                     Write-Host "MCP server not available; skipping MCP tool validation (-SkipIfNotConfigured). $($_.Exception.Message)" -ForegroundColor Yellow
@@ -704,7 +806,8 @@ if ($requestedAutomatedValidation -and $All) {
             }
             else {
                 $registration = Get-DirectMcpServerRegistration -Server $Server -Database $Database -Database2 $Database2 `
-                    -ExecutablePath $ExecutablePath -TrustedConnection $TrustedConnection -ElevatedPrincipalPolicy $ElevatedPrincipalPolicy
+                    -ExecutablePath $ExecutablePath -TrustedConnection $TrustedConnection -ElevatedPrincipalPolicy $ElevatedPrincipalPolicy `
+                    -EncryptionMode $EncryptionMode -CertificateValidation $CertificateValidation
             }
         }
         else {
@@ -756,6 +859,7 @@ Write-Host "  .\Test-McpServer.ps1 -ForceRegistration -Server localhost -Databas
 Write-Host "  .\Test-McpServer.ps1 -ForceRegistration -Server localhost -Database SqlNexus -All -NonInteractive" -ForegroundColor Gray
 Write-Host "  Note: TrustedConnection defaults to True unless -TrustedConnection is specified." -ForegroundColor Gray
 Write-Host "  Note: ElevatedPrincipalPolicy defaults to Block (matching registration) unless -ElevatedPrincipalPolicy is specified." -ForegroundColor Gray
+Write-Host "  Note: TLS defaults to Mandatory encryption and Validate certificates. Interactive mode prompts for both unless supplied." -ForegroundColor Gray
 Write-Host "  Note: -Server/-Database with -All validates directly without requiring MCP client registration." -ForegroundColor Gray
 Write-Host "  Note: -SkipIfNotConfigured exits 0 (instead of failing) when the MCP server/configuration is not available." -ForegroundColor Gray
 Write-Host "  Note: -ForceRegistration registers (or re-registers) this folder's SqlNexus.McpServer.exe as 'sqlnexus_mcp'," -ForegroundColor Gray
@@ -857,12 +961,26 @@ if ($Tool) {
     }
 }
 
+try {
+    $tlsSettings = Read-McpTlsSettings -EncryptionMode $EncryptionMode -CertificateValidation $CertificateValidation `
+        -PromptEncryptionMode:(-not $Tool -and -not $PSBoundParameters.ContainsKey('EncryptionMode')) `
+        -PromptCertificateValidation:(-not $Tool -and -not $PSBoundParameters.ContainsKey('CertificateValidation'))
+    $EncryptionMode = $tlsSettings.EncryptionMode
+    $CertificateValidation = $tlsSettings.CertificateValidation
+}
+catch {
+    Write-Host "Invalid MCP TLS settings: $($_.Exception.Message)" -ForegroundColor Red
+    exit 1
+}
+
 $trustedConnection = $defaultTrusted
 if ($PSBoundParameters.ContainsKey('TrustedConnection')) {
     $trustedConnection = [System.Convert]::ToBoolean($TrustedConnection)
 }
 Write-Host "  Using: $serverName / $databaseName" -ForegroundColor Green
 Write-Host "  Trusted connection: $trustedConnection" -ForegroundColor Green
+Write-Host "  Encryption mode: $EncryptionMode" -ForegroundColor Green
+Write-Host "  Certificate validation: $CertificateValidation" -ForegroundColor Green
 Write-Host "  Elevated principal policy: $effectiveElevatedPrincipalPolicy" -ForegroundColor Green
 if ($effectiveElevatedPrincipalPolicy -eq "ImpersonateReader") {
     Write-Host "    MCP queries execute as the non-revertible, loginless SqlNexusMcpReader database principal." -ForegroundColor Gray
@@ -870,7 +988,7 @@ if ($effectiveElevatedPrincipalPolicy -eq "ImpersonateReader") {
 Write-Host ""
 
 # Attempt to test SQL connection
-Write-Host "Testing SQL Server connection..." -ForegroundColor Yellow
+Write-Host "Testing basic SQL Server connectivity (not MCP TLS policy)..." -ForegroundColor Yellow
 try {
     if ($trustedConnection) {
         $connString = "Server=$serverName;Database=$databaseName;Integrated Security=true;TrustServerCertificate=true;Connect Timeout=5"
@@ -887,7 +1005,7 @@ try {
         $connection = New-Object System.Data.SqlClient.SqlConnection($connString)
         $connection.Open()
         $connection.Close()
-        Write-Host "  Successfully connected to $serverName/$databaseName" -ForegroundColor Green
+        Write-Host "  Basic connection succeeded to $serverName/$databaseName; MCP TLS settings will be validated when testing tools." -ForegroundColor Green
     }
 } catch {
     Write-Host "  Could not connect to SQL Server: $($_.Exception.Message)" -ForegroundColor Yellow
@@ -905,6 +1023,7 @@ function Invoke-McpTool {
         "--trusted-connection", $trustedConnection.ToString().ToLowerInvariant(),
         "--elevated-principal-policy", $elevatedPrincipalPolicyArg
     )
+    $exeArgs += @(Get-McpTlsArguments -EncryptionMode $EncryptionMode -CertificateValidation $CertificateValidation)
 
     $originalUserId = $env:SqlNexus__UserId
     $originalPassword = $env:SqlNexus__Password
@@ -1033,7 +1152,8 @@ while (-not $exit) {
             try {
                 $registration = Get-DirectMcpServerRegistration -Server $serverName -Database $databaseName -Database2 $Database2 `
                     -ExecutablePath $exePath -TrustedConnection $trustedConnection.ToString() `
-                    -ElevatedPrincipalPolicy $effectiveElevatedPrincipalPolicy
+                    -ElevatedPrincipalPolicy $effectiveElevatedPrincipalPolicy `
+                    -EncryptionMode $EncryptionMode -CertificateValidation $CertificateValidation
                 Write-Host "Testing all tools using the current connection settings." -ForegroundColor Cyan
                 Invoke-AllMcpTools -Registration $registration
             }
@@ -1044,7 +1164,7 @@ while (-not $exit) {
         "9" {
             try {
                 $exePathForRegistration = if (-not [string]::IsNullOrWhiteSpace($ExecutablePath)) { $ExecutablePath } else { $exePath }
-                Invoke-ForceRegistrationSync -ExecutablePath $exePathForRegistration -Server $Server -Database $Database `
+                Invoke-ForceRegistrationSync -ExecutablePath $exePathForRegistration -Server $serverName -Database $databaseName `
                     -Database2 $Database2 -ElevatedPrincipalPolicy $effectiveElevatedPrincipalPolicy -TrustedConnection $TrustedConnection `
                     -EncryptionMode $EncryptionMode -CertificateValidation $CertificateValidation `
                     -ConfigurationPath $ConfigurationPath | Out-Null
