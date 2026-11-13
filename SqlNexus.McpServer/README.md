@@ -51,7 +51,7 @@ There are two ways to register the MCP server with VS Code and Copilot CLI:
 
 #### Option A: Registration script (recommended)
 
-`CopilotIntegration\Register-SqlNexusCopilotIntegration.ps1` registers the `sqlnexus_mcp` server for both VS Code (`%APPDATA%\Code\User\mcp.json`) and Copilot CLI (`%USERPROFILE%\.copilot\mcp-config.json`). Unless you pass `-McpOnly`, it also installs the SQL Nexus Diagnostic Agent. It always configures Windows Integrated Authentication and never asks for or stores a password.
+`CopilotIntegration\Register-SqlNexusCopilotIntegration.ps1` registers the `sqlnexus_mcp` server for both VS Code (`%APPDATA%\Code\User\mcp.json`) and Copilot CLI (`%USERPROFILE%\.copilot\mcp-config.json`). Unless you pass `-McpOnly`, it also installs the SQL Nexus Diagnostic Agent. It configures Windows Integrated Authentication by default. For SQL Authentication use `-AuthMode Sql -UserId <login>`: the script prompts for the password and stores it in a DPAPI-protected file for the current Windows user; it is never written to a configuration file or command line (see **Optional SQL Authentication** below).
 
 Run it from the root of the SQL Nexus folder (the parent of `CopilotIntegration`). `-EncryptionMode` and `-CertificateValidation` are **required**, so the TLS policy is always an explicit choice:
 
@@ -189,14 +189,15 @@ code "C:\path\to\.copilot\mcp-config.json"
 
 ### 3. Update Connection Details (manual registration)
 
-All non-sensitive settings go in `args`. Passwords go in `env`:
+All non-sensitive settings go in `args`. Passwords are never placed in `args`, `appsettings.json` or `env`; SQL Authentication passwords are stored with `--set-credential` (see **Optional SQL Authentication** below):
 
 | Argument | Description | Default |
 |----------|-------------|--------|
 | `--server` | SQL Server instance name | `localhost` |
 | `--database` | SQL Nexus database name | `SqlNexus` |
 | `--database2` | Second SQL Nexus database used by the `compare_nexus_databases` tool (aliases: `--database-for-comparison`, `--database_for_comparison`) | *(none)* |
-| `--trusted-connection` | `true` = Windows Auth, `false` = SQL Auth | `true` |
+| `--trusted-connection` | `true` = Windows Auth, `false` = SQL Auth (requires `--user-id` and a stored credential) | `true` |
+| `--user-id` (`SqlNexus:UserId`) | SQL login name; only used with `--trusted-connection false` | *(none)* |
 | `--elevated-principal-policy` | `block` rejects elevated SQL identities; `impersonate-reader` accepts the connection only after entering the non-revertible loginless reader context | `block` |
 | `--encrypt` (`SqlNexus:Encrypt`) | `Optional`, `Mandatory` or `Strict`. `Optional` does not require encryption from the client (the connection is still encrypted if SQL Server requires it) and logs a startup warning. `Mandatory` works with SQL Server **Force Encryption**. `Strict` uses TDS 8.0 and is required when SQL Server uses **Force Strict Encryption**. For compatibility, `true` maps to `Mandatory` and `false` to `Optional` | `Mandatory` |
 | `--trust-server-certificate` (`SqlNexus:TrustServerCertificate`) | `true` skips SQL Server certificate validation. Refused unless `--allow-certificate-validation-bypass true` is also set, and rejected with `--encrypt Strict` or `--encrypt Optional` | `false` |
@@ -277,21 +278,24 @@ EXEC sys.sp_executesql @sql;
 
 Do not add `SqlNexusMcpReader` to any other role, grant it direct permissions, or make it the owner of database securables. The MCP startup check independently verifies the exact reader configuration before accepting requests. If the reserved principal already exists, inspect its role memberships, permissions, and ownership before removing it; do not drop an unknown principal without first transferring anything it legitimately owns.
 
-**Optional SQL Authentication** — Windows Integrated Authentication with `SqlNexusMcpReader` impersonation is recommended and requires no stored password. If SQL Authentication is explicitly required, add credentials in `env` (keep passwords out of `args`) and use a least-privilege login, not `sa`:
+**Optional SQL Authentication** — Windows Integrated Authentication with `SqlNexusMcpReader` impersonation is recommended and requires no stored password. If SQL Authentication is explicitly required, use a least-privilege login (not `sa`) and store its password once with the credential commands. The password is encrypted with Windows DPAPI (current user) in `%LOCALAPPDATA%\SqlNexus\McpCredentials`; the MCP entry holds only the user name:
+```powershell
+# Prompts for the password (masked, entered twice) and stores it for the current Windows user
+.\SqlNexus.McpServer.exe --set-credential --server "localhost" --user-id "sqlnexus_reader"
+.\SqlNexus.McpServer.exe --check-credential --server "localhost" --user-id "sqlnexus_reader"
+.\SqlNexus.McpServer.exe --delete-credential --server "localhost" --user-id "sqlnexus_reader"
+```
 ```json
 {
   "mcpServers": {
     "sqlnexus_MCP": {
       "command": "C:\\path\\to\\SqlNexus.McpServer\\bin\\Release\\SqlNexus.McpServer.exe",
-      "args": ["--server", "localhost", "--database", "SqlNexus", "--trusted-connection", "false"],
-      "env": {
-        "SqlNexus__UserId": "sqlnexus_reader",
-        "SqlNexus__Password": "YourPassword"
-      }
+      "args": ["--server", "localhost", "--database", "SqlNexus", "--trusted-connection", "false", "--user-id", "sqlnexus_reader"]
     }
   }
 }
 ```
+Use the same `--server` text for `--set-credential` and the registered `args`; the credential is keyed by that exact text (case-insensitive). `--set-credential` also accepts `--password-stdin` (one line on redirected standard input) for scripted use; the registration script uses it so the password never appears on a command line. The credential works only for the same Windows user on the same machine, and does not protect against malware running as that user. A plaintext `SqlNexus:Password` in any JSON configuration file makes the server refuse to start. The `SqlNexus__Password` environment variable is still honored as a compatibility fallback (it logs a warning, because environment variables can be exposed through process inspection and dumps).
 
 **Remote server example:**
 ```json

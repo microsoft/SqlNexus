@@ -44,7 +44,25 @@ param(
     [switch] $Force,
 
     [Parameter()]
-    [switch] $McpOnly
+    [switch] $McpOnly,
+
+    # Windows (default): Windows Integrated Authentication, no secret involved.
+    # Sql: SQL authentication. The password is never written to a configuration file or passed on a
+    # command line; it is collected securely and stored in a DPAPI-protected file for the current user.
+    [Parameter()]
+    [ValidateSet("Windows", "Sql")]
+    [string] $AuthMode = "Windows",
+
+    [Parameter()]
+    [string] $UserId,
+
+    # Optional, for automation. When omitted, the script prompts for the password (masked).
+    [Parameter()]
+    [System.Security.SecureString] $SqlPassword,
+
+    # Replace an existing stored credential. By default an existing credential is kept.
+    [Parameter()]
+    [switch] $UpdateCredential
 )
 
 $ErrorActionPreference = "Stop"
@@ -83,6 +101,16 @@ trap {
     Write-Status -Level "ERROR" -Message "SQL Nexus Copilot integration was not registered."
     Write-Status -Level "ERROR" -Message $_.Exception.Message
     exit 1
+}
+
+if ($AuthMode -eq "Sql") {
+    if ([string]::IsNullOrWhiteSpace($UserId)) {
+        throw "-UserId is required when -AuthMode is Sql."
+    }
+    $UserId = $UserId.Trim()
+}
+elseif ($PSBoundParameters.ContainsKey("UserId") -or $PSBoundParameters.ContainsKey("SqlPassword") -or $UpdateCredential) {
+    throw "-UserId, -SqlPassword and -UpdateCredential are only valid with -AuthMode Sql."
 }
 
 function Read-JsonConfiguration {
@@ -175,6 +203,142 @@ function Write-JsonConfiguration {
     Move-Item -LiteralPath $temporaryPath -Destination $Path -Force
 }
 
+function ConvertTo-ProcessArgument {
+    param([string] $Value)
+
+    if ($Value.Length -gt 0 -and $Value -notmatch '[\s"]') {
+        return $Value
+    }
+
+    $escaped = [regex]::Replace($Value, '(\\*)"', '$1$1\"')
+    $escaped = [regex]::Replace($escaped, '(\\+)$', '$1$1')
+    return '"' + $escaped + '"'
+}
+
+# Runs the MCP server executable in one of its credential modes. The password, when needed, is
+# written to the process's standard input as UTF-8 bytes: never a command-line argument or an
+# environment variable, both of which other processes can read.
+function Invoke-McpCredentialCommand {
+    param(
+        [string[]] $Arguments,
+        [byte[]] $StandardInputBytes
+    )
+
+    $startInfo = New-Object System.Diagnostics.ProcessStartInfo
+    $startInfo.FileName = $mcpExecutable
+    $startInfo.Arguments = (($Arguments | ForEach-Object { ConvertTo-ProcessArgument $_ }) -join " ")
+    $startInfo.UseShellExecute = $false
+    $startInfo.CreateNoWindow = $true
+    $startInfo.RedirectStandardOutput = $true
+    $startInfo.RedirectStandardError = $true
+    $startInfo.RedirectStandardInput = ($null -ne $StandardInputBytes)
+
+    $process = [System.Diagnostics.Process]::Start($startInfo)
+    try {
+        if ($null -ne $StandardInputBytes) {
+            $inputStream = $process.StandardInput.BaseStream
+            $inputStream.Write($StandardInputBytes, 0, $StandardInputBytes.Length)
+            $inputStream.Flush()
+            $process.StandardInput.Close()
+        }
+
+        $output = $process.StandardOutput.ReadToEnd()
+        $errorText = $process.StandardError.ReadToEnd()
+        $process.WaitForExit()
+        return [pscustomobject]@{ ExitCode = $process.ExitCode; Output = $output; Error = $errorText }
+    }
+    finally {
+        $process.Dispose()
+    }
+}
+
+# Copies a SecureString into a UTF-8 byte array without creating a managed string copy.
+function ConvertFrom-SecureStringToUtf8Bytes {
+    param([System.Security.SecureString] $SecureString)
+
+    $bstr = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($SecureString)
+    $chars = New-Object char[] $SecureString.Length
+    try {
+        for ($i = 0; $i -lt $chars.Length; $i++) {
+            $chars[$i] = [char][System.Runtime.InteropServices.Marshal]::ReadInt16($bstr, 2 * $i)
+        }
+
+        return ,([System.Text.Encoding]::UTF8.GetBytes($chars))
+    }
+    finally {
+        [System.Array]::Clear($chars, 0, $chars.Length)
+        [System.Runtime.InteropServices.Marshal]::ZeroFreeBSTR($bstr)
+    }
+}
+
+function Read-SqlPasswordSecurely {
+    try {
+        $first = Read-Host -Prompt "Enter the SQL password for '$UserId' on '$Server'" -AsSecureString
+        $second = Read-Host -Prompt "Confirm the SQL password" -AsSecureString
+    }
+    catch {
+        throw "The SQL password could not be requested because this session is not interactive. Re-run in an interactive PowerShell window, or pass -SqlPassword (a SecureString)."
+    }
+
+    $firstBytes = ConvertFrom-SecureStringToUtf8Bytes -SecureString $first
+    $secondBytes = ConvertFrom-SecureStringToUtf8Bytes -SecureString $second
+    try {
+        $same = ($firstBytes.Length -eq $secondBytes.Length)
+        for ($i = 0; $same -and $i -lt $firstBytes.Length; $i++) {
+            if ($firstBytes[$i] -ne $secondBytes[$i]) { $same = $false }
+        }
+    }
+    finally {
+        [System.Array]::Clear($firstBytes, 0, $firstBytes.Length)
+        [System.Array]::Clear($secondBytes, 0, $secondBytes.Length)
+    }
+
+    if (-not $same) {
+        throw "The passwords did not match. No credential was stored."
+    }
+
+    return $first
+}
+
+function Initialize-SqlCredential {
+    $check = Invoke-McpCredentialCommand -Arguments @("--check-credential", "--server", $Server, "--user-id", $UserId)
+    if ($check.ExitCode -eq 0 -and -not $UpdateCredential) {
+        Write-Status -Level "INFO" -Message "A stored SQL credential already exists for user '$UserId' on '$Server' and was kept. If this login's password has changed in SQL Server, use -UpdateCredential to update the locally stored credential."
+        if ($null -ne $SqlPassword) {
+            Write-Status -Level "WARNING" -Message "-SqlPassword was ignored because a stored credential already exists. Add -UpdateCredential to update the locally stored credential."
+        }
+        return
+    }
+
+    $securePassword = $SqlPassword
+    if ($null -eq $securePassword) {
+        $securePassword = Read-SqlPasswordSecurely
+    }
+    if ($securePassword.Length -eq 0) {
+        throw "The SQL password must not be empty. No credential was stored."
+    }
+
+    $passwordBytes = ConvertFrom-SecureStringToUtf8Bytes -SecureString $securePassword
+    $inputBytes = New-Object byte[] ($passwordBytes.Length + 1)
+    [System.Array]::Copy($passwordBytes, $inputBytes, $passwordBytes.Length)
+    $inputBytes[$passwordBytes.Length] = 10
+    try {
+        $result = Invoke-McpCredentialCommand `
+            -Arguments @("--set-credential", "--server", $Server, "--user-id", $UserId, "--password-stdin") `
+            -StandardInputBytes $inputBytes
+    }
+    finally {
+        [System.Array]::Clear($passwordBytes, 0, $passwordBytes.Length)
+        [System.Array]::Clear($inputBytes, 0, $inputBytes.Length)
+    }
+
+    if ($result.ExitCode -ne 0) {
+        throw "Storing the SQL credential failed. $($result.Error.Trim())"
+    }
+
+    Write-Status -Level "INFO" -Message "Stored the SQL credential for user '$UserId' on '$Server' (protected for the current Windows user)."
+}
+
 $requiredPaths = @($mcpExecutable)
 if (-not $McpOnly) {
     $requiredPaths += @($agentSource, $skillsDirectory)
@@ -190,7 +354,12 @@ $arguments = @("--server", $Server, "--database", $Database)
 if (-not [string]::IsNullOrWhiteSpace($Database2)) {
     $arguments += @("--database2", $Database2)
 }
-$arguments += @("--trusted-connection", "true")
+if ($AuthMode -eq "Sql") {
+    $arguments += @("--trusted-connection", "false", "--user-id", $UserId)
+}
+else {
+    $arguments += @("--trusted-connection", "true")
+}
 # Reject unsafe combinations before anything is written; the MCP server enforces the same rules.
 if ($CertificateValidation -eq "TrustServerCertificate" -and $EncryptionMode -eq "Strict") {
     throw "-EncryptionMode Strict always requires certificate validation (-CertificateValidation Validate) and cannot be combined with -CertificateValidation TrustServerCertificate. Use -EncryptionMode Mandatory for a lab server with an untrusted certificate."
@@ -244,6 +413,11 @@ if (-not $McpOnly) {
     }
 }
 
+if ($AuthMode -eq "Sql") {
+    # Runs after every validation/conflict check above so a rejected registration never leaves a credential behind.
+    Initialize-SqlCredential
+}
+
 if ($vscodeChanged) {
     Write-JsonConfiguration -Path $vscodeConfigPath -Configuration $vscodeConfiguration
 }
@@ -277,7 +451,13 @@ Write-Status -Level "INFO" -Message "Database: $Database"
 if (-not [string]::IsNullOrWhiteSpace($Database2)) {
     Write-Status -Level "INFO" -Message "Comparison database (--database2): $Database2"
 }
-Write-Status -Level "INFO" -Message "Authentication: Windows Integrated Authentication"
+if ($AuthMode -eq "Sql") {
+    Write-Status -Level "INFO" -Message "Authentication: SQL Authentication (user '$UserId'); the password is stored in a DPAPI-protected file for the current Windows user"
+    Write-Status -Level "WARNING" -Message "The stored SQL credential works only in the context of this Windows user on this machine and is keyed by the exact server name '$Server'. If this login's password changes in SQL Server, re-run this script with -UpdateCredential to update the locally stored credential."
+}
+else {
+    Write-Status -Level "INFO" -Message "Authentication: Windows Integrated Authentication"
+}
 Write-Status -Level "INFO" -Message "Encryption mode: $EncryptionMode"
 Write-Status -Level "INFO" -Message "Certificate validation: $CertificateValidation"
 if ($EncryptionMode -eq "Optional") {

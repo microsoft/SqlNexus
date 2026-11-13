@@ -71,22 +71,19 @@ If the engineer's Windows identity is a SQL administrator, use the registration 
 
 The elevated identity is then used only to establish the connection. MCP queries execute as `SqlNexusMcpReader` under `EXECUTE AS USER ... WITH NO REVERT`. No SQL password is required.
 
-**Optional SQL Authentication** — add credentials in `env` (keep passwords out of `args`). Use a least-privilege login, not `sa`:
+**Optional SQL Authentication** — use a least-privilege login (not `sa`). Store its password once with `SqlNexus.McpServer.exe --set-credential --server <server> --user-id <login>` (or register with `-AuthMode Sql -UserId <login>`, which does it for you). The password is protected with Windows DPAPI for the current user and is never kept in a configuration file; the MCP entry holds only the user name:
 ```json
 {
   "mcpServers": {
     "sqlnexus_MCP": {
       "type": "stdio",
       "command": "C:\\path\\to\\SqlNexus.McpServer\\bin\\Release\\SqlNexus.McpServer.exe",
-      "args": ["--server", "localhost", "--database", "SqlNexus", "--trusted-connection", "false"],
-      "env": {
-        "SqlNexus__UserId": "sqlnexus_reader",
-        "SqlNexus__Password": "YourPassword"
-      }
+      "args": ["--server", "localhost", "--database", "SqlNexus", "--trusted-connection", "false", "--user-id", "sqlnexus_reader"]
     }
   }
 }
 ```
+Use the same `--server` text for `--set-credential` and `args`. A plaintext `SqlNexus:Password` in any JSON configuration file makes the server refuse to start.
 
 > **Note**: `"type": "stdio"` is required for Copilot CLI. VS Code's `mcp.json` does not use the `type` field.
 

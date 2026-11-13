@@ -915,9 +915,8 @@ if (Test-Path $configPath) {
     if ([string]::IsNullOrWhiteSpace($configuredUserId) -and $config.SqlNexus.UserId) {
         $configuredUserId = $config.SqlNexus.UserId
     }
-    if ([string]::IsNullOrWhiteSpace($configuredPassword) -and $config.SqlNexus.Password) {
-        $configuredPassword = $config.SqlNexus.Password
-    }
+    # A password in appsettings.json is never read: the MCP server rejects plaintext passwords in
+    # configuration files. Use a stored credential (--set-credential) or SqlNexus__Password.
 }
 
 if ([string]::IsNullOrWhiteSpace($UserId)) { $UserId = $configuredUserId }
@@ -1027,19 +1026,22 @@ function Invoke-McpTool {
 
     $originalUserId = $env:SqlNexus__UserId
     $originalPassword = $env:SqlNexus__Password
-    $setCredentials = (-not $trustedConnection) -and (-not [string]::IsNullOrWhiteSpace($UserId)) -and (-not [string]::IsNullOrWhiteSpace($Password))
+    # The user name goes on the command line (it is not a secret) so the server can find a stored
+    # credential; a password is only set in the environment when explicitly supplied.
+    if ((-not $trustedConnection) -and (-not [string]::IsNullOrWhiteSpace($UserId))) {
+        $exeArgs += @("--user-id", $UserId)
+    }
+    $setPassword = (-not $trustedConnection) -and (-not [string]::IsNullOrWhiteSpace($Password))
 
     try {
-        if ($setCredentials) {
-            $env:SqlNexus__UserId = $UserId
+        if ($setPassword) {
             $env:SqlNexus__Password = $Password
         }
 
         $rawLines = $Messages -join "`n" | & $exePath @exeArgs
     }
     finally {
-        if ($setCredentials) {
-            if ($null -eq $originalUserId) { Remove-Item Env:SqlNexus__UserId -ErrorAction SilentlyContinue } else { $env:SqlNexus__UserId = $originalUserId }
+        if ($setPassword) {
             if ($null -eq $originalPassword) { Remove-Item Env:SqlNexus__Password -ErrorAction SilentlyContinue } else { $env:SqlNexus__Password = $originalPassword }
         }
     }

@@ -5,7 +5,9 @@ current Windows user. They do not install or remove GitHub Copilot.
 
 ## Register SQL Nexus
 
-Run from an extracted SQL Nexus release:
+Run from an extracted SQL Nexus release, in **Windows PowerShell 5.1** (`powershell.exe`).
+PowerShell 7 (`pwsh`) is not supported by SQL Nexus or SQL LogScout; check your version with
+`$PSVersionTable.PSVersion`.
 
 ```powershell
 .\CopilotIntegration\Register-SqlNexusCopilotIntegration.ps1 `
@@ -63,8 +65,64 @@ This adds `--database2` to the registered MCP server arguments. After registrati
 `compare_nexus_databases` tool to get a side-by-side comparison.
 
 Use `-Force` only when replacing an existing `sqlnexus_mcp` entry or SQL Nexus agent that has
-different content. The scripts configure Windows Integrated Authentication and never request or
-store a password.
+different content. By default the scripts configure Windows Integrated Authentication, which
+needs no password. See [SQL Authentication (optional)](#sql-authentication-optional) for the
+one case where a password is stored, and how it is protected.
+
+### SQL Authentication (optional)
+
+Windows Integrated Authentication is recommended and is the default. Use SQL Authentication only
+when the SQL Server login for your Windows account is not an option (for example a SQL Server
+that accepts only SQL logins). Use a least-privilege, read-only login, never `sa`.
+
+```powershell
+.\CopilotIntegration\Register-SqlNexusCopilotIntegration.ps1 `
+    -Server "localhost" `
+    -Database "SqlNexus" `
+    -EncryptionMode Mandatory `
+    -CertificateValidation Validate `
+    -AuthMode Sql `
+    -UserId "sqlnexus_reader"
+```
+
+The script prompts for the password (masked, typed twice) and stores it in a file protected with
+Windows DPAPI for the current user under `%LOCALAPPDATA%\SqlNexus\McpCredentials`. The registered
+MCP arguments contain only `--trusted-connection false` and `--user-id`; **the password is never
+written to `mcp.json`, `mcp-config.json`, `appsettings.json`, or a command line.**
+
+| Parameter | Purpose |
+|-----------|---------|
+| `-AuthMode Sql` | Use SQL Authentication (`Windows` is the default) |
+| `-UserId` | SQL login name; required with `-AuthMode Sql` |
+| `-SqlPassword` | Optional `SecureString` for automation. Without it, the script prompts. An existing stored credential is kept unless `-UpdateCredential` is also given |
+| `-UpdateCredential` | Update the locally stored credential, for example after the login's password changed in SQL Server. This does not change the password in SQL Server |
+
+The same operations are available on the MCP server executable. Pass the same `--server` text you
+registered:
+
+```powershell
+.\SqlNexus.McpServer\SqlNexus.McpServer.exe --set-credential --server "localhost" --user-id "sqlnexus_reader"
+.\SqlNexus.McpServer\SqlNexus.McpServer.exe --check-credential --server "localhost" --user-id "sqlnexus_reader"
+.\SqlNexus.McpServer\SqlNexus.McpServer.exe --delete-credential --server "localhost" --user-id "sqlnexus_reader"
+```
+
+Limits to be aware of:
+
+- The credential can be decrypted only by the same Windows user on the same machine. If it is
+  created by another user or copied elsewhere, the MCP server fails with a message to recreate it.
+- It is keyed by the exact `--server` text (case-insensitive). `localhost`, `.`, `localhost,1433` and
+  `localhost\SQLEXPRESS` are treated as different servers; re-run the script if you change it.
+- DPAPI protects the file from being copied or read by other users. It does not protect against
+  malware or another process running as the same Windows user, and the password is in the MCP
+  server's memory while it runs.
+- A plaintext `SqlNexus:Password` in any JSON configuration file is rejected at startup; the server
+  refuses to run until it is removed.
+- The `SqlNexus__Password` environment variable is still honored as a compatibility mechanism (and
+  logs a warning). Environment variables can be exposed through process inspection, diagnostic dumps,
+  parent processes and logs; prefer the stored credential.
+
+**Existing SQL Authentication setups.** If you previously stored the password in `appsettings.json`
+or in the `env` block of an MCP entry, remove it, then re-register with `-AuthMode Sql -UserId <login> -Force`.
 
 ### TLS policy (encryption and certificate validation)
 
@@ -195,6 +253,13 @@ copilot --agent sql-nexus-diagnostic --prompt "Analyze this SQL Nexus database f
 
 Unregistration removes only the `sqlnexus_mcp` entries and the SQL Nexus diagnostic agent.
 Other user configuration is preserved.
+
+If the registration used SQL Authentication, unregistration also deletes the stored DPAPI
+credential for that server and user (it reads both from the registered entry). It keeps the
+credential, with a warning, when another MCP entry uses the same server and user. Add
+`-KeepCredential` to always keep it, or pass `-Server` and `-UserId` (with optional
+`-McpExecutablePath`) to delete a specific credential. If the MCP executable can no longer be
+found, the script warns that the credential was not deleted and shows how to remove it.
 
 To remove only the MCP entries and preserve the installed SQL Nexus Diagnostic Agent, run:
 

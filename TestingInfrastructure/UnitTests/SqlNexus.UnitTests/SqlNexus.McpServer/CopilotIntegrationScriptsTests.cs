@@ -1,7 +1,7 @@
 using System;
-using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
 
@@ -322,6 +322,354 @@ namespace SqlNexus.UnitTests.SqlNexus.McpServer
             }
         }
 
+        private static readonly string SqlPassword = TestSecrets.NewPassword();
+        // Credentials that already exist before a test runs; generated so no password literal is committed.
+        private static readonly string ExistingSecret = TestSecrets.NewPassword();
+        private static readonly string OldSecret = TestSecrets.NewPassword();
+
+        private static string[] SqlAuthArguments(CopilotIntegrationFixture fixture)
+        {
+            return new[] { "-AuthMode", "Sql", "-UserId", "sqlnexus_reader", "-McpExecutablePath", fixture.StubPath };
+        }
+
+        [TestMethod]
+        public void Register_SqlAuthWithoutUserId_FailsWithoutRegistering()
+        {
+            using (var fixture = new CopilotIntegrationFixture())
+            {
+                ProcessResult result = fixture.RunRegister(extraArguments: new[] { "-AuthMode", "Sql" });
+
+                Assert.AreNotEqual(0, result.ExitCode);
+                StringAssert.Contains(result.Output, "-UserId is required");
+                Assert.IsFalse(File.Exists(fixture.CopilotConfigPath));
+            }
+        }
+
+        [TestMethod]
+        public void Register_WindowsAuthWithSqlOnlyParameters_IsRejected()
+        {
+            using (var fixture = new CopilotIntegrationFixture())
+            {
+                ProcessResult result = fixture.RunRegister(extraArguments: new[] { "-UserId", "sqlnexus_reader" });
+
+                Assert.AreNotEqual(0, result.ExitCode);
+                StringAssert.Contains(result.Output, "only valid with -AuthMode Sql");
+                Assert.IsFalse(File.Exists(fixture.CopilotConfigPath));
+            }
+        }
+
+        [TestMethod]
+        public void Register_InvalidAuthMode_Fails()
+        {
+            using (var fixture = new CopilotIntegrationFixture())
+            {
+                ProcessResult result = fixture.RunRegister(extraArguments: new[] { "-AuthMode", "Kerberos" });
+
+                Assert.AreNotEqual(0, result.ExitCode);
+                Assert.IsFalse(File.Exists(fixture.CopilotConfigPath));
+            }
+        }
+
+        [TestMethod]
+        public void Register_WindowsAuth_DefaultDoesNotTouchCredentialsOrUseUserId()
+        {
+            using (var fixture = new CopilotIntegrationFixture())
+            {
+                ProcessResult result = fixture.RunRegister();
+
+                Assert.AreEqual(0, result.ExitCode, result.Error);
+                string[] arguments = fixture.ReadRegisteredArguments();
+                Assert.AreEqual("true", arguments[Array.IndexOf(arguments, "--trusted-connection") + 1]);
+                CollectionAssert.DoesNotContain(arguments, "--user-id");
+                StringAssert.Contains(result.Output, "Windows Integrated Authentication");
+            }
+        }
+
+        [TestMethod]
+        public void Register_SqlAuthWithExistingCredential_KeepsItAndPersistsNoSecret()
+        {
+            using (var fixture = new CopilotIntegrationFixture())
+            {
+                fixture.CreateStub(existingCredential: ExistingSecret);
+
+                ProcessResult result = fixture.RunRegister(extraArguments: SqlAuthArguments(fixture));
+
+                Assert.AreEqual(0, result.ExitCode, result.Output + result.Error);
+                string[] arguments = fixture.ReadRegisteredArguments();
+                Assert.AreEqual("false", arguments[Array.IndexOf(arguments, "--trusted-connection") + 1]);
+                Assert.AreEqual("sqlnexus_reader", arguments[Array.IndexOf(arguments, "--user-id") + 1]);
+                Assert.AreEqual("localhost\\SQLEXPRESS", arguments[Array.IndexOf(arguments, "--server") + 1]);
+                string calls = fixture.ReadCalls();
+                StringAssert.Contains(calls, "--check-credential");
+                Assert.IsFalse(calls.Contains("--set-credential"), calls);
+                Assert.AreEqual(ExistingSecret, fixture.ReadStoredCredential());
+                StringAssert.Contains(result.Output, "was kept");
+                Assert.IsFalse(File.ReadAllText(fixture.CopilotConfigPath).Contains(ExistingSecret));
+            }
+        }
+
+        [TestMethod]
+        public void Register_SqlAuthWithoutCredentialInNonInteractiveSession_FailsAndWritesNothing()
+        {
+            using (var fixture = new CopilotIntegrationFixture())
+            {
+                fixture.CreateStub();
+
+                ProcessResult result = fixture.RunRegister(extraArguments: SqlAuthArguments(fixture));
+
+                Assert.AreNotEqual(0, result.ExitCode);
+                StringAssert.Contains(result.Output, "not interactive");
+                StringAssert.Contains(result.Output, "-SqlPassword");
+                Assert.IsFalse(File.Exists(fixture.CopilotConfigPath));
+                Assert.IsFalse(File.Exists(fixture.VsCodeConfigPath));
+                Assert.IsNull(fixture.ReadStoredCredential());
+            }
+        }
+
+        [TestMethod]
+        public void Register_SqlAuthWithSecurePassword_SendsPasswordOnStandardInputOnly()
+        {
+            using (var fixture = new CopilotIntegrationFixture())
+            {
+                fixture.CreateStub();
+
+                ProcessResult result = fixture.RunRegisterWithSecurePassword(SqlPassword, SqlAuthArguments(fixture));
+
+                Assert.AreEqual(0, result.ExitCode, result.Output + result.Error);
+                Assert.AreEqual(SqlPassword, fixture.ReadStoredCredential(), result.Output + result.Error);
+                string calls = fixture.ReadCalls();
+                StringAssert.Contains(calls, "--set-credential");
+                StringAssert.Contains(calls, "--password-stdin");
+                Assert.IsFalse(calls.Contains(SqlPassword), "The password must never appear on a command line.");
+                Assert.IsFalse(result.Output.Contains(SqlPassword));
+                Assert.IsFalse(result.Error.Contains(SqlPassword));
+                Assert.IsFalse(File.ReadAllText(fixture.CopilotConfigPath).Contains(SqlPassword));
+                Assert.IsFalse(File.ReadAllText(fixture.VsCodeConfigPath).Contains(SqlPassword));
+            }
+        }
+
+        [TestMethod]
+        public void Register_SqlAuthUpdateCredential_ReplacesExistingPassword()
+        {
+            using (var fixture = new CopilotIntegrationFixture())
+            {
+                fixture.CreateStub(existingCredential: OldSecret);
+                string[] extra = SqlAuthArguments(fixture).Concat(new[] { "-UpdateCredential" }).ToArray();
+
+                ProcessResult result = fixture.RunRegisterWithSecurePassword(SqlPassword, extra);
+
+                Assert.AreEqual(0, result.ExitCode, result.Output + result.Error);
+                Assert.AreEqual(SqlPassword, fixture.ReadStoredCredential());
+            }
+        }
+
+        [TestMethod]
+        public void Register_SqlAuthConflictingEntry_FailsBeforeStoringCredential()
+        {
+            using (var fixture = new CopilotIntegrationFixture())
+            {
+                fixture.CreateStub();
+                File.WriteAllText(fixture.CopilotConfigPath, "{\"mcpServers\":{\"sqlnexus_mcp\":{\"type\":\"stdio\",\"command\":\"old.exe\"}}}");
+
+                ProcessResult result = fixture.RunRegisterWithSecurePassword(SqlPassword, SqlAuthArguments(fixture));
+
+                Assert.AreNotEqual(0, result.ExitCode);
+                Assert.IsNull(fixture.ReadStoredCredential());
+            }
+        }
+
+        [TestMethod]
+        public void Register_SqlAuthPasswordWithExistingCredentialAndNoUpdate_WarnsItWasIgnored()
+        {
+            using (var fixture = new CopilotIntegrationFixture())
+            {
+                fixture.CreateStub(existingCredential: OldSecret);
+
+                ProcessResult result = fixture.RunRegisterWithSecurePassword(SqlPassword, SqlAuthArguments(fixture));
+
+                Assert.AreEqual(0, result.ExitCode, result.Output + result.Error);
+                StringAssert.Contains(result.Output, "-SqlPassword was ignored");
+                Assert.AreEqual(OldSecret, fixture.ReadStoredCredential());
+                Assert.IsFalse(result.Output.Contains(SqlPassword));
+            }
+        }
+
+        [TestMethod]
+        public void Unregister_RegisteredCommandIsNotTheMcpServer_IsNotExecuted()
+        {
+            using (var fixture = new CopilotIntegrationFixture())
+            {
+                fixture.CreateStub(existingCredential: ExistingSecret);
+                string unrelated = Path.Combine(Path.GetDirectoryName(fixture.StubPath), "unrelated-tool.cmd");
+                File.Copy(fixture.StubPath, unrelated);
+                File.WriteAllText(
+                    fixture.CopilotConfigPath,
+                    new JObject
+                    {
+                        ["mcpServers"] = new JObject
+                        {
+                            ["sqlnexus_mcp"] = new JObject
+                            {
+                                ["type"] = "stdio",
+                                ["command"] = unrelated,
+                                ["args"] = new JArray("--server", "localhost", "--trusted-connection", "false", "--user-id", "reader")
+                            }
+                        }
+                    }.ToString());
+                File.Delete(fixture.McpExecutable);
+
+                ProcessResult result = fixture.RunUnregister();
+
+                Assert.AreEqual(0, result.ExitCode, result.Output + result.Error);
+                StringAssert.Contains(result.Output, "was not run");
+                Assert.AreEqual(string.Empty, fixture.ReadCalls());
+                Assert.AreEqual(ExistingSecret, fixture.ReadStoredCredential());
+            }
+        }
+
+        [TestMethod]
+        public void Unregister_ExecutableCannotStart_ReportsCredentialNotDeletedAndFails()
+        {
+            using (var fixture = new CopilotIntegrationFixture())
+            {
+                fixture.CreateStub(existingCredential: ExistingSecret);
+                Assert.AreEqual(0, fixture.RunRegister(extraArguments: SqlAuthArguments(fixture)).ExitCode);
+
+                // The default fixture "executable" is a text file, so it cannot be started.
+                ProcessResult result = fixture.RunUnregister(
+                    extraArguments: new[] { "-McpExecutablePath", fixture.McpExecutable });
+
+                Assert.AreNotEqual(0, result.ExitCode);
+                StringAssert.Contains(result.Output, "could not be deleted");
+                Assert.AreEqual(ExistingSecret, fixture.ReadStoredCredential());
+                JObject configuration = JObject.Parse(File.ReadAllText(fixture.CopilotConfigPath));
+                Assert.IsNull(configuration["mcpServers"]["sqlnexus_mcp"]);
+            }
+        }
+
+        [TestMethod]
+        public void Unregister_SqlAuthRegistration_DeletesTheStoredCredential()
+        {
+            using (var fixture = new CopilotIntegrationFixture())
+            {
+                fixture.CreateStub(existingCredential: ExistingSecret);
+                Assert.AreEqual(0, fixture.RunRegister(extraArguments: SqlAuthArguments(fixture)).ExitCode);
+
+                ProcessResult result = fixture.RunUnregister();
+
+                Assert.AreEqual(0, result.ExitCode, result.Output + result.Error);
+                Assert.IsNull(fixture.ReadStoredCredential());
+                string calls = fixture.ReadCalls();
+                StringAssert.Contains(calls, "--delete-credential --server localhost\\SQLEXPRESS --user-id sqlnexus_reader");
+                JObject configuration = JObject.Parse(File.ReadAllText(fixture.CopilotConfigPath));
+                Assert.IsNull(configuration["mcpServers"]["sqlnexus_mcp"]);
+            }
+        }
+
+        [TestMethod]
+        public void Unregister_KeepCredential_PreservesTheStoredCredential()
+        {
+            using (var fixture = new CopilotIntegrationFixture())
+            {
+                fixture.CreateStub(existingCredential: ExistingSecret);
+                Assert.AreEqual(0, fixture.RunRegister(extraArguments: SqlAuthArguments(fixture)).ExitCode);
+
+                ProcessResult result = fixture.RunUnregister(extraArguments: new[] { "-KeepCredential" });
+
+                Assert.AreEqual(0, result.ExitCode, result.Output + result.Error);
+                Assert.AreEqual(ExistingSecret, fixture.ReadStoredCredential());
+                Assert.IsFalse(fixture.ReadCalls().Contains("--delete-credential"));
+            }
+        }
+
+        [TestMethod]
+        public void Unregister_WindowsAuthRegistration_DoesNotInvokeCredentialDeletion()
+        {
+            using (var fixture = new CopilotIntegrationFixture())
+            {
+                fixture.CreateStub(existingCredential: ExistingSecret);
+                Assert.AreEqual(0, fixture.RunRegister().ExitCode);
+
+                ProcessResult result = fixture.RunUnregister();
+
+                Assert.AreEqual(0, result.ExitCode, result.Output + result.Error);
+                Assert.AreEqual(ExistingSecret, fixture.ReadStoredCredential());
+                Assert.AreEqual(string.Empty, fixture.ReadCalls());
+            }
+        }
+
+        [TestMethod]
+        public void Unregister_CredentialSharedWithAnotherEntry_KeepsCredentialAndWarns()
+        {
+            using (var fixture = new CopilotIntegrationFixture())
+            {
+                fixture.CreateStub(existingCredential: ExistingSecret);
+                Assert.AreEqual(0, fixture.RunRegister(extraArguments: SqlAuthArguments(fixture)).ExitCode);
+                JObject vscode = JObject.Parse(File.ReadAllText(fixture.VsCodeConfigPath));
+                ((JObject)vscode["servers"])["my_other_nexus"] = new JObject
+                {
+                    ["command"] = fixture.StubPath,
+                    ["args"] = new JArray("--server", "LOCALHOST\\sqlexpress", "--trusted-connection", "false", "--user-id", "SQLNEXUS_READER")
+                };
+                File.WriteAllText(fixture.VsCodeConfigPath, vscode.ToString());
+
+                ProcessResult result = fixture.RunUnregister();
+
+                Assert.AreEqual(0, result.ExitCode, result.Output + result.Error);
+                StringAssert.Contains(result.Output, "my_other_nexus");
+                Assert.AreEqual(ExistingSecret, fixture.ReadStoredCredential());
+                JObject after = JObject.Parse(File.ReadAllText(fixture.VsCodeConfigPath));
+                Assert.IsNull(after["servers"]["sqlnexus_mcp"]);
+                Assert.IsNotNull(after["servers"]["my_other_nexus"]);
+            }
+        }
+
+        [TestMethod]
+        public void Unregister_ExecutableMissing_RemovesEntriesAndWarnsCredentialWasNotDeleted()
+        {
+            using (var fixture = new CopilotIntegrationFixture())
+            {
+                fixture.CreateStub(existingCredential: ExistingSecret);
+                Assert.AreEqual(0, fixture.RunRegister(extraArguments: SqlAuthArguments(fixture)).ExitCode);
+                File.Delete(fixture.StubPath);
+
+                ProcessResult result = fixture.RunUnregister();
+
+                Assert.AreEqual(0, result.ExitCode, result.Output + result.Error);
+                StringAssert.Contains(result.Output, "was NOT deleted");
+                StringAssert.Contains(result.Output, "--delete-credential");
+                JObject configuration = JObject.Parse(File.ReadAllText(fixture.CopilotConfigPath));
+                Assert.IsNull(configuration["mcpServers"]["sqlnexus_mcp"]);
+            }
+        }
+
+        [TestMethod]
+        public void Unregister_ServerWithoutUserIdOverride_IsRejected()
+        {
+            using (var fixture = new CopilotIntegrationFixture())
+            {
+                ProcessResult result = fixture.RunUnregister(extraArguments: new[] { "-Server", "localhost" });
+
+                Assert.AreNotEqual(0, result.ExitCode);
+                StringAssert.Contains(result.Output, "-Server and -UserId must be specified together");
+            }
+        }
+
+        [TestMethod]
+        public void Unregister_ExplicitServerAndUser_DeletesThatCredentialEvenWithoutRegistration()
+        {
+            using (var fixture = new CopilotIntegrationFixture())
+            {
+                fixture.CreateStub(existingCredential: ExistingSecret);
+
+                ProcessResult result = fixture.RunUnregister(
+                    extraArguments: new[] { "-Server", "localhost", "-UserId", "reader", "-McpExecutablePath", fixture.StubPath });
+
+                Assert.AreEqual(0, result.ExitCode, result.Output + result.Error);
+                Assert.IsNull(fixture.ReadStoredCredential());
+            }
+        }
+
         private sealed class CopilotIntegrationFixture : IDisposable
         {
             private readonly string root;
@@ -374,6 +722,58 @@ namespace SqlNexus.UnitTests.SqlNexus.McpServer
             public string VsCodeConfigPath { get; }
             public string CopilotConfigPath { get; }
 
+            public string StubPath
+            {
+                get { return Path.Combine(root, "McpStub", "SqlNexus.McpServer.cmd"); }
+            }
+
+            // A stand-in for SqlNexus.McpServer.exe that records every call (arguments only) and keeps the
+            // "stored credential" in a text file, so the scripts' credential handling can be tested
+            // deterministically without DPAPI or a real executable.
+            public void CreateStub(string existingCredential = null)
+            {
+                string stubDirectory = Path.GetDirectoryName(StubPath);
+                Directory.CreateDirectory(stubDirectory);
+                File.WriteAllText(
+                    StubPath,
+                    "@echo off\r\n" +
+                    "setlocal EnableDelayedExpansion\r\n" +
+                    ">>\"%~dp0calls.log\" echo %*\r\n" +
+                    "if /i \"%~1\"==\"--check-credential\" goto check\r\n" +
+                    "if /i \"%~1\"==\"--set-credential\" goto set\r\n" +
+                    "if /i \"%~1\"==\"--delete-credential\" goto delete\r\n" +
+                    "exit /b 9\r\n" +
+                    ":check\r\n" +
+                    "if exist \"%~dp0credential.txt\" exit /b 0\r\n" +
+                    "echo No stored credential. 1>&2\r\n" +
+                    "exit /b 1\r\n" +
+                    ":set\r\n" +
+                    "set /p PW=\r\n" +
+                    ">\"%~dp0credential.txt\" echo !PW!\r\n" +
+                    "echo Stored.\r\n" +
+                    "exit /b 0\r\n" +
+                    ":delete\r\n" +
+                    "if exist \"%~dp0credential.txt\" del \"%~dp0credential.txt\"\r\n" +
+                    "echo Deleted the stored SQL credential.\r\n" +
+                    "exit /b 0\r\n");
+                if (existingCredential != null)
+                {
+                    File.WriteAllText(Path.Combine(stubDirectory, "credential.txt"), existingCredential + "\r\n");
+                }
+            }
+
+            public string ReadCalls()
+            {
+                string path = Path.Combine(Path.GetDirectoryName(StubPath), "calls.log");
+                return File.Exists(path) ? File.ReadAllText(path) : string.Empty;
+            }
+
+            public string ReadStoredCredential()
+            {
+                string path = Path.Combine(Path.GetDirectoryName(StubPath), "credential.txt");
+                return File.Exists(path) ? File.ReadAllText(path).TrimEnd('\r', '\n') : null;
+            }
+
             public string[] ReadRegisteredArguments()
             {
                 JObject configuration = JObject.Parse(File.ReadAllText(CopilotConfigPath));
@@ -385,7 +785,37 @@ namespace SqlNexus.UnitTests.SqlNexus.McpServer
                 string elevatedPrincipalPolicy = "Block",
                 string encryptionMode = "Mandatory",
                 string certificateValidation = "Validate",
-                bool passInstallRoot = true)
+                bool passInstallRoot = true,
+                string[] extraArguments = null)
+            {
+                return RunPowerShell(registerScript, BuildRegisterArguments(
+                    mcpOnly, elevatedPrincipalPolicy, encryptionMode, certificateValidation, passInstallRoot, extraArguments));
+            }
+
+            // Runs the registration script through -Command so a real SecureString can be supplied.
+            public ProcessResult RunRegisterWithSecurePassword(string password, string[] extraArguments)
+            {
+                string[] arguments = BuildRegisterArguments(false, "Block", "Mandatory", "Validate", true, extraArguments);
+                string command = "$ErrorActionPreference = 'Stop'; "
+                    + "$securePassword = New-Object System.Security.SecureString; "
+                    + SingleQuote(password) + ".ToCharArray() | ForEach-Object { $securePassword.AppendChar($_) }; "
+                    + "& " + SingleQuote(registerScript);
+                foreach (string argument in arguments)
+                {
+                    command += " " + (argument.StartsWith("-") ? argument : SingleQuote(argument));
+                }
+
+                command += " -SqlPassword $securePassword; exit $LASTEXITCODE";
+                return RunPowerShellCommand(command);
+            }
+
+            private string[] BuildRegisterArguments(
+                bool mcpOnly,
+                string elevatedPrincipalPolicy,
+                string encryptionMode,
+                string certificateValidation,
+                bool passInstallRoot,
+                string[] extraArguments)
             {
                 var arguments = new System.Collections.Generic.List<string>
                 {
@@ -414,11 +844,15 @@ namespace SqlNexus.UnitTests.SqlNexus.McpServer
                 {
                     arguments.Add("-McpOnly");
                 }
+                if (extraArguments != null)
+                {
+                    arguments.AddRange(extraArguments);
+                }
 
-                return RunPowerShell(registerScript, arguments.ToArray());
+                return arguments.ToArray();
             }
 
-            public ProcessResult RunUnregister(bool mcpOnly = false)
+            public ProcessResult RunUnregister(bool mcpOnly = false, string[] extraArguments = null)
             {
                 var arguments = new System.Collections.Generic.List<string>
                 {
@@ -428,6 +862,10 @@ namespace SqlNexus.UnitTests.SqlNexus.McpServer
                 if (mcpOnly)
                 {
                     arguments.Add("-McpOnly");
+                }
+                if (extraArguments != null)
+                {
+                    arguments.AddRange(extraArguments);
                 }
 
                 return RunPowerShell(unregisterScript, arguments.ToArray());
@@ -441,6 +879,16 @@ namespace SqlNexus.UnitTests.SqlNexus.McpServer
                 }
             }
 
+            private static string SingleQuote(string value)
+            {
+                return "'" + value.Replace("'", "''") + "'";
+            }
+
+            private static ProcessResult RunPowerShellCommand(string command)
+            {
+                return RunPowerShellWithArguments("-NoProfile -NonInteractive -ExecutionPolicy Bypass -Command " + Quote(command));
+            }
+
             private static ProcessResult RunPowerShell(string script, params string[] arguments)
             {
                 string commandArguments = "-NoProfile -NonInteractive -ExecutionPolicy Bypass -File " + Quote(script);
@@ -449,6 +897,11 @@ namespace SqlNexus.UnitTests.SqlNexus.McpServer
                     commandArguments += " " + Quote(argument);
                 }
 
+                return RunPowerShellWithArguments(commandArguments);
+            }
+
+            private static ProcessResult RunPowerShellWithArguments(string commandArguments)
+            {
                 var startInfo = new ProcessStartInfo
                 {
                     FileName = Path.Combine(
