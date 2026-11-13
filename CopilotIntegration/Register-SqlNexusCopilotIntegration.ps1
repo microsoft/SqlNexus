@@ -453,7 +453,7 @@ if (-not [string]::IsNullOrWhiteSpace($Database2)) {
 }
 if ($AuthMode -eq "Sql") {
     Write-Status -Level "INFO" -Message "Authentication: SQL Authentication (user '$UserId'); the password is stored in a DPAPI-protected file for the current Windows user"
-    Write-Status -Level "WARNING" -Message "The stored SQL credential works only for this Windows user on this machine and is keyed by the exact server name '$Server'. Re-run this script with -UpdateCredential to change the password."
+    Write-Status -Level "WARNING" -Message "The stored SQL credential works only in the context of this Windows user on this machine and is keyed by the exact server name '$Server'. Re-run this script with -UpdateCredential to change the password."
 }
 else {
     Write-Status -Level "INFO" -Message "Authentication: Windows Integrated Authentication"
