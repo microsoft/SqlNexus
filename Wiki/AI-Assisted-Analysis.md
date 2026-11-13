@@ -129,7 +129,7 @@ in scripts.
 | `-AuthMode` | `Windows` (Windows Integrated Authentication) or `Sql`; see [SQL Authentication](#sql-authentication-optional) | `Windows` |
 | `-UserId` | SQL login name; required with `-AuthMode Sql` | Not configured |
 | `-SqlPassword` | Optional `SecureString` for automation with `-AuthMode Sql`; the script prompts when omitted | Prompt |
-| `-UpdateCredential` | Replace an existing stored SQL credential | Off |
+| `-UpdateCredential` | Update the locally stored credential, for example after the login's password changed in SQL Server. This does not change the password in SQL Server | Off |
 
 ### SQL Authentication (optional)
 
@@ -151,7 +151,7 @@ The script prompts for the password (masked, entered twice) and stores it in a W
 DPAPI-protected file for the current user in `%LOCALAPPDATA%\SqlNexus\McpCredentials`. The
 registered MCP entry contains only `--trusted-connection false` and `--user-id`; the password is
 never written to `mcp.json`, `mcp-config.json`, `appsettings.json`, an environment variable, or a
-command line. If a credential already exists it is kept; add `-UpdateCredential` to replace it.
+command line. If a credential already exists it is kept; add `-UpdateCredential` to update the locally stored credential.
 
 Things to know:
 
@@ -162,7 +162,8 @@ Things to know:
 - The MCP server refuses to start if any JSON configuration file contains `SqlNexus:Password`.
 - `SqlNexus__Password` in the environment is still honored for compatibility but logs a warning;
   environment variables can be exposed through process inspection, dumps, parent processes and logs.
-- To change the password, rerun the script with `-UpdateCredential`. To manage the credential directly,
+- If the login's password changes in SQL Server, rerun the script with `-UpdateCredential` to update the
+  locally stored credential (the script never changes the password in SQL Server). To manage the credential directly,
   use `SqlNexus.McpServer.exe --set-credential`, `--check-credential` or `--delete-credential` with the
   same `--server` and `--user-id`.
 - Upgrading: remove any password you previously placed in `appsettings.json` or an MCP `env` block,

@@ -95,7 +95,7 @@ written to `mcp.json`, `mcp-config.json`, `appsettings.json`, or a command line.
 | `-AuthMode Sql` | Use SQL Authentication (`Windows` is the default) |
 | `-UserId` | SQL login name; required with `-AuthMode Sql` |
 | `-SqlPassword` | Optional `SecureString` for automation. Without it, the script prompts. An existing stored credential is kept unless `-UpdateCredential` is also given |
-| `-UpdateCredential` | Replace the stored credential (for example after a password change) |
+| `-UpdateCredential` | Update the locally stored credential, for example after the login's password changed in SQL Server. This does not change the password in SQL Server |
 
 The same operations are available on the MCP server executable. Pass the same `--server` text you
 registered:

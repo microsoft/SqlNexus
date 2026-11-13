@@ -303,9 +303,9 @@ function Read-SqlPasswordSecurely {
 function Initialize-SqlCredential {
     $check = Invoke-McpCredentialCommand -Arguments @("--check-credential", "--server", $Server, "--user-id", $UserId)
     if ($check.ExitCode -eq 0 -and -not $UpdateCredential) {
-        Write-Status -Level "INFO" -Message "A stored SQL credential already exists for user '$UserId' on '$Server' and was kept. Use -UpdateCredential to replace it."
+        Write-Status -Level "INFO" -Message "A stored SQL credential already exists for user '$UserId' on '$Server' and was kept. If this login's password has changed in SQL Server, use -UpdateCredential to update the locally stored credential."
         if ($null -ne $SqlPassword) {
-            Write-Status -Level "WARNING" -Message "-SqlPassword was ignored because a stored credential already exists. Add -UpdateCredential to replace the stored password."
+            Write-Status -Level "WARNING" -Message "-SqlPassword was ignored because a stored credential already exists. Add -UpdateCredential to update the locally stored credential."
         }
         return
     }
@@ -453,7 +453,7 @@ if (-not [string]::IsNullOrWhiteSpace($Database2)) {
 }
 if ($AuthMode -eq "Sql") {
     Write-Status -Level "INFO" -Message "Authentication: SQL Authentication (user '$UserId'); the password is stored in a DPAPI-protected file for the current Windows user"
-    Write-Status -Level "WARNING" -Message "The stored SQL credential works only in the context of this Windows user on this machine and is keyed by the exact server name '$Server'. Re-run this script with -UpdateCredential to change the password."
+    Write-Status -Level "WARNING" -Message "The stored SQL credential works only in the context of this Windows user on this machine and is keyed by the exact server name '$Server'. If this login's password changes in SQL Server, re-run this script with -UpdateCredential to update the locally stored credential."
 }
 else {
     Write-Status -Level "INFO" -Message "Authentication: Windows Integrated Authentication"
