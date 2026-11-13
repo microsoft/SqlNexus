@@ -78,6 +78,32 @@ For any WinForms UI changes:
 - Prefer clear names; add comments only where they clarify non-obvious intent (as the codebase does).
 - Do not introduce new warnings; keep the build clean (`net48`, C# 7.3 language features only).
 
+## SQL and case-sensitive collations (mandatory)
+
+SqlNexus and the MCP server run against SQL Server instances and databases that may use a
+**case-sensitive (CS/CS_AS) collation**. All T-SQL must work there, wherever it lives: `.sql`
+scripts, SQL strings in C# and PowerShell, RDLC report datasets, and `TextRowsets.xml` rowset
+definitions. An identifier written with the wrong case is a syntax error ("Invalid object name",
+"Invalid column name", "Could not find stored procedure") on a CS instance.
+
+- Write every system object exactly as SQL Server defines it: catalog views, DMVs, system tables,
+  system stored procedures and functions, schemas, and their columns. Examples:
+  `sys.dm_exec_requests` and `sys.dm_os_wait_stats` (all lowercase), `sys.objects`, `sys.databases`,
+  `msdb.dbo.sysjobs`, `sp_executesql`, `sp_MSforeachdb`, `OBJECT_ID()`, `DB_NAME()`. Never rely on
+  case-insensitive matching (for example `SYS.OBJECTS`, `Sys.Dm_Exec_Requests`, `SP_EXECUTESQL`).
+- Verify the exact spelling of system objects and columns against the official documentation
+  (Microsoft Learn) instead of writing them from memory.
+- Reference SqlNexus tables, columns, variables, aliases, temp tables, and parameters with the
+  same case used in their definition. Do not change the case of an existing name.
+- Use the same case for a name everywhere it appears in the same statement or batch (including
+  aliases, CTE names, `@variables`, and `#temp` tables).
+- Compare metadata in code with an explicit, case-aware intent: when a name could be compared
+  case-insensitively, use `COLLATE` deliberately rather than depending on the database collation.
+  Do not assume `tempdb`, `master`, and the SqlNexus database share the same collation.
+- Keywords may be any case, but follow the casing of neighbouring code.
+- Validate new or changed SQL against a case-sensitive instance (or a database created with a
+  `*_CS_*` collation such as `Latin1_General_CS_AS`) before considering the change done.
+
 ## Official wiki documentation
 
 - `Wiki/` contains the official user-facing documentation copied from the separate SQL Nexus
@@ -97,6 +123,8 @@ For any WinForms UI changes:
 2. Unit tests added/updated and passing (including a regression test for any bug fix).
 3. Security, privacy, and accessibility considerations addressed (or explicitly noted as N/A).
 4. Build is green; no new warnings.
+   Any new or changed T-SQL has been checked for case-sensitive collation compatibility (see
+   "SQL and case-sensitive collations").
 5. PR description explains the change, any data-handling implications, and test coverage.
 6. Check whether any file listed in `ScriptIntegrityChecker.ScriptHashes` changed; if so, compute
    its new SHA-256 hash from the final file contents and update the corresponding allowlist entry.
