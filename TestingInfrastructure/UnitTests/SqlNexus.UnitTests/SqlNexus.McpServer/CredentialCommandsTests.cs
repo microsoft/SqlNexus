@@ -12,7 +12,7 @@ namespace SqlNexus.UnitTests.SqlNexus.McpServer
     {
         private const string Server = "localhost\\SQLEXPRESS";
         private const string User = "sqlnexus_reader";
-        private const string Password = "Zx9!unique-Passw0rd#42";
+        private static readonly string Password = TestSecrets.NewPassword();
 
         private string root;
         private string directory;
@@ -268,10 +268,11 @@ namespace SqlNexus.UnitTests.SqlNexus.McpServer
         public void Execute_UnrecognizedPositionalArgument_DoesNotEchoIt()
         {
             // A mistyped positional password must not be echoed to stderr.
-            Result result = Run(Args("--set-credential", "hunter2-Secret"), redirected: false);
+            string mistyped = TestSecrets.NewPassword();
+            Result result = Run(Args("--set-credential", mistyped), redirected: false);
 
             Assert.AreEqual(Commands.ExitUsage, result.ExitCode);
-            Assert.IsFalse(result.Combined.Contains("hunter2-Secret"));
+            Assert.IsFalse(result.Combined.Contains(mistyped));
         }
 
         [TestMethod]

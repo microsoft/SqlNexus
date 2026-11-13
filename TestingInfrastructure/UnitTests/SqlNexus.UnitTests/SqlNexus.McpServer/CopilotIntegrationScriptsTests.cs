@@ -322,7 +322,10 @@ namespace SqlNexus.UnitTests.SqlNexus.McpServer
             }
         }
 
-        private const string SqlPassword = "Zx9!unique-Passw0rd#42";
+        private static readonly string SqlPassword = TestSecrets.NewPassword();
+        // Credentials that already exist before a test runs; generated so no password literal is committed.
+        private static readonly string ExistingSecret = TestSecrets.NewPassword();
+        private static readonly string OldSecret = TestSecrets.NewPassword();
 
         private static string[] SqlAuthArguments(CopilotIntegrationFixture fixture)
         {
@@ -387,7 +390,7 @@ namespace SqlNexus.UnitTests.SqlNexus.McpServer
         {
             using (var fixture = new CopilotIntegrationFixture())
             {
-                fixture.CreateStub(existingCredential: "stored-earlier");
+                fixture.CreateStub(existingCredential: ExistingSecret);
 
                 ProcessResult result = fixture.RunRegister(extraArguments: SqlAuthArguments(fixture));
 
@@ -399,9 +402,9 @@ namespace SqlNexus.UnitTests.SqlNexus.McpServer
                 string calls = fixture.ReadCalls();
                 StringAssert.Contains(calls, "--check-credential");
                 Assert.IsFalse(calls.Contains("--set-credential"), calls);
-                Assert.AreEqual("stored-earlier", fixture.ReadStoredCredential());
+                Assert.AreEqual(ExistingSecret, fixture.ReadStoredCredential());
                 StringAssert.Contains(result.Output, "was kept");
-                Assert.IsFalse(File.ReadAllText(fixture.CopilotConfigPath).Contains("stored-earlier"));
+                Assert.IsFalse(File.ReadAllText(fixture.CopilotConfigPath).Contains(ExistingSecret));
             }
         }
 
@@ -450,7 +453,7 @@ namespace SqlNexus.UnitTests.SqlNexus.McpServer
         {
             using (var fixture = new CopilotIntegrationFixture())
             {
-                fixture.CreateStub(existingCredential: "old-password");
+                fixture.CreateStub(existingCredential: OldSecret);
                 string[] extra = SqlAuthArguments(fixture).Concat(new[] { "-UpdateCredential" }).ToArray();
 
                 ProcessResult result = fixture.RunRegisterWithSecurePassword(SqlPassword, extra);
@@ -480,13 +483,13 @@ namespace SqlNexus.UnitTests.SqlNexus.McpServer
         {
             using (var fixture = new CopilotIntegrationFixture())
             {
-                fixture.CreateStub(existingCredential: "old-password");
+                fixture.CreateStub(existingCredential: OldSecret);
 
                 ProcessResult result = fixture.RunRegisterWithSecurePassword(SqlPassword, SqlAuthArguments(fixture));
 
                 Assert.AreEqual(0, result.ExitCode, result.Output + result.Error);
                 StringAssert.Contains(result.Output, "-SqlPassword was ignored");
-                Assert.AreEqual("old-password", fixture.ReadStoredCredential());
+                Assert.AreEqual(OldSecret, fixture.ReadStoredCredential());
                 Assert.IsFalse(result.Output.Contains(SqlPassword));
             }
         }
@@ -496,7 +499,7 @@ namespace SqlNexus.UnitTests.SqlNexus.McpServer
         {
             using (var fixture = new CopilotIntegrationFixture())
             {
-                fixture.CreateStub(existingCredential: "stored-earlier");
+                fixture.CreateStub(existingCredential: ExistingSecret);
                 string unrelated = Path.Combine(Path.GetDirectoryName(fixture.StubPath), "unrelated-tool.cmd");
                 File.Copy(fixture.StubPath, unrelated);
                 File.WriteAllText(
@@ -520,7 +523,7 @@ namespace SqlNexus.UnitTests.SqlNexus.McpServer
                 Assert.AreEqual(0, result.ExitCode, result.Output + result.Error);
                 StringAssert.Contains(result.Output, "was not run");
                 Assert.AreEqual(string.Empty, fixture.ReadCalls());
-                Assert.AreEqual("stored-earlier", fixture.ReadStoredCredential());
+                Assert.AreEqual(ExistingSecret, fixture.ReadStoredCredential());
             }
         }
 
@@ -529,7 +532,7 @@ namespace SqlNexus.UnitTests.SqlNexus.McpServer
         {
             using (var fixture = new CopilotIntegrationFixture())
             {
-                fixture.CreateStub(existingCredential: "stored-earlier");
+                fixture.CreateStub(existingCredential: ExistingSecret);
                 Assert.AreEqual(0, fixture.RunRegister(extraArguments: SqlAuthArguments(fixture)).ExitCode);
 
                 // The default fixture "executable" is a text file, so it cannot be started.
@@ -538,7 +541,7 @@ namespace SqlNexus.UnitTests.SqlNexus.McpServer
 
                 Assert.AreNotEqual(0, result.ExitCode);
                 StringAssert.Contains(result.Output, "could not be deleted");
-                Assert.AreEqual("stored-earlier", fixture.ReadStoredCredential());
+                Assert.AreEqual(ExistingSecret, fixture.ReadStoredCredential());
                 JObject configuration = JObject.Parse(File.ReadAllText(fixture.CopilotConfigPath));
                 Assert.IsNull(configuration["mcpServers"]["sqlnexus_mcp"]);
             }
@@ -549,7 +552,7 @@ namespace SqlNexus.UnitTests.SqlNexus.McpServer
         {
             using (var fixture = new CopilotIntegrationFixture())
             {
-                fixture.CreateStub(existingCredential: "stored-earlier");
+                fixture.CreateStub(existingCredential: ExistingSecret);
                 Assert.AreEqual(0, fixture.RunRegister(extraArguments: SqlAuthArguments(fixture)).ExitCode);
 
                 ProcessResult result = fixture.RunUnregister();
@@ -568,13 +571,13 @@ namespace SqlNexus.UnitTests.SqlNexus.McpServer
         {
             using (var fixture = new CopilotIntegrationFixture())
             {
-                fixture.CreateStub(existingCredential: "stored-earlier");
+                fixture.CreateStub(existingCredential: ExistingSecret);
                 Assert.AreEqual(0, fixture.RunRegister(extraArguments: SqlAuthArguments(fixture)).ExitCode);
 
                 ProcessResult result = fixture.RunUnregister(extraArguments: new[] { "-KeepCredential" });
 
                 Assert.AreEqual(0, result.ExitCode, result.Output + result.Error);
-                Assert.AreEqual("stored-earlier", fixture.ReadStoredCredential());
+                Assert.AreEqual(ExistingSecret, fixture.ReadStoredCredential());
                 Assert.IsFalse(fixture.ReadCalls().Contains("--delete-credential"));
             }
         }
@@ -584,13 +587,13 @@ namespace SqlNexus.UnitTests.SqlNexus.McpServer
         {
             using (var fixture = new CopilotIntegrationFixture())
             {
-                fixture.CreateStub(existingCredential: "unrelated");
+                fixture.CreateStub(existingCredential: ExistingSecret);
                 Assert.AreEqual(0, fixture.RunRegister().ExitCode);
 
                 ProcessResult result = fixture.RunUnregister();
 
                 Assert.AreEqual(0, result.ExitCode, result.Output + result.Error);
-                Assert.AreEqual("unrelated", fixture.ReadStoredCredential());
+                Assert.AreEqual(ExistingSecret, fixture.ReadStoredCredential());
                 Assert.AreEqual(string.Empty, fixture.ReadCalls());
             }
         }
@@ -600,7 +603,7 @@ namespace SqlNexus.UnitTests.SqlNexus.McpServer
         {
             using (var fixture = new CopilotIntegrationFixture())
             {
-                fixture.CreateStub(existingCredential: "stored-earlier");
+                fixture.CreateStub(existingCredential: ExistingSecret);
                 Assert.AreEqual(0, fixture.RunRegister(extraArguments: SqlAuthArguments(fixture)).ExitCode);
                 JObject vscode = JObject.Parse(File.ReadAllText(fixture.VsCodeConfigPath));
                 ((JObject)vscode["servers"])["my_other_nexus"] = new JObject
@@ -614,7 +617,7 @@ namespace SqlNexus.UnitTests.SqlNexus.McpServer
 
                 Assert.AreEqual(0, result.ExitCode, result.Output + result.Error);
                 StringAssert.Contains(result.Output, "my_other_nexus");
-                Assert.AreEqual("stored-earlier", fixture.ReadStoredCredential());
+                Assert.AreEqual(ExistingSecret, fixture.ReadStoredCredential());
                 JObject after = JObject.Parse(File.ReadAllText(fixture.VsCodeConfigPath));
                 Assert.IsNull(after["servers"]["sqlnexus_mcp"]);
                 Assert.IsNotNull(after["servers"]["my_other_nexus"]);
@@ -626,7 +629,7 @@ namespace SqlNexus.UnitTests.SqlNexus.McpServer
         {
             using (var fixture = new CopilotIntegrationFixture())
             {
-                fixture.CreateStub(existingCredential: "stored-earlier");
+                fixture.CreateStub(existingCredential: ExistingSecret);
                 Assert.AreEqual(0, fixture.RunRegister(extraArguments: SqlAuthArguments(fixture)).ExitCode);
                 File.Delete(fixture.StubPath);
 
@@ -657,7 +660,7 @@ namespace SqlNexus.UnitTests.SqlNexus.McpServer
         {
             using (var fixture = new CopilotIntegrationFixture())
             {
-                fixture.CreateStub(existingCredential: "stored-earlier");
+                fixture.CreateStub(existingCredential: ExistingSecret);
 
                 ProcessResult result = fixture.RunUnregister(
                     extraArguments: new[] { "-Server", "localhost", "-UserId", "reader", "-McpExecutablePath", fixture.StubPath });

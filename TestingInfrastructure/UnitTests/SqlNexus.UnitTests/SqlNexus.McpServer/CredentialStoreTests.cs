@@ -15,7 +15,7 @@ namespace SqlNexus.UnitTests.SqlNexus.McpServer
     {
         private const string Server = "localhost\\SQLEXPRESS";
         private const string User = "sqlnexus_reader";
-        private const string Password = "Zx9!unique-Passw0rd#42";
+        private static readonly string Password = TestSecrets.NewPassword();
 
         private string root;
         private string directory;
@@ -58,7 +58,7 @@ namespace SqlNexus.UnitTests.SqlNexus.McpServer
         [TestMethod]
         public void SaveThenTryLoad_NonAsciiPassword_RoundTrips()
         {
-            const string unicodePassword = "pässwörd-日本語-🔑";
+            string unicodePassword = TestSecrets.NewPassword() + "-pässwörd-日本語-🔑";
 
             Store.Save(Server, User, unicodePassword.ToCharArray(), directory);
 
@@ -81,11 +81,13 @@ namespace SqlNexus.UnitTests.SqlNexus.McpServer
         [TestMethod]
         public void Save_ExistingCredential_ReplacesPasswordAndLeavesNoTemporaryFiles()
         {
-            Store.Save(Server, User, "first-password".ToCharArray(), directory);
-            Store.Save(Server, User, "second-password".ToCharArray(), directory);
+            string first = TestSecrets.NewPassword();
+            string second = TestSecrets.NewPassword();
+            Store.Save(Server, User, first.ToCharArray(), directory);
+            Store.Save(Server, User, second.ToCharArray(), directory);
 
             Assert.IsTrue(Store.TryLoad(Server, User, out string password, out string error, directory), error);
-            Assert.AreEqual("second-password", password);
+            Assert.AreEqual(second, password);
             Assert.AreEqual(0, Directory.GetFiles(directory, "*.tmp").Length);
             Assert.AreEqual(1, Directory.GetFiles(directory).Length);
         }

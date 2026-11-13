@@ -13,7 +13,7 @@ namespace SqlNexus.UnitTests.SqlNexus.McpServer
     {
         private const string Server = "localhost";
         private const string User = "sqlnexus_reader";
-        private const string Password = "Zx9!unique-Passw0rd#42";
+        private static readonly string Password = TestSecrets.NewPassword();
 
         private string root;
         private string directory;
@@ -117,7 +117,7 @@ namespace SqlNexus.UnitTests.SqlNexus.McpServer
         [TestMethod]
         public void ResolvePassword_EnvironmentPassword_TakesPrecedenceOverStoredCredential()
         {
-            Store.Save(Server, User, "stored-password".ToCharArray(), directory);
+            Store.Save(Server, User, TestSecrets.NewPassword().ToCharArray(), directory);
 
             string password = Resolver.ResolvePassword(Server, User, Password, new List<string>(), directory);
 
