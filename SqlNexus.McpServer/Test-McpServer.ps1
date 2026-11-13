@@ -569,12 +569,14 @@ function Invoke-McpRequests {
 
     $process = [System.Diagnostics.Process]::Start($processInfo)
     try {
+        # Drain both output pipes before writing requests to avoid a redirected-pipe deadlock.
+        $stdOutTask = $process.StandardOutput.ReadToEndAsync()
+        $stdErrTask = $process.StandardError.ReadToEndAsync()
+
         $process.StandardInput.Write($requestPayload)
         $process.StandardInput.WriteLine()
         $process.StandardInput.Close()
 
-        $stdOutTask = $process.StandardOutput.ReadToEndAsync()
-        $stdErrTask = $process.StandardError.ReadToEndAsync()
         if (-not $process.WaitForExit(30000)) {
             $process.Kill()
             throw "The MCP server did not respond within 30 seconds. Check the startup log at %TEMP%\sqlnexus_mcpserver.log and the registered server configuration."
