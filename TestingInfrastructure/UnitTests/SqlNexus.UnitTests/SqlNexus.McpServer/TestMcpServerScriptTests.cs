@@ -572,6 +572,51 @@ Write-Output 'TLS forwarding verified.'
             }
         }
 
+        [DataTestMethod]
+        [DataRow("Out", 2)]
+        [DataRow("Error", 1)]
+        public void McpRequests_LargeRequestAndStartupOutput_CompletesWithoutPipeDeadlock(
+            string startupStream, int expectedResponseCount)
+        {
+            using (var fixture = new ForceRegistrationFixture())
+            {
+                ProcessResult result = fixture.RunScriptFunctions(@"
+$childScript = @'
+$ErrorActionPreference = 'Stop'
+# Bound the regression failure even if a synchronous pipe write blocks.
+Add-Type -TypeDefinition 'public static class PipeTestWatchdog {
+    public static readonly System.Threading.Timer Timer = new System.Threading.Timer(
+        state => System.Environment.Exit(9), null, 10000, System.Threading.Timeout.Infinite);
+}'
+$null = [PipeTestWatchdog]::Timer
+$message = 'd' * 65536
+$startup = if ('" + startupStream + @"' -eq 'Out') {
+    @{ jsonrpc = '2.0'; method = 'notifications/message'; params = @{ message = $message } } |
+        ConvertTo-Json -Depth 4 -Compress
+} else { $message }
+[Console]::" + startupStream + @".WriteLine($startup)
+$inputText = [Console]::In.ReadToEnd()
+$request = $inputText | ConvertFrom-Json
+@{ jsonrpc = '2.0'; id = $request.id; result = @{
+    method = $request.method; payloadLength = $request.params.message.Length
+} } | ConvertTo-Json -Depth 4 -Compress
+'@
+$encodedChild = [Convert]::ToBase64String([Text.Encoding]::Unicode.GetBytes($childScript))
+$responses = @(Invoke-McpRequests -Command (Join-Path $PSHOME 'powershell.exe') `
+    -Arguments @('-NoProfile', '-NonInteractive', '-EncodedCommand', $encodedChild) `
+    -Requests @(@{ jsonrpc = '2.0'; id = 1; method = 'tools/call'; params = @{ message = 'r' * 65536 } }))
+if ($responses.Count -ne " + expectedResponseCount + @") { throw 'Unexpected response count.' }
+$response = $responses[-1]
+if ($response.id -ne 1 -or $response.result.method -ne 'tools/call' -or
+    $response.result.payloadLength -ne 65536) { throw 'Request or response was truncated.' }
+Write-Output 'Large redirected-pipe exchange completed.'
+");
+
+                Assert.AreEqual(0, result.ExitCode, result.Output + result.Error);
+                StringAssert.Contains(result.Output, "Large redirected-pipe exchange completed.");
+            }
+        }
+
         private static string CreateTemporaryConfiguration(string content)
         {
             string path = Path.Combine(Path.GetTempPath(), "SqlNexusMcpTest_" + Guid.NewGuid().ToString("N") + ".json");
@@ -602,10 +647,13 @@ Write-Output 'TLS forwarding verified.'
 
             using (Process process = Process.Start(startInfo))
             {
-                string output = process.StandardOutput.ReadToEnd();
-                string error = process.StandardError.ReadToEnd();
+                var outputTask = process.StandardOutput.ReadToEndAsync();
+                var errorTask = process.StandardError.ReadToEndAsync();
                 process.WaitForExit();
-                return new ProcessResult(process.ExitCode, output, error);
+                return new ProcessResult(
+                    process.ExitCode,
+                    outputTask.GetAwaiter().GetResult(),
+                    errorTask.GetAwaiter().GetResult());
             }
         }
 

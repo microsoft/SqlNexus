@@ -334,6 +334,11 @@ For a packaged SQL Nexus build, run the single staged copy at
 
 The script checks prerequisites, tests the SQL connection, and lets you interactively invoke tools.
 
+The validator drains stdout and stderr asynchronously before writing requests to stdin, preventing
+redirected-pipe deadlocks with large request batches or startup diagnostics on Windows PowerShell 5.1.
+If an older packaged validator hangs during all-tools validation, replace the staged script above
+with the current source script.
+
 Interactive connection setup also prompts for `Encryption mode (Optional/Mandatory/Strict)`
 and `Certificate validation (Validate/TrustServerCertificate)`. Press Enter to keep `Mandatory`
 and `Validate`. Supplying `-EncryptionMode` or `-CertificateValidation` skips its corresponding

@@ -221,6 +221,10 @@ their respective prompts. The selection applies to individual tests, all-tools v
 menu-based registration. Interactive `-ForceRegistration` prompts for omitted TLS settings too;
 non-interactive runs never prompt.
 
+The validator drains stdout and stderr before sending requests to avoid redirected-pipe deadlocks
+on Windows PowerShell 5.1. If all-tools validation hangs with an older build, update the packaged
+`sqlnexus\bin\Release\SqlNexus.McpServer\Test-McpServer.ps1` from the current source script.
+
 For an untrusted lab certificate, choose `Mandatory` with `TrustServerCertificate` (or supply
 both parameters explicitly). `Optional` does not bypass certificate validation if SQL Server
 requires encryption. The preliminary basic connectivity check is not a validation of MCP TLS
